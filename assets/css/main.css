@@ -16,12 +16,18 @@
   --ink-soft: rgba(20, 20, 20, .74); /* вторичный текст на цветных подложках */
   --err: #C8372D;
 
-  /* акценты B */
-  --coral: #FF6F4F;
-  --sun: #FFC83D;
-  --sky: #4DA3FF;
-  --mint: #2EC27E;
-  --lilac: #A58BFF;
+  /* акценты B, смягчённые до пастели */
+  --coral: #FF967C;
+  --sun: #FFD66B;
+  --sky: #8EC1FF;
+  --mint: #7FD8AC;
+  --lilac: #BEA9FF;
+  --sand: #EBDCC7;
+  /* насыщенные версии — только для мелких сигналов: статусы, звёзды, точки */
+  --coral-strong: #FF6F4F;
+  --ok: #2EC27E;
+  --res: #F5B82E;
+  --soon: #4DA3FF;
   --coral-50: #FFE9E2;
   --sun-50: #FFF4CF;
   --sky-50: #E4F0FF;
@@ -213,10 +219,10 @@ main:focus, section[tabindex="-1"]:focus, [data-anchor-focus]:focus { outline: n
 .ico--sm { width: 32px; height: 32px; }
 
 /* статус-точки */
-.dot { width: 8px; height: 8px; flex: none; border-radius: 50%; background: var(--mint); }
-.dot--ok { background: var(--mint); box-shadow: 0 0 0 3px rgba(46, 194, 126, .22); }
-.dot--res { background: var(--sun); box-shadow: 0 0 0 3px rgba(255, 200, 61, .3); }
-.dot--soon { background: var(--sky); box-shadow: 0 0 0 3px rgba(77, 163, 255, .25); }
+.dot { width: 8px; height: 8px; flex: none; border-radius: 50%; background: var(--ok); }
+.dot--ok { background: var(--ok); box-shadow: 0 0 0 3px rgba(46, 194, 126, .22); }
+.dot--res { background: var(--res); box-shadow: 0 0 0 3px rgba(245, 184, 46, .3); }
+.dot--soon { background: var(--soon); box-shadow: 0 0 0 3px rgba(77, 163, 255, .25); }
 
 /* круглое фото-лицо (меню «Породы») */
 .face {
@@ -443,7 +449,7 @@ main:focus, section[tabindex="-1"]:focus, [data-anchor-focus]:focus { outline: n
   background: rgba(255, 255, 255, .62);
   font-size: 14px; font-weight: 500;
 }
-.eyebrow__dot { width: 8px; height: 8px; border-radius: 50%; background: var(--coral); }
+.eyebrow__dot { width: 8px; height: 8px; border-radius: 50%; background: var(--coral-strong); }
 .hero .h1 { margin-top: clamp(20px, 2.4vw, 32px); max-width: 10.6ch; }
 .hero__sub { margin-top: 22px; font-size: 16px; line-height: 1.45; max-width: 36ch; color: var(--ink-soft); }
 /* подзаголовок одной строкой — только когда строка (≈ 575 px) кончается левее щенка.
@@ -648,7 +654,7 @@ main:focus, section[tabindex="-1"]:focus, [data-anchor-focus]:focus { outline: n
 }
 .fav:hover { background: #fff; }
 .fav:active { transform: scale(.92); }
-.fav[aria-pressed="true"] { background: #fff; color: var(--coral); }
+.fav[aria-pressed="true"] { background: #fff; color: var(--coral-strong); }
 .fav[aria-pressed="true"] .i { fill: currentColor; }
 
 .pups__more { min-width: 0; container-type: inline-size; }
@@ -822,7 +828,7 @@ main:focus, section[tabindex="-1"]:focus, [data-anchor-focus]:focus { outline: n
 }
 .rating__num { font-size: clamp(30px, 2.6vw, 40px); font-weight: 600; letter-spacing: -0.04em; line-height: 1; }
 .rating__txt { display: grid; gap: 4px; font-size: 14px; color: var(--muted); line-height: 1.2; }
-.stars { display: flex; gap: 2px; color: var(--coral); }
+.stars { display: flex; gap: 2px; color: var(--coral-strong); }
 .stars .i { width: 14px; height: 14px; }
 .reviews { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--gap); }
 .reviews > li { min-width: 0; }
