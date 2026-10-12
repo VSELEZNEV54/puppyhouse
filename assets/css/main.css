@@ -73,6 +73,8 @@
 .tone--powder { --tone: var(--powder); --tone-floor: var(--powder-floor); --tone-hi: #A9D2E7; }
 .tone--butter { --tone: var(--butter); --tone-floor: var(--butter-floor); --tone-hi: #EFD190; }
 .tone--sage   { --tone: var(--sage);   --tone-floor: var(--sage-floor);   --tone-hi: #AECCB5; }
+/* фон кадра «четыре щенка»: стена и пол (замер) */
+.tone--cream  { --tone: #F1DCBF; --tone-floor: #F8E9D3; --tone-hi: #F4E0C4; }
 
 /* ---------- база ---------- */
 *, *::before, *::after { box-sizing: border-box; }
@@ -410,7 +412,7 @@ main:focus, section[tabindex="-1"]:focus, [data-anchor-focus]:focus { outline: n
 /* общая «студийная» подложка: тон → пол, как в кадре.
    --floor-a/--floor-b — где в плитке начинается и кончается переход «стена → пол».
    По умолчанию 55% → 100%; у плиток с фото — точно по линии пола в кадре. */
-.hero__main, .hbreed, .lead {
+.lead {
   background: linear-gradient(180deg, var(--tone) 0 var(--floor-a, 55%), var(--tone-floor) var(--floor-b, 100%));
 }
 .studio-img { -webkit-mask-image: var(--studio-mask); mask-image: var(--studio-mask); }
@@ -425,18 +427,20 @@ main:focus, section[tabindex="-1"]:focus, [data-anchor-focus]:focus { outline: n
    ПЕРВЫЙ ЭКРАН
    ========================================================= */
 .hero { padding-top: var(--gap); }
-.hero__grid {
-  display: grid;
-  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
-  gap: var(--gap);
-  height: clamp(580px, calc(100svh - 250px), 760px);
-}
 .hero__main {
-  --floor-a: 79%; --floor-b: 97%;
+  /* высота кадра «четыре щенка»: по высоте плитки, но не шире 58% её ширины — текст слева свободен */
+  --ph: min(86cqh, calc(58cqw / 1.4906));
   position: relative; isolation: isolate; overflow: hidden;
   container-type: size;
+  height: clamp(560px, calc(100svh - 240px), 720px);
   border-radius: var(--r-tile);
   padding: clamp(28px, 3.4vw, 52px);
+  background: var(--tone);
+}
+/* пол студии во всю ширину плитки — на той же высоте, что пол в кадре (84% → 97% высоты фото) */
+.hero__floor {
+  position: absolute; inset: 0; z-index: -1; pointer-events: none;
+  background: linear-gradient(180deg, transparent 0 calc(100cqh - var(--ph) * .16), var(--tone-floor) calc(100cqh - var(--ph) * .03));
 }
 .hero__copy {
   position: relative; z-index: 2;
@@ -452,20 +456,20 @@ main:focus, section[tabindex="-1"]:focus, [data-anchor-focus]:focus { outline: n
 .eyebrow__dot { width: 8px; height: 8px; border-radius: 50%; background: var(--coral-strong); }
 .hero .h1 { margin-top: clamp(20px, 2.4vw, 32px); max-width: 10.6ch; }
 .hero__sub { margin-top: 22px; font-size: 16px; line-height: 1.45; max-width: 36ch; color: var(--ink-soft); }
-/* подзаголовок одной строкой — только когда строка (≈ 575 px) кончается левее щенка.
-   Левый край щенка ≈ ширина плитки − 0,41 × её высоты, поэтому условие зависит и от высоты плитки. */
-@container (min-width: 815px) or ((min-width: 780px) and (max-height: 572px)) or ((min-width: 760px) and (max-height: 523px)) or ((min-width: 740px) and (max-height: 476px)) {
-  .hero__sub { max-width: none; white-space: nowrap; font-size: 15px; }
-}
 .hero__actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: auto; padding-top: 24px; }
 
+/* кадр прижат к правому и нижнему краю плитки: эти края совпадают с краями плитки,
+   левый и верхний гаснут в цвет стены */
 .hero__photo {
-  position: absolute; z-index: 1;
-  width: 88cqh; height: 88cqh;
-  right: calc(88cqh * -0.24);
-  bottom: calc(88cqh * -0.045);
+  position: absolute; z-index: 1; right: 0; bottom: 0;
+  height: var(--ph); aspect-ratio: 1264 / 848;
 }
-.hero__photo img { width: 100%; height: 100%; object-fit: cover; }
+.hero__photo img {
+  width: 100%; height: 100%; object-fit: cover;
+  -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 22%), linear-gradient(180deg, transparent 0, #000 26%);
+  mask-image: linear-gradient(90deg, transparent 0, #000 22%), linear-gradient(180deg, transparent 0, #000 26%);
+  -webkit-mask-composite: source-in; mask-composite: intersect;
+}
 
 /* стикер — один, повёрнутый */
 .sticker {
@@ -483,53 +487,8 @@ main:focus, section[tabindex="-1"]:focus, [data-anchor-focus]:focus { outline: n
 .sticker b { display: block; font-size: 16px; font-weight: 700; letter-spacing: -0.01em; }
 .sticker small { display: block; margin-top: 2px; font-size: 13px; font-weight: 500; }
 
-/* три плитки пород справа */
-.hero__side { display: grid; grid-template-rows: repeat(3, minmax(0, 1fr)); gap: var(--gap); min-height: 0; }
-.hero__side > li { min-height: 0; min-width: 0; }
-.hbreed {
-  /* стена студии вокруг собаки (замер по кадру) светлее виньетки по краям: плитка берёт её, иначе
-     вокруг собаки читается светлое пятно */
-  --tone: var(--tone-hi);
-  --floor-a: 75%; --floor-b: 101%;
-  position: relative; isolation: isolate; overflow: hidden;
-  container-type: size;
-  display: flex; flex-direction: column; justify-content: space-between; align-items: flex-start;
-  height: 100%;
-  padding: 20px 22px;
-  border-radius: var(--r-tile);
-  color: var(--ink); text-decoration: none;
-}
-.hbreed__name {
-  position: relative; z-index: 2;
-  max-width: 8.6em;
-  font-size: clamp(20px, 1.7vw, 26px); font-weight: 600; letter-spacing: -0.025em; line-height: 1.05;
-}
-.hbreed .round-arrow { position: relative; z-index: 2; }
-/* размер кадра подобран под каждую собаку (в % высоты плитки): собака ≈ 85% высоты, лапы ≈ 10 px над низом,
-   уши ≈ 20 px под верхом. На узких плитках кадр сдвигается вправо (--shift), правый край маски
-   подтягивается к собаке (--m2), а --k чуть уменьшает собаку — чтобы уши не заходили под название. */
-.hbreed { --s: 114; --b: -7; --k: 1; --shift: 0%; --m1: 72%; --m2: 96%; }
-.hbreed.tone--butter { --s: 137; --b: -14; }
-.hbreed.tone--sage { --s: 110; --b: -5.5; }
-.hbreed__photo {
-  position: absolute; z-index: 1; right: 0;
-  height: calc(var(--s) * var(--k) * 1%); width: auto; aspect-ratio: 1;
-  bottom: calc(var(--b) * var(--k) * 1%);
-  transform: translateX(var(--shift));
-}
-/* края кадра гаснут до нуля внутри самой плитки: собака (x 29–70 %, y ≥ 13 % кадра) непрозрачна,
-   виньетка и тень справа уходят в цвет плитки — без ореола и грязного края */
-.hbreed__photo img {
-  width: 100%; height: 100%; object-fit: cover;
-  -webkit-mask-image: linear-gradient(90deg, transparent 4%, #000 28%, #000 var(--m1), transparent var(--m2)), linear-gradient(180deg, transparent 0, #000 13%);
-  mask-image: linear-gradient(90deg, transparent 4%, #000 28%, #000 var(--m1), transparent var(--m2)), linear-gradient(180deg, transparent 0, #000 13%);
-  -webkit-mask-composite: source-in; mask-composite: intersect;
-  transform-origin: 50% 92%;
-  transition: transform .8s var(--ease);
-}
-.hbreed:hover .hbreed__photo img { transform: scale(1.04); }
-.hbreed:hover .round-arrow, .breed:hover .round-arrow, .hcard:hover .round-arrow, .ptile:hover .round-arrow { background: var(--ink); color: #fff; }
-.hbreed:hover .round-arrow .i, .breed:hover .round-arrow .i, .hcard:hover .round-arrow .i, .ptile:hover .round-arrow .i { transform: rotate(45deg); }
+.breed:hover .round-arrow, .hcard:hover .round-arrow, .ptile:hover .round-arrow { background: var(--ink); color: #fff; }
+.breed:hover .round-arrow .i, .hcard:hover .round-arrow .i, .ptile:hover .round-arrow .i { transform: rotate(45deg); }
 
 /* цифры доверия */
 .stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--gap); margin-top: var(--gap); }
@@ -543,43 +502,43 @@ main:focus, section[tabindex="-1"]:focus, [data-anchor-focus]:focus { outline: n
 .stat .ico { grid-column: 2; grid-row: 1 / 3; align-self: center; width: 48px; height: 48px; }
 
 /* =========================================================
-   ПОРОДЫ — вертикальные тёмные плитки
+   ПОРОДЫ — пастельные плитки со студийными фото
    ========================================================= */
 .breeds { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--gap); }
 .breeds > li { min-width: 0; }
 .breed {
+  --s: 100; /* ширина кадра в % ширины плитки: ≥ 100, чтобы боковые края кадра совпадали с краями плитки */
   position: relative; isolation: isolate; overflow: hidden;
-  container-type: inline-size;
-  display: flex; flex-direction: column; justify-content: space-between;
-  aspect-ratio: 3 / 4.3;
+  display: flex; flex-direction: column; align-items: flex-start;
+  aspect-ratio: 3 / 4;
   padding: clamp(20px, 1.8vw, 26px);
   border-radius: var(--r-tile);
-  background: #2B2520; color: #fff; text-decoration: none;
+  background: var(--tone-hi); color: var(--ink); text-decoration: none;
 }
-.breed__img {
-  position: absolute; inset: 0; z-index: -2;
-  width: 100%; height: 100%; object-fit: cover;
-  transition: transform 1.6s var(--ease);
-}
-.breed--maltipu .breed__img { object-position: 42% 50%; }
-.breed--buldog .breed__img { object-position: 58% 50%; }
-.breed--pudel .breed__img { object-position: 46% 50%; }
-.breed--kolli .breed__img { object-position: 52% 50%; }
-.breed::before {
-  content: ""; position: absolute; inset: 0; z-index: -1;
-  background: linear-gradient(180deg, rgba(0, 0, 0, .58) 0%, rgba(0, 0, 0, .34) 28%, rgba(0, 0, 0, 0) 52%, rgba(0, 0, 0, 0) 74%, rgba(0, 0, 0, .5) 100%);
-}
-.breed:hover .breed__img { transform: scale(1.06); }
-.breed__top { display: grid; gap: 10px; }
-.breed__title {
-  font-size: min(var(--fs-breed), 12.7cqi);
-  font-weight: 700; text-transform: uppercase; letter-spacing: -0.04em; line-height: .92;
-  white-space: nowrap;
-}
-.breed__desc { font-size: 14px; line-height: 1.35; color: #fff; }
+/* мальтипу и пудель в кадре мельче — кадр крупнее, чтобы собаки были одного роста */
+.breed.tone--peach, .breed.tone--butter { --s: 112; }
+.breed__top { position: relative; z-index: 2; display: grid; gap: 6px; }
+.breed__title { font-size: clamp(20px, 1.75vw, 30px); font-weight: 600; letter-spacing: -0.03em; line-height: 1.05; }
+@media (min-width: 1200px) { .breed__title { white-space: nowrap; } }
+.breed__desc { font-size: 15px; line-height: 1.35; color: var(--ink-soft); }
 @media (min-width: 1200px) { .breed__desc { white-space: nowrap; } }
-.breed__foot { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
-.breed__count { display: inline-flex; align-items: center; gap: 10px; font-size: 15px; font-weight: 500; }
+.breed__count { display: inline-flex; align-items: center; gap: 8px; margin-top: 4px; font-size: 14px; font-weight: 500; }
+/* стрелка — внизу слева, на «полу» плитки, как в плитках первого экрана */
+.breed .round-arrow { position: absolute; z-index: 2; left: clamp(18px, 1.6vw, 24px); bottom: clamp(18px, 1.6vw, 24px); }
+/* кадр стоит на «полу» плитки во всю её ширину; гаснет только верхний край */
+.breed__photo {
+  position: absolute; z-index: 1; left: 50%; bottom: 0;
+  width: calc(var(--s) * 1%); aspect-ratio: 1;
+  transform: translateX(-50%);
+}
+.breed__photo img {
+  width: 100%; height: 100%; object-fit: cover;
+  -webkit-mask-image: linear-gradient(180deg, transparent 0, #000 18%);
+  mask-image: linear-gradient(180deg, transparent 0, #000 18%);
+  transform-origin: 50% 92%;
+  transition: transform .9s var(--ease);
+}
+.breed:hover .breed__photo img { transform: scale(1.04); }
 
 /* =========================================================
    ЩЕНКИ В НАЛИЧИИ
@@ -780,12 +739,12 @@ main:focus, section[tabindex="-1"]:focus, [data-anchor-focus]:focus { outline: n
   border-radius: var(--r-tile);
   background: #E7E1D8; color: var(--ink); text-decoration: none;
 }
-.ptile img {
+.ptile > img {
   position: absolute; inset: 0; z-index: -1;
   width: 100%; height: 100%; object-fit: cover;
   transition: transform 1.4s var(--ease);
 }
-.ptile:hover img { transform: scale(1.04); }
+.ptile:hover > img { transform: scale(1.04); }
 .ptile__cap {
   position: absolute; left: 10px; right: 10px; bottom: 10px;
   display: flex; align-items: center; justify-content: space-between; gap: 12px;
@@ -800,13 +759,21 @@ main:focus, section[tabindex="-1"]:focus, [data-anchor-focus]:focus { outline: n
 .ptile:hover .round-arrow { background: var(--coral); color: var(--ink); }
 .bento__cell--gift img { object-position: 55% 60%; }
 .bento__cell--parents img { object-position: 60% 50%; }
-/* «Подобрать породу»: кадр на кремовом фоне растворяется в плитке того же цвета */
-.bento__cell--pick .ptile { background: linear-gradient(180deg, #EAD6B9 0%, #F1DCBF 42%, #F1DDC1 82%, #F7E6CF 93%, #F8E9D4 100%); }
-.bento__cell--pick img {
-  left: auto; right: 0; width: auto; height: 100%; aspect-ratio: 1264 / 848;
-  -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 26%);
-  mask-image: linear-gradient(90deg, transparent 0, #000 26%);
-  transform-origin: 70% 100%;
+/* «Подобрать породу»: четыре мордочки пород на лиловой пастели */
+.bento__cell--pick .ptile { background: var(--lilac-50); }
+.ptile__faces {
+  position: absolute; right: var(--tile-pad); bottom: var(--tile-pad);
+  display: flex;
+}
+.ptile__faces .face {
+  width: clamp(72px, 7.4vw, 116px); height: clamp(72px, 7.4vw, 116px);
+  border: 4px solid #fff; box-shadow: 0 14px 28px -18px rgba(20, 20, 20, .45);
+  transition: transform .5s var(--ease);
+}
+.ptile__faces .face + .face { margin-left: -16px; }
+@media (hover: hover) {
+  .ptile--pick:hover .face:nth-child(odd) { transform: translateY(-6px) rotate(-4deg); }
+  .ptile--pick:hover .face:nth-child(even) { transform: translateY(-3px) rotate(4deg); }
 }
 .bento__cell--pick .ptile__cap {
   inset: var(--tile-pad) auto auto var(--tile-pad);
@@ -1081,9 +1048,6 @@ legend.field__label { margin-bottom: 8px; }
 /* =========================================================
    АДАПТИВ
    ========================================================= */
-@media (min-width: 1600px) {
-  .hero__grid { grid-template-columns: minmax(0, 2.1fr) minmax(0, 1fr); }
-}
 
 /* отзывы в узкой колонке тянутся на 5 строк — ниже 1360 рейтинги встают строкой над ними */
 @media (max-width: 1359px) {
@@ -1092,14 +1056,24 @@ legend.field__label { margin-bottom: 8px; }
 }
 
 @media (max-width: 1199px) {
-  .hero__grid { grid-template-columns: minmax(0, 1fr); height: auto; }
   .hero__main { height: clamp(480px, 58vw, 600px); }
-  .hero__side { grid-template-rows: none; grid-template-columns: repeat(3, minmax(0, 1fr)); height: clamp(180px, 20vw, 220px); }
-  /* плитки уже: собака правее и чуть меньше, чтобы уши не заходили под название */
-  .hbreed { --shift: 19%; --m1: 70%; --m2: 78%; --k: .92; }
-  .breeds { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .breed { aspect-ratio: 4 / 4.4; }
   .pups { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+
+/* планшет: плитки пород широкие, 2 в ряд. Кадр — квадрат во всю высоту справа:
+   верх, низ и правый край совпадают с краями плитки, левый гаснет; пол плитки — на линии пола кадра */
+@media (min-width: 761px) and (max-width: 1199px) {
+  .breeds { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .breed {
+    aspect-ratio: 16 / 10;
+    background: linear-gradient(180deg, var(--tone-hi) 0 78%, var(--tone-floor) 97%);
+  }
+  .breed__top { max-width: 56%; padding-right: 0; }
+  .breed__photo { left: auto; right: -10%; top: 0; bottom: 0; width: auto; height: 100%; transform: none; }
+  .breed__photo img {
+    -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 32%);
+    mask-image: linear-gradient(90deg, transparent 0, #000 32%);
+  }
 }
 
 @media (min-width: 1001px) and (max-width: 1199px) {
@@ -1109,6 +1083,13 @@ legend.field__label { margin-bottom: 8px; }
   .step { column-gap: 12px; }
   .step__num { width: 48px; height: 48px; font-size: 22px; }
   .step__title { font-size: 18px; }
+}
+
+@media (min-width: 761px) and (max-width: 1000px) {
+  /* кнопки первого экрана столбиком — иначе вторая заходит на щенков */
+  .hero__actions { flex-direction: column; align-items: flex-start; }
+  /* «Французский бульдог» здесь в две строки — у всех плиток место под две, описания на одной высоте */
+  .breed__title { min-height: 2.1em; }
 }
 
 @media (max-width: 1000px) {
@@ -1132,8 +1113,6 @@ legend.field__label { margin-bottom: 8px; }
 }
 
 @media (max-width: 900px) {
-  .hbreed { --k: .85; }
-  .hbreed__name { font-size: 17px; }
   .chips { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; margin-inline: calc(-1 * var(--pad)); padding-inline: var(--pad); padding-block: 6px; margin-block: -6px 12px; }
   .chips::-webkit-scrollbar { display: none; }
   .pups { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -1166,23 +1145,26 @@ legend.field__label { margin-bottom: 8px; }
   .scroller::-webkit-scrollbar { display: none; }
   .scroller > * { flex: 0 0 auto; scroll-snap-align: start; }
 
-  /* первый экран: щенок над текстом, ленты пород */
+  /* первый экран: щенки над текстом. Кадр во всю ширину плитки, пустая стена сверху срезана,
+     нижний край кадра (пол) гаснет в цвет пола — им же залита плитка под текстом */
   .hero__main {
-    /* размер фото и линия пола в кадре: 72% → 92% высоты фото */
-    --ph: min(300px, calc(.84 * (100vw - 2 * var(--pad) - 40px)));
     height: auto; container-type: inline-size;
     display: flex; flex-direction: column;
     padding: 0 20px 22px;
-    background: linear-gradient(180deg, var(--tone) 0 calc(var(--ph) * .72 - 6px), var(--tone-floor) calc(var(--ph) * .92 - 6px), var(--tone-floor) 100%);
+    background: var(--tone-floor);
   }
+  .hero__floor { display: none; }
   .hero__photo {
-    position: relative; order: -1; align-self: flex-start; margin-left: -14px;
-    width: var(--ph); height: auto; aspect-ratio: 1;
-    right: auto; bottom: auto;
-    margin-top: -6px;
+    position: relative; order: -1; right: auto; bottom: auto;
+    width: calc(100% + 40px); height: auto; margin: 0 -20px;
+    aspect-ratio: 1264 / 790; /* запас стены над ушами — под стикер */
   }
-  .hero__photo img { --studio-mask: radial-gradient(50% 50% at 50% 54%, #000 74%, transparent 100%); }
-  .hero__copy { height: auto; margin-top: -18px; }
+  .hero__photo img {
+    object-position: 50% 100%;
+    -webkit-mask-image: linear-gradient(180deg, #000 92%, transparent 100%);
+    mask-image: linear-gradient(180deg, #000 92%, transparent 100%);
+  }
+  .hero__copy { height: auto; margin-top: 2px; }
   .hero .h1 { margin-top: 16px; max-width: none; }
   .hero__sub { margin-top: 14px; font-size: 16px; }
   .hero__actions { margin-top: 0; padding-top: 22px; width: 100%; }
@@ -1194,16 +1176,10 @@ legend.field__label { margin-bottom: 8px; }
   .sticker b { font-size: 13.5px; }
   .sticker small { font-size: 11.5px; }
 
-  .hero__side { display: flex; height: auto; grid-template-columns: none; }
-  .hero__side > li { width: 80%; max-width: 300px; height: 180px; }
-  .hbreed { --k: 1; }
-
   .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .stat { padding: 18px; }
 
-  .breeds > li { width: 76%; max-width: 320px; }
-  .breed { aspect-ratio: 3 / 4.3; }
-  .breed__desc { font-size: 14px; }
+  .breeds > li { width: 76%; max-width: 300px; }
 
   .pups__item { width: 76%; max-width: 320px; }
 
@@ -1227,8 +1203,8 @@ legend.field__label { margin-bottom: 8px; }
 
   .bento { display: flex; grid-template-rows: none; }
   .bento__cell { width: 76%; max-width: 320px; }
-  .ptile { height: auto; display: flex; flex-direction: column; background: var(--tile); }
-  .ptile img, .bento__cell--pick img {
+  .ptile { height: 100%; display: flex; flex-direction: column; background: var(--tile); }
+  .ptile > img {
     position: relative; inset: auto; z-index: 0; order: -1;
     width: calc(100% - 2 * var(--inset)); height: auto; aspect-ratio: 3 / 2.2;
     margin: var(--inset) var(--inset) 0; border-radius: var(--r-img);
@@ -1244,6 +1220,9 @@ legend.field__label { margin-bottom: 8px; }
   .bento__cell--pick .ptile__title, .ptile__title { font-size: 18px; }
   .bento__cell--pick .ptile__line { margin-top: 0; font-size: 14px; color: var(--muted); }
   .bento__cell--pick .round-arrow { width: 44px; height: 44px; }
+  .bento__cell--pick .ptile { background: var(--lilac-50); }
+  .ptile__faces { position: relative; right: auto; bottom: auto; order: -1; flex: 1; align-items: center; justify-content: center; padding: 20px 16px 4px; }
+  .ptile__faces .face { width: 64px; height: 64px; }
   .ptile .round-arrow { align-self: flex-end; }
 
   .ratings { grid-template-columns: repeat(3, minmax(0, 1fr)); }
