@@ -1,20 +1,286 @@
 [
-  {"name": "hero-maltipu-sofa", "url": "https://www.figma.com/api/mcp/asset/1988af56-c662-4131-9bfe-bd700a931aac.png", "thumb": "u2movu", "w": 928, "h": 1152, "about": "Мальтипу абрикос на светлом диване, светлый интерьер"},
-  {"name": "breed-maltipu", "url": "https://www.figma.com/api/mcp/asset/1def4cf9-fa12-4c31-b2c1-ae501ced830c.png", "thumb": "w3j5ss", "w": 928, "h": 1152, "about": "Мальтипу на коньячном кожаном кресле, тёмный тёплый тон, верх кадра тёмный под заголовок"},
-  {"name": "breed-francuzskij-buldog", "url": "https://www.figma.com/api/mcp/asset/622d3b98-d7f9-4fab-8d59-e4042543ac08.png", "thumb": "y7zsl4", "w": 928, "h": 1152, "about": "Голубой француз на тёмной скамье, тёмный тон, верх под заголовок"},
-  {"name": "breed-toj-pudel", "url": "https://www.figma.com/api/mcp/asset/9b4e1019-7d9b-41f5-8bcc-d6e22f5edf12.png", "thumb": "guy4tt", "w": 928, "h": 1152, "about": "Рыжий той-пудель на оливковом бархате, тёмный тон"},
-  {"name": "breed-border-kolli", "url": "https://www.figma.com/api/mcp/asset/27ec518e-b070-48d7-8279-bfc8e197124d.png", "thumb": "t51xck", "w": 928, "h": 1152, "about": "Чёрно-белый бордер-колли в траве на закате, тёмный тон"},
-  {"name": "studio-maltipu-peach", "url": "https://www.figma.com/api/mcp/asset/ccceb212-de34-4174-b520-e62f45f0e273.png", "thumb": "wf9vuq", "w": 1024, "h": 1024, "about": "Кремовый мальтипу на персиковом фоне #F6C6A8"},
-  {"name": "studio-buldog-blue", "url": "https://www.figma.com/api/mcp/asset/9687a9f0-887d-47a3-94e0-2b27799e73f4.png", "thumb": "28b414", "w": 1024, "h": 1024, "about": "Палевый француз на голубом фоне #BFD8F2"},
-  {"name": "studio-pudel-yellow", "url": "https://www.figma.com/api/mcp/asset/cd7c6813-599d-40ae-915d-f349f056e2bd.png", "thumb": "84oi3h", "w": 1024, "h": 1024, "about": "Абрикосовый той-пудель на жёлтом фоне #F5E3A3"},
-  {"name": "studio-kolli-green", "url": "https://www.figma.com/api/mcp/asset/24d30f02-f714-4e7d-8552-26e9574b332e.png", "thumb": "ywv2gz", "w": 1024, "h": 1024, "about": "Голубой мрамор бордер-колли на мятном фоне #C9E4CF"},
-  {"name": "pup-maltipu-chocolate", "url": "https://www.figma.com/api/mcp/asset/d4c4c1a5-396a-46e7-ae2e-35a6d2e81d6e.png", "thumb": "orxyl0", "w": 928, "h": 1152, "about": "Шоколадный мальтипу на вязаном пледе, светлый тон"},
-  {"name": "pup-buldog-cream", "url": "https://www.figma.com/api/mcp/asset/c3f50c22-cb9b-4516-992c-062580275108.png", "thumb": "kwfndv", "w": 928, "h": 1152, "about": "Кремовый француз в светлой квартире"},
-  {"name": "hero-four-breeds", "url": "https://www.figma.com/api/mcp/asset/3adc31b6-29f1-489d-9584-4a34e97908cb.png", "thumb": "c40xhn", "w": 1264, "h": 848, "about": "Четыре щенка в ряд на кремовом фоне: мальтипу, француз, той-пудель, бордер-колли"},
-  {"name": "family-maltipu", "url": "https://www.figma.com/api/mcp/asset/f5ba5b98-7dfd-4a01-9364-e7591ecdee3a.png", "thumb": "yg9xss", "w": 1264, "h": 848, "about": "Девушка обнимает щенка мальтипу на диване"},
-  {"name": "delivery-carrier", "url": "https://www.figma.com/api/mcp/asset/61499fa9-bb56-4c96-a96d-da41f3ea920a.png", "thumb": "nyqkqf", "w": 1264, "h": 848, "about": "Француз в переноске на заднем сиденье авто"},
-  {"name": "vet-check", "url": "https://www.figma.com/api/mcp/asset/18b4a17b-f4a7-4f50-88a7-fc29886cf63d.png", "thumb": "gd5160", "w": 1264, "h": 848, "about": "Ветеринар осматривает той-пуделя"},
-  {"name": "gift-maltipu", "url": "https://www.figma.com/api/mcp/asset/1094b256-45e1-459c-b36c-47acd68dfd78.png", "thumb": "wmr9fi", "w": 928, "h": 1152, "about": "Мальтипу в подарочной коробке, новогодний свет"},
-  {"name": "parents-maltipu", "url": "https://www.figma.com/api/mcp/asset/97a6324b-c5c6-40e9-9fb9-4f141446a64e.png", "thumb": "rbh6k9", "w": 1264, "h": 848, "about": "Мама-мальтипу со щенками на лежанке"},
-  {"name": "starter-kit", "url": "https://www.figma.com/api/mcp/asset/bb9ec14e-5ce8-4c1d-86a5-936fa2385b02.png", "thumb": "6ir4eu", "w": 1024, "h": 1024, "about": "Флэтлей: стартовый набор для щенка"}
+  {
+    "name": "hero-maltipu-sofa",
+    "url": "https://www.figma.com/api/mcp/asset/1988af56-c662-4131-9bfe-bd700a931aac.png",
+    "thumb": "u2movu",
+    "w": 928,
+    "h": 1152,
+    "about": "Мальтипу абрикос на светлом диване, светлый интерьер"
+  },
+  {
+    "name": "breed-maltipu",
+    "url": "https://www.figma.com/api/mcp/asset/1def4cf9-fa12-4c31-b2c1-ae501ced830c.png",
+    "thumb": "w3j5ss",
+    "w": 928,
+    "h": 1152,
+    "about": "Мальтипу на коньячном кожаном кресле, тёмный тёплый тон, верх кадра тёмный под заголовок"
+  },
+  {
+    "name": "breed-francuzskij-buldog",
+    "url": "https://www.figma.com/api/mcp/asset/622d3b98-d7f9-4fab-8d59-e4042543ac08.png",
+    "thumb": "y7zsl4",
+    "w": 928,
+    "h": 1152,
+    "about": "Голубой француз на тёмной скамье, тёмный тон, верх под заголовок"
+  },
+  {
+    "name": "breed-toj-pudel",
+    "url": "https://www.figma.com/api/mcp/asset/9b4e1019-7d9b-41f5-8bcc-d6e22f5edf12.png",
+    "thumb": "guy4tt",
+    "w": 928,
+    "h": 1152,
+    "about": "Рыжий той-пудель на оливковом бархате, тёмный тон"
+  },
+  {
+    "name": "breed-border-kolli",
+    "url": "https://www.figma.com/api/mcp/asset/27ec518e-b070-48d7-8279-bfc8e197124d.png",
+    "thumb": "t51xck",
+    "w": 928,
+    "h": 1152,
+    "about": "Чёрно-белый бордер-колли в траве на закате, тёмный тон"
+  },
+  {
+    "name": "studio-maltipu-peach",
+    "url": "https://www.figma.com/api/mcp/asset/ccceb212-de34-4174-b520-e62f45f0e273.png",
+    "thumb": "wf9vuq",
+    "w": 1024,
+    "h": 1024,
+    "about": "Кремовый мальтипу на персиковом фоне #F6C6A8"
+  },
+  {
+    "name": "studio-buldog-blue",
+    "url": "https://www.figma.com/api/mcp/asset/9687a9f0-887d-47a3-94e0-2b27799e73f4.png",
+    "thumb": "28b414",
+    "w": 1024,
+    "h": 1024,
+    "about": "Палевый француз на голубом фоне #BFD8F2"
+  },
+  {
+    "name": "studio-pudel-yellow",
+    "url": "https://www.figma.com/api/mcp/asset/cd7c6813-599d-40ae-915d-f349f056e2bd.png",
+    "thumb": "84oi3h",
+    "w": 1024,
+    "h": 1024,
+    "about": "Абрикосовый той-пудель на жёлтом фоне #F5E3A3"
+  },
+  {
+    "name": "studio-kolli-green",
+    "url": "https://www.figma.com/api/mcp/asset/24d30f02-f714-4e7d-8552-26e9574b332e.png",
+    "thumb": "ywv2gz",
+    "w": 1024,
+    "h": 1024,
+    "about": "Голубой мрамор бордер-колли на мятном фоне #C9E4CF"
+  },
+  {
+    "name": "pup-maltipu-chocolate",
+    "url": "https://www.figma.com/api/mcp/asset/d4c4c1a5-396a-46e7-ae2e-35a6d2e81d6e.png",
+    "thumb": "orxyl0",
+    "w": 928,
+    "h": 1152,
+    "about": "Шоколадный мальтипу на вязаном пледе, светлый тон"
+  },
+  {
+    "name": "pup-buldog-cream",
+    "url": "https://www.figma.com/api/mcp/asset/c3f50c22-cb9b-4516-992c-062580275108.png",
+    "thumb": "kwfndv",
+    "w": 928,
+    "h": 1152,
+    "about": "Кремовый француз в светлой квартире"
+  },
+  {
+    "name": "hero-four-breeds",
+    "url": "https://www.figma.com/api/mcp/asset/3adc31b6-29f1-489d-9584-4a34e97908cb.png",
+    "thumb": "c40xhn",
+    "w": 1264,
+    "h": 848,
+    "about": "Четыре щенка в ряд на кремовом фоне: мальтипу, француз, той-пудель, бордер-колли"
+  },
+  {
+    "name": "family-maltipu",
+    "url": "https://www.figma.com/api/mcp/asset/f5ba5b98-7dfd-4a01-9364-e7591ecdee3a.png",
+    "thumb": "yg9xss",
+    "w": 1264,
+    "h": 848,
+    "about": "Девушка обнимает щенка мальтипу на диване"
+  },
+  {
+    "name": "delivery-carrier",
+    "url": "https://www.figma.com/api/mcp/asset/61499fa9-bb56-4c96-a96d-da41f3ea920a.png",
+    "thumb": "nyqkqf",
+    "w": 1264,
+    "h": 848,
+    "about": "Француз в переноске на заднем сиденье авто"
+  },
+  {
+    "name": "vet-check",
+    "url": "https://www.figma.com/api/mcp/asset/18b4a17b-f4a7-4f50-88a7-fc29886cf63d.png",
+    "thumb": "gd5160",
+    "w": 1264,
+    "h": 848,
+    "about": "Ветеринар осматривает той-пуделя"
+  },
+  {
+    "name": "gift-maltipu",
+    "url": "https://www.figma.com/api/mcp/asset/1094b256-45e1-459c-b36c-47acd68dfd78.png",
+    "thumb": "wmr9fi",
+    "w": 928,
+    "h": 1152,
+    "about": "Мальтипу в подарочной коробке, новогодний свет"
+  },
+  {
+    "name": "parents-maltipu",
+    "url": "https://www.figma.com/api/mcp/asset/97a6324b-c5c6-40e9-9fb9-4f141446a64e.png",
+    "thumb": "rbh6k9",
+    "w": 1264,
+    "h": 848,
+    "about": "Мама-мальтипу со щенками на лежанке"
+  },
+  {
+    "name": "starter-kit",
+    "url": "https://www.figma.com/api/mcp/asset/bb9ec14e-5ce8-4c1d-86a5-936fa2385b02.png",
+    "thumb": "6ir4eu",
+    "w": 1024,
+    "h": 1024,
+    "about": "Флэтлей: стартовый набор для щенка"
+  },
+  {
+    "name": "color-maltipu-red",
+    "url": "https://www.figma.com/api/mcp/asset/aa50cca8-78b3-41c2-b954-14b11e24187e.png",
+    "w": 1024,
+    "h": 1024,
+    "about": "Мальтипу, насыщенный абрикос/рыжий, персиковый фон"
+  },
+  {
+    "name": "color-maltipu-chocolate",
+    "url": "https://www.figma.com/api/mcp/asset/883b16aa-42d7-4a47-ae00-e399e4028a81.png",
+    "w": 1024,
+    "h": 1024,
+    "about": "Мальтипу, шоколадный, персиковый фон"
+  },
+  {
+    "name": "color-maltipu-parti",
+    "url": "https://www.figma.com/api/mcp/asset/125f9dc8-bec1-4407-8fa1-2e7b83269361.png",
+    "w": 1024,
+    "h": 1024,
+    "about": "Мальтипу, парти (белый с чёрными пятнами), персиковый фон"
+  },
+  {
+    "name": "color-buldog-blue",
+    "url": "https://www.figma.com/api/mcp/asset/5c3c569a-bb10-4d70-b313-754e68ed2a81.png",
+    "w": 1024,
+    "h": 1024,
+    "about": "Французский бульдог, голубой, голубой фон"
+  },
+  {
+    "name": "color-buldog-brindle",
+    "url": "https://www.figma.com/api/mcp/asset/019c0a19-34a5-4bdc-bafa-1638b2436b8c.png",
+    "w": 1024,
+    "h": 1024,
+    "about": "Французский бульдог, тигровый, голубой фон"
+  },
+  {
+    "name": "color-buldog-pied",
+    "url": "https://www.figma.com/api/mcp/asset/52b3d589-4962-43a6-8784-c260a6406fa3.png",
+    "w": 1024,
+    "h": 1024,
+    "about": "Французский бульдог, пегий (белый с чёрным), голубой фон"
+  },
+  {
+    "name": "color-pudel-black",
+    "url": "https://www.figma.com/api/mcp/asset/6726a429-31f0-44f6-a46a-6ebd24dff9ed.png",
+    "w": 1024,
+    "h": 1024,
+    "about": "Той-пудель, чёрный, жёлтый фон"
+  },
+  {
+    "name": "color-pudel-white",
+    "url": "https://www.figma.com/api/mcp/asset/48d14c80-ef2c-46b4-84c1-bbd81a9ba775.png",
+    "w": 1024,
+    "h": 1024,
+    "about": "Той-пудель, белый, жёлтый фон"
+  },
+  {
+    "name": "color-pudel-chocolate",
+    "url": "https://www.figma.com/api/mcp/asset/3cf90db0-5138-47b0-a328-f17aa31fd132.png",
+    "w": 1024,
+    "h": 1024,
+    "about": "Той-пудель, шоколадный, жёлтый фон"
+  },
+  {
+    "name": "color-kolli-red",
+    "url": "https://www.figma.com/api/mcp/asset/d840b6a1-69b8-40cb-a58c-5007a307838a.png",
+    "w": 1024,
+    "h": 1024,
+    "about": "Бордер-колли, красно-белый, мятный фон"
+  },
+  {
+    "name": "color-kolli-tricolor",
+    "url": "https://www.figma.com/api/mcp/asset/21b0d73a-25e5-467a-84ec-75ea4956865e.png",
+    "w": 1024,
+    "h": 1024,
+    "about": "Бордер-колли, триколор, мятный фон"
+  },
+  {
+    "name": "parent-maltipu",
+    "url": "https://www.figma.com/api/mcp/asset/df24441d-b983-4609-a7cb-7961d764f378.png",
+    "w": 928,
+    "h": 1152,
+    "about": "Взрослый мальтипу (абрикос), персиковый фон, вертикаль"
+  },
+  {
+    "name": "parent-buldog",
+    "url": "https://www.figma.com/api/mcp/asset/f9a4ea29-6d19-49d0-9bba-de49e437dcf7.png",
+    "w": 928,
+    "h": 1152,
+    "about": "Взрослый французский бульдог (палевый), голубой фон, вертикаль"
+  },
+  {
+    "name": "parent-pudel",
+    "url": "https://www.figma.com/api/mcp/asset/b9fe5659-3471-486d-8264-5b42bec837cb.png",
+    "w": 928,
+    "h": 1152,
+    "about": "Взрослый той-пудель (рыжий), жёлтый фон, вертикаль"
+  },
+  {
+    "name": "parent-kolli",
+    "url": "https://www.figma.com/api/mcp/asset/a1b54e02-fa17-4430-b665-c09d99d0b0af.png",
+    "w": 928,
+    "h": 1152,
+    "about": "Взрослый бордер-колли (чёрно-белый), мятный фон, вертикаль"
+  },
+  {
+    "name": "grad-family-buldog",
+    "url": "https://www.figma.com/api/mcp/asset/8dccbba8-1d95-4642-8555-32bca812a1d4.png",
+    "w": 1264,
+    "h": 848,
+    "about": "Семья с дочкой и щенком француза на диване"
+  },
+  {
+    "name": "grad-man-kolli",
+    "url": "https://www.figma.com/api/mcp/asset/9cde432b-1d9c-4ea8-be76-0c8181abf9f6.png",
+    "w": 1264,
+    "h": 848,
+    "about": "Мужчина играет с бордер-колли в осеннем парке"
+  },
+  {
+    "name": "grad-woman-pudel",
+    "url": "https://www.figma.com/api/mcp/asset/ca77c9d2-dfd2-4bf3-b31a-ed5c8fc43eb0.png",
+    "w": 1264,
+    "h": 848,
+    "about": "Женщина с той-пуделем в кресле у окна"
+  },
+  {
+    "name": "video-call",
+    "url": "https://www.figma.com/api/mcp/asset/5417952b-62bd-47a8-bcc1-b25001fdb17c.png",
+    "w": 1264,
+    "h": 848,
+    "about": "Видеозвонок: щенок мальтипу на экране смартфона"
+  },
+  {
+    "name": "documents",
+    "url": "https://www.figma.com/api/mcp/asset/409abb84-4421-4c64-9498-437a3540b0af.png",
+    "w": 1264,
+    "h": 848,
+    "about": "Лапка щенка рядом с папкой документов и ветпаспортом"
+  }
 ]
