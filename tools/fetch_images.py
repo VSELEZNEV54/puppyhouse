@@ -19,5 +19,5 @@ for item in json.loads((ROOT / "tools" / "images.json").read_text(encoding="utf-
         data = resp.read()
     img = Image.open(io.BytesIO(data)).convert("RGB")
     dest = OUT / f"{item['name']}.jpg"
-    img.save(dest, "JPEG", quality=84, optimize=True, progressive=True)
+    img.save(dest, "JPEG", quality=88, optimize=True, progressive=True, subsampling=0)
     print(f"{dest.relative_to(ROOT)}  {img.width}x{img.height}  {dest.stat().st_size // 1024} KB")
