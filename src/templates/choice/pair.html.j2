@@ -1,0 +1,101 @@
+{#- /sravnenie/<a>-ili-<b>/ — comparison of two breeds (×6, one template). Context from routes/choice.py:
+    pg (copy, Markup), a / b (breeds.json items), rows (cmp_table rows), pair_pups (2 + 2 puppies), pair_links (other pairs),
+    links (hub A, hub B, quiz). «Щенки в наличии» is overridden with puppies of both breeds. -#}
+{% extends "layouts/page.html.j2" %}
+{% import "choice/_parts.html.j2" as part %}
+
+{% block page_css %}
+  <link rel="stylesheet" href="/assets/css/choice.css">
+{% endblock %}
+{% block page_js %}
+  <script src="/assets/js/choice.js" defer></script>
+{% endblock %}
+
+{% block sprite_extra %}{{ part.icons() }}{% endblock %}
+
+{% block hero %}
+    <section class="phero container" aria-labelledby="page-title">
+      <div class="cho-vs">
+        <div class="phero__tile tone--cream cho-vs__copy" data-hero-ctas>
+          <div class="phero__copy">
+            <p class="eyebrow"><span class="eyebrow__dot" aria-hidden="true"></span>Сравнение пород</p>
+            <h1 class="phero__title" id="page-title">{{ pg.h1|typo }}</h1>
+            <p class="phero__lead">{{ pg.lead|typo }}</p>
+            <div class="phero__actions">
+              {{ forms.price_button(cls='btn btn--ink btn--lg') }}
+              <a class="btn btn--white btn--lg" href="/podbor-porody/">Пройти тест</a>
+            </div>
+          </div>
+        </div>
+        <div class="cho-vs__pair">
+          {{ part.hero_stile(a) }}
+          {{ part.hero_stile(b) }}
+          <span class="cho-vs__or" aria-hidden="true">или</span>
+        </div>
+      </div>
+    </section>
+{% endblock %}
+
+{% block body %}
+    <section class="section section--tight container" id="raznica" aria-labelledby="raznica-title">
+      {{ ui.section_head('В чём разница', id='raznica-title', lead='Главное о двух породах — в одной таблице') }}
+      {{ ui.cmp_table(cols, rows, caption='Сравнение: ' ~ a.name ~ ' и ' ~ b.name) }}
+    </section>
+
+    <section class="section container" id="chto-vybrat" aria-labelledby="chto-vybrat-title">
+      {{ ui.section_head('Что выбрать', id='chto-vybrat-title') }}
+      <div class="cho-pick">
+        {% for side in pg.pick %}
+        {%- set br = side.b %}
+        <div class="cho-pick__card tone--{{ br.tone }}">
+          <div class="cho-pick__head">
+            {{ ui.face(br) }}
+            <h3 class="cho-pick__title" id="vybor-{{ br.key }}">{{ side.title|typo }}</h3>
+          </div>
+          <ul class="cho-pick__list" aria-labelledby="vybor-{{ br.key }}">
+            {% for t in side['items'] %}<li><span class="cho-pick__tick" aria-hidden="true">{{ ui.icon('check', sm=true) }}</span><span>{{ t|typo }}</span></li>{% endfor %}
+          </ul>
+          <p class="cho-pick__more">{{ ui.text_link(br.urls.hub, 'Всё о породе ' ~ br.name_gen) }}</p>
+        </div>
+        {% endfor %}
+      </div>
+      <div class="cho-verdict">
+        {{ ui.ico('sparkle', 'sun') }}
+        <div class="cho-verdict__txt">
+          <p class="cho-verdict__label">Коротко</p>
+          <p class="cho-verdict__text">{{ pg.verdict|typo }}</p>
+        </div>
+        <div class="cho-verdict__actions">
+          <a class="btn btn--ink" href="/podbor-porody/">Пройти тест {{ ui.icon('arrow') }}</a>
+        </div>
+      </div>
+    </section>
+
+    {{ blocks.faq_section(pg.faq, title='Частые вопросы') }}
+
+    <section class="section container" id="eshche" aria-labelledby="eshche-title">
+      {{ ui.section_head('Читайте также', id='eshche-title') }}
+      {{ ui.link_tiles(links) }}
+      {{ part.pair_pills(pair_links, 'Другие сравнения', 'pary-label') }}
+    </section>
+
+    {% call blocks.seo_block(pg.seo.title, pg.seo.lead, id='podrobnee') %}
+        {% for s in pg.seo.blocks %}
+        <h3>{{ s.h|typo }}</h3>
+        <p>{{ s.p|typo }}</p>
+        {% endfor %}
+    {% endcall %}
+{% endblock %}
+
+{% block pups %}
+    <section class="section container" id="pups" aria-labelledby="pups-title">
+      {{ ui.section_head(pg.pups_title, id='pups-title', link={'url': '/shchenki/', 'label': 'Весь каталог — ' ~ puppies|length}) }}
+      <ul class="pups scroller" data-reveal="items">
+        {% for p in pair_pups %}
+        <li class="pups__item">
+          {{ cards.puppy_card(p) }}
+        </li>
+        {% endfor %}
+      </ul>
+    </section>
+{% endblock %}

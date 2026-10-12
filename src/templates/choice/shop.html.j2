@@ -1,0 +1,106 @@
+{#- /magazin/ — starter kit: what to buy for a puppy (categories), printable checklist, breed extras, «Соберём набор» CTA
+    (shared modal, title set by assets/js/choice.js), FAQ, collapsed SEO text. No prices. Context: sh (copy, Markup). -#}
+{% extends "layouts/page.html.j2" %}
+{% import "choice/_parts.html.j2" as part %}
+
+{% block body_attrs %} class="cho-print-list"{% endblock %}
+
+{% block page_css %}
+  <link rel="stylesheet" href="/assets/css/choice.css">
+{% endblock %}
+{% block page_js %}
+  <script src="/assets/js/choice.js" defer></script>
+{% endblock %}
+
+{% block sprite_extra %}{{ part.icons() }}{% endblock %}
+
+{%- macro kit_button(label, cls='btn btn--ink btn--lg') -%}
+<button class="{{ cls }}" type="button" data-open-modal data-modal-title="{{ sh.modal_title }}" data-modal-sub="{{ sh.modal_sub }}" data-modal-note="Стартовый набор">{{ label }}</button>
+{%- endmacro %}
+
+{% block hero %}
+    <section class="phero container" aria-labelledby="page-title">
+      <div class="cho-kit">
+        <div class="phero__tile tone--sand cho-kit__copy" data-hero-ctas>
+          <div class="phero__copy">
+            <p class="eyebrow"><span class="eyebrow__dot" aria-hidden="true"></span>{{ sh.eyebrow }}</p>
+            <h1 class="phero__title" id="page-title">{{ sh.h1|typo }}</h1>
+            <p class="phero__lead">{{ sh.lead|typo }}</p>
+            <div class="phero__actions">
+              {{ kit_button(sh.cta_label) }}
+              <a class="btn btn--white btn--lg" href="#chek-list">{{ sh.list_label }}</a>
+            </div>
+          </div>
+        </div>
+        <div class="cho-kit__media">{{ ui.img(sh.photo.src, sh.photo.alt, priority=true) }}</div>
+      </div>
+    </section>
+{% endblock %}
+
+{% block body %}
+    <section class="section section--tight container" id="nabor" aria-labelledby="nabor-title">
+      {{ ui.section_head(sh.cats_title, id='nabor-title', lead=sh.cats_lead) }}
+      <ul class="cho-cats" data-reveal="items">
+        {% for c in sh.cats %}
+        <li class="cho-cat">
+          {{ ui.ico(c.icon, c.color) }}
+          <h3 class="cho-cat__title">{{ c.title|typo }}</h3>
+          <p class="cho-cat__line">{{ c.line|typo }}</p>
+        </li>
+        {% endfor %}
+      </ul>
+    </section>
+
+    <section class="section container" id="chek-list" aria-labelledby="chek-list-title">
+      {{ ui.section_head(sh.list_title, id='chek-list-title', lead=sh.list_lead) }}
+      <div class="cho-list" data-checklist>
+        <div class="cho-list__head">
+          <p class="cho-list__brand">{{ ui.icon('paw') }}Puppy House</p>
+          <p class="cho-list__title">{{ sh.list_head|typo }}</p>
+          <button class="btn btn--white cho-list__print" type="button" data-print hidden>{{ ui.icon('ch-print', sm=true) }}{{ sh.print }}</button>
+        </div>
+        <div class="cho-list__cols">
+          {% for g in sh.groups %}
+          {%- set gi = loop.index %}
+          <fieldset class="cho-list__group">
+            <legend class="cho-list__gtitle">{{ g.title|typo }}</legend>
+            <ul class="cho-list__items">
+              {% for it in g['items'] %}
+              <li><label class="cho-check"><input type="checkbox" name="kit-{{ gi }}-{{ loop.index }}"><span class="cho-check__box" aria-hidden="true">{{ ui.icon('check', sm=true) }}</span><span class="cho-check__txt">{{ it|typo }}</span></label></li>
+              {% endfor %}
+            </ul>
+          </fieldset>
+          {% endfor %}
+        </div>
+      </div>
+    </section>
+
+    <section class="section container" id="poroda" aria-labelledby="poroda-title">
+      {{ ui.section_head(sh.breeds_title, id='poroda-title', lead=sh.breeds_lead) }}
+      {{ ui.link_tiles(sh.tips) }}
+    </section>
+
+    <section class="section container" id="sobrat" aria-labelledby="sobrat-title">
+      <div class="cta-band tone--sand">
+        <div class="cta-band__txt">
+          <h2 class="cta-band__title" id="sobrat-title">{{ sh.band_title|typo }}</h2>
+          <p class="cta-band__line">{{ sh.band_line|typo }}</p>
+        </div>
+        <span class="cta-band__faces" aria-hidden="true">
+          {%- for x, y, z in [('26%', '25%', 2.2), ('50%', '51%', 2.5), ('86%', '51%', 4.4), ('19.5%', '77%', 4.6)] %}<span class="face cho-kit-face" style="--x:{{ x }};--y:{{ y }};--z:{{ z }}"><img src="{{ sh.photo.src }}" alt="" width="1024" height="1024" loading="lazy" decoding="async"></span>{% endfor -%}
+        </span>
+        <div class="cta-band__actions">
+          {{ kit_button(sh.cta_label) }}
+        </div>
+      </div>
+    </section>
+
+    {{ blocks.faq_section(sh.faq, title='Частые вопросы') }}
+
+    {% call blocks.seo_block(sh.seo.title, sh.seo.lead, id='chto-kupit') %}
+        {% for s in sh.seo.blocks %}
+        <h3>{{ s.h|typo }}</h3>
+        <p>{{ s.p|typo }}</p>
+        {% endfor %}
+    {% endcall %}
+{% endblock %}

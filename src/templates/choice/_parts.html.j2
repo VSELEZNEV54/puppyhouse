@@ -1,0 +1,48 @@
+{#- Shared pieces of the «choice» pages (quiz, comparisons, starter kit). Import:  {% import "choice/_parts.html.j2" as part %}
+    Text params are Markup or plain text from routes/choice.py; every one goes through |typo. -#}
+{% import "macros/ui.html.j2" as ui %}
+
+{#- Extra icons for {% block sprite_extra %} (24×24, stroke = currentColor like the shared sprite). Prefix i-ch-. -#}
+{% macro icons() -%}
+    <symbol id="i-ch-flat" viewBox="0 0 24 24"><path d="M5 20.5V5.2c0-.7.5-1.2 1.2-1.2h7.1c.7 0 1.2.5 1.2 1.2v15.3M14.5 9.5h4.3c.7 0 1.2.5 1.2 1.2v9.8M3.5 20.5h17M8.4 8h.01M11.2 8h.01M8.4 11.5h.01M11.2 11.5h.01M8.4 15h.01M11.2 15h.01M17.3 13h.01M17.3 16.5h.01"/></symbol>
+    <symbol id="i-ch-tree" viewBox="0 0 24 24"><path d="M12 20.5v-4.8M12 3.5 6.8 10.4h2.7l-3.8 5.3h12.6l-3.8-5.3h2.7Z"/><path d="M3.5 20.5h17"/></symbol>
+    <symbol id="i-ch-sofa" viewBox="0 0 24 24"><path d="M5.5 10.5V8.3c0-1.3 1-2.3 2.3-2.3h8.4c1.3 0 2.3 1 2.3 2.3v2.2"/><path d="M3.5 12.7a1.9 1.9 0 0 1 3.8 0v1.8h9.4v-1.8a1.9 1.9 0 0 1 3.8 0v4.3c0 .6-.4 1-1 1h-15c-.6 0-1-.4-1-1ZM6 18v2M18 18v2"/></symbol>
+    <symbol id="i-ch-walk" viewBox="0 0 24 24"><circle cx="12.6" cy="4.6" r="1.8"/><path d="m12 8.2-1 5.2-2.7 7M11 13.4l3 3.1.9 4M11.8 8.9l-3.3 2.6M12.1 8.9l3.3 2.7"/></symbol>
+    <symbol id="i-ch-run" viewBox="0 0 24 24"><circle cx="15.4" cy="4.4" r="1.8"/><path d="m13.8 8-1.9 5.4 3.4 2.6-1.1 4.6M11.9 13.4l-2.4 3.1H5.4M13.8 8l-3.5 1.4-2 3M13.8 8l2.3 2.9 3.2.9"/></symbol>
+    <symbol id="i-ch-kid" viewBox="0 0 24 24"><circle cx="12" cy="6.6" r="3"/><path d="M8.2 20.5v-4.3a3.8 3.8 0 0 1 7.6 0v4.3M5.8 13.2l2.6 1.6M18.2 13.2l-2.6 1.6"/></symbol>
+    <symbol id="i-ch-small" viewBox="0 0 24 24"><rect x="3.5" y="14" width="4.4" height="6" rx="1.2" fill="currentColor"/><rect x="9.8" y="10" width="4.4" height="10" rx="1.2"/><rect x="16.1" y="5" width="4.4" height="15" rx="1.2"/></symbol>
+    <symbol id="i-ch-medium" viewBox="0 0 24 24"><rect x="3.5" y="14" width="4.4" height="6" rx="1.2" fill="currentColor"/><rect x="9.8" y="10" width="4.4" height="10" rx="1.2" fill="currentColor"/><rect x="16.1" y="5" width="4.4" height="15" rx="1.2"/></symbol>
+    <symbol id="i-ch-large" viewBox="0 0 24 24"><rect x="3.5" y="14" width="4.4" height="6" rx="1.2" fill="currentColor"/><rect x="9.8" y="10" width="4.4" height="10" rx="1.2" fill="currentColor"/><rect x="16.1" y="5" width="4.4" height="15" rx="1.2" fill="currentColor"/></symbol>
+    <symbol id="i-ch-carrier" viewBox="0 0 24 24"><rect x="3.5" y="8.5" width="17" height="11" rx="2.6"/><path d="M8.5 8.5V7a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v1.5M14 11.5v5M17 11.5v5M3.5 14h7"/></symbol>
+    <symbol id="i-ch-bed" viewBox="0 0 24 24"><path d="M3 13.2c0-2.6 4-4.7 9-4.7s9 2.1 9 4.7v1.6c0 2.6-4 4.7-9 4.7s-9-2.1-9-4.7Z"/><path d="M7.2 12.9c0-1.2 2.1-2.2 4.8-2.2s4.8 1 4.8 2.2-2.1 2.2-4.8 2.2-4.8-1-4.8-2.2Z"/></symbol>
+    <symbol id="i-ch-food" viewBox="0 0 24 24"><path d="M7.2 3.5h9.6l1.7 3.2v12.6c0 .7-.5 1.2-1.2 1.2H6.7c-.7 0-1.2-.5-1.2-1.2V6.7ZM5.5 6.7h13"/><path d="M12 11.3c-1.4 0-2.9 1.5-2.9 2.8 0 .8.6 1.2 1.3 1.2s1-.4 1.6-.4 1 .4 1.6.4 1.3-.4 1.3-1.2c0-1.3-1.5-2.8-2.9-2.8Z"/></symbol>
+    <symbol id="i-ch-ball" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M5.4 6.8c3.3 2 5 5.6 4.6 13.4M18.6 17.2c-3.3-2-5-5.6-4.6-13.4"/></symbol>
+    <symbol id="i-ch-pad" viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="17" height="17" rx="2.6"/><path d="M3.8 11.7 11.7 3.8M3.8 19.7 19.7 3.8M12.3 20.2l7.9-7.9"/></symbol>
+    <symbol id="i-ch-leash" viewBox="0 0 24 24"><circle cx="12" cy="10.2" r="6.3"/><rect x="10.2" y="2.4" width="3.6" height="2.8" rx=".7"/><path d="M12 16.5v1.4"/><circle cx="12" cy="19.8" r="1.9"/></symbol>
+    <symbol id="i-ch-brush" viewBox="0 0 24 24"><path d="m14.3 9.7 6.2-6.2"/><ellipse cx="8.9" cy="15.1" rx="6.6" ry="4.8" transform="rotate(-45 8.9 15.1)"/><path d="M6.6 15.3h.01M8.9 13h.01M11.1 14.9h.01M8.7 17.5h.01M11.2 10.8h.01M6.7 19.4h.01" stroke-width="2.1"/></symbol>
+    <symbol id="i-ch-print" viewBox="0 0 24 24"><path d="M7 9V3.5h10V9M7 17.5H5a1.5 1.5 0 0 1-1.5-1.5v-5.5A1.5 1.5 0 0 1 5 9h14a1.5 1.5 0 0 1 1.5 1.5V16a1.5 1.5 0 0 1-1.5 1.5h-2"/><rect x="7" y="14" width="10" height="6.5" rx="1"/></symbol>
+{%- endmacro %}
+
+{#- Pill links to comparison pages: items = [{url, a, b, label}] (routes/choice.py: _pair_links) -#}
+{% macro pair_pills(items, label, id) -%}
+<div class="cho-pairs">
+  <p class="cho-pairs__label" id="{{ id }}">{{ label|typo }}</p>
+  <ul class="cho-pairs__list" aria-labelledby="{{ id }}">
+    {% for p in items %}
+    <li><a class="cho-pair" href="{{ p.url }}"><span class="cho-pair__faces" aria-hidden="true">{{ ui.face(p.a) }}{{ ui.face(p.b) }}</span><span class="cho-pair__label">{{ p.label|typo }}</span></a></li>
+    {% endfor %}
+  </ul>
+</div>
+{%- endmacro %}
+
+{#- Hero studio tile (the ui.studio_tile markup) for the first screen: eager, high priority -#}
+{% macro hero_stile(b) -%}
+<a class="stile tone--{{ b.tone }}" href="{{ b.urls.hub }}" style="--ar:{{ b.studio.w }}/{{ b.studio.h }};{{ tone_style(b.studio.src) }}">
+  <span class="stile__top">
+    <span class="stile__title">{{ b.name|typo }}</span>
+    <span class="stile__line">{{ b.tile_line|typo }}</span>
+  </span>
+  {{ ui.round_arrow() }}
+  <span class="stile__photo"><img src="{{ b.studio.src }}" alt="{{ b.studio.alt|typo }}" width="{{ b.studio.w }}" height="{{ b.studio.h }}" fetchpriority="high" decoding="async"></span>
+</a>
+{%- endmacro %}
