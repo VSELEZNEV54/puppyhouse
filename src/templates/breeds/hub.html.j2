@@ -1,5 +1,5 @@
 {#- Breed hub (/maltipu/ and the other three) — one template, copy in data/breeds-hub.json, facts and photos in breeds.json.
-    Context: b (breed), hub (copy), pups (all puppies of the breed, sorted), colour_tiles, more_colours, links. -#}
+    Context: b (breed), hub (copy, Markup), pups (all puppies of the breed, sorted), colour_tiles, more_colours, more_style, links. -#}
 {% extends "layouts/page.html.j2" %}
 
 {% block page_css %}
@@ -59,7 +59,7 @@
         {% endfor %}
         {% if more_colours %}
         <li>
-          <a class="brd-more {{ b.tone_class }}" href="{{ b.urls.varieties }}">
+          <a class="brd-more {{ b.tone_class }}" href="{{ b.urls.varieties }}"{% if more_style %} style="{{ more_style }}"{% endif %}>
             <span class="brd-more__title">{{ hub.more_title|typo }}</span>
             <span class="brd-more__list">{% for c in more_colours %}<span>{{ c|typo }}</span>{% endfor %}</span>
             {{ ui.round_arrow() }}

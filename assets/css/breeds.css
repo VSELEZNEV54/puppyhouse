@@ -5,6 +5,7 @@
 
 /* шапка: длинное название породы («Щенки французского бульдога») — в две строки по ширине текста, а не в четыре */
 .phero__title { max-width: none; }
+@media (min-width: 1001px) { .phero__copy { max-width: min(720px, 58%); } }
 
 /* =========================================================
    Щенки породы — все карточки сеткой (лентой на мобиле). «Ждёте другого щенка?» добирает последний ряд;
@@ -41,9 +42,9 @@
   min-height: clamp(200px, 15vw, 232px);
   padding: var(--tile-pad); border-radius: var(--r-tile); background: var(--tile);
 }
-.brd-trait__label { grid-area: label; align-self: center; font-size: 14px; font-weight: 500; color: var(--muted); }
+.brd-trait__label { grid-area: label; align-self: center; font-size: 14px; color: var(--muted); }
 .brd-trait .ico { grid-area: ico; }
-.brd-trait__title { grid-area: title; margin-top: clamp(28px, 3vw, 44px); font-size: var(--fs-h3); font-weight: 600; letter-spacing: -0.025em; line-height: 1.15; }
+.brd-trait__title { grid-area: title; margin-top: clamp(28px, 3vw, 44px); font-size: var(--fs-h3); font-weight: 500; letter-spacing: -0.025em; line-height: 1.15; }
 .brd-trait__line { grid-area: line; margin-top: 8px; font-size: 15px; line-height: 1.4; color: var(--muted); }
 
 /* =========================================================
@@ -52,17 +53,18 @@
 .brd-more {
   position: relative; isolation: isolate;
   display: flex; flex-direction: column; align-items: flex-start; gap: 16px;
-  height: 100%; aspect-ratio: 3 / 4;
+  height: 100%; min-width: 0; aspect-ratio: 3 / 4; /* min-width: 0 — длинное название окраса не растягивает плитку */
   padding: clamp(20px, 1.8vw, 26px);
   border-radius: var(--r-tile);
-  background: linear-gradient(180deg, var(--tone) 0 55%, var(--tone-floor) 100%);
+  /* --tone-top / --tone-floor — средний замер соседних студийных кадров (ставит шаблон), без замера — цвета породы */
+  background: linear-gradient(180deg, var(--tone-top, var(--tone)) 0 60%, var(--tone-floor) 100%);
   color: var(--ink); text-decoration: none;
 }
-.brd-more__title { font-size: clamp(20px, 1.6vw, 26px); font-weight: 600; letter-spacing: -0.03em; line-height: 1.08; }
-.brd-more__list { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; }
+.brd-more__title { font-size: clamp(20px, 1.6vw, 26px); font-weight: 500; letter-spacing: -0.03em; line-height: 1.08; }
+.brd-more__list { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; max-width: 100%; }
 .brd-more__list span {
   display: inline-flex; align-items: center; min-height: 38px; padding: 6px 15px;
-  border-radius: var(--r-pill); background: rgba(255, 255, 255, .62);
+  border-radius: 19px; background: rgba(255, 255, 255, .62);
   font-size: 15px; font-weight: 500; line-height: 1.25;
 }
 .brd-more .round-arrow { position: absolute; z-index: 2; left: clamp(18px, 1.6vw, 24px); bottom: clamp(18px, 1.6vw, 24px); }
@@ -74,8 +76,8 @@ a.brd-more:hover .round-arrow .i { transform: rotate(45deg); }
    ========================================================= */
 .brd-pre {
   display: grid; gap: var(--gap);
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  grid-template-areas: "parents price price" "parents docs docs";
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-areas: "parents price price price" "parents docs docs docs";
 }
 .brd-pre__parents { grid-area: parents; display: grid; container-type: inline-size; }
 .brd-pre__price { grid-area: price; }
@@ -88,7 +90,7 @@ a.brd-more:hover .round-arrow .i { transform: rotate(45deg); }
   padding: var(--tile-pad); border-radius: var(--r-tile); background: var(--tile);
 }
 .brd-card__head { align-self: stretch; display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; }
-.brd-card__title { font-size: clamp(24px, 2.1vw, 34px); font-weight: 600; letter-spacing: -0.03em; line-height: 1.06; }
+.brd-card__title { font-size: clamp(24px, 2.1vw, 34px); font-weight: 500; letter-spacing: -0.03em; line-height: 1.06; }
 .brd-card__line { margin-top: 10px; font-size: 16px; line-height: 1.45; color: var(--muted); }
 .brd-card__chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
 .brd-card__chips li {
@@ -118,6 +120,7 @@ a.brd-more:hover .round-arrow .i { transform: rotate(45deg); }
    ========================================================= */
 @media (max-width: 1199px) {
   .brd-links .ltiles { --n: 2; }
+  .brd-pre { grid-template-columns: repeat(3, minmax(0, 1fr)); grid-template-areas: "parents price price" "parents docs docs"; }
 }
 
 @media (max-width: 1000px) {
@@ -150,12 +153,9 @@ a.brd-more:hover .round-arrow .i { transform: rotate(45deg); }
 }
 
 @media (max-width: 760px) {
-  .phero__title { max-width: none; }
-
   .brd-about__media { aspect-ratio: 3 / 2; }
   .brd-trait { min-height: 0; padding: 18px; }
-  .brd-trait__title { margin-top: 18px; }
-  .brd-trait__title { font-size: 19px; }
+  .brd-trait__title { margin-top: 18px; font-size: 19px; }
   .brd-trait__line { margin-top: 6px; font-size: 14.5px; }
 
   /* лента окрасов (pages.css: .stiles { display: grid } перекрывает ленту .scroller из main.css) */

@@ -2,13 +2,35 @@
 Owns: src/templates/breeds/, src/data/breeds-hub.json (copy per breed), assets/css/breeds.css.
 Breed facts, photos and colours come from breeds.json; puppies (and every count) from puppies.json."""
 
+import json
 import re
+from pathlib import Path
 
 from markupsafe import Markup, escape
 
 from _lib import by_id, crumbs, sort_puppies
 
 PHOTO_TILES = 3  # colour photos in the «Окрасы» row; the fourth tile lists the remaining colours
+TONES = Path(__file__).resolve().parents[2] / "tools" / "photo-tones.json"  # measured studio backdrops (read only)
+
+
+def _mix(hexes):
+    """Average colour of '#RRGGBB' values."""
+    rgb = [[int(h[i:i + 2], 16) for i in (1, 3, 5)] for h in hexes]
+    return "#" + "".join(f"{round(sum(c) / len(c)):02X}" for c in zip(*rgb))
+
+
+def _more_style(tiles):
+    """«Ещё окрасы» tile: the average measured top / floor of the photo tiles beside it, so the row reads as one."""
+    try:
+        tones = json.loads(TONES.read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return ""
+    found = [tones.get(Path(t["photo"]["src"]).stem) for t in tiles]
+    found = [t for t in found if t]
+    if not found:
+        return ""
+    return f"--tone-top:{_mix([t['top'] for t in found])};--tone-floor:{_mix([t['floor'] for t in found])}"
 
 
 def _pair_url(a, b, order):
@@ -18,11 +40,12 @@ def _pair_url(a, b, order):
 
 
 # Visible copy never breaks inside «той-пуделя», «о бордер-колли» or a range like «2–5 кг»: such words go into
-# <span class="nw"> (the macros' |typo keeps Markup tags). Meta title/description and photo alts stay plain text.
+# <span class="nw"> (the macros' |typo keeps Markup tags). Meta title/description, photo alts and text that sits
+# directly in a flex box (eyebrow, badges, chips — a span there would become a separate flex item) stay plain text.
 _HYPHENATED = re.compile(r"(?<![\w-])((?:\w{1,2} )?\w+(?:-\w+)+)")
 _RANGE = re.compile(r"(?<![\w,])(\d+(?:,\d+)?–\d+(?:,\d+)?)(?: (?=[а-яё])(?!(?:и|или|а|но|до|в|во|на|с|со|по|за|из|от|к|у|о)\b))?")
 NBSP = "\u00a0"
-TEXT_KEYS = ("h1", "eyebrow", "lead", "pups_title", "about_title", "colours_title", "colours_lead", "more_title",
+TEXT_KEYS = ("h1", "lead", "pups_title", "about_title", "colours_title", "colours_lead", "more_title",
              "price_title", "parents_line", "docs_line", "faq_title", "lead_title", "lead_line")
 
 
@@ -40,9 +63,8 @@ def copy_markup(hub):
         h[k] = nobr(h[k])
     h["facts"] = [dict(f, value=nobr(f["value"])) for f in h["facts"]]
     h["traits"] = [{k: (nobr(v) if k in ("label", "title", "line") else v) for k, v in t.items()} for t in h["traits"]]
-    h["price_factors"] = [nobr(f) for f in h["price_factors"]]
-    h["docs"] = [nobr(d) for d in h["docs"]]
-    h["faq"] = [dict(q=nobr(f["q"]), a=nobr(f["a"])) for f in h["faq"]]
+    # the question sits in a flex button next to the «+» icon: one wrapping span keeps it a single flex item
+    h["faq"] = [dict(q=Markup("<span>") + nobr(f["q"]) + Markup("</span>"), a=nobr(f["a"])) for f in h["faq"]]
     h["seo"] = dict(title=nobr(h["seo"]["title"]), lead=nobr(h["seo"]["lead"]),
                     blocks=[dict(h=nobr(b["h"]), p=nobr(b["p"])) for b in h["seo"]["blocks"]])
     return h
@@ -67,7 +89,7 @@ def routes(data):
         with_photo = [c for c in colours if c.get("photo") and c.get("standard") is not False][:PHOTO_TILES]
         tiles = [dict(photo=c["photo"], title=nobr(c["name"][:1].upper() + c["name"][1:]),
                       badge="стандарт FCI" if c.get("standard") else None) for c in with_photo]
-        more = [nobr(c["name"]) for c in colours if c not in with_photo]
+        more = [c["name"] for c in colours if c not in with_photo]
 
         compare = []
         for other in breeds:
@@ -96,6 +118,7 @@ def routes(data):
                 pups=sort_puppies(b["puppies"]),
                 colour_tiles=tiles,
                 more_colours=more,
+                more_style=_more_style(tiles),
                 links=compare + reading,
                 pups_strip=False,          # the hub lists every puppy of the breed itself
                 lead_breed=b["slug"],
