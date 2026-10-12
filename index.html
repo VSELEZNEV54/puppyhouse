@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Puppy House — варианты главной</title>
+  <meta name="robots" content="noindex">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --page: #F2F1EE; --tile: #FFFFFF; --ink: #111111; --muted: #6B6B6B; --line: #E6E3DE;
+      --pad: clamp(16px, 3.6vw, 56px); --gap: 10px; --r: 28px;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--page); color: var(--ink); font: 16px/1.5 Geist, system-ui, sans-serif; }
+    main { padding: var(--pad); display: grid; gap: var(--gap); }
+    .head { background: var(--tile); border-radius: var(--r); padding: clamp(24px, 4vw, 48px); display: grid; gap: 12px; }
+    .label { font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+    h1 { margin: 0; font-size: clamp(36px, 5vw, 72px); line-height: .98; letter-spacing: -.035em; font-weight: 600; text-wrap: balance; }
+    .head p { margin: 0; max-width: 62ch; color: var(--muted); }
+    .grid { display: grid; gap: var(--gap); grid-template-columns: repeat(3, 1fr); }
+    .card { background: var(--tile); border-radius: var(--r); overflow: hidden; color: inherit; text-decoration: none;
+      display: grid; grid-template-rows: auto 1fr; transition: transform .25s ease, box-shadow .25s ease; }
+    .card:hover { transform: translateY(-4px); box-shadow: 0 18px 40px -24px rgba(0,0,0,.35); }
+    .card:focus-visible { outline: 3px solid #FF5A1F; outline-offset: 3px; }
+    .shot { aspect-ratio: 4 / 3; background: #E9E6E1 center top / cover no-repeat; }
+    .body { padding: 24px 28px 28px; display: grid; gap: 8px; align-content: start; }
+    .body h2 { margin: 0; font-size: 26px; letter-spacing: -.02em; font-weight: 600; }
+    .body p { margin: 0; color: var(--muted); }
+    .go { margin-top: 8px; font-weight: 600; }
+    .note { background: var(--tile); border-radius: var(--r); padding: 24px 28px; color: var(--muted); font-size: 14px; }
+    @media (max-width: 900px) { .grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <main>
+    <header class="head">
+      <span class="label">Puppy House · прототип главной</span>
+      <h1>Три варианта главной страницы</h1>
+      <p>Одинаковые тексты и структура для SEO. Разный дизайн. Откройте каждый, покликайте: фильтр щенков, «Узнать цену», FAQ, меню на мобиле.</p>
+    </header>
+    <section class="grid" aria-label="Варианты">
+      <a class="card" href="variant-a/">
+        <div class="shot" style="background-image:url(assets/previews/variant-a.jpg)"></div>
+        <div class="body">
+          <span class="label">Вариант A</span>
+          <h2>Бенто чистый</h2>
+          <p>Светлый, спокойный. Белые плитки на тёплом сером, пастельные фото-карточки, один акцентный цвет. Шрифт Geist.</p>
+          <span class="go">Открыть →</span>
+        </div>
+      </a>
+      <a class="card" href="variant-b/">
+        <div class="shot" style="background-image:url(assets/previews/variant-b.jpg)"></div>
+        <div class="body">
+          <span class="label">Вариант B</span>
+          <h2>Ярко и по-доброму</h2>
+          <p>Белый фон, сочные цветные плитки, фото «растворяются» в цвете карточки. Дружелюбный тон. Шрифт Onest.</p>
+          <span class="go">Открыть →</span>
+        </div>
+      </a>
+      <a class="card" href="variant-c/">
+        <div class="shot" style="background-image:url(assets/previews/variant-c.jpg)"></div>
+        <div class="body">
+          <span class="label">Вариант C</span>
+          <h2>Editorial премиум</h2>
+          <p>Глубокие фото, крупный капс как на референсе, кремовый и эспрессо. Ощущение премиального питомника. Jost + Inter.</p>
+          <span class="go">Открыть →</span>
+        </div>
+      </a>
+    </section>
+    <p class="note">Фото сгенерированы под прототип и будут заменены реальными фото щенков питомника. Цены не показываются: везде кнопка «Узнать цену» с формой заявки. Внутренние разделы появятся на следующем этапе.</p>
+  </main>
+</body>
+</html>
