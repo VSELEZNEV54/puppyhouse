@@ -1,0 +1,87 @@
+{#- /<breed>/vidy-i-okrasy/ — varieties and colours of a breed. One template, blocks in the order of data:
+    kinds (comparison tiles: generations, sizes, coats, «мини»), colours (studio tiles in each photo's measured
+    backdrop + other colours), std (what the FCI standard allows), tips. Context from routes/breedsub.py:
+    b (breed), v (copy, Markup), tint, links_title, links. The layout adds «Щенки в наличии» (pups_breed = b). -#}
+{% extends "layouts/page.html.j2" %}
+{% import "breedsub/_parts.html.j2" as part %}
+
+{% block page_css %}
+  <link rel="stylesheet" href="/assets/css/breedsub.css">
+{% endblock %}
+
+{% block sprite_extra %}{{ part.icons() }}{% endblock %}
+
+{% block hero %}
+{%- set hs = imgsize(v.hero_photo.src) -%}
+    {% call ui.page_hero(v.h1, lead=v.lead, breed=b, photo={'src': v.hero_photo.src, 'alt': v.hero_photo.alt, 'w': hs[0], 'h': hs[1]}, eyebrow=v.eyebrow, facts=v.facts) %}
+      {{ forms.price_button(cls='btn btn--ink btn--lg') }}
+      <a class="btn btn--white btn--lg" href="#okrasy">Смотреть окрасы</a>
+    {% endcall %}
+{% endblock %}
+
+{% block body %}
+{% for s in v.blocks %}
+    <section class="section{{ ' section--tight' if loop.first }} container" id="{{ s.id }}" aria-labelledby="{{ s.id }}-title">
+    {% if s.type == 'kinds' %}
+      {{ ui.section_head(s.title, id=s.id ~ '-title', lead=s.lead) }}
+      <ul class="bsub-kinds bsub-kinds--{{ s['items']|length }} scroller">
+        {% for k in s['items'] %}
+        <li class="bsub-kind{{ ' bsub-kind--off' if k.off }}">
+          <div class="bsub-kind__head">
+            {% if k.face %}<span class="bsub-kind__face" style="--s:{{ k.face }}" aria-hidden="true">{{ ui.face(b) }}</span>
+            {% elif k.tag %}<span class="bsub-kind__tag" style="--c:var(--{{ k.color }})" aria-hidden="true">{{ k.tag }}</span>
+            {% else %}{{ ui.ico(k.icon, k.color) }}{% endif %}
+            {% if k.badge %}<span class="bsub-kind__badge{{ ' bsub-kind__badge--off' if k.off }}">{{ k.badge }}</span>{% endif %}
+          </div>
+          <h3 class="bsub-kind__title">{% if k.tag %}<span class="sr-only">{{ k.tag }}: </span>{% endif %}{{ k.title|typo }}</h3>
+          <p class="bsub-kind__line">{{ k.line|typo }}</p>
+          {% if k.rows %}
+          <dl class="bsub-kind__rows">
+            {% for r in k.rows %}<div><dt>{{ r[0]|typo }}</dt><dd>{{ r[1]|typo }}</dd></div>{% endfor %}
+          </dl>
+          {% endif %}
+        </li>
+        {% endfor %}
+      </ul>
+
+    {% elif s.type == 'colours' %}
+      {{ ui.section_head(s.title, id=s.id ~ '-title', lead=s.lead) }}
+      {{ ui.studio_tiles(s.tiles) }}
+      {% if s.more %}
+      <div class="bsub-more">
+        <div class="bsub-more__head">
+          <h3 class="bsub-more__title">{{ s.more.title|typo }}</h3>
+          {% if s.more.note %}<p class="bsub-more__note">{{ s.more.note|typo }}</p>{% endif %}
+        </div>
+        <ul class="bsub-more__list">
+          {% for c in s.more['items'] %}<li><span class="bsub-more__name">{{ c.name|typo }}</span><span class="bsub-more__line">{{ c.line|typo }}</span></li>{% endfor %}
+        </ul>
+      </div>
+      {% endif %}
+
+    {% elif s.type == 'std' %}
+      {{ ui.section_head(s.title, id=s.id ~ '-title', lead=s.lead) }}
+      {{ part.vs(s.no, s.ok, tint, order='ok-no', id=s.id) }}
+
+    {% elif s.type == 'tips' %}
+      {{ ui.section_head(s.title, id=s.id ~ '-title') }}
+      {{ ui.steps(s['items'], cols=3) }}
+    {% endif %}
+    </section>
+
+{% endfor %}
+    {{ blocks.faq_section(v.faq, title=v.faq_title) }}
+
+    {{ part.links(links_title, links) }}
+
+    {% call blocks.seo_block(v.seo.title, v.seo.lead, id='ob-okrasah') %}
+        {% for s in v.seo.blocks %}
+        <h3>{{ s.h|typo }}</h3>
+        <p>{{ s.p|typo }}</p>
+        {% endfor %}
+    {% endcall %}
+{% endblock %}
+
+{% block lead %}
+    {{ forms.lead_form(title=v.lead_title, line=v.lead_line, tone=b.tone, breed=b.slug) }}
+{% endblock %}

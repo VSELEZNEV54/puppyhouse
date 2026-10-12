@@ -1,0 +1,77 @@
+{#- /<breed>/cena/ — price page of a breed. No numbers or prices anywhere (client decision): factors, what is included,
+    honest «why not cheap», booking teaser, FAQ, CTA. Context from routes/breedsub.py:
+    b (breed), pg (copy, Markup), tint, faces, links_title, links. The layout adds «Щенки в наличии» (pups_breed = b). -#}
+{% extends "layouts/page.html.j2" %}
+{% import "breedsub/_parts.html.j2" as part %}
+
+{% block page_css %}
+  <link rel="stylesheet" href="/assets/css/breedsub.css">
+{% endblock %}
+
+{% block sprite_extra %}{{ part.icons() }}{% endblock %}
+
+{% block hero %}
+    {% call ui.page_hero(pg.h1, lead=pg.lead, breed=b, eyebrow=pg.eyebrow, chips=pg.chips) %}
+      {{ forms.price_button(cls='btn btn--ink btn--lg') }}
+      <a class="btn btn--white btn--lg" href="#pups">Щенки в&nbsp;наличии</a>
+    {% endcall %}
+{% endblock %}
+
+{% block body %}
+    <section class="section section--tight container" id="faktory" aria-labelledby="faktory-title">
+      {{ ui.section_head(pg.factors_title, id='faktory-title', lead=pg.factors_lead) }}
+      <ul class="bsub-facts" data-reveal="items">
+        {% for f in pg.factors %}
+        <li class="bsub-fact">
+          {{ ui.ico(f.icon, f.color) }}
+          <div class="bsub-fact__txt">
+            <h3 class="bsub-fact__title">{{ f.title|typo }}</h3>
+            <p class="bsub-fact__line">{{ f.line|typo }}</p>
+          </div>
+        </li>
+        {% endfor %}
+      </ul>
+    </section>
+
+    <section class="section container" id="chto-vhodit" aria-labelledby="chto-vhodit-title">
+      {{ ui.section_head(pg.incl_title, id='chto-vhodit-title', lead=pg.incl_lead, link={'url': '/dokumenty-i-garantii/', 'label': 'Документы и гарантии'}) }}
+      <div class="bsub-incl">
+        <ul class="bsub-incl__list">
+          {% for i in pg.incl %}
+          <li class="bsub-check">
+            {{ ui.ico(i.icon, i.color, sm=true) }}
+            <span class="bsub-check__txt"><span class="bsub-check__title">{{ i.title|typo }}</span><span class="bsub-check__line">{{ i.line|typo }}</span></span>
+          </li>
+          {% endfor %}
+        </ul>
+        <div class="bsub-incl__media">{{ ui.img(pg.incl_photo.src, pg.incl_photo.alt) }}</div>
+      </div>
+    </section>
+
+    <section class="section container" id="nedorogo" aria-labelledby="nedorogo-title">
+      {{ ui.section_head(pg.cheap_title, id='nedorogo-title', lead=pg.cheap_lead) }}
+      {{ part.vs({'title': pg.cheap_bad_title, 'items': pg.cheap_bad}, {'title': pg.cheap_good_title, 'items': pg.cheap_good}, tint, id='nedorogo') }}
+    </section>
+
+    {{ part.cta(pg.cta_title, pg.cta_line, tint, faces=faces) }}
+
+    <section class="section container" id="bron" aria-labelledby="bron-title">
+      {{ ui.section_head(pg.booking_title, id='bron-title', lead=pg.booking_lead, link={'url': '/rassrochka/', 'label': 'Условия брони и рассрочки'}) }}
+      {{ ui.steps(pg.booking, cols=3) }}
+    </section>
+
+    {{ blocks.faq_section(pg.faq, title=pg.faq_title) }}
+
+    {{ part.links(links_title, links) }}
+
+    {% call blocks.seo_block(pg.seo.title, pg.seo.lead, id='o-cene') %}
+        {% for s in pg.seo.blocks %}
+        <h3>{{ s.h|typo }}</h3>
+        <p>{{ s.p|typo }}</p>
+        {% endfor %}
+    {% endcall %}
+{% endblock %}
+
+{% block lead %}
+    {{ forms.lead_form(title=pg.lead_title, line=pg.lead_line, tone=b.tone, breed=b.slug) }}
+{% endblock %}

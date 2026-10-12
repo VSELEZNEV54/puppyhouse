@@ -1,0 +1,60 @@
+{#- Shared pieces of the breedsub pages (price and varieties). Import:  {% import "breedsub/_parts.html.j2" as part %}
+    Text params are Markup or plain text from routes/breedsub.py; every one goes through |typo. -#}
+{% import "macros/ui.html.j2" as ui %}
+
+{#- Extra icons for {% block sprite_extra %} (24×24, stroke = currentColor like the shared sprite) -#}
+{% macro icons() -%}
+    <symbol id="i-palette" viewBox="0 0 24 24"><path d="M12 3.5a8.5 8.5 0 0 0 0 17c1.1 0 1.8-.7 1.8-1.6 0-1.2-1-1.5-1-2.6 0-.9.7-1.6 1.6-1.6h2.2c2.2 0 3.9-1.6 3.9-3.8 0-4.1-3.8-7.4-8.5-7.4Z"/><circle cx="7.6" cy="11.2" r="1.1" fill="currentColor" stroke="none"/><circle cx="10.2" cy="7.5" r="1.1" fill="currentColor" stroke="none"/><circle cx="14.6" cy="7.6" r="1.1" fill="currentColor" stroke="none"/></symbol>
+    <symbol id="i-gender" viewBox="0 0 24 24"><circle cx="10.5" cy="12.5" r="4.6"/><path d="M13.8 9.2 19 4M15.2 4H19v3.8M10.5 17.1v4.4M8.3 19.4h4.4"/></symbol>
+    <symbol id="i-chip" viewBox="0 0 24 24"><rect x="6.5" y="6.5" width="11" height="11" rx="2.2"/><rect x="10" y="10" width="4" height="4" rx=".8"/><path d="M10 3.5v3M14 3.5v3M10 17.5v3M14 17.5v3M3.5 10h3M3.5 14h3M17.5 10h3M17.5 14h3"/></symbol>
+    <symbol id="i-medal" viewBox="0 0 24 24"><circle cx="12" cy="14.8" r="5.2"/><path d="m8.6 10.9-2.4-7.4h4l2 4.6M15.4 10.9l2.4-7.4h-4l-1.1 2.6M12 12.4l.8 1.6 1.7.25-1.25 1.2.3 1.7L12 16.3l-1.55.85.3-1.7-1.25-1.2 1.7-.25Z"/></symbol>
+{%- endmacro %}
+
+{#- Two cards side by side: «no» (white, crosses) and «ok» (breed tint, checks). Used for «Почему не бывает дёшево»
+    and for the colour standard. card = {title, items:[{title, line?}], note?}. order: 'no-ok' | 'ok-no' -#}
+{% macro vs(no, ok, tint, order='no-ok', id='vs') -%}
+<div class="bsub-vs">
+  {% for side in (['no', 'ok'] if order == 'no-ok' else ['ok', 'no']) %}
+  {%- set c = no if side == 'no' else ok %}
+  <div class="bsub-vs__card bsub-vs__card--{{ side }}{{ ' tone--' ~ tint if side == 'ok' }}">
+    <h3 class="bsub-vs__title" id="{{ id }}-{{ side }}">{{ c.title|typo }}</h3>
+    <ul class="bsub-vs__list" aria-labelledby="{{ id }}-{{ side }}">
+      {% for i in c['items'] %}
+      <li class="bsub-vs__item">
+        <span class="bsub-vs__mark" aria-hidden="true">{{ ui.icon('check' if side == 'ok' else 'close', sm=true) }}</span>
+        <span class="bsub-vs__txt"><span class="bsub-vs__name">{{ i.title|typo }}</span>{% if i.line %}<span class="bsub-vs__line">{{ i.line|typo }}</span>{% endif %}</span>
+      </li>
+      {% endfor %}
+    </ul>
+    {% if c.get('note') %}<p class="bsub-vs__note">{{ c.note|typo }}</p>{% endif %}
+  </div>
+  {% endfor %}
+</div>
+{%- endmacro %}
+
+{#- CTA band (pages.css .cta-band) with its title as the section's H2 and round faces of the breed's colours.
+    faces: [{src, alt}] studio photos of puppies; tint: tone class of the band -#}
+{% macro cta(title, line, tint, faces=(), id='cena') -%}
+<section class="section container" id="{{ id }}" aria-labelledby="{{ id }}-title">
+  <div class="cta-band tone--{{ tint }} bsub-cta">
+    <div class="cta-band__txt">
+      <h2 class="cta-band__title" id="{{ id }}-title">{{ title|typo }}</h2>
+      <p class="cta-band__line">{{ line|typo }}</p>
+    </div>
+    {% if faces %}
+    <span class="cta-band__faces bsub-cta__faces" aria-hidden="true">{% for f in faces %}<span class="face"{% if tone_style(f.src) %} style="--tone:{{ photo_tone(f.src).top }}"{% endif %}><img src="{{ f.src }}" alt="" width="{{ imgsize(f.src)[0] }}" height="{{ imgsize(f.src)[1] }}" loading="lazy" decoding="async"></span>{% endfor %}</span>
+    {% endif %}
+    <div class="cta-band__actions">
+      <button class="btn btn--ink btn--lg" type="button" data-open-modal>Узнать цену</button>
+    </div>
+  </div>
+</section>
+{%- endmacro %}
+
+{#- Links to the breed hub and the sibling page -#}
+{% macro links(title, items, id='eshche') -%}
+<section class="section container" id="{{ id }}" aria-labelledby="{{ id }}-title">
+  {{ ui.section_head(title, id=id ~ '-title') }}
+  {{ ui.link_tiles(items) }}
+</section>
+{%- endmacro %}

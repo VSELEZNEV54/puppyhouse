@@ -1,0 +1,170 @@
+/* =========================================================
+   Puppy House — цена породы и «Виды и окрасы» (группа breedsub).
+   Подключается после main.css и pages.css. Только раскладка этих страниц:
+   токены, плитки, кнопки, студийные плитки, шаги, CTA — из общих файлов.
+   ========================================================= */
+
+/* ---------- «От чего зависит цена»: белые плитки, иконка сверху, текст снизу ---------- */
+.bsub-facts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--gap); }
+.bsub-fact {
+  display: flex; flex-direction: column; align-items: flex-start; gap: clamp(24px, 2.4vw, 36px);
+  padding: var(--tile-pad); border-radius: var(--r-tile); background: var(--tile);
+}
+.bsub-fact__txt { display: grid; gap: 6px; }
+.bsub-fact__title { font-size: var(--fs-h3); font-weight: 500; letter-spacing: -0.025em; line-height: 1.15; }
+.bsub-fact__line { font-size: 15px; line-height: 1.4; color: var(--muted); max-width: 36ch; }
+
+/* ---------- «Что входит в цену»: список в белой плитке + фото во всю плитку ---------- */
+.bsub-incl { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: var(--gap); }
+.bsub-incl__list {
+  display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); align-content: center;
+  gap: clamp(24px, 2.6vw, 38px) clamp(20px, 2.6vw, 40px);
+  padding: clamp(26px, 3.2vw, 48px); border-radius: var(--r-tile); background: var(--tile);
+}
+.bsub-check { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: start; column-gap: 14px; }
+.bsub-check__txt { display: grid; gap: 3px; padding-top: 4px; }
+.bsub-check__title { font-size: 17px; font-weight: 500; letter-spacing: -0.01em; line-height: 1.25; }
+.bsub-check__line { font-size: 14.5px; line-height: 1.4; color: var(--muted); }
+.bsub-incl__media { position: relative; min-height: 360px; border-radius: var(--r-tile); overflow: hidden; background: var(--line); }
+.bsub-incl__media img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 30% 50%; }
+
+/* ---------- две карточки: «нет» (белая, крестики) и «да» (тинт породы, галочки) ---------- */
+.bsub-vs { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--gap); }
+.bsub-vs__card {
+  display: flex; flex-direction: column; gap: clamp(20px, 2vw, 28px);
+  padding: clamp(24px, 3vw, 44px); border-radius: var(--r-tile); background: var(--tile);
+}
+.bsub-vs__card--ok { background: linear-gradient(180deg, var(--tone) 0 55%, var(--tone-floor) 100%); }
+.bsub-vs__title { font-size: clamp(22px, 1.9vw, 30px); font-weight: 500; letter-spacing: -0.03em; line-height: 1.1; }
+.bsub-vs__list { display: grid; gap: 18px; }
+.bsub-vs__item { display: grid; grid-template-columns: 30px minmax(0, 1fr); column-gap: 14px; align-items: start; }
+.bsub-vs__mark {
+  width: 30px; height: 30px; border-radius: 50%;
+  display: grid; place-items: center;
+  background: var(--coral-50); color: var(--ink);
+}
+.bsub-vs__card--ok .bsub-vs__mark { background: #fff; color: var(--ok); }
+.bsub-vs__mark .i { stroke-width: 2.2; }
+.bsub-vs__txt { display: grid; gap: 2px; padding-top: 3px; }
+.bsub-vs__name { font-size: 17px; font-weight: 500; letter-spacing: -0.01em; line-height: 1.3; }
+.bsub-vs__line { font-size: 15px; line-height: 1.4; color: var(--muted); }
+.bsub-vs__card--ok .bsub-vs__line { color: var(--ink-soft); }
+.bsub-vs__note { margin-top: auto; padding-top: 4px; font-size: 14.5px; line-height: 1.45; color: var(--muted); max-width: 52ch; }
+
+/* ---------- CTA: мордочки окрасов породы ---------- */
+.bsub-cta__faces .face img { transform-origin: 50% 30%; }
+
+/* ---------- сравнительные плитки: поколения, размеры, шерсть, «мини» ---------- */
+.bsub-kinds { display: grid; grid-template-columns: repeat(var(--n, 3), minmax(0, 1fr)); gap: var(--gap); }
+.bsub-kinds--2 { --n: 2; }
+.bsub-kinds--4 { --n: 4; }
+.bsub-kinds > li { min-width: 0; }
+.bsub-kind {
+  position: relative; /* .sr-only внутри ленты не должен выходить за её край */
+  display: flex; flex-direction: column; align-items: flex-start;
+  padding: var(--tile-pad); border-radius: var(--r-tile); background: var(--tile);
+}
+.bsub-kind__head { display: flex; align-items: flex-end; justify-content: space-between; gap: 12px; align-self: stretch; margin-bottom: clamp(22px, 2.2vw, 30px); }
+/* одна высота «шапки» на весь ряд: заголовки плиток на одной линии */
+.bsub-kinds:has(.bsub-kind__tag) .bsub-kind__head { min-height: 64px; }
+.bsub-kinds:has(.bsub-kind__face) .bsub-kind__head { min-height: 92px; }
+.bsub-kind__tag {
+  width: 64px; height: 64px; flex: none; border-radius: 50%;
+  display: grid; place-items: center;
+  background: var(--c); font-size: 22px; font-weight: 500; letter-spacing: -0.03em;
+}
+.bsub-kind__face { display: flex; align-items: flex-end; height: 92px; }
+.bsub-kind__face .face { width: calc(92px * var(--s, 1)); height: calc(92px * var(--s, 1)); }
+.bsub-kind__badge {
+  align-self: flex-start; padding: 6px 12px; border-radius: var(--r-pill);
+  background: var(--mint-50); font-size: 13px; font-weight: 500; line-height: 1.25; white-space: nowrap;
+}
+.bsub-kind__badge--off { background: var(--page); color: var(--muted); }
+.bsub-kind__title { font-size: var(--fs-h3); font-weight: 500; letter-spacing: -0.025em; line-height: 1.15; }
+.bsub-kind__line { margin-top: 6px; font-size: 15px; line-height: 1.4; color: var(--muted); }
+.bsub-kind__rows { align-self: stretch; margin-top: auto; padding-top: 20px; }
+.bsub-kind__rows > div { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 11px 0; border-top: 1px solid var(--line); font-size: 15px; line-height: 1.35; }
+.bsub-kind__rows > div:last-child { padding-bottom: 0; }
+.bsub-kind__rows dt { color: var(--muted); }
+.bsub-kind__rows dd { margin: 0; font-weight: 500; text-align: right; }
+
+/* ---------- «Ещё окрасы» под студийными плитками: заголовок и подпись слева, окрасы справа ---------- */
+.bsub-more {
+  display: grid; grid-template-columns: minmax(220px, 1fr) minmax(0, 2.4fr); align-items: start;
+  gap: 16px clamp(24px, 3vw, 48px);
+  margin-top: var(--gap); padding: clamp(22px, 2.4vw, 32px); border-radius: var(--r-tile); background: var(--tile);
+}
+.bsub-more__head { display: grid; gap: 8px; }
+.bsub-more__title { font-size: var(--fs-h3); font-weight: 500; letter-spacing: -0.025em; line-height: 1.15; }
+.bsub-more__note { font-size: 14.5px; line-height: 1.45; color: var(--muted); max-width: 34ch; }
+.bsub-more__list { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 14px clamp(20px, 2.4vw, 36px); }
+.bsub-more__list li { display: grid; align-content: start; gap: 2px; padding-left: 14px; border-left: 2px solid var(--line); }
+.bsub-more__name { font-size: 17px; font-weight: 500; letter-spacing: -0.01em; line-height: 1.3; }
+.bsub-more__line { font-size: 14.5px; line-height: 1.4; color: var(--muted); }
+
+/* шаги «Как выбрать» и «Бронь»: заголовки на одной высоте, даже если подпись в две строки */
+.section .steps--3 .step { align-content: start; }
+
+/* =========================================================
+   АДАПТИВ (1199 / 1000 / 900 / 760 / 560 / 420)
+   ========================================================= */
+@media (max-width: 1199px) {
+  .bsub-kinds--4 { --n: 2; }
+  /* «Что входит»: фото широкой полосой сверху, список — во всю ширину */
+  .bsub-incl { grid-template-columns: minmax(0, 1fr); }
+  .bsub-incl__media { order: -1; min-height: 0; aspect-ratio: 21 / 8; }
+  .bsub-incl__list { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+
+/* лента «Щенки в наличии» (layout, id="pups") в 3 колонки: четвёртая карточка осталась бы одна во втором ряду */
+@media (min-width: 901px) and (max-width: 1199px) {
+  #pups .pups > .pups__item:nth-child(4) { display: none; }
+}
+
+@media (max-width: 1000px) {
+  .bsub-facts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .bsub-incl__list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .bsub-incl__media { aspect-ratio: 16 / 8; }
+  .bsub-more { grid-template-columns: minmax(0, 1fr); }
+}
+
+@media (max-width: 760px) {
+  /* факторы цены: компактный список — иконка слева, текст справа */
+  .bsub-facts { grid-template-columns: minmax(0, 1fr); }
+  .bsub-fact { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: center; column-gap: 14px; min-height: 0; padding: 16px 18px 16px 16px; }
+  .bsub-fact .ico { width: 44px; height: 44px; }
+  .bsub-fact__txt { margin: 0; gap: 2px; }
+  .bsub-fact__title { font-size: 18px; }
+  .bsub-fact__line { font-size: 14.5px; }
+
+  .bsub-incl__list { grid-template-columns: minmax(0, 1fr); gap: 18px; padding: 22px 20px; }
+  .bsub-incl__media { aspect-ratio: 16 / 10; }
+
+  .bsub-vs { grid-template-columns: minmax(0, 1fr); }
+  .bsub-vs__card { padding: 22px 20px; gap: 18px; }
+  .bsub-vs__list { gap: 14px; }
+  .bsub-vs__name { font-size: 16px; }
+  .bsub-vs__line { font-size: 14.5px; }
+
+  /* ленты: .bsub-kinds и .stiles (pages.css) объявлены сеткой и перекрывают .scroller из main.css — возвращаем flex */
+  .bsub-kinds.scroller, .stiles.scroller { display: flex; }
+  /* сравнительные плитки — лентой, как карточки щенков и студийные плитки */
+  .bsub-kinds.scroller > li { width: 76%; max-width: 300px; }
+  .bsub-kind { padding: 20px; }
+  .bsub-kind__head { margin-bottom: 18px; }
+  .bsub-kinds:has(.bsub-kind__tag) .bsub-kind__head { min-height: 56px; }
+  .bsub-kind__tag { width: 56px; height: 56px; font-size: 20px; }
+  .bsub-kinds:has(.bsub-kind__face) .bsub-kind__head { min-height: 76px; }
+  .bsub-kind__face { height: 76px; }
+  .bsub-kind__face .face { width: calc(76px * var(--s, 1)); height: calc(76px * var(--s, 1)); }
+  .bsub-kind__title { font-size: 19px; }
+  .bsub-kind__line, .bsub-kind__rows > div { font-size: 14.5px; }
+
+  .bsub-more { padding: 20px; gap: 14px; }
+  .bsub-more__list { grid-template-columns: minmax(0, 1fr); gap: 12px; }
+  .bsub-more__name { font-size: 16px; }
+}
+
+@media (max-width: 420px) {
+  .bsub-kinds.scroller > li { width: 82%; }
+}
