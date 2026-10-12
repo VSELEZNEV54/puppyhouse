@@ -1,0 +1,211 @@
+{
+ "color-buldog-blue": {
+  "size": [
+   1024,
+   1024
+  ],
+  "top": "#9FC8DA",
+  "wall": "#A1CADC",
+  "wall_right": "#96C4D5",
+  "floor": "#C3E3F2",
+  "floor_line": 0.7
+ },
+ "color-buldog-brindle": {
+  "size": [
+   1024,
+   1024
+  ],
+  "top": "#AED3E3",
+  "wall": "#A3CDDD",
+  "wall_right": "#AED8E6",
+  "floor": "#B8DAE9",
+  "floor_line": 0.88
+ },
+ "color-buldog-pied": {
+  "size": [
+   1024,
+   1024
+  ],
+  "top": "#A4CEDE",
+  "wall": "#B0D6E8",
+  "wall_right": "#98C6DA",
+  "floor": "#B2D7E6",
+  "floor_line": 1.0
+ },
+ "color-kolli-red": {
+  "size": [
+   1024,
+   1024
+  ],
+  "top": "#9CB8A2",
+  "wall": "#9EBAA4",
+  "wall_right": "#A5C2AC",
+  "floor": "#9EB9A3",
+  "floor_line": 0.7
+ },
+ "color-kolli-tricolor": {
+  "size": [
+   1024,
+   1024
+  ],
+  "top": "#A3BFA9",
+  "wall": "#A8C4AF",
+  "wall_right": "#98B8A1",
+  "floor": "#C2DAC7",
+  "floor_line": 0.78
+ },
+ "color-maltipu-chocolate": {
+  "size": [
+   1024,
+   1024
+  ],
+  "top": "#F5BF99",
+  "wall": "#FAC59D",
+  "wall_right": "#EDB388",
+  "floor": "#FEDABA",
+  "floor_line": 0.81
+ },
+ "color-maltipu-parti": {
+  "size": [
+   1024,
+   1024
+  ],
+  "top": "#F5C098",
+  "wall": "#F5BC91",
+  "wall_right": "#EDB286",
+  "floor": "#FBCBA7",
+  "floor_line": 0.77
+ },
+ "color-maltipu-red": {
+  "size": [
+   1024,
+   1024
+  ],
+  "top": "#F5C29C",
+  "wall": "#F8C7A1",
+  "wall_right": "#EEB88E",
+  "floor": "#FED5B2",
+  "floor_line": 0.87
+ },
+ "color-pudel-black": {
+  "size": [
+   1024,
+   1024
+  ],
+  "top": "#F6D391",
+  "wall": "#F6D38F",
+  "wall_right": "#F5D38D",
+  "floor": "#FADC9E",
+  "floor_line": 0.92
+ },
+ "color-pudel-chocolate": {
+  "size": [
+   1024,
+   1024
+  ],
+  "top": "#F4D096",
+  "wall": "#EEC886",
+  "wall_right": "#F6D497",
+  "floor": "#F1D29B",
+  "floor_line": 0.86
+ },
+ "color-pudel-white": {
+  "size": [
+   1024,
+   1024
+  ],
+  "top": "#EBC586",
+  "wall": "#E9C382",
+  "wall_right": "#ECC783",
+  "floor": "#ECCE92",
+  "floor_line": 0.91
+ },
+ "parent-buldog": {
+  "size": [
+   928,
+   1152
+  ],
+  "top": "#A9CFDF",
+  "wall": "#AED5E4",
+  "wall_right": "#A0CADA",
+  "floor": "#C2E1EE",
+  "floor_line": 0.87
+ },
+ "parent-kolli": {
+  "size": [
+   928,
+   1152
+  ],
+  "top": "#A1BDA7",
+  "wall": "#A3C0A9",
+  "wall_right": "#9EBBA4",
+  "floor": "#C1D7C6",
+  "floor_line": 0.83
+ },
+ "parent-maltipu": {
+  "size": [
+   928,
+   1152
+  ],
+  "top": "#EEB991",
+  "wall": "#EDB488",
+  "wall_right": "#F2BD93",
+  "floor": "#F1C09A",
+  "floor_line": 0.9
+ },
+ "parent-pudel": {
+  "size": [
+   928,
+   1152
+  ],
+  "top": "#E9C885",
+  "wall": "#EECC88",
+  "wall_right": "#E8C682",
+  "floor": "#F7E2AB",
+  "floor_line": 0.82
+ },
+ "studio-buldog-blue": {
+  "size": [
+   1024,
+   1024
+  ],
+  "top": "#A7D0E3",
+  "wall": "#B0D7EA",
+  "wall_right": "#9BC8DF",
+  "floor": "#C2E2F1",
+  "floor_line": 0.82
+ },
+ "studio-kolli-green": {
+  "size": [
+   1024,
+   1024
+  ],
+  "top": "#AECAB4",
+  "wall": "#B2CFB9",
+  "wall_right": "#A6C6AE",
+  "floor": "#C8E0D1",
+  "floor_line": 0.8
+ },
+ "studio-maltipu-peach": {
+  "size": [
+   1024,
+   1024
+  ],
+  "top": "#F3BB95",
+  "wall": "#F5BE97",
+  "wall_right": "#EFB58C",
+  "floor": "#FDD1B0",
+  "floor_line": 0.82
+ },
+ "studio-pudel-yellow": {
+  "size": [
+   1024,
+   1024
+  ],
+  "top": "#EFD193",
+  "wall": "#F1D294",
+  "wall_right": "#EDCE8C",
+  "floor": "#F9E3AD",
+  "floor_line": 0.79
+ }
+}
