@@ -2,75 +2,752 @@
 <html lang="ru">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Puppy House — варианты главной</title>
-  <meta name="robots" content="noindex">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Купить щенка в Москве — питомник собак Puppy House</title>
+  <meta name="description" content="Щенки мальтипу, французского бульдога, той-пуделя и бордер-колли из питомника в Москве. Документы, прививки, договор, доставка по России. Узнайте цену.">
+  <meta name="theme-color" content="#F3F2EF">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='12' fill='%23FF6F4F'/%3E%3Cg fill='%23141414'%3E%3Cpath d='M20 20.7c-3.3 0-6.7 3.6-6.7 6.6 0 1.8 1.3 3 3.1 3 1.6 0 2.4-.8 3.6-.8s2 .8 3.6.8c1.8 0 3.1-1.2 3.1-3 0-3-3.4-6.6-6.7-6.6Z'/%3E%3Cellipse cx='12.4' cy='18.6' rx='2.3' ry='2.9'/%3E%3Cellipse cx='17' cy='13.4' rx='2.4' ry='3.1'/%3E%3Cellipse cx='23' cy='13.4' rx='2.4' ry='3.1'/%3E%3Cellipse cx='27.6' cy='18.6' rx='2.3' ry='2.9'/%3E%3C/g%3E%3C/svg%3E">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --page: #F2F1EE; --tile: #FFFFFF; --ink: #111111; --muted: #6B6B6B; --line: #E6E3DE;
-      --pad: clamp(16px, 3.6vw, 56px); --gap: 10px; --r: 28px;
-    }
-    * { box-sizing: border-box; }
-    body { margin: 0; background: var(--page); color: var(--ink); font: 16px/1.5 Geist, system-ui, sans-serif; }
-    main { padding: var(--pad); display: grid; gap: var(--gap); }
-    .head { background: var(--tile); border-radius: var(--r); padding: clamp(24px, 4vw, 48px); display: grid; gap: 12px; }
-    .label { font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
-    h1 { margin: 0; font-size: clamp(36px, 5vw, 72px); line-height: .98; letter-spacing: -.035em; font-weight: 600; text-wrap: balance; }
-    .head p { margin: 0; max-width: 62ch; color: var(--muted); }
-    .grid { display: grid; gap: var(--gap); grid-template-columns: repeat(3, 1fr); }
-    .card { background: var(--tile); border-radius: var(--r); overflow: hidden; color: inherit; text-decoration: none;
-      display: grid; grid-template-rows: auto 1fr; transition: transform .25s ease, box-shadow .25s ease; }
-    .card:hover { transform: translateY(-4px); box-shadow: 0 18px 40px -24px rgba(0,0,0,.35); }
-    .card:focus-visible { outline: 3px solid #FF5A1F; outline-offset: 3px; }
-    .shot { aspect-ratio: 4 / 3; background: #E9E6E1 center top / cover no-repeat; }
-    .body { padding: 24px 28px 28px; display: grid; gap: 8px; align-content: start; }
-    .body h2 { margin: 0; font-size: 26px; letter-spacing: -.02em; font-weight: 600; }
-    .body p { margin: 0; color: var(--muted); }
-    .go { margin-top: 8px; font-weight: 600; }
-    .note { background: var(--tile); border-radius: var(--r); padding: 24px 28px; color: var(--muted); font-size: 14px; }
-    @media (max-width: 900px) { .grid { grid-template-columns: 1fr; } }
-  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/main.css">
+  <script src="assets/js/main.js" defer></script>
 </head>
 <body>
-  <main>
-    <header class="head">
-      <span class="label">Puppy House · прототип главной</span>
-      <h1>Три варианта главной страницы</h1>
-      <p>Одинаковые тексты и структура для SEO. Разный дизайн. Откройте каждый, покликайте: фильтр щенков, «Узнать цену», FAQ, меню на мобиле.</p>
-    </header>
-    <section class="grid" aria-label="Варианты">
-      <a class="card" href="variant-a/">
-        <div class="shot" style="background-image:url(assets/previews/variant-a.jpg)"></div>
-        <div class="body">
-          <span class="label">Вариант A</span>
-          <h2>Бенто чистый</h2>
-          <p>Светлый, спокойный. Белые плитки на тёплом сером, пастельные фото-карточки, один акцентный цвет. Шрифт Geist.</p>
-          <span class="go">Открыть →</span>
-        </div>
+  <!-- Иконки: инлайн-спрайт 24×24. Линейные — stroke currentColor, заливочные — fill. -->
+  <svg class="sprite" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
+    <symbol id="i-arrow-ur" viewBox="0 0 24 24"><path d="M7 17 17 7M8.5 7H17v8.5"/></symbol>
+    <symbol id="i-chevron" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></symbol>
+    <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 8.5h16M4 15.5h16"/></symbol>
+    <symbol id="i-phone" viewBox="0 0 24 24"><path d="M5.6 3.8h3l1.8 4.5-2.2 1.4a11.4 11.4 0 0 0 6.1 6.1l1.4-2.2 4.5 1.8v3a1.6 1.6 0 0 1-1.7 1.6A16 16 0 0 1 4 5.5a1.6 1.6 0 0 1 1.6-1.7z"/></symbol>
+    <symbol id="i-tg" viewBox="0 0 24 24"><path d="M20.6 4.3 3.4 11.1c-.6.2-.6 1.1 0 1.3l4.3 1.6 1.7 5.3c.2.5.8.7 1.2.3l2.6-2.4 4.5 3.3c.5.3 1.1.1 1.3-.5l3-14.4c.1-.9-.6-1.5-1.4-1.3Z"/><path d="m7.7 14 9.2-6.2-6.6 7.3"/></symbol>
+    <symbol id="i-wa" viewBox="0 0 24 24"><path d="m3.8 20.2 1.3-4A8.6 8.6 0 1 1 8 19Z"/><path d="M9.2 8.4c.3-.4.6-.5.9-.4l.5.2.8 1.8-.8.9a5.4 5.4 0 0 0 2.5 2.5l.9-.8 1.8.8.2.5c.1.3 0 .6-.3.9-.9.8-2 .8-3 .4a8.7 8.7 0 0 1-3.9-3.9c-.4-1-.4-2 .4-2.9Z"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+    <symbol id="i-star" viewBox="0 0 24 24"><path fill="currentColor" stroke="none" d="m12 3.2 2.7 5.5 6 .9-4.4 4.2 1 6-5.3-2.8-5.3 2.8 1-6-4.4-4.2 6-.9Z"/></symbol>
+    <symbol id="i-paw" viewBox="0 0 24 24"><g fill="currentColor" stroke="none"><path d="M12 12.4c-2.7 0-5.6 3-5.6 5.5 0 1.5 1.1 2.5 2.6 2.5 1.3 0 2-.7 3-.7s1.7.7 3 .7c1.5 0 2.6-1 2.6-2.5 0-2.5-2.9-5.5-5.6-5.5Z"/><ellipse cx="5.6" cy="10.6" rx="1.9" ry="2.4" transform="rotate(-22 5.6 10.6)"/><ellipse cx="9.5" cy="6.3" rx="2" ry="2.6" transform="rotate(-8 9.5 6.3)"/><ellipse cx="14.5" cy="6.3" rx="2" ry="2.6" transform="rotate(8 14.5 6.3)"/><ellipse cx="18.4" cy="10.6" rx="1.9" ry="2.4" transform="rotate(22 18.4 10.6)"/></g></symbol>
+    <symbol id="i-heart" viewBox="0 0 24 24"><path d="M12 20s-7.4-4.5-9-9.2C1.9 7.6 3.9 4.5 7.2 4.5c1.9 0 3.5 1 4.8 2.8 1.3-1.8 2.9-2.8 4.8-2.8 3.3 0 5.3 3.1 4.2 6.3C19.4 15.5 12 20 12 20Z"/></symbol>
+    <symbol id="i-doc" viewBox="0 0 24 24"><path d="M6.8 3h7.4L19 7.8v12.1c0 .6-.5 1.1-1.1 1.1H6.8c-.6 0-1.1-.5-1.1-1.1V4.1c0-.6.5-1.1 1.1-1.1Z"/><path d="M14 3v5h5M9 13h6M9 17h4"/></symbol>
+    <symbol id="i-wallet" viewBox="0 0 24 24"><rect x="3" y="5.5" width="18" height="13.5" rx="3"/><path d="M3 10h18M15.5 14.5h2"/></symbol>
+    <symbol id="i-calendar" viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15.5" rx="3"/><path d="M3.5 10h17M8.5 3v4M15.5 3v4"/></symbol>
+    <symbol id="i-home" viewBox="0 0 24 24"><path d="M4 10.8 12 4l8 6.8v8.4c0 .6-.5 1.1-1.1 1.1h-4.4v-5.8h-5v5.8H5.1c-.6 0-1.1-.5-1.1-1.1Z"/></symbol>
+    <symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 21s-6.8-6-6.8-11.3a6.8 6.8 0 1 1 13.6 0C18.8 15 12 21 12 21Z"/><circle cx="12" cy="9.7" r="2.4"/></symbol>
+    <symbol id="i-sparkle" viewBox="0 0 24 24"><path d="M12 3.5c.5 4.2 2.3 6 6.5 6.5-4.2.5-6 2.3-6.5 6.5-.5-4.2-2.3-6-6.5-6.5 4.2-.5 6-2.3 6.5-6.5z"/><path d="M18.5 15.5c.2 1.6.9 2.3 2.5 2.5-1.6.2-2.3.9-2.5 2.5-.2-1.6-.9-2.3-2.5-2.5 1.6-.2 2.3-.9 2.5-2.5z"/></symbol>
+    <symbol id="i-mail" viewBox="0 0 24 24"><rect x="3" y="5.5" width="18" height="13" rx="2.6"/><path d="m3.8 7 8.2 6 8.2-6"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.8"/><path d="M12 7.5V12l3 2"/></symbol>
+  </svg>
+
+  <a class="skip-link" href="#main">Перейти к&nbsp;содержанию</a>
+
+  <!-- ================= ШАПКА ================= -->
+  <header class="hdr" data-hdr>
+    <div class="hdr__bar">
+      <a class="logo" href="#top" aria-label="Puppy House — наверх страницы">
+        <span class="logo__mark" aria-hidden="true"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-paw"/></svg></span>
+        <span class="logo__text"><span class="logo__name">Puppy House</span><span class="logo__sub">питомник щенков · Москва</span></span>
       </a>
-      <a class="card" href="variant-b/">
-        <div class="shot" style="background-image:url(assets/previews/variant-b.jpg)"></div>
-        <div class="body">
-          <span class="label">Вариант B</span>
-          <h2>Ярко и по-доброму</h2>
-          <p>Белый фон, сочные цветные плитки, фото «растворяются» в цвете карточки. Дружелюбный тон. Шрифт Onest.</p>
-          <span class="go">Открыть →</span>
+
+      <nav class="nav" aria-label="Основное меню">
+        <ul class="nav__list">
+          <li><a class="nav__link" href="/shchenki/">Щенки</a></li>
+          <li class="nav__dd" data-dd>
+            <button class="nav__link nav__dd-btn" type="button" aria-expanded="false" aria-controls="dd-breeds">Породы <svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-chevron"/></svg></button>
+            <div class="dd" id="dd-breeds" hidden>
+              <ul class="dd__list">
+                <li><a class="dd__item" href="/maltipu/"><span class="face tone--peach"><img src="assets/img/studio-maltipu-peach.jpg" alt="" width="1024" height="1024" loading="lazy" decoding="async"></span><span class="dd__txt"><b>Мальтипу</b><small>Компаньон размером с&nbsp;кошку</small></span></a></li>
+                <li><a class="dd__item" href="/francuzskij-buldog/"><span class="face tone--powder"><img src="assets/img/studio-buldog-blue.jpg" alt="" width="1024" height="1024" loading="lazy" decoding="async"></span><span class="dd__txt"><b>Французский бульдог</b><small>Спокойный городской друг</small></span></a></li>
+                <li><a class="dd__item" href="/toj-pudel/"><span class="face tone--butter"><img src="assets/img/studio-pudel-yellow.jpg" alt="" width="1024" height="1024" loading="lazy" decoding="async"></span><span class="dd__txt"><b>Той-пудель</b><small>Маленький и&nbsp;очень умный</small></span></a></li>
+                <li><a class="dd__item" href="/border-kolli/"><span class="face tone--sage"><img src="assets/img/studio-kolli-green.jpg" alt="" width="1024" height="1024" loading="lazy" decoding="async"></span><span class="dd__txt"><b>Бордер-колли</b><small>Для активной жизни и&nbsp;спорта</small></span></a></li>
+              </ul>
+              <a class="dd__test" href="/podbor-porody/"><span class="ico ico--sm" style="--c:var(--lilac)"><svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-sparkle"/></svg></span><span>Подобрать породу&nbsp;— тест</span><svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></a>
+            </div>
+          </li>
+          <li><a class="nav__link" href="/dostavka/">Доставка</a></li>
+          <li><a class="nav__link" href="/otzyvy/">Отзывы</a></li>
+          <li><a class="nav__link" href="/roditeli/">О&nbsp;питомнике</a></li>
+          <li><a class="nav__link" href="/kontakty/">Контакты</a></li>
+        </ul>
+      </nav>
+
+      <div class="hdr__right">
+        <a class="hdr__phone" href="tel:+74951234567">+7 (495) 123-45-67</a>
+        <a class="msgr msgr--tg" href="https://t.me/puppyhouse_msk" target="_blank" rel="noopener" aria-label="Написать в Telegram"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-tg"/></svg></a>
+        <a class="msgr msgr--wa" href="https://wa.me/74951234567" target="_blank" rel="noopener" aria-label="Написать в WhatsApp"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-wa"/></svg></a>
+        <a class="msgr msgr--call" href="tel:+74951234567" aria-label="Позвонить: +7 (495) 123-45-67"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-phone"/></svg></a>
+        <button class="btn btn--ink hdr__cta" type="button" data-open-modal>Подобрать щенка</button>
+        <button class="msgr msgr--ink hdr__burger" type="button" aria-label="Открыть меню" aria-expanded="false" aria-controls="mmenu" data-burger><svg class="i" aria-hidden="true" focusable="false"><use href="#i-menu"/></svg></button>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+    <!-- ================= ПЕРВЫЙ ЭКРАН ================= -->
+    <section class="hero container" id="top" aria-labelledby="hero-title">
+      <div class="hero__grid">
+        <div class="hero__main tone--peach">
+          <div class="hero__copy">
+            <p class="eyebrow"><span class="eyebrow__dot" aria-hidden="true"></span>Питомник щенков · Москва</p>
+            <h1 class="h1" id="hero-title">Купить щенка в&nbsp;Москве&nbsp;— напрямую из&nbsp;питомника</h1>
+            <p class="hero__sub">Мальтипу, французы, <span class="nw">той-пудели</span> и&nbsp;<span class="nw">бордер-колли</span>&nbsp;— с&nbsp;документами и&nbsp;договором</p>
+            <div class="hero__actions" data-hero-ctas>
+              <a class="btn btn--ink btn--lg" href="#shchenki">Смотреть щенков <svg class="i" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></a>
+              <a class="btn btn--white btn--lg" href="#porody">Подобрать породу</a>
+            </div>
+          </div>
+          <div class="hero__photo studio-glow">
+            <img class="studio-img" src="assets/img/studio-maltipu-peach.jpg" alt="Кремовый щенок мальтипу на персиковом фоне" width="1024" height="1024" fetchpriority="high" decoding="async">
+          </div>
+          <p class="sticker"><span class="sticker__ico" aria-hidden="true"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-home"/></svg></span><span><b>Растим дома</b><small>не&nbsp;в&nbsp;вольерах</small></span></p>
         </div>
-      </a>
-      <a class="card" href="variant-c/">
-        <div class="shot" style="background-image:url(assets/previews/variant-c.jpg)"></div>
-        <div class="body">
-          <span class="label">Вариант C</span>
-          <h2>Editorial премиум</h2>
-          <p>Глубокие фото, крупный капс как на референсе, кремовый и эспрессо. Ощущение премиального питомника. Jost + Inter.</p>
-          <span class="go">Открыть →</span>
-        </div>
-      </a>
+
+        <ul class="hero__side scroller" aria-label="Другие породы">
+          <li>
+            <a class="hbreed tone--powder" href="/francuzskij-buldog/">
+              <span class="hbreed__name">Французский бульдог</span>
+              <span class="round-arrow" aria-hidden="true"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-arrow-ur"/></svg></span>
+              <span class="hbreed__photo"><img class="studio-img" src="assets/img/studio-buldog-blue.jpg" alt="Палевый щенок французского бульдога" width="1024" height="1024" fetchpriority="high" decoding="async"></span>
+            </a>
+          </li>
+          <li>
+            <a class="hbreed tone--butter" href="/toj-pudel/">
+              <span class="hbreed__name">Той-пудель</span>
+              <span class="round-arrow" aria-hidden="true"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-arrow-ur"/></svg></span>
+              <span class="hbreed__photo"><img class="studio-img" src="assets/img/studio-pudel-yellow.jpg" alt="Абрикосовый щенок той-пуделя" width="1024" height="1024" fetchpriority="high" decoding="async"></span>
+            </a>
+          </li>
+          <li>
+            <a class="hbreed tone--sage" href="/border-kolli/">
+              <span class="hbreed__name">Бордер-колли</span>
+              <span class="round-arrow" aria-hidden="true"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-arrow-ur"/></svg></span>
+              <span class="hbreed__photo"><img class="studio-img" src="assets/img/studio-kolli-green.jpg" alt="Щенок бордер-колли, голубой мрамор" width="1024" height="1024" fetchpriority="high" decoding="async"></span>
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <ul class="stats" aria-label="Питомник в цифрах">
+        <li class="stat"><span class="ico" style="--c:var(--coral)" aria-hidden="true"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-calendar"/></svg></span><b class="stat__num">9&nbsp;лет</b><span class="stat__cap">растим щенков</span></li>
+        <li class="stat"><span class="ico" style="--c:var(--sun)" aria-hidden="true"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-home"/></svg></span><b class="stat__num">640+</b><span class="stat__cap">выпускников дома</span></li>
+        <li class="stat"><span class="ico" style="--c:var(--sky)" aria-hidden="true"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg></span><b class="stat__num">4,9</b><span class="stat__cap">Яндекс Карты</span></li>
+        <li class="stat"><span class="ico" style="--c:var(--mint)" aria-hidden="true"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-pin"/></svg></span><b class="stat__num">60+</b><span class="stat__cap">городов доставки</span></li>
+      </ul>
     </section>
-    <p class="note">Фото сгенерированы под прототип и будут заменены реальными фото щенков питомника. Цены не показываются: везде кнопка «Узнать цену» с формой заявки. Внутренние разделы появятся на следующем этапе.</p>
+
+    <!-- ================= ПОРОДЫ ================= -->
+    <section class="section container" id="porody" aria-labelledby="porody-title">
+      <div class="sec-head">
+        <h2 class="h2" id="porody-title">Четыре породы питомника</h2>
+      </div>
+      <ul class="breeds scroller">
+        <li>
+          <a class="breed breed--maltipu" href="/maltipu/">
+            <img class="breed__img" src="assets/img/breed-maltipu.jpg" alt="Щенок мальтипу на коньячном кожаном кресле" width="928" height="1152" loading="lazy" decoding="async">
+            <span class="breed__top"><span class="breed__title">Мальтипу</span><span class="breed__desc">Компаньон размером с&nbsp;кошку</span></span>
+            <span class="breed__foot"><span class="breed__count"><span class="dot dot--ok" aria-hidden="true"></span>В&nbsp;наличии: 7</span><span class="round-arrow round-arrow--glass" aria-hidden="true"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-arrow-ur"/></svg></span></span>
+          </a>
+        </li>
+        <li>
+          <a class="breed breed--buldog" href="/francuzskij-buldog/">
+            <img class="breed__img" src="assets/img/breed-francuzskij-buldog.jpg" alt="Голубой французский бульдог на тёмной скамье" width="928" height="1152" loading="lazy" decoding="async">
+            <span class="breed__top"><span class="breed__title">Французы</span><span class="breed__desc">Спокойный друг для квартиры</span></span>
+            <span class="breed__foot"><span class="breed__count"><span class="dot dot--ok" aria-hidden="true"></span>В&nbsp;наличии: 4</span><span class="round-arrow round-arrow--glass" aria-hidden="true"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-arrow-ur"/></svg></span></span>
+          </a>
+        </li>
+        <li>
+          <a class="breed breed--pudel" href="/toj-pudel/">
+            <img class="breed__img" src="assets/img/breed-toj-pudel.jpg" alt="Рыжий той-пудель на оливковом бархате" width="928" height="1152" loading="lazy" decoding="async">
+            <span class="breed__top"><span class="breed__title">Той-пудели</span><span class="breed__desc">Умный кроха, почти не&nbsp;линяет</span></span>
+            <span class="breed__foot"><span class="breed__count"><span class="dot dot--ok" aria-hidden="true"></span>В&nbsp;наличии: 5</span><span class="round-arrow round-arrow--glass" aria-hidden="true"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-arrow-ur"/></svg></span></span>
+          </a>
+        </li>
+        <li>
+          <a class="breed breed--kolli" href="/border-kolli/">
+            <img class="breed__img" src="assets/img/breed-border-kolli.jpg" alt="Чёрно-белый бордер-колли в&nbsp;траве на&nbsp;закате" width="928" height="1152" loading="lazy" decoding="async">
+            <span class="breed__top"><span class="breed__title">Бордер-колли</span><span class="breed__desc">Для активной жизни и&nbsp;спорта</span></span>
+            <span class="breed__foot"><span class="breed__count"><span class="dot dot--ok" aria-hidden="true"></span>В&nbsp;наличии: 3</span><span class="round-arrow round-arrow--glass" aria-hidden="true"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-arrow-ur"/></svg></span></span>
+          </a>
+        </li>
+      </ul>
+    </section>
+
+    <!-- ================= ЩЕНКИ В НАЛИЧИИ ================= -->
+    <section class="section container" id="shchenki" aria-labelledby="shchenki-title">
+      <div class="sec-head">
+        <h2 class="h2" id="shchenki-title">Щенки в&nbsp;наличии</h2>
+        <a class="text-link" href="/shchenki/">Весь каталог&nbsp;— <span class="nw">19 <svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></span></a>
+      </div>
+
+      <div class="chips scroller" role="group" aria-label="Фильтр по породе">
+        <button class="chip" type="button" data-filter="all" aria-pressed="true">Все</button>
+        <button class="chip" type="button" data-filter="maltipu" aria-pressed="false"><span class="chip__dot tone--peach" aria-hidden="true"></span>Мальтипу</button>
+        <button class="chip" type="button" data-filter="francuzskij-buldog" aria-pressed="false"><span class="chip__dot tone--powder" aria-hidden="true"></span>Французский бульдог</button>
+        <button class="chip" type="button" data-filter="toj-pudel" aria-pressed="false"><span class="chip__dot tone--butter" aria-hidden="true"></span>Той-пудель</button>
+        <button class="chip" type="button" data-filter="border-kolli" aria-pressed="false"><span class="chip__dot tone--sage" aria-hidden="true"></span>Бордер-колли</button>
+      </div>
+      <p class="sr-only" role="status" aria-live="polite" data-pups-status></p>
+
+      <ul class="pups scroller" data-pups>
+        <li class="pups__item" data-breed="maltipu">
+          <article class="pup tone--peach" data-pup data-name="Пломбир" data-desc="Мальтипу F1 · 10&nbsp;недель · мальчик" data-img="studio-maltipu-peach.jpg">
+            <div class="pup__media pup__media--studio">
+              <img src="assets/img/studio-maltipu-peach.jpg" alt="Щенок мальтипу F1 Пломбир, кремовый мальчик" width="1024" height="1024" loading="lazy" decoding="async">
+            </div>
+            <div class="pup__body">
+              <h3 class="pup__name"><span class="dot dot--ok" aria-hidden="true"></span><a href="/shchenki/maltipu-f1-krem-2026-08/">Пломбир</a></h3>
+              <p class="pup__meta">Мальтипу · 10&nbsp;недель · мальчик<span class="sr-only"> · в&nbsp;наличии</span></p>
+              <div class="pup__actions">
+                <button class="btn btn--ink" type="button" data-open-modal aria-label="Узнать цену: Пломбир">Узнать цену</button>
+                <button class="fav" type="button" aria-pressed="false" aria-label="В избранное: Пломбир"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-heart"/></svg></button>
+              </div>
+            </div>
+          </article>
+        </li>
+        <li class="pups__item" data-breed="maltipu">
+          <article class="pup tone--peach" data-pup data-name="Мокка" data-desc="Мальтипу F1b мини · 12&nbsp;недель · девочка" data-img="pup-maltipu-chocolate.jpg">
+            <div class="pup__media">
+              <img class="pup__img--mokka" src="assets/img/pup-maltipu-chocolate.jpg" alt="Шоколадный щенок мальтипу Мокка на вязаном пледе" width="928" height="1152" loading="lazy" decoding="async">
+            </div>
+            <div class="pup__body">
+              <h3 class="pup__name"><span class="dot dot--ok" aria-hidden="true"></span><a href="/shchenki/maltipu-f1b-mini-shokolad-2026-07/">Мокка</a></h3>
+              <p class="pup__meta">Мальтипу · 12&nbsp;недель · девочка<span class="sr-only"> · в&nbsp;наличии</span></p>
+              <div class="pup__actions">
+                <button class="btn btn--ink" type="button" data-open-modal aria-label="Узнать цену: Мокка">Узнать цену</button>
+                <button class="fav" type="button" aria-pressed="false" aria-label="В избранное: Мокка"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-heart"/></svg></button>
+              </div>
+            </div>
+          </article>
+        </li>
+        <li class="pups__item" data-breed="francuzskij-buldog">
+          <article class="pup tone--powder" data-pup data-name="Бруно" data-desc="Французский бульдог · 13&nbsp;недель · мальчик" data-img="studio-buldog-blue.jpg">
+            <div class="pup__media pup__media--studio">
+              <img src="assets/img/studio-buldog-blue.jpg" alt="Палевый щенок французского бульдога Бруно на голубом фоне" width="1024" height="1024" loading="lazy" decoding="async">
+            </div>
+            <div class="pup__body">
+              <h3 class="pup__name"><span class="dot dot--ok" aria-hidden="true"></span><a href="/shchenki/francuzskij-buldog-palevyj-2026-07/">Бруно</a></h3>
+              <p class="pup__meta">Французский бульдог · 13&nbsp;недель · мальчик<span class="sr-only"> · в&nbsp;наличии</span></p>
+              <div class="pup__actions">
+                <button class="btn btn--ink" type="button" data-open-modal aria-label="Узнать цену: Бруно">Узнать цену</button>
+                <button class="fav" type="button" aria-pressed="false" aria-label="В избранное: Бруно"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-heart"/></svg></button>
+              </div>
+            </div>
+          </article>
+        </li>
+        <li class="pups__item" data-breed="francuzskij-buldog">
+          <article class="pup tone--powder" data-pup data-name="Луиза" data-desc="Французский бульдог · 11&nbsp;недель · девочка" data-img="pup-buldog-cream.jpg">
+            <div class="pup__media">
+              <img class="pup__img--luiza" src="assets/img/pup-buldog-cream.jpg" alt="Кремовый щенок французского бульдога Луиза в&nbsp;светлой квартире" width="928" height="1152" loading="lazy" decoding="async">
+              <span class="status"><span class="dot dot--res" aria-hidden="true"></span>Забронирована</span>
+            </div>
+            <div class="pup__body">
+              <h3 class="pup__name"><a href="/shchenki/francuzskij-buldog-krem-2026-07/">Луиза</a></h3>
+              <p class="pup__meta">Французский бульдог · 11&nbsp;недель · девочка</p>
+              <div class="pup__actions">
+                <button class="btn btn--ink" type="button" data-open-modal aria-label="Узнать цену: Луиза">Узнать цену</button>
+                <button class="fav" type="button" aria-pressed="false" aria-label="В избранное: Луиза"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-heart"/></svg></button>
+              </div>
+            </div>
+          </article>
+        </li>
+        <li class="pups__item" data-breed="toj-pudel">
+          <article class="pup tone--butter" data-pup data-name="Марго" data-desc="Той-пудель · 14&nbsp;недель · девочка" data-img="studio-pudel-yellow.jpg">
+            <div class="pup__media pup__media--studio">
+              <img src="assets/img/studio-pudel-yellow.jpg" alt="Абрикосовый щенок той-пуделя Марго на жёлтом фоне" width="1024" height="1024" loading="lazy" decoding="async">
+            </div>
+            <div class="pup__body">
+              <h3 class="pup__name"><span class="dot dot--ok" aria-hidden="true"></span><a href="/shchenki/toj-pudel-abrikos-2026-07/">Марго</a></h3>
+              <p class="pup__meta">Той-пудель · 14&nbsp;недель · девочка<span class="sr-only"> · в&nbsp;наличии</span></p>
+              <div class="pup__actions">
+                <button class="btn btn--ink" type="button" data-open-modal aria-label="Узнать цену: Марго">Узнать цену</button>
+                <button class="fav" type="button" aria-pressed="false" aria-label="В избранное: Марго"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-heart"/></svg></button>
+              </div>
+            </div>
+          </article>
+        </li>
+        <li class="pups__item" data-breed="toj-pudel">
+          <article class="pup tone--butter" data-pup data-name="Чарли" data-desc="Той-пудель · 9&nbsp;недель · мальчик" data-img="breed-toj-pudel.jpg">
+            <div class="pup__media">
+              <img class="pup__img--charli" src="assets/img/breed-toj-pudel.jpg" alt="Рыжий щенок той-пуделя Чарли на&nbsp;оливковом бархате" width="928" height="1152" loading="lazy" decoding="async">
+              <span class="status"><span class="dot dot--soon" aria-hidden="true"></span>Скоро в&nbsp;продаже</span>
+            </div>
+            <div class="pup__body">
+              <h3 class="pup__name"><a href="/shchenki/toj-pudel-ryzhij-2026-08/">Чарли</a></h3>
+              <p class="pup__meta">Той-пудель · 9&nbsp;недель · мальчик</p>
+              <div class="pup__actions">
+                <button class="btn btn--ink" type="button" data-open-modal aria-label="Узнать цену: Чарли">Узнать цену</button>
+                <button class="fav" type="button" aria-pressed="false" aria-label="В избранное: Чарли"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-heart"/></svg></button>
+              </div>
+            </div>
+          </article>
+        </li>
+        <li class="pups__item" data-breed="border-kolli">
+          <article class="pup tone--sage" data-pup data-name="Скай" data-desc="Бордер-колли · 11&nbsp;недель · мальчик" data-img="studio-kolli-green.jpg">
+            <div class="pup__media pup__media--studio">
+              <img src="assets/img/studio-kolli-green.jpg" alt="Щенок бордер-колли Скай, окрас голубой мрамор, на&nbsp;мятном фоне" width="1024" height="1024" loading="lazy" decoding="async">
+            </div>
+            <div class="pup__body">
+              <h3 class="pup__name"><span class="dot dot--ok" aria-hidden="true"></span><a href="/shchenki/border-kolli-goluboj-mramor-2026-07/">Скай</a></h3>
+              <p class="pup__meta">Бордер-колли · 11&nbsp;недель · мальчик<span class="sr-only"> · в&nbsp;наличии</span></p>
+              <div class="pup__actions">
+                <button class="btn btn--ink" type="button" data-open-modal aria-label="Узнать цену: Скай">Узнать цену</button>
+                <button class="fav" type="button" aria-pressed="false" aria-label="В избранное: Скай"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-heart"/></svg></button>
+              </div>
+            </div>
+          </article>
+        </li>
+        <li class="pups__item" data-breed="border-kolli">
+          <article class="pup tone--sage" data-pup data-name="Тесса" data-desc="Бордер-колли · 10&nbsp;недель · девочка" data-img="breed-border-kolli.jpg">
+            <div class="pup__media">
+              <img class="pup__img--tessa" src="assets/img/breed-border-kolli.jpg" alt="Чёрно-белый щенок бордер-колли Тесса в&nbsp;траве на&nbsp;закате" width="928" height="1152" loading="lazy" decoding="async">
+              <span class="status"><span class="dot dot--res" aria-hidden="true"></span>Забронирована</span>
+            </div>
+            <div class="pup__body">
+              <h3 class="pup__name"><a href="/shchenki/border-kolli-cherno-belyj-2026-07/">Тесса</a></h3>
+              <p class="pup__meta">Бордер-колли · 10&nbsp;недель · девочка</p>
+              <div class="pup__actions">
+                <button class="btn btn--ink" type="button" data-open-modal aria-label="Узнать цену: Тесса">Узнать цену</button>
+                <button class="fav" type="button" aria-pressed="false" aria-label="В избранное: Тесса"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-heart"/></svg></button>
+              </div>
+            </div>
+          </article>
+        </li>
+        <li class="pups__more" data-more hidden>
+          <a class="more-tile" href="/shchenki/">
+            <span class="more-tile__faces" aria-hidden="true"><span class="face tone--peach"><img src="assets/img/studio-maltipu-peach.jpg" alt="" width="1024" height="1024" loading="lazy" decoding="async"></span><span class="face tone--powder"><img src="assets/img/studio-buldog-blue.jpg" alt="" width="1024" height="1024" loading="lazy" decoding="async"></span><span class="face tone--butter"><img src="assets/img/studio-pudel-yellow.jpg" alt="" width="1024" height="1024" loading="lazy" decoding="async"></span><span class="face tone--sage"><img src="assets/img/studio-kolli-green.jpg" alt="" width="1024" height="1024" loading="lazy" decoding="async"></span></span>
+            <span class="more-tile__txt"><span class="more-tile__num">19</span><span class="more-tile__cap">щенков в&nbsp;каталоге</span></span>
+            <span class="more-tile__btn">Весь каталог <svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></span>
+          </a>
+        </li>
+      </ul>
+
+      <div class="pups-empty" data-empty hidden>
+        <p>Сейчас щенков этой породы нет в&nbsp;наличии. Оставьте заявку&nbsp;— напишем, когда появится новый помёт.</p>
+        <button class="btn btn--ink" type="button" data-open-modal>Оставить заявку</button>
+      </div>
+    </section>
+
+    <!-- ================= С ЧЕМ ПОМОЖЕМ ================= -->
+    <section class="section container" id="pomozhem" aria-labelledby="help-title">
+      <div class="sec-head">
+        <h2 class="h2" id="help-title">С&nbsp;чем поможем</h2>
+      </div>
+      <ul class="help scroller">
+        <li class="help__cell help__cell--docs">
+          <a class="hcard hcard--icon" href="/dokumenty-i-garantii/" style="--bg:var(--sky)">
+            <span class="hcard__text"><span class="hcard__title">Документы и&nbsp;договор</span><span class="hcard__line">Договор, ветпаспорт и&nbsp;метрика РКФ</span></span>
+            <span class="hcard__badge" aria-hidden="true"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-doc"/></svg></span>
+            <span class="round-arrow" aria-hidden="true"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-arrow-ur"/></svg></span>
+          </a>
+        </li>
+        <li class="help__cell help__cell--health">
+          <a class="hcard hcard--wide" href="/dokumenty-i-garantii/" style="--bg:var(--mint)">
+            <span class="hcard__text"><span class="hcard__title">Здоровье и&nbsp;прививки</span><span class="hcard__line">Осмотр врача и&nbsp;прививки по&nbsp;возрасту</span></span>
+            <span class="hcard__photo"><img src="assets/img/vet-check.jpg" alt="Ветеринар осматривает щенка той-пуделя" width="1264" height="848" loading="lazy" decoding="async"></span>
+            <span class="round-arrow" aria-hidden="true"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-arrow-ur"/></svg></span>
+          </a>
+        </li>
+        <li class="help__cell help__cell--video">
+          <a class="hcard hcard--tall" href="/shchenki/" style="--bg:var(--lilac)">
+            <span class="hcard__text"><span class="hcard__title">Видео до&nbsp;покупки</span><span class="hcard__line">Покажем щенка по&nbsp;видеосвязи</span></span>
+            <span class="hcard__photo"><img class="hcard__img--sofa" src="assets/img/hero-maltipu-sofa.jpg" alt="Абрикосовый щенок мальтипу на светлом диване" width="928" height="1152" loading="lazy" decoding="async"></span>
+            <span class="round-arrow" aria-hidden="true"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-arrow-ur"/></svg></span>
+          </a>
+        </li>
+        <li class="help__cell help__cell--care">
+          <a class="hcard hcard--wide" href="/faq/" style="--bg:var(--coral)">
+            <span class="hcard__text"><span class="hcard__title">На&nbsp;связи после покупки</span><span class="hcard__line">Корм, прививки, первая стрижка</span></span>
+            <span class="hcard__photo"><img src="assets/img/family-maltipu.jpg" alt="Девушка обнимает щенка мальтипу" width="1264" height="848" loading="lazy" decoding="async"></span>
+            <span class="round-arrow" aria-hidden="true"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-arrow-ur"/></svg></span>
+          </a>
+        </li>
+        <li class="help__cell help__cell--delivery">
+          <a class="hcard hcard--tall hcard--ink" href="/dostavka/" style="--bg:var(--ink)">
+            <span class="hcard__text"><span class="hcard__title">Доставка по&nbsp;России</span><span class="hcard__line">К&nbsp;двери, с&nbsp;видео в&nbsp;дороге</span></span>
+            <span class="hcard__photo"><img class="hcard__img--car" src="assets/img/delivery-carrier.jpg" alt="Французский бульдог в&nbsp;переноске на&nbsp;сиденье машины" width="1264" height="848" loading="lazy" decoding="async"></span>
+            <span class="round-arrow" aria-hidden="true"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-arrow-ur"/></svg></span>
+          </a>
+        </li>
+        <li class="help__cell help__cell--pay">
+          <a class="hcard hcard--icon" href="/rassrochka/" style="--bg:var(--sun)">
+            <span class="hcard__text"><span class="hcard__title">Рассрочка и&nbsp;бронь</span><span class="hcard__line">Бронь по&nbsp;договору, остаток частями</span></span>
+            <span class="hcard__badge" aria-hidden="true"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-wallet"/></svg></span>
+            <span class="round-arrow" aria-hidden="true"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-arrow-ur"/></svg></span>
+          </a>
+        </li>
+      </ul>
+    </section>
+
+    <!-- ================= КАК КУПИТЬ ================= -->
+    <section class="section container" id="kak-kupit" aria-labelledby="steps-title">
+      <div class="sec-head">
+        <h2 class="h2" id="steps-title">Как купить щенка</h2>
+        <button class="btn btn--ink" type="button" data-open-modal>Узнать цену</button>
+      </div>
+      <ol class="steps">
+        <li class="step"><span class="step__num" style="--c:var(--coral)" aria-hidden="true">1</span><h3 class="step__title">Заявка</h3><p class="step__text">Оставьте номер&nbsp;— пришлём цену</p></li>
+        <li class="step"><span class="step__num" style="--c:var(--sun)" aria-hidden="true">2</span><h3 class="step__title">Видеозвонок</h3><p class="step__text">Знакомитесь со&nbsp;щенком онлайн</p></li>
+        <li class="step"><span class="step__num" style="--c:var(--sky)" aria-hidden="true">3</span><h3 class="step__title">Бронь</h3><p class="step__text">Договор и&nbsp;предоплата&nbsp;— щенок ваш</p></li>
+        <li class="step"><span class="step__num" style="--c:var(--mint)" aria-hidden="true">4</span><h3 class="step__title">Встреча</h3><p class="step__text">Забираете сами или привезём</p></li>
+      </ol>
+    </section>
+
+    <!-- ================= ЕЩЁ ПОЛЕЗНОЕ ================= -->
+    <section class="section container" id="poleznoe" aria-labelledby="more-title">
+      <div class="sec-head">
+        <h2 class="h2" id="more-title">Ещё полезное</h2>
+      </div>
+      <ul class="bento scroller">
+        <li class="bento__cell bento__cell--pick">
+          <a class="ptile" href="/podbor-porody/">
+            <img src="assets/img/hero-four-breeds.jpg" alt="Щенки мальтипу, французского бульдога, той-пуделя и&nbsp;бордер-колли в&nbsp;ряд" width="1264" height="848" loading="lazy" decoding="async">
+            <span class="ptile__cap"><span class="ptile__txt"><span class="ptile__title">Подобрать породу</span><span class="ptile__line">Тест на&nbsp;2&nbsp;минуты</span></span><span class="round-arrow round-arrow--ink" aria-hidden="true"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-arrow-ur"/></svg></span></span>
+          </a>
+        </li>
+        <li class="bento__cell bento__cell--gift">
+          <a class="ptile" href="/shchenok-v-podarok/">
+            <img src="assets/img/gift-maltipu.jpg" alt="Щенок мальтипу в&nbsp;подарочной коробке среди новогодних огней" width="928" height="1152" loading="lazy" decoding="async">
+            <span class="ptile__cap"><span class="ptile__txt"><span class="ptile__title">Щенок в&nbsp;подарок</span><span class="ptile__line">Успеем к&nbsp;празднику</span></span><span class="round-arrow round-arrow--ink" aria-hidden="true"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-arrow-ur"/></svg></span></span>
+          </a>
+        </li>
+        <li class="bento__cell bento__cell--parents">
+          <a class="ptile" href="/roditeli/">
+            <img src="assets/img/parents-maltipu.jpg" alt="Мама-мальтипу со&nbsp;щенками на&nbsp;лежанке" width="1264" height="848" loading="lazy" decoding="async">
+            <span class="ptile__cap"><span class="ptile__txt"><span class="ptile__title">Родители щенков</span><span class="ptile__line">Домашние, с&nbsp;родословными РКФ</span></span><span class="round-arrow round-arrow--ink" aria-hidden="true"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-arrow-ur"/></svg></span></span>
+          </a>
+        </li>
+        <li class="bento__cell bento__cell--kit">
+          <a class="ptile" href="/magazin/">
+            <img src="assets/img/starter-kit.jpg" alt="Лежанка, переноска, миски и&nbsp;игрушки для щенка" width="1024" height="1024" loading="lazy" decoding="async">
+            <span class="ptile__cap"><span class="ptile__txt"><span class="ptile__title">Стартовый набор</span><span class="ptile__line">Всё для первых дней</span></span><span class="round-arrow round-arrow--ink" aria-hidden="true"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-arrow-ur"/></svg></span></span>
+          </a>
+        </li>
+      </ul>
+    </section>
+
+    <!-- ================= ОТЗЫВЫ ================= -->
+    <section class="section container" id="otzyvy" aria-labelledby="reviews-title">
+      <div class="sec-head">
+        <h2 class="h2" id="reviews-title">Отзывы владельцев</h2>
+        <a class="text-link" href="/otzyvy/">Все <span class="nw">отзывы <svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></span></a>
+      </div>
+      <div class="reviews-wrap">
+        <ul class="ratings" aria-label="Рейтинг питомника">
+          <li class="rating"><b class="rating__num">4,9</b><span class="rating__txt"><span class="stars" aria-hidden="true"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg></span><span>Яндекс · 128</span></span></li>
+          <li class="rating"><b class="rating__num">4,8</b><span class="rating__txt"><span class="stars" aria-hidden="true"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg></span><span>Google · 64</span></span></li>
+          <li class="rating"><b class="rating__num">5,0</b><span class="rating__txt"><span class="stars" aria-hidden="true"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg></span><span>Авито · 87</span></span></li>
+        </ul>
+        <ul class="reviews scroller">
+          <li class="review">
+            <blockquote class="review__text"><p>Каждый вечер показывали щенков по&nbsp;видео. Боня первой подбежала к&nbsp;телефону&nbsp;— так и&nbsp;выбрали.</p></blockquote>
+            <p class="review__who"><span class="ava" style="--c:var(--coral)" aria-hidden="true">А</span><span><b>Анна, Москва</b><span>Мальтипу</span></span></p>
+          </li>
+          <li class="review">
+            <blockquote class="review__text"><p>Боялся везти зимой, но&nbsp;Тайсон доехал спокойно&nbsp;— с&nbsp;ветпаспортом, метрикой и&nbsp;видео в&nbsp;пути.</p></blockquote>
+            <p class="review__who"><span class="ava" style="--c:var(--sky)" aria-hidden="true">И</span><span><b>Игорь, Санкт-Петербург</b><span>Французский бульдог</span></span></p>
+          </li>
+          <li class="review">
+            <blockquote class="review__text"><p>Отговорили от&nbsp;самого крошечного и&nbsp;подобрали девочку покрепче. Чапа легко перенесла перелёт.</p></blockquote>
+            <p class="review__who"><span class="ava" style="--c:var(--sun)" aria-hidden="true">М</span><span><b>Марина, Казань</b><span>Той-пудель</span></span></p>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ================= ВОПРОСЫ ================= -->
+    <section class="section container" id="faq" aria-labelledby="faq-title">
+      <div class="faq">
+        <div class="faq__aside">
+          <h2 class="h2" id="faq-title">Частые вопросы</h2>
+          <a class="text-link" href="/faq/">Все <span class="nw">вопросы <svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></span></a>
+        </div>
+        <ul class="faq__list">
+          <li class="faq__item">
+            <h3 class="faq__q"><button class="faq__btn" type="button" aria-expanded="false" aria-controls="faq-a1" id="faq-q1">От&nbsp;чего зависит цена щенка?<span class="faq__ico" aria-hidden="true"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-plus"/></svg></span></button></h3>
+            <div class="faq__a" id="faq-a1"><div><p>От&nbsp;породы, поколения и&nbsp;размера, окраса, пола и&nbsp;родителей. Точную цену пришлём в&nbsp;мессенджер сразу после заявки.</p></div></div>
+          </li>
+          <li class="faq__item">
+            <h3 class="faq__q"><button class="faq__btn" type="button" aria-expanded="false" aria-controls="faq-a2" id="faq-q2">Какие документы я&nbsp;получу?<span class="faq__ico" aria-hidden="true"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-plus"/></svg></span></button></h3>
+            <div class="faq__a" id="faq-a2"><div><p>Договор и&nbsp;ветпаспорт, у&nbsp;французов, той-пуделей и&nbsp;бордер-колли&nbsp;— ещё метрику РКФ. Мальтипу&nbsp;— гибрид, поэтому прилагаем копии родословных родителей.</p></div></div>
+          </li>
+          <li class="faq__item">
+            <h3 class="faq__q"><button class="faq__btn" type="button" aria-expanded="false" aria-controls="faq-a3" id="faq-q3">Во&nbsp;сколько щенка можно забрать домой?<span class="faq__ico" aria-hidden="true"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-plus"/></svg></span></button></h3>
+            <div class="faq__a" id="faq-a3"><div><p>Не&nbsp;раньше 10&nbsp;недель: щенок привит по&nbsp;возрасту и&nbsp;осмотрен ветеринаром. Дату переезда согласуем при брони.</p></div></div>
+          </li>
+          <li class="faq__item">
+            <h3 class="faq__q"><button class="faq__btn" type="button" aria-expanded="false" aria-controls="faq-a4" id="faq-q4">Доставляете в&nbsp;другие города?<span class="faq__ico" aria-hidden="true"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-plus"/></svg></span></button></h3>
+            <div class="faq__a" id="faq-a4"><div><p>Да, по&nbsp;всей России: на&nbsp;машине с&nbsp;куратором, самолётом в&nbsp;салоне или поездом. Сроки и&nbsp;стоимость назовём при брони.</p></div></div>
+          </li>
+          <li class="faq__item">
+            <h3 class="faq__q"><button class="faq__btn" type="button" aria-expanded="false" aria-controls="faq-a5" id="faq-q5">Как забронировать? Есть рассрочка?<span class="faq__ico" aria-hidden="true"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-plus"/></svg></span></button></h3>
+            <div class="faq__a" id="faq-a5"><div><p>Подписываем договор, вы&nbsp;вносите предоплату&nbsp;— и&nbsp;щенок закреплён за&nbsp;вами. Остаток можно оплатить в&nbsp;рассрочку через банк-партнёр.</p></div></div>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ================= SEO-ТЕКСТ ================= -->
+    <section class="section container" id="o-pitomnike" aria-labelledby="seo-title">
+      <div class="seo">
+        <h2 class="seo__title" id="seo-title">Купить щенка в&nbsp;Москве: питомник Puppy House</h2>
+        <div class="seo__body" data-seo>
+          <p class="seo__lead">Puppy House&nbsp;— питомник собак в&nbsp;Москве. Мы&nbsp;разводим четыре породы: мальтипу, французского бульдога, той-пуделя и&nbsp;бордер-колли. Щенки растут в&nbsp;доме рядом с&nbsp;людьми и&nbsp;привыкают к&nbsp;звукам квартиры, рукам и&nbsp;пелёнке. Поэтому переезд в&nbsp;новую семью проходит спокойнее. Купить щенка у&nbsp;нас можно лично в&nbsp;Москве или с&nbsp;доставкой в&nbsp;другой город.</p>
+          <div class="seo__more" id="seo-more" hidden>
+            <h3>Щенки четырёх пород</h3>
+            <p>Щенки мальтипу подойдут тем, кому нужен маленький ласковый компаньон. Мальтипу&nbsp;— помесь мальтийской болонки и&nbsp;той- или миниатюрного пуделя. У&nbsp;нас есть поколения F1 и&nbsp;F1b: взрослые мини-мальтипу весят 2–5&nbsp;кг, стандартные&nbsp;— до&nbsp;7&nbsp;кг. Шерсть почти не&nbsp;линяет, но&nbsp;абсолютно гипоаллергенных собак не&nbsp;бывает: реакция зависит от&nbsp;человека.</p>
+            <p>Щенки той-пуделя вырастают до&nbsp;28&nbsp;см в&nbsp;холке и&nbsp;весят 2–4&nbsp;кг. Той-пудель быстро учится, а&nbsp;его шерсть практически не&nbsp;линяет. Щенки французского бульдога&nbsp;— спокойные городские собаки весом 8–14&nbsp;кг. Им&nbsp;хватает обычных прогулок, но&nbsp;летом их&nbsp;нужно беречь от&nbsp;жары. Щенки бордер-колли&nbsp;— для активной семьи. Это пастушья порода ростом 46–56&nbsp;см в&nbsp;холке, с&nbsp;большим запасом энергии. Без ежедневных занятий бордер-колли скучает.</p>
+            <h3>Документы на&nbsp;щенка и&nbsp;здоровье</h3>
+            <p>Каждый щенок уезжает с&nbsp;договором купли-продажи и&nbsp;ветеринарным паспортом. В&nbsp;паспорте&nbsp;— отметки о&nbsp;прививках по&nbsp;возрасту и&nbsp;обработках от&nbsp;паразитов. Щенки французского бульдога, той-пуделя и&nbsp;бордер-колли получают метрику РКФ, которую позже меняют на&nbsp;родословную. Мальтипу&nbsp;— гибрид, РКФ его не&nbsp;регистрирует, поэтому к&nbsp;щенку прилагаем копии родословных родителей. Перед продажей каждого щенка осматривает ветеринар, а&nbsp;схему следующих прививок, включая прививку от&nbsp;бешенства, мы&nbsp;даём с&nbsp;собой.</p>
+            <h3>Как выбрать щенка</h3>
+            <p>Начните с&nbsp;образа жизни, а&nbsp;не&nbsp;с&nbsp;фото. Сколько вы&nbsp;гуляете, есть&nbsp;ли дети, какая у&nbsp;вас квартира&nbsp;— от&nbsp;этого зависит, какая порода подойдёт. Если сомневаетесь, пройдите тест подбора породы или спросите куратора. Смотрите и&nbsp;на&nbsp;самого щенка: здоровый малыш любопытен, охотно идёт на&nbsp;контакт, у&nbsp;него чистые глаза и&nbsp;уши. Мы&nbsp;покажем щенка по&nbsp;видеосвязи и&nbsp;расскажем о&nbsp;его характере и&nbsp;родителях. Цена зависит от&nbsp;породы, поколения, окраса, пола и&nbsp;перспектив щенка&nbsp;— назовём её&nbsp;сразу после заявки.</p>
+            <h3>Доставка щенков по&nbsp;России</h3>
+            <p>Привезём щенка на&nbsp;машине с&nbsp;куратором, отправим самолётом в&nbsp;салоне с&nbsp;сопровождающим или поездом. Способ подбираем под породу и&nbsp;возраст: маленьким щенкам подходит перелёт в&nbsp;салоне, бордер-колли обычно едут на&nbsp;машине. В&nbsp;дороге присылаем фото и&nbsp;видео, а&nbsp;после приезда остаёмся на&nbsp;связи.</p>
+            <h3>Купить щенка в&nbsp;Москве и&nbsp;Московской области</h3>
+            <p>Если вы&nbsp;живёте в&nbsp;Москве или Подмосковье, приезжайте в&nbsp;питомник по&nbsp;записи: познакомьтесь со&nbsp;щенками, посмотрите на&nbsp;маму, обсудите уход. Или выберите щенка по&nbsp;видео&nbsp;— привезём его к&nbsp;дому в&nbsp;Москве, Химках, Красногорске, Балашихе, Подольске или другом городе области. Оставьте заявку, и&nbsp;куратор пришлёт щенков в&nbsp;наличии с&nbsp;ценами и&nbsp;свежими видео.</p>
+          </div>
+        </div>
+        <button class="seo__toggle" type="button" aria-expanded="false" aria-controls="seo-more" data-seo-toggle><span data-seo-label>Читать полностью</span><svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-chevron"/></svg></button>
+      </div>
+    </section>
+
+    <!-- ================= ЗАЯВКА ================= -->
+    <section class="section container" id="zayavka" aria-labelledby="lead-title">
+      <div class="lead tone--peach">
+        <div class="lead__intro">
+          <h2 class="h2" id="lead-title">Подберём щенка за&nbsp;15&nbsp;минут</h2>
+          <p class="lead__line">Пришлём щенков в&nbsp;наличии, цены и&nbsp;свежие видео</p>
+          <div class="lead__contacts">
+            <a class="lead__phone" href="tel:+74951234567">+7 (495) 123-45-67</a>
+            <a class="msgr msgr--tg" href="https://t.me/puppyhouse_msk" target="_blank" rel="noopener" aria-label="Написать в Telegram"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-tg"/></svg></a>
+            <a class="msgr msgr--wa" href="https://wa.me/74951234567" target="_blank" rel="noopener" aria-label="Написать в WhatsApp"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-wa"/></svg></a>
+          </div>
+        </div>
+
+        <div class="lead__box">
+          <form class="form" id="lead-form" novalidate>
+            <div class="form__grid">
+              <div class="field">
+                <label class="field__label" for="lf-name">Имя</label>
+                <input class="input" id="lf-name" name="name" type="text" autocomplete="given-name" placeholder="Как к&nbsp;вам обращаться" required aria-describedby="lf-name-err">
+                <p class="field__err" id="lf-name-err" hidden></p>
+              </div>
+              <div class="field">
+                <label class="field__label" for="lf-phone">Телефон</label>
+                <input class="input" id="lf-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="+7 (___) ___-__-__" required aria-describedby="lf-phone-err" data-phone>
+                <p class="field__err" id="lf-phone-err" hidden></p>
+              </div>
+              <div class="field field--full">
+                <label class="field__label" for="lf-breed">Какая порода интересует</label>
+                <select class="input select" id="lf-breed" name="breed">
+                  <option value="" selected>Выберите породу</option>
+                  <option>Мальтипу</option>
+                  <option>Французский бульдог</option>
+                  <option>Той-пудель</option>
+                  <option>Бордер-колли</option>
+                  <option>Пока не&nbsp;решил(а)</option>
+                </select>
+              </div>
+              <fieldset class="field field--full seg" role="radiogroup" aria-describedby="lf-contact-err">
+                <legend class="field__label">Куда написать</legend>
+                <div class="seg__opts">
+                  <input type="radio" name="contact" id="lf-c-tg" value="telegram"><label for="lf-c-tg"><svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-tg"/></svg>Telegram</label>
+                  <input type="radio" name="contact" id="lf-c-wa" value="whatsapp"><label for="lf-c-wa"><svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-wa"/></svg>WhatsApp</label>
+                  <input type="radio" name="contact" id="lf-c-call" value="call"><label for="lf-c-call"><svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-phone"/></svg>Звонок</label>
+                </div>
+                <p class="field__err" id="lf-contact-err" hidden></p>
+              </fieldset>
+              <div class="field field--full">
+                <div class="check">
+                  <input type="checkbox" id="lf-consent" name="consent" aria-describedby="lf-consent-err">
+                  <label for="lf-consent">Соглашаюсь на&nbsp;обработку персональных данных и&nbsp;принимаю <a href="/politika-konfidencialnosti/">политику конфиденциальности</a></label>
+                </div>
+                <p class="field__err" id="lf-consent-err" hidden></p>
+              </div>
+            </div>
+            <button class="btn btn--ink btn--lg btn--block form__submit" type="submit" data-submit data-label="Получить подборку">Получить подборку</button>
+          </form>
+          <div class="form-done" data-done tabindex="-1" hidden>
+            <span class="form-done__ico" aria-hidden="true"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-check"/></svg></span>
+            <p class="form-done__title" data-done-text>Спасибо! Напишем в&nbsp;течение 15&nbsp;минут</p>
+          </div>
+        </div>
+      </div>
+    </section>
   </main>
+
+  <!-- ================= ПОДВАЛ ================= -->
+  <footer class="footer container">
+    <div class="footer__tile">
+      <div class="footer__top">
+        <div class="footer__brand">
+          <a class="logo" href="#top" aria-label="Puppy House — наверх страницы">
+            <span class="logo__mark" aria-hidden="true"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-paw"/></svg></span>
+            <span class="logo__text"><span class="logo__name">Puppy House</span><span class="logo__sub">питомник щенков · Москва</span></span>
+          </a>
+          <a class="footer__phone" href="tel:+74951234567">+7 (495) 123-45-67</a>
+          <ul class="footer__info">
+            <li><svg class="i i--sm" aria-hidden="true"><use href="#i-clock"/></svg>Ежедневно с&nbsp;9:00 до&nbsp;21:00</li>
+            <li><svg class="i i--sm" aria-hidden="true"><use href="#i-pin"/></svg>Москва, приезд по&nbsp;записи</li>
+            <li><svg class="i i--sm" aria-hidden="true"><use href="#i-mail"/></svg><a href="mailto:hello@puppyhouse.ru">hello@puppyhouse.ru</a></li>
+          </ul>
+          <div class="footer__msgs">
+            <a class="msgr msgr--tg" href="https://t.me/puppyhouse_msk" target="_blank" rel="noopener" aria-label="Написать в Telegram"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-tg"/></svg></a>
+            <a class="msgr msgr--wa" href="https://wa.me/74951234567" target="_blank" rel="noopener" aria-label="Написать в WhatsApp"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-wa"/></svg></a>
+          </div>
+        </div>
+        <nav class="footer__nav" aria-label="Разделы сайта">
+          <div class="fcol">
+            <h2 class="fcol__h">Щенки и&nbsp;породы</h2>
+            <ul>
+              <li><a href="/shchenki/">Все щенки в&nbsp;наличии</a></li>
+              <li><a href="/maltipu/">Мальтипу</a></li>
+              <li><a href="/francuzskij-buldog/">Французский бульдог</a></li>
+              <li><a href="/toj-pudel/">Той-пудель</a></li>
+              <li><a href="/border-kolli/">Бордер-колли</a></li>
+              <li><a href="/podbor-porody/">Подбор породы&nbsp;— тест</a></li>
+            </ul>
+          </div>
+          <div class="fcol">
+            <h2 class="fcol__h">Покупка</h2>
+            <ul>
+              <li><a href="/dokumenty-i-garantii/">Документы и&nbsp;гарантии</a></li>
+              <li><a href="/dostavka/">Доставка</a></li>
+              <li><a href="/rassrochka/">Рассрочка и&nbsp;бронь</a></li>
+              <li><a href="/shchenok-v-podarok/">Щенок в&nbsp;подарок</a></li>
+              <li><a href="/magazin/">Стартовый набор</a></li>
+              <li><a href="/faq/">Вопросы и&nbsp;ответы</a></li>
+            </ul>
+          </div>
+          <div class="fcol">
+            <h2 class="fcol__h">О&nbsp;питомнике</h2>
+            <ul>
+              <li><a href="/roditeli/">Родители</a></li>
+              <li><a href="/vypuskniki/">Выпускники</a></li>
+              <li><a href="/otzyvy/">Отзывы</a></li>
+              <li><a href="/blog/">Блог</a></li>
+              <li><a href="/kontakty/">Контакты</a></li>
+            </ul>
+          </div>
+        </nav>
+      </div>
+      <div class="footer__legal">
+        <span>© 2017–2026 Puppy House · ИП&nbsp;[ФИО] · ИНН [000000000000] · ОГРНИП [000000000000000]</span>
+        <span>Сайт не&nbsp;является публичной офертой · <a href="/politika-konfidencialnosti/">Политика конфиденциальности</a> · домщенков.рф</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Липкая панель на мобиле -->
+  <nav class="mbar" aria-label="Быстрая связь" data-mbar>
+    <a class="mbar__btn" href="tel:+74951234567"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-phone"/></svg>Позвонить</a>
+    <a class="mbar__btn" href="https://t.me/puppyhouse_msk" target="_blank" rel="noopener"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-tg"/></svg>Telegram</a>
+    <button class="mbar__btn mbar__btn--ink" type="button" data-open-modal>Узнать цену</button>
+  </nav>
+
+  <!-- Мобильное меню -->
+  <div class="mmenu" id="mmenu" role="dialog" aria-modal="true" aria-label="Меню сайта" hidden>
+    <div class="mmenu__top">
+      <a class="logo" href="#top" data-menu-link aria-label="Puppy House — наверх страницы">
+        <span class="logo__mark" aria-hidden="true"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-paw"/></svg></span>
+        <span class="logo__text"><span class="logo__name">Puppy House</span><span class="logo__sub">питомник щенков · Москва</span></span>
+      </a>
+      <button class="msgr msgr--ink" type="button" aria-label="Закрыть меню" data-menu-close><svg class="i" aria-hidden="true" focusable="false"><use href="#i-close"/></svg></button>
+    </div>
+    <nav class="mmenu__nav" aria-label="Мобильное меню">
+      <ul class="mmenu__list">
+        <li><a href="/shchenki/">Щенки <svg class="i" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></a></li>
+        <li>
+          <button class="mmenu__acc" type="button" aria-expanded="false" aria-controls="mm-breeds">Породы <svg class="i" aria-hidden="true" focusable="false"><use href="#i-chevron"/></svg></button>
+          <ul class="mmenu__sub" id="mm-breeds" hidden>
+            <li><a href="/maltipu/"><span class="face tone--peach"><img src="assets/img/studio-maltipu-peach.jpg" alt="" width="1024" height="1024" loading="lazy" decoding="async"></span>Мальтипу</a></li>
+            <li><a href="/francuzskij-buldog/"><span class="face tone--powder"><img src="assets/img/studio-buldog-blue.jpg" alt="" width="1024" height="1024" loading="lazy" decoding="async"></span>Французский бульдог</a></li>
+            <li><a href="/toj-pudel/"><span class="face tone--butter"><img src="assets/img/studio-pudel-yellow.jpg" alt="" width="1024" height="1024" loading="lazy" decoding="async"></span>Той-пудель</a></li>
+            <li><a href="/border-kolli/"><span class="face tone--sage"><img src="assets/img/studio-kolli-green.jpg" alt="" width="1024" height="1024" loading="lazy" decoding="async"></span>Бордер-колли</a></li>
+            <li><a href="/podbor-porody/"><span class="ico" style="--c:var(--lilac)" aria-hidden="true"><svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-sparkle"/></svg></span>Подобрать породу&nbsp;— тест</a></li>
+          </ul>
+        </li>
+        <li><a href="/dostavka/">Доставка <svg class="i" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></a></li>
+        <li><a href="/otzyvy/">Отзывы <svg class="i" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></a></li>
+        <li><a href="/roditeli/">О&nbsp;питомнике <svg class="i" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></a></li>
+        <li><a href="/kontakty/">Контакты <svg class="i" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></a></li>
+      </ul>
+    </nav>
+    <div class="mmenu__bottom">
+      <a class="mmenu__phone" href="tel:+74951234567">+7 (495) 123-45-67<small>Ежедневно с&nbsp;9:00 до&nbsp;21:00</small></a>
+      <div class="mmenu__msgs">
+        <a class="msgr msgr--tg" href="https://t.me/puppyhouse_msk" target="_blank" rel="noopener" aria-label="Написать в Telegram"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-tg"/></svg></a>
+        <a class="msgr msgr--wa" href="https://wa.me/74951234567" target="_blank" rel="noopener" aria-label="Написать в WhatsApp"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-wa"/></svg></a>
+        <button class="btn btn--ink btn--lg mmenu__cta" type="button" data-open-modal>Подобрать щенка</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Модалка «Узнать цену» -->
+  <dialog class="modal" id="price-modal" aria-labelledby="pm-title" aria-describedby="pm-sub">
+    <div class="modal__inner">
+      <button class="msgr modal__close" type="button" aria-label="Закрыть" data-close-modal><svg class="i" aria-hidden="true" focusable="false"><use href="#i-close"/></svg></button>
+      <div class="modal__view" data-view="form">
+        <div class="modal__head">
+          <span class="modal__thumb" data-pm-thumb hidden><img src="assets/img/studio-maltipu-peach.jpg" alt="" width="1024" height="1024" decoding="async"></span>
+          <div>
+            <h2 class="modal__title" id="pm-title">Узнать цену щенка</h2>
+            <p class="modal__sub" id="pm-sub">Пришлём щенков в&nbsp;наличии с&nbsp;ценами и&nbsp;видео</p>
+          </div>
+        </div>
+        <form class="form" id="price-form" novalidate>
+          <input type="hidden" name="puppy" value="">
+          <div class="form__grid">
+            <div class="field">
+              <label class="field__label" for="pm-name">Имя</label>
+              <input class="input" id="pm-name" name="name" type="text" autocomplete="given-name" placeholder="Как к&nbsp;вам обращаться" required aria-describedby="pm-name-err">
+              <p class="field__err" id="pm-name-err" hidden></p>
+            </div>
+            <div class="field">
+              <label class="field__label" for="pm-phone">Телефон</label>
+              <input class="input" id="pm-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="+7 (___) ___-__-__" required aria-describedby="pm-phone-err" data-phone>
+              <p class="field__err" id="pm-phone-err" hidden></p>
+            </div>
+            <div class="field field--full" data-pm-breed>
+              <label class="field__label" for="pm-breed">Какая порода интересует</label>
+              <select class="input select" id="pm-breed" name="breed">
+                <option value="" selected>Выберите породу</option>
+                <option>Мальтипу</option>
+                <option>Французский бульдог</option>
+                <option>Той-пудель</option>
+                <option>Бордер-колли</option>
+                <option>Пока не&nbsp;решил(а)</option>
+              </select>
+            </div>
+            <fieldset class="field field--full seg" role="radiogroup" aria-describedby="pm-contact-err">
+              <legend class="field__label">Куда написать</legend>
+              <div class="seg__opts">
+                <input type="radio" name="contact" id="pm-c-tg" value="telegram"><label for="pm-c-tg"><svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-tg"/></svg>Telegram</label>
+                <input type="radio" name="contact" id="pm-c-wa" value="whatsapp"><label for="pm-c-wa"><svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-wa"/></svg>WhatsApp</label>
+                <input type="radio" name="contact" id="pm-c-call" value="call"><label for="pm-c-call"><svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-phone"/></svg>Звонок</label>
+              </div>
+              <p class="field__err" id="pm-contact-err" hidden></p>
+            </fieldset>
+            <div class="field field--full">
+              <div class="check">
+                <input type="checkbox" id="pm-consent" name="consent" aria-describedby="pm-consent-err">
+                <label for="pm-consent">Соглашаюсь на&nbsp;обработку персональных данных и&nbsp;принимаю <a href="/politika-konfidencialnosti/">политику конфиденциальности</a></label>
+              </div>
+              <p class="field__err" id="pm-consent-err" hidden></p>
+            </div>
+          </div>
+          <button class="btn btn--ink btn--lg btn--block form__submit" type="submit" data-submit data-label="Узнать цену">Узнать цену</button>
+          <p class="form__hint">Ответим за&nbsp;15&nbsp;минут, с&nbsp;9:00 до&nbsp;21:00</p>
+        </form>
+      </div>
+      <div class="modal__view modal__done" data-view="done" hidden>
+        <span class="form-done__ico" aria-hidden="true"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-check"/></svg></span>
+        <h2 class="modal__title" id="pm-done-title" tabindex="-1">Спасибо</h2>
+        <p class="modal__sub" id="pm-done-text"></p>
+        <button class="btn btn--ink btn--lg btn--block" type="button" data-close-modal>Хорошо</button>
+      </div>
+    </div>
+  </dialog>
+
+  <div class="toast" role="status" aria-live="polite" aria-atomic="true" data-toast></div>
 </body>
 </html>
