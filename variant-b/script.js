@@ -389,7 +389,7 @@
   const leadSuccess = $('#final-success');
   if (leadForm && leadSuccess) {
     submitWith(leadForm, ({ name, method }) => {
-      const tail = 'в течение 15 минут, а если сейчас поздний вечер — утром. Пока ждёте, почитайте, что говорят владельцы наших щенков.';
+      const tail = 'в\u00A0течение 15\u00A0минут, а\u00A0если сейчас поздний вечер\u00A0— утром. Пока ждёте, почитайте, что говорят владельцы наших щенков.';
       $('[data-success-text]', leadSuccess).textContent = method === 'call'
         ? 'Спасибо, ' + name + '. Куратор позвонит вам ' + tail
         : 'Спасибо, ' + name + '. Куратор напишет вам в ' + method + ' ' + tail;
@@ -466,8 +466,8 @@
     submitWith(form, ({ name, method }) => {
       $('[data-pm-success-title]', success).textContent = 'Спасибо, ' + name;
       $('[data-pm-success-text]', success).textContent = method === 'call'
-        ? 'Куратор позвонит вам в течение 15 минут. Ночью — утром, после 9:00.'
-        : 'Куратор пришлёт цену и видео в ' + method + ' в течение 15 минут. Ночью — утром, после 9:00.';
+        ? 'Куратор позвонит вам в\u00A0течение 15\u00A0минут. Ночью\u00A0— утром, после 9:00.'
+        : 'Куратор пришлёт цену и\u00A0видео в\u00A0' + method + ' в\u00A0течение 15\u00A0минут. Ночью\u00A0— утром, после 9:00.';
       formView.hidden = true;
       success.hidden = false;
       success.focus();

@@ -362,6 +362,7 @@
     const items = $$('.pups__item', grid);
     const more = $('[data-more]', grid);
     const empty = $('[data-empty]');
+    const status = $('[data-pups-status]');
     let visible = items.length;
 
     // Плитка «Весь каталог» закрывает пустые ячейки последнего ряда; в карусели — всегда в конце
@@ -383,6 +384,7 @@
         if (show) visible++;
       });
       empty.hidden = visible > 0;
+      if (status) status.textContent = 'Показано щенков: ' + visible;
       fitMore();
       grid.scrollLeft = 0;
     };
