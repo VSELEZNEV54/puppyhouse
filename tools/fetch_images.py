@@ -1,7 +1,7 @@
 """Скачивает сгенерированные фото (tools/images.json) в assets/img/ как JPEG.
 
-Запуск: python3 tools/fetch_images.py
-Нужен доступ к www.figma.com. Ссылки действуют 7 дней с 12.10.2026.
+Запуск: python3 tools/fetch_images.py (или GitHub Actions: .github/workflows/fetch-images.yml).
+Нужен доступ к www.figma.com. Ссылки действуют 7 дней с даты генерации.
 """
 import io
 import json
@@ -24,8 +24,7 @@ for item in json.loads((ROOT / "tools" / "images.json").read_text(encoding="utf-
     try:
         img = Image.open(io.BytesIO(data)).convert("RGB")
     except Exception:
-        print(f"{item['name']}: not an image, status ok, content-type={ctype}, {len(data)} bytes")
-        print(data[:600])
+        print(f"{item['name']}: not an image, content-type={ctype}, {len(data)} bytes")
         raise
     dest = OUT / f"{item['name']}.jpg"
     img.save(dest, "JPEG", quality=88, optimize=True, progressive=True, subsampling=0)
