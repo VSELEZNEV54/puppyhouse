@@ -1,0 +1,101 @@
+{#- Cards: puppies, breeds, reviews. READ-ONLY for page-group agents.
+    Import:  {% import "macros/cards.html.j2" as cards %} -#}
+{% import "macros/ui.html.j2" as ui %}
+
+{#- Puppy card — exactly the homepage card. p = puppies.json item (enriched by build.py).
+    The «Узнать цену» button opens the shared modal with the puppy's name, photo and description.
+    Studio photo: the card takes that photo's measured backdrop (tools/photo-tones.json) unless the photo has
+    "backdrop": "token" (the four approved homepage cards keep the breed token colours). Optional photo "pos" → object-position. -#}
+{% macro puppy_card(p) -%}
+{%- set t = photo_tone(p.photo.src) if p.photo.kind == 'studio' and p.photo.get('backdrop') != 'token' else none -%}
+<article class="pup {{ p.tone_class }}"{% if t %} style="--tone:{{ t.top }};--tone-floor:{{ t.floor }}"{% endif %} data-pup data-name="{{ p.name }}" data-desc="{{ p.desc }}" data-img="{{ p.photo.src.rsplit('/', 1)[-1] }}">
+  <div class="pup__media{{ ' pup__media--studio' if p.photo.kind == 'studio' }}">
+    <img{% if p.photo['class'] %} class="{{ p.photo['class'] }}"{% endif %} src="{{ p.photo.src }}" alt="{{ p.photo.alt|typo }}" width="{{ p.photo.w }}" height="{{ p.photo.h }}"{% if p.photo.get('pos') %} style="object-position:{{ p.photo.pos }}"{% endif %} loading="lazy" decoding="async">
+    {% if p.status != 'available' %}
+    <span class="status"><span class="dot dot--{{ p.status_dot }}" aria-hidden="true"></span>{{ p.status_label|typo }}</span>
+    {% endif %}
+  </div>
+  <div class="pup__body">
+    <h3 class="pup__name">{% if p.status == 'available' %}<span class="dot dot--ok" aria-hidden="true"></span>{% endif %}<a href="{{ p.url }}">{{ p.name }}</a></h3>
+    <p class="pup__meta">{{ p.meta }}{% if p.status == 'available' %}<span class="sr-only"> · в&nbsp;наличии</span>{% endif %}</p>
+    <div class="pup__actions">
+      <button class="btn btn--ink" type="button" data-open-modal aria-label="Узнать цену: {{ p.name }}">Узнать цену</button>
+      <button class="fav" type="button" aria-pressed="false" aria-label="В избранное: {{ p.name }}">{{ ui.icon('heart') }}</button>
+    </div>
+  </div>
+</article>
+{%- endmacro %}
+
+{#- «Щенки в наличии» section for inner pages: up to `limit` cards (available first) and a link to the catalog.
+    breed: breeds.json item → only that breed, link to the filtered catalog. Ribbon on mobile, grid on desktop. -#}
+{% macro pups_section(title='Щенки в наличии', breed=none, limit=4, id='pups', exclude=none) -%}
+{%- set pool = (breed.puppies if breed else puppies)|rejectattr('slug', 'equalto', exclude)|sort(attribute='status_order')|list -%}
+{%- set list = pool[:limit] -%}
+{%- set total = (breed.puppies if breed else puppies)|length -%}
+<section class="section container" id="{{ id }}" aria-labelledby="{{ id }}-title">
+  {{ ui.section_head(title, id=id ~ '-title', link={'url': '/shchenki/' ~ ('?breed=' ~ breed.slug if breed else ''), 'label': 'Весь каталог — ' ~ total}) }}
+  {% if list %}
+  <ul class="pups scroller" data-reveal="items">
+    {% for p in list %}
+    <li class="pups__item">
+      {{ puppy_card(p) }}
+    </li>
+    {% endfor %}
+    {% if list|length < limit %}
+    {%- set n = list|length %}
+    <li class="pups__more pups__more--fill" style="--s4:{{ 4 - n % 4 }};--s3:{{ 3 - n % 3 }};--s2:{{ 2 - n % 2 }}">
+      {{ soon_tile() }}
+    </li>
+    {% endif %}
+  </ul>
+  {% else %}
+  {{ ui.empty_state('Сейчас щенков нет в наличии', 'Оставьте заявку — напишем, когда появится новый помёт.') }}
+  {% endif %}
+</section>
+{%- endmacro %}
+
+{#- «Ждёте другого щенка?» tile: fills the rest of a puppy row, opens the modal. -#}
+{% macro soon_tile(title='Ждёте другого щенка?', line='Напишем, когда появится новый помёт', label='Оставить заявку') -%}
+<div class="soon-tile">
+  <span class="soon-tile__faces" aria-hidden="true">{% for b in breeds %}{{ ui.face(b) }}{% endfor %}</span>
+  <span class="soon-tile__txt"><span class="soon-tile__title">{{ title|typo }}</span><span class="soon-tile__line">{{ line|typo }}</span></span>
+  <button class="btn btn--ink" type="button" data-open-modal>{{ label }}</button>
+</div>
+{%- endmacro %}
+
+{#- Breed tile — the homepage pastel tile with the studio photo standing on the tile «floor». b = breeds.json item -#}
+{% macro breed_tile(b) -%}
+<a class="breed breed--{{ b.key }} {{ b.tone_class }}" href="{{ b.urls.hub }}">
+  <span class="breed__top"><span class="breed__title">{{ b.name }}</span><span class="breed__desc">{{ b.tile_line|typo }}</span><span class="breed__count"><span class="dot dot--ok" aria-hidden="true"></span>В&nbsp;наличии: {{ b.stock }}</span></span>
+  {{ ui.round_arrow() }}
+  <span class="breed__photo"><img src="{{ b.studio.src }}" alt="{{ b.studio.alt|typo }}" width="{{ b.studio.w }}" height="{{ b.studio.h }}" loading="lazy" decoding="async"></span>
+</a>
+{%- endmacro %}
+
+{#- Grid of the four breed tiles (ribbon on mobile) -#}
+{% macro breed_tiles(items=none) -%}
+<ul class="breeds scroller">
+  {% for b in items or breeds %}
+  <li>
+    {{ breed_tile(b) }}
+  </li>
+  {% endfor %}
+</ul>
+{%- endmacro %}
+
+{#- Review card. r = reviews.json item. short=true uses r.short (≤180 chars, homepage style) when present. -#}
+{% macro review_card(r, short=true) -%}
+<li class="review">
+  <blockquote class="review__text"><p>{{ (r.short if short and r.short else r.text)|typo }}</p></blockquote>
+  <p class="review__who"><span class="ava" style="--c:var(--{{ r.color }})" aria-hidden="true">{{ r.name[0] }}</span><span><b>{{ r.name }}, {{ r.city }}</b><span>{{ breed_map[r.breed].name if short else r.breed_label }}</span></span></p>
+</li>
+{%- endmacro %}
+
+{#- Rating tiles (Яндекс · Google · Авито) from site.ratings -#}
+{% macro ratings(items=none) -%}
+<ul class="ratings" aria-label="Рейтинг питомника">
+  {% for r in items or site.ratings %}
+  <li class="rating"><b class="rating__num">{{ r.num }}</b><span class="rating__txt"><span class="stars" aria-hidden="true">{% for _ in range(5) %}{{ ui.icon('star') }}{% endfor %}</span><span>{{ r.label }} · {{ r.count }}</span></span></li>
+  {% endfor %}
+</ul>
+{%- endmacro %}

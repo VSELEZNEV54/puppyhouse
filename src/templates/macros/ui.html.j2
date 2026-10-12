@@ -1,0 +1,313 @@
+{#- Basic UI pieces shared by every page. READ-ONLY for page-group agents.
+    Import:  {% import "macros/ui.html.j2" as ui %}
+    Every text parameter is plain text: macros escape it and run the |typo filter (non-breaking spaces).
+    Pass Markup (e.g. "...<a href>..."|safe) only when you really need inline HTML. -#}
+
+{#- <svg> icon from the sprite (partials/sprite.html.j2): ui.icon('arrow'), ui.icon('check', sm=true) -#}
+{% macro icon(name, sm=false, cls='') -%}
+<svg class="i{{ ' i--sm' if sm }}{{ ' ' ~ cls if cls }}" aria-hidden="true" focusable="false"><use href="#i-{{ name }}"/></svg>
+{%- endmacro %}
+
+{#- Round arrow badge used on clickable tiles. variant: '' | 'ink' | 'glass' -#}
+{% macro round_arrow(variant='') -%}
+<span class="round-arrow{{ ' round-arrow--' ~ variant if variant }}" aria-hidden="true">{{ icon('arrow-ur') }}</span>
+{%- endmacro %}
+
+{#- Coloured circle with an icon. color: coral | sun | sky | mint | lilac | sand (any CSS colour token name) -#}
+{% macro ico(name, color='coral', sm=false) -%}
+<span class="ico{{ ' ico--sm' if sm }}" style="--c:var(--{{ color }})" aria-hidden="true">{{ icon(name, sm=sm) }}</span>
+{%- endmacro %}
+
+{#- Underlined text link with an arrow glued to the last word: ui.text_link('/faq/', 'Все вопросы') -#}
+{% macro text_link(url, label) -%}
+{%- set words = label.rsplit(' ', 1) -%}
+<a class="text-link" href="{{ url }}">{% if words|length > 1 %}{{ words[0]|typo }} {% endif %}<span class="nw">{{ words[-1]|typo }} {{ icon('arrow', sm=true) }}</span></a>
+{%- endmacro %}
+
+{#- Image with width/height read from the file: ui.img('/assets/img/x.jpg', 'Описание').
+    loading: 'lazy' | 'eager'; priority=true adds fetchpriority="high" (first screen only). -#}
+{% macro img(src, alt, cls='', loading='lazy', priority=false, w=none, h=none) -%}
+{%- set size = imgsize(src) or [w, h] -%}
+<img{% if cls %} class="{{ cls }}"{% endif %} src="{{ src }}" alt="{{ alt|typo }}" width="{{ w or size[0] }}" height="{{ h or size[1] }}"{% if priority %} fetchpriority="high"{% elif loading == 'lazy' %} loading="lazy"{% endif %} decoding="async">
+{%- endmacro %}
+
+{#- Round studio face of a breed (breed = item of breeds.json). size via CSS on .face -#}
+{% macro face(b, alt='') -%}
+<span class="face {{ b.tone_class }}"><img src="{{ b.studio.src }}" alt="{{ alt }}" width="{{ b.studio.w }}" height="{{ b.studio.h }}" loading="lazy" decoding="async"></span>
+{%- endmacro %}
+
+{#- Breadcrumbs. items: [["Главная", "/"], ["Щенки", "/shchenki/"], ["Пломбир", none]] — last item is the current page -#}
+{% macro breadcrumbs(items) -%}
+<nav class="crumbs container" aria-label="Хлебные крошки">
+  <ol class="crumbs__list">
+    {% for label, url in items %}
+    <li class="crumbs__item">{% if url and not loop.last %}<a href="{{ url }}">{{ label|typo }}</a>{% else %}<span aria-current="page">{{ label|typo }}</span>{% endif %}</li>
+    {% endfor %}
+  </ol>
+</nav>
+{%- endmacro %}
+
+{#- Section head: H2 (+ optional one-line lead) on the left, optional link on the right, caller() for extra buttons.
+    ui.section_head('Щенки в наличии', id='pups-title', link={'url': '/shchenki/', 'label': 'Весь каталог'}) -#}
+{% macro section_head(title, id=none, link=none, lead=none) -%}
+<div class="sec-head">
+  {% if lead %}
+  <div class="sec-head__txt">
+    <h2 class="h2"{% if id %} id="{{ id }}"{% endif %}>{{ title|typo }}</h2>
+    <p class="sec-head__lead">{{ lead|typo }}</p>
+  </div>
+  {% else %}
+  <h2 class="h2"{% if id %} id="{{ id }}"{% endif %}>{{ title|typo }}</h2>
+  {% endif %}
+  {{ text_link(link.url, link.label) if link else '' }}
+  {{ caller() if caller is defined else '' }}
+</div>
+{%- endmacro %}
+
+{#- Page hero: pastel tile with H1 and one-line lead. Put first in {% block hero %}.
+    tone:   cream | peach | powder | butter | sage (studio tones) | sun | sky | mint | lilac | coral | sand (tints)
+    breed:  a breeds.json item → tone and studio photo of that breed, blended into the tile
+    photo:  {"src","w","h","alt"} of a studio photo (only studio-*.jpg blend cleanly)
+    faces:  true → four breed faces on the right (general pages)
+    facts:  [{"label": "Вес", "value": "2–5 кг"}] → small fact tiles under the lead
+    chips:  [{"icon": "doc", "label": "Договор"}] → small pills under the lead
+    eyebrow: short label above H1.  caller() → buttons row.
+    Exactly one H1 per page: this macro renders it. -#}
+{% macro page_hero(title, lead=none, tone=none, breed=none, photo=none, faces=false, facts=none, chips=none, eyebrow=none, id='page-title') -%}
+{%- set tone = tone or (breed.tone if breed else 'cream') -%}
+{%- set photo = photo or (breed.studio if breed else none) -%}
+<section class="phero container" aria-labelledby="{{ id }}">
+  <div class="phero__tile tone--{{ tone }}{{ ' phero--photo' if photo }}{{ ' phero--faces' if faces and not photo }}"{% if photo and tone_style(photo.src) %} style="{{ tone_style(photo.src) }}"{% endif %} data-hero-ctas>
+    {% if photo %}
+    <div class="phero__photo"><img src="{{ photo.src }}" alt="{{ photo.alt|typo }}" width="{{ photo.w }}" height="{{ photo.h }}" fetchpriority="high" decoding="async"></div>
+    {% elif faces %}
+    <div class="phero__faces" aria-hidden="true">{% for b in breeds %}<span class="face {{ b.tone_class }}"><img src="{{ b.studio.src }}" alt="" width="{{ b.studio.w }}" height="{{ b.studio.h }}" decoding="async"></span>{% endfor %}</div>
+    {% endif %}
+    <div class="phero__copy">
+      {% if eyebrow %}<p class="eyebrow"><span class="eyebrow__dot" aria-hidden="true"></span>{{ eyebrow|typo }}</p>{% endif %}
+      <h1 class="phero__title" id="{{ id }}">{{ title|typo }}</h1>
+      {% if lead %}<p class="phero__lead">{{ lead|typo }}</p>{% endif %}
+      {% if facts %}
+      <dl class="phero__facts">
+        {% for f in facts %}<div class="phero__fact"><dt>{{ f.label|typo }}</dt><dd>{{ f.value|typo }}</dd></div>{% endfor %}
+      </dl>
+      {% endif %}
+      {% if chips %}
+      <ul class="phero__chips">
+        {% for c in chips %}<li>{% if c.icon %}{{ icon(c.icon, sm=true) }}{% endif %}{{ c.label|typo }}</li>{% endfor %}
+      </ul>
+      {% endif %}
+      {% if caller is defined %}<div class="phero__actions">{{ caller() }}</div>{% endif %}
+    </div>
+  </div>
+</section>
+{%- endmacro %}
+
+{#- Studio photo tile — the homepage breed-tile technique for ANY measured studio photo (color-*, parent-*, studio-*):
+    the tile takes the photo's own measured backdrop (tools/photo-tones.json), the photo stands on the tile floor
+    full width, only its top edge fades. photo: {"src", "alt"} (+ optional "w", "h").
+    tone: fallback tone class if the photo is not measured. url → the tile is a link with a round arrow. badge: small pill. -#}
+{% macro studio_tile(photo, title, line=none, url=none, badge=none, tone='cream') -%}
+{%- set size = imgsize(photo.src) or [photo.w, photo.h] -%}
+{%- set tag = 'a' if url else 'div' -%}
+<{{ tag }} class="stile tone--{{ tone }}"{% if url %} href="{{ url }}"{% endif %} style="--ar:{{ size[0] }}/{{ size[1] }};{{ tone_style(photo.src) }}">
+  <span class="stile__top">
+    <span class="stile__title">{{ title|typo }}</span>
+    {% if line %}<span class="stile__line">{{ line|typo }}</span>{% endif %}
+    {% if badge %}<span class="stile__badge">{{ badge|typo }}</span>{% endif %}
+  </span>
+  {% if url %}{{ round_arrow() }}{% endif %}
+  <span class="stile__photo"><img src="{{ photo.src }}" alt="{{ photo.alt|typo }}" width="{{ size[0] }}" height="{{ size[1] }}" loading="lazy" decoding="async"></span>
+</{{ tag }}>
+{%- endmacro %}
+
+{#- Row of studio tiles (4 per row on desktop, 2 on tablet, ribbon on mobile).
+    items: [{"photo": {...}, "title": "...", "line": "...", "url": "...", "badge": "...", "tone": "peach"}] -#}
+{% macro studio_tiles(items) -%}
+<ul class="stiles stiles--{{ items|length if items|length < 4 else 4 }} scroller">
+  {% for t in items %}
+  <li>{{ studio_tile(t.photo, t.title, line=t.line if t.line is defined else none, url=t.url if t.url is defined else none, badge=t.badge if t.badge is defined else none, tone=t.tone if t.tone is defined else 'cream') }}</li>
+  {% endfor %}
+</ul>
+{%- endmacro %}
+
+{#- Grid of white fact tiles. items: [{"label": "Вес", "value": "2–5 кг", "icon": "ruler", "color": "sun"}] (icon/color optional).
+    cols: max columns on desktop (2–4). tone: optional pastel tone class for the whole grid background. -#}
+{% macro spec_grid(items, cols=4) -%}
+<dl class="specs specs--{{ cols }}">
+  {% for f in items %}
+  <div class="spec">
+    {% if f.icon is defined and f.icon %}{{ ico(f.icon, f.color if f.color is defined else 'sun', sm=true) }}{% endif %}
+    <dt class="spec__label">{{ f.label|typo }}</dt>
+    <dd class="spec__value">{{ f.value|typo }}</dd>
+  </div>
+  {% endfor %}
+</dl>
+{%- endmacro %}
+
+{#- Stat tiles (big number + caption + coloured icon), same look as the homepage trust numbers.
+    items: [{"num": "9 лет", "cap": "растим щенков", "icon": "calendar", "color": "coral"}] — site.stats has the defaults -#}
+{% macro stat_tiles(items, label='Питомник в цифрах') -%}
+<ul class="kpis kpis--{{ items|length }}" aria-label="{{ label }}">
+  {% for s in items %}
+  <li class="stat">{{ ico(s.icon, s.color) }}<b class="stat__num">{{ s.num|typo }}</b><span class="stat__cap">{{ s.cap|typo }}</span></li>
+  {% endfor %}
+</ul>
+{%- endmacro %}
+
+{#- Numbered steps in white tiles (homepage «Как купить»). items: [{"title": "Заявка", "text": "..."}]
+    4 steps fill a row; for 3 or 5 steps pass cols=3 / cols=5 (pages.css). -#}
+{% macro steps(items, cols=none, colors=('coral', 'sun', 'sky', 'mint', 'lilac', 'sand')) -%}
+<ol class="steps{{ ' steps--' ~ cols if cols }}">
+  {% for s in items %}
+  <li class="step"><span class="step__num" style="--c:var(--{{ colors[loop.index0 % colors|length] }})" aria-hidden="true">{{ loop.index }}</span><h3 class="step__title">{{ s.title|typo }}</h3><p class="step__text">{{ s.text|typo }}</p></li>
+  {% endfor %}
+</ol>
+{%- endmacro %}
+
+{#- Vertical timeline. items: [{"when": "День 1", "title": "...", "text": "..."}] ("when" optional) -#}
+{% macro timeline(items, colors=('coral', 'sun', 'sky', 'mint', 'lilac', 'sand')) -%}
+<ol class="tline">
+  {% for s in items %}
+  <li class="tline__item">
+    <span class="tline__dot" style="--c:var(--{{ colors[loop.index0 % colors|length] }})" aria-hidden="true">{{ loop.index }}</span>
+    <div class="tline__body">
+      {% if s.when is defined and s.when %}<p class="tline__when">{{ s.when|typo }}</p>{% endif %}
+      <h3 class="tline__title">{{ s.title|typo }}</h3>
+      {% if s.text is defined and s.text %}<p class="tline__text">{{ s.text|typo }}</p>{% endif %}
+    </div>
+  </li>
+  {% endfor %}
+</ol>
+{%- endmacro %}
+
+{#- Related links tiles. items: [{"url": "/dostavka/", "title": "Доставка", "line": "По Москве и в 60+ городов",
+    "icon": "car", "color": "mint"}] — or "breed": breeds.json item (shows its face), or "image": "/assets/img/x.jpg".
+    style: 'white' (white tiles, coloured icon) | 'color' (whole tile in its colour, like homepage «С чем поможем») -#}
+{% macro link_tiles(items, style='white') -%}
+<ul class="ltiles ltiles--{{ items|length if items|length <= 4 else 4 }}">
+  {% for t in items %}
+  <li>
+    <a class="ltile ltile--{{ style }}" href="{{ t.url }}"{% if style == 'color' %} style="--bg:var(--{{ t.color if t.color is defined else 'sand' }})"{% endif %}>
+      {% if t.breed is defined and t.breed %}{{ face(t.breed) }}
+      {% elif t.image is defined and t.image %}<span class="ltile__img">{{ img(t.image, '') }}</span>
+      {% elif t.icon is defined and t.icon %}{{ ico(t.icon, t.color if t.color is defined else 'sun') }}{% endif %}
+      <span class="ltile__txt"><span class="ltile__title">{{ t.title|typo }}</span>{% if t.line is defined and t.line %}<span class="ltile__line">{{ t.line|typo }}</span>{% endif %}</span>
+      {{ round_arrow() }}
+    </a>
+  </li>
+  {% endfor %}
+</ul>
+{%- endmacro %}
+
+{#- CTA band: pastel tile with a short title, one line and a button. button: 'modal' (opens «Узнать цену»)
+    or {"url": "/shchenki/", "label": "Смотреть щенков"}. faces=true shows the four breed faces. -#}
+{% macro cta_band(title, line=none, button='modal', label='Узнать цену', tone='lilac', faces=true, id=none) -%}
+<div class="cta-band tone--{{ tone }}"{% if id %} id="{{ id }}"{% endif %}>
+  <div class="cta-band__txt">
+    <h2 class="cta-band__title">{{ title|typo }}</h2>
+    {% if line %}<p class="cta-band__line">{{ line|typo }}</p>{% endif %}
+  </div>
+  {% if faces %}<span class="cta-band__faces" aria-hidden="true">{% for b in breeds %}{{ face(b) }}{% endfor %}</span>{% endif %}
+  <div class="cta-band__actions">
+    {% if button == 'modal' %}<button class="btn btn--ink btn--lg" type="button" data-open-modal>{{ label }}</button>
+    {% else %}<a class="btn btn--ink btn--lg" href="{{ button.url }}">{{ button.label|typo }} {{ icon('arrow') }}</a>{% endif %}
+    {% if caller is defined %}{{ caller() }}{% endif %}
+  </div>
+</div>
+{%- endmacro %}
+
+{#- Key facts box for articles and hubs. items: [{"label": "Вес", "value": "2–5 кг"}] -#}
+{% macro keyfacts(items, title='Коротко') -%}
+<aside class="keyfacts" aria-label="{{ title }}">
+  <p class="keyfacts__title">{{ ico('sparkle', 'sun', sm=true) }}{{ title|typo }}</p>
+  <dl class="keyfacts__list">
+    {% for f in items %}<div><dt>{{ f.label|typo }}</dt><dd>{{ f.value|typo }}</dd></div>{% endfor %}
+  </dl>
+</aside>
+{%- endmacro %}
+
+{#- Callout inside prose: {% call ui.callout('info', 'Важно') %}<p>Текст</p>{% endcall %}
+    kind: info (sky) | warn (sun) | ok (mint) | love (coral) -#}
+{% macro callout(kind='info', title=none) -%}
+{%- set map = {'info': ('info', 'sky'), 'warn': ('alert', 'sun'), 'ok': ('check', 'mint'), 'love': ('heart', 'coral')} -%}
+<div class="callout callout--{{ kind }}">
+  {{ ico(map[kind][0], map[kind][1], sm=true) }}
+  <div class="callout__body">
+    {% if title %}<p class="callout__title">{{ title|typo }}</p>{% endif %}
+    {{ caller() }}
+  </div>
+</div>
+{%- endmacro %}
+
+{#- Table of contents for long articles. items: [["kharakter", "Характер"], ["ukhod", "Уход"]] (anchor id, label) -#}
+{% macro toc(items, title='Содержание') -%}
+<nav class="toc" aria-label="{{ title }}">
+  <p class="toc__title">{{ title }}</p>
+  <ol class="toc__list">
+    {% for anchor, label in items %}<li><a href="#{{ anchor }}">{{ label|typo }}</a></li>{% endfor %}
+  </ol>
+</nav>
+{%- endmacro %}
+
+{#- Photo gallery. photos: [{"src": "/assets/img/x.jpg", "alt": "...", "caption": "..."}] (caption optional).
+    The first photo is large on desktop. -#}
+{% macro gallery(photos, label='Фото') -%}
+<ul class="gallery gallery--{{ photos|length if photos|length <= 5 else 5 }} scroller" aria-label="{{ label }}">
+  {% for p in photos %}
+  <li class="gallery__item">
+    <figure>
+      {{ img(p.src, p.alt) }}
+      {% if p.caption is defined and p.caption %}<figcaption>{{ p.caption|typo }}</figcaption>{% endif %}
+    </figure>
+  </li>
+  {% endfor %}
+</ul>
+{%- endmacro %}
+
+{#- Comparison table. cols: ["Мальтипу", "Той-пудель"] or breeds.json items (shows faces);
+    rows: [["Вес", "2–5 кг", "2–4 кг"], ...]. Scrolls inside its tile on narrow screens, first column sticky. -#}
+{% macro cmp_table(cols, rows, caption=none) -%}
+<div class="cmp{{ ' cmp--wide' if cols|length > 2 }}" role="region" aria-label="{{ caption or 'Сравнение' }}" tabindex="0">
+  <table class="cmp__table">
+    {% if caption %}<caption class="sr-only">{{ caption }}</caption>{% endif %}
+    <thead>
+      <tr>
+        <td></td>
+        {% for c in cols %}
+        <th scope="col">{% if c is mapping %}<span class="cmp__head">{{ face(c) }}<span>{{ c.name|typo }}</span></span>{% else %}{{ c|typo }}{% endif %}</th>
+        {% endfor %}
+      </tr>
+    </thead>
+    <tbody>
+      {% for r in rows %}
+      <tr>
+        <th scope="row">{{ r[0]|typo }}</th>
+        {% for v in r[1:] %}<td>{{ v|typo }}</td>{% endfor %}
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{%- endmacro %}
+
+{#- Small pills with a check icon (documents, badges). items: ["Метрика РКФ", "Чип"] -#}
+{% macro badges(items) -%}
+<ul class="badges">
+  {% for b in items %}<li>{{ icon('check', sm=true) }}{{ b|typo }}</li>{% endfor %}
+</ul>
+{%- endmacro %}
+
+{#- Empty state tile. caller() → extra buttons. -#}
+{% macro empty_state(title, text=none, button='modal', label='Оставить заявку', attrs='') -%}
+<div class="empty" {{ attrs|safe }}>
+  <span class="empty__faces" aria-hidden="true">{% for b in breeds %}{{ face(b) }}{% endfor %}</span>
+  <p class="empty__title">{{ title|typo }}</p>
+  {% if text %}<p class="empty__text">{{ text|typo }}</p>{% endif %}
+  <div class="empty__actions">
+    {% if button == 'modal' %}<button class="btn btn--ink" type="button" data-open-modal>{{ label }}</button>
+    {% elif button %}<a class="btn btn--ink" href="{{ button.url }}">{{ button.label|typo }}</a>{% endif %}
+    {% if caller is defined %}{{ caller() }}{% endif %}
+  </div>
+</div>
+{%- endmacro %}

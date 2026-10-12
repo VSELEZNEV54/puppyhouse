@@ -1,0 +1,502 @@
+[
+  {
+    "slug": "maltipu",
+    "key": "maltipu",
+    "name": "Мальтипу",
+    "name_gen": "мальтипу",
+    "name_plural": "мальтипу",
+    "name_plural_gen": "мальтипу",
+    "name_short": "Мальтипу",
+    "tone": "peach",
+    "nav_line": "Компаньон размером с кошку",
+    "tile_line": "Компаньон размером с кошку",
+    "description": "Кудрявый компаньон размером с кошку. Почти не линяет и ходит за вами из комнаты в комнату.",
+    "facts": [
+      {
+        "key": "weight",
+        "label": "Вес",
+        "value": "2–5 кг, стандарт до 7 кг"
+      },
+      {
+        "key": "height",
+        "label": "Рост",
+        "value": "20–35 см в холке"
+      },
+      {
+        "key": "coat",
+        "label": "Шерсть",
+        "value": "мягкая, почти не линяет"
+      },
+      {
+        "key": "life",
+        "label": "Живут",
+        "value": "12–15 лет"
+      }
+    ],
+    "compare": {
+      "size": "Маленький, 20–35 см",
+      "weight": "2–5 кг, стандарт до 7 кг",
+      "coat": "Мягкая, почти не линяет",
+      "activity": "Средняя: игры и прогулки",
+      "kids": "Да, с бережными детьми",
+      "flat": "Да"
+    },
+    "rkf": false,
+    "docs": "Договор, ветпаспорт и копии родословных родителей. Мальтипу — гибрид, РКФ его не регистрирует.",
+    "studio": {
+      "src": "/assets/img/studio-maltipu-peach.jpg",
+      "w": 1024,
+      "h": 1024,
+      "alt": "Кремовый щенок мальтипу на персиковом фоне"
+    },
+    "mood": {
+      "src": "/assets/img/breed-maltipu.jpg",
+      "w": 928,
+      "h": 1152,
+      "alt": "Щенок мальтипу на коньячном кожаном кресле"
+    },
+    "adult": {
+      "src": "/assets/img/parent-maltipu.jpg",
+      "alt": "Взрослый абрикосовый мальтипу на персиковом фоне"
+    },
+    "urls": {
+      "hub": "/maltipu/",
+      "price": "/maltipu/cena/",
+      "varieties": "/maltipu/vidy-i-okrasy/"
+    },
+    "varieties": {
+      "_note": "черновик для страницы «Виды и окрасы» — сверить с питомником",
+      "items": [
+        {
+          "slug": "f1",
+          "name": "F1",
+          "line": "Мальтийская болонка × той- или миниатюрный пудель"
+        },
+        {
+          "slug": "f1b",
+          "name": "F1b",
+          "line": "Мальтипу F1 × пудель: шерсть ещё кудрявее"
+        },
+        {
+          "slug": "f2",
+          "name": "F2",
+          "line": "Мальтипу × мальтипу: внешность менее предсказуема"
+        },
+        {
+          "slug": "mini",
+          "name": "Мини",
+          "line": "Взрослый вес 2–5 кг"
+        },
+        {
+          "slug": "standard",
+          "name": "Стандарт",
+          "line": "Взрослый вес до 7 кг"
+        }
+      ]
+    },
+    "colours": {
+      "_note": "черновик — сверить с питомником; photo — студийный кадр этого окраса (фон замерен в tools/photo-tones.json)",
+      "items": [
+        {
+          "name": "кремовый",
+          "photo": {
+            "src": "/assets/img/studio-maltipu-peach.jpg",
+            "alt": "Кремовый щенок мальтипу на персиковом фоне"
+          }
+        },
+        {
+          "name": "рыжий (абрикос)",
+          "photo": {
+            "src": "/assets/img/color-maltipu-red.jpg",
+            "alt": "Рыжий щенок мальтипу на персиковом фоне"
+          }
+        },
+        {
+          "name": "шоколадный",
+          "photo": {
+            "src": "/assets/img/color-maltipu-chocolate.jpg",
+            "alt": "Шоколадный щенок мальтипу на персиковом фоне"
+          }
+        },
+        {
+          "name": "партиколор",
+          "photo": {
+            "src": "/assets/img/color-maltipu-parti.jpg",
+            "alt": "Щенок мальтипу партиколор — белый с чёрными пятнами"
+          }
+        },
+        {
+          "name": "белый",
+          "photo": null
+        },
+        {
+          "name": "чёрный",
+          "photo": null
+        }
+      ]
+    }
+  },
+  {
+    "slug": "francuzskij-buldog",
+    "key": "buldog",
+    "name": "Французский бульдог",
+    "name_gen": "французского бульдога",
+    "name_plural": "французские бульдоги",
+    "name_plural_gen": "французских бульдогов",
+    "name_short": "Французы",
+    "tone": "powder",
+    "nav_line": "Спокойный городской друг",
+    "tile_line": "Спокойный друг для квартиры",
+    "description": "Спокойный городской друг с ушами-локаторами. Любит диван, неспешные прогулки и вашу компанию.",
+    "facts": [
+      {
+        "key": "weight",
+        "label": "Вес",
+        "value": "8–14 кг"
+      },
+      {
+        "key": "height",
+        "label": "Рост",
+        "value": "24–35 см в холке"
+      },
+      {
+        "key": "coat",
+        "label": "Шерсть",
+        "value": "короткая, линяет умеренно"
+      },
+      {
+        "key": "life",
+        "label": "Живут",
+        "value": "10–12 лет"
+      }
+    ],
+    "compare": {
+      "size": "Небольшой, 24–35 см",
+      "weight": "8–14 кг",
+      "coat": "Короткая, линяет умеренно",
+      "activity": "Невысокая: спокойные прогулки",
+      "kids": "Да, терпелив и устойчив",
+      "flat": "Да, но беречь от жары"
+    },
+    "rkf": true,
+    "docs": "Договор, ветпаспорт и метрика РКФ — позже её меняют на родословную.",
+    "studio": {
+      "src": "/assets/img/studio-buldog-blue.jpg",
+      "w": 1024,
+      "h": 1024,
+      "alt": "Палевый щенок французского бульдога на голубом фоне"
+    },
+    "mood": {
+      "src": "/assets/img/breed-francuzskij-buldog.jpg",
+      "w": 928,
+      "h": 1152,
+      "alt": "Голубой французский бульдог на тёмной скамье"
+    },
+    "adult": {
+      "src": "/assets/img/parent-buldog.jpg",
+      "alt": "Взрослый палевый французский бульдог на голубом фоне"
+    },
+    "urls": {
+      "hub": "/francuzskij-buldog/",
+      "price": "/francuzskij-buldog/cena/",
+      "varieties": "/francuzskij-buldog/vidy-i-okrasy/"
+    },
+    "varieties": {
+      "_note": "черновик — сверить с питомником; «мини» и «флаффи» не признаны стандартом FCI",
+      "items": []
+    },
+    "colours": {
+      "_note": "черновик — standard: признан стандартом FCI/РКФ; остальные окрасы нестандартные, писать об этом честно",
+      "items": [
+        {
+          "name": "палевый",
+          "standard": true,
+          "photo": {
+            "src": "/assets/img/studio-buldog-blue.jpg",
+            "alt": "Палевый щенок французского бульдога на голубом фоне"
+          }
+        },
+        {
+          "name": "тигровый",
+          "standard": true,
+          "photo": {
+            "src": "/assets/img/color-buldog-brindle.jpg",
+            "alt": "Тигровый щенок французского бульдога на голубом фоне"
+          }
+        },
+        {
+          "name": "пегий (белый с пятнами)",
+          "standard": true,
+          "photo": {
+            "src": "/assets/img/color-buldog-pied.jpg",
+            "alt": "Пегий щенок французского бульдога на голубом фоне"
+          }
+        },
+        {
+          "name": "голубой",
+          "standard": false,
+          "photo": {
+            "src": "/assets/img/color-buldog-blue.jpg",
+            "alt": "Голубой щенок французского бульдога на голубом фоне"
+          }
+        },
+        {
+          "name": "кремовый",
+          "standard": false,
+          "photo": null
+        },
+        {
+          "name": "шоколадный",
+          "standard": false,
+          "photo": null
+        },
+        {
+          "name": "мраморный (мерль)",
+          "standard": false,
+          "photo": null
+        }
+      ]
+    }
+  },
+  {
+    "slug": "toj-pudel",
+    "key": "pudel",
+    "name": "Той-пудель",
+    "name_gen": "той-пуделя",
+    "name_plural": "той-пудели",
+    "name_plural_gen": "той-пуделей",
+    "name_short": "Той-пудели",
+    "tone": "butter",
+    "nav_line": "Маленький и очень умный",
+    "tile_line": "Умный кроха, почти не линяет",
+    "description": "Маленький пудель с умом большой собаки. Быстро учится, а кудрявая шерсть практически не линяет.",
+    "facts": [
+      {
+        "key": "weight",
+        "label": "Вес",
+        "value": "2–4 кг"
+      },
+      {
+        "key": "height",
+        "label": "Рост",
+        "value": "до 28 см в холке"
+      },
+      {
+        "key": "coat",
+        "label": "Шерсть",
+        "value": "кудрявая, практически не линяет"
+      },
+      {
+        "key": "life",
+        "label": "Живут",
+        "value": "14–16 лет"
+      }
+    ],
+    "compare": {
+      "size": "Миниатюрный, до 28 см",
+      "weight": "2–4 кг",
+      "coat": "Кудрявая, практически не линяет",
+      "activity": "Средняя: любит учиться",
+      "kids": "Лучше со школьниками",
+      "flat": "Да"
+    },
+    "rkf": true,
+    "docs": "Договор, ветпаспорт и метрика РКФ — позже её меняют на родословную.",
+    "studio": {
+      "src": "/assets/img/studio-pudel-yellow.jpg",
+      "w": 1024,
+      "h": 1024,
+      "alt": "Абрикосовый щенок той-пуделя на жёлтом фоне"
+    },
+    "mood": {
+      "src": "/assets/img/breed-toj-pudel.jpg",
+      "w": 928,
+      "h": 1152,
+      "alt": "Рыжий той-пудель на оливковом бархате"
+    },
+    "adult": {
+      "src": "/assets/img/parent-pudel.jpg",
+      "alt": "Взрослый рыжий той-пудель на жёлтом фоне"
+    },
+    "urls": {
+      "hub": "/toj-pudel/",
+      "price": "/toj-pudel/cena/",
+      "varieties": "/toj-pudel/vidy-i-okrasy/"
+    },
+    "varieties": {
+      "_note": "черновик — по стандарту FCI: той до 28 см, миниатюрный 28–35 см",
+      "items": [
+        {
+          "slug": "toj",
+          "name": "Той",
+          "line": "До 28 см в холке"
+        },
+        {
+          "slug": "mini",
+          "name": "Миниатюрный",
+          "line": "28–35 см в холке"
+        }
+      ]
+    },
+    "colours": {
+      "_note": "черновик — окрасы пуделя по стандарту FCI",
+      "items": [
+        {
+          "name": "абрикосовый",
+          "photo": {
+            "src": "/assets/img/studio-pudel-yellow.jpg",
+            "alt": "Абрикосовый щенок той-пуделя на жёлтом фоне"
+          }
+        },
+        {
+          "name": "чёрный",
+          "photo": {
+            "src": "/assets/img/color-pudel-black.jpg",
+            "alt": "Чёрный щенок той-пуделя на жёлтом фоне"
+          }
+        },
+        {
+          "name": "белый",
+          "photo": {
+            "src": "/assets/img/color-pudel-white.jpg",
+            "alt": "Белый щенок той-пуделя на жёлтом фоне"
+          }
+        },
+        {
+          "name": "коричневый (шоколадный)",
+          "photo": {
+            "src": "/assets/img/color-pudel-chocolate.jpg",
+            "alt": "Шоколадный щенок той-пуделя на жёлтом фоне"
+          }
+        },
+        {
+          "name": "рыжий",
+          "photo": null
+        },
+        {
+          "name": "серый",
+          "photo": null
+        }
+      ]
+    }
+  },
+  {
+    "slug": "border-kolli",
+    "key": "kolli",
+    "name": "Бордер-колли",
+    "name_gen": "бордер-колли",
+    "name_plural": "бордер-колли",
+    "name_plural_gen": "бордер-колли",
+    "name_short": "Бордер-колли",
+    "tone": "sage",
+    "nav_line": "Для активной жизни и спорта",
+    "tile_line": "Для активной жизни и спорта",
+    "description": "Пастушья собака с острым умом. Для тех, кто готов каждый день бегать, гулять в лесу и учить новые команды.",
+    "facts": [
+      {
+        "key": "weight",
+        "label": "Вес",
+        "value": "14–22 кг"
+      },
+      {
+        "key": "height",
+        "label": "Рост",
+        "value": "46–56 см в холке"
+      },
+      {
+        "key": "coat",
+        "label": "Шерсть",
+        "value": "с подшёрстком, линяет заметно"
+      },
+      {
+        "key": "life",
+        "label": "Живут",
+        "value": "12–15 лет"
+      }
+    ],
+    "compare": {
+      "size": "Средний, 46–56 см",
+      "weight": "14–22 кг",
+      "coat": "С подшёрстком, линяет заметно",
+      "activity": "Очень высокая: 2+ часа в день",
+      "kids": "Для активных детей постарше",
+      "flat": "Только с ежедневным спортом"
+    },
+    "rkf": true,
+    "docs": "Договор, ветпаспорт и метрика РКФ — позже её меняют на родословную.",
+    "studio": {
+      "src": "/assets/img/studio-kolli-green.jpg",
+      "w": 1024,
+      "h": 1024,
+      "alt": "Щенок бордер-колли голубой мрамор на мятном фоне"
+    },
+    "mood": {
+      "src": "/assets/img/breed-border-kolli.jpg",
+      "w": 928,
+      "h": 1152,
+      "alt": "Чёрно-белый бордер-колли в траве на закате"
+    },
+    "adult": {
+      "src": "/assets/img/parent-kolli.jpg",
+      "alt": "Взрослый чёрно-белый бордер-колли на мятном фоне"
+    },
+    "urls": {
+      "hub": "/border-kolli/",
+      "price": "/border-kolli/cena/",
+      "varieties": "/border-kolli/vidy-i-okrasy/"
+    },
+    "varieties": {
+      "_note": "черновик — «мини» бордер-колли стандартом не признан",
+      "items": [
+        {
+          "slug": "short",
+          "name": "Гладкошёрстный",
+          "line": "Короткая плотная шерсть"
+        },
+        {
+          "slug": "long",
+          "name": "Длинношёрстный",
+          "line": "Умеренно длинная шерсть с «гривой»"
+        }
+      ]
+    },
+    "colours": {
+      "_note": "черновик — стандарт допускает разные окрасы, белый не должен преобладать",
+      "items": [
+        {
+          "name": "голубой мрамор",
+          "photo": {
+            "src": "/assets/img/studio-kolli-green.jpg",
+            "alt": "Щенок бордер-колли голубой мрамор на мятном фоне"
+          }
+        },
+        {
+          "name": "красно-белый",
+          "photo": {
+            "src": "/assets/img/color-kolli-red.jpg",
+            "alt": "Красно-белый щенок бордер-колли на мятном фоне"
+          }
+        },
+        {
+          "name": "трёхцветный",
+          "photo": {
+            "src": "/assets/img/color-kolli-tricolor.jpg",
+            "alt": "Трёхцветный щенок бордер-колли на мятном фоне"
+          }
+        },
+        {
+          "name": "чёрно-белый",
+          "photo": null
+        },
+        {
+          "name": "красный мрамор",
+          "photo": null
+        },
+        {
+          "name": "лиловый",
+          "photo": null
+        }
+      ]
+    }
+  }
+]

@@ -1,0 +1,352 @@
+[
+  {
+    "slug": "maltipu-f1-krem-2026-08",
+    "name": "Пломбир",
+    "breed": "maltipu",
+    "generation": "F1",
+    "variety": null,
+    "sex": "male",
+    "colour": "кремовый",
+    "birth_date": "2026-08-03",
+    "age_weeks": 10,
+    "status": "available",
+    "badges": ["Родители с РКФ", "Прививки по возрасту", "Ветпаспорт"],
+    "weight_forecast": "около [4–5] кг",
+    "photos": [
+      { "src": "/assets/img/studio-maltipu-peach.jpg", "w": 1024, "h": 1024, "kind": "studio", "class": null, "backdrop": "token", "alt": "Щенок мальтипу F1 Пломбир, кремовый мальчик" }
+    ],
+    "parents": { "mother": { "name": "[кличка мамы]", "breed": "[мальтийская болонка]" }, "father": { "name": "[кличка папы]", "breed": "[той-пудель]" } },
+    "video": null
+  },
+  {
+    "slug": "maltipu-f1b-mini-shokolad-2026-07",
+    "name": "Мокка",
+    "breed": "maltipu",
+    "generation": "F1b мини",
+    "variety": null,
+    "sex": "female",
+    "colour": "шоколадный",
+    "birth_date": "2026-07-20",
+    "age_weeks": 12,
+    "status": "available",
+    "badges": ["Родители с РКФ", "Прививки по возрасту", "Чип"],
+    "weight_forecast": "около [3–4] кг",
+    "photos": [
+      { "src": "/assets/img/pup-maltipu-chocolate.jpg", "w": 928, "h": 1152, "kind": "life", "class": "pup__img--mokka", "alt": "Шоколадный щенок мальтипу Мокка на вязаном пледе" }
+    ],
+    "parents": { "mother": { "name": "[кличка мамы]", "breed": "[мальтипу F1]" }, "father": { "name": "[кличка папы]", "breed": "[той-пудель]" } },
+    "video": null
+  },
+  {
+    "slug": "francuzskij-buldog-palevyj-2026-07",
+    "name": "Бруно",
+    "breed": "francuzskij-buldog",
+    "generation": null,
+    "variety": null,
+    "sex": "male",
+    "colour": "палевый",
+    "birth_date": "2026-07-13",
+    "age_weeks": 13,
+    "status": "available",
+    "badges": ["Метрика РКФ", "Прививки по возрасту", "Чип"],
+    "weight_forecast": "около [11–13] кг",
+    "photos": [
+      { "src": "/assets/img/studio-buldog-blue.jpg", "w": 1024, "h": 1024, "kind": "studio", "class": null, "backdrop": "token", "alt": "Палевый щенок французского бульдога Бруно на голубом фоне" }
+    ],
+    "parents": { "mother": { "name": "[кличка мамы]", "breed": "французский бульдог" }, "father": { "name": "[кличка папы]", "breed": "французский бульдог" } },
+    "video": null
+  },
+  {
+    "slug": "francuzskij-buldog-krem-2026-07",
+    "name": "Луиза",
+    "breed": "francuzskij-buldog",
+    "generation": null,
+    "variety": null,
+    "sex": "female",
+    "colour": "кремовый",
+    "birth_date": "2026-07-27",
+    "age_weeks": 11,
+    "status": "reserved",
+    "badges": ["Метрика РКФ", "Прививки по возрасту", "Ветпаспорт"],
+    "weight_forecast": "около [9–11] кг",
+    "photos": [
+      { "src": "/assets/img/pup-buldog-cream.jpg", "w": 928, "h": 1152, "kind": "life", "class": "pup__img--luiza", "alt": "Кремовый щенок французского бульдога Луиза в светлой квартире" }
+    ],
+    "parents": { "mother": { "name": "[кличка мамы]", "breed": "французский бульдог" }, "father": { "name": "[кличка папы]", "breed": "французский бульдог" } },
+    "video": null
+  },
+  {
+    "slug": "toj-pudel-abrikos-2026-07",
+    "name": "Марго",
+    "breed": "toj-pudel",
+    "generation": null,
+    "variety": "той (до 28 см)",
+    "sex": "female",
+    "colour": "абрикосовый",
+    "birth_date": "2026-07-06",
+    "age_weeks": 14,
+    "status": "available",
+    "badges": ["Метрика РКФ", "Прививки по возрасту", "Чип"],
+    "weight_forecast": "около [2,5–3] кг",
+    "photos": [
+      { "src": "/assets/img/studio-pudel-yellow.jpg", "w": 1024, "h": 1024, "kind": "studio", "class": null, "backdrop": "token", "alt": "Абрикосовый щенок той-пуделя Марго на жёлтом фоне" }
+    ],
+    "parents": { "mother": { "name": "[кличка мамы]", "breed": "той-пудель" }, "father": { "name": "[кличка папы]", "breed": "той-пудель" } },
+    "video": null
+  },
+  {
+    "slug": "toj-pudel-ryzhij-2026-08",
+    "name": "Чарли",
+    "breed": "toj-pudel",
+    "generation": null,
+    "variety": "той (до 28 см)",
+    "sex": "male",
+    "colour": "рыжий (красный)",
+    "birth_date": "2026-08-10",
+    "age_weeks": 9,
+    "status": "soon",
+    "badges": ["Метрика РКФ", "Прививки по возрасту"],
+    "weight_forecast": "около [3–4] кг",
+    "photos": [
+      { "src": "/assets/img/breed-toj-pudel.jpg", "w": 928, "h": 1152, "kind": "life", "class": "pup__img--charli", "alt": "Рыжий щенок той-пуделя Чарли на оливковом бархате" }
+    ],
+    "parents": { "mother": { "name": "[кличка мамы]", "breed": "той-пудель" }, "father": { "name": "[кличка папы]", "breed": "той-пудель" } },
+    "video": null
+  },
+  {
+    "slug": "border-kolli-goluboj-mramor-2026-07",
+    "name": "Скай",
+    "breed": "border-kolli",
+    "generation": null,
+    "variety": null,
+    "sex": "male",
+    "colour": "голубой мрамор",
+    "birth_date": "2026-07-22",
+    "age_weeks": 11,
+    "status": "available",
+    "badges": ["Метрика РКФ", "Прививки по возрасту", "Чип"],
+    "weight_forecast": "около [18–20] кг",
+    "photos": [
+      { "src": "/assets/img/studio-kolli-green.jpg", "w": 1024, "h": 1024, "kind": "studio", "class": null, "backdrop": "token", "alt": "Щенок бордер-колли Скай, окрас голубой мрамор, на мятном фоне" }
+    ],
+    "parents": { "mother": { "name": "[кличка мамы]", "breed": "бордер-колли" }, "father": { "name": "[кличка папы]", "breed": "бордер-колли" } },
+    "video": null
+  },
+  {
+    "slug": "border-kolli-cherno-belyj-2026-07",
+    "name": "Тесса",
+    "breed": "border-kolli",
+    "generation": null,
+    "variety": null,
+    "sex": "female",
+    "colour": "чёрно-белый",
+    "birth_date": "2026-07-29",
+    "age_weeks": 10,
+    "status": "reserved",
+    "badges": ["Метрика РКФ", "Прививки по возрасту", "Чип"],
+    "weight_forecast": "около [14–16] кг",
+    "photos": [
+      { "src": "/assets/img/breed-border-kolli.jpg", "w": 928, "h": 1152, "kind": "life", "class": "pup__img--tessa", "alt": "Чёрно-белый щенок бордер-колли Тесса в траве на закате" }
+    ],
+    "parents": { "mother": { "name": "[кличка мамы]", "breed": "бордер-колли" }, "father": { "name": "[кличка папы]", "breed": "бордер-колли" } },
+    "video": null
+  },
+  {
+    "slug": "francuzskij-buldog-tigrovyj-2026-07",
+    "name": "Оскар",
+    "breed": "francuzskij-buldog",
+    "generation": null,
+    "variety": null,
+    "sex": "male",
+    "colour": "тигровый",
+    "birth_date": "2026-07-20",
+    "status": "available",
+    "badges": ["Метрика РКФ", "Прививки по возрасту", "Чип"],
+    "weight_forecast": "около [11–13] кг",
+    "photos": [
+      { "src": "/assets/img/color-buldog-brindle.jpg", "w": 1024, "h": 1024, "kind": "studio", "class": null, "alt": "Тигровый щенок французского бульдога Оскар на голубом фоне" }
+    ],
+    "parents": { "mother": { "name": "[кличка мамы]", "breed": "французский бульдог" }, "father": { "name": "[кличка папы]", "breed": "французский бульдог" } },
+    "video": null
+  },
+  {
+    "slug": "toj-pudel-chernyj-2026-07",
+    "name": "Уголёк",
+    "breed": "toj-pudel",
+    "generation": null,
+    "variety": "той (до 28 см)",
+    "sex": "male",
+    "colour": "чёрный",
+    "birth_date": "2026-07-18",
+    "status": "available",
+    "badges": ["Метрика РКФ", "Прививки по возрасту", "Чип"],
+    "weight_forecast": "около [2,5–3] кг",
+    "photos": [
+      { "src": "/assets/img/color-pudel-black.jpg", "w": 1024, "h": 1024, "kind": "studio", "class": null, "alt": "Чёрный щенок той-пуделя Уголёк на жёлтом фоне" }
+    ],
+    "parents": { "mother": { "name": "[кличка мамы]", "breed": "той-пудель" }, "father": { "name": "[кличка папы]", "breed": "той-пудель" } },
+    "video": null
+  },
+  {
+    "slug": "maltipu-f1-ryzhij-2026-07",
+    "name": "Персик",
+    "breed": "maltipu",
+    "generation": "F1",
+    "variety": null,
+    "sex": "male",
+    "colour": "рыжий (абрикос)",
+    "birth_date": "2026-07-27",
+    "status": "available",
+    "badges": ["Родители с РКФ", "Прививки по возрасту", "Чип"],
+    "weight_forecast": "около [4–5] кг",
+    "photos": [
+      { "src": "/assets/img/color-maltipu-red.jpg", "w": 1024, "h": 1024, "kind": "studio", "class": null, "alt": "Рыжий щенок мальтипу F1 Персик на персиковом фоне" }
+    ],
+    "parents": { "mother": { "name": "[кличка мамы]", "breed": "[мальтийская болонка]" }, "father": { "name": "[кличка папы]", "breed": "[той-пудель]" } },
+    "video": null
+  },
+  {
+    "slug": "border-kolli-trehcvetnyj-2026-07",
+    "name": "Ральф",
+    "breed": "border-kolli",
+    "generation": null,
+    "variety": null,
+    "sex": "male",
+    "colour": "трёхцветный",
+    "birth_date": "2026-07-25",
+    "status": "available",
+    "badges": ["Метрика РКФ", "Прививки по возрасту", "Чип"],
+    "weight_forecast": "около [18–20] кг",
+    "photos": [
+      { "src": "/assets/img/color-kolli-tricolor.jpg", "w": 1024, "h": 1024, "kind": "studio", "class": null, "alt": "Трёхцветный щенок бордер-колли Ральф на мятном фоне" }
+    ],
+    "parents": { "mother": { "name": "[кличка мамы]", "breed": "бордер-колли" }, "father": { "name": "[кличка папы]", "breed": "бордер-колли" } },
+    "video": null
+  },
+  {
+    "slug": "toj-pudel-belyj-2026-07",
+    "name": "Пушинка",
+    "breed": "toj-pudel",
+    "generation": null,
+    "variety": "той (до 28 см)",
+    "sex": "female",
+    "colour": "белый",
+    "birth_date": "2026-07-30",
+    "status": "available",
+    "badges": ["Метрика РКФ", "Прививки по возрасту", "Ветпаспорт"],
+    "weight_forecast": "около [2–2,5] кг",
+    "photos": [
+      { "src": "/assets/img/color-pudel-white.jpg", "w": 1024, "h": 1024, "kind": "studio", "class": null, "alt": "Белый щенок той-пуделя Пушинка на жёлтом фоне" }
+    ],
+    "parents": { "mother": { "name": "[кличка мамы]", "breed": "той-пудель" }, "father": { "name": "[кличка папы]", "breed": "той-пудель" } },
+    "video": null
+  },
+  {
+    "slug": "maltipu-f1b-parti-2026-07",
+    "name": "Бусинка",
+    "breed": "maltipu",
+    "generation": "F1b",
+    "variety": null,
+    "sex": "female",
+    "colour": "партиколор",
+    "birth_date": "2026-07-15",
+    "status": "available",
+    "badges": ["Родители с РКФ", "Прививки по возрасту", "Ветпаспорт"],
+    "weight_forecast": "около [3–4] кг",
+    "photos": [
+      { "src": "/assets/img/color-maltipu-parti.jpg", "w": 1024, "h": 1024, "kind": "studio", "class": null, "alt": "Щенок мальтипу F1b Бусинка, белая с чёрными пятнами, на персиковом фоне" }
+    ],
+    "parents": { "mother": { "name": "[кличка мамы]", "breed": "[мальтипу F1]" }, "father": { "name": "[кличка папы]", "breed": "[той-пудель]" } },
+    "video": null
+  },
+  {
+    "slug": "maltipu-f1b-mini-krem-2026-08",
+    "name": "Зефир",
+    "breed": "maltipu",
+    "generation": "F1b мини",
+    "variety": null,
+    "sex": "male",
+    "colour": "кремовый",
+    "birth_date": "2026-08-05",
+    "status": "available",
+    "badges": ["Родители с РКФ", "Прививки по возрасту", "Чип"],
+    "weight_forecast": "около [2,5–3,5] кг",
+    "photos": [
+      { "src": "/assets/img/gift-maltipu.jpg", "w": 928, "h": 1152, "kind": "life", "class": null, "alt": "Кремовый щенок мальтипу Зефир в подарочной коробке", "pos": "50% 42%" }
+    ],
+    "parents": { "mother": { "name": "[кличка мамы]", "breed": "[мальтипу F1]" }, "father": { "name": "[кличка папы]", "breed": "[той-пудель]" } },
+    "video": null
+  },
+  {
+    "slug": "francuzskij-buldog-pegij-2026-08",
+    "name": "Белла",
+    "breed": "francuzskij-buldog",
+    "generation": null,
+    "variety": null,
+    "sex": "female",
+    "colour": "пегий (белый с пятнами)",
+    "birth_date": "2026-08-17",
+    "status": "soon",
+    "badges": ["Метрика РКФ", "Прививки по возрасту"],
+    "weight_forecast": "около [9–11] кг",
+    "photos": [
+      { "src": "/assets/img/color-buldog-pied.jpg", "w": 1024, "h": 1024, "kind": "studio", "class": null, "alt": "Пегий щенок французского бульдога Белла на голубом фоне" }
+    ],
+    "parents": { "mother": { "name": "[кличка мамы]", "breed": "французский бульдог" }, "father": { "name": "[кличка папы]", "breed": "французский бульдог" } },
+    "video": null
+  },
+  {
+    "slug": "maltipu-f2-shokolad-2026-08",
+    "name": "Трюфель",
+    "breed": "maltipu",
+    "generation": "F2",
+    "variety": null,
+    "sex": "male",
+    "colour": "шоколадный",
+    "birth_date": "2026-08-24",
+    "status": "soon",
+    "badges": ["Родители с РКФ", "Прививки по возрасту"],
+    "weight_forecast": "около [4–6] кг",
+    "photos": [
+      { "src": "/assets/img/color-maltipu-chocolate.jpg", "w": 1024, "h": 1024, "kind": "studio", "class": null, "alt": "Шоколадный щенок мальтипу F2 Трюфель на персиковом фоне" }
+    ],
+    "parents": { "mother": { "name": "[кличка мамы]", "breed": "[мальтипу F1]" }, "father": { "name": "[кличка папы]", "breed": "[мальтипу F1]" } },
+    "video": null
+  },
+  {
+    "slug": "maltipu-f1-mini-abrikos-2026-07",
+    "name": "Карамель",
+    "breed": "maltipu",
+    "generation": "F1 мини",
+    "variety": null,
+    "sex": "female",
+    "colour": "рыжий (абрикос)",
+    "birth_date": "2026-07-08",
+    "status": "reserved",
+    "badges": ["Родители с РКФ", "Прививки по возрасту", "Чип"],
+    "weight_forecast": "около [3–4] кг",
+    "photos": [
+      { "src": "/assets/img/breed-maltipu.jpg", "w": 928, "h": 1152, "kind": "life", "class": null, "alt": "Абрикосовый щенок мальтипу Карамель на кожаном кресле", "pos": "50% 74%" }
+    ],
+    "parents": { "mother": { "name": "[кличка мамы]", "breed": "[мальтийская болонка]" }, "father": { "name": "[кличка папы]", "breed": "[той-пудель]" } },
+    "video": null
+  },
+  {
+    "slug": "toj-pudel-shokolad-2026-07",
+    "name": "Какао",
+    "breed": "toj-pudel",
+    "generation": null,
+    "variety": "той (до 28 см)",
+    "sex": "male",
+    "colour": "коричневый (шоколадный)",
+    "birth_date": "2026-07-04",
+    "status": "reserved",
+    "badges": ["Метрика РКФ", "Прививки по возрасту", "Чип"],
+    "weight_forecast": "около [2,5–3] кг",
+    "photos": [
+      { "src": "/assets/img/color-pudel-chocolate.jpg", "w": 1024, "h": 1024, "kind": "studio", "class": null, "alt": "Шоколадный щенок той-пуделя Какао на жёлтом фоне" }
+    ],
+    "parents": { "mother": { "name": "[кличка мамы]", "breed": "той-пудель" }, "father": { "name": "[кличка папы]", "breed": "той-пудель" } },
+    "video": null
+  }
+]

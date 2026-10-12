@@ -1,0 +1,63 @@
+{#- Content blocks: FAQ, reviews, SEO text. READ-ONLY for page-group agents.
+    Import:  {% import "macros/blocks.html.j2" as blocks %} -#}
+{% import "macros/ui.html.j2" as ui %}
+{% import "macros/cards.html.j2" as cards %}
+
+{#- FAQ accordion list. items: faq.json items (or any {"q", "a"} dicts; "a" may be Markup with links).
+    short=true uses item.short (homepage wording) when present. prefix makes ids unique if a page has two lists. -#}
+{% macro faq_list(items, prefix='faq', short=false) -%}
+<ul class="faq__list">
+  {% for f in items %}
+  {%- set qa = f.short if short and f.short else f %}
+  <li class="faq__item">
+    <h3 class="faq__q"><button class="faq__btn" type="button" aria-expanded="false" aria-controls="{{ prefix }}-a{{ loop.index }}" id="{{ prefix }}-q{{ loop.index }}">{{ qa.q|typo }}<span class="faq__ico" aria-hidden="true">{{ ui.icon('plus') }}</span></button></h3>
+    <div class="faq__a" id="{{ prefix }}-a{{ loop.index }}"><div><p>{{ qa.a|typo }}</p></div></div>
+  </li>
+  {% endfor %}
+</ul>
+{%- endmacro %}
+
+{#- FAQ section: H2 + link on the left (sticky), accordion on the right (homepage layout). -#}
+{% macro faq_section(items, title='Частые вопросы', id='faq', link={'url': '/faq/', 'label': 'Все вопросы'}, short=false) -%}
+<section class="section container" id="{{ id }}" aria-labelledby="{{ id }}-title">
+  <div class="faq">
+    <div class="faq__aside">
+      <h2 class="h2" id="{{ id }}-title">{{ title|typo }}</h2>
+      {% if link %}{{ ui.text_link(link.url, link.label) }}{% endif %}
+    </div>
+    {{ faq_list(items, prefix=id, short=short)|indent(4) }}
+  </div>
+</section>
+{%- endmacro %}
+
+{#- Reviews section: rating tiles + review cards (ribbon on mobile). reviews: reviews.json items. -#}
+{% macro reviews_section(reviews, title='Отзывы владельцев', id='otzyvy', title_id='reviews-title', link={'url': '/otzyvy/', 'label': 'Все отзывы'}, short=true) -%}
+<section class="section container" id="{{ id }}" aria-labelledby="{{ title_id }}">
+  {{ ui.section_head(title, id=title_id, link=link) }}
+  <div class="reviews-wrap">
+    {{ cards.ratings() }}
+    <ul class="reviews scroller">
+      {% for r in reviews %}
+      {{ cards.review_card(r, short=short) }}
+      {% endfor %}
+    </ul>
+  </div>
+</section>
+{%- endmacro %}
+
+{#- Collapsed SEO text (white tile): title + first paragraph clamped to 2 lines; caller() = the rest, hidden
+    until «Читать полностью». Use h3 + p inside caller. Two blocks on one page need different id and key. -#}
+{% macro seo_block(title, lead, id='o-pitomnike', key='seo') -%}
+<section class="section container" id="{{ id }}" aria-labelledby="{{ key }}-title">
+  <div class="seo">
+    <h2 class="seo__title" id="{{ key }}-title">{{ title|typo }}</h2>
+    <div class="seo__body" data-seo>
+      <p class="seo__lead">{{ lead|typo }}</p>
+      <div class="seo__more" id="{{ key }}-more" hidden>
+        {{ caller() }}
+      </div>
+    </div>
+    <button class="seo__toggle" type="button" aria-expanded="false" aria-controls="{{ key }}-more" data-seo-toggle><span data-seo-label>Читать полностью</span>{{ ui.icon('chevron', sm=true) }}</button>
+  </div>
+</section>
+{%- endmacro %}

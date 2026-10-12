@@ -1,0 +1,190 @@
+{#- Homepage — APPROVED by the client. Its look must not change: compare screenshots with the baseline after any edit.
+    Route: src/routes/home.py. Context: title, description, faq_items, reviews_home, home_puppies.
+    Puppy counts come from puppies.json (all of them = the catalog), the strip shows home_puppies. -#}
+{% extends "base.html.j2" %}
+{% import "macros/ui.html.j2" as ui %}
+{% import "macros/cards.html.j2" as cards %}
+{% import "macros/forms.html.j2" as forms %}
+{% import "macros/blocks.html.j2" as blocks %}
+
+{% block content %}
+    <!-- ================= ПЕРВЫЙ ЭКРАН ================= -->
+    <section class="hero container" id="top" aria-labelledby="hero-title">
+      <div class="hero__main tone--cream">
+        <span class="hero__floor" aria-hidden="true"></span>
+        <div class="hero__copy">
+          <p class="eyebrow"><span class="eyebrow__dot" aria-hidden="true"></span>Питомник щенков · Москва</p>
+          <h1 class="h1" id="hero-title">Купить щенка в&nbsp;Москве&nbsp;— напрямую из&nbsp;питомника</h1>
+          <p class="hero__sub">Мальтипу, французы, <span class="nw">той-пудели</span> и&nbsp;<span class="nw">бордер-колли</span>&nbsp;— с&nbsp;документами и&nbsp;договором</p>
+          <div class="hero__actions" data-hero-ctas>
+            <a class="btn btn--ink btn--lg" href="#shchenki">Смотреть щенков {{ ui.icon('arrow') }}</a>
+            <a class="btn btn--white btn--lg" href="#porody">Подобрать породу</a>
+          </div>
+        </div>
+        <div class="hero__photo">
+          <img src="/assets/img/hero-four-breeds.jpg" alt="Щенки мальтипу, французского бульдога, той-пуделя и&nbsp;бордер-колли сидят в&nbsp;ряд" width="1264" height="848" fetchpriority="high" decoding="async">
+        </div>
+        <p class="sticker"><span class="sticker__ico" aria-hidden="true">{{ ui.icon('home') }}</span><span><b>Растим дома</b><small>не&nbsp;в&nbsp;вольерах</small></span></p>
+      </div>
+
+      <ul class="stats" aria-label="Питомник в цифрах">
+        {% for s in site.stats %}
+        <li class="stat">{{ ui.ico(s.icon, s.color) }}<b class="stat__num">{{ s.num|typo }}</b><span class="stat__cap">{{ s.cap|typo }}</span></li>
+        {% endfor %}
+      </ul>
+    </section>
+
+    <!-- ================= ПОРОДЫ ================= -->
+    <section class="section container" id="porody" aria-labelledby="porody-title">
+      {{ ui.section_head('Четыре породы питомника', id='porody-title') }}
+      {{ cards.breed_tiles() }}
+    </section>
+
+    <!-- ================= ЩЕНКИ В НАЛИЧИИ ================= -->
+    <section class="section container" id="shchenki" aria-labelledby="shchenki-title">
+      {{ ui.section_head('Щенки в наличии', id='shchenki-title', link={'url': '/shchenki/', 'label': 'Весь каталог — ' ~ puppies|length}) }}
+
+      <div class="chips scroller" role="group" aria-label="Фильтр по породе">
+        <button class="chip" type="button" data-filter="all" aria-pressed="true">Все</button>
+        {% for b in breeds %}
+        <button class="chip" type="button" data-filter="{{ b.slug }}" aria-pressed="false"><span class="chip__dot {{ b.tone_class }}" aria-hidden="true"></span>{{ b.name }}</button>
+        {% endfor %}
+      </div>
+      <p class="sr-only" role="status" aria-live="polite" data-pups-status></p>
+
+      <ul class="pups scroller" data-pups>
+        {% for p in home_puppies %}
+        <li class="pups__item" data-breed="{{ p.breed }}">
+          {{ cards.puppy_card(p) }}
+        </li>
+        {% endfor %}
+        <li class="pups__more" data-more hidden>
+          <a class="more-tile" href="/shchenki/">
+            <span class="more-tile__faces" aria-hidden="true">{% for b in breeds %}{{ ui.face(b) }}{% endfor %}</span>
+            <span class="more-tile__txt"><span class="more-tile__num">{{ puppies|length }}</span><span class="more-tile__cap">{{ plural(puppies|length, 'щенок', 'щенка', 'щенков') }} в&nbsp;каталоге</span></span>
+            <span class="more-tile__btn">Весь каталог {{ ui.icon('arrow', sm=true) }}</span>
+          </a>
+        </li>
+      </ul>
+
+      <div class="pups-empty" data-empty hidden>
+        <p>Сейчас щенков этой породы нет в&nbsp;наличии. Оставьте заявку&nbsp;— напишем, когда появится новый помёт.</p>
+        <button class="btn btn--ink" type="button" data-open-modal>Оставить заявку</button>
+      </div>
+    </section>
+
+    <!-- ================= С ЧЕМ ПОМОЖЕМ ================= -->
+    <section class="section container" id="pomozhem" aria-labelledby="help-title">
+      {{ ui.section_head('С чем поможем', id='help-title') }}
+      <ul class="help scroller">
+        <li class="help__cell help__cell--docs">
+          <a class="hcard hcard--icon" href="/dokumenty-i-garantii/" style="--bg:var(--sky)">
+            <span class="hcard__text"><span class="hcard__title">Документы и&nbsp;договор</span><span class="hcard__line">Договор, ветпаспорт и&nbsp;метрика РКФ</span></span>
+            <span class="hcard__badge" aria-hidden="true">{{ ui.icon('doc') }}</span>
+            {{ ui.round_arrow() }}
+          </a>
+        </li>
+        <li class="help__cell help__cell--health">
+          <a class="hcard hcard--wide" href="/dokumenty-i-garantii/" style="--bg:var(--mint)">
+            <span class="hcard__text"><span class="hcard__title">Здоровье и&nbsp;прививки</span><span class="hcard__line">Осмотр врача и&nbsp;прививки по&nbsp;возрасту</span></span>
+            <span class="hcard__photo"><img src="/assets/img/vet-check.jpg" alt="Ветеринар осматривает щенка той-пуделя" width="1264" height="848" loading="lazy" decoding="async"></span>
+            {{ ui.round_arrow() }}
+          </a>
+        </li>
+        <li class="help__cell help__cell--video">
+          <a class="hcard hcard--tall" href="/shchenki/" style="--bg:var(--lilac)">
+            <span class="hcard__text"><span class="hcard__title">Видео до&nbsp;покупки</span><span class="hcard__line">Покажем щенка по&nbsp;видеосвязи</span></span>
+            <span class="hcard__photo"><img class="hcard__img--sofa" src="/assets/img/hero-maltipu-sofa.jpg" alt="Абрикосовый щенок мальтипу на светлом диване" width="928" height="1152" loading="lazy" decoding="async"></span>
+            {{ ui.round_arrow() }}
+          </a>
+        </li>
+        <li class="help__cell help__cell--care">
+          <a class="hcard hcard--wide" href="/faq/" style="--bg:var(--coral)">
+            <span class="hcard__text"><span class="hcard__title">На&nbsp;связи после покупки</span><span class="hcard__line">Корм, прививки, первая стрижка</span></span>
+            <span class="hcard__photo"><img src="/assets/img/family-maltipu.jpg" alt="Девушка обнимает щенка мальтипу" width="1264" height="848" loading="lazy" decoding="async"></span>
+            {{ ui.round_arrow() }}
+          </a>
+        </li>
+        <li class="help__cell help__cell--delivery">
+          <a class="hcard hcard--tall" href="/dostavka/" style="--bg:var(--sand)">
+            <span class="hcard__text"><span class="hcard__title">Доставка по&nbsp;России</span><span class="hcard__line">К&nbsp;двери, с&nbsp;видео в&nbsp;дороге</span></span>
+            <span class="hcard__photo"><img class="hcard__img--car" src="/assets/img/delivery-carrier.jpg" alt="Французский бульдог в&nbsp;переноске на&nbsp;сиденье машины" width="1264" height="848" loading="lazy" decoding="async"></span>
+            {{ ui.round_arrow() }}
+          </a>
+        </li>
+        <li class="help__cell help__cell--pay">
+          <a class="hcard hcard--icon" href="/rassrochka/" style="--bg:var(--sun)">
+            <span class="hcard__text"><span class="hcard__title">Рассрочка и&nbsp;бронь</span><span class="hcard__line">Бронь по&nbsp;договору, остаток частями</span></span>
+            <span class="hcard__badge" aria-hidden="true">{{ ui.icon('wallet') }}</span>
+            {{ ui.round_arrow() }}
+          </a>
+        </li>
+      </ul>
+    </section>
+
+    <!-- ================= КАК КУПИТЬ ================= -->
+    <section class="section container" id="kak-kupit" aria-labelledby="steps-title">
+      {% call ui.section_head('Как купить щенка', id='steps-title') %}{{ forms.price_button() }}{% endcall %}
+      {{ ui.steps([
+        {'title': 'Заявка', 'text': 'Оставьте номер — пришлём цену'},
+        {'title': 'Видеозвонок', 'text': 'Знакомитесь со щенком онлайн'},
+        {'title': 'Бронь', 'text': 'Договор и предоплата — щенок ваш'},
+        {'title': 'Встреча', 'text': 'Забираете сами или привезём'},
+      ]) }}
+    </section>
+
+    <!-- ================= ЕЩЁ ПОЛЕЗНОЕ ================= -->
+    <section class="section container" id="poleznoe" aria-labelledby="more-title">
+      {{ ui.section_head('Ещё полезное', id='more-title') }}
+      <ul class="bento scroller">
+        <li class="bento__cell bento__cell--pick">
+          <a class="ptile ptile--pick" href="/podbor-porody/">
+            <span class="ptile__faces" aria-hidden="true">{% for b in breeds %}{{ ui.face(b) }}{% endfor %}</span>
+            <span class="ptile__cap"><span class="ptile__txt"><span class="ptile__title">Подобрать породу</span><span class="ptile__line">Тест на&nbsp;2&nbsp;минуты</span></span>{{ ui.round_arrow('ink') }}</span>
+          </a>
+        </li>
+        <li class="bento__cell bento__cell--gift">
+          <a class="ptile" href="/shchenok-v-podarok/">
+            <img src="/assets/img/gift-maltipu.jpg" alt="Щенок мальтипу в&nbsp;подарочной коробке среди новогодних огней" width="928" height="1152" loading="lazy" decoding="async">
+            <span class="ptile__cap"><span class="ptile__txt"><span class="ptile__title">Щенок в&nbsp;подарок</span><span class="ptile__line">Успеем к&nbsp;празднику</span></span>{{ ui.round_arrow('ink') }}</span>
+          </a>
+        </li>
+        <li class="bento__cell bento__cell--parents">
+          <a class="ptile" href="/roditeli/">
+            <img src="/assets/img/parents-maltipu.jpg" alt="Мама-мальтипу со&nbsp;щенками на&nbsp;лежанке" width="1264" height="848" loading="lazy" decoding="async">
+            <span class="ptile__cap"><span class="ptile__txt"><span class="ptile__title">Родители щенков</span><span class="ptile__line">Домашние, с&nbsp;родословными РКФ</span></span>{{ ui.round_arrow('ink') }}</span>
+          </a>
+        </li>
+        <li class="bento__cell bento__cell--kit">
+          <a class="ptile" href="/magazin/">
+            <img src="/assets/img/starter-kit.jpg" alt="Лежанка, переноска, миски и&nbsp;игрушки для щенка" width="1024" height="1024" loading="lazy" decoding="async">
+            <span class="ptile__cap"><span class="ptile__txt"><span class="ptile__title">Стартовый набор</span><span class="ptile__line">Всё для первых дней</span></span>{{ ui.round_arrow('ink') }}</span>
+          </a>
+        </li>
+      </ul>
+    </section>
+
+    <!-- ================= ОТЗЫВЫ ================= -->
+    {{ blocks.reviews_section(reviews_home) }}
+
+    <!-- ================= ВОПРОСЫ ================= -->
+    {{ blocks.faq_section(faq_items, short=true) }}
+
+    <!-- ================= SEO-ТЕКСТ ================= -->
+    {% call blocks.seo_block('Купить щенка в Москве: питомник Puppy House', 'Puppy House — питомник собак в Москве. Мы разводим четыре породы: мальтипу, французского бульдога, той-пуделя и бордер-колли. Щенки растут в доме рядом с людьми и привыкают к звукам квартиры, рукам и пелёнке. Поэтому переезд в новую семью проходит спокойнее. Купить щенка у нас можно лично в Москве или с доставкой в другой город.') %}
+            <h3>Щенки четырёх пород</h3>
+            <p>Щенки мальтипу подойдут тем, кому нужен маленький ласковый компаньон. Мальтипу&nbsp;— помесь мальтийской болонки и&nbsp;той- или миниатюрного пуделя. У&nbsp;нас есть поколения F1 и&nbsp;F1b: взрослые мини-мальтипу весят 2–5&nbsp;кг, стандартные&nbsp;— до&nbsp;7&nbsp;кг. Шерсть почти не&nbsp;линяет, но&nbsp;абсолютно гипоаллергенных собак не&nbsp;бывает: реакция зависит от&nbsp;человека.</p>
+            <p>Щенки той-пуделя вырастают до&nbsp;28&nbsp;см в&nbsp;холке и&nbsp;весят 2–4&nbsp;кг. Той-пудель быстро учится, а&nbsp;его шерсть практически не&nbsp;линяет. Щенки французского бульдога&nbsp;— спокойные городские собаки весом 8–14&nbsp;кг. Им&nbsp;хватает обычных прогулок, но&nbsp;летом их&nbsp;нужно беречь от&nbsp;жары. Щенки бордер-колли&nbsp;— для активной семьи. Это пастушья порода ростом 46–56&nbsp;см в&nbsp;холке, с&nbsp;большим запасом энергии. Без ежедневных занятий бордер-колли скучает.</p>
+            <h3>Документы на&nbsp;щенка и&nbsp;здоровье</h3>
+            <p>Каждый щенок уезжает с&nbsp;договором купли-продажи и&nbsp;ветеринарным паспортом. В&nbsp;паспорте&nbsp;— отметки о&nbsp;прививках по&nbsp;возрасту и&nbsp;обработках от&nbsp;паразитов. Щенки французского бульдога, той-пуделя и&nbsp;бордер-колли получают метрику РКФ, которую позже меняют на&nbsp;родословную. Мальтипу&nbsp;— гибрид, РКФ его не&nbsp;регистрирует, поэтому к&nbsp;щенку прилагаем копии родословных родителей. Перед продажей каждого щенка осматривает ветеринар, а&nbsp;схему следующих прививок, включая прививку от&nbsp;бешенства, мы&nbsp;даём с&nbsp;собой.</p>
+            <h3>Как выбрать щенка</h3>
+            <p>Начните с&nbsp;образа жизни, а&nbsp;не&nbsp;с&nbsp;фото. Сколько вы&nbsp;гуляете, есть&nbsp;ли дети, какая у&nbsp;вас квартира&nbsp;— от&nbsp;этого зависит, какая порода подойдёт. Если сомневаетесь, пройдите тест подбора породы или спросите куратора. Смотрите и&nbsp;на&nbsp;самого щенка: здоровый малыш любопытен, охотно идёт на&nbsp;контакт, у&nbsp;него чистые глаза и&nbsp;уши. Мы&nbsp;покажем щенка по&nbsp;видеосвязи и&nbsp;расскажем о&nbsp;его характере и&nbsp;родителях. Цена зависит от&nbsp;породы, поколения, окраса, пола и&nbsp;перспектив щенка&nbsp;— назовём её&nbsp;сразу после заявки.</p>
+            <h3>Доставка щенков по&nbsp;России</h3>
+            <p>Привезём щенка на&nbsp;машине с&nbsp;куратором, отправим самолётом в&nbsp;салоне с&nbsp;сопровождающим или поездом. Способ подбираем под породу и&nbsp;возраст: маленьким щенкам подходит перелёт в&nbsp;салоне, бордер-колли обычно едут на&nbsp;машине. В&nbsp;дороге присылаем фото и&nbsp;видео, а&nbsp;после приезда остаёмся на&nbsp;связи.</p>
+            <h3>Купить щенка в&nbsp;Москве и&nbsp;Московской области</h3>
+            <p>Если вы&nbsp;живёте в&nbsp;Москве или Подмосковье, приезжайте в&nbsp;питомник по&nbsp;записи: познакомьтесь со&nbsp;щенками, посмотрите на&nbsp;маму, обсудите уход. Или выберите щенка по&nbsp;видео&nbsp;— привезём его к&nbsp;дому в&nbsp;Москве, Химках, Красногорске, Балашихе, Подольске или другом городе области. Оставьте заявку, и&nbsp;куратор пришлёт щенков в&nbsp;наличии с&nbsp;ценами и&nbsp;свежими видео.</p>
+    {% endcall %}
+
+    <!-- ================= ЗАЯВКА ================= -->
+    {{ forms.lead_form() }}
+{% endblock %}

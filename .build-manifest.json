@@ -1,0 +1,11 @@
+{
+  "note": "Written by tools/build.py. Lists generated pages; --clean deletes only files listed here.",
+  "files": [
+    "index.html",
+    "shchenki/index.html"
+  ],
+  "routes": {
+    "/": "home",
+    "/shchenki/": "catalog"
+  }
+}

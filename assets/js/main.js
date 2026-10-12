@@ -1,4 +1,6 @@
-/* Puppy House — главная. Ванильный JS, без библиотек. */
+/* Puppy House — общий скрипт всех страниц. Ванильный JS, без библиотек.
+   Страницы собирает tools/build.py: ссылки на собранные страницы — относительные,
+   на ещё не собранные — от корня ("/maltipu/"), их клик показывает тост. */
 (() => {
   'use strict';
 
@@ -8,7 +10,8 @@
 
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const canHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
-  const IMG_BASE = 'assets/img/';
+  // папка фото относительно самого скрипта (assets/js/main.js → assets/img/): работает на любой глубине и под подпутём
+  const IMG_BASE = d.currentScript && d.currentScript.src ? new URL('../img/', d.currentScript.src).href : 'assets/img/';
   const TOAST_TEXT = 'Раздел появится на следующем этапе';
   const CONTACT_LABEL = { telegram: 'Telegram', whatsapp: 'WhatsApp', call: 'звонок' };
   const ERR = {
@@ -43,7 +46,7 @@
     toastTimer = setTimeout(() => toast.classList.remove('is-on'), 2600);
   }
 
-  // Несвёрстанные внутренние страницы → тост; якоря главной → плавная прокрутка
+  // Несвёрстанные страницы (href от корня, сборщик оставил его как есть) → тост; якоря → плавная прокрутка
   d.addEventListener('click', (e) => {
     const a = e.target.closest('a');
     if (!a) return;
@@ -443,12 +446,12 @@
     });
   });
 
-  /* ---------- SEO-текст ---------- */
-  const seoBtn = $('[data-seo-toggle]');
-  if (seoBtn) {
+  /* ---------- SEO-текст (на странице их может быть несколько) ---------- */
+  $$('[data-seo-toggle]').forEach((seoBtn) => {
     const box = seoBtn.closest('.seo');
     const more = $('#' + seoBtn.getAttribute('aria-controls'));
     const label = $('[data-seo-label]', seoBtn);
+    if (!box || !more || !label) return;
     seoBtn.addEventListener('click', () => {
       const open = seoBtn.getAttribute('aria-expanded') !== 'true';
       seoBtn.setAttribute('aria-expanded', String(open));
@@ -457,7 +460,7 @@
       label.textContent = open ? 'Свернуть' : 'Читать полностью';
       if (!open && box.getBoundingClientRect().top < 0) box.scrollIntoView({ behavior: scrollBehavior, block: 'start' });
     });
-  }
+  });
 
   /* ---------- липкая панель: после того как кнопки первого экрана ушли из вида ---------- */
   const mbar = $('[data-mbar]');
@@ -501,7 +504,9 @@
     const targets = $$([
       'main .section .sec-head',
       '.breeds > li', '.pups > li', '.help > li', '.steps > li', '.bento > li',
-      '.ratings > li', '.reviews > li', '.faq__aside', '.faq__list', '.seo', '.lead', '.footer__tile'
+      '.ratings > li', '.reviews > li', '.faq__aside', '.faq__list', '.seo', '.lead', '.footer__tile',
+      // внутренние страницы: data-reveal — сам блок, data-reveal="items" — его дети по очереди
+      '[data-reveal]:not([data-reveal="items"])', '[data-reveal="items"] > *'
     ].join(',')).filter((el) => !inScroller(el));
 
     const io = new IntersectionObserver((entries) => {

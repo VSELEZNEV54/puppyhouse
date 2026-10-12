@@ -1,0 +1,97 @@
+{#- /shchenki/ — catalog with filters (assets/js/catalog.js). Reference inner page: copy its structure. -#}
+{% extends "layouts/page.html.j2" %}
+
+{% block page_js %}
+  <script src="/assets/js/catalog.js" defer></script>
+{% endblock %}
+
+{% block hero %}
+    {{ ui.page_hero('Щенки в наличии',
+        lead='Покажем каждого по видео. Цену и условия брони пришлём в мессенджер',
+        eyebrow='Каталог питомника',
+        faces=true,
+        chips=[{'icon': 'video', 'label': 'Видео до покупки'}, {'icon': 'doc', 'label': 'Договор и ветпаспорт'}, {'icon': 'car', 'label': 'Доставка по России'}]) }}
+{% endblock %}
+
+{% block body %}
+    <section class="section section--tight container" id="katalog" aria-labelledby="katalog-title" data-catalog>
+      <h2 class="sr-only" id="katalog-title">Все щенки</h2>
+      <div class="filters" data-cf>
+        <div class="chips" role="group" aria-label="Порода">
+          <button class="chip" type="button" data-cf-key="breed" data-cf-value="all" aria-pressed="true">Все породы</button>
+          {% for b in breeds %}
+          <button class="chip" type="button" data-cf-key="breed" data-cf-value="{{ b.slug }}" aria-pressed="false"><span class="chip__dot {{ b.tone_class }}" aria-hidden="true"></span>{{ b.name }}</button>
+          {% endfor %}
+        </div>
+        <div class="filters__row">
+          <button class="filters__toggle" type="button" aria-expanded="false" aria-controls="cf-more" data-cf-toggle>{{ ui.icon('filter') }}Пол и&nbsp;статус<span class="filters__badge" data-cf-badge hidden></span></button>
+          <div class="filters__more" id="cf-more">
+            <div class="fgroup" role="group" aria-labelledby="cf-sex">
+              <span class="fgroup__label" id="cf-sex">Пол</span>
+              <div class="fseg">
+                <button type="button" data-cf-key="sex" data-cf-value="all" aria-pressed="true">Любой</button>
+                <button type="button" data-cf-key="sex" data-cf-value="male" aria-pressed="false">Мальчик</button>
+                <button type="button" data-cf-key="sex" data-cf-value="female" aria-pressed="false">Девочка</button>
+              </div>
+            </div>
+            <div class="fgroup" role="group" aria-labelledby="cf-status">
+              <span class="fgroup__label" id="cf-status">Статус</span>
+              <div class="fseg">
+                <button type="button" data-cf-key="status" data-cf-value="all" aria-pressed="true">Все</button>
+                <button type="button" data-cf-key="status" data-cf-value="available" aria-pressed="false"><span class="dot dot--ok" aria-hidden="true"></span>В&nbsp;наличии</button>
+                <button type="button" data-cf-key="status" data-cf-value="soon" aria-pressed="false"><span class="dot dot--soon" aria-hidden="true"></span>Скоро</button>
+                <button type="button" data-cf-key="status" data-cf-value="reserved" aria-pressed="false"><span class="dot dot--res" aria-hidden="true"></span>Бронь</button>
+              </div>
+            </div>
+          </div>
+          <div class="filters__meta">
+            <p class="filters__count" data-cf-count>{{ items|length }}&nbsp;{{ items|length|plural('щенок', 'щенка', 'щенков') }}</p>
+            <button class="filters__reset" type="button" data-cf-reset hidden>{{ ui.icon('reset', sm=true) }}<span>Сбросить</span></button>
+          </div>
+        </div>
+        <p class="sr-only" role="status" aria-live="polite" data-cf-status></p>
+      </div>
+
+      <ul class="pups pups--grid" data-cf-list>
+        {% for p in items %}
+        <li class="pups__item" data-breed="{{ p.breed }}" data-sex="{{ p.sex }}" data-status="{{ p.status }}">
+          {{ cards.puppy_card(p) }}
+        </li>
+        {% endfor %}
+        <li class="pups__more" data-cf-more>
+          {{ cards.soon_tile() }}
+        </li>
+      </ul>
+
+      {% call ui.empty_state('Таких щенков сейчас нет', 'Оставьте заявку — напишем, когда появится новый помёт. Или посмотрите всех щенков.', attrs='data-cf-empty hidden') %}
+      <button class="btn btn--white" type="button" data-cf-reset>Показать всех</button>
+      {% endcall %}
+    </section>
+
+    <section class="section container" id="pered-pokupkoj" aria-labelledby="pered-pokupkoj-title">
+      {{ ui.section_head('Перед покупкой', id='pered-pokupkoj-title') }}
+      {{ ui.link_tiles(related) }}
+    </section>
+
+    {{ blocks.faq_section(faq_items, title='Вопросы о покупке') }}
+
+    {% call blocks.seo_block('Как купить щенка в Москве', 'В каталоге — щенки, которые сейчас живут в питомнике Puppy House в Москве. Мальтипу, французские бульдоги, той-пудели и бордер-колли растут в доме, а не в вольере. Выберите щенка по фото — мы покажем его по видео и расскажем о характере и родителях.') %}
+        <h3>Щенки четырёх пород</h3>
+        <p>{{ 'Мы разводим только четыре породы и знаем каждую до мелочей. Мальтипу и той-пудели подойдут тем, кому нужен маленький компаньон для квартиры. Французский бульдог — спокойный городской друг. Бордер-колли — собака для активной семьи, которая готова гулять и заниматься каждый день.'|typo }}</p>
+        <h3>Как проходит покупка</h3>
+        <p>{{ 'Нажмите «Узнать цену» на карточке или оставьте заявку. Куратор пришлёт цену, свежие видео и расскажет об условиях брони. Понравился щенок — подписываем договор, вы вносите предоплату, и щенок закреплён за вами. Забрать его можно в питомнике по записи или с доставкой.'|typo }}</p>
+        <h3>{{ 'Купить щенка в Москве и Московской области'|typo }}</h3>
+        <p>{{ 'Если вы живёте в Москве или Подмосковье, приезжайте познакомиться со щенком и его мамой. Можем и привезти щенка к дому — в Химки, Красногорск, Балашиху, Подольск и другие города области. В другие регионы везём на машине с куратором или самолётом в салоне с сопровождающим.'|typo }}</p>
+        <h3>{{ 'Документы и здоровье'|typo }}</h3>
+        <p>{{ 'Каждый щенок уезжает с договором купли-продажи и ветпаспортом с прививками по возрасту. У французов, той-пуделей и бордер-колли — метрика РКФ. Мальтипу — гибрид, поэтому к нему прилагаем копии родословных родителей. Перед переездом щенка осматривает ветеринар.'|typo }}</p>
+        <h3>{{ 'Почему на сайте нет цен'|typo }}</h3>
+        <p>{{ 'Цена щенка зависит от породы, поколения, окраса, пола и перспектив. Поэтому мы называем её лично — сразу после заявки и вместе с видео щенка.'|typo }}</p>
+    {% endcall %}
+{% endblock %}
+
+{# the catalog is the list itself — no «Щенки в наличии» strip #}
+{% block pups %}{% endblock %}
+
+{% block lead %}
+    {{ forms.lead_form(title='Не нашли своего щенка?', line='Расскажите, кого ищете, — пришлём новых щенков первыми', tone='butter') }}
+{% endblock %}

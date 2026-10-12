@@ -1,0 +1,43 @@
+{#- Sticky header pill. On the homepage the logo scrolls to #top, elsewhere it goes home. -#}
+{% import "macros/ui.html.j2" as ui %}
+{% set is_home = page.url == '/' %}
+  <!-- ================= ШАПКА ================= -->
+  <header class="hdr" data-hdr>
+    <div class="hdr__bar">
+      <a class="logo" href="{{ '#top' if is_home else '/' }}" aria-label="{{ site.brand }} — {{ 'наверх страницы' if is_home else 'на главную' }}">
+        <span class="logo__mark" aria-hidden="true">{{ ui.icon('paw') }}</span>
+        <span class="logo__text"><span class="logo__name">{{ site.brand }}</span><span class="logo__sub">{{ site.tagline }}</span></span>
+      </a>
+
+      <nav class="nav" aria-label="Основное меню">
+        <ul class="nav__list">
+          {% for item in site.nav %}
+          {% if item.dropdown is defined %}
+          <li class="nav__dd" data-dd>
+            <button class="nav__link nav__dd-btn" type="button" aria-expanded="false" aria-controls="dd-breeds">{{ item.label }} {{ ui.icon('chevron', sm=true) }}</button>
+            <div class="dd" id="dd-breeds" hidden>
+              <ul class="dd__list">
+                {% for b in breeds %}
+                <li><a class="dd__item" href="{{ b.urls.hub }}"{% if page.url.startswith(b.urls.hub) %} aria-current="page"{% endif %}>{{ ui.face(b) }}<span class="dd__txt"><b>{{ b.name }}</b><small>{{ b.nav_line|typo }}</small></span></a></li>
+                {% endfor %}
+              </ul>
+              <a class="dd__test" href="{{ site.breed_test.url }}"><span class="ico ico--sm" style="--c:var(--lilac)">{{ ui.icon('sparkle', sm=true) }}</span><span>{{ site.breed_test.label|typo }}</span>{{ ui.icon('arrow', sm=true) }}</a>
+            </div>
+          </li>
+          {% else %}
+          <li><a class="nav__link" href="{{ item.url }}"{% if not is_home and page.url.startswith(item.url) %} aria-current="page"{% endif %}>{{ item.label|typo }}</a></li>
+          {% endif %}
+          {% endfor %}
+        </ul>
+      </nav>
+
+      <div class="hdr__right">
+        <a class="hdr__phone" href="{{ site.phone.tel }}">{{ site.phone.display }}</a>
+        <a class="msgr msgr--tg" href="{{ site.messengers.telegram.url }}" target="_blank" rel="noopener" aria-label="{{ site.messengers.telegram.aria }}">{{ ui.icon('tg') }}</a>
+        <a class="msgr msgr--wa" href="{{ site.messengers.whatsapp.url }}" target="_blank" rel="noopener" aria-label="{{ site.messengers.whatsapp.aria }}">{{ ui.icon('wa') }}</a>
+        <a class="msgr msgr--call" href="{{ site.phone.tel }}" aria-label="Позвонить: {{ site.phone.display }}">{{ ui.icon('phone') }}</a>
+        <button class="btn btn--ink hdr__cta" type="button" data-open-modal>{{ site.cta_label }}</button>
+        <button class="msgr msgr--ink hdr__burger" type="button" aria-label="Открыть меню" aria-expanded="false" aria-controls="mmenu" data-burger>{{ ui.icon('menu') }}</button>
+      </div>
+    </div>
+  </header>

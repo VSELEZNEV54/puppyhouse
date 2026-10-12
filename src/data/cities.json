@@ -1,0 +1,406 @@
+[
+  {
+    "slug": "sankt-peterburg",
+    "name": "Санкт-Петербург",
+    "prep": "в Санкт-Петербурге",
+    "acc": "в Санкт-Петербург",
+    "gen": "Санкт-Петербурга",
+    "url": "/dostavka/sankt-peterburg/",
+    "km_approx": 710,
+    "methods": [
+      "car",
+      "train"
+    ],
+    "duration": "[8–10 часов]"
+  },
+  {
+    "slug": "novosibirsk",
+    "name": "Новосибирск",
+    "prep": "в Новосибирске",
+    "acc": "в Новосибирск",
+    "gen": "Новосибирска",
+    "url": "/dostavka/novosibirsk/",
+    "km_approx": 3300,
+    "methods": [
+      "plane"
+    ],
+    "duration": "[уточнить]"
+  },
+  {
+    "slug": "ekaterinburg",
+    "name": "Екатеринбург",
+    "prep": "в Екатеринбурге",
+    "acc": "в Екатеринбург",
+    "gen": "Екатеринбурга",
+    "url": "/dostavka/ekaterinburg/",
+    "km_approx": 1790,
+    "methods": [
+      "plane",
+      "car"
+    ],
+    "duration": "[уточнить]"
+  },
+  {
+    "slug": "kazan",
+    "name": "Казань",
+    "prep": "в Казани",
+    "acc": "в Казань",
+    "gen": "Казани",
+    "url": "/dostavka/kazan/",
+    "km_approx": 820,
+    "methods": [
+      "car",
+      "train"
+    ],
+    "duration": "[уточнить]"
+  },
+  {
+    "slug": "nizhnij-novgorod",
+    "name": "Нижний Новгород",
+    "prep": "в Нижнем Новгороде",
+    "acc": "в Нижний Новгород",
+    "gen": "Нижнего Новгорода",
+    "url": "/dostavka/nizhnij-novgorod/",
+    "km_approx": 420,
+    "methods": [
+      "car"
+    ],
+    "duration": "[уточнить]"
+  },
+  {
+    "slug": "krasnoyarsk",
+    "name": "Красноярск",
+    "prep": "в Красноярске",
+    "acc": "в Красноярск",
+    "gen": "Красноярска",
+    "url": "/dostavka/krasnoyarsk/",
+    "km_approx": 4100,
+    "methods": [
+      "plane"
+    ],
+    "duration": "[уточнить]"
+  },
+  {
+    "slug": "chelyabinsk",
+    "name": "Челябинск",
+    "prep": "в Челябинске",
+    "acc": "в Челябинск",
+    "gen": "Челябинска",
+    "url": "/dostavka/chelyabinsk/",
+    "km_approx": 1770,
+    "methods": [
+      "plane",
+      "car"
+    ],
+    "duration": "[уточнить]"
+  },
+  {
+    "slug": "samara",
+    "name": "Самара",
+    "prep": "в Самаре",
+    "acc": "в Самару",
+    "gen": "Самары",
+    "url": "/dostavka/samara/",
+    "km_approx": 1060,
+    "methods": [
+      "car",
+      "train"
+    ],
+    "duration": "[уточнить]"
+  },
+  {
+    "slug": "ufa",
+    "name": "Уфа",
+    "prep": "в Уфе",
+    "acc": "в Уфу",
+    "gen": "Уфы",
+    "url": "/dostavka/ufa/",
+    "km_approx": 1350,
+    "methods": [
+      "car",
+      "plane"
+    ],
+    "duration": "[уточнить]"
+  },
+  {
+    "slug": "rostov-na-donu",
+    "name": "Ростов-на-Дону",
+    "prep": "в Ростове-на-Дону",
+    "acc": "в Ростов-на-Дону",
+    "gen": "Ростова-на-Дону",
+    "url": "/dostavka/rostov-na-donu/",
+    "km_approx": 1070,
+    "methods": [
+      "car",
+      "train"
+    ],
+    "duration": "[уточнить]"
+  },
+  {
+    "slug": "krasnodar",
+    "name": "Краснодар",
+    "prep": "в Краснодаре",
+    "acc": "в Краснодар",
+    "gen": "Краснодара",
+    "url": "/dostavka/krasnodar/",
+    "km_approx": 1350,
+    "methods": [
+      "car",
+      "plane"
+    ],
+    "duration": "[уточнить]"
+  },
+  {
+    "slug": "omsk",
+    "name": "Омск",
+    "prep": "в Омске",
+    "acc": "в Омск",
+    "gen": "Омска",
+    "url": "/dostavka/omsk/",
+    "km_approx": 2700,
+    "methods": [
+      "plane"
+    ],
+    "duration": "[уточнить]"
+  },
+  {
+    "slug": "voronezh",
+    "name": "Воронеж",
+    "prep": "в Воронеже",
+    "acc": "в Воронеж",
+    "gen": "Воронежа",
+    "url": "/dostavka/voronezh/",
+    "km_approx": 520,
+    "methods": [
+      "car"
+    ],
+    "duration": "[уточнить]"
+  },
+  {
+    "slug": "perm",
+    "name": "Пермь",
+    "prep": "в Перми",
+    "acc": "в Пермь",
+    "gen": "Перми",
+    "url": "/dostavka/perm/",
+    "km_approx": 1430,
+    "methods": [
+      "car",
+      "plane"
+    ],
+    "duration": "[уточнить]"
+  },
+  {
+    "slug": "volgograd",
+    "name": "Волгоград",
+    "prep": "в Волгограде",
+    "acc": "в Волгоград",
+    "gen": "Волгограда",
+    "url": "/dostavka/volgograd/",
+    "km_approx": 970,
+    "methods": [
+      "car",
+      "train"
+    ],
+    "duration": "[уточнить]"
+  },
+  {
+    "slug": "saratov",
+    "name": "Саратов",
+    "prep": "в Саратове",
+    "acc": "в Саратов",
+    "gen": "Саратова",
+    "url": "/dostavka/saratov/",
+    "km_approx": 850,
+    "methods": [
+      "car",
+      "train"
+    ],
+    "duration": "[уточнить]"
+  },
+  {
+    "slug": "tyumen",
+    "name": "Тюмень",
+    "prep": "в Тюмени",
+    "acc": "в Тюмень",
+    "gen": "Тюмени",
+    "url": "/dostavka/tyumen/",
+    "km_approx": 2100,
+    "methods": [
+      "plane"
+    ],
+    "duration": "[уточнить]"
+  },
+  {
+    "slug": "tolyatti",
+    "name": "Тольятти",
+    "prep": "в Тольятти",
+    "acc": "в Тольятти",
+    "gen": "Тольятти",
+    "url": "/dostavka/tolyatti/",
+    "km_approx": 1000,
+    "methods": [
+      "car"
+    ],
+    "duration": "[уточнить]"
+  },
+  {
+    "slug": "mahachkala",
+    "name": "Махачкала",
+    "prep": "в Махачкале",
+    "acc": "в Махачкалу",
+    "gen": "Махачкалы",
+    "url": "/dostavka/mahachkala/",
+    "km_approx": 1950,
+    "methods": [
+      "plane"
+    ],
+    "duration": "[уточнить]"
+  },
+  {
+    "slug": "barnaul",
+    "name": "Барнаул",
+    "prep": "в Барнауле",
+    "acc": "в Барнаул",
+    "gen": "Барнаула",
+    "url": "/dostavka/barnaul/",
+    "km_approx": 3600,
+    "methods": [
+      "plane"
+    ],
+    "duration": "[уточнить]"
+  },
+  {
+    "slug": "izhevsk",
+    "name": "Ижевск",
+    "prep": "в Ижевске",
+    "acc": "в Ижевск",
+    "gen": "Ижевска",
+    "url": "/dostavka/izhevsk/",
+    "km_approx": 1150,
+    "methods": [
+      "car",
+      "plane"
+    ],
+    "duration": "[уточнить]"
+  },
+  {
+    "slug": "habarovsk",
+    "name": "Хабаровск",
+    "prep": "в Хабаровске",
+    "acc": "в Хабаровск",
+    "gen": "Хабаровска",
+    "url": "/dostavka/habarovsk/",
+    "km_approx": 8500,
+    "methods": [
+      "plane"
+    ],
+    "duration": "[уточнить]"
+  },
+  {
+    "slug": "ulyanovsk",
+    "name": "Ульяновск",
+    "prep": "в Ульяновске",
+    "acc": "в Ульяновск",
+    "gen": "Ульяновска",
+    "url": "/dostavka/ulyanovsk/",
+    "km_approx": 890,
+    "methods": [
+      "car"
+    ],
+    "duration": "[уточнить]"
+  },
+  {
+    "slug": "irkutsk",
+    "name": "Иркутск",
+    "prep": "в Иркутске",
+    "acc": "в Иркутск",
+    "gen": "Иркутска",
+    "url": "/dostavka/irkutsk/",
+    "km_approx": 5100,
+    "methods": [
+      "plane"
+    ],
+    "duration": "[уточнить]"
+  },
+  {
+    "slug": "vladivostok",
+    "name": "Владивосток",
+    "prep": "во Владивостоке",
+    "acc": "во Владивосток",
+    "gen": "Владивостока",
+    "url": "/dostavka/vladivostok/",
+    "km_approx": 9300,
+    "methods": [
+      "plane"
+    ],
+    "duration": "[уточнить]"
+  },
+  {
+    "slug": "yaroslavl",
+    "name": "Ярославль",
+    "prep": "в Ярославле",
+    "acc": "в Ярославль",
+    "gen": "Ярославля",
+    "url": "/dostavka/yaroslavl/",
+    "km_approx": 270,
+    "methods": [
+      "car"
+    ],
+    "duration": "[уточнить]"
+  },
+  {
+    "slug": "sevastopol",
+    "name": "Севастополь",
+    "prep": "в Севастополе",
+    "acc": "в Севастополь",
+    "gen": "Севастополя",
+    "url": "/dostavka/sevastopol/",
+    "km_approx": 1900,
+    "methods": [
+      "car",
+      "train"
+    ],
+    "duration": "[уточнить]"
+  },
+  {
+    "slug": "stavropol",
+    "name": "Ставрополь",
+    "prep": "в Ставрополе",
+    "acc": "в Ставрополь",
+    "gen": "Ставрополя",
+    "url": "/dostavka/stavropol/",
+    "km_approx": 1400,
+    "methods": [
+      "car",
+      "plane"
+    ],
+    "duration": "[уточнить]"
+  },
+  {
+    "slug": "tomsk",
+    "name": "Томск",
+    "prep": "в Томске",
+    "acc": "в Томск",
+    "gen": "Томска",
+    "url": "/dostavka/tomsk/",
+    "km_approx": 3500,
+    "methods": [
+      "plane"
+    ],
+    "duration": "[уточнить]"
+  },
+  {
+    "slug": "kemerovo",
+    "name": "Кемерово",
+    "prep": "в Кемерове",
+    "acc": "в Кемерово",
+    "gen": "Кемерова",
+    "url": "/dostavka/kemerovo/",
+    "km_approx": 3500,
+    "methods": [
+      "plane"
+    ],
+    "duration": "[уточнить]"
+  }
+]

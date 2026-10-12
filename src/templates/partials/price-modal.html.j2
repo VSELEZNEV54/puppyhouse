@@ -1,0 +1,63 @@
+{#- Shared «Узнать цену» modal. Any [data-open-modal] opens it; inside a [data-pup] card it is prefilled with that puppy. -#}
+{% import "macros/ui.html.j2" as ui %}
+{% import "macros/forms.html.j2" as forms %}
+  <!-- Модалка «Узнать цену» -->
+  <dialog class="modal" id="price-modal" aria-labelledby="pm-title" aria-describedby="pm-sub">
+    <div class="modal__inner">
+      <button class="msgr modal__close" type="button" aria-label="Закрыть" data-close-modal>{{ ui.icon('close') }}</button>
+      <div class="modal__view" data-view="form">
+        <div class="modal__head">
+          <span class="modal__thumb" data-pm-thumb hidden><img src="{{ breeds[0].studio.src }}" alt="" width="1024" height="1024" decoding="async"></span>
+          <div>
+            <h2 class="modal__title" id="pm-title">Узнать цену щенка</h2>
+            <p class="modal__sub" id="pm-sub">Пришлём щенков в&nbsp;наличии с&nbsp;ценами и&nbsp;видео</p>
+          </div>
+        </div>
+        <form class="form" id="price-form" novalidate>
+          <input type="hidden" name="puppy" value="">
+          <div class="form__grid">
+            <div class="field">
+              <label class="field__label" for="pm-name">Имя</label>
+              <input class="input" id="pm-name" name="name" type="text" autocomplete="given-name" placeholder="Как к&nbsp;вам обращаться" required aria-describedby="pm-name-err">
+              <p class="field__err" id="pm-name-err" hidden></p>
+            </div>
+            <div class="field">
+              <label class="field__label" for="pm-phone">Телефон</label>
+              <input class="input" id="pm-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="+7 (___) ___-__-__" required aria-describedby="pm-phone-err" data-phone>
+              <p class="field__err" id="pm-phone-err" hidden></p>
+            </div>
+            <div class="field field--full" data-pm-breed>
+              <label class="field__label" for="pm-breed">Какая порода интересует</label>
+              <select class="input select" id="pm-breed" name="breed">
+                {{ forms.breed_options()|indent(16) }}
+              </select>
+            </div>
+            <fieldset class="field field--full seg" role="radiogroup" aria-describedby="pm-contact-err">
+              <legend class="field__label">Куда написать</legend>
+              <div class="seg__opts">
+                <input type="radio" name="contact" id="pm-c-tg" value="telegram"><label for="pm-c-tg">{{ ui.icon('tg', sm=true) }}Telegram</label>
+                <input type="radio" name="contact" id="pm-c-wa" value="whatsapp"><label for="pm-c-wa">{{ ui.icon('wa', sm=true) }}WhatsApp</label>
+                <input type="radio" name="contact" id="pm-c-call" value="call"><label for="pm-c-call">{{ ui.icon('phone', sm=true) }}Звонок</label>
+              </div>
+              <p class="field__err" id="pm-contact-err" hidden></p>
+            </fieldset>
+            <div class="field field--full">
+              <div class="check">
+                <input type="checkbox" id="pm-consent" name="consent" aria-describedby="pm-consent-err">
+                <label for="pm-consent">Соглашаюсь на&nbsp;обработку персональных данных и&nbsp;принимаю <a href="{{ site.footer.legal.privacy.url }}">политику конфиденциальности</a></label>
+              </div>
+              <p class="field__err" id="pm-consent-err" hidden></p>
+            </div>
+          </div>
+          <button class="btn btn--ink btn--lg btn--block form__submit" type="submit" data-submit data-label="Узнать цену">Узнать цену</button>
+          <p class="form__hint">Ответим за&nbsp;15&nbsp;минут, с&nbsp;9:00 до&nbsp;21:00</p>
+        </form>
+      </div>
+      <div class="modal__view modal__done" data-view="done" hidden>
+        <span class="form-done__ico" aria-hidden="true">{{ ui.icon('check') }}</span>
+        <h2 class="modal__title" id="pm-done-title" tabindex="-1">Спасибо</h2>
+        <p class="modal__sub" id="pm-done-text"></p>
+        <button class="btn btn--ink btn--lg btn--block" type="button" data-close-modal>Хорошо</button>
+      </div>
+    </div>
+  </dialog>

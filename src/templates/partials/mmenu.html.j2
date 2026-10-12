@@ -1,0 +1,41 @@
+{#- Full-screen burger menu (< 1100 px). main.js: [data-burger], #mmenu, .mmenu__acc, #mm-breeds, [data-menu-close], [data-menu-link]. -#}
+{% import "macros/ui.html.j2" as ui %}
+{% import "macros/forms.html.j2" as forms %}
+{% set is_home = page.url == '/' %}
+  <!-- Мобильное меню -->
+  <div class="mmenu" id="mmenu" role="dialog" aria-modal="true" aria-label="Меню сайта" hidden>
+    <div class="mmenu__top">
+      <a class="logo" href="{{ '#top' if is_home else '/' }}" data-menu-link aria-label="{{ site.brand }} — {{ 'наверх страницы' if is_home else 'на главную' }}">
+        <span class="logo__mark" aria-hidden="true">{{ ui.icon('paw') }}</span>
+        <span class="logo__text"><span class="logo__name">{{ site.brand }}</span><span class="logo__sub">{{ site.tagline }}</span></span>
+      </a>
+      <button class="msgr msgr--ink" type="button" aria-label="Закрыть меню" data-menu-close>{{ ui.icon('close') }}</button>
+    </div>
+    <nav class="mmenu__nav" aria-label="Мобильное меню">
+      <ul class="mmenu__list">
+        {% for item in site.nav %}
+        {% if item.dropdown is defined %}
+        <li>
+          <button class="mmenu__acc" type="button" aria-expanded="false" aria-controls="mm-breeds">{{ item.label }} {{ ui.icon('chevron') }}</button>
+          <ul class="mmenu__sub" id="mm-breeds" hidden>
+            {% for b in breeds %}
+            <li><a href="{{ b.urls.hub }}">{{ ui.face(b) }}{{ b.name }}</a></li>
+            {% endfor %}
+            <li><a href="{{ site.breed_test.url }}"><span class="ico" style="--c:var(--lilac)" aria-hidden="true">{{ ui.icon('sparkle', sm=true) }}</span>{{ site.breed_test.label|typo }}</a></li>
+          </ul>
+        </li>
+        {% else %}
+        <li><a href="{{ item.url }}"{% if not is_home and page.url.startswith(item.url) %} aria-current="page"{% endif %}>{{ item.label|typo }} {{ ui.icon('arrow') }}</a></li>
+        {% endif %}
+        {% endfor %}
+      </ul>
+    </nav>
+    <div class="mmenu__bottom">
+      <a class="mmenu__phone" href="{{ site.phone.tel }}">{{ site.phone.display }}<small>{{ site.phone.hours|typo }}</small></a>
+      <div class="mmenu__msgs">
+        {{ forms.msgr('telegram') }}
+        {{ forms.msgr('whatsapp') }}
+        <button class="btn btn--ink btn--lg mmenu__cta" type="button" data-open-modal>{{ site.cta_label }}</button>
+      </div>
+    </div>
+  </div>

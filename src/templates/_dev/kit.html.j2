@@ -1,0 +1,208 @@
+{#- Developer UI kit: every macro with sample data. Built only with `python3 tools/build.py --kit` → /_kit/ (git-ignored).
+    Use it to see what exists before writing new CSS. Not a site page. -#}
+{% extends "layouts/page.html.j2" %}
+{% set mal = breed_map['maltipu'] %}
+{% set bul = breed_map['francuzskij-buldog'] %}
+{% set pud = breed_map['toj-pudel'] %}
+{% set kol = breed_map['border-kolli'] %}
+
+{% block head_extra %}
+  <meta name="robots" content="noindex, nofollow">
+  <style>
+    .kit-label { margin: 0 4px 12px; font: 500 12px/1.3 ui-monospace, SFMono-Regular, Menlo, monospace; color: #8a857d; }
+    .kit-gap { height: var(--gap); }
+  </style>
+{% endblock %}
+
+{% block hero %}
+    {% call ui.page_hero('Мальтипу', lead='Кудрявый компаньон размером с кошку. Почти не линяет', breed=mal, eyebrow='ui.page_hero(breed=…, facts=…)', facts=mal.facts[:3]) %}
+      {{ forms.price_button(cls='btn btn--ink btn--lg') }}
+      <a class="btn btn--white btn--lg" href="/maltipu/vidy-i-okrasy/">Виды и окрасы</a>
+    {% endcall %}
+{% endblock %}
+
+{% block body %}
+    <section class="section container">
+      <p class="kit-label">Шапка с фото в тонах других пород (так выглядит ui.page_hero(breed=…) у каждой породы)</p>
+      <div class="grid grid--3">
+        {% for b in [bul, pud, kol] %}
+        <div class="phero" style="padding:0">
+          <div class="phero__tile phero--photo tone--{{ b.tone }}" style="min-height:300px;{{ tone_style(b.studio.src) }}">
+            <div class="phero__photo"><img src="{{ b.studio.src }}" alt="" width="1024" height="1024" loading="lazy"></div>
+            <div class="phero__copy"><p class="phero__title" style="font-size:34px">{{ b.name_short }}</p><p class="phero__lead">{{ b.nav_line|typo }}</p></div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+      <div class="kit-gap"></div>
+      <div class="grid grid--3">
+        {% for t in ['cream', 'sun', 'sky', 'mint', 'lilac', 'coral', 'sand'] %}
+        <div class="tile tile--tone tone--{{ t }}"><p class="h3">tone--{{ t }}</p><p class="note">тинт для плиток без фото</p></div>
+        {% endfor %}
+      </div>
+    </section>
+
+    <section class="section container" aria-labelledby="kit-stiles">
+      {{ ui.section_head('Окрасы — студийные плитки', id='kit-stiles', lead='ui.studio_tiles: фон плитки = замер кадра из tools/photo-tones.json') }}
+      {% set items = [] %}
+      {% for c in mal.colours['items'] if c.photo %}{% set _ = items.append({'photo': c.photo, 'title': c.name|capitalize, 'line': 'Мальтипу', 'url': mal.urls.varieties}) %}{% endfor %}
+      {{ ui.studio_tiles(items) }}
+      <div class="kit-gap"></div>
+      {% set items2 = [] %}
+      {% for b in breeds %}{% set _ = items2.append({'photo': b.adult, 'title': b.name, 'line': 'Взрослая собака', 'badge': 'родитель'}) %}{% endfor %}
+      {{ ui.studio_tiles(items2) }}
+      <div class="kit-gap"></div>
+      {% set items3 = [] %}
+      {% for c in bul.colours['items'] if c.photo %}{% set _ = items3.append({'photo': c.photo, 'title': c.name|capitalize, 'badge': 'стандарт FCI' if c.standard else 'нестандартный'}) %}{% endfor %}
+      {{ ui.studio_tiles(items3) }}
+    </section>
+
+    <section class="section container" aria-labelledby="kit-specs">
+      {{ ui.section_head('Порода коротко', id='kit-specs', lead='ui.section_head(lead=…, link=…) — подпись в одну строку', link={'url': '/maltipu/', 'label': 'Всё о породе'}) }}
+      {{ ui.spec_grid([
+        {'label': 'Вес', 'value': '2–5 кг, стандарт до 7 кг', 'icon': 'ruler', 'color': 'sun'},
+        {'label': 'Рост', 'value': '20–35 см в холке', 'icon': 'ruler', 'color': 'sky'},
+        {'label': 'Шерсть', 'value': 'Мягкая, почти не линяет', 'icon': 'scissors', 'color': 'mint'},
+        {'label': 'Живут', 'value': '12–15 лет', 'icon': 'heart', 'color': 'coral'},
+      ]) }}
+      <div class="kit-gap"></div>
+      {{ ui.spec_grid(mal.facts, cols=3) }}
+    </section>
+
+    <section class="section container" aria-labelledby="kit-kpi">
+      {{ ui.section_head('Цифры и бейджи', id='kit-kpi') }}
+      {{ ui.stat_tiles(site.stats) }}
+      <div class="kit-gap"></div>
+      {{ ui.badges(['Метрика РКФ', 'Прививки по возрасту', 'Ветпаспорт', 'Чип']) }}
+    </section>
+
+    <section class="section container" aria-labelledby="kit-steps">
+      {{ ui.section_head('Шаги и таймлайн', id='kit-steps') }}
+      {{ ui.steps([{'title': 'Заявка', 'text': 'Оставьте номер — пришлём цену'}, {'title': 'Видеозвонок', 'text': 'Знакомитесь со щенком онлайн'}, {'title': 'Бронь', 'text': 'Договор и предоплата — щенок ваш'}], cols=3) }}
+      <div class="kit-gap"></div>
+      <div class="split">
+        {{ ui.timeline([
+          {'when': 'За 1–2 дня', 'title': 'Готовим документы', 'text': 'Ветпаспорт, договор и памятку по кормлению кладём в папку.'},
+          {'when': 'В день выезда', 'title': 'Щенок в переноске', 'text': 'Куратор присылает фото и короткое видео перед стартом.'},
+          {'title': 'Встреча дома', 'text': 'Передаём щенка, документы и стартовый корм.'},
+        ]) }}
+        <div class="split__media">{{ ui.img('/assets/img/delivery-carrier.jpg', 'Французский бульдог в переноске на сиденье машины') }}</div>
+      </div>
+    </section>
+
+    <section class="section container" aria-labelledby="kit-links">
+      {{ ui.section_head('Ссылки-плитки', id='kit-links') }}
+      {{ ui.link_tiles([
+        {'url': '/maltipu/cena/', 'title': 'Цена мальтипу', 'line': 'От чего зависит', 'breed': mal},
+        {'url': '/dostavka/', 'title': 'Доставка', 'line': 'По Москве и в другие города', 'icon': 'car', 'color': 'mint'},
+        {'url': '/roditeli/', 'title': 'Родители', 'line': 'Домашние, с родословными РКФ', 'image': '/assets/img/parents-maltipu.jpg'},
+      ]) }}
+      <div class="kit-gap"></div>
+      {{ ui.link_tiles([
+        {'url': '/rassrochka/', 'title': 'Бронь и рассрочка', 'line': 'Остаток частями', 'icon': 'wallet', 'color': 'sun'},
+        {'url': '/dokumenty-i-garantii/', 'title': 'Документы', 'line': 'Договор и ветпаспорт', 'icon': 'doc', 'color': 'sky'},
+        {'url': '/shchenok-v-podarok/', 'title': 'Щенок в подарок', 'line': 'Успеем к празднику', 'icon': 'gift', 'color': 'coral'},
+        {'url': '/podbor-porody/', 'title': 'Подобрать породу', 'line': 'Тест на 2 минуты', 'icon': 'sparkle', 'color': 'lilac'},
+      ], style='color') }}
+    </section>
+
+    <section class="section container">
+      {{ ui.cta_band('Хотите увидеть щенка вживую?', line='Покажем по видео или ждём в питомнике по записи') }}
+    </section>
+
+    <section class="section container" aria-labelledby="kit-article">
+      {{ ui.section_head('Статья', id='kit-article') }}
+      <div class="article">
+        <article class="article__body prose">
+          <p>Мальтипу — помесь мальтийской болонки и той- или миниатюрного пуделя. Это маленький ласковый компаньон, который любит быть рядом с человеком.</p>
+          <h2 id="kharakter">Характер</h2>
+          <p>Мальтипу дружелюбны и общительны. Им сложно оставаться одним надолго, зато они быстро привыкают к режиму семьи.</p>
+          <ul>
+            <li>Ладят с детьми, если те обращаются с щенком бережно.</li>
+            <li>Хорошо поддаются обучению — особенно за лакомство.</li>
+            <li>Редко лают без причины.</li>
+          </ul>
+          {% call ui.callout('warn', 'Важно') %}<p>Абсолютно гипоаллергенных собак не бывает. Если в семье аллергия, сначала познакомьтесь со щенком вживую.</p>{% endcall %}
+          <h2 id="ukhod">Уход</h2>
+          <h3>Шерсть</h3>
+          <ol>
+            <li>Расчёсывайте 3–4 раза в неделю.</li>
+            <li>Стригите раз в 6–8 недель.</li>
+            <li>Мойте по мере загрязнения.</li>
+          </ol>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Возраст</th><th>Кормлений в день</th><th>Прогулки</th></tr></thead>
+              <tbody>
+                <tr><th>2–3 месяца</th><td>4–5</td><td>После прививок, по 10–15 минут</td></tr>
+                <tr><th>4–6 месяцев</th><td>3–4</td><td>2–3 раза по 30 минут</td></tr>
+                <tr><th>С 6 месяцев</th><td>2</td><td>2 раза по 40–60 минут</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <blockquote><p>«Боня с первой ночи спала на лежанке, к пелёнке привыкла за неделю».</p></blockquote>
+          {% call ui.callout('ok') %}<p>Куратор питомника остаётся на связи и после покупки: спросите про корм, прививки или первую стрижку.</p>{% endcall %}
+          <figure>{{ ui.img('/assets/img/family-maltipu.jpg', 'Девушка обнимает щенка мальтипу') }}<figcaption>Щенок дома: первые дни — самые важные</figcaption></figure>
+        </article>
+        <aside class="article__aside">
+          {{ ui.toc([['kharakter', 'Характер'], ['ukhod', 'Уход']]) }}
+          {{ ui.keyfacts(mal.facts) }}
+        </aside>
+      </div>
+    </section>
+
+    <section class="section container" aria-labelledby="kit-cmp">
+      {{ ui.section_head('Сравнение', id='kit-cmp') }}
+      {{ ui.cmp_table(breeds, [
+        ['Размер'] + breeds|map(attribute='compare.size')|list,
+        ['Вес'] + breeds|map(attribute='compare.weight')|list,
+        ['Шерсть'] + breeds|map(attribute='compare.coat')|list,
+        ['Активность'] + breeds|map(attribute='compare.activity')|list,
+        ['Для детей'] + breeds|map(attribute='compare.kids')|list,
+        ['Для квартиры'] + breeds|map(attribute='compare.flat')|list,
+      ], caption='Четыре породы') }}
+      <div class="kit-gap"></div>
+      {{ ui.cmp_table([mal, pud], [
+        ['Размер', mal.compare.size, pud.compare.size],
+        ['Шерсть', mal.compare.coat, pud.compare.coat],
+        ['Активность', mal.compare.activity, pud.compare.activity],
+      ], caption='Мальтипу или той-пудель') }}
+    </section>
+
+    <section class="section container" aria-labelledby="kit-gallery">
+      {{ ui.section_head('Галерея', id='kit-gallery') }}
+      {{ ui.gallery([
+        {'src': '/assets/img/parents-maltipu.jpg', 'alt': 'Мама-мальтипу со щенками', 'caption': 'Мама Пломбира'},
+        {'src': '/assets/img/hero-maltipu-sofa.jpg', 'alt': 'Щенок мальтипу на диване'},
+        {'src': '/assets/img/pup-maltipu-chocolate.jpg', 'alt': 'Шоколадный щенок мальтипу'},
+        {'src': '/assets/img/family-maltipu.jpg', 'alt': 'Девушка обнимает щенка'},
+        {'src': '/assets/img/gift-maltipu.jpg', 'alt': 'Щенок в подарочной коробке'},
+      ]) }}
+      <div class="kit-gap"></div>
+      {{ ui.gallery([
+        {'src': '/assets/img/vet-check.jpg', 'alt': 'Осмотр ветеринара', 'caption': 'Осмотр перед переездом'},
+        {'src': '/assets/img/delivery-carrier.jpg', 'alt': 'Щенок в переноске'},
+        {'src': '/assets/img/starter-kit.jpg', 'alt': 'Стартовый набор'},
+      ]) }}
+    </section>
+
+    <section class="section container" aria-labelledby="kit-breeds">
+      {{ ui.section_head('Плитки пород', id='kit-breeds') }}
+      {{ cards.breed_tiles() }}
+    </section>
+
+    {{ blocks.reviews_section(data.reviews[3:], title='Отзывы: полный текст', id='kit-reviews', title_id='kit-reviews-title', short=false) }}
+
+    {{ blocks.faq_section(data.faq[5:], title='FAQ', id='kit-faq', link=none) }}
+
+    <section class="section container">
+      {% call ui.empty_state('Таких щенков сейчас нет', 'Оставьте заявку — напишем, когда появится новый помёт.') %}<button class="btn btn--white" type="button">Показать всех</button>{% endcall %}
+    </section>
+
+    {% call blocks.seo_block('SEO-блок', 'Первый абзац обрезан до двух строк. Остальной текст скрыт до кнопки «Читать полностью». Он нужен поисковикам, но не мешает читателю. Пишите коротко и по делу, с ключами из семантики для этой страницы.', id='kit-seo', key='kit-seo') %}
+        <h3>Подзаголовок</h3>
+        <p>Скрытый текст.</p>
+    {% endcall %}
+{% endblock %}
+
+{% set pups_breed = mal %}

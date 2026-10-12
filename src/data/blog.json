@@ -1,0 +1,143 @@
+[
+  {
+    "slug": "maltipu-harakter",
+    "url": "/blog/maltipu-harakter/",
+    "title": "Мальтипу: характер, плюсы и минусы породы",
+    "breed": "maltipu",
+    "teaser": "Кому подойдёт мальтипу, сколько внимания ему нужно и чего ждать от характера.",
+    "cover": "/assets/img/hero-maltipu-sofa.jpg",
+    "read_min": "[7]",
+    "keywords": [
+      "мальтипу характеристика",
+      "мальтипу плюсы и минусы",
+      "мальтипу характер",
+      "мальтипу отзывы владельцев"
+    ],
+    "body": null
+  },
+  {
+    "slug": "maltipu-uhod",
+    "url": "/blog/maltipu-uhod/",
+    "title": "Мальтипу: уход, стрижка и размеры взрослой собаки",
+    "breed": "maltipu",
+    "teaser": "Как ухаживать за шерстью, когда стричь и каким вырастет щенок.",
+    "cover": "/assets/img/pup-maltipu-chocolate.jpg",
+    "read_min": "[7]",
+    "keywords": [
+      "мальтипу размер",
+      "мальтипу сколько живут",
+      "мальтипу уход",
+      "мальтипу стрижка",
+      "мальтипу корм"
+    ],
+    "body": null
+  },
+  {
+    "slug": "francuzskij-buldog-harakter",
+    "url": "/blog/francuzskij-buldog-harakter/",
+    "title": "Французский бульдог: характер, плюсы и минусы",
+    "breed": "francuzskij-buldog",
+    "teaser": "Каким бывает француз дома, с детьми и на прогулке.",
+    "cover": "/assets/img/breed-francuzskij-buldog.jpg",
+    "read_min": "[7]",
+    "keywords": [
+      "французский бульдог плюсы и минусы",
+      "французский бульдог характер",
+      "французский бульдог характеристика"
+    ],
+    "body": null
+  },
+  {
+    "slug": "francuzskij-buldog-uhod",
+    "url": "/blog/francuzskij-buldog-uhod/",
+    "title": "Французский бульдог: уход, кормление и сколько живут",
+    "breed": "francuzskij-buldog",
+    "teaser": "Как беречь француза от жары, чем кормить щенка и как продлить ему жизнь.",
+    "cover": "/assets/img/pup-buldog-cream.jpg",
+    "read_min": "[7]",
+    "keywords": [
+      "французский бульдог сколько живут",
+      "французский бульдог размеры",
+      "французский бульдог корм",
+      "французский бульдог уход"
+    ],
+    "body": null
+  },
+  {
+    "slug": "toj-pudel-harakter",
+    "url": "/blog/toj-pudel-harakter/",
+    "title": "Той-пудель: характер и особенности породы",
+    "breed": "toj-pudel",
+    "teaser": "Почему той-пудель так быстро учится и с кем ему будет хорошо.",
+    "cover": "/assets/img/breed-toj-pudel.jpg",
+    "read_min": "[7]",
+    "keywords": [
+      "той пудель плюсы и минусы",
+      "той пудель характеристика",
+      "той пудель характер"
+    ],
+    "body": null
+  },
+  {
+    "slug": "toj-pudel-uhod",
+    "url": "/blog/toj-pudel-uhod/",
+    "title": "Той-пудель: уход, стрижка и размеры",
+    "breed": "toj-pudel",
+    "teaser": "Стрижки, уход за шерстью и каким вырастет той-пудель.",
+    "cover": "/assets/img/studio-pudel-yellow.jpg",
+    "read_min": "[7]",
+    "keywords": [
+      "той пудель размеры",
+      "той пудель сколько живут",
+      "стрижка пуделя",
+      "той пудель стрижка",
+      "той пудель уход"
+    ],
+    "body": null
+  },
+  {
+    "slug": "border-kolli-harakter",
+    "url": "/blog/border-kolli-harakter/",
+    "title": "Бордер-колли: характер и кому подходит порода",
+    "breed": "border-kolli",
+    "teaser": "Сколько движения нужно бордер-колли и почему без задач ему скучно.",
+    "cover": "/assets/img/breed-border-kolli.jpg",
+    "read_min": "[7]",
+    "keywords": [
+      "бордер колли характер",
+      "бордер колли плюсы и минусы",
+      "бордер колли характеристика"
+    ],
+    "body": null
+  },
+  {
+    "slug": "border-kolli-uhod",
+    "url": "/blog/border-kolli-uhod/",
+    "title": "Бордер-колли: уход, кормление и размеры",
+    "breed": "border-kolli",
+    "teaser": "Как ухаживать за шерстью, чем кормить и сколько живут бордер-колли.",
+    "cover": "/assets/img/studio-kolli-green.jpg",
+    "read_min": "[7]",
+    "keywords": [
+      "бордер колли размер",
+      "бордер колли сколько живут",
+      "бордер колли корм",
+      "бордер колли уход"
+    ],
+    "body": null
+  },
+  {
+    "slug": "kak-vybrat-shchenka",
+    "url": "/blog/kak-vybrat-shchenka/",
+    "title": "Как выбрать щенка: что спросить у заводчика",
+    "breed": null,
+    "teaser": "Вопросы, документы и признаки здоровья, на которые стоит смотреть до брони.",
+    "cover": "/assets/img/hero-four-breeds.jpg",
+    "read_min": "[7]",
+    "keywords": [
+      "как выбрать щенка",
+      "как выбрать щенка из помета"
+    ],
+    "body": null
+  }
+]

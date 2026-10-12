@@ -1,0 +1,100 @@
+{
+  "_note": "Shared site data. READ-ONLY for page-group agents. Values in [square brackets] are placeholders to replace with real data (see placeholders).",
+  "brand": "Puppy House",
+  "tagline": "питомник щенков · Москва",
+  "domain": "puppyhouse.ru",
+  "mirror": "домщенков.рф",
+  "as_of": "2026-10-12",
+  "theme_color": "#F3F2EF",
+  "phone": {
+    "display": "+7 (495) 123-45-67",
+    "tel": "tel:+74951234567",
+    "hours": "Ежедневно с 9:00 до 21:00",
+    "response": "Ответим за 15 минут, с 9:00 до 21:00"
+  },
+  "email": "hello@puppyhouse.ru",
+  "address": {
+    "city": "Москва",
+    "street": "[адрес питомника]",
+    "short": "Москва, приезд по записи",
+    "visit": "Приезд по предварительной записи"
+  },
+  "messengers": {
+    "telegram": { "label": "Telegram", "url": "https://t.me/puppyhouse_msk", "aria": "Написать в Telegram", "icon": "tg" },
+    "whatsapp": { "label": "WhatsApp", "url": "https://wa.me/74951234567", "aria": "Написать в WhatsApp", "icon": "wa" },
+    "max": { "label": "MAX", "url": "[ссылка на профиль в MAX]", "aria": "Написать в MAX", "icon": null }
+  },
+  "nav": [
+    { "label": "Щенки", "url": "/shchenki/" },
+    { "label": "Породы", "dropdown": "breeds" },
+    { "label": "Доставка", "url": "/dostavka/" },
+    { "label": "Отзывы", "url": "/otzyvy/" },
+    { "label": "О питомнике", "url": "/roditeli/" },
+    { "label": "Контакты", "url": "/kontakty/" }
+  ],
+  "breed_test": { "label": "Подобрать породу — тест", "url": "/podbor-porody/" },
+  "cta_label": "Подобрать щенка",
+  "footer": {
+    "columns": [
+      {
+        "title": "Щенки и породы",
+        "links": [
+          { "label": "Все щенки в наличии", "url": "/shchenki/" },
+          { "label": "Мальтипу", "url": "/maltipu/" },
+          { "label": "Французский бульдог", "url": "/francuzskij-buldog/" },
+          { "label": "Той-пудель", "url": "/toj-pudel/" },
+          { "label": "Бордер-колли", "url": "/border-kolli/" },
+          { "label": "Подбор породы — тест", "url": "/podbor-porody/" }
+        ]
+      },
+      {
+        "title": "Покупка",
+        "links": [
+          { "label": "Документы и гарантии", "url": "/dokumenty-i-garantii/" },
+          { "label": "Доставка", "url": "/dostavka/" },
+          { "label": "Рассрочка и бронь", "url": "/rassrochka/" },
+          { "label": "Щенок в подарок", "url": "/shchenok-v-podarok/" },
+          { "label": "Стартовый набор", "url": "/magazin/" },
+          { "label": "Вопросы и ответы", "url": "/faq/" }
+        ]
+      },
+      {
+        "title": "О питомнике",
+        "links": [
+          { "label": "Родители", "url": "/roditeli/" },
+          { "label": "Выпускники", "url": "/vypuskniki/" },
+          { "label": "Отзывы", "url": "/otzyvy/" },
+          { "label": "Блог", "url": "/blog/" },
+          { "label": "Контакты", "url": "/kontakty/" }
+        ]
+      }
+    ],
+    "legal": {
+      "requisites": "© 2017–2026 Puppy House · ИП [ФИО] · ИНН [000000000000] · ОГРНИП [000000000000000]",
+      "offer": "Сайт не является публичной офертой",
+      "privacy": { "label": "Политика конфиденциальности", "url": "/politika-konfidencialnosti/" }
+    }
+  },
+  "stats": [
+    { "num": "9 лет", "cap": "растим щенков", "icon": "calendar", "color": "coral" },
+    { "num": "640+", "cap": "выпускников дома", "icon": "home", "color": "sun" },
+    { "num": "4,9", "cap": "Яндекс Карты", "icon": "star", "color": "sky" },
+    { "num": "60+", "cap": "городов доставки", "icon": "pin", "color": "mint" }
+  ],
+  "ratings": [
+    { "num": "4,9", "label": "Яндекс", "full": "Яндекс Карты", "count": 128, "url": "[ссылка на карточку]" },
+    { "num": "4,8", "label": "Google", "full": "Google", "count": 64, "url": "[ссылка на карточку]" },
+    { "num": "5,0", "label": "Авито", "full": "Авито", "count": 87, "url": "[ссылка на профиль]" }
+  ],
+  "toast": "Раздел появится на следующем этапе",
+  "placeholders": [
+    "Телефон +7 (495) 123-45-67, ссылки Telegram / WhatsApp / MAX, почта, адрес питомника",
+    "Реквизиты ИП / ООО, ИНН, ОГРН / ОГРНИП, год основания [2017]",
+    "Цифры доверия: 9 лет, 640+ выпускников, рейтинг 4,9, 60+ городов",
+    "Рейтинги и число отзывов: Яндекс 4,9 / 128, Google 4,8 / 64, Авито 5,0 / 87 + ссылки",
+    "Число щенков (7 / 4 / 5 / 3, всего 19) — считается из puppies.json: плитки пород, «Весь каталог — 19» на главной, каталог",
+    "Все 19 щенков в puppies.json — образцы (8 с главной + 11 под счётчики пород: клички, окрасы, даты, фото); родители и прогноз веса — заглушки",
+    "Все отзывы в reviews.json — образцы для макета",
+    "Сроки доставки по городам в cities.json"
+  ]
+}

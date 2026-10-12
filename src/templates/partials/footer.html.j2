@@ -1,0 +1,41 @@
+{% import "macros/ui.html.j2" as ui %}
+{% set is_home = page.url == '/' %}
+  <!-- ================= ПОДВАЛ ================= -->
+  <footer class="footer container">
+    <div class="footer__tile">
+      <div class="footer__top">
+        <div class="footer__brand">
+          <a class="logo" href="{{ '#top' if is_home else '/' }}" aria-label="{{ site.brand }} — {{ 'наверх страницы' if is_home else 'на главную' }}">
+            <span class="logo__mark" aria-hidden="true">{{ ui.icon('paw') }}</span>
+            <span class="logo__text"><span class="logo__name">{{ site.brand }}</span><span class="logo__sub">{{ site.tagline }}</span></span>
+          </a>
+          <a class="footer__phone" href="{{ site.phone.tel }}">{{ site.phone.display }}</a>
+          <ul class="footer__info">
+            <li><svg class="i i--sm" aria-hidden="true"><use href="#i-clock"/></svg>{{ site.phone.hours|typo }}</li>
+            <li><svg class="i i--sm" aria-hidden="true"><use href="#i-pin"/></svg>{{ site.address.short|typo }}</li>
+            <li><svg class="i i--sm" aria-hidden="true"><use href="#i-mail"/></svg><a href="mailto:{{ site.email }}">{{ site.email }}</a></li>
+          </ul>
+          <div class="footer__msgs">
+            <a class="msgr msgr--tg" href="{{ site.messengers.telegram.url }}" target="_blank" rel="noopener" aria-label="{{ site.messengers.telegram.aria }}">{{ ui.icon('tg') }}</a>
+            <a class="msgr msgr--wa" href="{{ site.messengers.whatsapp.url }}" target="_blank" rel="noopener" aria-label="{{ site.messengers.whatsapp.aria }}">{{ ui.icon('wa') }}</a>
+          </div>
+        </div>
+        <nav class="footer__nav" aria-label="Разделы сайта">
+          {% for col in site.footer.columns %}
+          <div class="fcol">
+            <h2 class="fcol__h">{{ col.title|typo }}</h2>
+            <ul>
+              {% for l in col.links %}
+              <li><a href="{{ l.url }}">{{ l.label|typo }}</a></li>
+              {% endfor %}
+            </ul>
+          </div>
+          {% endfor %}
+        </nav>
+      </div>
+      <div class="footer__legal">
+        <span>{{ site.footer.legal.requisites|typo }}</span>
+        <span>{{ site.footer.legal.offer|typo }} · <a href="{{ site.footer.legal.privacy.url }}">{{ site.footer.legal.privacy.label }}</a> · {{ site.mirror }}</span>
+      </div>
+    </div>
+  </footer>
