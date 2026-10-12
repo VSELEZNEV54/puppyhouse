@@ -1,0 +1,151 @@
+{#- /shchenki/<slug>/ — puppy page (conversion). Context from routes/puppy.py:
+    p (puppy), b (its breed), meta, specs, docs, docs_note, colour_note, parents, gallery, gets, steps, related, lead_line.
+    Gallery and modal modes: assets/js/puppy.js. -#}
+{% extends "layouts/page.html.j2" %}
+
+{% block page_css %}
+  <link rel="stylesheet" href="/assets/css/puppy.css">
+{% endblock %}
+{% block page_js %}
+  <script src="/assets/js/puppy.js" defer></script>
+{% endblock %}
+
+{% block hero %}
+{%- set t = photo_tone(p.photo.src) if p.photo.kind == 'studio' and p.photo.get('backdrop') != 'token' else none -%}
+{%- set g0 = gallery[0] -%}
+{%- set g0size = imgsize(g0.src) -%}
+    <section class="pp container" id="shchenok" aria-labelledby="page-title">
+      <div class="pp__grid {{ p.tone_class }}"{% if t %} style="--tone:{{ t.top }};--tone-floor:{{ t.floor }}"{% endif %} data-pup data-name="{{ p.name }}" data-desc="{{ p.desc }}" data-img="{{ p.photo.src.rsplit('/', 1)[-1] }}" data-pp data-pp-status="{{ p.status }}" data-pp-breed="{{ b.name }}" data-pp-breed-gen="{{ b.name_plural_gen }}">
+        <div class="pp-gal">
+          <figure class="pp-stage pp-stage--{{ g0.kind }}" id="pp-stage" data-pp-stage>
+            <img class="pp-stage__img" src="{{ g0.src }}" alt="{{ g0.alt|typo }}" width="{{ g0size[0] }}" height="{{ g0size[1] }}" style="object-position:{{ g0.pos }}" fetchpriority="high" decoding="async" data-pp-img>
+            {% if p.status != 'available' %}
+            <span class="status pp-stage__status" data-pp-status-pill><span class="dot dot--{{ p.status_dot }}" aria-hidden="true"></span>{{ p.status_label|typo }}</span>
+            {% endif %}
+            <figcaption class="pp-stage__cap" data-pp-cap hidden></figcaption>
+            <button class="pp-play" type="button" data-open-modal data-pp-modal="video" data-pp-play hidden><span class="pp-play__ico" aria-hidden="true">{{ ui.icon('play') }}</span><span class="pp-play__txt">Видео по&nbsp;запросу</span></button>
+          </figure>
+          <ul class="pp-thumbs" aria-label="Фото и видео щенка">
+            {% for g in gallery %}
+            <li>
+              <button class="pp-thumb pp-thumb--{{ g.kind }}" type="button" aria-pressed="{{ 'true' if loop.first else 'false' }}" aria-controls="pp-stage" aria-label="{{ g.aria }}" data-pp-thumb data-kind="{{ g.kind }}" data-alt="{{ g.alt }}" data-pos="{{ g.pos }}" data-cap="{{ g.cap }}">
+                {% set gs = imgsize(g.src) %}
+                <img class="pp-thumb__img" src="{{ g.src }}" alt="" width="{{ gs[0] }}" height="{{ gs[1] }}" style="object-position:{{ g.tpos }}" loading="lazy" decoding="async">
+                {% if g.kind == 'video' %}<span class="pp-thumb__play" aria-hidden="true">{{ ui.icon('play', sm=true) }}</span>{% endif %}
+                <span class="pp-thumb__label" aria-hidden="true">{{ g.label|typo }}</span>
+              </button>
+            </li>
+            {% endfor %}
+          </ul>
+        </div>
+
+        <div class="pp-info">
+          <p class="pp-info__status pp-info__status--{{ p.status_dot }}"><span class="dot dot--{{ p.status_dot }}" aria-hidden="true"></span>{{ p.status_label|typo }}</p>
+          <h1 class="pp-title" id="page-title"><span class="pp-title__name">{{ p.name }}</span><span class="sr-only"> — </span> <span class="pp-title__sub">{{ ('щенок ' ~ b.name_gen)|typo }}</span></h1>
+          <p class="pp-meta">{% for m in meta %}<span>{{ m|typo }}</span>{% endfor %}</p>
+          {% if p.status == 'reserved' %}
+          <p class="pp-note pp-note--res">{{ ui.icon('info', sm=true) }}<span>{{ ('Этого щенка уже забронировали. Покажем похожих или напишем, когда появится новый помёт.')|typo }}</span></p>
+          {% elif p.status == 'soon' %}
+          <p class="pp-note pp-note--soon">{{ ui.icon('clock', sm=true) }}<span>{{ ('Бронь откроем скоро. Запишитесь в лист ожидания — пришлём видео и цену первыми.')|typo }}</span></p>
+          {% endif %}
+
+          <dl class="pp-specs">
+            {% for s in specs %}
+            <div class="pp-spec"><dt>{{ s.label|typo }}</dt><dd>{{ s.value|typo }}</dd></div>
+            {% endfor %}
+          </dl>
+          {% if colour_note %}<p class="pp-small">{{ colour_note|typo }}</p>{% endif %}
+
+          <div class="pp-docs">
+            {{ ui.badges(docs) }}
+            {% if docs_note %}<p class="pp-small">{{ docs_note|typo }}</p>{% endif %}
+          </div>
+
+          <div class="pp-cta" data-hero-ctas>
+            {% if p.status == 'available' %}
+            <button class="btn btn--ink btn--lg pp-cta__main" type="button" data-open-modal data-pp-main aria-label="Узнать цену: {{ p.name }}">Узнать цену</button>
+            <button class="btn btn--white btn--lg" type="button" data-open-modal data-pp-modal="video">{{ ui.icon('video') }}Видеозвонок со&nbsp;щенком</button>
+            {% elif p.status == 'soon' %}
+            <button class="btn btn--ink btn--lg pp-cta__main" type="button" data-open-modal data-pp-modal="wait">Записаться в&nbsp;лист ожидания</button>
+            <button class="btn btn--white btn--lg" type="button" data-open-modal data-pp-modal="video">{{ ui.icon('video') }}Видеозвонок со&nbsp;щенком</button>
+            {% else %}
+            <a class="btn btn--ink btn--lg pp-cta__main" href="#pohozhie">Похожие щенки {{ ui.icon('arrow', cls='pp-i-down') }}</a>
+            <button class="btn btn--white btn--lg" type="button" data-open-modal data-pp-modal="litter">Узнать о&nbsp;следующем помёте</button>
+            {% endif %}
+          </div>
+          <ul class="pp-trust" aria-label="Гарантии">
+            <li>{{ ui.icon('doc', sm=true) }}Бронь по&nbsp;договору</li>
+            <li>{{ ui.icon('shield', sm=true) }}Ветпаспорт</li>
+            <li>{{ ui.icon('car', sm=true) }}Доставка по&nbsp;России</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+{% endblock %}
+
+{% block body %}
+    <section class="section container" id="roditeli" aria-labelledby="roditeli-title">
+      {{ ui.section_head('Родители', id='roditeli-title', lead='Мама и папа щенка — покажем их по видео', link={'url': '/roditeli/', 'label': 'Все родители'}) }}
+      <ul class="pp-parents" data-reveal="items">
+        {% for par in parents %}
+        <li>
+          <article class="pp-parent tone--{{ par.tone }}{{ ' pp-parent--photo' if par.photo else ' pp-parent--ask' }}"{% if par.photo %} style="{{ tone_style(par.photo.src) }}"{% endif %} aria-labelledby="pp-parent-{{ loop.index }}">
+            <div class="pp-parent__txt">
+              <p class="pp-parent__role">{{ par.role_label }}</p>
+              <h3 class="pp-parent__name" id="pp-parent-{{ loop.index }}">{{ par.name|typo }}</h3>
+              <p class="pp-parent__breed">{{ par.breed|typo }}</p>
+              <ul class="pp-parent__facts">
+                {% for f in par.facts %}<li>{% if not f.startswith('[') %}{{ ui.icon('check', sm=true) }}{% endif %}{{ f|typo }}</li>{% endfor %}
+              </ul>
+              {% if not par.photo %}<p class="pp-parent__ask">{{ 'Фото и видео пришлём по запросу'|typo }}</p>{% endif %}
+            </div>
+            {% if par.photo %}
+            <div class="pp-parent__photo">{{ ui.img(par.photo.src, par.photo.alt) }}</div>
+            {% else %}
+            <span class="pp-parent__badge" aria-hidden="true">{{ ui.icon('video') }}</span>
+            {% endif %}
+          </article>
+        </li>
+        {% endfor %}
+      </ul>
+    </section>
+
+    <section class="section container" id="chto-poluchite" aria-labelledby="chto-poluchite-title">
+      {{ ui.section_head('Что получите вместе со щенком', id='chto-poluchite-title', link={'url': '/dokumenty-i-garantii/', 'label': 'Документы и гарантии'}) }}
+      <div class="pp-gets">
+        <ul class="pp-gets__list" data-reveal="items">
+          {% for g in gets %}
+          <li class="pp-get">
+            {{ ui.ico(g.icon, g.color) }}
+            <h3 class="pp-get__title">{{ g.title|typo }}</h3>
+            <p class="pp-get__line">{{ g.line|typo }}</p>
+          </li>
+          {% endfor %}
+        </ul>
+        <a class="pp-kit" href="/magazin/">
+          <span class="pp-kit__img">{{ ui.img('/assets/img/starter-kit.jpg', 'Лежанка, переноска, миски и игрушки для щенка') }}</span>
+          <span class="pp-kit__txt"><span class="pp-kit__title">{{ 'Соберём набор заранее'|typo }}</span><span class="pp-kit__line">{{ 'Лежанка, переноска, миски и игрушки'|typo }}</span></span>
+          {{ ui.round_arrow() }}
+        </a>
+      </div>
+    </section>
+
+    <section class="section container" id="kak-zabrat" aria-labelledby="kak-zabrat-title">
+      {{ ui.section_head('Как забрать щенка', id='kak-zabrat-title', link={'url': '/dostavka/', 'label': 'Доставка по России'}) }}
+      {{ ui.steps(steps) }}
+    </section>
+
+    {{ cards.pups_section(title='Похожие щенки', breed=b, id='pohozhie', exclude=p.slug) }}
+
+    <section class="section container" id="o-porode" aria-labelledby="o-porode-title">
+      {{ ui.section_head('Подробнее о породе', id='o-porode-title') }}
+      {{ ui.link_tiles(related) }}
+    </section>
+{% endblock %}
+
+{# «Похожие щенки» above replace the default strip #}
+{% block pups %}{% endblock %}
+
+{% block lead %}
+    {{ forms.lead_form(title='Подберём щенка за 15 минут', line=lead_line, tone=b.tone, breed=b.slug) }}
+{% endblock %}

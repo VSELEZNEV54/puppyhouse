@@ -1,0 +1,189 @@
+/* =========================================================
+   Хабы пород: /maltipu/, /francuzskij-buldog/, /toj-pudel/, /border-kolli/
+   Только раскладка блоков хаба — плитки, кнопки, карточки щенков берутся из main.css и pages.css.
+   ========================================================= */
+
+/* шапка: длинное название породы («Щенки французского бульдога») — в две строки по ширине текста, а не в четыре */
+.phero__title { max-width: none; }
+
+/* =========================================================
+   Щенки породы — все карточки сеткой (лентой на мобиле). «Ждёте другого щенка?» добирает последний ряд;
+   если делит ряд с карточками (а не стоит отдельной полосой), раскладка — колонкой по центру плитки
+   ========================================================= */
+@media (min-width: 1200px) {
+  .brd-fill:not(.brd-fill--a4) .soon-tile { flex-direction: column; justify-content: center; gap: 22px; text-align: center; }
+  .brd-fill:not(.brd-fill--a4) .soon-tile__txt { justify-items: center; }
+  .brd-fill:not(.brd-fill--a4) .soon-tile .btn { margin-left: 0; }
+}
+@media (min-width: 901px) and (max-width: 1199px) {
+  .brd-fill:not(.brd-fill--a3) .soon-tile { flex-direction: column; justify-content: center; gap: 22px; text-align: center; }
+  .brd-fill:not(.brd-fill--a3) .soon-tile__txt { justify-items: center; }
+  .brd-fill:not(.brd-fill--a3) .soon-tile .btn { margin-left: 0; }
+}
+@media (min-width: 761px) and (max-width: 900px) {
+  .brd-fill:not(.brd-fill--a2) .soon-tile { flex-direction: column; justify-content: center; gap: 22px; text-align: center; }
+  .brd-fill:not(.brd-fill--a2) .soon-tile__txt { justify-items: center; }
+  .brd-fill:not(.brd-fill--a2) .soon-tile .btn { margin-left: 0; }
+}
+
+/* =========================================================
+   «Какой он» — фото из жизни + четыре короткие карточки 2×2
+   ========================================================= */
+.brd-about { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: var(--gap); }
+.brd-about__media { position: relative; min-height: 340px; border-radius: var(--r-tile); overflow: hidden; background: #E7E1D8; }
+.brd-about__media img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.brd-about__list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--gap); }
+.brd-trait {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-rows: auto auto auto 1fr;
+  grid-template-areas: "label ico" "title title" "line line" ". .";
+  min-height: clamp(200px, 15vw, 232px);
+  padding: var(--tile-pad); border-radius: var(--r-tile); background: var(--tile);
+}
+.brd-trait__label { grid-area: label; align-self: center; font-size: 14px; font-weight: 500; color: var(--muted); }
+.brd-trait .ico { grid-area: ico; }
+.brd-trait__title { grid-area: title; margin-top: clamp(28px, 3vw, 44px); font-size: var(--fs-h3); font-weight: 600; letter-spacing: -0.025em; line-height: 1.15; }
+.brd-trait__line { grid-area: line; margin-top: 8px; font-size: 15px; line-height: 1.4; color: var(--muted); }
+
+/* =========================================================
+   «Окрасы» — три студийные плитки + плитка с остальными окрасами
+   ========================================================= */
+.brd-more {
+  position: relative; isolation: isolate;
+  display: flex; flex-direction: column; align-items: flex-start; gap: 16px;
+  height: 100%; aspect-ratio: 3 / 4;
+  padding: clamp(20px, 1.8vw, 26px);
+  border-radius: var(--r-tile);
+  background: linear-gradient(180deg, var(--tone) 0 55%, var(--tone-floor) 100%);
+  color: var(--ink); text-decoration: none;
+}
+.brd-more__title { font-size: clamp(20px, 1.6vw, 26px); font-weight: 600; letter-spacing: -0.03em; line-height: 1.08; }
+.brd-more__list { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; }
+.brd-more__list span {
+  display: inline-flex; align-items: center; min-height: 38px; padding: 6px 15px;
+  border-radius: var(--r-pill); background: rgba(255, 255, 255, .62);
+  font-size: 15px; font-weight: 500; line-height: 1.25;
+}
+.brd-more .round-arrow { position: absolute; z-index: 2; left: clamp(18px, 1.6vw, 24px); bottom: clamp(18px, 1.6vw, 24px); }
+a.brd-more:hover .round-arrow { background: var(--ink); color: #fff; }
+a.brd-more:hover .round-arrow .i { transform: rotate(45deg); }
+
+/* =========================================================
+   «Перед покупкой» — родители (студийное фото «в цвет»), цена, документы
+   ========================================================= */
+.brd-pre {
+  display: grid; gap: var(--gap);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-areas: "parents price price" "parents docs docs";
+}
+.brd-pre__parents { grid-area: parents; display: grid; container-type: inline-size; }
+.brd-pre__price { grid-area: price; }
+.brd-pre__docs { grid-area: docs; }
+/* плитка родителей тянется на две строки, но не ниже своих 3 : 4 — собака всегда целиком */
+.brd-pre__parents .stile { aspect-ratio: auto; height: 100%; min-height: calc(100cqi * 4 / 3); }
+
+.brd-card {
+  display: flex; flex-direction: column; align-items: flex-start;
+  padding: var(--tile-pad); border-radius: var(--r-tile); background: var(--tile);
+}
+.brd-card__head { align-self: stretch; display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; }
+.brd-card__title { font-size: clamp(24px, 2.1vw, 34px); font-weight: 600; letter-spacing: -0.03em; line-height: 1.06; }
+.brd-card__line { margin-top: 10px; font-size: 16px; line-height: 1.45; color: var(--muted); }
+.brd-card__chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+.brd-card__chips li {
+  display: inline-flex; align-items: center; min-height: 38px; padding: 6px 15px;
+  border-radius: var(--r-pill); background: var(--page);
+  font-size: 14px; font-weight: 500; line-height: 1.25;
+}
+.brd-card .badges { margin-top: 16px; }
+.brd-card .badges li { background: var(--page); }
+.brd-card__actions { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 28px; margin-top: auto; padding-top: 24px; }
+
+/* =========================================================
+   «Сравнить и почитать» — шесть ссылок: три сравнения и три материала, по три в ряд
+   ========================================================= */
+/* ссылок много — плитки компактные, в одну строку: кружок, текст, стрелка */
+.brd-links .ltiles { --n: 3; }
+.brd-links .ltile {
+  display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 18px;
+  min-height: 0; padding: 22px 22px 22px 24px;
+}
+.brd-links .ltile .face, .brd-links .ltile .ico { width: 52px; height: 52px; }
+.brd-links .ltile .round-arrow { margin: 0; }
+.brd-links .ltile__title { font-size: clamp(18px, 1.3vw, 21px); }
+
+/* =========================================================
+   АДАПТИВ
+   ========================================================= */
+@media (max-width: 1199px) {
+  .brd-links .ltiles { --n: 2; }
+}
+
+@media (max-width: 1000px) {
+  .brd-about { grid-template-columns: minmax(0, 1fr); }
+  .brd-about__media { min-height: 0; aspect-ratio: 16 / 9; }
+
+  /* факты в шапке — 2 × 2, а не 3 + 1 */
+  .phero__facts { display: grid; grid-template-columns: repeat(2, max-content); }
+
+  /* окрасы 2 × 2: плитки ниже, чем 3 : 4, чтобы два ряда не занимали весь экран */
+  .brd-colours .stile, .brd-colours .brd-more { aspect-ratio: 4 / 5; }
+
+  /* цена и документы рядом, родители — широкой плиткой: кадр справа во всю высоту, левый край гаснет в стену */
+  .brd-pre { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-areas: "price docs" "parents parents"; }
+  .brd-pre__parents .stile {
+    min-height: 0; height: clamp(232px, 56vw, 320px);
+    background: linear-gradient(180deg, var(--tone-top, var(--tone-hi)) 0, var(--tone-hi) 22%, var(--tone-hi) calc(var(--fa, .78) * 100%), var(--tone-floor) calc(var(--fb, .97) * 100%));
+  }
+  .brd-pre__parents .stile__top { max-width: 52%; }
+  .brd-pre__parents .stile__photo { left: auto; right: -6%; top: 0; bottom: 0; height: 100%; }
+  .brd-pre__parents .stile__photo img {
+    -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 34%), linear-gradient(180deg, transparent 0, #000 12%);
+    mask-image: linear-gradient(90deg, transparent 0, #000 34%), linear-gradient(180deg, transparent 0, #000 12%);
+    -webkit-mask-composite: source-in; mask-composite: intersect;
+  }
+}
+
+@media (max-width: 900px) {
+  .brd-links .ltiles { --n: 1; }
+}
+
+@media (max-width: 760px) {
+  .phero__title { max-width: none; }
+
+  .brd-about__media { aspect-ratio: 3 / 2; }
+  .brd-trait { min-height: 0; padding: 18px; }
+  .brd-trait__title { margin-top: 18px; }
+  .brd-trait__title { font-size: 19px; }
+  .brd-trait__line { margin-top: 6px; font-size: 14.5px; }
+
+  /* лента окрасов (pages.css: .stiles { display: grid } перекрывает ленту .scroller из main.css) */
+  .brd-colours.scroller { display: flex; }
+  .brd-colours .stile, .brd-colours .brd-more { aspect-ratio: 3 / 4; }
+  .brd-more { padding: 18px; }
+  .brd-more__list span { min-height: 34px; padding: 5px 13px; font-size: 14px; }
+
+  /* одна колонка: цена, документы, затем родители широкой плиткой */
+  .brd-pre { grid-template-columns: minmax(0, 1fr); grid-template-areas: "price" "docs" "parents"; }
+  .phero__facts { display: flex; }
+  .brd-card { padding: 20px; }
+  .brd-card__title { font-size: 24px; }
+  .brd-card .ico { width: 40px; height: 40px; }
+  .brd-card__line { font-size: 15px; }
+  .brd-card__chips li, .brd-card .badges li { min-height: 34px; font-size: 13.5px; }
+  .brd-card__actions { padding-top: 20px; }
+  .brd-card__actions .btn { flex: 1 1 100%; }
+
+  .brd-links .ltile { gap: 14px; padding: 14px 14px 14px 16px; }
+  .brd-links .ltile .face, .brd-links .ltile .ico { width: 44px; height: 44px; }
+  .brd-links .ltile__title { font-size: 18px; }
+}
+
+@media (max-width: 560px) {
+  .brd-about__list { grid-template-columns: minmax(0, 1fr); }
+  .brd-trait { grid-template-rows: auto auto auto; grid-template-areas: "label ico" "title ico" "line line"; row-gap: 2px; }
+  .brd-trait__title { margin-top: 0; }
+  .brd-trait__label { align-self: end; font-size: 13px; }
+  .brd-trait .ico { align-self: center; }
+}

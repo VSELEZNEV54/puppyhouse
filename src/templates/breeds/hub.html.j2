@@ -1,0 +1,123 @@
+{#- Breed hub (/maltipu/ and the other three) — one template, copy in data/breeds-hub.json, facts and photos in breeds.json.
+    Context: b (breed), hub (copy), pups (all puppies of the breed, sorted), colour_tiles, more_colours, links. -#}
+{% extends "layouts/page.html.j2" %}
+
+{% block page_css %}
+  <link rel="stylesheet" href="/assets/css/breeds.css">
+{% endblock %}
+
+{% block hero %}
+    {% call ui.page_hero(hub.h1, lead=hub.lead, breed=b, eyebrow=hub.eyebrow, facts=hub.facts) %}
+      {{ forms.price_button(cls='btn btn--ink btn--lg') }}
+      <a class="btn btn--white btn--lg" href="#shchenki">Смотреть щенков</a>
+    {% endcall %}
+{% endblock %}
+
+{% block body %}
+    <section class="section section--tight container" id="shchenki" aria-labelledby="shchenki-title">
+      {{ ui.section_head(hub.pups_title, id='shchenki-title', link={'url': '/shchenki/?breed=' ~ b.slug, 'label': 'Смотреть в каталоге'}) }}
+      {% if pups %}
+      {%- set n = pups|length %}
+      <ul class="pups brd-pups scroller" data-reveal="items">
+        {% for p in pups %}
+        <li class="pups__item">
+          {{ cards.puppy_card(p) }}
+        </li>
+        {% endfor %}
+        {#- brd-fill--aN: at N columns the tile has a row of its own (a wide band); otherwise it shares the last row with cards #}
+        <li class="pups__more pups__more--fill brd-fill{{ ' brd-fill--a4' if n % 4 == 0 }}{{ ' brd-fill--a3' if n % 3 == 0 }}{{ ' brd-fill--a2' if n % 2 == 0 }}" style="--s4:{{ 4 - n % 4 }};--s3:{{ 3 - n % 3 }};--s2:{{ 2 - n % 2 }}">
+          {{ cards.soon_tile() }}
+        </li>
+      </ul>
+      {% else %}
+      {{ ui.empty_state('Сейчас щенков нет в наличии', 'Оставьте заявку — напишем, когда появится новый помёт.') }}
+      {% endif %}
+    </section>
+
+    <section class="section container" id="kakoj-on" aria-labelledby="kakoj-on-title">
+      {{ ui.section_head(hub.about_title, id='kakoj-on-title') }}
+      <div class="brd-about">
+        <div class="brd-about__media">{{ ui.img(hub.about_photo.src, hub.about_photo.alt) }}</div>
+        <ul class="brd-about__list">
+          {% for t in hub.traits %}
+          <li class="brd-trait">
+            <p class="brd-trait__label">{{ t.label|typo }}</p>
+            {{ ui.ico(t.icon, t.color, sm=true) }}
+            <h3 class="brd-trait__title">{{ t.title|typo }}</h3>
+            <p class="brd-trait__line">{{ t.line|typo }}</p>
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
+    </section>
+
+    <section class="section container" id="okrasy" aria-labelledby="okrasy-title">
+      {{ ui.section_head(hub.colours_title, id='okrasy-title', lead=hub.colours_lead, link={'url': b.urls.varieties, 'label': 'Все виды и окрасы'}) }}
+      <ul class="stiles brd-colours scroller">
+        {% for t in colour_tiles %}
+        <li>{{ ui.studio_tile(t.photo, t.title, url=b.urls.varieties, badge=t.badge, tone=b.tone) }}</li>
+        {% endfor %}
+        {% if more_colours %}
+        <li>
+          <a class="brd-more {{ b.tone_class }}" href="{{ b.urls.varieties }}">
+            <span class="brd-more__title">{{ hub.more_title|typo }}</span>
+            <span class="brd-more__list">{% for c in more_colours %}<span>{{ c|typo }}</span>{% endfor %}</span>
+            {{ ui.round_arrow() }}
+          </a>
+        </li>
+        {% endif %}
+      </ul>
+    </section>
+
+    <section class="section container" id="pered-pokupkoj" aria-labelledby="pered-pokupkoj-title">
+      {{ ui.section_head('Перед покупкой', id='pered-pokupkoj-title') }}
+      <div class="brd-pre">
+        <div class="brd-pre__parents">
+          {{ ui.studio_tile(b.adult, 'Родители щенков', line=hub.parents_line, url='/roditeli/', tone=b.tone) }}
+        </div>
+        <div class="brd-pre__price brd-card">
+          <div class="brd-card__head">
+            <h3 class="brd-card__title">{{ hub.price_title|typo }}</h3>
+            {{ ui.ico('wallet', 'sun') }}
+          </div>
+          <p class="brd-card__line">Цену называем лично. Она зависит от:</p>
+          <ul class="brd-card__chips">
+            {% for f in hub.price_factors %}<li>{{ f|typo }}</li>{% endfor %}
+          </ul>
+          <div class="brd-card__actions">
+            {{ forms.price_button() }}
+            {{ ui.text_link(b.urls.price, 'Подробнее о цене') }}
+          </div>
+        </div>
+        <div class="brd-pre__docs brd-card">
+          <div class="brd-card__head">
+            <h3 class="brd-card__title">Документы на&nbsp;щенка</h3>
+            {{ ui.ico('doc', 'sky') }}
+          </div>
+          <p class="brd-card__line">{{ hub.docs_line|typo }}</p>
+          {{ ui.badges(hub.docs) }}
+          <div class="brd-card__actions">
+            {{ ui.text_link('/dokumenty-i-garantii/', 'Документы и гарантии') }}
+          </div>
+        </div>
+      </div>
+    </section>
+
+    {{ blocks.faq_section(hub.faq, title=hub.faq_title) }}
+
+    <section class="section container brd-links" id="sravnenie" aria-labelledby="sravnenie-title">
+      {{ ui.section_head('Сравнить и почитать', id='sravnenie-title') }}
+      {{ ui.link_tiles(links) }}
+    </section>
+
+    {% call blocks.seo_block(hub.seo.title, hub.seo.lead, id='o-porode') %}
+        {% for s in hub.seo.blocks %}
+        <h3>{{ s.h|typo }}</h3>
+        <p>{{ s.p|typo }}</p>
+        {% endfor %}
+    {% endcall %}
+{% endblock %}
+
+{% block lead %}
+    {{ forms.lead_form(title=hub.lead_title, line=hub.lead_line, tone=b.tone, breed=b.slug) }}
+{% endblock %}
