@@ -19,6 +19,12 @@ Two builds in a row must give no diff. Commit the generated `index.html` files t
 Several agents may build at the same time: every page and the manifest are written atomically, and a full build always
 renders every group, so the files on disk reflect whichever build ran last — rebuild right before you commit.
 
+## Typography rule from the client (12.10) — enforced by the build
+
+- **No capitals.** Never `text-transform: uppercase`, small-caps or text typed in capitals (headlines, labels, eyebrows, badges, buttons, tables). Normal sentence case everywhere. Abbreviations like РКФ, FCI, ДНК are fine.
+- **No heavy weights.** Geist is loaded only in 400 and 500. Headings, numbers, names, buttons: 500. Body: 400. Never 600/700/bold; `<b>`/`<strong>` render at 500. Hierarchy comes from size, colour (`--muted`) and spacing, not weight.
+- The build warns on every CSS line with uppercase or a weight above 500 and on every page with words in capitals — fix these warnings in your files.
+
 ## Ownership — who may edit what
 
 Shared, **read-only** for page groups (list any change you need in your final report instead):

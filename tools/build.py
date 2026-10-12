@@ -363,6 +363,22 @@ _TEXT_RE = re.compile(r"<(script|style)\b.*?</\1>|<[^>]+>", re.S | re.I)
 _TITLE_RE = re.compile(r"<title>(.*?)</title>", re.S)
 _DESC_RE = re.compile(r'<meta name="description" content="([^"]*)"')
 TITLE_MAX, DESC_MAX = 60, 160
+# Стиль клиента: без капса и без жирных начертаний (максимум 500).
+_CAPS_WORD_RE = re.compile(r"\b[А-ЯЁA-Z]{4,}\b")
+CAPS_OK = {"FCI", "ФКС", "ДНК", "ИНН", "ОГРН", "ОГРНИП", "КПП", "БИК", "ОКПО", "ОКВЭД", "MAX", "HTML", "SMS", "PDF", "WhatsApp"}
+_CSS_CAPS_RE = re.compile(r"text-transform\s*:\s*uppercase|font-variant(?:-caps)?\s*:\s*(?:all-)?small-caps", re.I)
+_CSS_WEIGHT_RE = re.compile(r"font-weight\s*:\s*(\d{3}|bold|bolder)", re.I)
+
+
+def lint_css(rep: "Report") -> None:
+    """Каждый stylesheet: без капса и весов больше 500 (замечание клиента 12.10)."""
+    for css in sorted((ROOT / "assets" / "css").glob("*.css")):
+        for n, line in enumerate(css.read_text(encoding="utf-8").splitlines(), 1):
+            if _CSS_CAPS_RE.search(line):
+                rep.warn(f"{css.relative_to(ROOT)}:{n}: uppercase text is not allowed (client style rule) — use normal case")
+            for w in _CSS_WEIGHT_RE.findall(line):
+                if w.lower() in ("bold", "bolder") or int(w) > 500:
+                    rep.warn(f"{css.relative_to(ROOT)}:{n}: font-weight {w} — max 500 on this site (client style rule)")
 
 
 def lint(html: str, url: str, rep: Report) -> None:
@@ -400,6 +416,9 @@ def lint(html: str, url: str, rep: Report) -> None:
         rep.warn(f"{where} looks like a price: «{_PRICE_RE.search(text).group(0)}» (no prices on the site)")
     if _BANNED_RE.search(text):
         rep.warn(f"{where} banned wording: «{_BANNED_RE.search(text).group(0)}»")
+    caps = sorted({w for w in _CAPS_WORD_RE.findall(htmllib.unescape(text)) if w not in CAPS_OK and not re.fullmatch(r"[A-Z]\d*", w)})
+    if caps:
+        rep.warn(f"{where} words in capitals: {', '.join(caps[:6])} — write in normal case (client style rule)")
 
 
 # ---------------------------------------------------------------- output
@@ -527,6 +546,8 @@ def main(argv=None) -> int:
             changed += 1
         if url != KIT_URL:  # the dev kit is git-ignored and never listed in the manifest
             written.append(out.relative_to(ROOT).as_posix())
+
+    lint_css(rep)
 
     for path, pages in sorted(rw.missing.items()):
         rep.warn(f"missing file {path} (used on {', '.join(sorted(pages)[:3])}{' …' if len(pages) > 3 else ''})")
