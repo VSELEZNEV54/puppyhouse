@@ -1,0 +1,116 @@
+{#- Parts of the trust pages (/roditeli/, /vypuskniki/, /otzyvy/, /dokumenty-i-garantii/).
+    Import: {% import "trust/_parts.html.j2" as tr %}. Text params are plain text (escaped, |typo). -#}
+{% import "macros/ui.html.j2" as ui %}
+
+{#- Page hero with a lifestyle photo: the photo does not blend — it stands in the tile with an 8 px inset
+    and a 20 px radius (CONVENTIONS «Photos and tones»). h = {"h1", "lead", "eyebrow", "photo": {src, alt}, "pos", "chips"}.
+    caller() → buttons. Renders the page's single H1. -#}
+{% macro framed_hero(h, tone='cream') -%}
+<section class="phero tr-hero container" aria-labelledby="page-title">
+  <div class="phero__tile tr-hero__tile tone--{{ tone }}" data-hero-ctas>
+    <div class="phero__copy tr-hero__copy">
+      {% if h.eyebrow %}<p class="eyebrow"><span class="eyebrow__dot" aria-hidden="true"></span>{{ h.eyebrow|typo }}</p>{% endif %}
+      <h1 class="phero__title" id="page-title">{{ h.h1|typo }}</h1>
+      {% if h.lead %}<p class="phero__lead">{{ h.lead|typo }}</p>{% endif %}
+      {% if h.chips is defined and h.chips %}
+      <ul class="phero__chips">
+        {% for c in h.chips %}<li>{{ ui.icon(c.icon, sm=true) }}{{ c.label|typo }}</li>{% endfor %}
+      </ul>
+      {% endif %}
+      {% if caller is defined %}<div class="phero__actions">{{ caller() }}</div>{% endif %}
+    </div>
+    <figure class="tr-hero__media" style="--pos:{{ h.pos if h.pos is defined else '50% 50%' }}">{{ ui.img(h.photo.src, h.photo.alt, priority=true) }}</figure>
+  </div>
+</section>
+{%- endmacro %}
+
+{#- White tiles: coloured icon, short title, one line. items: [{icon, color, title, line}] -#}
+{% macro feats(items) -%}
+<ul class="tr-feats tr-feats--{{ items|length }}" data-reveal="items">
+  {% for f in items %}
+  <li class="tr-feat">
+    {{ ui.ico(f.icon, f.color) }}
+    <h3 class="tr-feat__title">{{ f.title|typo }}</h3>
+    <p class="tr-feat__line">{{ f.line|typo }}</p>
+  </li>
+  {% endfor %}
+</ul>
+{%- endmacro %}
+
+{#- Parent tile — ui.studio_tile technique (the tile takes the photo's measured backdrop, the photo stands on the
+    tile floor) with a name, a role line and up to two small pills. p = {name, role, pills, b: breeds.json item} -#}
+{% macro parent_tile(p) -%}
+{%- set photo = p.b.adult -%}
+{%- set size = imgsize(photo.src) -%}
+<article class="stile tr-parent tone--{{ p.b.tone }}" style="--ar:{{ size[0] }}/{{ size[1] }};{{ tone_style(photo.src) }}">
+  <div class="stile__top">
+    <h3 class="stile__title">{{ p.name|typo }}</h3>
+    <p class="stile__line">{{ p.role|typo }}</p>
+    <ul class="tr-pills">
+      {% for x in p.pills %}<li>{% if not x.startswith('[') %}{{ ui.icon('check', sm=true) }}{% endif %}{{ x|typo }}</li>{% endfor %}
+    </ul>
+  </div>
+  <div class="stile__photo"><img src="{{ photo.src }}" alt="{{ photo.alt|typo }}" width="{{ size[0] }}" height="{{ size[1] }}" loading="lazy" decoding="async"></div>
+</article>
+{%- endmacro %}
+
+{#- Graduate story: breed face, «Кличка, город», breed · age, 2–3 sentences. s = {name, meta, text, b} -#}
+{% macro story(s) -%}
+<article class="tr-story">
+  <div class="tr-story__head">
+    {{ ui.face(s.b) }}
+    <div>
+      <h3 class="tr-story__name">{{ s.name|typo }}</h3>
+      <p class="tr-story__meta">{{ s.meta|typo }}</p>
+    </div>
+  </div>
+  <p class="tr-story__text">{{ s.text|typo }}</p>
+</article>
+{%- endmacro %}
+
+{#- Full review card for /otzyvy/: stars + source, full text, avatar, name and city, breed · puppy. r = reviews.json item -#}
+{% macro review(r) -%}
+<article class="review tr-rv">
+  <div class="tr-rv__top">
+    <span class="stars" role="img" aria-label="Оценка {{ r.rating }} из 5">{% for _ in range(r.rating) %}{{ ui.icon('star') }}{% endfor %}</span>
+    <span class="tr-rv__src">{{ r.source|typo }}</span>
+  </div>
+  <blockquote class="review__text"><p>{{ r.text|typo }}</p></blockquote>
+  <p class="review__who"><span class="ava" style="--c:var(--{{ r.color }})" aria-hidden="true">{{ r.name[0] }}</span><span><b>{{ r.name|typo }}, {{ r.city|typo }}</b><span>{{ r.breed_label|typo }} · {{ r.pup }}</span></span></p>
+</article>
+{%- endmacro %}
+
+{#- Document card: icon, title, one line, which breeds get it (faces + label). d = trust.json docs item + fit_breeds -#}
+{% macro doc_card(d) -%}
+<article class="tr-doc">
+  {{ ui.ico(d.icon, d.color) }}
+  {#- a hyphenated word («купли-продажи») never breaks at its hyphen -#}
+  <h3 class="tr-doc__title">{% for w in d.title.split(' ') %}{% if '-' in w %}<span class="nw">{{ w }}</span>{% else %}{{ w|typo }}{% endif %}{{ ' ' if not loop.last }}{% endfor %}</h3>
+  <p class="tr-doc__line">{{ d.line|typo }}</p>
+  <p class="tr-doc__fit"><span class="tr-doc__faces" aria-hidden="true">{% for b in d.fit_breeds %}{{ ui.face(b) }}{% endfor %}</span><span>{{ d.fit|typo }}</span></p>
+</article>
+{%- endmacro %}
+
+{#- List with green check circles. items: plain strings -#}
+{% macro checks(items, cls='') -%}
+<ul class="tr-checks{{ ' ' ~ cls if cls }}">
+  {% for x in items %}<li><span class="tr-checks__ico" aria-hidden="true">{{ ui.icon('check', sm=true) }}</span><span>{{ x|typo }}</span></li>{% endfor %}
+</ul>
+{%- endmacro %}
+
+{#- CTA band (the ui.cta_band look) wrapped in its own section, so the H2 gets an id for aria-labelledby.
+    attrs: the button's opening attribute — 'data-open-modal' (shared «Узнать цену» modal) or 'data-rv-open' (review modal). -#}
+{% macro band(id, title, line=none, label='Узнать цену', tone='lilac', attrs='data-open-modal') -%}
+<section class="section container" id="{{ id }}" aria-labelledby="{{ id }}-title">
+  <div class="cta-band tone--{{ tone }}">
+    <div class="cta-band__txt">
+      <h2 class="cta-band__title" id="{{ id }}-title">{{ title|typo }}</h2>
+      {% if line %}<p class="cta-band__line">{{ line|typo }}</p>{% endif %}
+    </div>
+    <span class="cta-band__faces" aria-hidden="true">{% for b in breeds %}{{ ui.face(b) }}{% endfor %}</span>
+    <div class="cta-band__actions">
+      <button class="btn btn--ink btn--lg" type="button" {{ attrs }}>{{ label|typo }}</button>
+    </div>
+  </div>
+</section>
+{%- endmacro %}

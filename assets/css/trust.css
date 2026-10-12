@@ -1,0 +1,241 @@
+/* =========================================================
+   Страницы доверия: /roditeli/, /vypuskniki/, /otzyvy/, /dokumenty-i-garantii/.
+   Только раскладка своих блоков — плитки, кнопки, FAQ, формы, модалка берутся из main.css и pages.css.
+   ========================================================= */
+
+/* =========================================================
+   ШАПКА С ФОТО ИЗ ЖИЗНИ — фото не растворяется, а стоит в плитке с отступом 8 px и радиусом 20 px
+   ========================================================= */
+.tr-hero__tile {
+  display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.12fr);
+  gap: clamp(24px, 3vw, 48px);
+  min-height: clamp(380px, 34vw, 520px);
+  padding: var(--inset) var(--inset) var(--inset) clamp(28px, 3.4vw, 52px);
+}
+.tr-hero__copy { max-width: none; padding-block: clamp(20px, 2.6vw, 44px); }
+.tr-hero__media { position: relative; margin: 0; border-radius: var(--r-img); overflow: hidden; background: #E7E1D8; }
+.tr-hero__media img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: var(--pos, 50% 50%); }
+
+/* =========================================================
+   БЕЛЫЕ ПЛИТКИ С ИКОНКОЙ — «Как растим щенков», «Гарантии по договору»
+   ========================================================= */
+.tr-feats { display: grid; grid-template-columns: repeat(var(--n, 3), minmax(0, 1fr)); gap: var(--gap); }
+.tr-feats--2 { --n: 2; }
+.tr-feats--4 { --n: 4; }
+.tr-feats > li { min-width: 0; }
+.tr-feat {
+  display: flex; flex-direction: column; align-items: flex-start;
+  height: 100%;
+  padding: var(--tile-pad); border-radius: var(--r-tile); background: var(--tile);
+}
+.tr-feat__title { margin-top: clamp(28px, 3vw, 44px); font-size: var(--fs-h3); font-weight: 500; letter-spacing: -0.025em; line-height: 1.15; }
+.tr-feat__line { margin-top: 8px; font-size: 15px; line-height: 1.45; color: var(--muted); max-width: 36ch; }
+
+/* =========================================================
+   РОДИТЕЛИ — студийные плитки (ui.studio_tile) с кличкой, ролью и метками
+   ========================================================= */
+.tr-pills { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+.tr-pills li {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 5px 11px; border-radius: var(--r-pill);
+  background: rgba(255, 255, 255, .62); font-size: 12.5px; font-weight: 500; line-height: 1.3;
+}
+.tr-pills .i { width: 13px; height: 13px; stroke-width: 2.2; }
+
+.tr-note {
+  display: flex; align-items: flex-start; gap: 10px;
+  margin-top: 16px; padding: 0 4px;
+  font-size: 14px; line-height: 1.45; color: var(--muted);
+}
+.tr-note .i { margin-top: 2px; }
+
+/* =========================================================
+   ИСТОРИИ ВЫПУСКНИКОВ
+   ========================================================= */
+.tr-stories { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--gap); }
+.tr-stories > li { min-width: 0; }
+.tr-story {
+  height: 100%; display: flex; flex-direction: column; gap: 22px;
+  padding: var(--tile-pad); border-radius: var(--r-tile); background: var(--tile);
+}
+.tr-story__head { display: flex; align-items: center; gap: 14px; }
+.tr-story .face { width: 56px; height: 56px; }
+.tr-story__name { font-size: 19px; font-weight: 500; letter-spacing: -0.02em; line-height: 1.2; }
+.tr-story__meta { margin-top: 3px; font-size: 14px; line-height: 1.3; color: var(--muted); }
+.tr-story__text { font-size: 16px; line-height: 1.5; }
+
+/* =========================================================
+   ОТЗЫВЫ — рейтинги, «Оставить отзыв», фильтр, карточки
+   ========================================================= */
+.tr-rate { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 1fr); gap: var(--gap); margin-bottom: clamp(32px, 3.4vw, 52px); }
+.tr-rate .ratings { grid-template-rows: none; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+@media (min-width: 761px) { .tr-rate .rating { padding: 20px 26px; } } /* на телефоне — компактные отступы из main.css */
+.tr-write {
+  display: flex; flex-direction: column; align-items: flex-start; gap: 4px;
+  padding: 20px 24px; border-radius: var(--r-tile);
+  background: linear-gradient(180deg, var(--tone) 0 55%, var(--tone-floor) 100%);
+}
+.tr-write__title { font-size: 20px; font-weight: 500; letter-spacing: -0.02em; line-height: 1.15; }
+.tr-write__line { font-size: 14px; line-height: 1.4; color: var(--ink-soft); }
+.tr-write .btn { margin-top: 12px; }
+
+.tr-filter { display: flex; align-items: center; justify-content: space-between; gap: 10px 24px; margin-bottom: 18px; }
+.tr-filter .chips { margin-bottom: 0; min-width: 0; }
+.tr-filter__count { font-size: 15px; font-weight: 500; white-space: nowrap; }
+
+.tr-rvlist { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--gap); }
+.tr-rvlist > li { min-width: 0; display: flex; }
+.tr-rv { width: 100%; gap: 22px; }
+.tr-rv__top { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.tr-rv .stars .i { width: 16px; height: 16px; }
+.tr-rv__src { font-size: 13px; line-height: 1.3; color: var(--muted); text-align: right; }
+
+/* модалка «Оставить отзыв»: звёзды-оценка и поле отзыва */
+.tr-stars__row { display: flex; gap: 2px; margin-left: -6px; }
+.tr-stars input { position: absolute; opacity: 0; width: 1px; height: 1px; pointer-events: none; }
+.tr-stars label {
+  display: grid; place-items: center; width: 44px; height: 44px; border-radius: 12px;
+  color: var(--line-2); cursor: pointer; transition: color .15s, transform .2s var(--ease);
+}
+.tr-stars label .i { width: 30px; height: 30px; }
+.tr-stars label:hover { transform: scale(1.08); }
+.tr-stars input:focus-visible + label { outline: 2px solid var(--ink); outline-offset: -2px; }
+.tr-stars input:checked + label,
+.tr-stars__row:has(#rm-r2:checked) label:nth-of-type(-n+2),
+.tr-stars__row:has(#rm-r3:checked) label:nth-of-type(-n+3),
+.tr-stars__row:has(#rm-r4:checked) label:nth-of-type(-n+4),
+.tr-stars__row:has(#rm-r5:checked) label:nth-of-type(-n+5) { color: var(--coral-strong); }
+.tr-textarea { height: auto; min-height: 118px; padding: 14px 18px; line-height: 1.5; resize: vertical; }
+
+/* =========================================================
+   ДОКУМЕНТЫ — карточки документов, прививки, чип, осмотр
+   ========================================================= */
+.tr-docs { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--gap); }
+.tr-docs > li { min-width: 0; }
+.tr-doc {
+  height: 100%; display: flex; flex-direction: column; align-items: flex-start;
+  padding: var(--tile-pad); border-radius: var(--r-tile); background: var(--tile);
+}
+.tr-doc__title { margin-top: 26px; font-size: var(--fs-h3); font-weight: 500; letter-spacing: -0.025em; line-height: 1.15; }
+.tr-doc__line { margin-top: 8px; font-size: 15px; line-height: 1.45; color: var(--muted); }
+.tr-doc__fit {
+  display: flex; align-items: center; gap: 10px;
+  margin-top: auto; padding-top: 24px;
+  font-size: 13.5px; font-weight: 500; line-height: 1.3;
+}
+.tr-doc__faces { display: flex; flex: none; }
+.tr-doc__faces .face { width: 32px; height: 32px; border: 2px solid #fff; }
+.tr-doc__faces .face + .face { margin-left: -9px; }
+
+.tr-side { display: grid; grid-template-rows: minmax(0, 1fr) auto; gap: var(--gap); }
+.tr-side .tr-checks--big { margin-top: 10px; }
+.tr-box { padding: clamp(22px, 2.8vw, 40px); border-radius: var(--r-tile); background: var(--tile); }
+.tr-box--tone { background: linear-gradient(180deg, var(--tone) 0 55%, var(--tone-floor) 100%); }
+.tr-box--tone .ico { background: #fff; }
+.tr-box__title { display: flex; align-items: center; gap: 12px; font-size: var(--fs-h3); font-weight: 500; letter-spacing: -0.025em; line-height: 1.15; }
+.tr-box__text { margin-top: 12px; font-size: 15.5px; line-height: 1.5; color: var(--ink-soft); max-width: 54ch; }
+
+.tr-checks { display: grid; gap: 12px; margin-top: 18px; }
+.tr-checks li { display: flex; align-items: flex-start; gap: 12px; font-size: 16px; line-height: 1.45; }
+.tr-checks__ico { width: 26px; height: 26px; flex: none; border-radius: 50%; display: grid; place-items: center; background: var(--mint-50); }
+.tr-checks__ico .i { width: 15px; height: 15px; color: var(--ok); stroke-width: 2.4; }
+
+.tr-return { margin-top: var(--gap); }
+.tr-return .callout { border-radius: var(--r-tile); padding: 20px clamp(20px, 2.2vw, 28px); }
+
+.tr-health__media { min-height: clamp(320px, 30vw, 460px); margin: 0; }
+.tr-cap {
+  position: absolute; left: 12px; bottom: 12px; max-width: calc(100% - 24px);
+  padding: 7px 14px; border-radius: var(--r-pill);
+  background: rgba(255, 255, 255, .9); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px);
+  font-size: 13px; font-weight: 500; line-height: 1.3;
+}
+.tr-box--big { display: flex; flex-direction: column; justify-content: center; }
+.tr-checks--big { margin-top: 0; gap: 0; }
+.tr-checks--big li { padding: 18px 0; font-size: clamp(16px, 1.3vw, 19px); letter-spacing: -0.01em; }
+.tr-checks--big li + li { border-top: 1px solid var(--line); }
+.tr-checks--big .tr-checks__ico { width: 30px; height: 30px; margin-top: -1px; }
+
+/* =========================================================
+   АДАПТИВ
+   ========================================================= */
+@media (max-width: 1199px) {
+  .tr-hero__tile { grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); }
+  /* родители: в узкой плитке кличка, роль и метки переносятся и закрывают морду — две плитки в ряд */
+  .tr-parents { --n: 2; }
+  .tr-feats--4, .tr-docs { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .tr-rate { grid-template-columns: minmax(0, 1fr); }
+  .tr-write { flex-direction: row; flex-wrap: wrap; align-items: center; column-gap: 20px; }
+  .tr-write__title { flex: none; }
+  .tr-write__line { flex: 1 1 200px; }
+  .tr-write .btn { margin: 0 0 0 auto; }
+  /* прививки: график во всю ширину, ветпаспорт и чип — под ним */
+  .tr-vax { grid-template-columns: minmax(0, 1fr); }
+  .tr-side { grid-template-rows: none; }
+}
+
+@media (max-width: 1000px) {
+  .tr-rvlist { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  /* main.css кладёт карточку отзыва набок ниже 1000 px — в сетке страницы отзывов она остаётся столбиком */
+  .tr-rv { flex-direction: column; align-items: stretch; gap: 22px; }
+  .tr-rv .review__text { flex: none; }
+  .tr-rv .review__who { margin-top: auto; flex: none; }
+  .tr-stories { grid-template-columns: minmax(0, 1fr); }
+  .tr-story { display: grid; grid-template-columns: minmax(0, 260px) minmax(0, 1fr); align-items: center; gap: 24px; }
+  .tr-health__media { min-height: 0; aspect-ratio: 16 / 9; }
+}
+
+/* три ссылки-плитки — тремя колонками и на планшете, без «сироты» во втором ряду */
+@media (min-width: 761px) and (max-width: 1000px) {
+  .ltiles--3 { --n: 3; }
+}
+
+@media (max-width: 900px) {
+  /* шапка с фото: фото сверху во всю ширину плитки, текст под ним */
+  .tr-hero__tile { grid-template-columns: minmax(0, 1fr); gap: 0; min-height: 0; padding: var(--inset); }
+  .tr-hero__media { order: -1; aspect-ratio: 16 / 9; }
+  .tr-hero__copy { padding: clamp(18px, 3vw, 28px) clamp(12px, 3vw, 28px) clamp(12px, 2vw, 20px); }
+  .tr-filter { display: grid; grid-template-columns: minmax(0, 1fr); gap: 4px; }
+  .tr-filter .chips { margin-bottom: 0; }
+  .tr-filter__count { padding: 0 4px; font-size: 14px; color: var(--muted); }
+}
+
+@media (max-width: 760px) {
+  .tr-hero__media { aspect-ratio: 4 / 3; }
+  .tr-hero__copy { padding: 18px 12px 12px; }
+  .tr-hero .phero__chips { margin-inline: -20px; padding-inline: 20px; }
+
+  /* плитки с иконкой — компактной строкой: иконка слева, текст справа */
+  .tr-feats, .tr-feats--4 { grid-template-columns: minmax(0, 1fr); }
+  .tr-feat { display: grid; grid-template-columns: auto minmax(0, 1fr); column-gap: 14px; row-gap: 2px; align-items: start; padding: 18px; }
+  .tr-feat .ico { grid-row: 1 / 3; margin: 0; }
+  .tr-feat__title { margin-top: 0; font-size: 19px; align-self: end; }
+  .tr-feat__line { margin-top: 0; font-size: 14.5px; }
+
+  /* лента родителей: pages.css объявляет .stiles сеткой позже, чем main.css — ленту .scroller, возвращаем flex */
+  .tr-parents.scroller { display: flex; }
+  .tr-parents.scroller > li { width: 66%; max-width: 280px; }
+
+  .tr-story { display: flex; align-items: stretch; gap: 16px; padding: 20px; }
+  .tr-story .face { width: 48px; height: 48px; }
+
+  .tr-rate { margin-bottom: 28px; }
+  .tr-write { display: grid; grid-template-columns: minmax(0, 1fr); gap: 2px; padding: 18px 20px 20px; }
+  .tr-write .btn { margin: 12px 0 0; width: 100%; }
+  .tr-rvlist { grid-template-columns: minmax(0, 1fr); }
+  .tr-rv { padding: 20px; }
+
+  .tr-docs { grid-template-columns: minmax(0, 1fr); }
+  .tr-doc { display: grid; grid-template-columns: auto minmax(0, 1fr); column-gap: 14px; align-items: start; padding: 18px; }
+  .tr-doc .ico { grid-row: 1 / 3; }
+  .tr-doc__title { margin-top: 0; font-size: 19px; }
+  .tr-doc__line { margin-top: 2px; font-size: 14.5px; }
+  .tr-doc__fit { grid-column: 2; padding-top: 12px; }
+  .tr-doc__faces .face { width: 28px; height: 28px; }
+
+  .tr-box { padding: 20px; }
+  .tr-checks li { font-size: 15.5px; }
+  .tr-checks--big li { padding: 14px 0; font-size: 16px; }
+  .tr-health__media { aspect-ratio: 4 / 3; }
+  .tr-return .callout { padding: 16px 18px; }
+}

@@ -1,0 +1,79 @@
+{#- /dokumenty-i-garantii/ — documents, vaccinations, chip, contract guarantees, vet check.
+    Context (routes/trust.py): pg (data/trust.json → dokumenty), docs (items + fit_breeds), faq_items. -#}
+{% extends "layouts/page.html.j2" %}
+{% import "trust/_parts.html.j2" as tr %}
+
+{% block page_css %}
+  <link rel="stylesheet" href="/assets/css/trust.css">
+{% endblock %}
+
+{% block sprite_extra %}
+    <symbol id="i-chip" viewBox="0 0 24 24"><rect x="7" y="7" width="10" height="10" rx="2"/><path d="M10 7V4M14 7V4M10 20v-3M14 20v-3M7 10H4M7 14H4M20 10h-3M20 14h-3"/></symbol>
+{% endblock %}
+
+{% block hero %}
+    {% call tr.framed_hero(pg.hero, tone='sky') %}
+      {{ forms.price_button(cls='btn btn--ink btn--lg') }}
+      <a class="btn btn--white btn--lg" href="/shchenki/">Смотреть щенков</a>
+    {% endcall %}
+{% endblock %}
+
+{% block body %}
+    <section class="section section--tight container" id="dokumenty" aria-labelledby="dokumenty-title">
+      {{ ui.section_head(pg.docs.title, id='dokumenty-title', lead=pg.docs.lead) }}
+      <ul class="tr-docs" data-reveal="items">
+        {% for d in docs %}
+        <li>{{ tr.doc_card(d) }}</li>
+        {% endfor %}
+      </ul>
+    </section>
+
+    <section class="section container" id="privivki" aria-labelledby="privivki-title">
+      {{ ui.section_head(pg.vax.title, id='privivki-title', lead=pg.vax.lead) }}
+      <div class="split tr-vax">
+        {{ ui.timeline(pg.vax.steps) }}
+        <div class="tr-side">
+          <div class="tr-box">
+            <h3 class="tr-box__title">{{ ui.ico('book', 'sun', sm=true) }}{{ pg.vax.passport_title|typo }}</h3>
+            {{ tr.checks(pg.vax.passport, cls='tr-checks--big') }}
+          </div>
+          <div class="tr-box tr-box--tone tone--mint" id="chip">
+            <h3 class="tr-box__title">{{ ui.ico('chip', 'mint', sm=true) }}{{ pg.vax.chip_title|typo }}</h3>
+            <p class="tr-box__text">{{ pg.vax.chip_line|typo }}</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section container" id="garantii" aria-labelledby="garantii-title">
+      {{ ui.section_head(pg.guarantees.title, id='garantii-title', lead=pg.guarantees.lead) }}
+      {{ tr.feats(pg.guarantees['items']) }}
+      <div class="tr-return">
+        {% call ui.callout('info', pg.guarantees.return_title) %}<p>{{ pg.guarantees.return_text|typo }}</p>{% endcall %}
+      </div>
+    </section>
+
+    <section class="section container" id="osmotr" aria-labelledby="osmotr-title">
+      {{ ui.section_head(pg.health.title, id='osmotr-title', link={'url': '/roditeli/', 'label': 'Родители щенков'}) }}
+      <div class="split tr-health">
+        <figure class="split__media tr-health__media">
+          {{ ui.img(pg.health.photo.src, pg.health.photo.alt) }}
+          <figcaption class="tr-cap">{{ pg.health.caption|typo }}</figcaption>
+        </figure>
+        <div class="tr-box tr-box--big">
+          {{ tr.checks(pg.health['items'], cls='tr-checks--big') }}
+        </div>
+      </div>
+    </section>
+
+    {{ blocks.faq_section(faq_items, title=pg.faq_title, id='voprosy') }}
+
+    {{ tr.band('vybrali-shchenka', pg.cta.title, line=pg.cta.line, label=pg.cta.label, tone='sky') }}
+
+    {% call blocks.seo_block(pg.seo.title, pg.seo.lead, id='o-dokumentah', key='seo') %}
+        {% for s in pg.seo.blocks %}
+        <h3>{{ s.h|typo }}</h3>
+        <p>{{ s.p|typo }}</p>
+        {% endfor %}
+    {% endcall %}
+{% endblock %}

@@ -1,0 +1,127 @@
+{#- /otzyvy/ — all reviews with a breed filter and the «Оставить отзыв» modal (assets/js/trust.js).
+    Context (routes/trust.py): pg (data/trust.json → otzyvy), reviews (reviews.json), review_breeds (breeds with reviews). -#}
+{% extends "layouts/page.html.j2" %}
+{% import "trust/_parts.html.j2" as tr %}
+
+{% block page_css %}
+  <link rel="stylesheet" href="/assets/css/trust.css">
+{% endblock %}
+
+{% block page_js %}
+  <script src="/assets/js/trust.js" defer></script>
+{% endblock %}
+
+{% block hero %}
+    {% call tr.framed_hero(pg.hero, tone='coral') %}
+      <a class="btn btn--ink btn--lg" href="/shchenki/">Смотреть щенков {{ ui.icon('arrow') }}</a>
+      <button class="btn btn--white btn--lg" type="button" data-rv-open>{{ pg.write.label }}</button>
+    {% endcall %}
+{% endblock %}
+
+{% block body %}
+    <section class="section section--tight container" id="vse-otzyvy" aria-labelledby="vse-otzyvy-title" data-rf>
+      <h2 class="sr-only" id="vse-otzyvy-title">Все отзывы</h2>
+      <div class="tr-rate">
+        {{ cards.ratings() }}
+        <div class="tr-write tone--lilac">
+          <p class="tr-write__title">{{ pg.write.title|typo }}</p>
+          <p class="tr-write__line">{{ pg.write.line|typo }}</p>
+          <button class="btn btn--ink" type="button" data-rv-open>{{ pg.write.label }}</button>
+        </div>
+      </div>
+
+      <div class="tr-filter">
+        <div class="chips" role="group" aria-label="Порода">
+          <button class="chip" type="button" data-rf-value="all" aria-pressed="true">Все</button>
+          {% for b in review_breeds %}
+          <button class="chip" type="button" data-rf-value="{{ b.slug }}" aria-pressed="false"><span class="chip__dot {{ b.tone_class }}" aria-hidden="true"></span>{{ b.name }}</button>
+          {% endfor %}
+        </div>
+        <p class="tr-filter__count" data-rf-count>{{ reviews|length }}&nbsp;{{ reviews|length|plural('отзыв', 'отзыва', 'отзывов') }}</p>
+      </div>
+      <p class="sr-only" role="status" aria-live="polite" data-rf-status></p>
+
+      <ul class="tr-rvlist" data-rf-list>
+        {% for r in reviews %}
+        <li data-breed="{{ r.breed }}">
+          {{ tr.review(r) }}
+        </li>
+        {% endfor %}
+      </ul>
+
+      {% call ui.empty_state('Отзывов о такой породе пока нет', 'Посмотрите отзывы о других породах или спросите куратора — дадим контакты владельцев.', button=none, attrs='data-rf-empty hidden') %}
+      <button class="btn btn--ink" type="button" data-rf-reset>Показать все отзывы</button>
+      {% endcall %}
+    </section>
+
+    <section class="section container" id="eshchyo" aria-labelledby="eshchyo-title">
+      {{ ui.section_head(pg.links_title, id='eshchyo-title') }}
+      {{ ui.link_tiles(pg.links) }}
+    </section>
+{% endblock %}
+
+{% block body_end %}
+  <!-- Модалка «Оставить отзыв» (assets/js/trust.js) -->
+  <dialog class="modal tr-rvm" id="review-modal" aria-labelledby="rm-title" aria-describedby="rm-sub">
+    <div class="modal__inner">
+      <button class="msgr modal__close" type="button" aria-label="Закрыть" data-rv-close>{{ ui.icon('close') }}</button>
+      <div class="modal__view" data-rv-view="form">
+        <div class="modal__head">
+          <div>
+            <h2 class="modal__title" id="rm-title">{{ pg.modal.title|typo }}</h2>
+            <p class="modal__sub" id="rm-sub">{{ pg.modal.sub|typo }}</p>
+          </div>
+        </div>
+        <form class="form" id="review-form" novalidate>
+          <div class="form__grid">
+            <div class="field">
+              <label class="field__label" for="rm-name">Имя</label>
+              <input class="input" id="rm-name" name="name" type="text" autocomplete="given-name" placeholder="Как вас подписать" required aria-describedby="rm-name-err">
+              <p class="field__err" id="rm-name-err" hidden></p>
+            </div>
+            <div class="field">
+              <label class="field__label" for="rm-city">Город</label>
+              <input class="input" id="rm-city" name="city" type="text" autocomplete="address-level2" placeholder="Например, Казань">
+            </div>
+            <div class="field field--full">
+              <label class="field__label" for="rm-breed">Порода щенка</label>
+              <select class="input select" id="rm-breed" name="breed">
+                <option value="" selected>Выберите породу</option>
+                {% for b in breeds %}
+                <option>{{ b.name }}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <fieldset class="field field--full tr-stars">
+              <legend class="field__label">Оценка</legend>
+              <div class="tr-stars__row">
+                {% for n in range(1, 6) %}
+                <input type="radio" name="rating" id="rm-r{{ n }}" value="{{ n }}"{% if n == 5 %} checked{% endif %}><label for="rm-r{{ n }}"><span class="sr-only">{{ n }} из&nbsp;5</span>{{ ui.icon('star') }}</label>
+                {% endfor %}
+              </div>
+            </fieldset>
+            <div class="field field--full">
+              <label class="field__label" for="rm-text">Отзыв</label>
+              <textarea class="input tr-textarea" id="rm-text" name="text" rows="4" placeholder="Как щенок освоился дома, что понравилось, что можно улучшить" required aria-describedby="rm-text-err"></textarea>
+              <p class="field__err" id="rm-text-err" hidden></p>
+            </div>
+            <div class="field field--full">
+              <div class="check">
+                <input type="checkbox" id="rm-consent" name="consent" aria-describedby="rm-consent-err">
+                <label for="rm-consent">Соглашаюсь на&nbsp;публикацию отзыва и&nbsp;обработку персональных данных, принимаю <a href="{{ site.footer.legal.privacy.url }}">политику конфиденциальности</a></label>
+              </div>
+              <p class="field__err" id="rm-consent-err" hidden></p>
+            </div>
+          </div>
+          <button class="btn btn--ink btn--lg btn--block form__submit" type="submit" data-rv-submit data-label="Отправить отзыв">Отправить отзыв</button>
+        </form>
+      </div>
+      <div class="modal__view modal__done" data-rv-view="done" hidden>
+        <span class="form-done__ico" aria-hidden="true">{{ ui.icon('check') }}</span>
+        <h2 class="modal__title" id="rm-done-title" tabindex="-1">{{ pg.modal.done_title|typo }}</h2>
+        <p class="modal__sub" id="rm-done-text">{{ pg.modal.done_text|typo }}</p>
+        <button class="btn btn--ink btn--lg btn--block" type="button" data-rv-close>Хорошо</button>
+      </div>
+    </div>
+  </dialog>
+{% endblock %}
