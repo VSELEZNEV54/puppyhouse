@@ -22,6 +22,8 @@ jobs:
         with:
           python-version: "3.12"
       - run: pip install pillow
+      - name: Probe one URL
+        run: curl -sSL -A 'Mozilla/5.0' -D - -o /tmp/probe.bin "$(python -c 'import json;print(json.load(open("tools/images.json"))[0]["url"])')" | head -40; file /tmp/probe.bin; head -c 400 /tmp/probe.bin | cat -v; echo
       - run: python tools/fetch_images.py
       - name: Commit photos
         run: |
