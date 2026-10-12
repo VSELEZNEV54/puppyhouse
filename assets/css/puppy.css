@@ -13,6 +13,7 @@
 .pp-gal { display: flex; flex-direction: column; gap: var(--gap); min-width: 0; }
 .pp-stage {
   position: relative; isolation: isolate; overflow: hidden;
+  flex: 1 0 auto; /* плитка с данными выше галереи — кадр растёт, низ колонок совпадает */
   aspect-ratio: 1 / .94;
   border-radius: var(--r-tile);
   background: linear-gradient(180deg, var(--tone) 0 55%, var(--tone-floor) 100%);
@@ -80,10 +81,11 @@
 .pp-info__status--res { background: var(--sun-50); }
 .pp-info__status--soon { background: var(--sky-50); }
 .pp-title { display: grid; gap: 8px; margin-top: 20px; }
-.pp-title__name { font-size: clamp(44px, 4.6vw, 76px); font-weight: 600; letter-spacing: -0.04em; line-height: .95; }
-.pp-title__sub { font-size: clamp(20px, 1.7vw, 26px); font-weight: 500; letter-spacing: -0.02em; line-height: 1.2; }
+.pp-title__name { font-size: clamp(44px, 4.6vw, 76px); font-weight: 500; letter-spacing: -0.04em; line-height: .95; }
+.pp-title__sub { font-size: clamp(20px, 1.7vw, 26px); font-weight: 400; letter-spacing: -0.02em; line-height: 1.2; }
 .pp-meta { margin-top: 12px; font-size: 15px; line-height: 1.5; color: var(--muted); }
-.pp-meta span:not(:last-child)::after { content: " · "; }
+.pp-meta span { white-space: nowrap; }
+.pp-meta span:not(:last-child)::after { content: " · "; white-space: normal; }
 .pp-note {
   display: flex; align-items: flex-start; gap: 10px;
   margin-top: 18px; padding: 12px 16px; border-radius: 18px;
@@ -134,7 +136,7 @@
   padding: 5px 12px; border-radius: var(--r-pill); background: rgba(255, 255, 255, .62);
   font-size: 13px; font-weight: 500; line-height: 1.3;
 }
-.pp-parent__name { margin-top: 16px; font-size: clamp(26px, 2.3vw, 36px); font-weight: 600; letter-spacing: -0.03em; line-height: 1.05; }
+.pp-parent__name { margin-top: 16px; font-size: clamp(26px, 2.3vw, 36px); font-weight: 500; letter-spacing: -0.03em; line-height: 1.05; }
 .pp-parent__breed { margin-top: 6px; font-size: 15px; line-height: 1.4; color: var(--ink-soft); }
 .pp-parent__facts { display: flex; flex-wrap: wrap; gap: 6px; margin-top: auto; padding-top: 20px; }
 .pp-parent__facts li {
@@ -166,7 +168,7 @@
   padding: var(--tile-pad); border-radius: var(--r-tile); background: var(--tile);
 }
 .pp-get .ico { grid-row: 1 / 3; width: 48px; height: 48px; }
-.pp-get__title { align-self: end; font-size: var(--fs-h3); font-weight: 600; letter-spacing: -0.025em; line-height: 1.15; }
+.pp-get__title { align-self: end; font-size: var(--fs-h3); font-weight: 500; letter-spacing: -0.025em; line-height: 1.15; }
 .pp-get__line { font-size: 15px; line-height: 1.4; color: var(--muted); }
 .pp-kit {
   position: relative; isolation: isolate;
@@ -179,7 +181,7 @@
 .pp-kit__img { position: relative; flex: 1; min-height: 150px; border-radius: var(--r-img); overflow: hidden; background: #E7E1D8; }
 .pp-kit__img img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
 .pp-kit__txt { display: grid; gap: 4px; padding: 16px 76px 20px calc(var(--tile-pad) - var(--inset)); }
-.pp-kit__title { font-size: var(--fs-h3); font-weight: 600; letter-spacing: -0.025em; line-height: 1.15; }
+.pp-kit__title { font-size: var(--fs-h3); font-weight: 500; letter-spacing: -0.025em; line-height: 1.15; }
 .pp-kit__line { font-size: 15px; line-height: 1.4; color: var(--muted); }
 .pp-kit .round-arrow { position: absolute; right: 20px; bottom: 20px; background: var(--page); }
 .pp-kit:hover .round-arrow { background: var(--ink); color: #fff; }
@@ -191,11 +193,17 @@
 @media (max-width: 1199px) {
   .pp__grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
   .pp-thumb__label { font-size: 12px; padding: 4px 9px; }
+  .pp-thumb__more { display: none; }
   .pp-gets { grid-template-columns: minmax(0, 1fr); }
   .pp-kit { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); align-items: center; min-height: 0; padding: var(--inset); }
-  .pp-kit__img { flex: none; aspect-ratio: 16 / 10; min-height: 0; }
+  .pp-kit__img { flex: none; aspect-ratio: 2.4 / 1; min-height: 0; }
   .pp-kit__txt { padding: 12px 76px 12px clamp(12px, 2vw, 24px); }
   .pp-kit .round-arrow { top: 50%; bottom: auto; transform: translateY(-50%); }
+}
+
+/* три карточки в ряду: четвёртая похожая осталась бы одна во втором ряду */
+@media (min-width: 901px) and (max-width: 1199px) {
+  #pohozhie .pups > .pups__item:nth-child(4) { display: none; }
 }
 
 @media (max-width: 1000px) {
@@ -206,6 +214,8 @@
   .pp__grid { grid-template-columns: minmax(0, 1fr); }
   .pp-stage { aspect-ratio: 4 / 3; }
   .pp-cta .btn { flex: 1 1 220px; }
+  .pp-parents { grid-template-columns: minmax(0, 1fr); }
+  .pp-parent__txt { max-width: 58%; }
 }
 
 @media (max-width: 760px) {
@@ -228,7 +238,7 @@
   .pp-cta .btn { flex: 1 1 100%; }
 
   .pp-parents { grid-template-columns: minmax(0, 1fr); }
-  .pp-parent { min-height: 272px; padding: 20px; }
+  .pp-parent { min-height: 288px; padding: 20px; }
   .pp-parent__txt { max-width: 60%; }
   .pp-parent__name { margin-top: 12px; font-size: 24px; }
   .pp-parent__breed { font-size: 14px; }
@@ -242,7 +252,7 @@
   .pp-get .ico { width: 44px; height: 44px; align-self: center; }
   .pp-get__title { font-size: 18px; }
   .pp-get__line { font-size: 14px; }
-  .pp-kit { display: flex; padding: var(--inset) var(--inset) 0; }
+  .pp-kit { display: flex; align-items: stretch; padding: var(--inset) var(--inset) 0; }
   .pp-kit__img { aspect-ratio: 16 / 9; }
   .pp-kit__txt { padding: 14px 68px 16px 12px; }
   .pp-kit__title { font-size: 18px; }
@@ -254,4 +264,12 @@
   .pp-parent__txt { max-width: 64%; }
   .pp-parent__photo { transform: translateX(18%); }
   .pp-trust { gap: 6px 14px; font-size: 13px; }
+}
+
+/* «Ждёте другого щенка?» на два места в ряду (у бордер-колли похожих двое): в строку не помещаются
+   мордочки, текст и кнопка — кнопка уходит под текст */
+@container (min-width: 520px) and (max-width: 860px) {
+  #pohozhie .soon-tile { display: grid; grid-template-columns: auto minmax(0, 1fr); align-content: center; gap: 16px 28px; }
+  #pohozhie .soon-tile__faces { grid-row: 1 / 3; }
+  #pohozhie .soon-tile .btn { justify-self: start; margin-left: 0; }
 }

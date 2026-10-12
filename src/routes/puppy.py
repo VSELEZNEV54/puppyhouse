@@ -29,8 +29,6 @@ PARENT_FACTS = {
     "французский бульдог": (("[4 года]", "[10 кг]"), ("[3 года]", "[12 кг]")),
     "бордер-колли": (("[4 года]", "[17 кг]"), ("[3 года]", "[20 кг]")),
 }
-
-
 VARIETY_LINE = {
     "maltipu": "F1, F1b, F2, мини и окрасы",
     "francuzskij-buldog": "Окрасы по стандарту и вне его",
@@ -98,6 +96,11 @@ def parent_facts(breed_text, role):
     return ["[возраст]", "[вес]"]
 
 
+def doc_list(docs, n):
+    """«Метрика РКФ, ветпаспорт, договор» — the first n documents as one phrase."""
+    return ", ".join([docs[0]] + [d[0].lower() + d[1:] for d in docs[1:n]])
+
+
 def documents(p, b):
     """Documents badges: RKF metric only for FCI breeds; maltipu — vet passport, contract, pedigree copies."""
     if b["rkf"]:
@@ -124,10 +127,10 @@ def specs(p, b, as_of):
     if p.get("variety") and "до 28" in p["variety"]:
         height = "до 28 см"
     rows = [
-        {"label": "Взрослый вес", "value": p["weight_forecast"], "icon": "ruler"},
-        {"label": "Рост в холке", "value": height, "icon": "ruler"},
-        {"label": "Шерсть", "value": facts["coat"], "icon": "scissors"},
-        {"label": "Прививки", "value": "по возрасту, в ветпаспорте", "icon": "syringe"},
+        {"label": "Взрослый вес", "value": p["weight_forecast"]},
+        {"label": "Рост в холке", "value": height},
+        {"label": "Шерсть", "value": facts["coat"]},
+        {"label": "Прививки", "value": "по возрасту, в ветпаспорте"},
     ]
     if p["status"] != "reserved":
         born = dt.date.fromisoformat(p["birth_date"])
@@ -136,13 +139,14 @@ def specs(p, b, as_of):
             value = "можно забрать сейчас"
         else:
             value = f"не раньше {ru_date(home, year=False)}"
-        rows.append({"label": "Переезд домой", "value": value, "icon": "home"})
+        rows.append({"label": "Переезд домой", "value": value})
     return rows
 
 
-def gallery(p, b, parents, docs):
+def gallery(p, parents, docs):
+    """Thumbnails: the puppy, one parent (the first with a photo), video on request, documents."""
     ph = p["photo"]
-    main_pos = ph.get("pos") or LIFE_POS.get(ph.get("class") or "", "50% 100%" if ph["kind"] == "studio" else "50% 55%")
+    main_pos = ph.get("pos") or LIFE_POS.get(ph.get("class") or "", "50% 62%" if ph["kind"] == "studio" else "50% 55%")
     items = [{
         "kind": "photo", "src": ph["src"], "alt": ph["alt"], "label": p["name"], "pos": main_pos,
         "aria": f"Фото: {p['name']}", "cap": "", "tpos": "50% 62%" if ph["kind"] == "studio" else main_pos,
@@ -213,15 +217,14 @@ def routes(data):
                          f"Щенок {bg} {name} в Москве{BRAND}", f"Щенок {bg} {name}{BRAND}"], TITLE_MAX)
             tail = "Покажем по видео, доставим по России. Узнайте цену."
         head = f"{name} — щенок {bg}{gen_sp}, {p['sex_label']}, окрас {p['colour']}, {weeks(p['age_weeks'])}."
-        doc_line = ", ".join([docs[0]] + [d[0].lower() + d[1:] for d in docs[1:3]]) + "."
         short_head = f"{name} — щенок {bg}{gen_sp}, {p['sex_label']}, {weeks(p['age_weeks'])}."
-        doc_line2 = ", ".join([docs[0]] + [d[0].lower() + d[1:] for d in docs[1:2]]) + "."
-        description = fit([f"{head} {doc_line} {tail}", f"{head} {doc_line2} {tail}", f"{head} {tail}", f"{short_head} {doc_line} {tail}",
-                           f"{short_head} {tail}"], DESC_MAX).replace(NBSP, " ")
+        d3, d2 = doc_list(docs, 3) + ".", doc_list(docs, 2) + "."
+        description = fit([f"{head} {d3} {tail}", f"{head} {d2} {tail}", f"{head} {tail}",
+                           f"{short_head} {d3} {tail}", f"{short_head} {tail}"], DESC_MAX).replace(NBSP, " ")
 
         gets = [
             {"icon": "doc", "color": "sky", "title": "Документы",
-             "line": ", ".join([docs[0]] + [d[0].lower() + d[1:] for d in docs[1:3]])},
+             "line": doc_list(docs, 3)},
             {"icon": "syringe", "color": "mint", "title": "Прививки и осмотр",
              "line": "Прививки по возрасту, осмотр ветеринара перед переездом"},
             {"icon": "bowl", "color": "sun", "title": "Стартовый набор",
@@ -255,7 +258,7 @@ def routes(data):
                 docs_note="Мальтипу — гибрид, РКФ его не регистрирует." if not b["rkf"] else None,
                 colour_note=colour_note(p, b),
                 parents=parents,
-                gallery=gallery(p, b, parents, docs),
+                gallery=gallery(p, parents, docs),
                 gets=gets,
                 steps=STEPS,
                 related=related,
