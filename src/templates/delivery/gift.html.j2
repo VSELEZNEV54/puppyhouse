@@ -1,0 +1,62 @@
+{#- /shchenok-v-podarok/ — puppy as a gift (seasonal). Context (routes/delivery.py): g (copy, data/delivery-service.json), faq_items. -#}
+{% extends "layouts/page.html.j2" %}
+{% import "delivery/_parts.html.j2" as dlv %}
+
+{% block page_css %}
+  <link rel="stylesheet" href="/assets/css/delivery.css">
+{% endblock %}
+
+{% block hero %}
+    {% call dlv.framed_hero(g.h1, g.photo, lead=g.lead, tone='coral', eyebrow=g.eyebrow, chips=g.chips, pos='52% 62%', portrait=true) %}
+      {{ forms.price_button('Подобрать щенка', cls='btn btn--ink btn--lg') }}
+      <a class="btn btn--white btn--lg" href="#kak-podarit">Как подарить</a>
+    {% endcall %}
+{% endblock %}
+
+{% block body %}
+    <section class="section section--tight container" id="kak-podarit" aria-labelledby="kak-podarit-title">
+      {{ ui.section_head(g.ideas_title, id='kak-podarit-title') }}
+      <ul class="dlv-ideas" data-reveal="items">
+        {% for i in g.ideas %}
+        <li class="dlv-idea tone--{{ i.tone }}">
+          <span class="dlv-idea__ico" aria-hidden="true">{{ ui.icon(i.icon) }}</span>
+          <h3 class="dlv-idea__title">{{ i.title|typo }}</h3>
+          <p class="dlv-idea__line">{{ i.line|typo }}</p>
+          <p class="dlv-idea__note">{{ i.note|typo }}</p>
+        </li>
+        {% endfor %}
+      </ul>
+    </section>
+
+    <section class="section container" id="podumajte" aria-labelledby="podumajte-title">
+      <div class="dlv-think tone--sun" data-reveal>
+        <div class="dlv-think__intro">
+          {{ ui.ico('heart', 'coral') }}
+          <h2 class="h2 dlv-think__title" id="podumajte-title">{{ g.think_title|typo }}</h2>
+          <p class="dlv-think__lead">{{ g.think_lead|typo }}</p>
+          {{ ui.text_link('/podbor-porody/', 'Подобрать породу — тест') }}
+        </div>
+        <div class="dlv-think__box">
+          <ul class="dlv-think__list">
+            {% for t in g.think %}<li><span class="dlv-think__num" aria-hidden="true">{{ loop.index }}</span><span>{{ t|typo }}</span></li>{% endfor %}
+          </ul>
+          <p class="dlv-think__note">{{ ui.icon('gift', sm=true) }}<span>{{ g.think_note|typo }}</span></p>
+        </div>
+      </div>
+    </section>
+
+    {{ cards.pups_section(title=g.pups_title) }}
+
+    {{ blocks.faq_section(faq_items, title=g.faq_title, id='voprosy') }}
+
+    {% call blocks.seo_block(g.seo.title, g.seo.lead, id='o-podarke') %}
+        {% for s in g.seo.blocks %}
+        <h3>{{ s.h|typo }}</h3>
+        <p>{{ s.p|typo }}</p>
+        {% endfor %}
+    {% endcall %}
+{% endblock %}
+
+{% block lead %}
+    {{ forms.lead_form(title=g.lead_title, line=g.lead_line, tone='coral') }}
+{% endblock %}

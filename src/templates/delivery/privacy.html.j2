@@ -1,0 +1,37 @@
+{#- /politika-konfidencialnosti/ — personal data policy (152-ФЗ). Context (routes/delivery.py): p (copy, data/delivery-service.json).
+    A legal page: no puppy strip and no lead form. -#}
+{% extends "layouts/page.html.j2" %}
+
+{% block page_css %}
+  <link rel="stylesheet" href="/assets/css/delivery.css">
+{% endblock %}
+
+{% block hero %}
+    <div class="dlv-legal">
+    {{ ui.page_hero(p.h1, lead=p.lead, tone='sand') }}
+    </div>
+{% endblock %}
+
+{% block body %}
+    <section class="section section--tight container" id="tekst" aria-labelledby="tekst-title">
+      <h2 class="sr-only" id="tekst-title">Текст политики</h2>
+      <div class="article dlv-policy">
+        <div class="article__body prose">
+          {% for s in p.sections %}
+          <h2 id="{{ s.id }}">{{ loop.index }}. {{ s.h|typo }}</h2>
+          {% for b in s.body %}
+          {% if b.p is defined %}<p>{{ b.p|typo }}</p>
+          {% elif b.ul is defined %}<ul>{% for li in b.ul %}<li>{{ li|typo }}</li>{% endfor %}</ul>
+          {% endif %}
+          {% endfor %}
+          {% endfor %}
+        </div>
+        <aside class="article__aside">
+          {{ ui.keyfacts(p.facts, title='Коротко') }}
+          {{ ui.toc(toc_items) }}
+        </aside>
+      </div>
+    </section>
+{% endblock %}
+
+{% block lead %}{% endblock %}

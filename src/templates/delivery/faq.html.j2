@@ -1,0 +1,40 @@
+{#- /faq/ — every question of faq.json (+ the group's own) in five topics, each an accordion with its own anchor.
+    Context (routes/delivery.py): f (copy, data/delivery-service.json), cats [{id, title, items}], faq_ld (JSON-LD). -#}
+{% extends "layouts/page.html.j2" %}
+
+{% block page_css %}
+  <link rel="stylesheet" href="/assets/css/delivery.css">
+{% endblock %}
+
+{% block head_extra %}
+  <script type="application/ld+json">{{ faq_ld }}</script>
+{% endblock %}
+
+{% block hero %}
+    {% call ui.page_hero(f.h1, lead=f.lead, eyebrow=f.eyebrow, photo=dict(f.photo, w=imgsize(f.photo.src)[0], h=imgsize(f.photo.src)[1]), tone='peach') %}
+      {{ forms.price_button(cls='btn btn--ink btn--lg') }}
+      <a class="btn btn--white btn--lg" href="#zayavka">Задать вопрос</a>
+    {% endcall %}
+{% endblock %}
+
+{% block body %}
+    <nav class="container dlv-topics" aria-label="{{ f.nav_label }}">
+      <ul class="chips dlv-topics__list">
+        {% for c in cats %}
+        <li><a class="chip" href="#{{ c.id }}">{{ c.title|typo }}<span class="dlv-topics__n">{{ c.qs|length }}</span></a></li>
+        {% endfor %}
+      </ul>
+    </nav>
+
+    <div class="dlv-faqcats">
+    {% for c in cats %}
+    {{ blocks.faq_section(c.qs, title=c.title, id=c.id, link=none) }}
+    {% endfor %}
+    </div>
+
+    {{ cards.pups_section() }}
+{% endblock %}
+
+{% block lead %}
+    {{ forms.lead_form(title=f.lead_title, line=f.lead_line, tone='peach') }}
+{% endblock %}

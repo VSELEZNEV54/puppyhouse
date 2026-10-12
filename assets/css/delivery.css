@@ -1,0 +1,379 @@
+/* =========================================================
+   Сервисные страницы: /dostavka/ + города, /rassrochka/, /shchenok-v-podarok/, /faq/, /kontakty/,
+   /politika-konfidencialnosti/. Только раскладка своих блоков — плитки, кнопки, FAQ, формы берутся
+   из main.css и pages.css.
+   ========================================================= */
+
+/* =========================================================
+   ШАПКА С ФОТО ИЗ ЖИЗНИ — фото не растворяется, а стоит в плитке с отступом 8 px и радиусом 20 px
+   ========================================================= */
+.dlv-hero__tile {
+  display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.12fr);
+  gap: clamp(24px, 3vw, 48px);
+  min-height: clamp(380px, 34vw, 520px);
+  padding: var(--inset) var(--inset) var(--inset) clamp(28px, 3.4vw, 52px);
+}
+.dlv-hero--portrait { grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); }
+.dlv-hero__copy { max-width: none; padding-block: clamp(20px, 2.6vw, 44px); }
+.dlv-hero__media { position: relative; margin: 0; border-radius: var(--r-img); overflow: hidden; background: #E7E1D8; }
+.dlv-hero__media img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: var(--pos, 50% 50%); }
+
+/* шапка города: длинное «Щенки с доставкой в Санкт-Петербург» — две-три строки по ширине текста */
+.dlv-cityhero .phero__title { max-width: 15ch; }
+
+/* контакты: круглые мессенджеры рядом с «Позвонить» — высотой с большую кнопку */
+.dlv-konhero .phero__actions { align-items: center; }
+.dlv-konhero .phero__actions .msgr { width: 56px; height: 56px; }
+.dlv-konhero .phero__actions .msgr .i { width: 22px; height: 22px; }
+
+/* юридическая страница: короткая плитка, длинное слово «конфиденциальности» не вылезает на телефоне */
+.dlv-legal .phero__tile { min-height: 0; }
+.dlv-legal .phero__title { max-width: none; }
+
+/* =========================================================
+   СПОСОБЫ ДОСТАВКИ — белые плитки: иконка и метка, заголовок, строка, кому подходит, «Честно»
+   ========================================================= */
+.dlv-ways { display: grid; grid-template-columns: repeat(var(--n, 3), minmax(0, 1fr)); gap: var(--gap); }
+.dlv-ways--1 { --n: 1; }
+.dlv-ways--2 { --n: 2; }
+.dlv-ways--4 { --n: 4; }
+.dlv-way {
+  display: flex; flex-direction: column; align-items: flex-start; min-width: 0;
+  padding: var(--tile-pad); border-radius: var(--r-tile); background: var(--tile);
+}
+.dlv-way__top { align-self: stretch; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.dlv-way__tag {
+  min-width: 0; padding: 7px 13px; border-radius: var(--r-pill); background: var(--page);
+  font-size: 13px; font-weight: 500; line-height: 1.25; text-align: right;
+}
+.dlv-way__title { margin-top: clamp(24px, 2.6vw, 40px); font-size: var(--fs-h3); font-weight: 500; letter-spacing: -0.025em; line-height: 1.15; }
+.dlv-way__line { margin-top: 8px; padding-bottom: 20px; font-size: 15px; line-height: 1.45; color: var(--muted); }
+.dlv-way__fit { display: flex; align-items: center; gap: 10px; margin-top: -4px; padding-bottom: 20px; font-size: 14px; font-weight: 500; line-height: 1.3; }
+.dlv-way__faces { display: flex; flex: none; }
+.dlv-way__faces .face { width: 34px; height: 34px; border: 2px solid #fff; }
+.dlv-way__faces .face + .face { margin-left: -9px; }
+.dlv-way__note {
+  align-self: stretch; margin-top: auto;
+  padding: 12px 15px; border-radius: 16px; background: var(--page);
+  font-size: 14px; line-height: 1.45; color: var(--ink-soft);
+}
+.dlv-way__note b { font-weight: 500; color: var(--ink); }
+
+/* =========================================================
+   ТАЙМЛАЙН + ФОТО, ДОРОЖНЫЙ НАБОР
+   ========================================================= */
+.dlv-split__media { margin: 0; }
+.dlv-split__media img { object-position: 50% 50%; }
+.dlv-cap {
+  position: absolute; left: 10px; bottom: 10px; max-width: calc(100% - 20px);
+  padding: 8px 15px; border-radius: var(--r-pill);
+  background: rgba(255, 255, 255, .9); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px);
+  font-size: 14px; font-weight: 500; line-height: 1.3;
+}
+
+.dlv-kit {
+  display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); align-content: center;
+  column-gap: clamp(18px, 2.2vw, 32px);
+  padding: clamp(10px, 1.4vw, 18px) var(--tile-pad); border-radius: var(--r-tile); background: var(--tile);
+}
+.dlv-kit__item { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: start; gap: 14px; padding: 20px 0; border-top: 1px solid var(--line); }
+.dlv-kit__item:nth-child(-n+2) { border-top: 0; }
+.dlv-kit__txt { display: grid; gap: 3px; padding-top: 4px; }
+.dlv-kit__title { font-size: 17px; font-weight: 500; letter-spacing: -0.015em; line-height: 1.25; }
+.dlv-kit__line { font-size: 14px; line-height: 1.4; color: var(--muted); }
+
+/* =========================================================
+   ГОРОДА — три группы по расстоянию, города пилюлями
+   ========================================================= */
+.dlv-geo { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--gap); }
+.dlv-geo__group { display: flex; flex-direction: column; gap: 22px; min-width: 0; padding: var(--tile-pad); border-radius: var(--r-tile); background: var(--tile); }
+.dlv-geo__head { display: flex; align-items: center; gap: 14px; }
+.dlv-geo__title { font-size: var(--fs-h3); font-weight: 500; letter-spacing: -0.025em; line-height: 1.15; }
+.dlv-geo__line { margin-top: 3px; font-size: 14px; line-height: 1.4; color: var(--muted); }
+
+.dlv-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.dlv-chip {
+  display: inline-flex; align-items: center; min-height: 40px; padding: 8px 16px;
+  border-radius: var(--r-pill); background: var(--page);
+  font-size: 15px; font-weight: 500; line-height: 1.2; text-decoration: none;
+  transition: background-color .2s, color .2s;
+}
+.dlv-chip:hover { background: var(--ink); color: #fff; }
+.dlv-others { padding: var(--tile-pad); border-radius: var(--r-tile); background: var(--tile); }
+
+.dlv-ask {
+  display: flex; align-items: center; gap: 16px; margin-top: var(--gap);
+  padding: 12px 12px 12px clamp(16px, 1.6vw, 22px); border-radius: var(--r-tile); background: var(--tile);
+}
+.dlv-ask__text { flex: 1; min-width: 0; font-size: 16px; font-weight: 500; letter-spacing: -0.01em; line-height: 1.35; }
+
+/* породы на странице города: 2 × 2 широкие плитки в одну строку — мордочка, текст, стрелка */
+.dlv-breeds .ltiles { --n: 2; }
+.dlv-breeds .ltile {
+  display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 18px;
+  min-height: 0; padding: 18px 18px 18px 20px;
+}
+.dlv-breeds .ltile .face { width: 60px; height: 60px; }
+.dlv-breeds .ltile .round-arrow { margin: 0; }
+.dlv-breeds .ltile__title { font-size: clamp(19px, 1.4vw, 22px); }
+
+/* =========================================================
+   РАССРОЧКА — карточка банка (пастель) + таймлайн
+   ========================================================= */
+.dlv-bank { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--gap); }
+.dlv-bank__card {
+  display: flex; flex-direction: column; gap: 20px;
+  padding: var(--tile-pad); border-radius: var(--r-tile);
+  background: linear-gradient(180deg, var(--tone) 0 55%, var(--tone-floor) 100%);
+}
+.dlv-bank__head { display: flex; align-items: center; gap: 14px; }
+.dlv-bank__head .ico { background: #fff; }
+.dlv-bank__name { font-size: clamp(22px, 2vw, 30px); font-weight: 500; letter-spacing: -0.03em; line-height: 1.1; }
+.dlv-bank__facts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+.dlv-bank__facts > div { padding: 14px 16px 15px; border-radius: 18px; background: rgba(255, 255, 255, .66); }
+.dlv-bank__facts dt { font-size: 13px; line-height: 1.3; color: var(--ink-soft); }
+.dlv-bank__facts dd { margin: 3px 0 0; font-size: 17px; font-weight: 500; letter-spacing: -0.01em; line-height: 1.25; }
+.dlv-bank__note { display: flex; align-items: flex-start; gap: 10px; margin-top: auto; font-size: 14.5px; line-height: 1.45; color: var(--ink-soft); }
+.dlv-bank__note .i { margin-top: 2px; }
+
+/* =========================================================
+   ПОДАРОК — идеи цветными плитками, честный блок «Подумайте заранее»
+   ========================================================= */
+.dlv-ideas { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--gap); }
+.dlv-idea {
+  display: flex; flex-direction: column; align-items: flex-start; min-width: 0;
+  min-height: clamp(260px, 21vw, 320px);
+  padding: var(--tile-pad); border-radius: var(--r-tile);
+  background: linear-gradient(180deg, var(--tone) 0 55%, var(--tone-floor) 100%);
+}
+.dlv-idea__ico { width: 52px; height: 52px; border-radius: 50%; display: grid; place-items: center; background: #fff; }
+.dlv-idea__title { margin-top: clamp(36px, 4vw, 60px); font-size: clamp(22px, 1.8vw, 28px); font-weight: 500; letter-spacing: -0.03em; line-height: 1.08; }
+.dlv-idea__line { margin-top: 8px; padding-bottom: 18px; font-size: 15.5px; line-height: 1.45; color: var(--ink-soft); }
+.dlv-idea__note { align-self: stretch; margin-top: auto; padding-top: 14px; border-top: 1px solid rgba(20, 20, 20, .1); font-size: 14px; line-height: 1.4; color: var(--ink-soft); }
+
+.dlv-think {
+  display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  gap: var(--gap) clamp(24px, 4vw, 72px);
+  padding: var(--inset) var(--inset) var(--inset) clamp(24px, 3.4vw, 52px);
+  border-radius: var(--r-tile);
+  background: linear-gradient(180deg, var(--tone) 0 55%, var(--tone-floor) 100%);
+}
+.dlv-think__intro { display: flex; flex-direction: column; align-items: flex-start; gap: 16px; padding-block: clamp(16px, 2.6vw, 44px); }
+.dlv-think__title { margin-top: 8px; max-width: 9em; }
+.dlv-think__lead { font-size: 17px; line-height: 1.45; color: var(--ink-soft); max-width: 40ch; }
+.dlv-think__intro .text-link { margin-top: auto; padding-top: 12px; }
+.dlv-think__box { padding: clamp(22px, 2.8vw, 40px); border-radius: var(--r-img); background: var(--tile); }
+.dlv-think__list li {
+  display: grid; grid-template-columns: 32px minmax(0, 1fr); align-items: center; gap: 14px;
+  padding: 15px 0; border-top: 1px solid var(--line); font-size: 17px; line-height: 1.35;
+}
+.dlv-think__list li:first-child { padding-top: 0; border-top: 0; }
+.dlv-think__num { width: 32px; height: 32px; border-radius: 50%; display: grid; place-items: center; background: var(--sun); font-size: 14px; font-weight: 500; }
+.dlv-think__note {
+  display: flex; align-items: center; gap: 10px; margin-top: 16px;
+  padding: 14px 16px; border-radius: 16px; background: var(--coral-50);
+  font-size: 15px; font-weight: 500; line-height: 1.4;
+}
+
+/* =========================================================
+   FAQ — темы пилюлями-якорями над разделами
+   ========================================================= */
+.dlv-topics { margin-top: clamp(28px, 3vw, 40px); }
+.dlv-topics__list { margin-bottom: 0; }
+.dlv-topics .chip { text-decoration: none; }
+.dlv-topics__n {
+  min-width: 24px; height: 24px; padding: 0 7px; margin-right: -6px; border-radius: var(--r-pill);
+  display: inline-grid; place-items: center; background: var(--page);
+  font-size: 12.5px; font-weight: 500; color: var(--muted);
+}
+.dlv-faqcats > .section { margin-top: clamp(40px, 4.4vw, 64px); }
+
+/* =========================================================
+   КОНТАКТЫ — четыре плитки, карта-заглушка + как приехать
+   ========================================================= */
+.dlv-cts { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--gap); }
+.dlv-ct { display: flex; flex-direction: column; align-items: flex-start; min-width: 0; padding: var(--tile-pad); border-radius: var(--r-tile); background: var(--tile); }
+.dlv-ct .ico { margin-bottom: clamp(24px, 2.6vw, 40px); }
+.dlv-ct__label { font-size: 14px; line-height: 1.35; color: var(--muted); }
+.dlv-ct__value {
+  max-width: 100%; margin-top: 4px;
+  font-size: clamp(20px, 1.6vw, 26px); font-weight: 500; letter-spacing: -0.025em; line-height: 1.2;
+  text-decoration: none; overflow-wrap: anywhere;
+}
+a.dlv-ct__value:hover { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 4px; }
+.dlv-ct__value--mail { font-size: clamp(18px, 1.35vw, 22px); }
+.dlv-ct__line { margin-top: auto; padding-top: 14px; font-size: 14px; line-height: 1.4; color: var(--muted); }
+.dlv-ct__msgrs { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+.dlv-msgr {
+  display: inline-flex; align-items: center; gap: 7px; height: 44px; padding: 0 14px 0 4px;
+  border-radius: var(--r-pill); background: var(--page);
+  font-size: 14.5px; font-weight: 500; text-decoration: none;
+  transition: background-color .2s, color .2s;
+}
+.dlv-msgr .msgr { width: 36px; height: 36px; }
+.dlv-msgr .msgr .i { width: 18px; height: 18px; }
+.dlv-msgr:hover { background: var(--ink); color: #fff; }
+
+.dlv-visit { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: var(--gap); }
+.dlv-visit__side { display: grid; gap: var(--gap); align-content: start; }
+.dlv-visit__side .callout { border-radius: var(--r-tile); padding: 20px 22px; }
+
+/* стилизованная «карта» без внешних сервисов: кварталы, проспект, парк, река и метка */
+.dlv-map {
+  position: relative; overflow: hidden; isolation: isolate;
+  min-height: 400px; border-radius: var(--r-tile);
+  background-color: #EFE6D7;
+  background-image:
+    radial-gradient(34% 30% at 20% 74%, #CFE9D9 0 98%, transparent 100%),
+    radial-gradient(140% 110% at 108% 118%, transparent 0 56%, #CFE2F1 56% 61%, transparent 61%),
+    linear-gradient(116deg, transparent 0 41%, rgba(255, 255, 255, .95) 41% 42.6%, transparent 42.6%),
+    linear-gradient(24deg, transparent 0 63%, rgba(255, 255, 255, .9) 63% 64.2%, transparent 64.2%),
+    linear-gradient(90deg, rgba(255, 255, 255, .7) 0 2px, transparent 2px),
+    linear-gradient(0deg, rgba(255, 255, 255, .7) 0 2px, transparent 2px);
+  background-size: auto, auto, auto, auto, 58px 58px, 58px 58px;
+}
+.dlv-map__pin {
+  position: absolute; left: 50%; top: 42%; z-index: 1;
+  width: 64px; height: 64px; border-radius: 50%; display: grid; place-items: center;
+  background: var(--coral); border: 5px solid #fff; color: var(--ink);
+  box-shadow: 0 18px 34px -16px rgba(20, 20, 20, .45);
+  transform: translate(-50%, -50%);
+}
+.dlv-map__pin .i { width: 26px; height: 26px; fill: currentColor; stroke: none; }
+.dlv-map__pin::after {
+  content: ""; position: absolute; left: 50%; bottom: -15px; width: 12px; height: 12px;
+  border-radius: 50%; background: rgba(20, 20, 20, .16); transform: translateX(-50%);
+}
+.dlv-map__card {
+  position: absolute; left: var(--inset); bottom: var(--inset); z-index: 1;
+  max-width: min(420px, calc(100% - 2 * var(--inset)));
+  padding: 18px 20px; border-radius: var(--r-img); background: rgba(255, 255, 255, .94);
+}
+.dlv-map__title { font-size: 19px; font-weight: 500; letter-spacing: -0.02em; line-height: 1.2; }
+.dlv-map__line { margin-top: 4px; font-size: 14px; line-height: 1.45; color: var(--muted); }
+
+/* =========================================================
+   ПОЛИТИКА — статья с оглавлением
+   ========================================================= */
+.dlv-policy .prose h2 { font-size: clamp(22px, 1.9vw, 28px); margin-top: 1.6em; }
+.dlv-policy .prose > h2:first-child { margin-top: 0; }
+
+/* =========================================================
+   АДАПТИВ
+   ========================================================= */
+@media (max-width: 1199px) {
+  .dlv-cts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+/* три способа в ряд: строки описаний на одной высоте, чтобы «кому подходит» и «Честно» стояли ровно */
+@media (min-width: 1001px) {
+  .dlv-ways--3 .dlv-way__line, .dlv-ways--4 .dlv-way__line { min-height: calc(2 * 1.45em + 20px); }
+}
+
+/* планшет: способы — по одному в строку, широкой плиткой: иконка | метка, заголовок, строка | «Честно» */
+@media (min-width: 761px) and (max-width: 1000px) {
+  .dlv-ways, .dlv-ways--2, .dlv-ways--4 { --n: 1; }
+  .dlv-way {
+    display: grid; grid-template-columns: 48px minmax(0, 1fr) minmax(0, .82fr); column-gap: 20px;
+    grid-template-areas: "ico tag note" "ico title note" "ico line note" "ico fit note";
+    grid-template-rows: auto auto auto 1fr;
+    padding: 22px 22px 22px 24px;
+  }
+  .dlv-way__top { display: contents; }
+  .dlv-way .ico { grid-area: ico; }
+  .dlv-way__tag { grid-area: tag; justify-self: start; text-align: left; }
+  .dlv-way__title { grid-area: title; margin-top: 10px; }
+  .dlv-way__line { grid-area: line; padding-bottom: 0; }
+  .dlv-way__fit { grid-area: fit; margin-top: 14px; padding-bottom: 0; }
+  .dlv-way__note { grid-area: note; align-self: center; margin: 0; }
+}
+
+@media (max-width: 1199px) {
+  .dlv-hero__tile { grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); }
+  .dlv-hero--portrait { grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); }
+}
+
+@media (max-width: 1000px) {
+  .dlv-bank { grid-template-columns: minmax(0, 1fr); }
+  .dlv-think { grid-template-columns: minmax(0, 1fr); padding: var(--inset); }
+  .dlv-think__intro { padding: clamp(16px, 3vw, 28px) clamp(16px, 3vw, 28px) 8px; }
+  .dlv-think__title { max-width: 14ch; }
+  .dlv-visit { grid-template-columns: minmax(0, 1fr); }
+  .dlv-map { min-height: 0; aspect-ratio: 16 / 9; }
+  .dlv-split__media { min-height: 0; aspect-ratio: 16 / 9; }
+  .dlv-policy .toc { display: none; }
+}
+
+@media (max-width: 900px) {
+  /* шапка с фото: фото сверху во всю ширину плитки, текст под ним */
+  .dlv-hero__tile, .dlv-hero--portrait { grid-template-columns: minmax(0, 1fr); gap: 0; min-height: 0; padding: var(--inset); }
+  .dlv-hero__media { order: -1; aspect-ratio: 16 / 9; }
+  .dlv-hero--portrait .dlv-hero__media img { object-position: 50% 48%; }
+  .dlv-hero__copy { padding: clamp(18px, 3vw, 28px) clamp(12px, 3vw, 28px) clamp(12px, 2vw, 20px); }
+  .dlv-geo { grid-template-columns: minmax(0, 1fr); }
+}
+
+@media (max-width: 760px) {
+  .dlv-hero__media { aspect-ratio: 4 / 3; }
+  .dlv-hero__copy { padding: 18px 12px 12px; }
+  .dlv-hero .phero__chips { margin-inline: -20px; padding-inline: 20px; }
+  .dlv-legal .phero__title { font-size: clamp(27px, 7.4vw, 44px); }
+
+  .dlv-ways, .dlv-ways--2, .dlv-ways--4 { --n: 1; }
+  .dlv-way__title { margin-top: 18px; }
+
+  .dlv-kit { grid-template-columns: minmax(0, 1fr); padding-block: 4px; }
+  .dlv-kit__item { padding: 16px 0; }
+  .dlv-kit__item:nth-child(2) { border-top: 1px solid var(--line); }
+
+  .dlv-geo__group { gap: 18px; }
+  .dlv-chip { min-height: 40px; padding: 8px 14px; font-size: 14.5px; }
+
+  .dlv-breeds .ltiles { --n: 1; }
+  .dlv-breeds .ltile { gap: 14px; padding: 14px 14px 14px 16px; }
+  .dlv-breeds .ltile .face { width: 48px; height: 48px; }
+
+  .dlv-bank__facts dd { font-size: 16px; }
+
+  .dlv-ideas { grid-template-columns: minmax(0, 1fr); }
+  .dlv-idea { min-height: 0; }
+  .dlv-idea__title { margin-top: 24px; }
+
+  .dlv-think__list li { font-size: 16px; padding: 13px 0; }
+
+  .dlv-map { aspect-ratio: 4 / 3; }
+  .dlv-map__pin { top: 38%; }
+  .dlv-map__card { padding: 14px 16px; }
+}
+
+@media (max-width: 760px) {
+  /* контакты: «Позвонить» и два круглых мессенджера — одной строкой */
+  .dlv-konhero .phero__actions { flex-wrap: nowrap; }
+  .dlv-konhero .phero__actions .btn { flex: 1 1 auto; }
+}
+
+@media (max-width: 560px) {
+  /* контакты: иконка слева, текст справа — плитки короче */
+  .dlv-ct { display: grid; grid-template-columns: 44px minmax(0, 1fr); column-gap: 16px; align-items: start; padding: 18px; }
+  .dlv-ct .ico { grid-row: 1 / span 3; margin: 0; }
+  .dlv-ct > :not(.ico) { grid-column: 2; }
+  .dlv-ct__line { padding-top: 6px; }
+
+  /* «Щенки с доставкой в Санкт-Петербург»: название города не рвётся и помещается в плитку на 360 */
+  .dlv-cityhero .phero__title { font-size: clamp(30px, 8.6vw, 44px); }
+  .dlv-chips { gap: 6px; }
+  .dlv-chip { min-height: 36px; padding: 6px 12px; font-size: 14px; }
+  .dlv-ask { flex-wrap: wrap; padding: 16px; }
+  .dlv-ask__text { flex-basis: calc(100% - 60px); }
+  .dlv-ask .btn { flex: 1 1 100%; }
+  .dlv-cts { grid-template-columns: minmax(0, 1fr); }
+  .dlv-bank__facts { grid-template-columns: minmax(0, 1fr); }
+}
+
+/* шаги разной длины: номер и заголовок у всех на одной линии сверху */
+.steps .step { align-content: start; }
+
+/* планшет и узкий десктоп: четыре факта города — 2 × 2, а не 3 + 1 */
+@media (min-width: 761px) and (max-width: 1199px) {
+  .dlv-cityhero .phero__facts:has(> :nth-child(4)) { display: grid; grid-template-columns: repeat(2, max-content); }
+}

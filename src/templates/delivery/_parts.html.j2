@@ -1,0 +1,58 @@
+{#- Parts shared by the «delivery» group pages. {% import "delivery/_parts.html.j2" as dlv %} -#}
+{% import "macros/ui.html.j2" as ui %}
+
+{#- Page hero with a LIFESTYLE photo (never blended): pastel tile, copy on the left, the photo framed on the right
+    (8 px inset, 20 px radius); on mobile the photo sits on top. Renders the page's single H1.
+    photo: {"src", "alt"}; pos: object-position; portrait=true for a vertical frame. caller() → buttons. -#}
+{% macro framed_hero(title, photo, lead=none, tone='sand', eyebrow=none, chips=none, pos='50% 50%', portrait=false) -%}
+<section class="phero dlv-hero container" aria-labelledby="page-title">
+  <div class="phero__tile dlv-hero__tile tone--{{ tone }}{{ ' dlv-hero--portrait' if portrait }}" data-hero-ctas>
+    <div class="phero__copy dlv-hero__copy">
+      {% if eyebrow %}<p class="eyebrow"><span class="eyebrow__dot" aria-hidden="true"></span>{{ eyebrow|typo }}</p>{% endif %}
+      <h1 class="phero__title" id="page-title">{{ title|typo }}</h1>
+      {% if lead %}<p class="phero__lead">{{ lead|typo }}</p>{% endif %}
+      {% if chips %}
+      <ul class="phero__chips">
+        {% for c in chips %}<li>{% if c.icon %}{{ ui.icon(c.icon, sm=true) }}{% endif %}{{ c.label|typo }}</li>{% endfor %}
+      </ul>
+      {% endif %}
+      {% if caller is defined %}<div class="phero__actions">{{ caller() }}</div>{% endif %}
+    </div>
+    <figure class="dlv-hero__media" style="--pos:{{ pos }}">{{ ui.img(photo.src, photo.alt, priority=true) }}</figure>
+  </div>
+</section>
+{%- endmacro %}
+
+{#- Delivery methods as white tiles: icon + tag, title, one line, breeds it suits (faces), an honest note.
+    items: method dicts from delivery.json (+ fit_breeds: [breed] or none). -#}
+{% macro ways(items) -%}
+<ul class="dlv-ways dlv-ways--{{ items|length }}" data-reveal="items">
+  {% for m in items %}
+  <li class="dlv-way">
+    <div class="dlv-way__top">{{ ui.ico(m.icon, m.color) }}<span class="dlv-way__tag">{{ m.tag|typo }}</span></div>
+    <h3 class="dlv-way__title">{{ m.title|typo }}</h3>
+    <p class="dlv-way__line">{{ m.line|typo }}</p>
+    {% if m.fit_breeds %}
+    <p class="dlv-way__fit"><span class="dlv-way__faces" aria-hidden="true">{% for b in m.fit_breeds %}{{ ui.face(b) }}{% endfor %}</span><span>{{ m.fit_label|typo }}</span></p>
+    {% endif %}
+    <p class="dlv-way__note"><b>Честно.</b> {{ m.note|typo }}</p>
+  </li>
+  {% endfor %}
+</ul>
+{%- endmacro %}
+
+{#- City links as compact pills. cities: cities.json items. -#}
+{% macro city_chips(cities, label='Города доставки') -%}
+<ul class="dlv-chips" aria-label="{{ label }}">
+  {% for c in cities %}<li><a class="dlv-chip" href="{{ c.url }}">{{ c.name|typo }}</a></li>{% endfor %}
+</ul>
+{%- endmacro %}
+
+{#- Slim white row: icon, one line and a link button (by default — to the lead form at the end of the page). -#}
+{% macro ask_row(text, label='Рассчитать доставку', href='#zayavka', icon='chat', color='sun') -%}
+<div class="dlv-ask">
+  {{ ui.ico(icon, color) }}
+  <p class="dlv-ask__text">{{ text|typo }}</p>
+  <a class="btn btn--white" href="{{ href }}">{{ label|typo }}</a>
+</div>
+{%- endmacro %}

@@ -1,0 +1,76 @@
+{#- /kontakty/ — phone, messengers, address, how to visit, map placeholder, requisites.
+    Context (routes/delivery.py): c (copy, data/delivery-service.json). Contacts themselves come from site.json. -#}
+{% extends "layouts/page.html.j2" %}
+
+{% block page_css %}
+  <link rel="stylesheet" href="/assets/css/delivery.css">
+{% endblock %}
+
+{% block hero %}
+    <div class="dlv-konhero">
+    {% call ui.page_hero(c.h1, lead=c.lead, eyebrow=c.eyebrow, photo=dict(c.photo, w=imgsize(c.photo.src)[0], h=imgsize(c.photo.src)[1]), tone='sage') %}
+      <a class="btn btn--ink btn--lg" href="{{ site.phone.tel }}">{{ ui.icon('phone') }}Позвонить</a>
+      {{ forms.msgr('telegram') }}
+      {{ forms.msgr('whatsapp') }}
+    {% endcall %}
+    </div>
+{% endblock %}
+
+{% block body %}
+    <section class="section section--tight container" id="svyaz" aria-labelledby="svyaz-title">
+      {{ ui.section_head(c.ways_title, id='svyaz-title') }}
+      <ul class="dlv-cts" data-reveal="items">
+        <li class="dlv-ct">
+          {{ ui.ico('phone', 'coral') }}
+          <p class="dlv-ct__label">Телефон</p>
+          <a class="dlv-ct__value" href="{{ site.phone.tel }}">{{ site.phone.display }}</a>
+          <p class="dlv-ct__line">{{ site.phone.hours|typo }}</p>
+        </li>
+        <li class="dlv-ct">
+          {{ ui.ico('chat', 'sky') }}
+          <p class="dlv-ct__label">Мессенджеры</p>
+          <div class="dlv-ct__msgrs">
+            {% for k in ('telegram', 'whatsapp') %}
+            {%- set m = site.messengers[k] %}
+            <a class="dlv-msgr" href="{{ m.url }}" target="_blank" rel="noopener" aria-label="{{ m.aria }}"><span class="msgr msgr--{{ m.icon }}" aria-hidden="true">{{ ui.icon(m.icon) }}</span>{{ m.label }}</a>
+            {% endfor %}
+          </div>
+          <p class="dlv-ct__line">Пришлём видео щенков и&nbsp;цену</p>
+        </li>
+        <li class="dlv-ct">
+          {{ ui.ico('mail', 'sun') }}
+          <p class="dlv-ct__label">Почта</p>
+          <a class="dlv-ct__value dlv-ct__value--mail" href="mailto:{{ site.email }}">{{ site.email }}</a>
+          <p class="dlv-ct__line">Для документов и&nbsp;вопросов по&nbsp;договору</p>
+        </li>
+        <li class="dlv-ct">
+          {{ ui.ico('pin', 'mint') }}
+          <p class="dlv-ct__label">Адрес</p>
+          <p class="dlv-ct__value">{{ site.address.city }}, {{ site.address.street|typo }}</p>
+          <p class="dlv-ct__line">{{ site.address.visit|typo }}</p>
+        </li>
+      </ul>
+    </section>
+
+    <section class="section container" id="kak-priehat" aria-labelledby="kak-priehat-title">
+      {{ ui.section_head(c.visit_title, id='kak-priehat-title') }}
+      <div class="dlv-visit">
+        <div class="dlv-map" role="img" aria-label="Здесь будет карта: {{ c.map_line }}">
+          <span class="dlv-map__pin" aria-hidden="true">{{ ui.icon('paw') }}</span>
+          <div class="dlv-map__card">
+            <p class="dlv-map__title">{{ c.map_title|typo }}</p>
+            <p class="dlv-map__line">{{ c.map_line|typo }}</p>
+          </div>
+        </div>
+        <div class="dlv-visit__side">
+          {{ ui.timeline(c.visit) }}
+          {% call ui.callout('warn', 'Перед визитом') %}<p>{{ c.visit_note|typo }}</p>{% endcall %}
+        </div>
+      </div>
+    </section>
+
+    <section class="section container" id="rekvizity" aria-labelledby="rekvizity-title">
+      {{ ui.section_head(c.req_title, id='rekvizity-title', link={'url': site.footer.legal.privacy.url, 'label': 'Политика конфиденциальности'}) }}
+      {{ ui.spec_grid(c.requisites, cols=4) }}
+    </section>
+{% endblock %}
