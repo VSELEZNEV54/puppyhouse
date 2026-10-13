@@ -51,6 +51,67 @@
 </section>
 {%- endmacro %}
 
+{#- Round colour face: the colour's studio shot cropped to the head (on its measured backdrop) or, without a photo,
+    a colour dot on the breed's pastel tone. c: item of breedsub.colour_items(); b: the breed -#}
+{% macro colour_face(c, b, eager=false) -%}
+{%- if c.photo -%}
+{%- set size = imgsize(c.photo.src) -%}
+<span class="bsub-cface"{% if photo_tone(c.photo.src) %} style="--tone:{{ photo_tone(c.photo.src).top }}"{% endif %} aria-hidden="true"><img src="{{ c.photo.src }}" alt="" width="{{ size[0] }}" height="{{ size[1] }}"{% if not eager %} loading="lazy"{% endif %} decoding="async"></span>
+{%- else -%}
+<span class="bsub-cface bsub-cface--dot {{ b.tone_class }}"{% if photo_tone(b.studio.src) %} style="--tone:{{ photo_tone(b.studio.src).top }}"{% endif %} aria-hidden="true"><span class="bsub-cface__dot" style="background:{{ c.swatch }}"></span></span>
+{%- endif -%}
+{%- endmacro %}
+
+{#- Compact colour list: round faces with the colour name under each, every one a link to its card on the
+    varieties page (url = /<breed>/vidy-i-okrasy/, '' on that page itself). cta {url, label} → «Все окрасы» pill.
+    eager=true: the list is on the first screen (no lazy loading). -#}
+{% macro colour_nav(items, b, url='', label='Окрасы', cta=none, eager=false) -%}
+<div class="bsub-cnav{{ ' bsub-cnav--cta' if cta }}">
+  <ul class="bsub-cnav__list" aria-label="{{ label }}">
+    {% for c in items %}
+    <li><a class="bsub-cnav__item" href="{{ url }}#{{ c.slug }}">{{ colour_face(c, b, eager) }}<span class="bsub-cnav__name">{{ c.name|typo }}</span></a></li>
+    {% endfor %}
+  </ul>
+  {% if cta %}<div class="bsub-cnav__cta">{{ ui.tile_cta(cta.label, variant='soft', url=cta.url) }}</div>{% endif %}
+</div>
+{%- endmacro %}
+
+{#- One card per colour, anchored by its slug (links from the hub land here): studio shot on its measured backdrop
+    (or a colour dot), standard badge, name, two sentences and «Спросить о щенках» (modal with the colour noted).
+    An odd number of colours: the last cell of the two-column grid is a request tile (ask.title, ask.line). -#}
+{% macro colour_cards(items, b, ask=none) -%}
+<ul class="bsub-cols">
+  {% for c in items %}
+  <li class="bsub-col" id="{{ c.slug }}">
+    <div class="bsub-col__media{{ ' bsub-col__media--dot' if not c.photo }}" style="{{ tone_style(c.photo.src if c.photo else b.studio.src) }}">
+      {% if c.photo %}
+      {%- set size = imgsize(c.photo.src) %}
+      <img src="{{ c.photo.src }}" alt="{{ c.photo.alt|typo }}" width="{{ size[0] }}" height="{{ size[1] }}" loading="lazy" decoding="async">
+      {% if c.photo_note %}<span class="bsub-col__pnote">{{ c.photo_note|typo }}</span>{% endif %}
+      {% else %}
+      <span class="bsub-col__dot" style="background:{{ c.swatch }}" aria-hidden="true"></span>
+      <span class="bsub-col__pnote">Фото по&nbsp;запросу</span>
+      {% endif %}
+    </div>
+    <div class="bsub-col__body">
+      <span class="bsub-col__badge bsub-col__badge--{{ c.std or 'none' }}">{{ c.badge|typo }}</span>
+      <h3 class="bsub-col__name">{{ c.name|typo }}</h3>
+      <p class="bsub-col__text">{{ c.text|typo }}</p>
+      <button class="btn btn--white bsub-col__btn" type="button" data-open-modal data-modal-breed="{{ b.name }}" data-modal-title="{{ b.name }}: {{ c.label|lower }}" data-modal-sub="Пришлём щенков этого окраса с фото, видео и ценой" data-modal-note="Окрас: {{ c.label|lower }}">Спросить о&nbsp;щенках</button>
+    </div>
+  </li>
+  {% endfor %}
+  {% if ask and items|length is odd %}
+  <li class="bsub-col bsub-col--ask tone--{{ ask.tint }}">
+    {{ ui.ico('palette', 'lilac') }}
+    <h3 class="bsub-col__name">{{ ask.title|typo }}</h3>
+    <p class="bsub-col__text">{{ ask.line|typo }}</p>
+    <button class="btn btn--ink" type="button" data-open-modal data-modal-breed="{{ b.name }}" data-modal-title="{{ ask.title }}" data-modal-sub="Пришлём щенков нужного окраса с фото, видео и ценой" data-modal-note="Подбор по окрасу">Оставить заявку</button>
+  </li>
+  {% endif %}
+</ul>
+{%- endmacro %}
+
 {#- Links to the breed hub and the sibling page -#}
 {% macro links(title, items, id='eshche') -%}
 <section class="section container" id="{{ id }}" aria-labelledby="{{ id }}-title">

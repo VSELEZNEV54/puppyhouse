@@ -142,20 +142,15 @@
           "type": "colours", "id": "okrasy",
           "title": "Окрасы мальтипу",
           "lead": "Стандарта у мальтипу нет, поэтому окрасов много. Вот главные",
-          "tiles": [
-            { "photo": "/assets/img/studio-maltipu-peach.jpg", "name": "Кремовый", "line": "Нежный светлый оттенок" },
-            { "photo": "/assets/img/color-maltipu-red.jpg", "name": "Рыжий (абрикос)", "line": "Яркий, к году может посветлеть" },
-            { "photo": "/assets/img/color-maltipu-chocolate.jpg", "name": "Шоколадный", "line": "Тёплый коричневый, нос в тон" },
-            { "photo": "/assets/img/color-maltipu-parti.jpg", "name": "Партиколор", "line": "Белый с цветными пятнами" }
-          ],
-          "more": {
-            "title": "Ещё окрасы",
-            "items": [
-              { "name": "Белый", "line": "Как у мальтийской болонки" },
-              { "name": "Чёрный", "line": "Достаётся от пуделя" }
-            ],
-            "note": "Спросите о ближайших помётах — пришлём фото и видео"
-          }
+          "note": "Спросите о ближайших помётах — пришлём фото и видео щенков нужного окраса",
+          "items": [
+            {"slug": "kremovyj", "name": "Кремовый", "photo": "/assets/img/studio-maltipu-peach.jpg", "std": null, "badge": "без стандарта", "text": "От молочного до светло-бежевого. На светлой шерсти особенно заметны тёмные глаза и нос."},
+            {"slug": "ryzhij", "name": "Рыжий (абрикос)", "photo": "/assets/img/color-maltipu-red.jpg", "std": null, "badge": "без стандарта", "text": "Тёплый оттенок от абрикосового до насыщенно-рыжего, достаётся от пуделя. К году шерсть часто становится светлее."},
+            {"slug": "shokoladnyj", "name": "Шоколадный", "photo": "/assets/img/color-maltipu-chocolate.jpg", "std": null, "badge": "без стандарта", "text": "Глубокий коричневый окрас, нос и подушечки лап — в тон шерсти. С возрастом может посветлеть до кофейного."},
+            {"slug": "partikolor", "name": "Партиколор", "photo": "/assets/img/color-maltipu-parti.jpg", "std": null, "badge": "без стандарта", "text": "Белая основа и крупные цветные пятна — чёрные, рыжие или шоколадные. Рисунок у каждого щенка свой."},
+            {"slug": "belyj", "name": "Белый", "swatch": "radial-gradient(circle at 34% 30%, #FFFFFF 0, #F3EEE6 58%, #E2DACD 100%)", "std": null, "badge": "без стандарта", "text": "Чисто-белая шерсть, как у мальтийской болонки. Тёмные глаза и нос дают яркий контраст."},
+            {"slug": "chernyj", "name": "Чёрный", "swatch": "radial-gradient(circle at 34% 30%, #5A534E 0, #2B2623 58%, #1A1715 100%)", "std": null, "badge": "без стандарта", "text": "Глубокий чёрный окрас достаётся от пуделя. Кудрявая шерсть блестит и выглядит особенно густой."}
+          ]
         },
         { "type": "tips", "id": "kak-vybrat" }
       ],
@@ -235,12 +230,15 @@
         {
           "type": "colours", "id": "okrasy",
           "title": "Окрасы французского бульдога",
-          "lead": "Палевый, тигровый и пегий — по стандарту. Голубой — нет",
-          "tiles": [
-            { "photo": "/assets/img/studio-buldog-blue.jpg", "name": "Палевый", "line": "От светлого до рыжеватого, с маской", "badge": "стандарт FCI" },
-            { "photo": "/assets/img/color-buldog-brindle.jpg", "name": "Тигровый", "line": "Тёмные полосы, часто почти чёрный", "badge": "стандарт FCI" },
-            { "photo": "/assets/img/color-buldog-pied.jpg", "name": "Пегий", "line": "Белый с цветными пятнами", "badge": "стандарт FCI" },
-            { "photo": "/assets/img/color-buldog-blue.jpg", "name": "Голубой", "line": "Он же серый. Популярен, но не по стандарту", "badge": "вне стандарта" }
+          "lead": "Палевый, тигровый и пегий — по стандарту. Голубой и другие — нет",
+          "items": [
+            {"slug": "palevyj", "name": "Палевый", "photo": "/assets/img/studio-buldog-blue.jpg", "std": "ok", "badge": "стандарт FCI", "text": "Песочный окрас от светлого до тёмно-рыжего, часто с тёмной маской на морде. Классика породы."},
+            {"slug": "tigrovyj", "name": "Тигровый", "photo": "/assets/img/color-buldog-brindle.jpg", "std": "ok", "badge": "стандарт FCI", "text": "Тёмные полосы на палевом фоне — иногда такие густые, что щенок кажется чёрным. Бывает белое пятно на груди."},
+            {"slug": "pegij", "name": "Пегий", "photo": "/assets/img/color-buldog-pied.jpg", "std": "ok", "badge": "стандарт FCI", "text": "Белая основа с тигровыми или палевыми пятнами. Рисунок у каждого щенка свой."},
+            {"slug": "goluboj", "name": "Голубой", "photo": "/assets/img/color-buldog-blue.jpg", "std": "no", "badge": "вне стандарта FCI", "text": "Он же серый — разбавленный чёрный. Его любят за необычный вид, но к выставкам такой француз не допускается."},
+            {"slug": "kremovyj", "name": "Кремовый", "swatch": "radial-gradient(circle at 34% 30%, #FBF4E6 0, #EADBC1 58%, #D6C2A1 100%)", "std": "no", "badge": "вне стандарта FCI", "text": "Очень светлый ровный окрас без маски. Прекрасный друг, но не выставочная собака."},
+            {"slug": "shokoladnyj", "name": "Шоколадный", "swatch": "radial-gradient(circle at 34% 30%, #9A735B 0, #6A4935 58%, #4C3324 100%)", "std": "no", "badge": "вне стандарта FCI", "text": "Коричневая шерсть, нос и подушечки лап — в тон. Стандарт FCI этот окрас не признаёт."},
+            {"slug": "mramornyj", "name": "Мраморный (мерль)", "swatch": "radial-gradient(ellipse 20% 13% at 28% 30%, rgba(46,47,52,.92) 55%, transparent 72%), radial-gradient(ellipse 12% 15% at 36% 40%, rgba(46,47,52,.92) 55%, transparent 72%), radial-gradient(ellipse 15% 10% at 64% 24%, rgba(88,90,97,.75) 55%, transparent 72%), radial-gradient(ellipse 19% 15% at 70% 56%, rgba(46,47,52,.92) 55%, transparent 72%), radial-gradient(ellipse 13% 10% at 58% 64%, rgba(88,90,97,.75) 55%, transparent 72%), radial-gradient(ellipse 16% 11% at 30% 70%, rgba(88,90,97,.75) 55%, transparent 72%), radial-gradient(ellipse 7% 6% at 22% 52%, rgba(46,47,52,.92) 55%, transparent 72%), radial-gradient(ellipse 6% 5% at 48% 48%, rgba(46,47,52,.92) 55%, transparent 72%), radial-gradient(ellipse 6% 7% at 82% 40%, rgba(88,90,97,.75) 55%, transparent 72%), radial-gradient(ellipse 10% 7% at 46% 84%, rgba(46,47,52,.92) 55%, transparent 72%), radial-gradient(circle at 34% 30%, #DADCE0 0, #B3B7BD 58%, #959BA2 100%)", "std": "no", "badge": "вне стандарта FCI", "text": "Тёмные пятна на светлом фоне. Вязка двух мраморных собак грозит щенкам глухотой."}
           ]
         },
         {
@@ -371,20 +369,15 @@
           "type": "colours", "id": "okrasy",
           "title": "Окрасы той-пуделя",
           "lead": "По стандарту FCI окрас однотонный и ровный",
-          "tiles": [
-            { "photo": "/assets/img/studio-pudel-yellow.jpg", "name": "Абрикосовый", "line": "Светлый палевый", "badge": "стандарт FCI" },
-            { "photo": "/assets/img/color-pudel-black.jpg", "name": "Чёрный", "line": "Насыщенный и ровный", "badge": "стандарт FCI" },
-            { "photo": "/assets/img/color-pudel-white.jpg", "name": "Белый", "line": "Без желтизны", "badge": "стандарт FCI" },
-            { "photo": "/assets/img/color-pudel-chocolate.jpg", "name": "Коричневый", "line": "Тёплый, нос в тон", "badge": "стандарт FCI" }
-          ],
-          "more": {
-            "title": "Ещё по стандарту",
-            "items": [
-              { "name": "Рыжий", "line": "Самый насыщенный оттенок палевого" },
-              { "name": "Серый", "line": "Ровный, от серебристого до тёмного" }
-            ],
-            "note": "Пятнистых пуделей — партиколор и фантом — стандарт FCI не признаёт"
-          }
+          "note": "Пятнистых пуделей — партиколор и фантом — стандарт FCI не признаёт",
+          "items": [
+            {"slug": "abrikosovyj", "name": "Абрикосовый", "photo": "/assets/img/studio-pudel-yellow.jpg", "std": "ok", "badge": "стандарт FCI", "text": "Тёплый светлый оттенок палевого — между кремовым и рыжим. С возрастом может посветлеть."},
+            {"slug": "chernyj", "name": "Чёрный", "photo": "/assets/img/color-pudel-black.jpg", "std": "ok", "badge": "стандарт FCI", "text": "Насыщенный и ровный, без рыжины и седины. Нос и глаза — тёмные."},
+            {"slug": "belyj", "name": "Белый", "photo": "/assets/img/color-pudel-white.jpg", "std": "ok", "badge": "стандарт FCI", "text": "Чистый белый без желтизны и кремовых пятен. Тёмные глаза и нос дают яркий контраст."},
+            {"slug": "korichnevyj", "name": "Коричневый", "photo": "/assets/img/color-pudel-chocolate.jpg", "std": "ok", "badge": "стандарт FCI", "text": "Тёплый шоколадный окрас, нос в тон шерсти. К году может немного посветлеть."},
+            {"slug": "ryzhij", "name": "Рыжий", "swatch": "radial-gradient(circle at 34% 30%, #DB8955 0, #B5592E 58%, #91431F 100%)", "std": "ok", "badge": "стандарт FCI", "text": "Самый насыщенный оттенок палевого — медно-рыжий. По стандарту окрас должен быть ровным."},
+            {"slug": "seryj", "name": "Серый", "swatch": "radial-gradient(circle at 34% 30%, #C9C9C7 0, #9C9C9A 58%, #7C7C7A 100%)", "std": "ok", "badge": "стандарт FCI", "text": "Ровный серый — от серебристого до графитового. Щенки часто рождаются тёмными и светлеют к году."}
+          ]
         },
         { "type": "tips", "id": "kak-vybrat" }
       ],
@@ -475,21 +468,16 @@
           "type": "colours", "id": "okrasy",
           "title": "Окрасы бордер-колли",
           "lead": "Стандарт допускает много окрасов — важно, чтобы белый не преобладал",
-          "tiles": [
-            { "photo": "/assets/img/studio-kolli-green.jpg", "name": "Голубой мрамор", "line": "Серо-голубой с чёрными пятнами" },
-            { "photo": "/assets/img/color-kolli-tricolor.jpg", "name": "Трёхцветный", "line": "Чёрный и белый с рыжими подпалами" },
-            { "photo": "/assets/img/color-kolli-red.jpg", "name": "Красно-белый", "line": "Тёплый рыжий с белым" },
-            { "photo": "/assets/img/parent-kolli.jpg", "name": "Чёрно-белый", "line": "Классика породы", "badge": "на фото — взрослая собака" }
-          ],
-          "more": {
-            "title": "Ещё окрасы",
-            "items": [
-              { "name": "Красный мрамор", "line": "Мрамор на рыже-коричневом фоне" },
-              { "name": "Мраморный триколор", "line": "Мрамор с рыжими подпалами" },
-              { "name": "Лиловый", "line": "Редкий, разбавленный шоколадный" }
-            ],
-            "note": "Спросите о ближайших помётах — пришлём фото и видео"
-          }
+          "note": "Спросите о ближайших помётах — пришлём фото и видео щенков нужного окраса",
+          "items": [
+            {"slug": "goluboj-mramor", "name": "Голубой мрамор", "photo": "/assets/img/studio-kolli-green.jpg", "std": "ok", "badge": "стандарт FCI", "text": "Серебристо-голубая шерсть в чёрных пятнах. Глаза бывают голубыми или разного цвета."},
+            {"slug": "trehcvetnyj", "name": "Трёхцветный", "photo": "/assets/img/color-kolli-tricolor.jpg", "std": "ok", "badge": "стандарт FCI", "text": "Чёрный и белый с рыжими подпалами на морде и лапах. Яркий и узнаваемый окрас."},
+            {"slug": "krasno-belyj", "name": "Красно-белый", "photo": "/assets/img/color-kolli-red.jpg", "std": "ok", "badge": "стандарт FCI", "text": "Тёплый рыже-коричневый с белым воротником и отметинами. Нос — коричневый, в тон."},
+            {"slug": "cherno-belyj", "name": "Чёрно-белый", "photo": "/assets/img/parent-kolli.jpg", "photo_note": "Взрослая собака", "std": "ok", "badge": "стандарт FCI", "text": "Классика породы: чёрная шерсть с белым воротником, грудью и лапами."},
+            {"slug": "krasnyj-mramor", "name": "Красный мрамор", "swatch": "radial-gradient(ellipse 20% 13% at 28% 30%, rgba(122,62,34,.9) 55%, transparent 72%), radial-gradient(ellipse 12% 15% at 36% 40%, rgba(122,62,34,.9) 55%, transparent 72%), radial-gradient(ellipse 15% 10% at 64% 24%, rgba(160,92,58,.7) 55%, transparent 72%), radial-gradient(ellipse 19% 15% at 70% 56%, rgba(122,62,34,.9) 55%, transparent 72%), radial-gradient(ellipse 13% 10% at 58% 64%, rgba(160,92,58,.7) 55%, transparent 72%), radial-gradient(ellipse 16% 11% at 30% 70%, rgba(160,92,58,.7) 55%, transparent 72%), radial-gradient(ellipse 7% 6% at 22% 52%, rgba(122,62,34,.9) 55%, transparent 72%), radial-gradient(ellipse 6% 5% at 48% 48%, rgba(122,62,34,.9) 55%, transparent 72%), radial-gradient(ellipse 6% 7% at 82% 40%, rgba(160,92,58,.7) 55%, transparent 72%), radial-gradient(ellipse 10% 7% at 46% 84%, rgba(122,62,34,.9) 55%, transparent 72%), radial-gradient(circle at 34% 30%, #F3DFCD 0, #E0BC9F 58%, #C9A07F 100%)", "std": "ok", "badge": "стандарт FCI", "text": "Мраморный рисунок на рыже-коричневом фоне: светлая основа и тёмные пятна."},
+            {"slug": "mramornyj-trikolor", "name": "Мраморный триколор", "swatch": "radial-gradient(ellipse 14% 9% at 66% 82%, #C27A42 55%, transparent 74%), radial-gradient(ellipse 10% 8% at 34% 86%, #C27A42 55%, transparent 74%), radial-gradient(ellipse 20% 13% at 28% 30%, rgba(46,47,52,.92) 55%, transparent 72%), radial-gradient(ellipse 12% 15% at 36% 40%, rgba(46,47,52,.92) 55%, transparent 72%), radial-gradient(ellipse 15% 10% at 64% 24%, rgba(88,90,97,.75) 55%, transparent 72%), radial-gradient(ellipse 19% 15% at 70% 56%, rgba(46,47,52,.92) 55%, transparent 72%), radial-gradient(ellipse 13% 10% at 58% 64%, rgba(88,90,97,.75) 55%, transparent 72%), radial-gradient(ellipse 16% 11% at 30% 70%, rgba(88,90,97,.75) 55%, transparent 72%), radial-gradient(ellipse 7% 6% at 22% 52%, rgba(46,47,52,.92) 55%, transparent 72%), radial-gradient(ellipse 6% 5% at 48% 48%, rgba(46,47,52,.92) 55%, transparent 72%), radial-gradient(ellipse 6% 7% at 82% 40%, rgba(88,90,97,.75) 55%, transparent 72%), radial-gradient(ellipse 10% 7% at 46% 84%, rgba(46,47,52,.92) 55%, transparent 72%), radial-gradient(circle at 34% 30%, #DADCE0 0, #B3B7BD 58%, #959BA2 100%)", "std": "ok", "badge": "стандарт FCI", "text": "Голубой мрамор с рыжими подпалами на морде и лапах."},
+            {"slug": "lilovyj", "name": "Лиловый", "swatch": "radial-gradient(circle at 34% 30%, #D2BEB6 0, #AD948A 58%, #8C746B 100%)", "std": "ok", "badge": "стандарт FCI", "text": "Редкий дымчато-коричневый оттенок с розоватым отливом — разбавленный шоколадный."}
+          ]
         },
         {
           "type": "std", "id": "standart",

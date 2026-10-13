@@ -150,6 +150,10 @@ Computed by the build:
 Values in `[square brackets]` are placeholders (see `site.placeholders`); keep them bracketed until the client gives real data.
 `cities.json`: `name`, `prep` («в Казани»), `acc` («в Казань»), `gen` («из Казани»), `km_approx` (rough road distance), `methods` (car/plane/train), `duration` (bracketed estimate from distance and the first method, to confirm).
 `breeds.json` also has `facts`, `compare` (comparison rows), `docs`, `studio` / `mood` / `adult` photos, `varieties`, `colours` (drafts — check, some with `standard` and `photo`).
+**Colour anchors** (stage 3): every colour has its own card on `/<breed>/vidy-i-okrasy/#<colour-slug>` (e.g. `/maltipu/vidy-i-okrasy/#ryzhij`,
+`/francuzskij-buldog/vidy-i-okrasy/#goluboj`); slugs, photos and texts live in `breedsub.json` → `<breed>.varieties` → the `colours`
+block (the hubs read the same list). Link a colour there instead of the page top. The hubs' carousels use `data.media[<breed>]`
+in the order of `breeds-hub.json` → `media` (+ extra placeholders), so a video file added to `media.json` shows on the hub too.
 
 ## Macros (`ui.`, `cards.`, `forms.`, `blocks.`) — text params are plain text, escaped and run through `|typo`
 

@@ -3,9 +3,26 @@
    Только раскладка блоков хаба — плитки, кнопки, карточки щенков берутся из main.css и pages.css.
    ========================================================= */
 
-/* шапка: длинное название породы («Щенки французского бульдога») — в две строки по ширине текста, а не в четыре */
+/* первый экран на весь экран (ui.page_hero full=true): длинное название породы («Щенки французского бульдога»)
+   — в две-три строки по ширине текста, а не в четыре; чипы гарантий — в одну строку на 1440 */
 .phero__title { max-width: none; }
-@media (min-width: 1001px) { .phero__copy { max-width: min(720px, 58%); } }
+@media (min-width: 1001px) { .phero__copy { max-width: min(740px, 60%); } }
+/* кадр — квадрат во всю высоту плитки, поэтому высоту плитки ограничиваем шириной экрана (высокий планшет), а текст
+   заканчивается левее собаки: её левый край ≈ 59 % высоты плитки от правого края (кадр сдвинут на 8 %) */
+@media (min-width: 761px) {
+  .phero--full .phero__tile { --ph: min(max(560px, calc(100svh - var(--head-h) - 76px)), 72vw); min-height: var(--ph); }
+  .phero--full .phero__copy { max-width: min(740px, max(420px, calc(100% + clamp(28px, 3.4vw, 52px) - .59 * var(--ph) - 24px))); }
+}
+/* планшет: кадр сдвинут правее (собака целиком), текст до её левого края ≈ 51 % высоты плитки */
+@media (min-width: 761px) and (max-width: 1000px) {
+  .phero--full .phero__photo { transform: translateX(16%); }
+  .phero--full .phero__copy { max-width: max(360px, calc(100% + clamp(28px, 3.4vw, 52px) - .51 * var(--ph) - 24px)); }
+}
+
+/* карусель «Фото и видео»: подпись карточки — обычной строкой (метка «Видео» в начале строки, длинная подпись
+   переносится под неё, а не уходит отдельным блоком на вторую строку, как во flex-подписи из main.css) */
+#foto-video .mcard__cap { display: block; }
+#foto-video .mcard__kind { display: inline-block; margin-right: 8px; vertical-align: 1px; }
 
 /* =========================================================
    «Какой он» — фото из жизни + четыре короткие карточки 2×2
@@ -26,28 +43,6 @@
 .brd-trait .ico { grid-area: ico; }
 .brd-trait__title { grid-area: title; margin-top: clamp(28px, 3vw, 44px); font-size: var(--fs-h3); font-weight: 500; letter-spacing: -0.025em; line-height: 1.15; }
 .brd-trait__line { grid-area: line; margin-top: 8px; font-size: 15px; line-height: 1.4; color: var(--muted); }
-
-/* =========================================================
-   «Окрасы» — три студийные плитки + плитка с остальными окрасами
-   ========================================================= */
-.brd-more {
-  position: relative; isolation: isolate;
-  display: flex; flex-direction: column; align-items: flex-start; gap: 16px;
-  height: 100%; min-width: 0; aspect-ratio: 3 / 4; /* min-width: 0 — длинное название окраса не растягивает плитку */
-  padding: clamp(20px, 1.8vw, 26px);
-  border-radius: var(--r-tile);
-  /* --tone-top / --tone-floor — средний замер соседних студийных кадров (ставит шаблон), без замера — цвета породы */
-  background: linear-gradient(180deg, var(--tone-top, var(--tone)) 0 60%, var(--tone-floor) 100%);
-  color: var(--ink); text-decoration: none;
-}
-.brd-more__title { font-size: clamp(20px, 1.6vw, 26px); font-weight: 500; letter-spacing: -0.03em; line-height: 1.08; }
-.brd-more__list { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; max-width: 100%; }
-.brd-more__list span {
-  display: inline-flex; align-items: center; min-height: 38px; padding: 6px 15px;
-  border-radius: 19px; background: rgba(255, 255, 255, .62);
-  font-size: 15px; font-weight: 500; line-height: 1.25;
-}
-.brd-more .tcta { position: absolute; z-index: 2; left: clamp(18px, 1.6vw, 24px); bottom: clamp(18px, 1.6vw, 24px); }
 
 /* =========================================================
    «Перед покупкой» — родители (студийное фото «в цвет»), цена, документы
@@ -105,12 +100,6 @@
   .brd-about { grid-template-columns: minmax(0, 1fr); }
   .brd-about__media { min-height: 0; aspect-ratio: 16 / 9; }
 
-  /* факты в шапке — 2 × 2, а не 3 + 1 */
-  .phero__facts { display: grid; grid-template-columns: repeat(2, max-content); }
-
-  /* окрасы 2 × 2: плитки ниже, чем 3 : 4, чтобы два ряда не занимали весь экран */
-  .brd-colours .stile, .brd-colours .brd-more { aspect-ratio: 4 / 5; }
-
   /* цена и документы рядом, родители — широкой плиткой: кадр справа во всю высоту, левый край гаснет в стену */
   .brd-pre { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-areas: "price docs" "parents parents"; }
   .brd-pre__parents .stile {
@@ -136,14 +125,8 @@
   .brd-trait__title { margin-top: 18px; font-size: 19px; }
   .brd-trait__line { margin-top: 6px; font-size: 14.5px; }
 
-  /* окрасы — по одному в ряд (широкие студийные плитки из pages.css), «Ещё окрасы» — плиткой по содержимому */
-  .brd-colours .stile, .brd-colours .brd-more { aspect-ratio: auto; }
-  .brd-more { min-height: 0; padding: 18px 18px 80px; }
-  .brd-more__list span { min-height: 34px; padding: 5px 13px; font-size: 14px; }
-
   /* одна колонка: цена, документы, затем родители широкой плиткой */
   .brd-pre { grid-template-columns: minmax(0, 1fr); grid-template-areas: "price" "docs" "parents"; }
-  .phero__facts { display: flex; }
   .brd-card { padding: 20px; }
   .brd-card__title { font-size: 24px; }
   .brd-card .ico { width: 40px; height: 40px; }
@@ -159,6 +142,34 @@
 }
 
 @media (max-width: 560px) {
+  /* первый экран на телефоне: без надзаголовка («в Москве» уже в H1) — кнопки помещаются в первый экран */
+  .phero .eyebrow { display: none; }
+  .phero .eyebrow + .phero__title { margin-top: 0; }
+  .phero__chips li { height: 32px; font-size: 13px; }
+
+  /* щенки породы на узком телефоне — компактной строкой: фото слева (белая плитка, кадр со скруглением),
+     кличка, возраст и «Узнать цену» справа, сердечко в углу. Семь карточек — около 1200 px, а не 3000 */
+  .brd-pups .pup { flex-direction: row; align-items: stretch; background: var(--tile); }
+  .brd-pups .pup__media {
+    flex: none; width: 42%; aspect-ratio: auto; min-height: 156px; margin: 8px 0 8px 8px;
+    clip-path: none; border-radius: var(--r-img); overflow: hidden;
+  }
+  .brd-pups .pup__media img { inset: 0; width: 100%; height: 100%; border-radius: 0; }
+  .brd-pups .pup__media--studio { background: var(--tone); }
+  .brd-pups .pup__media--studio img { object-position: 50% 100%; -webkit-mask-image: none; mask-image: none; }
+  .brd-pups .pup__img--charli, .brd-pups .pup__img--tessa { transform: none; }
+  .brd-pups .status { top: auto; bottom: 8px; left: 8px; height: 26px; padding: 0 10px 0 9px; gap: 6px; font-size: 12px; }
+  .brd-pups .pup__body { min-width: 0; padding: 16px 14px 14px; }
+  .brd-pups .pup__name { padding-right: 40px; font-size: 22px; }
+  .brd-pups .pup__meta { font-size: 13px; }
+  .brd-pups .pup__actions { padding-top: 12px; }
+  .brd-pups .fav { position: absolute; top: 10px; right: 10px; width: 40px; height: 40px; background: var(--page); }
+  /* «Ждёте другого щенка?» — мордочки в ряд внахлёст, плитка по содержимому */
+  .brd-pups .soon-tile { min-height: 0; gap: 14px; padding: 22px 18px; }
+  .brd-pups .soon-tile__faces { display: flex; }
+  .brd-pups .soon-tile__faces .face { width: 56px; height: 56px; border: 3px solid var(--sun-50); }
+  .brd-pups .soon-tile__faces .face + .face { margin-left: -12px; }
+
   .brd-about__list { grid-template-columns: minmax(0, 1fr); }
   .brd-trait { grid-template-rows: auto auto auto; grid-template-areas: "label ico" "title ico" "line line"; row-gap: 2px; }
   .brd-trait__title { margin-top: 0; }

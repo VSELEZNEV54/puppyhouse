@@ -10,9 +10,10 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500&amp;display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../assets/css/main.css?v=78591173">
+  <link rel="stylesheet" href="../assets/css/main.css?v=0cce2551">
   <link rel="stylesheet" href="../assets/css/pages.css?v=460f7729">
-  <link rel="stylesheet" href="../assets/css/breeds.css?v=4f7effd0">
+  <link rel="stylesheet" href="../assets/css/breedsub.css?v=d63b8447">
+  <link rel="stylesheet" href="../assets/css/breeds.css?v=9b3cfe68">
   <script src="../assets/js/main.js?v=77017173" defer></script>
 </head>
 <body>
@@ -201,19 +202,101 @@
   </ol>
 </nav>
 
-<section class="phero container" aria-labelledby="page-title">
+<section class="phero container phero--full" aria-labelledby="page-title">
   <div class="phero__tile tone--sage phero--photo" style="--tone-top:#AECAB4;--tone-hi:#B2CFB9;--tone-floor:#C8E0D1;--fa:0.76;--fb:0.92" data-hero-ctas>
     <div class="phero__photo"><img src="../assets/img/studio-kolli-green.jpg" alt="Щенок бордер-колли голубой мрамор на мятном фоне" width="1024" height="1024" fetchpriority="high" decoding="async"></div>
     <div class="phero__copy">
 <p class="eyebrow"><span class="eyebrow__dot" aria-hidden="true"></span>Питомник бордер-колли · Москва</p>      <h1 class="phero__title" id="page-title">Щенки <span class="nw">бордер-колли</span> в Москве</h1>
-<p class="phero__lead">Умная пастушья собака для активной семьи, спорта и долгих прогулок</p>      <dl class="phero__facts">
-<div class="phero__fact"><dt>Вес</dt><dd><span class="nw">14–22</span> кг</dd></div><div class="phero__fact"><dt>Рост</dt><dd><span class="nw">46–56</span> см</dd></div><div class="phero__fact"><dt>Шерсть</dt><dd>с подшёрстком</dd></div><div class="phero__fact"><dt>Живут</dt><dd><span class="nw">12–15</span> лет</dd></div>      </dl>
-<div class="phero__actions">      <button class="btn btn--ink btn--lg" type="button" data-open-modal data-modal-breed="Бордер-колли">Узнать цену</button>
-      <a class="btn btn--white btn--lg" href="#shchenki">Смотреть щенков</a>
-</div>    </div>
+<p class="phero__lead">Умная пастушья собака для активной семьи, спорта и долгих прогулок</p>      <ul class="phero__chips">
+<li><svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-syringe"/></svg>Привиты</li><li><svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-doc"/></svg>Ветпаспорт и договор</li><li><svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-shield"/></svg>Пожизненная гарантия и консультации</li>      </ul>
+<div class="phero__actions">      <button class="btn btn--white btn--lg" type="button" data-open-modal data-modal-breed="Бордер-колли" data-modal-title="Подберём щенка за 1 час" data-modal-sub="Расскажите, какого щенка ищете, — пришлём подходящих с видео и ценой" data-modal-note="Подбор щенка за 1 час: бордер-колли" data-modal-submit="Подобрать щенка">Подобрать щенка</button>
+      <a class="btn btn--outline btn--lg" href="#shchenki">Смотреть щенков</a>
+</div><p class="phero__note">За 1 час подберём <span class="nw">бордер-колли</span> под ваш запрос и пришлём видео щенков</p>    </div>
   </div>
 </section>
-    <section class="section section--tight container" id="shchenki" aria-labelledby="shchenki-title">
+    <section class="section container" id="foto-video" aria-labelledby="foto-video-title">
+  <div class="sec-head">
+  <div class="sec-head__txt">
+    <h2 class="h2" id="foto-video-title">Фото и видео <span class="nw">бордер-колли</span></h2>
+    <p class="sec-head__lead">Живые кадры щенков и родителей. Свежие видео пришлём в мессенджер</p>
+  </div>
+  
+  
+</div>
+  <div class="media-carousel" data-carousel data-start="6" role="region" aria-roledescription="карусель" aria-label="Фото и видео бордер-колли">
+  <div class="media-carousel__viewport" tabindex="0" data-carousel-viewport>
+    <ul class="media-carousel__track">
+      <li class="media-carousel__item" aria-roledescription="слайд" aria-label="1 из 12">
+        <button class="mcard mcard--video" type="button" data-lightbox data-kind="video" data-caption="Голубой мрамор" aria-label="Смотреть видео: Голубой мрамор">
+          <img src="../assets/img/studio-kolli-green.jpg" alt="Щенок бордер-колли голубого мраморного окраса на мятном фоне" width="1024" height="1024" loading="lazy" decoding="async">
+        <span class="mcard__play" aria-hidden="true"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-play"/></svg></span><span class="mcard__cap"><span class="mcard__kind">Видео</span>Голубой мрамор</span></button>
+      </li>
+      <li class="media-carousel__item" aria-roledescription="слайд" aria-label="2 из 12">
+        <button class="mcard" type="button" data-lightbox data-kind="photo" data-caption="На прогулке" aria-label="Открыть фото: На прогулке">
+          <img src="../assets/img/grad-man-kolli.jpg" alt="Мужчина играет с бордер-колли в осеннем парке" width="1264" height="848" style="object-position:62% 50%" loading="lazy" decoding="async">
+        <span class="mcard__cap">На прогулке</span></button>
+      </li>
+      <li class="media-carousel__item" aria-roledescription="слайд" aria-label="3 из 12">
+        <button class="mcard mcard--video" type="button" data-lightbox data-kind="video" data-caption="Красно-белый окрас" aria-label="Смотреть видео: Красно-белый окрас">
+          <img src="../assets/img/color-kolli-red.jpg" alt="Красно-белый щенок бордер-колли на мятном фоне" width="1024" height="1024" loading="lazy" decoding="async">
+        <span class="mcard__play" aria-hidden="true"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-play"/></svg></span><span class="mcard__cap"><span class="mcard__kind">Видео</span>Красно-белый окрас</span></button>
+      </li>
+      <li class="media-carousel__item" aria-roledescription="слайд" aria-label="4 из 12">
+        <button class="mcard" type="button" data-lightbox data-kind="photo" data-caption="С друзьями" aria-label="Открыть фото: С друзьями">
+          <img src="../assets/img/hero-four-breeds.jpg" alt="Щенок бордер-колли рядом с другими щенками питомника" width="1264" height="848" style="object-position:96% 50%" loading="lazy" decoding="async">
+        <span class="mcard__cap">С друзьями</span></button>
+      </li>
+      <li class="media-carousel__item" aria-roledescription="слайд" aria-label="5 из 12">
+        <button class="mcard mcard--video" type="button" data-lightbox data-kind="video" data-caption="Взрослый бордер-колли" aria-label="Смотреть видео: Взрослый бордер-колли">
+          <img src="../assets/img/parent-kolli.jpg" alt="Взрослый чёрно-белый бордер-колли на мятном фоне" width="928" height="1152" loading="lazy" decoding="async">
+        <span class="mcard__play" aria-hidden="true"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-play"/></svg></span><span class="mcard__cap"><span class="mcard__kind">Видео</span>Взрослый бордер-колли</span></button>
+      </li>
+      <li class="media-carousel__item" aria-roledescription="слайд" aria-label="6 из 12">
+        <button class="mcard" type="button" data-lightbox data-kind="photo" data-caption="Триколор" aria-label="Открыть фото: Триколор">
+          <img src="../assets/img/color-kolli-tricolor.jpg" alt="Щенок бордер-колли окраса триколор на мятном фоне" width="1024" height="1024" loading="lazy" decoding="async">
+        <span class="mcard__cap">Триколор</span></button>
+      </li>
+      <li class="media-carousel__item is-active" aria-roledescription="слайд" aria-label="7 из 12">
+        <button class="mcard mcard--video" type="button" data-lightbox data-kind="video" data-caption="Вечерняя прогулка" aria-label="Смотреть видео: Вечерняя прогулка">
+          <img src="../assets/img/breed-border-kolli.jpg" alt="Чёрно-белый щенок бордер-колли в траве на закате" width="928" height="1152" style="object-position:55% 50%" loading="lazy" decoding="async">
+        <span class="mcard__play" aria-hidden="true"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-play"/></svg></span><span class="mcard__cap"><span class="mcard__kind">Видео</span>Вечерняя прогулка</span></button>
+      </li>
+      <li class="media-carousel__item" aria-roledescription="слайд" aria-label="8 из 12">
+        <button class="mcard" type="button" data-lightbox data-kind="photo" data-caption="Документы и метрика" aria-label="Открыть фото: Документы и метрика">
+          <img src="../assets/img/documents.jpg" alt="Папка документов и ветпаспорт щенка" width="1264" height="848" style="object-position:72% 50%" loading="lazy" decoding="async">
+        <span class="mcard__cap">Документы и метрика</span></button>
+      </li>
+      <li class="media-carousel__item" aria-roledescription="слайд" aria-label="9 из 12">
+        <button class="mcard mcard--video" type="button" data-lightbox data-kind="video" data-caption="Игра с мячом" aria-label="Смотреть видео: Игра с мячом">
+          <img src="../assets/img/grad-man-kolli.jpg" alt="Бордер-колли ловит мяч в осеннем парке" width="1264" height="848" style="object-position:88% 50%" loading="lazy" decoding="async">
+        <span class="mcard__play" aria-hidden="true"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-play"/></svg></span><span class="mcard__cap"><span class="mcard__kind">Видео</span>Игра с мячом</span></button>
+      </li>
+      <li class="media-carousel__item" aria-roledescription="слайд" aria-label="10 из 12">
+        <button class="mcard" type="button" data-lightbox data-kind="photo" data-caption="Голубой мрамор" aria-label="Открыть фото: Голубой мрамор">
+          <img src="../assets/img/studio-kolli-green.jpg" alt="Щенок бордер-колли голубой мрамор на мятном фоне" width="1024" height="1024" loading="lazy" decoding="async">
+        <span class="mcard__cap">Голубой мрамор</span></button>
+      </li>
+      <li class="media-carousel__item" aria-roledescription="слайд" aria-label="11 из 12">
+        <button class="mcard mcard--video" type="button" data-lightbox data-kind="video" data-caption="Знакомство по видео" aria-label="Смотреть видео: Знакомство по видео">
+          <img src="../assets/img/color-kolli-tricolor.jpg" alt="Трёхцветный щенок бордер-колли на мятном фоне" width="1024" height="1024" loading="lazy" decoding="async">
+        <span class="mcard__play" aria-hidden="true"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-play"/></svg></span><span class="mcard__cap"><span class="mcard__kind">Видео</span>Знакомство по видео</span></button>
+      </li>
+      <li class="media-carousel__item" aria-roledescription="слайд" aria-label="12 из 12">
+        <button class="mcard" type="button" data-lightbox data-kind="photo" data-caption="На закате" aria-label="Открыть фото: На закате">
+          <img src="../assets/img/breed-border-kolli.jpg" alt="Чёрно-белый щенок бордер-колли в траве на закате" width="928" height="1152" loading="lazy" decoding="async">
+        <span class="mcard__cap">На закате</span></button>
+      </li>
+    </ul>
+  </div>
+  <div class="media-carousel__nav">
+    <button class="media-carousel__btn" type="button" data-carousel-prev aria-label="Предыдущее"><svg class="i i--flip" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></button>
+    <button class="media-carousel__btn" type="button" data-carousel-next aria-label="Следующее"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></button>
+  </div>
+</div>
+</section>
+
+
+    <section class="section container" id="shchenki" aria-labelledby="shchenki-title">
       <div class="sec-head">
   <h2 class="h2" id="shchenki-title"><span class="nw">Бордер-колли</span> в наличии</h2>
   <a class="text-link" href="../shchenki/?breed=border-kolli">Смотреть в <span class="nw">каталоге <svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></span></a>
@@ -276,6 +359,50 @@
       </ul>
     </section>
 
+    <section class="section container" id="preimushchestva" aria-labelledby="preimushchestva-title">
+  <div class="sec-head">
+  <div class="sec-head__txt">
+    <h2 class="h2" id="preimushchestva-title">Щенок с гарантией</h2>
+    <p class="sec-head__lead">Привит, с ветпаспортом и договором. Мы на связи всю его жизнь</p>
+  </div>
+  <a class="text-link" href="../dokumenty-i-garantii/">Документы и <span class="nw">гарантии <svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></span></a>
+  
+</div>
+  <ul class="advs advs--3">
+  <li class="adv">
+    <span class="ico" style="--c:var(--mint)" aria-hidden="true"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-syringe"/></svg></span>
+    <h3 class="adv__title">Привиты по возрасту</h3>
+    <p class="adv__line">Прививки и обработки — в ветпаспорте</p>
+  </li>
+  <li class="adv">
+    <span class="ico" style="--c:var(--sky)" aria-hidden="true"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-doc"/></svg></span>
+    <h3 class="adv__title">Ветпаспорт и договор</h3>
+    <p class="adv__line">Документы на щенка с первого дня</p>
+  </li>
+  <li class="adv">
+    <span class="ico" style="--c:var(--coral)" aria-hidden="true"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-shield"/></svg></span>
+    <h3 class="adv__title">Пожизненная гарантия</h3>
+    <p class="adv__line">Условия гарантии прописаны в договоре</p>
+  </li>
+  <li class="adv">
+    <span class="ico" style="--c:var(--lilac)" aria-hidden="true"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-chat"/></svg></span>
+    <h3 class="adv__title">Пожизненная консультация</h3>
+    <p class="adv__line">На связи по уходу, корму и здоровью</p>
+  </li>
+  <li class="adv">
+    <span class="ico" style="--c:var(--sun)" aria-hidden="true"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-video"/></svg></span>
+    <h3 class="adv__title">Видео до покупки</h3>
+    <p class="adv__line">Покажем щенка по видеосвязи</p>
+  </li>
+  <li class="adv">
+    <span class="ico" style="--c:var(--sand)" aria-hidden="true"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-car"/></svg></span>
+    <h3 class="adv__title">Доставка по России</h3>
+    <p class="adv__line">Привезём к двери в 60+ городов</p>
+  </li>
+</ul>
+</section>
+
+
     <section class="section container" id="kakoj-on" aria-labelledby="kakoj-on-title">
       <div class="sec-head">
   <h2 class="h2" id="kakoj-on-title">Какой он, <span class="nw">бордер-колли</span></h2>
@@ -319,36 +446,20 @@
     <h2 class="h2" id="okrasy-title">Окрасы <span class="nw">бордер-колли</span></h2>
     <p class="sec-head__lead">Стандарт допускает много окрасов — важно, чтобы белый не преобладал</p>
   </div>
-  <a class="text-link" href="vidy-i-okrasy/">Все виды и <span class="nw">окрасы <svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></span></a>
+  
   
 </div>
-      <ul class="stiles brd-colours">
-        <li><a class="stile tone--sage" href="vidy-i-okrasy/" style="--ar:1024/1024;--tone-top:#AECAB4;--tone-hi:#B2CFB9;--tone-floor:#C8E0D1;--fa:0.76;--fb:0.92">
-  <span class="stile__top">
-    <span class="stile__title">Голубой мрамор</span>
-  </span>
-<span class="tcta">Смотреть окрас <svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></span>  <span class="stile__photo"><img src="../assets/img/studio-kolli-green.jpg" alt="Щенок бордер-колли голубой мрамор на мятном фоне" width="1024" height="1024" loading="lazy" decoding="async"></span>
-</a></li>
-        <li><a class="stile tone--sage" href="vidy-i-okrasy/" style="--ar:1024/1024;--tone-top:#9CB8A2;--tone-hi:#9EBAA4;--tone-floor:#9EB9A3;--fa:0.66;--fb:0.82">
-  <span class="stile__top">
-    <span class="stile__title"><span class="nw">Красно-белый</span></span>
-  </span>
-<span class="tcta">Смотреть окрас <svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></span>  <span class="stile__photo"><img src="../assets/img/color-kolli-red.jpg" alt="Красно-белый щенок бордер-колли на мятном фоне" width="1024" height="1024" loading="lazy" decoding="async"></span>
-</a></li>
-        <li><a class="stile tone--sage" href="vidy-i-okrasy/" style="--ar:1024/1024;--tone-top:#A3BFA9;--tone-hi:#A8C4AF;--tone-floor:#C2DAC7;--fa:0.74;--fb:0.90">
-  <span class="stile__top">
-    <span class="stile__title">Трёхцветный</span>
-  </span>
-<span class="tcta">Смотреть окрас <svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></span>  <span class="stile__photo"><img src="../assets/img/color-kolli-tricolor.jpg" alt="Трёхцветный щенок бордер-колли на мятном фоне" width="1024" height="1024" loading="lazy" decoding="async"></span>
-</a></li>
-        <li>
-          <a class="brd-more tone--sage" href="vidy-i-okrasy/" style="--tone-top:#A4C0AA;--tone-floor:#B8D1BE">
-            <span class="brd-more__title">Ещё окрасы</span>
-            <span class="brd-more__list"><span>чёрно-белый</span><span>красный мрамор</span><span>лиловый</span></span>
-            <span class="tcta">Все окрасы <svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></span>
-          </a>
-        </li>
-      </ul>
+      <div class="bsub-cnav bsub-cnav--cta">
+  <ul class="bsub-cnav__list" aria-label="Бордер-колли: окрасы">
+    <li><a class="bsub-cnav__item" href="vidy-i-okrasy/#goluboj-mramor"><span class="bsub-cface" style="--tone:#AECAB4" aria-hidden="true"><img src="../assets/img/studio-kolli-green.jpg" alt="" width="1024" height="1024" loading="lazy" decoding="async"></span><span class="bsub-cnav__name">Голубой мрамор</span></a></li>
+    <li><a class="bsub-cnav__item" href="vidy-i-okrasy/#trehcvetnyj"><span class="bsub-cface" style="--tone:#A3BFA9" aria-hidden="true"><img src="../assets/img/color-kolli-tricolor.jpg" alt="" width="1024" height="1024" loading="lazy" decoding="async"></span><span class="bsub-cnav__name">Трёхцветный</span></a></li>
+    <li><a class="bsub-cnav__item" href="vidy-i-okrasy/#krasno-belyj"><span class="bsub-cface" style="--tone:#9CB8A2" aria-hidden="true"><img src="../assets/img/color-kolli-red.jpg" alt="" width="1024" height="1024" loading="lazy" decoding="async"></span><span class="bsub-cnav__name"><span class="nw">Красно-белый</span></span></a></li>
+    <li><a class="bsub-cnav__item" href="vidy-i-okrasy/#cherno-belyj"><span class="bsub-cface" style="--tone:#A1BDA7" aria-hidden="true"><img src="../assets/img/parent-kolli.jpg" alt="" width="928" height="1152" loading="lazy" decoding="async"></span><span class="bsub-cnav__name"><span class="nw">Чёрно-белый</span></span></a></li>
+    <li><a class="bsub-cnav__item" href="vidy-i-okrasy/#krasnyj-mramor"><span class="bsub-cface bsub-cface--dot tone--sage" style="--tone:#AECAB4" aria-hidden="true"><span class="bsub-cface__dot" style="background:radial-gradient(ellipse 20% 13% at 28% 30%, rgba(122,62,34,.9) 55%, transparent 72%), radial-gradient(ellipse 12% 15% at 36% 40%, rgba(122,62,34,.9) 55%, transparent 72%), radial-gradient(ellipse 15% 10% at 64% 24%, rgba(160,92,58,.7) 55%, transparent 72%), radial-gradient(ellipse 19% 15% at 70% 56%, rgba(122,62,34,.9) 55%, transparent 72%), radial-gradient(ellipse 13% 10% at 58% 64%, rgba(160,92,58,.7) 55%, transparent 72%), radial-gradient(ellipse 16% 11% at 30% 70%, rgba(160,92,58,.7) 55%, transparent 72%), radial-gradient(ellipse 7% 6% at 22% 52%, rgba(122,62,34,.9) 55%, transparent 72%), radial-gradient(ellipse 6% 5% at 48% 48%, rgba(122,62,34,.9) 55%, transparent 72%), radial-gradient(ellipse 6% 7% at 82% 40%, rgba(160,92,58,.7) 55%, transparent 72%), radial-gradient(ellipse 10% 7% at 46% 84%, rgba(122,62,34,.9) 55%, transparent 72%), radial-gradient(circle at 34% 30%, #F3DFCD 0, #E0BC9F 58%, #C9A07F 100%)"></span></span><span class="bsub-cnav__name">Красный мрамор</span></a></li>
+    <li><a class="bsub-cnav__item" href="vidy-i-okrasy/#mramornyj-trikolor"><span class="bsub-cface bsub-cface--dot tone--sage" style="--tone:#AECAB4" aria-hidden="true"><span class="bsub-cface__dot" style="background:radial-gradient(ellipse 14% 9% at 66% 82%, #C27A42 55%, transparent 74%), radial-gradient(ellipse 10% 8% at 34% 86%, #C27A42 55%, transparent 74%), radial-gradient(ellipse 20% 13% at 28% 30%, rgba(46,47,52,.92) 55%, transparent 72%), radial-gradient(ellipse 12% 15% at 36% 40%, rgba(46,47,52,.92) 55%, transparent 72%), radial-gradient(ellipse 15% 10% at 64% 24%, rgba(88,90,97,.75) 55%, transparent 72%), radial-gradient(ellipse 19% 15% at 70% 56%, rgba(46,47,52,.92) 55%, transparent 72%), radial-gradient(ellipse 13% 10% at 58% 64%, rgba(88,90,97,.75) 55%, transparent 72%), radial-gradient(ellipse 16% 11% at 30% 70%, rgba(88,90,97,.75) 55%, transparent 72%), radial-gradient(ellipse 7% 6% at 22% 52%, rgba(46,47,52,.92) 55%, transparent 72%), radial-gradient(ellipse 6% 5% at 48% 48%, rgba(46,47,52,.92) 55%, transparent 72%), radial-gradient(ellipse 6% 7% at 82% 40%, rgba(88,90,97,.75) 55%, transparent 72%), radial-gradient(ellipse 10% 7% at 46% 84%, rgba(46,47,52,.92) 55%, transparent 72%), radial-gradient(circle at 34% 30%, #DADCE0 0, #B3B7BD 58%, #959BA2 100%)"></span></span><span class="bsub-cnav__name">Мраморный триколор</span></a></li>
+    <li><a class="bsub-cnav__item" href="vidy-i-okrasy/#lilovyj"><span class="bsub-cface bsub-cface--dot tone--sage" style="--tone:#AECAB4" aria-hidden="true"><span class="bsub-cface__dot" style="background:radial-gradient(circle at 34% 30%, #D2BEB6 0, #AD948A 58%, #8C746B 100%)"></span></span><span class="bsub-cnav__name">Лиловый</span></a></li>
+  </ul>
+<div class="bsub-cnav__cta"><a class="tcta tcta--soft" href="vidy-i-okrasy/#okrasy">Все окрасы <svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></a></div></div>
     </section>
 
     <section class="section container" id="pered-pokupkoj" aria-labelledby="pered-pokupkoj-title">
@@ -419,6 +530,14 @@
       <li class="faq__item">
         <h3 class="faq__q"><button class="faq__btn" type="button" aria-expanded="false" aria-controls="faq-a5" id="faq-q5"><span>Чем <span class="nw">бордер-колли</span> отличается от австралийской овчарки?</span><span class="faq__ico" aria-hidden="true"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-plus"/></svg></span></button></h3>
         <div class="faq__a" id="faq-a5"><div><p>Это разные пастушьи породы. <span class="nw">Бордер-колли</span> легче и суше, австралийская овчарка крупнее и плотнее. Обеим нужно много движения.</p></div></div>
+      </li>
+      <li class="faq__item">
+        <h3 class="faq__q"><button class="faq__btn" type="button" aria-expanded="false" aria-controls="faq-a6" id="faq-q6"><span>Щенок будет привит?</span><span class="faq__ico" aria-hidden="true"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-plus"/></svg></span></button></h3>
+        <div class="faq__a" id="faq-a6"><div><p>Да. Щенок переезжает с комплексной прививкой по возрасту и обработкой от паразитов — все отметки есть в ветпаспорте. График следующих прививок дадим с собой.</p></div></div>
+      </li>
+      <li class="faq__item">
+        <h3 class="faq__q"><button class="faq__btn" type="button" aria-expanded="false" aria-controls="faq-a7" id="faq-q7"><span>Какие гарантии вы даёте?</span><span class="faq__ico" aria-hidden="true"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-plus"/></svg></span></button></h3>
+        <div class="faq__a" id="faq-a7"><div><p>Пожизненную гарантию на врождённые и генетические заболевания — условия прописаны в договоре. После покупки куратор на связи всю жизнь собаки: подскажет с кормом, уходом и прививками.</p></div></div>
       </li>
     </ul>
   </div>

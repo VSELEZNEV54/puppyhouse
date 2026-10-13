@@ -1,20 +1,27 @@
-{#- Breed hub (/maltipu/ and the other three) — one template, copy in data/breeds-hub.json, facts and photos in breeds.json.
-    Context: b (breed), hub (copy, Markup), pups (all puppies of the breed, sorted), colour_tiles, more_colours, more_style, links. -#}
+{#- Breed hub (/maltipu/ and the other three) — one template, copy in data/breeds-hub.json, photos in breeds.json.
+    Context: b (breed), hub (copy, Markup), common (copy shared by the hubs), reel (carousel items), pups (all puppies
+    of the breed, sorted), colours (colour cards of the varieties page, breedsub.colour_items), links.
+    Order (client 13.10): full-screen hero → photo / video carousel → puppies → advantages → «Какой он» → colours →
+    before buying (parents, price, documents) → FAQ → links → SEO text → lead form. -#}
 {% extends "layouts/page.html.j2" %}
+{% import "breedsub/_parts.html.j2" as part %}
 
 {% block page_css %}
+  <link rel="stylesheet" href="/assets/css/breedsub.css">
   <link rel="stylesheet" href="/assets/css/breeds.css">
 {% endblock %}
 
 {% block hero %}
-    {% call ui.page_hero(hub.h1, lead=hub.lead, breed=b, eyebrow=hub.eyebrow, facts=hub.facts) %}
-      {{ forms.price_button(cls='btn btn--ink btn--lg', breed=b.name) }}
-      <a class="btn btn--white btn--lg" href="#shchenki">Смотреть щенков</a>
+    {% call ui.page_hero(hub.h1, lead=hub.lead, breed=b, eyebrow=hub.eyebrow, chips=common.chips, full=true, note=hub.note) %}
+      <button class="btn btn--white btn--lg" type="button" data-open-modal data-modal-breed="{{ b.name }}" data-modal-title="{{ common.modal_title }}" data-modal-sub="{{ common.modal_sub }}" data-modal-note="{{ common.modal_note }}: {{ b.name|lower }}" data-modal-submit="{{ common.cta_main }}">{{ common.cta_main }}</button>
+      <a class="btn btn--outline btn--lg" href="#shchenki">{{ common.cta_second }}</a>
     {% endcall %}
 {% endblock %}
 
 {% block body %}
-    <section class="section section--tight container" id="shchenki" aria-labelledby="shchenki-title">
+    {{ media.media_carousel(reel, title=hub.media_title, id='foto-video', lead=common.media_lead, label=hub.media_label) }}
+
+    <section class="section container" id="shchenki" aria-labelledby="shchenki-title">
       {{ ui.section_head(hub.pups_title, id='shchenki-title', link={'url': '/shchenki/?breed=' ~ b.slug, 'label': 'Смотреть в каталоге'}) }}
       {% if pups %}
       {%- set n = pups|length %}
@@ -32,6 +39,8 @@
       {{ ui.empty_state('Сейчас щенков нет в наличии', 'Оставьте заявку — напишем, когда появится новый помёт.') }}
       {% endif %}
     </section>
+
+    {{ ui.advantages(title=common.adv_title, lead=common.adv_lead, link={'url': '/dokumenty-i-garantii/', 'label': 'Документы и гарантии'}) }}
 
     <section class="section container" id="kakoj-on" aria-labelledby="kakoj-on-title">
       {{ ui.section_head(hub.about_title, id='kakoj-on-title') }}
@@ -51,21 +60,8 @@
     </section>
 
     <section class="section container" id="okrasy" aria-labelledby="okrasy-title">
-      {{ ui.section_head(hub.colours_title, id='okrasy-title', lead=hub.colours_lead, link={'url': b.urls.varieties, 'label': 'Все виды и окрасы'}) }}
-      <ul class="stiles brd-colours">
-        {% for t in colour_tiles %}
-        <li>{{ ui.studio_tile(t.photo, t.title, url=b.urls.varieties, badge=t.badge, tone=b.tone, cta='Смотреть окрас') }}</li>
-        {% endfor %}
-        {% if more_colours %}
-        <li>
-          <a class="brd-more {{ b.tone_class }}" href="{{ b.urls.varieties }}"{% if more_style %} style="{{ more_style }}"{% endif %}>
-            <span class="brd-more__title">{{ hub.more_title|typo }}</span>
-            <span class="brd-more__list">{% for c in more_colours %}<span>{{ c|typo }}</span>{% endfor %}</span>
-            {{ ui.tile_cta('Все окрасы') }}
-          </a>
-        </li>
-        {% endif %}
-      </ul>
+      {{ ui.section_head(hub.colours_title, id='okrasy-title', lead=hub.colours_lead) }}
+      {{ part.colour_nav(colours, b, url=b.urls.varieties, label=b.name ~ ': окрасы', cta={'url': b.urls.varieties ~ '#okrasy', 'label': 'Все окрасы'}) }}
     </section>
 
     <section class="section container" id="pered-pokupkoj" aria-labelledby="pered-pokupkoj-title">

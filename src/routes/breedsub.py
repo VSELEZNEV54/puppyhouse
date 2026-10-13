@@ -18,7 +18,7 @@ _RANGE = re.compile(r"(?<![\w,])(\d+(?:,\d+)?–\d+(?:,\d+)?)(?: (?=[а-яё])(?
 NBSP = " "
 
 # optional keys of a varieties block / a comparison tile (the templates run with StrictUndefined)
-BLOCK = dict(lead=None, more=None)
+BLOCK = dict(lead=None, note=None)
 KIND = dict(face=None, tag=None, icon=None, color="sun", badge=None, off=False)
 
 
@@ -90,13 +90,8 @@ def _varieties(b, common, own, alts):
             s["items"] = [dict(_nb({**KIND, **k}, "title", "line"), rows=[[r[0], nobr(r[1])] for r in k.get("rows", [])])
                           for k in s["items"]]
         elif s["type"] == "colours":
-            s["tiles"] = [dict(photo=dict(src=t["photo"], alt=alts.get(t["photo"], f"{t['name']} щенок {b['name_gen']}")),
-                               title=nobr(t["name"]), line=nobr(t.get("line")), badge=t.get("badge"), tone=b["tone"])
-                          for t in s["tiles"]]
-            if s["more"]:
-                m = s["more"]
-                s["more"] = dict(title=nobr(m["title"]), note=nobr(m.get("note")),
-                                 items=[_nb({"line": None, **i}, "name", "line") for i in m["items"]])
+            s["items"] = colour_items(b, s["items"], alts)
+            s["note"] = nobr(s["note"])
         elif s["type"] == "std":
             for side in ("ok", "no"):
                 c = s[side]
@@ -112,9 +107,31 @@ def _varieties(b, common, own, alts):
     return v
 
 
-def _faces(tiles, limit=4):
+def colour_items(b, items, alts=None):
+    """Colours of a breed (breedsub.json → varieties → the "colours" block): one anchored card each on
+    /<breed>/vidy-i-okrasy/ (id = slug) and a round face in the compact colour list on the breed hub.
+    photo → its studio shot (alt from breeds.json); no photo → swatch (CSS background of the colour dot)."""
+    alts = alts if alts is not None else _alts(b)
+    out = []
+    for c in items:
+        src = c.get("photo")
+        out.append(dict(
+            slug=c["slug"], label=c["name"], name=nobr(c["name"]), text=nobr(c["text"]),
+            badge=c["badge"], std=c.get("std"), swatch=c.get("swatch"), photo_note=c.get("photo_note"),
+            photo=dict(src=src, alt=alts.get(src, f"{c['name']} щенок {b['name_gen']}")) if src else None,
+        ))
+    return out
+
+
+def breed_colours(data, b):
+    """Colour cards of breed b for other pages (the breed hub): colour_items() of its varieties block."""
+    blocks = data["breedsub"][b["slug"]]["varieties"]["blocks"]
+    return colour_items(b, next(s["items"] for s in blocks if s["type"] == "colours"))
+
+
+def _faces(colours, limit=4):
     """Studio photos of the breed's colours for the round faces in the CTA band (puppies only, no adults)."""
-    return [t["photo"] for t in tiles if "/parent-" not in t["photo"]["src"]][:limit]
+    return [c["photo"] for c in colours if c["photo"] and "/parent-" not in c["photo"]["src"]][:limit]
 
 
 def routes(data):
@@ -130,7 +147,7 @@ def routes(data):
         hub_tile = dict(url=urls["hub"], title=b["name"], line="О породе и щенки в наличии", breed=b)
 
         v = _varieties(b, common["varieties"], own["varieties"], alts)
-        colour_tiles = next((s["tiles"] for s in v["blocks"] if s["type"] == "colours"), [])
+        colours = next((s["items"] for s in v["blocks"] if s["type"] == "colours"), [])
         pg = _price(common["price"], own["price"])
 
         out.append(dict(
@@ -143,7 +160,7 @@ def routes(data):
                 b=b,
                 pg=pg,
                 tint=own["tint"],
-                faces=_faces(colour_tiles),
+                faces=_faces(colours),
                 links_title=links_title,
                 links=[
                     hub_tile,

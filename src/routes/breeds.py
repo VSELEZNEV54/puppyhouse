@@ -1,36 +1,32 @@
 """Breed hubs: /maltipu/, /francuzskij-buldog/, /toj-pudel/, /border-kolli/ — one data-driven template.
-Owns: src/templates/breeds/, src/data/breeds-hub.json (copy per breed), assets/css/breeds.css.
-Breed facts, photos and colours come from breeds.json; puppies (and every count) from puppies.json."""
+Owns: src/templates/breeds/, src/data/breeds-hub.json (copy per breed + "common"), assets/css/breeds.css.
+Breed photos come from breeds.json; puppies (and every count) from puppies.json; the photo / video carousel from
+media.json (the breed's set, ordered and topped up in breeds-hub.json → media); the colours from breedsub.json
+(the colour cards of /<breed>/vidy-i-okrasy/ — the hub links to each one by its anchor)."""
 
-import json
 import re
-from pathlib import Path
 
 from markupsafe import Markup, escape
 
 from _lib import by_id, crumbs, sort_puppies
-
-PHOTO_TILES = 3  # colour photos in the «Окрасы» row; the fourth tile lists the remaining colours
-TONES = Path(__file__).resolve().parents[2] / "tools" / "photo-tones.json"  # measured studio backdrops (read only)
+from breedsub import breed_colours
 
 
-def _mix(hexes):
-    """Average colour of '#RRGGBB' values."""
-    rgb = [[int(h[i:i + 2], 16) for i in (1, 3, 5)] for h in hexes]
-    return "#" + "".join(f"{round(sum(c) / len(c)):02X}" for c in zip(*rgb))
-
-
-def _more_style(tiles):
-    """«Ещё окрасы» tile: the average measured top / floor of the photo tiles beside it, so the row reads as one."""
-    try:
-        tones = json.loads(TONES.read_text(encoding="utf-8"))
-    except (OSError, ValueError):
-        return ""
-    found = [tones.get(Path(t["photo"]["src"]).stem) for t in tiles]
-    found = [t for t in found if t]
-    if not found:
-        return ""
-    return f"--tone-top:{_mix([t['top'] for t in found])};--tone-floor:{_mix([t['floor'] for t in found])}"
+def _media(hub, shared, slug):
+    """Photo / video carousel of a hub: breeds-hub.json → media in its order — a string is the src of an item of
+    the breed's media.json set (so a video file added there shows here too), a dict is an extra placeholder item.
+    Items of the shared set the list forgets are appended, so nothing the client adds there gets lost."""
+    by_src = {m["src"]: m for m in shared}
+    out, used = [], set()
+    for m in hub.get("media", []):
+        if isinstance(m, str):
+            if m not in by_src:
+                raise ValueError(f"breeds-hub.json {slug}.media: {m} is not in media.json → {slug}")
+            used.add(m)
+            m = by_src[m]
+        out.append(dict({"video": None, "pos": None}, **m))
+    out += [dict({"video": None, "pos": None}, **m) for m in shared if m["src"] not in used]
+    return out
 
 
 def _pair_url(a, b, order):
@@ -45,7 +41,7 @@ def _pair_url(a, b, order):
 _HYPHENATED = re.compile(r"(?<![\w-])((?:\w{1,2} )?\w+(?:-\w+)+)")
 _RANGE = re.compile(r"(?<![\w,])(\d+(?:,\d+)?–\d+(?:,\d+)?)(?: (?=[а-яё])(?!(?:и|или|а|но|до|в|во|на|с|со|по|за|из|от|к|у|о)\b))?")
 NBSP = "\u00a0"
-TEXT_KEYS = ("h1", "lead", "pups_title", "about_title", "colours_title", "colours_lead", "more_title",
+TEXT_KEYS = ("h1", "lead", "note", "pups_title", "about_title", "colours_title", "colours_lead",
              "price_title", "parents_line", "docs_line", "faq_title", "lead_title", "lead_line")
 
 
@@ -61,7 +57,8 @@ def copy_markup(hub):
     h = dict(hub)
     for k in TEXT_KEYS:
         h[k] = nobr(h[k])
-    h["facts"] = [dict(f, value=nobr(f["value"])) for f in h["facts"]]
+    h["media_label"] = h["media_title"]          # plain text for the carousel's aria-label
+    h["media_title"] = nobr(h["media_title"])
     h["traits"] = [{k: (nobr(v) if k in ("label", "title", "line") else v) for k, v in t.items()} for t in h["traits"]]
     # the question sits in a flex button next to the «+» icon: one wrapping span keeps it a single flex item
     h["faq"] = [dict(q=Markup("<span>") + nobr(f["q"]) + Markup("</span>"), a=nobr(f["a"])) for f in h["faq"]]
@@ -79,17 +76,13 @@ def routes(data):
     breeds = data["breeds"]
     order = [b["slug"] for b in breeds]
     hubs = data["breeds_hub"]
+    common = hubs["common"]
     blog = by_id(data["blog"], "slug")
     out = []
     for b in breeds:
-        hub = copy_markup(hubs[b["slug"]])
-
-        # «Окрасы»: up to three photo tiles (standard colours first), the rest by name in one tile
-        colours = b["colours"]["items"]
-        with_photo = [c for c in colours if c.get("photo") and c.get("standard") is not False][:PHOTO_TILES]
-        tiles = [dict(photo=c["photo"], title=nobr(c["name"][:1].upper() + c["name"][1:]),
-                      badge="стандарт FCI" if c.get("standard") else None) for c in with_photo]
-        more = [c["name"] for c in colours if c not in with_photo]
+        own = dict(hubs[b["slug"]])
+        own["faq"] = own["faq"] + common["faq_more"]   # every hub: vaccinations and the lifelong guarantee
+        hub = copy_markup(own)
 
         compare = []
         for other in breeds:
@@ -117,10 +110,10 @@ def routes(data):
                 breadcrumbs=crumbs((b["name"], None)),
                 b=b,
                 hub=hub,
+                common=common,
+                reel=_media(own, data["media"].get(b["slug"], []), b["slug"]),
                 pups=sort_puppies(b["puppies"]),
-                colour_tiles=tiles,
-                more_colours=more,
-                more_style=_more_style(tiles),
+                colours=breed_colours(data, b),
                 links=compare + reading,
                 pups_strip=False,          # the hub lists every puppy of the breed itself
                 lead_breed=b["slug"],

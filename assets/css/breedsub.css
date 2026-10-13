@@ -88,19 +88,70 @@
 .bsub-kind__rows dt { color: var(--muted); }
 .bsub-kind__rows dd { margin: 0; font-weight: 500; text-align: right; }
 
-/* ---------- «Ещё окрасы» под студийными плитками: заголовок и подпись слева, окрасы справа ---------- */
-.bsub-more {
-  display: grid; grid-template-columns: minmax(220px, 1fr) minmax(0, 2.4fr); align-items: start;
-  gap: 16px clamp(24px, 3vw, 48px);
-  margin-top: var(--gap); padding: clamp(22px, 2.4vw, 32px); border-radius: var(--r-tile); background: var(--tile);
+/* ---------- окрасы: круглые мордочки-ссылки (хаб породы и начало раздела «Окрасы»).
+   Фото окраса — кадр головы на замеренном фоне снимка; без фото — точка цвета на пастели породы ---------- */
+.bsub-cnav {
+  display: flex; align-items: center; gap: 22px clamp(24px, 3vw, 48px);
+  padding: clamp(22px, 2.4vw, 32px) clamp(22px, 2.6vw, 40px);
+  border-radius: var(--r-tile); background: var(--tile);
 }
-.bsub-more__head { display: grid; gap: 8px; }
-.bsub-more__title { font-size: var(--fs-h3); font-weight: 500; letter-spacing: -0.025em; line-height: 1.15; }
-.bsub-more__note { font-size: 14.5px; line-height: 1.45; color: var(--muted); max-width: 34ch; }
-.bsub-more__list { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 14px clamp(20px, 2.4vw, 36px); }
-.bsub-more__list li { display: grid; align-content: start; gap: 2px; padding-left: 14px; border-left: 2px solid var(--line); }
-.bsub-more__name { font-size: 17px; font-weight: 500; letter-spacing: -0.01em; line-height: 1.3; }
-.bsub-more__line { font-size: 14.5px; line-height: 1.4; color: var(--muted); }
+.bsub-cnav__list { flex: 1; display: grid; grid-template-columns: repeat(auto-fit, minmax(clamp(104px, 9.6vw, 140px), 1fr)); gap: 22px 10px; }
+.bsub-cnav__list > li { min-width: 0; }
+.bsub-cnav__item { display: grid; justify-items: center; gap: 12px; text-align: center; color: var(--ink); text-decoration: none; }
+.bsub-cface {
+  position: relative; display: block; width: clamp(84px, 7.6vw, 116px); aspect-ratio: 1;
+  border-radius: 50%; overflow: hidden; background: var(--tone);
+}
+.bsub-cface img { width: 100%; height: 100%; object-fit: cover; transform: scale(1.7); transform-origin: 50% 33%; transition: transform .6s var(--ease); }
+.bsub-cface__dot { position: absolute; inset: 19%; border-radius: 50%; box-shadow: 0 0 0 4px rgba(255, 255, 255, .7); transition: transform .6s var(--ease); }
+.bsub-cnav__name { font-size: 15px; font-weight: 500; letter-spacing: -0.01em; line-height: 1.25; }
+@media (hover: hover) {
+  .bsub-cnav__item:hover .bsub-cface img { transform: scale(1.82); }
+  .bsub-cnav__item:hover .bsub-cface__dot { transform: scale(1.08); }
+  .bsub-cnav__item:hover .bsub-cnav__name { text-decoration: underline; text-underline-offset: 3px; }
+}
+.bsub-cnav__cta { flex: none; }
+
+/* ---------- окрас отдельной карточкой (id = окрас — сюда ведут мордочки с хаба) ----------
+   белая плитка: студийный кадр окраса квадратом на своём замеренном фоне, справа — стандарт, название, два
+   предложения, «Спросить о щенках». Нечётное число окрасов — последнюю ячейку занимает плитка-заявка */
+.bsub-cols { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--gap); margin-top: var(--gap); }
+.bsub-col {
+  position: relative; scroll-margin-top: 104px;
+  display: grid; grid-template-columns: minmax(0, 46%) minmax(0, 1fr); column-gap: clamp(18px, 2vw, 30px);
+  padding: 8px; border-radius: var(--r-tile); background: var(--tile);
+  transition: box-shadow .3s var(--ease);
+}
+.bsub-col:target { box-shadow: 0 0 0 2px var(--ink); }
+.bsub-col__media {
+  position: relative; overflow: hidden; aspect-ratio: 1; border-radius: var(--r-img);
+  background: linear-gradient(180deg, var(--tone-top, var(--tone-hi)) 0, var(--tone-hi) 22%, var(--tone-hi) calc(var(--fa, .78) * 100%), var(--tone-floor) calc(var(--fb, .97) * 100%));
+}
+.bsub-col__media img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 100%; }
+.bsub-col__media--dot { display: grid; place-items: center; }
+.bsub-col__dot { width: 50%; aspect-ratio: 1; margin-bottom: 10%; border-radius: 50%; box-shadow: 0 0 0 6px rgba(255, 255, 255, .7); }
+.bsub-col__pnote {
+  position: absolute; left: 10px; bottom: 10px; max-width: calc(100% - 20px);
+  padding: 5px 11px; border-radius: var(--r-pill); background: rgba(255, 255, 255, .72);
+  font-size: 12.5px; font-weight: 500; line-height: 1.3;
+}
+.bsub-col__body { display: flex; flex-direction: column; align-items: flex-start; min-width: 0; padding: clamp(16px, 1.8vw, 26px) clamp(12px, 1.6vw, 22px) clamp(12px, 1.4vw, 18px) 0; }
+.bsub-col__badge { padding: 6px 12px; border-radius: var(--r-pill); background: var(--page); font-size: 13px; font-weight: 500; line-height: 1.25; }
+.bsub-col__badge--ok { background: var(--mint-50); }
+.bsub-col__badge--no { background: var(--coral-50); }
+.bsub-col__name { margin-top: clamp(14px, 1.4vw, 20px); font-size: var(--fs-h3); font-weight: 500; letter-spacing: -0.025em; line-height: 1.15; }
+.bsub-col__text { margin: 8px 0 18px; font-size: 15px; line-height: 1.45; color: var(--muted); }
+.bsub-col__btn { margin-top: auto; }
+.bsub-cols__note { margin-top: 18px; font-size: 14.5px; line-height: 1.45; color: var(--muted); }
+/* плитка-заявка в последней ячейке (нечётное число окрасов) */
+.bsub-col--ask {
+  display: flex; flex-direction: column; align-items: flex-start; justify-content: center; gap: 10px; padding: var(--tile-pad);
+  background: linear-gradient(180deg, var(--tone) 0 55%, var(--tone-floor) 100%);
+}
+.bsub-col--ask .ico { margin-bottom: 10px; }
+.bsub-col--ask .bsub-col__name { margin-top: 0; }
+.bsub-col--ask .bsub-col__text { margin-top: 0; max-width: 36ch; }
+.bsub-col--ask .btn { margin-top: 10px; }
 
 /* шаги «Как выбрать» и «Бронь»: заголовки на одной высоте, даже если подпись в две строки */
 .section .steps--3 .step { align-content: start; }
@@ -116,14 +167,39 @@
   .bsub-incl__list { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }
 
+@media (max-width: 1199px) {
+  /* мордочки окрасов: «Все окрасы» — под ними */
+  .bsub-cnav { flex-direction: column; align-items: stretch; }
+  .bsub-cnav__cta { align-self: center; }
+  /* карточка окраса компактнее: кадр квадратом слева от стандарта и названия, текст и кнопка — под ними */
+  .bsub-col { grid-template-columns: clamp(108px, 15vw, 140px) minmax(0, 1fr); grid-template-rows: auto auto 1fr auto; column-gap: 16px; }
+  .bsub-col__media { grid-row: 1 / 3; align-self: start; }
+  .bsub-col__body { display: contents; }
+  .bsub-col__badge { grid-column: 2; grid-row: 1; align-self: end; justify-self: start; margin-top: 8px; }
+  .bsub-col__name { grid-column: 2; grid-row: 2; align-self: start; margin-top: 10px; padding-right: 8px; }
+  .bsub-col__text { grid-column: 1 / -1; grid-row: 3; margin: 14px 10px 0; }
+  .bsub-col__btn { grid-column: 1 / -1; grid-row: 4; justify-self: start; margin: 16px 10px 10px; }
+  .bsub-col__pnote { left: 50%; bottom: 5px; transform: translateX(-50%); max-width: none; padding: 3px 8px; font-size: 11px; white-space: nowrap; }
+  .bsub-col--ask { display: flex; }
+}
+
 @media (max-width: 1000px) {
   .bsub-facts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .bsub-incl__list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .bsub-incl__media { aspect-ratio: 16 / 8; }
-  .bsub-more { grid-template-columns: minmax(0, 1fr); }
 }
 
 @media (max-width: 760px) {
+  /* окрасы: мордочки — сеткой по три-четыре в ряд (без прокрутки вбок), карточки — по одной в ряд */
+  .bsub-cnav { padding: 20px 14px; }
+  .bsub-cnav__list { grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); gap: 18px 6px; }
+  .bsub-cface { width: 76px; }
+  .bsub-cnav__name { font-size: 14px; }
+  .bsub-cols { grid-template-columns: minmax(0, 1fr); }
+  .bsub-col { grid-template-columns: 116px minmax(0, 1fr); }
+  .bsub-col__name { font-size: 21px; }
+  .bsub-col__text { font-size: 14.5px; }
+
   /* факторы цены: компактный список — иконка слева, текст справа */
   .bsub-facts { grid-template-columns: minmax(0, 1fr); }
   .bsub-fact { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: center; column-gap: 14px; min-height: 0; padding: 16px 18px 16px 16px; }
@@ -152,10 +228,6 @@
   .bsub-kind__face .face { width: calc(76px * var(--s, 1)); height: calc(76px * var(--s, 1)); }
   .bsub-kind__title { font-size: 19px; }
   .bsub-kind__line, .bsub-kind__rows > div { font-size: 14.5px; }
-
-  .bsub-more { padding: 20px; gap: 14px; }
-  .bsub-more__list { grid-template-columns: minmax(0, 1fr); gap: 12px; }
-  .bsub-more__name { font-size: 16px; }
 }
 
 

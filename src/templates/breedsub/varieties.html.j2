@@ -1,6 +1,6 @@
 {#- /<breed>/vidy-i-okrasy/ — varieties and colours of a breed. One template, blocks in the order of data:
-    kinds (comparison tiles: generations, sizes, coats, «мини»), colours (studio tiles in each photo's measured
-    backdrop + other colours), std (what the FCI standard allows), tips. Context from routes/breedsub.py:
+    kinds (comparison tiles: generations, sizes, coats, «мини»), colours (round faces → one anchored card per colour,
+    id = colour slug — the breed hub links here), std (what the FCI standard allows), tips. Context from routes/breedsub.py:
     b (breed), v (copy, Markup), tint, links_title, links. The layout adds «Щенки в наличии» (pups_breed = b). -#}
 {% extends "layouts/page.html.j2" %}
 {% import "breedsub/_parts.html.j2" as part %}
@@ -46,18 +46,10 @@
 
     {% elif s.type == 'colours' %}
       {{ ui.section_head(s.title, id=s.id ~ '-title', lead=s.lead) }}
-      {{ ui.studio_tiles(s.tiles) }}
-      {% if s.more %}
-      <div class="bsub-more">
-        <div class="bsub-more__head">
-          <h3 class="bsub-more__title">{{ s.more.title|typo }}</h3>
-          {% if s.more.note %}<p class="bsub-more__note">{{ s.more.note|typo }}</p>{% endif %}
-        </div>
-        <ul class="bsub-more__list">
-          {% for c in s.more['items'] %}<li><span class="bsub-more__name">{{ c.name|typo }}</span><span class="bsub-more__line">{{ c.line|typo }}</span></li>{% endfor %}
-        </ul>
-      </div>
-      {% endif %}
+      {{ part.colour_nav(s['items'], b, label='Окрасы: перейти к описанию', eager=loop.first) }}
+      {%- set odd = s['items']|length is odd %}
+      {{ part.colour_cards(s['items'], b, ask={'title': 'Ищете другой окрас?', 'line': s.note or 'Расскажите, какого щенка ищете, — подберём и пришлём видео', 'tint': tint}) }}
+      {% if s.note and not odd %}<p class="bsub-cols__note">{{ s.note|typo }}</p>{% endif %}
 
     {% elif s.type == 'std' %}
       {{ ui.section_head(s.title, id=s.id ~ '-title', lead=s.lead) }}
