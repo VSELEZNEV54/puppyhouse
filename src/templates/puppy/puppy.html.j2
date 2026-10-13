@@ -7,7 +7,6 @@
 {% import "catalog/_card.html.j2" as ct %}
 
 {% block page_css %}
-  <link rel="stylesheet" href="/assets/css/catalog.css">
   <link rel="stylesheet" href="/assets/css/puppy.css">
 {% endblock %}
 {% block page_js %}
@@ -179,5 +178,5 @@
 {% block pups %}{% endblock %}
 
 {% block lead %}
-    {{ forms.lead_form(title='Подберём щенка за 15 минут', line=lead_line, tone=b.tone, breed=b.slug) }}
+    {{ forms.lead_form(title='Подберём щенка за 1 час', line=lead_line, tone=b.tone, breed=b.slug) }}
 {% endblock %}

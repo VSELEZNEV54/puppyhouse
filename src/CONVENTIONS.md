@@ -11,19 +11,27 @@ pixel-parity baseline no longer applies. Reference inner page: `/shchenki/`.
 - **Brand: «домщенков.рф»** — lowercase, no hyphen, from `site.brand`. Never «Puppy House» (the build warns on it).
   `<title>` suffix: ` | домщенков.рф`; titles stay ≤ 60 characters.
 - **Header** (shared, `partials/header.html.j2`): logo · «Меню» (site map panel `#mega`, data `site.menu`) · «Породы ▾» ·
-  `site.nav` links · phone · Telegram / WhatsApp / MAX · «Написать в Telegram» (`.btn--tg`, Telegram gradient). On narrower
+  `site.nav` links · phone · Telegram / WhatsApp / MAX · «Написать в Telegram» (`.btn--tg`, Telegram blue darkened to
+  ≥ 4,5:1 with white text — tokens `--tg-a` / `--tg-b`). Round messenger buttons without a text label use
+  `m.get('round_icon') or m.icon` (MAX → the «MAX» wordmark `#i-max-word`) and `title`. On narrower
   desktops links hide from the end (`prio`), they stay in «Меню»; below 1100 px a burger opens the full-screen `#mmenu` with
   the same groups as accordions. Mobile sticky bar: Позвонить · Telegram · Узнать цену.
 - **Forms: one column.** Every field on its own row at every width (`forms.lead_form`, the price modal, any form you add:
   use `.form__grid` — it is a single column). Contact chips: Telegram / WhatsApp / MAX / Звонок (`forms.contact_field`).
 - **Phones (≤ 760 px): no sideways scrolling of cards.** Cards go down the page: one per row, or two small ones (colour
-  faces, `.stiles--pair`). Chips and filters wrap. The ONLY swipeable rows are photo/video carousels (`media.media_carousel`,
-  `media.video_reviews`). `.scroller` is a no-op now — don't use it. The crawler flags any other sideways scroll container.
+  faces, `.stiles--pair`). Chips and filters wrap. The ONLY swipeable rows are photo/video carousels (`media.media_carousel`);
+  video reviews (`media.video_reviews`) stack on phones (three cards + «Все отзывы»), wide comparison tables (`ui.cmp_table`
+  with 3+ columns) turn into one tile per column. `.scroller` is a no-op now — don't use it. The crawler flags any other
+  sideways scroll container and any link/button cut off by an `overflow: hidden` parent (`control-clipped`).
 - **CTA wording: no arrow-only buttons.** Every clickable tile/card ends with a text pill (`ui.tile_cta`) or a text link
   (`ui.text_link`): «Перейти к породе» (breed tiles), «Подробнее» (help / link / studio tiles), «Смотреть щенка» (a puppy),
   «Все окрасы» / «Смотреть окрас» (colours), «Читать» (articles). `ui.round_arrow` is decorative only.
 - **Advantages everywhere it fits**: `ui.advantages()` (привиты по возрасту, ветпаспорт и договор, пожизненная гарантия,
-  пожизненная консультация, видео до покупки, доставка — `site.advantages`).
+  пожизненная консультация, видео до покупки, доставка — `site.advantages`). Used on /, hubs, catalog, puppy pages,
+  /dokumenty-i-garantii/, /dostavka/ + cities, /otzyvy/, /roditeli/, /vypuskniki/, /rassrochka/, /shchenok-v-podarok/, /faq/.
+  The guarantee is **lifetime** everywhere («Пожизненная гарантия на врождённые и генетические заболевания — условия в договоре»).
+- **Promises**: picking a puppy — «Подберём щенка за 1 час» (hub hero, modal, `forms.lead_form` default); «за 15 минут» is only
+  the reply time («Ответим за 15 минут», «Цену пришлём за 15 минут»).
 - **First screen**: `ui.page_hero(..., full=true)` = the whole screen (breed pages); homepage hero: `.hero--full`.
   Studio photos in page heroes are larger on desktop (≥ 1200 px the tile is taller; the photo is never cropped).
 - **No new images.** Placeholders come from `assets/img/` (`src/data/media.json` lists sets per page/breed); a video is a
@@ -135,7 +143,9 @@ The layout renders: breadcrumbs → hero → body → «Щенки в налич
 Globals: `site`, `breeds` (list), `breed_map` (slug → breed), `puppies`, `data` (everything, incl. your files), `imgsize(src)`, `photo_tone(src)`, `tone_style(src)`.
 `site.json` (stage 3): `brand` «домщенков.рф», `nav` (header links, `prio` 2–6 = hide order on narrow desktops), `menu` (site-map
 groups for «Меню» and the burger: items `{label, url}` + `breed` face / `count` / `icon`, or `{label, sub: [...]}` pills),
-`tg_cta` («Написать в Telegram»), `messengers.telegram|whatsapp|max` (`max.url` is a placeholder), `advantages`, `stats`.
+`tg_cta` («Написать в Telegram»), `messengers.telegram|whatsapp|max` (`url_placeholder` marks placeholder links; `max.round_icon`),
+`advantages`, `stats`; `domain` «домщенков.рф» + `domain_ascii` (punycode `xn--b1adduihee9g.xn--p1ai`, for JSON-LD URLs),
+`email` (placeholder «[почта]@домщенков.рф»).
 `media.json`: photo/video sets for carousels — `home`, `maltipu`, `francuzskij-buldog`, `toj-pudel`, `border-kolli`; item
 `{src, alt, kind: photo|video, caption, video: null|file, pos?}` (`data.media.home`, `data.media[b.slug]`).
 `reviews.json`: + `poster {src, alt, pos?}` (placeholder lifestyle photo), `video: null`, `short` (≤ 160 chars) for every review.
@@ -147,6 +157,8 @@ Computed by the build:
 `puppies.json`: 19 sample puppies (maltipu 7, bulldog 4, toy poodle 5, border collie 3); the homepage has no puppy strip since
 13.10 (it links to the catalog: «Все щенки в наличии — 19»). Photo fields: `kind` (`studio` | `life`), `class`, optional `pos` (object-position for a lifestyle shot),
 `backdrop: "token"` (only the four approved homepage cards — every other studio photo takes its measured backdrop in the card).
+Live photos for the catalog (client 13.10, waiting for the client's files): put the real photo first in `photos` with
+`kind: "life"` (+ `pos` if needed) — every card then shows it cropped to cover (default `object-position: 50% 60%`), no code change.
 Values in `[square brackets]` are placeholders (see `site.placeholders`); keep them bracketed until the client gives real data.
 `cities.json`: `name`, `prep` («в Казани»), `acc` («в Казань»), `gen` («из Казани»), `km_approx` (rough road distance), `methods` (car/plane/train), `duration` (bracketed estimate from distance and the first method, to confirm).
 `breeds.json` also has `facts`, `compare` (comparison rows), `docs`, `studio` / `mood` / `adult` photos, `varieties`, `colours` (drafts — check, some with `standard` and `photo`).
@@ -168,27 +180,27 @@ in the order of `breeds-hub.json` → `media` (+ extra placeholders), so a video
 | `ui.steps` / `ui.timeline` | `items[{title,text}]`, `cols=3/5` / `items[{when?,title,text?}]` | how-to |
 | `ui.link_tiles` | `items[{url,title,line,icon,color \| breed \| image, cta?}], style='white'\|'color'` | related links (don't mix image + icon tiles in one row); each ends with a «Подробнее» pill (`t.cta` to change) |
 | `ui.tile_cta` | `label='Подробнее', variant=''\|'soft'\|'ink', url=none` | the CTA pill of a tile/card («Перейти к породе», «Смотреть щенка», «Все окрасы», «Читать»). Inside a link tile → `<span>`; `url` → `<a class="tcta">`. White on colour tiles, `soft` on white, `ink` on photos |
-| `ui.advantages` | `items=site.advantages, title, id='preimushchestva', lead, link, cols=3` | kennel advantages: pastel icon circle + 2–3 word title + one line. `title` → whole section with H2; `cols=6` → six narrow tiles in a row. Phones: one per row |
-| `ui.lead_band` | `title, line, label='Оставить заявку', tone='lilac', tag='h3', title_id, faces=true, note, modal_title` | CTA band right under a carousel: «Оставить заявку» (modal with its own title + hidden note) + «Написать в Telegram». Inside a section with an H2 keep `tag='h3'` |
+| `ui.advantages` | `items=site.advantages, title, id='preimushchestva', lead, link, cols=3, tight=false` (`tight` → `section--tight`, first block under a hero) | kennel advantages: pastel icon circle + 2–3 word title + one line. `title` → whole section with H2; `cols=6` → six narrow tiles in a row. Phones: one per row |
+| `ui.lead_band` | `title, line, label='Оставить заявку', tone='lilac', tag='h3', title_id, faces=true, note, modal_title, submit='Записаться на видеозвонок', done` | CTA band right under a carousel: «Оставить заявку» (modal with its own title + hidden note) + «Написать в Telegram». Inside a section with an H2 keep `tag='h3'` |
 | `ui.cta_band` | `title, line, button='modal'\|{url,label}, label, tone, faces, title_id` | mid-page CTA (wrap in a section, `title_id` → its `aria-labelledby`) |
 | `ui.keyfacts`, `ui.callout(kind,title)` + call, `ui.toc([[id,label]])` | | articles (`.article`, `.prose`) |
-| `ui.cmp_table` | `cols` (names or breed dicts), `rows[[label, v1, v2…]]`, `caption` | comparison, scrolls inside its tile; column names never break at a hyphen |
+| `ui.cmp_table` | `cols` (names or breed dicts), `rows[[label, v1, v2…]]`, `caption` | comparison table in a white tile; column names never break at a hyphen. 3+ columns: phones ≤ 760 get one tile per column (`.cmp-cards`) instead of the table |
 | `ui.gallery` | `photos[{src,alt,caption?}]` | 1–5+ photos; phones: a grid (first photo full width, the rest two per row). Swipeable row → `media.media_carousel` |
 | `ui.badges`, `ui.empty_state(title,text,button,label,attrs)`, `ui.img(src,alt,…)`, `ui.icon`, `ui.ico`, `ui.face`, `ui.round_arrow`, `ui.text_link` | | small parts |
-| `cards.puppy_card(p)` | puppy | the homepage card; «Узнать цену» opens the modal for that puppy; studio photo → card in that photo's measured colours |
-| `ct.card(p, eager=false)` / `ct.strip(items, breed)` | `{% import "catalog/_card.html.j2" as ct %}` (group catalog) | the catalog card: same look + «Смотреть щенка» and «Узнать цену» (side by side, stacked when the card is narrow; phones ≤ 560 — a compact row, photo left). Used by `/shchenki/` and «Похожие щенки» on puppy pages; needs `/assets/css/catalog.css` |
+| `cards.puppy_card(p, tag='h3', eager=false)` | puppy | THE puppy card of the whole site (every strip, hub, catalog, «Похожие щенки»): photo (a link), «Смотреть щенка» + «Узнать цену» (modal for that puppy), heart in the photo corner; studio photo → card in that photo's measured colours; phones ≤ 560 — a compact row, photo left. Styles: `main.css` (`.pup` + `.ct-card`) |
+| `ct.card(p, eager=false)` / `ct.strip(items, breed)` | `{% import "catalog/_card.html.j2" as ct %}` | `ct.card` = `cards.puppy_card`; `ct.strip` = a strip of cards + «Ждёте другого щенка?» («Похожие щенки») |
 | `cards.pups_section` | `title, breed, limit=4, id, exclude=slug` | «Щенки в наличии» strip (`.pups--strip`: at 3 columns a lone 4th card is hidden) |
 | `cards.breed_tile(s)` | `b, count=false, cta='Перейти к породе'` / `items, count=false, cols=4` | pastel breed tiles; `cols=2` → two wide tiles per row on desktop (photo right). «В наличии» only with `count=true` (removed from the homepage 13.10). Phones: one wide tile per row |
 | `cards.review_card(r, short)`, `cards.ratings()`, `cards.soon_tile()` | | |
-| `media.media_carousel` | `items, title, id='media', lead, link, label, start, priority` + `call` → content under it | row of 9:16 photo/video cards, centred card larger, arrows, swipe, ← →, snap; opens `#lightbox`. Starts on the middle card. `title` → whole section; `caller()` → e.g. `ui.lead_band()` under the carousel |
+| `media.media_carousel` | `items, title, id='media', lead, link, label, start, priority` + `call` → content under it | row of 9:16 photo/video cards, centred card larger, arrows (a pair under the row from 561 px; over the row on phones), swipe, ← →, snap; opens `#lightbox`. Starts on the middle card. `title` → whole section; `caller()` → e.g. `ui.lead_band()` under the carousel |
 | `media.media_card` | `m` (media.json item) | one 9:16 card (button → lightbox); video = poster + play |
-| `media.video_review_card` | `r` (reviews.json item) | 9:16 poster + play + review text (`r.short`) + name, city, breed on a white panel |
-| `media.video_reviews` | `reviews, title='Отзывы владельцев', id='otzyvy', title_id, link, lead, ratings=true` | section: rating tiles + swipeable row of video review cards |
+| `media.video_review_card` | `r, full=false, cls=''` | 9:16 poster + play + review text (`r.short`; `full=true` → `r.text` + source and puppy) + name, city, breed on a white panel. In `ul.vrev-grid` (or `cls='vrev--stack'`) the card grows with its text — /otzyvy/ uses the grid |
+| `media.video_reviews` | `reviews, title='Отзывы владельцев', id='otzyvy', title_id, link, lead, ratings=true` | section: rating tiles + row of video review cards (arrows under it); phones: first three stacked + «Все отзывы» |
 | `blocks.blog_teasers` | `slugs` (or `posts[{url,title,line,cover,topic}]`), `title='Гид по породам', id='blog', lead, link, limit=3` | article cards: photo, title, one line, «Читать»; phones — compact list |
-| `forms.lead_form` | `title, line, tone, breed, id='zayavka'` | one per page (the layout adds it) |
+| `forms.lead_form` | `title='Подберём щенка за 1 час', line, tone, breed, id='zayavka'` | one per page (the layout adds it); phones: phone number on its own line, three messengers (`.lead__msgrs`, never split) under it |
 | `forms.price_button(label, cls, breed)`, `forms.msgr(kind)` | `kind = telegram \| whatsapp \| max` | generic «Узнать цену» / messenger round button |
 | `forms.contact_field(prefix)` | `'lf' \| 'pm' \| yours` | «Куда написать» chips Telegram / WhatsApp / MAX / Звонок |
-| `blocks.faq_section` / `faq_list` | `items` (faq.json or `{q,a}`), `title, id, link, short` | accordion |
+| `blocks.faq_section` / `faq_list` | `items` (faq.json or `{q,a}`), `title, id, link, short, ld=true` | accordion; `ld=true` also emits FAQPage JSON-LD for its questions (one FAQ section per page — pass `ld=false` where the page outputs its own FAQPage: /faq/, blog articles) |
 | `blocks.reviews_section` | `reviews, title, id, title_id, link, short` | text reviews (one per row on phones); for video reviews use `media.video_reviews` |
 | `blocks.seo_block` | `title, lead, id, key` + `call` → hidden `<h3>/<p>` | collapsed SEO text |
 
@@ -196,11 +208,11 @@ in the order of `breeds-hub.json` → `media` (+ extra placeholders), so a video
 
 - Design tokens, the header, every homepage class and the stage-3 shared blocks live in `main.css`
   (`.btn--tg .btn--outline .tcta .media-carousel .mcard .vrev .lightbox .advs .lband .bteasers .breeds--2 .hero--full`,
-  pastel tints `.tone--sun/sky/mint/lilac/coral/sand`); the inner-page kit in `pages.css`
+  pastel tints `.tone--sun/sky/mint/lilac/coral/sand`, `.sec-head__lead`, the puppy card `.pup` + `.ct-card`); the inner-page kit in `pages.css`
   (`.crumbs .phero .phero--full .specs .kpis .badges .tline .ltiles .cta-band .empty .article .prose .table-wrap .keyfacts .callout .toc .cmp .gallery .filters .fseg .pups--grid .soon-tile .stiles .stiles--pair .tile .grid .split`).
 - Your CSS: only page-specific layout, prefix classes with your group (`.dlv-…`). Use tokens (`var(--gap)`, `--r-tile`, `--tile-pad`, `--sec`, colours). No new fonts, no shadows/colours outside the palette.
 - Breakpoints used everywhere: 1199 / 1000 / 900 / 760 (phones: everything stacks, no ribbons) / 560 / 420. Check 360–1920, no horizontal page scroll.
-  Header: phone text ≥ 1600; logo caption ≥ 1380; «Блог» ≥ 1340, «Контакты» ≥ 1280, round Telegram ≥ 1200, «Отзывы» ≥ 1150; burger < 1100.
+  Header: logo caption ≥ 1600; phone text ≥ 1440 («Блог» gives way to it at 1440–1519); «Блог» ≥ 1340, «Контакты» ≥ 1280, round Telegram ≥ 1200, «Отзывы» ≥ 1150; burger < 1100.
 - `main.js` (all pages) gives you, by markup: header panels `[data-mega]` / `[data-dd]` (hover with intent, click pins, ↓ ↑, Esc),
   `[data-burger]` + `#mmenu` accordions (`.mmenu__acc` → `aria-controls`), `[data-carousel]` (arrows, swipe, keys, active card,
   far images preloaded), `[data-lightbox]` → `#lightbox` (`data-kind`, `data-src` = video file, `data-caption`),
@@ -225,8 +237,9 @@ in the order of `breeds-hub.json` → `media` (+ extra placeholders), so a video
 Russian, short sentences, warm and concrete. No prices anywhere (every puppy → «Узнать цену»), no «лучший», «№1». H2 ≤ 5 words, one-line lead ≤ 90 chars,
 card line ≤ 60 chars, long SEO text only in `blocks.seo_block`, FAQ or article prose. Keywords: the semantic core CSV, target URL column.
 Facts about breeds — from `breeds.json` / `content/home.md`; anything unverified stays in `[brackets]`.
-`|typo` adds non-breaking spaces (after 1–2 letter words, before dashes, number + unit); in hand-written HTML use `&nbsp;` the same way.
-The build warns about prices, banned words, duplicate ids, broken aria references, `<img>` without alt/size, missing title/description,
+`|typo` adds non-breaking spaces (after 1–2 letter words, before dashes, number + unit) and a word joiner after the hyphen of
+«что-то», «как-нибудь», «кое-где» (no line break there); in hand-written HTML use `&nbsp;` the same way.
+The build warns about prices, banned words, the old brand («Puppy House», «puppyhouse», «дом-щенков.рф») in visible text, duplicate ids, broken aria references, `<img>` without alt/size, missing title/description,
 `<title>` over 60 and meta description over 160 characters.
 
 ## QA before you report

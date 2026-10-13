@@ -53,25 +53,27 @@
 {% endif %}
 {%- endmacro %}
 
-{#- Video review card: vertical 9:16 poster with a play button, the review text (r.short, ≤ 160 chars) and
-    name · city · breed. r = reviews.json item (poster {src, alt}, video: null|url). Opens the lightbox. -#}
-{% macro video_review_card(r) -%}
+{#- Video review card: vertical 9:16 poster with a play button, the review text (r.short, ≤ 160 chars; full=true → r.text)
+    and name · city · breed. r = reviews.json item (poster {src, alt}, video: null|url). Opens the lightbox.
+    Inside ul.vrev-grid (or cls='vrev--stack') the card grows with its text: a photo strip on top, the text panel below. -#}
+{% macro video_review_card(r, full=false, cls='') -%}
 {%- set size = imgsize(r.poster.src) or [900, 1600] -%}
 {%- set breed = breed_map[r.breed].name if r.breed in breed_map else r.breed_label -%}
-<article class="vrev">
+<article class="vrev{{ ' ' ~ cls if cls }}">
   <button class="vrev__media" type="button" data-lightbox data-kind="video"{% if r.video %} data-src="{{ r.video }}"{% endif %} data-caption="Отзыв: {{ r.name }}, {{ r.city }}" aria-label="Смотреть видеоотзыв: {{ r.name }}, {{ r.city }}">
     <img src="{{ r.poster.src }}" alt="{{ r.poster.alt|typo }}" width="{{ size[0] }}" height="{{ size[1] }}"{% if r.poster.pos is defined and r.poster.pos %} style="object-position:{{ r.poster.pos }}"{% endif %} loading="lazy" decoding="async">
     <span class="mcard__play" aria-hidden="true">{{ ui.icon('play') }}</span>
   </button>
   <div class="vrev__body">
-    <span class="stars" role="img" aria-label="Оценка {{ r.rating }} из 5">{% for _ in range(r.rating) %}{{ ui.icon('star') }}{% endfor %}</span>
-    <blockquote class="vrev__text"><p>{{ (r.short or r.text)|typo }}</p></blockquote>
-    <p class="vrev__who"><span class="ava" style="--c:var(--{{ r.color }})" aria-hidden="true">{{ r.name[0] }}</span><span><b>{{ r.name }}, {{ r.city }}</b><span>{{ breed }}</span></span></p>
+    <span class="vrev__top"><span class="stars" role="img" aria-label="Оценка {{ r.rating }} из 5">{% for _ in range(r.rating) %}{{ ui.icon('star') }}{% endfor %}</span>{% if full and r.source %}<span class="vrev__src">{{ r.source|typo }}</span>{% endif %}</span>
+    <blockquote class="vrev__text"><p>{{ (r.text if full else (r.short or r.text))|typo }}</p></blockquote>
+    <p class="vrev__who"><span class="ava" style="--c:var(--{{ r.color }})" aria-hidden="true">{{ r.name[0] }}</span><span><b>{{ r.name }}, {{ r.city }}</b><span>{{ (r.breed_label ~ ' · ' ~ r.pup) if full and r.pup else breed }}</span></span></p>
   </div>
 </article>
 {%- endmacro %}
 
-{#- Video reviews section: H2 + rating tiles + a carousel of video_review_card (swipe on phones, arrows on desktop).
+{#- Video reviews section: H2 + rating tiles + a carousel of video_review_card (arrows under the row on desktop).
+    Phones ≤ 760 px (client 13.10: no sideways card scrolling): the first three cards stacked + «Все отзывы» button.
     reviews: reviews.json items. ratings=false hides the Яндекс / Google / Авито tiles. -#}
 {% macro video_reviews(reviews, title='Отзывы владельцев', id='otzyvy', title_id=none, link={'url': '/otzyvy/', 'label': 'Все отзывы'}, lead=none, ratings=true) -%}
 {%- set tid = title_id or (id ~ '-title') -%}
@@ -93,5 +95,6 @@
       <button class="media-carousel__btn" type="button" data-carousel-next aria-label="Следующий отзыв">{{ ui.icon('arrow') }}</button>
     </div>
   </div>
+  {% if link %}<a class="btn btn--white btn--lg btn--block vrevs__more" href="{{ link.url }}">{{ link.label }}</a>{% endif %}
 </section>
 {%- endmacro %}

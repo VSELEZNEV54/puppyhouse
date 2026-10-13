@@ -28,9 +28,11 @@
 
     <div class="dlv-faqcats">
     {% for c in cats %}
-    {{ blocks.faq_section(c.qs, title=c.title, id=c.id, link=none) }}
+    {{ blocks.faq_section(c.qs, title=c.title, id=c.id, link=none, ld=false) }}
     {% endfor %}
     </div>
+
+    {{ ui.advantages(title='Почему выбирают нас', link={'url': '/dokumenty-i-garantii/', 'label': 'Документы и гарантии'}) }}
 
     {{ cards.pups_section() }}
 {% endblock %}

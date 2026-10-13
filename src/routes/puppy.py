@@ -2,7 +2,7 @@
 gallery carousel + info tile with the characteristics table → character → parents → what's included → booking and
 delivery → similar puppies → FAQ → lead form.
 Owns: src/routes/puppy.py, src/templates/puppy/, src/data/puppy.json, assets/css/puppy.css, assets/js/puppy.js.
-The puppy card of «Похожие щенки» is the catalog card (src/templates/catalog/_card.html.j2, assets/css/catalog.css)."""
+The puppy card of «Похожие щенки» is the shared card cards.puppy_card (via src/templates/catalog/_card.html.j2, main.css)."""
 
 import datetime as dt
 

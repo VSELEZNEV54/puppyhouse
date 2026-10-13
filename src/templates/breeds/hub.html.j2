@@ -25,7 +25,7 @@
       {{ ui.section_head(hub.pups_title, id='shchenki-title', link={'url': '/shchenki/?breed=' ~ b.slug, 'label': 'Смотреть в каталоге'}) }}
       {% if pups %}
       {%- set n = pups|length %}
-      <ul class="pups brd-pups" data-reveal="items">
+      <ul class="pups" data-reveal="items">
         {% for p in pups %}
         <li class="pups__item">
           {{ cards.puppy_card(p) }}

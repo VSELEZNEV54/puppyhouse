@@ -352,9 +352,13 @@ a.dlv-ct__value:hover { text-decoration: underline; text-decoration-thickness: 1
 }
 
 @media (max-width: 760px) {
-  /* контакты: «Позвонить» и два круглых мессенджера — одной строкой */
-  .dlv-konhero .phero__actions { flex-wrap: nowrap; }
+  /* контакты: «Позвонить» и три круглых мессенджера (Telegram, WhatsApp, MAX) — строка переносится, ничего не обрезается */
+  .dlv-konhero .phero__actions { flex-wrap: wrap; }
   .dlv-konhero .phero__actions .btn { flex: 1 1 auto; }
+}
+@media (max-width: 560px) {
+  /* телефон: «Позвонить» на всю ширину, три мессенджера — рядом под ней */
+  .dlv-konhero .phero__actions .btn { flex: 1 0 100%; }
 }
 
 @media (max-width: 560px) {

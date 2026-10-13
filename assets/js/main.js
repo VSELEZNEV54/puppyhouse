@@ -149,6 +149,15 @@
   if (ddWrap) dropdown(ddWrap, $('.nav__dd-btn', ddWrap), $('#dd-breeds'), 60);
   const megaWrap = $('[data-mega]');
   const mega = megaWrap ? dropdown(megaWrap, $('[data-mega-btn]', megaWrap), $('#mega'), 140) : null;
+  // мордочки пород в «Меню», «Породы ▾» и бургере — lazy и в скрытой панели не грузятся: подгружаем их, как только
+  // указатель или фокус пришёл в шапку (панель открывается с задержкой — к открытию они уже на месте)
+  if (hdr) {
+    const warm = () => {
+      ['#mega', '#dd-breeds', '#mmenu'].forEach((sel) => { const el = $(sel); if (el) $$('img[loading="lazy"]', el).forEach((img) => { img.loading = 'eager'; }); });
+      ['pointerenter', 'focusin', 'touchstart'].forEach((ev) => hdr.removeEventListener(ev, warm));
+    };
+    ['pointerenter', 'focusin', 'touchstart'].forEach((ev) => hdr.addEventListener(ev, warm, { passive: true }));
+  }
   // на планшете и телефоне вместо панелей — бургер
   window.matchMedia('(max-width: 1099px)').addEventListener('change', (m) => { if (m.matches) drops.forEach((o) => o.set(false)); });
 
@@ -584,24 +593,37 @@
       items.forEach((li, k) => { const dd = Math.abs(pos(li) - a); if (dd < dist) { dist = dd; best = k; } });
       return best;
     };
+    // пока лента плавно едет к карточке после стрелки или клавиши, цель — эта карточка, а не «ближайшая к центру»:
+    // иначе события scroll на полпути сбивают индекс, и быстрые нажатия подряд теряются
+    let target = -1; let settle = 0;
+    const release = (ms) => {
+      clearTimeout(settle);
+      settle = setTimeout(() => { target = -1; const k = nearest(); active = -1; setActive(k); }, ms);
+    };
+    const cur = () => (target >= 0 ? target : active);
     const go = (i, smooth = true) => {
       const k = Math.max(0, Math.min(items.length - 1, i));
-      vp.scrollBy({ left: pos(items[k]) - anchor(), behavior: smooth && !reduceMotion ? 'smooth' : 'auto' });
+      const animate = smooth && !reduceMotion;
+      vp.scrollBy({ left: pos(items[k]) - anchor(), behavior: animate ? 'smooth' : 'auto' });
       setActive(k);
+      if (animate) { target = k; release(400); }
       return k;
     };
     let raf = 0;
     vp.addEventListener('scroll', () => {
+      if (target >= 0) { release(140); return; } // своя анимация: ждём, пока лента остановится
       cancelAnimationFrame(raf);
       raf = requestAnimationFrame(() => { const k = nearest(); active = -1; setActive(k); });
     }, { passive: true });
-    if (prev) prev.addEventListener('click', () => go(active - 1));
-    if (next) next.addEventListener('click', () => go(active + 1));
+    // палец или колесо на ленте — снова главный пользователь
+    ['pointerdown', 'wheel'].forEach((ev) => vp.addEventListener(ev, () => { if (target >= 0) { target = -1; clearTimeout(settle); } }, { passive: true }));
+    if (prev) prev.addEventListener('click', () => go(cur() - 1));
+    if (next) next.addEventListener('click', () => go(cur() + 1));
     // клавиатура: на самой ленте или на карточке внутри — стрелки листают, фокус переходит на новую карточку
     vp.addEventListener('keydown', (e) => {
       if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
       e.preventDefault();
-      const k = go(active + (e.key === 'ArrowRight' ? 1 : -1));
+      const k = go(cur() + (e.key === 'ArrowRight' ? 1 : -1));
       if (d.activeElement !== vp) {
         const btn = $('button', items[k]);
         btn && btn.focus({ preventScroll: true });

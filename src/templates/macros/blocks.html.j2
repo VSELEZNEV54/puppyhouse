@@ -17,9 +17,21 @@
 </ul>
 {%- endmacro %}
 
+{#- FAQPage JSON-LD for the questions a faq_section renders (plain text). faq_section(ld=true) emits it — one FAQ
+    section per page; pages that output their own FAQPage (/faq/, blog articles) pass ld=false. -#}
+{% macro faq_ld(items, short=false) -%}
+{%- set ents = [] -%}
+{%- for f in items -%}
+{%- set qa = f.short if short and f.short else f -%}
+{%- set _ = ents.append({'@type': 'Question', 'name': (qa.q|string|striptags), 'acceptedAnswer': {'@type': 'Answer', 'text': (qa.a|string|striptags)}}) -%}
+{%- endfor -%}
+<script type="application/ld+json">{{ {'@context': 'https://schema.org', '@type': 'FAQPage', 'mainEntity': ents}|tojson }}</script>
+{%- endmacro %}
+
 {#- FAQ section: H2 + link on the left (sticky), accordion on the right (homepage layout). -#}
-{% macro faq_section(items, title='Частые вопросы', id='faq', link={'url': '/faq/', 'label': 'Все вопросы'}, short=false) -%}
+{% macro faq_section(items, title='Частые вопросы', id='faq', link={'url': '/faq/', 'label': 'Все вопросы'}, short=false, ld=true) -%}
 <section class="section container" id="{{ id }}" aria-labelledby="{{ id }}-title">
+  {% if ld and items %}{{ faq_ld(items, short=short) }}{% endif %}
   <div class="faq">
     <div class="faq__aside">
       <h2 class="h2" id="{{ id }}-title">{{ title|typo }}</h2>

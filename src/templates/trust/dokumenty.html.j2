@@ -19,7 +19,9 @@
 {% endblock %}
 
 {% block body %}
-    <section class="section section--tight container" id="dokumenty" aria-labelledby="dokumenty-title">
+    {{ ui.advantages(title='Коротко о главном', lead='Пожизненная гарантия и пожизненная консультация куратора — в договоре', tight=true) }}
+
+    <section class="section container" id="dokumenty" aria-labelledby="dokumenty-title">
       {{ ui.section_head(pg.docs.title, id='dokumenty-title', lead=pg.docs.lead) }}
       <ul class="tr-docs" data-reveal="items">
         {% for d in docs %}

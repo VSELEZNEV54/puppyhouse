@@ -68,17 +68,6 @@
 </article>
 {%- endmacro %}
 
-{#- Full review card for /otzyvy/: stars + source, full text, avatar, name and city, breed · puppy. r = reviews.json item -#}
-{% macro review(r) -%}
-<article class="review tr-rv">
-  <div class="tr-rv__top">
-    <span class="stars" role="img" aria-label="Оценка {{ r.rating }} из 5">{% for _ in range(r.rating) %}{{ ui.icon('star') }}{% endfor %}</span>
-    <span class="tr-rv__src">{{ r.source|typo }}</span>
-  </div>
-  <blockquote class="review__text"><p>{{ r.text|typo }}</p></blockquote>
-  <p class="review__who"><span class="ava" style="--c:var(--{{ r.color }})" aria-hidden="true">{{ r.name[0] }}</span><span><b>{{ r.name|typo }}, {{ r.city|typo }}</b><span>{{ r.breed_label|typo }} · {{ r.pup }}</span></span></p>
-</article>
-{%- endmacro %}
 
 {#- Document card: icon, title, one line, which breeds get it (faces + label). d = trust.json docs item + fit_breeds -#}
 {% macro doc_card(d) -%}

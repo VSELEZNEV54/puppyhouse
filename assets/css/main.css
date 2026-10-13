@@ -10,6 +10,7 @@
   --tile: #FFFFFF;
   --ink: #141414;
   --muted: #6B6B6B;
+  --tg-a: #1B80BD; --tg-b: #1570AB; /* Telegram-синий для кнопок с белым текстом (контраст ≥ 4,5:1) */
   --line: #E7E4DF;
   --line-2: #D8D4CD;
   --field: #F6F5F2;
@@ -194,9 +195,10 @@ main:focus, section[tabindex="-1"]:focus, [data-anchor-focus]:focus { outline: n
 .btn--outline { background: transparent; color: var(--ink); border: 1.5px solid #fff; }
 .btn--outline:hover { background: rgba(255, 255, 255, .4); }
 /* Telegram: фирменный градиент, белый текст 500 и иконка */
-.btn--tg { background: linear-gradient(180deg, #2AABEE 0%, #229ED9 100%); color: #fff; border: 0; }
+/* «Написать в Telegram»: градиент Telegram, притемнённый до 4,6–5:1 с белым текстом (фирменный #2AABEE → #229ED9 даёт 2,6–3:1) */
+.btn--tg { background: linear-gradient(180deg, var(--tg-a) 0%, var(--tg-b) 100%); color: #fff; border: 0; }
 .btn--tg .i { width: 19px; height: 19px; margin-left: -2px; }
-@media (hover: hover) { .btn--tg:hover { background: linear-gradient(180deg, #229ED9 0%, #1D8FC6 100%); } }
+@media (hover: hover) { .btn--tg:hover { background: linear-gradient(180deg, var(--tg-b) 0%, #11639A 100%); } }
 .btn--tg:hover .i { transform: none; }
 .btn[disabled] { opacity: .7; cursor: progress; }
 
@@ -422,13 +424,16 @@ main:focus, section[tabindex="-1"]:focus, [data-anchor-focus]:focus { outline: n
 .hdr__cta { margin-left: 4px; height: 44px; padding: 0 20px 0 16px; }
 .msgr--call, .hdr__burger { display: none; }
 
-/* узкий десктоп: сначала прячем подпись логотипа и номер (он в «Меню» и в подвале), потом ссылки с конца —
-   все разделы остаются в «Меню» */
+/* узкий десктоп: сначала прячем подпись логотипа, потом номер (он в «Меню» и в подвале), потом ссылки с конца —
+   все разделы остаются в «Меню». Номер — элемент заявки: на 1440–1599 он виден, место ему уступает «Блог» */
 @media (max-width: 1599px) {
-  .hdr__phone { display: none; }
-}
-@media (max-width: 1379px) {
   .logo__sub { display: none; }
+}
+@media (min-width: 1440px) and (max-width: 1519px) {
+  .nav__item--p6 { display: none; }
+}
+@media (max-width: 1439px) {
+  .hdr__phone { display: none; }
 }
 @media (max-width: 1339px) {
   .nav__item--p6 { display: none; }
@@ -508,6 +513,9 @@ main:focus, section[tabindex="-1"]:focus, [data-anchor-focus]:focus { outline: n
   margin-bottom: clamp(20px, 2.4vw, 36px);
   padding-inline: 4px;
 }
+/* заголовок с короткой строкой под ним (ui.section_head(lead=…)) — одинаково на главной и внутренних страницах */
+.sec-head__txt { display: grid; gap: 12px; }
+.sec-head__lead { font-size: 16px; line-height: 1.45; color: var(--muted); max-width: 62ch; }
 
 /* общая «студийная» подложка: тон → пол, как в кадре.
    --floor-a/--floor-b — где в плитке начинается и кончается переход «стена → пол».
@@ -871,6 +879,7 @@ main:focus, section[tabindex="-1"]:focus, [data-anchor-focus]:focus { outline: n
 .lead__intro .h2 { max-width: 8.6em; }
 .lead__line { font-size: 17px; color: var(--ink-soft); }
 .lead__contacts { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: auto; padding-top: 16px; }
+.lead__msgrs { display: flex; flex-wrap: nowrap; gap: 8px; } /* три мессенджера не разрываются: переносится вся группа */
 .lead__phone { margin-right: 8px; font-size: clamp(22px, 1.9vw, 28px); font-weight: 500; letter-spacing: -0.03em; text-decoration: none; white-space: nowrap; }
 .lead__phone:hover { text-decoration: underline; text-underline-offset: 4px; text-decoration-thickness: 2px; }
 .lead__box { padding: clamp(22px, 2.8vw, 40px); border-radius: var(--r-img); background: var(--tile); }
@@ -1075,6 +1084,13 @@ legend.field__label { margin-bottom: 8px; }
 .media-carousel__btn[data-carousel-next] { right: 6px; }
 @media (hover: hover) { .media-carousel__btn:hover { background: var(--ink); color: #fff; } }
 .media-carousel__btn:disabled { opacity: 0; pointer-events: none; }
+/* планшет и десктоп: стрелки — парой под лентой, по центру. Поверх ленты они ложились на кнопку Play и подпись
+   полускрытой крайней карточки и читались как сдвоенная кнопка. Галерея щенка (.pp-car) — своя раскладка. */
+@media (min-width: 561px) {
+  .media-carousel:not(.pp-car) .media-carousel__nav { display: flex; justify-content: center; gap: 10px; margin-top: clamp(18px, 1.8vw, 26px); }
+  .media-carousel:not(.pp-car) .media-carousel__btn { position: static; margin: 0; box-shadow: inset 0 0 0 1px var(--line-2); }
+  .media-carousel:not(.pp-car) .media-carousel__btn:disabled { opacity: .4; }
+}
 
 /* отзывы и любые ленты «с начала»: без увеличения, первая карточка у левого края */
 .media-carousel--reviews { --mc-w: clamp(260px, 22vw, 320px); }
@@ -1128,11 +1144,36 @@ legend.field__label { margin-bottom: 8px; }
   pointer-events: none; /* вся карточка открывает видео */
 }
 .vrev .stars .i { width: 13px; height: 13px; }
+.vrev__top { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.vrev__src { font-size: 13px; line-height: 1.3; color: var(--ink-soft); text-align: right; }
 .vrev__text { font-size: 15px; line-height: 1.45; letter-spacing: -0.005em; }
 .vrev__who { display: flex; align-items: center; gap: 10px; font-size: 14px; line-height: 1.25; }
 .vrev__who b { display: block; font-weight: 500; }
 .vrev__who span > span { font-size: 13px; color: var(--ink-soft); } /* на полупрозрачной подложке поверх фото --muted даёт < 4,5:1 */
 .vrev .ava { width: 36px; height: 36px; font-size: 15px; }
+
+/* видеоотзывы стопкой: сетка на /otzyvy/ (.vrev-grid) и отзывы на телефоне. Карточка растёт по тексту:
+   над белой подложкой с текстом всегда остаётся кадр высотой --vrev-photo, постер — на всю карточку */
+.vrevs__more { display: none; }
+.vrev-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--gap); }
+.vrev-grid > li { min-width: 0; display: flex; }
+.vrev-grid .vrev, .vrev--stack { --vrev-photo: clamp(260px, 22vw, 340px); width: 100%; aspect-ratio: auto; display: flex; flex-direction: column; justify-content: flex-end; }
+.vrev-grid .vrev__body, .vrev--stack .vrev__body { position: relative; inset: auto; margin: var(--vrev-photo) var(--inset) var(--inset); }
+@media (max-width: 1000px) { .vrev-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 760px) {
+  .vrev-grid { grid-template-columns: minmax(0, 1fr); }
+  .vrev-grid .vrev { --vrev-photo: min(62vw, 300px); }
+
+  /* правка клиента 13.10: на телефоне отзывы не листаются вбок — три карточки друг под другом, остальные — на /otzyvy/ */
+  .media-carousel--reviews .media-carousel__viewport { overflow: visible; margin: 0; padding: 0; scroll-snap-type: none; }
+  .media-carousel--reviews .media-carousel__track { display: grid; grid-template-columns: minmax(0, 1fr); width: auto; padding: 0; }
+  .media-carousel--reviews .media-carousel__item { width: auto; }
+  .media-carousel--reviews .media-carousel__item:nth-child(n+4) { display: none; }
+  .media-carousel--reviews .media-carousel__nav { display: none; }
+  .media-carousel--reviews .vrev { --vrev-photo: min(62vw, 300px); aspect-ratio: auto; display: flex; flex-direction: column; justify-content: flex-end; }
+  .media-carousel--reviews .vrev__body { position: relative; inset: auto; margin: var(--vrev-photo) var(--inset) var(--inset); }
+  .vrevs__more { display: flex; margin-top: 14px; }
+}
 
 /* ---------- лайтбокс (#lightbox): фото целиком, видео — плеер или постер «Видео появится здесь» ---------- */
 .lightbox {
@@ -1522,8 +1563,12 @@ legend.field__label { margin-bottom: 8px; }
   .fcol a { white-space: nowrap; }
 }
 
-@media (max-width: 380px) {
+@media (max-width: 560px) {
+  /* телефон: номер своей строкой, три мессенджера — рядом под ним */
   .lead__phone { flex-basis: 100%; margin-right: 0; }
+}
+
+@media (max-width: 380px) {
   .seg label .i { display: none; }
   .ratings { gap: 6px; }
   .rating { padding: 12px; }
@@ -1533,4 +1578,61 @@ legend.field__label { margin-bottom: 8px; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; transition-delay: 0s !important; scroll-behavior: auto !important; }
   .js .rv { opacity: 1; transform: none; }
+}
+
+/* =========================================================
+   КАРТОЧКА ЩЕНКА — одна на весь сайт (cards.puppy_card): каталог, «Похожие щенки», ленты «Щенки в наличии»,
+   хабы пород, сравнения. Основа — .pup выше; две кнопки «Смотреть щенка» + «Узнать цену» (правки 13.10)
+   ========================================================= */
+/* фото — тоже ссылка на страницу щенка (дубль ссылки в имени, вне порядка табуляции) */
+.ct-card__media { display: block; color: inherit; text-decoration: none; }
+/* живые (лайфстайл) фото: обрезка по центру чуть ниже середины — собака обычно в нижней половине кадра;
+   своя точка — "pos" у фото в puppies.json (или класс pup__img--…) */
+.ct-card--life .pup__media img:not([class]):not([style]) { object-position: 50% 60%; }
+
+/* «Мальтипу · 12 недель · девочка»: части не рвутся, точка остаётся в конце строки (разметка — в шаблоне) */
+.ct-card .pup__meta span { white-space: nowrap; }
+
+/* «В избранное» — в углу фото, не отнимает место у кнопок */
+.ct-card__fav { position: absolute; z-index: 3; top: calc(var(--inset) + 10px); right: calc(var(--inset) + 10px); width: 44px; height: 44px; }
+
+/* «Смотреть щенка» + «Узнать цену»: в ряд, а в узкой карточке — друг под другом */
+.ct-card__body { container-type: inline-size; }
+.ct-card__actions { display: flex; gap: 8px; margin-top: auto; padding-top: 16px; }
+.ct-card__actions .btn { flex: 1 1 auto; height: 46px; padding: 0 14px; font-size: 14.5px; }
+.ct-card__more { background: rgba(255, 255, 255, .8); border-color: transparent; }
+.ct-card__more:hover { background: #fff; border-color: var(--ink); }
+@container (max-width: 259px) {
+  .ct-card__actions { flex-direction: column; }
+  .ct-card__actions .btn { flex: none; width: 100%; }
+}
+
+/* =========================================================
+   ТЕЛЕФОН ≤ 560 px: карточка — компактной строкой (как щенки породы на хабах):
+   фото слева в белой плитке, кличка, возраст и две кнопки справа. 19 щенков — около 4000 px, а не 9000
+   ========================================================= */
+@media (max-width: 560px) {
+  .ct-card { flex-direction: row; align-items: stretch; background: var(--tile); }
+  .ct-card .pup__media {
+    flex: none; width: 42%; aspect-ratio: auto; min-height: 176px; margin: 8px 0 8px 8px;
+    clip-path: none; border-radius: var(--r-img); overflow: hidden;
+  }
+  .ct-card .pup__media img { inset: 0; width: 100%; height: 100%; border-radius: 0; }
+  .ct-card .pup__media--studio { background: var(--tone); }
+  .ct-card .pup__media--studio img { object-position: 50% 100%; -webkit-mask-image: none; mask-image: none; }
+  .ct-card .pup__img--charli, .ct-card .pup__img--tessa { transform: none; }
+  .ct-card .status { top: auto; bottom: 8px; left: 8px; height: 26px; padding: 0 10px 0 9px; gap: 6px; font-size: 12px; }
+  .ct-card__body { min-width: 0; padding: 14px 14px 14px 16px; }
+  .ct-card .pup__name { padding-right: 40px; font-size: 22px; }
+  .ct-card .pup__meta { font-size: 13px; }
+  .ct-card__fav { top: 10px; right: 10px; width: 40px; height: 40px; background: var(--page); }
+  .ct-card__actions { flex-direction: column; gap: 6px; padding-top: 12px; }
+  .ct-card__actions .btn { flex: none; width: 100%; height: 42px; }
+  .ct-card__more { background: var(--page); }
+
+  /* «Ждёте другого щенка?» — мордочки в ряд внахлёст, плитка по содержимому */
+  .pups .soon-tile { min-height: 0; gap: 14px; padding: 22px 18px; }
+  .pups .soon-tile__faces { display: flex; }
+  .pups .soon-tile__faces .face { width: 56px; height: 56px; border: 3px solid var(--sun-50); }
+  .pups .soon-tile__faces .face + .face { margin-left: -12px; }
 }

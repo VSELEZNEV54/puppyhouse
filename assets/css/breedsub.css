@@ -128,8 +128,11 @@
   background: linear-gradient(180deg, var(--tone-top, var(--tone-hi)) 0, var(--tone-hi) 22%, var(--tone-hi) calc(var(--fa, .78) * 100%), var(--tone-floor) calc(var(--fb, .97) * 100%));
 }
 .bsub-col__media img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 100%; }
+/* окрас без фото: небольшая пастельная плашка цвета по центру и «Фото по запросу» под ней — не огромный шар */
 .bsub-col__media--dot { display: grid; place-items: center; }
-.bsub-col__dot { width: 50%; aspect-ratio: 1; margin-bottom: 10%; border-radius: 50%; box-shadow: 0 0 0 6px rgba(255, 255, 255, .7); }
+.bsub-col__swatch { display: grid; justify-items: center; gap: 14px; }
+.bsub-col__dot { width: clamp(64px, 34%, 112px); aspect-ratio: 1; border-radius: 50%; box-shadow: 0 0 0 5px rgba(255, 255, 255, .7); }
+.bsub-col__pnote.bsub-col__pnote--dot { position: static; max-width: none; transform: none; }
 .bsub-col__pnote {
   position: absolute; left: 10px; bottom: 10px; max-width: calc(100% - 20px);
   padding: 5px 11px; border-radius: var(--r-pill); background: rgba(255, 255, 255, .72);
@@ -180,6 +183,8 @@
   .bsub-col__text { grid-column: 1 / -1; grid-row: 3; margin: 14px 10px 0; }
   .bsub-col__btn { grid-column: 1 / -1; grid-row: 4; justify-self: start; margin: 16px 10px 10px; }
   .bsub-col__pnote { left: 50%; bottom: 5px; transform: translateX(-50%); max-width: none; padding: 3px 8px; font-size: 11px; white-space: nowrap; }
+  .bsub-col__swatch { gap: 8px; }
+  .bsub-col__dot { width: clamp(48px, 46%, 64px); box-shadow: 0 0 0 4px rgba(255, 255, 255, .7); }
   .bsub-col--ask { display: flex; }
 }
 

@@ -6,7 +6,7 @@
 {#- Messenger round button: kind = telegram | whatsapp | max -#}
 {% macro msgr(kind) -%}
 {%- set m = site.messengers[kind] -%}
-<a class="msgr msgr--{{ m.icon }}" href="{{ m.url }}" target="_blank" rel="noopener" aria-label="{{ m.aria }}">{{ ui.icon(m.icon) }}</a>
+<a class="msgr msgr--{{ m.icon }}" href="{{ m.url }}" target="_blank" rel="noopener" aria-label="{{ m.aria }}" title="{{ m.label }}">{{ ui.icon(m.get('round_icon') or m.icon) }}</a>
 {%- endmacro %}
 
 {#- Breed <select> options. selected: breed slug to preselect (breed pages) -#}
@@ -41,7 +41,7 @@
 {#- Final lead form section (homepage «Заявка»). One per page — keep id="zayavka": the mobile sticky bar hides over it.
     The form is ONE column at every width: each field on its own row (client rule 13.10).
     title ≤ 5 words, line ≤ 90 chars. tone: studio/tint tone of the tile. breed: slug to preselect in the select. -#}
-{% macro lead_form(title='Подберём щенка за 15 минут', line='Пришлём щенков в наличии, цены и свежие видео', tone='peach', breed=none, id='zayavka') -%}
+{% macro lead_form(title='Подберём щенка за 1 час', line='Пришлём щенков в наличии, цены и свежие видео', tone='peach', breed=none, id='zayavka') -%}
 <section class="section container" id="{{ id }}" aria-labelledby="lead-title">
   <div class="lead tone--{{ tone }}">
     <div class="lead__intro">
@@ -49,9 +49,7 @@
       <p class="lead__line">{{ line|typo }}</p>
       <div class="lead__contacts">
         <a class="lead__phone" href="{{ site.phone.tel }}">{{ site.phone.display }}</a>
-        {{ msgr('telegram') }}
-        {{ msgr('whatsapp') }}
-        {{ msgr('max') }}
+        <span class="lead__msgrs">{{ msgr('telegram') }}{{ msgr('whatsapp') }}{{ msgr('max') }}</span>
       </div>
     </div>
 

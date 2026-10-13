@@ -10,10 +10,10 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500&amp;display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../assets/css/main.css?v=0cce2551">
-  <link rel="stylesheet" href="../assets/css/pages.css?v=460f7729">
-  <link rel="stylesheet" href="../assets/css/delivery.css?v=f29f6f57">
-  <script src="../assets/js/main.js?v=77017173" defer></script>
+  <link rel="stylesheet" href="../assets/css/main.css?v=eb624eb8">
+  <link rel="stylesheet" href="../assets/css/pages.css?v=3ce1d318">
+  <link rel="stylesheet" href="../assets/css/delivery.css?v=e386282c">
+  <script src="../assets/js/main.js?v=5e3efa7f" defer></script>
 </head>
 <body>
   <!-- Иконки: инлайн-спрайт 24×24. Линейные — stroke currentColor, заливочные — fill. -->
@@ -26,6 +26,7 @@
     <symbol id="i-phone" viewBox="0 0 24 24"><path d="M5.6 3.8h3l1.8 4.5-2.2 1.4a11.4 11.4 0 0 0 6.1 6.1l1.4-2.2 4.5 1.8v3a1.6 1.6 0 0 1-1.7 1.6A16 16 0 0 1 4 5.5a1.6 1.6 0 0 1 1.6-1.7z"/></symbol>
     <symbol id="i-tg" viewBox="0 0 24 24"><path d="M20.6 4.3 3.4 11.1c-.6.2-.6 1.1 0 1.3l4.3 1.6 1.7 5.3c.2.5.8.7 1.2.3l2.6-2.4 4.5 3.3c.5.3 1.1.1 1.3-.5l3-14.4c.1-.9-.6-1.5-1.4-1.3Z"/><path d="m7.7 14 9.2-6.2-6.6 7.3"/></symbol>
     <symbol id="i-wa" viewBox="0 0 24 24"><path d="m3.8 20.2 1.3-4A8.6 8.6 0 1 1 8 19Z"/><path d="M9.2 8.4c.3-.4.6-.5.9-.4l.5.2.8 1.8-.8.9a5.4 5.4 0 0 0 2.5 2.5l.9-.8 1.8.8.2.5c.1.3 0 .6-.3.9-.9.8-2 .8-3 .4a8.7 8.7 0 0 1-3.9-3.9c-.4-1-.4-2 .4-2.9Z"/></symbol>
+    <symbol id="i-max-word" viewBox="0 0 24 24"><path d="M2.6 15.6V8.4l3.1 4.6 3.1-4.6v7.2M10.3 15.6l2.2-7.2 2.2 7.2M11 13.4h3M16.2 8.4l5.2 7.2M21.4 8.4l-5.2 7.2"/></symbol>
     <symbol id="i-max" viewBox="0 0 24 24"><path d="M12 3.6a8.4 8.4 0 1 1-3.88 15.85L4.3 20.3l.82-3.48A8.4 8.4 0 0 1 12 3.6Z"/><circle cx="12" cy="12" r="3.3"/></symbol>
     <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5"/></symbol>
     <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
@@ -114,6 +115,11 @@
               <p class="mega__h">Покупка</p>
               <ul class="mega__list">
                 <li><a class="mega__link" href="../dostavka/"><span>Доставка по России</span></a></li>
+                <li class="mega__sub">
+                  <span class="mega__subh">Доставка по городам</span>
+                  <ul class="mega__pills">
+              <li><a class="mega__pill" href="../dostavka/sankt-peterburg/"><span><span class="nw">Санкт-Петербург</span></span></a></li><li><a class="mega__pill" href="../dostavka/novosibirsk/"><span>Новосибирск</span></a></li><li><a class="mega__pill" href="../dostavka/ekaterinburg/"><span>Екатеринбург</span></a></li><li><a class="mega__pill" href="../dostavka/kazan/"><span>Казань</span></a></li><li><a class="mega__pill" href="../dostavka/nizhnij-novgorod/"><span>Нижний Новгород</span></a></li><li><a class="mega__pill" href="../dostavka/krasnodar/"><span>Краснодар</span></a></li><li><a class="mega__pill" href="../dostavka/samara/"><span>Самара</span></a></li><li><a class="mega__pill" href="../dostavka/#goroda"><span>Все города</span></a></li>    </ul>
+                </li>
                 <li><a class="mega__link" href="../rassrochka/"><span>Рассрочка и бронь</span></a></li>
                 <li><a class="mega__link" href="../shchenok-v-podarok/"><span>Щенок в подарок</span></a></li>
                 <li><a class="mega__link" href="../magazin/"><span>Стартовый набор</span></a></li>
@@ -184,9 +190,9 @@
       <div class="hdr__right">
         <a class="hdr__phone" href="tel:+74951234567">+7 (495) 123-45-67</a>
         <a class="msgr msgr--call" href="tel:+74951234567" aria-label="Позвонить: +7 (495) 123-45-67"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-phone"/></svg></a>
-        <a class="msgr msgr--tg" href="https://t.me/puppyhouse_msk" target="_blank" rel="noopener" aria-label="Написать в Telegram"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-tg"/></svg></a>
-        <a class="msgr msgr--wa" href="https://wa.me/74951234567" target="_blank" rel="noopener" aria-label="Написать в WhatsApp"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-wa"/></svg></a>
-        <a class="msgr msgr--max" href="https://max.ru/domshchenkov" target="_blank" rel="noopener" aria-label="Написать в MAX"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-max"/></svg></a>
+        <a class="msgr msgr--tg" href="https://t.me/puppyhouse_msk" target="_blank" rel="noopener" aria-label="Написать в Telegram" title="Telegram"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-tg"/></svg></a>
+        <a class="msgr msgr--wa" href="https://wa.me/74951234567" target="_blank" rel="noopener" aria-label="Написать в WhatsApp" title="WhatsApp"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-wa"/></svg></a>
+        <a class="msgr msgr--max" href="https://max.ru/domshchenkov" target="_blank" rel="noopener" aria-label="Написать в MAX" title="MAX"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-max-word"/></svg></a>
         <a class="btn btn--tg hdr__cta" href="https://t.me/puppyhouse_msk" target="_blank" rel="noopener"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-tg"/></svg><span>Написать в Telegram</span></a>
         <button class="msgr msgr--ink hdr__burger" type="button" aria-label="Открыть меню" aria-expanded="false" aria-controls="mmenu" data-burger><svg class="i" aria-hidden="true" focusable="false"><use href="#i-menu"/></svg></button>
       </div>
@@ -208,9 +214,9 @@
     <div class="phero__copy">
 <p class="eyebrow"><span class="eyebrow__dot" aria-hidden="true"></span>Питомник в Москве</p>      <h1 class="phero__title" id="page-title">Контакты</h1>
 <p class="phero__lead">Звоните или пишите — ответим за 15 минут, ежедневно с 9:00 до 21:00</p><div class="phero__actions">      <a class="btn btn--ink btn--lg" href="tel:+74951234567"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-phone"/></svg>Позвонить</a>
-      <a class="msgr msgr--tg" href="https://t.me/puppyhouse_msk" target="_blank" rel="noopener" aria-label="Написать в Telegram"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-tg"/></svg></a>
-      <a class="msgr msgr--wa" href="https://wa.me/74951234567" target="_blank" rel="noopener" aria-label="Написать в WhatsApp"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-wa"/></svg></a>
-      <a class="msgr msgr--max" href="https://max.ru/domshchenkov" target="_blank" rel="noopener" aria-label="Написать в MAX"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-max"/></svg></a>
+      <a class="msgr msgr--tg" href="https://t.me/puppyhouse_msk" target="_blank" rel="noopener" aria-label="Написать в Telegram" title="Telegram"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-tg"/></svg></a>
+      <a class="msgr msgr--wa" href="https://wa.me/74951234567" target="_blank" rel="noopener" aria-label="Написать в WhatsApp" title="WhatsApp"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-wa"/></svg></a>
+      <a class="msgr msgr--max" href="https://max.ru/domshchenkov" target="_blank" rel="noopener" aria-label="Написать в MAX" title="MAX"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-max-word"/></svg></a>
 </div>    </div>
   </div>
 </section>    </div>
@@ -241,7 +247,7 @@
         <li class="dlv-ct">
           <span class="ico" style="--c:var(--sun)" aria-hidden="true"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-mail"/></svg></span>
           <p class="dlv-ct__label">Почта</p>
-          <a class="dlv-ct__value dlv-ct__value--mail" href="mailto:hello@puppyhouse.ru">hello@puppyhouse.ru</a>
+          <a class="dlv-ct__value dlv-ct__value--mail" href="mailto:[почта]@домщенков.рф">[почта]@домщенков.рф</a>
           <p class="dlv-ct__line">Для документов и&nbsp;вопросов по&nbsp;договору</p>
         </li>
         <li class="dlv-ct">
@@ -331,61 +337,65 @@
 </div>
   <ul class="pups pups--strip" data-reveal="items">
     <li class="pups__item">
-      <article class="pup tone--peach" data-pup data-name="Пломбир" data-desc="Мальтипу F1 · 10 недель · мальчик" data-img="studio-maltipu-peach.jpg">
-  <div class="pup__media pup__media--studio">
+      <article class="pup ct-card tone--peach ct-card--studio" data-pup data-name="Пломбир" data-desc="Мальтипу F1 · 10 недель · мальчик" data-img="studio-maltipu-peach.jpg">
+  <a class="pup__media ct-card__media pup__media--studio" href="../shchenki/maltipu-f1-krem-2026-08/" tabindex="-1" aria-hidden="true">
     <img src="../assets/img/studio-maltipu-peach.jpg" alt="Щенок мальтипу F1 Пломбир, кремовый мальчик" width="1024" height="1024" loading="lazy" decoding="async">
-  </div>
-  <div class="pup__body">
+  </a>
+  <button class="fav ct-card__fav" type="button" aria-pressed="false" aria-label="В избранное: Пломбир"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-heart"/></svg></button>
+  <div class="pup__body ct-card__body">
     <h3 class="pup__name"><span class="dot dot--ok" aria-hidden="true"></span><a href="../shchenki/maltipu-f1-krem-2026-08/">Пломбир</a></h3>
-    <p class="pup__meta">Мальтипу · 10 недель · мальчик<span class="sr-only"> · в&nbsp;наличии</span></p>
-    <div class="pup__actions">
+    <p class="pup__meta"><span>Мальтипу&nbsp;·</span> <span>10 недель&nbsp;·</span> <span>мальчик</span><span class="sr-only"> · в&nbsp;наличии</span></p>
+    <div class="ct-card__actions">
+      <a class="btn btn--white ct-card__more" href="../shchenki/maltipu-f1-krem-2026-08/" aria-label="Смотреть щенка: Пломбир">Смотреть щенка</a>
       <button class="btn btn--ink" type="button" data-open-modal aria-label="Узнать цену: Пломбир">Узнать цену</button>
-      <button class="fav" type="button" aria-pressed="false" aria-label="В избранное: Пломбир"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-heart"/></svg></button>
     </div>
   </div>
 </article>
     </li>
     <li class="pups__item">
-      <article class="pup tone--peach" data-pup data-name="Мокка" data-desc="Мальтипу F1b мини · 12 недель · девочка" data-img="pup-maltipu-chocolate.jpg">
-  <div class="pup__media">
+      <article class="pup ct-card tone--peach ct-card--life" data-pup data-name="Мокка" data-desc="Мальтипу F1b мини · 12 недель · девочка" data-img="pup-maltipu-chocolate.jpg">
+  <a class="pup__media ct-card__media" href="../shchenki/maltipu-f1b-mini-shokolad-2026-07/" tabindex="-1" aria-hidden="true">
     <img class="pup__img--mokka" src="../assets/img/pup-maltipu-chocolate.jpg" alt="Шоколадный щенок мальтипу Мокка на вязаном пледе" width="928" height="1152" loading="lazy" decoding="async">
-  </div>
-  <div class="pup__body">
+  </a>
+  <button class="fav ct-card__fav" type="button" aria-pressed="false" aria-label="В избранное: Мокка"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-heart"/></svg></button>
+  <div class="pup__body ct-card__body">
     <h3 class="pup__name"><span class="dot dot--ok" aria-hidden="true"></span><a href="../shchenki/maltipu-f1b-mini-shokolad-2026-07/">Мокка</a></h3>
-    <p class="pup__meta">Мальтипу · 12 недель · девочка<span class="sr-only"> · в&nbsp;наличии</span></p>
-    <div class="pup__actions">
+    <p class="pup__meta"><span>Мальтипу&nbsp;·</span> <span>12 недель&nbsp;·</span> <span>девочка</span><span class="sr-only"> · в&nbsp;наличии</span></p>
+    <div class="ct-card__actions">
+      <a class="btn btn--white ct-card__more" href="../shchenki/maltipu-f1b-mini-shokolad-2026-07/" aria-label="Смотреть щенка: Мокка">Смотреть щенка</a>
       <button class="btn btn--ink" type="button" data-open-modal aria-label="Узнать цену: Мокка">Узнать цену</button>
-      <button class="fav" type="button" aria-pressed="false" aria-label="В избранное: Мокка"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-heart"/></svg></button>
     </div>
   </div>
 </article>
     </li>
     <li class="pups__item">
-      <article class="pup tone--powder" data-pup data-name="Бруно" data-desc="Французский бульдог · 13 недель · мальчик" data-img="studio-buldog-blue.jpg">
-  <div class="pup__media pup__media--studio">
+      <article class="pup ct-card tone--powder ct-card--studio" data-pup data-name="Бруно" data-desc="Французский бульдог · 13 недель · мальчик" data-img="studio-buldog-blue.jpg">
+  <a class="pup__media ct-card__media pup__media--studio" href="../shchenki/francuzskij-buldog-palevyj-2026-07/" tabindex="-1" aria-hidden="true">
     <img src="../assets/img/studio-buldog-blue.jpg" alt="Палевый щенок французского бульдога Бруно на голубом фоне" width="1024" height="1024" loading="lazy" decoding="async">
-  </div>
-  <div class="pup__body">
+  </a>
+  <button class="fav ct-card__fav" type="button" aria-pressed="false" aria-label="В избранное: Бруно"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-heart"/></svg></button>
+  <div class="pup__body ct-card__body">
     <h3 class="pup__name"><span class="dot dot--ok" aria-hidden="true"></span><a href="../shchenki/francuzskij-buldog-palevyj-2026-07/">Бруно</a></h3>
-    <p class="pup__meta">Французский бульдог · 13 недель · мальчик<span class="sr-only"> · в&nbsp;наличии</span></p>
-    <div class="pup__actions">
+    <p class="pup__meta"><span>Французский бульдог&nbsp;·</span> <span>13 недель&nbsp;·</span> <span>мальчик</span><span class="sr-only"> · в&nbsp;наличии</span></p>
+    <div class="ct-card__actions">
+      <a class="btn btn--white ct-card__more" href="../shchenki/francuzskij-buldog-palevyj-2026-07/" aria-label="Смотреть щенка: Бруно">Смотреть щенка</a>
       <button class="btn btn--ink" type="button" data-open-modal aria-label="Узнать цену: Бруно">Узнать цену</button>
-      <button class="fav" type="button" aria-pressed="false" aria-label="В избранное: Бруно"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-heart"/></svg></button>
     </div>
   </div>
 </article>
     </li>
     <li class="pups__item">
-      <article class="pup tone--butter" data-pup data-name="Марго" data-desc="Той-пудель · 14 недель · девочка" data-img="studio-pudel-yellow.jpg">
-  <div class="pup__media pup__media--studio">
+      <article class="pup ct-card tone--butter ct-card--studio" data-pup data-name="Марго" data-desc="Той-пудель · 14 недель · девочка" data-img="studio-pudel-yellow.jpg">
+  <a class="pup__media ct-card__media pup__media--studio" href="../shchenki/toj-pudel-abrikos-2026-07/" tabindex="-1" aria-hidden="true">
     <img src="../assets/img/studio-pudel-yellow.jpg" alt="Абрикосовый щенок той-пуделя Марго на жёлтом фоне" width="1024" height="1024" loading="lazy" decoding="async">
-  </div>
-  <div class="pup__body">
+  </a>
+  <button class="fav ct-card__fav" type="button" aria-pressed="false" aria-label="В избранное: Марго"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-heart"/></svg></button>
+  <div class="pup__body ct-card__body">
     <h3 class="pup__name"><span class="dot dot--ok" aria-hidden="true"></span><a href="../shchenki/toj-pudel-abrikos-2026-07/">Марго</a></h3>
-    <p class="pup__meta">Той-пудель · 14 недель · девочка<span class="sr-only"> · в&nbsp;наличии</span></p>
-    <div class="pup__actions">
+    <p class="pup__meta"><span>Той-пудель&nbsp;·</span> <span>14 недель&nbsp;·</span> <span>девочка</span><span class="sr-only"> · в&nbsp;наличии</span></p>
+    <div class="ct-card__actions">
+      <a class="btn btn--white ct-card__more" href="../shchenki/toj-pudel-abrikos-2026-07/" aria-label="Смотреть щенка: Марго">Смотреть щенка</a>
       <button class="btn btn--ink" type="button" data-open-modal aria-label="Узнать цену: Марго">Узнать цену</button>
-      <button class="fav" type="button" aria-pressed="false" aria-label="В избранное: Марго"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-heart"/></svg></button>
     </div>
   </div>
 </article>
@@ -396,13 +406,11 @@
     <section class="section container" id="zayavka" aria-labelledby="lead-title">
   <div class="lead tone--peach">
     <div class="lead__intro">
-      <h2 class="h2" id="lead-title">Подберём щенка за 15 минут</h2>
+      <h2 class="h2" id="lead-title">Подберём щенка за 1 час</h2>
       <p class="lead__line">Пришлём щенков в наличии, цены и свежие видео</p>
       <div class="lead__contacts">
         <a class="lead__phone" href="tel:+74951234567">+7 (495) 123-45-67</a>
-        <a class="msgr msgr--tg" href="https://t.me/puppyhouse_msk" target="_blank" rel="noopener" aria-label="Написать в Telegram"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-tg"/></svg></a>
-        <a class="msgr msgr--wa" href="https://wa.me/74951234567" target="_blank" rel="noopener" aria-label="Написать в WhatsApp"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-wa"/></svg></a>
-        <a class="msgr msgr--max" href="https://max.ru/domshchenkov" target="_blank" rel="noopener" aria-label="Написать в MAX"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-max"/></svg></a>
+        <span class="lead__msgrs"><a class="msgr msgr--tg" href="https://t.me/puppyhouse_msk" target="_blank" rel="noopener" aria-label="Написать в Telegram" title="Telegram"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-tg"/></svg></a><a class="msgr msgr--wa" href="https://wa.me/74951234567" target="_blank" rel="noopener" aria-label="Написать в WhatsApp" title="WhatsApp"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-wa"/></svg></a><a class="msgr msgr--max" href="https://max.ru/domshchenkov" target="_blank" rel="noopener" aria-label="Написать в MAX" title="MAX"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-max-word"/></svg></a></span>
       </div>
     </div>
 
@@ -472,12 +480,12 @@
           <ul class="footer__info">
             <li><svg class="i i--sm" aria-hidden="true"><use href="#i-clock"/></svg>Ежедневно с 9:00 до 21:00</li>
             <li><svg class="i i--sm" aria-hidden="true"><use href="#i-pin"/></svg>Москва, приезд по записи</li>
-            <li><svg class="i i--sm" aria-hidden="true"><use href="#i-mail"/></svg><a href="mailto:hello@puppyhouse.ru">hello@puppyhouse.ru</a></li>
+            <li><svg class="i i--sm" aria-hidden="true"><use href="#i-mail"/></svg><a href="mailto:[почта]@домщенков.рф">[почта]@домщенков.рф</a></li>
           </ul>
           <div class="footer__msgs">
-            <a class="msgr msgr--tg" href="https://t.me/puppyhouse_msk" target="_blank" rel="noopener" aria-label="Написать в Telegram"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-tg"/></svg></a>
-            <a class="msgr msgr--wa" href="https://wa.me/74951234567" target="_blank" rel="noopener" aria-label="Написать в WhatsApp"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-wa"/></svg></a>
-            <a class="msgr msgr--max" href="https://max.ru/domshchenkov" target="_blank" rel="noopener" aria-label="Написать в MAX"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-max"/></svg></a>
+            <a class="msgr msgr--tg" href="https://t.me/puppyhouse_msk" target="_blank" rel="noopener" aria-label="Написать в Telegram" title="Telegram"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-tg"/></svg></a>
+            <a class="msgr msgr--wa" href="https://wa.me/74951234567" target="_blank" rel="noopener" aria-label="Написать в WhatsApp" title="WhatsApp"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-wa"/></svg></a>
+            <a class="msgr msgr--max" href="https://max.ru/domshchenkov" target="_blank" rel="noopener" aria-label="Написать в MAX" title="MAX"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-max-word"/></svg></a>
           </div>
         </div>
         <nav class="footer__nav" aria-label="Разделы сайта">
@@ -580,6 +588,11 @@
           <div class="mmenu__group" id="mm-g3" hidden>
             <ul class="mega__list">
               <li><a class="mega__link" href="../dostavka/"><span>Доставка по России</span></a></li>
+              <li class="mega__sub">
+                <span class="mega__subh">Доставка по городам</span>
+                <ul class="mega__pills">
+            <li><a class="mega__pill" href="../dostavka/sankt-peterburg/"><span><span class="nw">Санкт-Петербург</span></span></a></li><li><a class="mega__pill" href="../dostavka/novosibirsk/"><span>Новосибирск</span></a></li><li><a class="mega__pill" href="../dostavka/ekaterinburg/"><span>Екатеринбург</span></a></li><li><a class="mega__pill" href="../dostavka/kazan/"><span>Казань</span></a></li><li><a class="mega__pill" href="../dostavka/nizhnij-novgorod/"><span>Нижний Новгород</span></a></li><li><a class="mega__pill" href="../dostavka/krasnodar/"><span>Краснодар</span></a></li><li><a class="mega__pill" href="../dostavka/samara/"><span>Самара</span></a></li><li><a class="mega__pill" href="../dostavka/#goroda"><span>Все города</span></a></li>    </ul>
+              </li>
               <li><a class="mega__link" href="../rassrochka/"><span>Рассрочка и бронь</span></a></li>
               <li><a class="mega__link" href="../shchenok-v-podarok/"><span>Щенок в подарок</span></a></li>
               <li><a class="mega__link" href="../magazin/"><span>Стартовый набор</span></a></li>
@@ -623,9 +636,9 @@
     <div class="mmenu__bottom">
       <a class="mmenu__phone" href="tel:+74951234567">+7 (495) 123-45-67<small>Ежедневно с 9:00 до 21:00</small></a>
       <div class="mmenu__msgs">
-        <a class="msgr msgr--tg" href="https://t.me/puppyhouse_msk" target="_blank" rel="noopener" aria-label="Написать в Telegram"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-tg"/></svg></a>
-        <a class="msgr msgr--wa" href="https://wa.me/74951234567" target="_blank" rel="noopener" aria-label="Написать в WhatsApp"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-wa"/></svg></a>
-        <a class="msgr msgr--max" href="https://max.ru/domshchenkov" target="_blank" rel="noopener" aria-label="Написать в MAX"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-max"/></svg></a>
+        <a class="msgr msgr--tg" href="https://t.me/puppyhouse_msk" target="_blank" rel="noopener" aria-label="Написать в Telegram" title="Telegram"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-tg"/></svg></a>
+        <a class="msgr msgr--wa" href="https://wa.me/74951234567" target="_blank" rel="noopener" aria-label="Написать в WhatsApp" title="WhatsApp"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-wa"/></svg></a>
+        <a class="msgr msgr--max" href="https://max.ru/domshchenkov" target="_blank" rel="noopener" aria-label="Написать в MAX" title="MAX"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-max-word"/></svg></a>
         <button class="btn btn--white mmenu__price" type="button" data-open-modal>Узнать цену</button>
       </div>
       <a class="btn btn--tg btn--lg btn--block" href="https://t.me/puppyhouse_msk" target="_blank" rel="noopener"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-tg"/></svg>Написать в Telegram</a>

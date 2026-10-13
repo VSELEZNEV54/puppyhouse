@@ -21,8 +21,6 @@
 .muted { color: var(--muted); }
 .note { font-size: 14px; line-height: 1.45; color: var(--muted); }
 
-.sec-head__txt { display: grid; gap: 12px; }
-.sec-head__lead { font-size: 16px; line-height: 1.45; color: var(--muted); max-width: 62ch; }
 
 /* =========================================================
    ХЛЕБНЫЕ КРОШКИ
@@ -338,6 +336,19 @@ a.stile:hover .stile__photo img { transform: scale(1.04); }
 .cmp__head { display: flex; align-items: center; gap: 10px; }
 .cmp__head .face { width: 40px; height: 40px; }
 .cmp tbody th { width: 20%; font-size: 14px; font-weight: 500; color: var(--muted); }
+/* таблица на 3–4 колонки на телефоне — плитками по колонке (ui.cmp_table): без прокрутки вбок, все породы видны */
+.cmp-cards { display: none; }
+@media (max-width: 760px) {
+  .cmp--wide { display: none; }
+  .cmp-cards { display: grid; grid-template-columns: minmax(0, 1fr); gap: 8px; }
+  .cmp-card { padding: 18px 18px 8px; border-radius: var(--r-tile); background: var(--tile); }
+  .cmp-card__head { display: flex; align-items: center; gap: 12px; font-size: 20px; font-weight: 500; letter-spacing: -0.02em; line-height: 1.2; }
+  .cmp-card__head .face { width: 44px; height: 44px; }
+  .cmp-card__rows { margin-top: 10px; }
+  .cmp-card__row { display: grid; grid-template-columns: minmax(0, 36%) minmax(0, 1fr); gap: 12px; padding: 10px 0; border-top: 1px solid var(--line); font-size: 14px; line-height: 1.4; }
+  .cmp-card__row dt { color: var(--muted); }
+  .cmp-card__row dd { margin: 0; }
+}
 .cmp thead > tr > :first-child, .cmp tbody th { position: sticky; left: 0; z-index: 1; background: var(--tile); }
 
 /* =========================================================

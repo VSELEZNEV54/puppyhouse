@@ -8,6 +8,12 @@
 {% import "macros/blocks.html.j2" as blocks %}
 {% import "macros/media.html.j2" as media %}
 
+{% block head_extra %}
+  {#- Organization for search engines: name «домщенков.рф», production URL in punycode, phone, city, messengers -#}
+  {%- set home_url = 'https://' ~ (site.get('domain_ascii') or site.domain) ~ '/' -%}
+  <script type="application/ld+json">{{ {'@context': 'https://schema.org', '@type': 'Organization', 'name': site.brand, 'url': home_url, 'description': description, 'telephone': site.phone.tel[4:], 'address': {'@type': 'PostalAddress', 'addressLocality': site.address.city, 'addressCountry': 'RU'}, 'areaServed': 'RU', 'sameAs': [site.messengers.telegram.url, site.messengers.whatsapp.url, site.messengers.max.url]}|tojson }}</script>
+{% endblock %}
+
 {% block content %}
     <!-- ================= ПЕРВЫЙ ЭКРАН — на весь экран ================= -->
     <section class="hero hero--full container" id="top" aria-labelledby="hero-title">

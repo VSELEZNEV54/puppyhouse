@@ -2,7 +2,8 @@
   "_note": "Shared site data. READ-ONLY for page-group agents. Values in [square brackets] are placeholders to replace with real data (see placeholders).",
   "brand": "домщенков.рф",
   "tagline": "питомник щенков · Москва",
-  "domain": "puppyhouse.ru",
+  "domain": "домщенков.рф",
+  "domain_ascii": "xn--b1adduihee9g.xn--p1ai",
   "mirror": "домщенков.рф",
   "as_of": "2026-10-12",
   "theme_color": "#F3F2EF",
@@ -12,7 +13,7 @@
     "hours": "Ежедневно с 9:00 до 21:00",
     "response": "Ответим за 15 минут, с 9:00 до 21:00"
   },
-  "email": "hello@puppyhouse.ru",
+  "email": "[почта]@домщенков.рф",
   "address": {
     "city": "Москва",
     "street": "[адрес питомника]",
@@ -23,6 +24,7 @@
     "telegram": {
       "label": "Telegram",
       "url": "https://t.me/puppyhouse_msk",
+      "url_placeholder": "[ссылка Telegram — заглушка со старым названием, заменить на канал домщенков.рф]",
       "aria": "Написать в Telegram",
       "icon": "tg"
     },
@@ -35,8 +37,10 @@
     "max": {
       "label": "MAX",
       "url": "https://max.ru/domshchenkov",
+      "url_placeholder": "[ссылка MAX — заглушка]",
       "aria": "Написать в MAX",
-      "icon": "max"
+      "icon": "max",
+      "round_icon": "max-word"
     }
   },
   "nav": [
@@ -189,6 +193,43 @@
         {
           "label": "Доставка по России",
           "url": "/dostavka/"
+        },
+        {
+          "label": "Доставка по городам",
+          "sub": [
+            {
+              "label": "Санкт-Петербург",
+              "url": "/dostavka/sankt-peterburg/"
+            },
+            {
+              "label": "Новосибирск",
+              "url": "/dostavka/novosibirsk/"
+            },
+            {
+              "label": "Екатеринбург",
+              "url": "/dostavka/ekaterinburg/"
+            },
+            {
+              "label": "Казань",
+              "url": "/dostavka/kazan/"
+            },
+            {
+              "label": "Нижний Новгород",
+              "url": "/dostavka/nizhnij-novgorod/"
+            },
+            {
+              "label": "Краснодар",
+              "url": "/dostavka/krasnodar/"
+            },
+            {
+              "label": "Самара",
+              "url": "/dostavka/samara/"
+            },
+            {
+              "label": "Все города",
+              "url": "/dostavka/#goroda"
+            }
+          ]
         },
         {
           "label": "Рассрочка и бронь",
@@ -482,7 +523,7 @@
   ],
   "toast": "Раздел появится на следующем этапе",
   "placeholders": [
-    "Телефон +7 (495) 123-45-67, ссылки Telegram (t.me/puppyhouse_msk) / WhatsApp / MAX (max.ru/domshchenkov), почта, адрес питомника",
+    "Телефон +7 (495) 123-45-67, ссылки Telegram (t.me/puppyhouse_msk — заглушка со старым названием) / WhatsApp / MAX (max.ru/domshchenkov), почта ([почта]@домщенков.рф), адрес питомника",
     "Реквизиты ИП / ООО, ИНН, ОГРН / ОГРНИП, год основания [2017]",
     "Цифры доверия: 9 лет, 640+ выпускников, рейтинг 4,9, 60+ городов",
     "Рейтинги и число отзывов: Яндекс 4,9 / 128, Google 4,8 / 64, Авито 5,0 / 87 + ссылки",

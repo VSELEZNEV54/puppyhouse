@@ -41,10 +41,10 @@
       </div>
       <p class="sr-only" role="status" aria-live="polite" data-rf-status></p>
 
-      <ul class="tr-rvlist" data-rf-list>
+      <ul class="vrev-grid" data-rf-list>
         {% for r in reviews %}
         <li data-breed="{{ r.breed }}">
-          {{ tr.review(r) }}
+          {{ media.video_review_card(r, full=true)|indent(10) }}
         </li>
         {% endfor %}
       </ul>
@@ -53,6 +53,8 @@
       <button class="btn btn--ink" type="button" data-rf-reset>Показать все отзывы</button>
       {% endcall %}
     </section>
+
+    {{ ui.advantages(title='Почему нам доверяют', link={'url': '/dokumenty-i-garantii/', 'label': 'Документы и гарантии'}) }}
 
     <section class="section container" id="eshchyo" aria-labelledby="eshchyo-title">
       {{ ui.section_head(pg.links_title, id='eshchyo-title') }}

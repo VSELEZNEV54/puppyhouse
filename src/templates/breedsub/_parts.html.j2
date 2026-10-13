@@ -89,8 +89,10 @@
       <img src="{{ c.photo.src }}" alt="{{ c.photo.alt|typo }}" width="{{ size[0] }}" height="{{ size[1] }}" loading="lazy" decoding="async">
       {% if c.photo_note %}<span class="bsub-col__pnote">{{ c.photo_note|typo }}</span>{% endif %}
       {% else %}
-      <span class="bsub-col__dot" style="background:{{ c.swatch }}" aria-hidden="true"></span>
-      <span class="bsub-col__pnote">Фото по&nbsp;запросу</span>
+      <span class="bsub-col__swatch">
+        <span class="bsub-col__dot" style="background:{{ c.swatch }}" aria-hidden="true"></span>
+        <span class="bsub-col__pnote bsub-col__pnote--dot">Фото по&nbsp;запросу</span>
+      </span>
       {% endif %}
     </div>
     <div class="bsub-col__body">

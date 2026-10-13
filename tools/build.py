@@ -56,6 +56,9 @@ _DASH = re.compile(r" (?=[—–](?:\s|$))")
 # 15 минут, 2,5 кг; not times («9:00 до»), not «2026 Puppy», not before a preposition
 _NUM_UNIT = re.compile(r"(?<![\d:])(\d+(?:[.,]\d+)?) (?=[а-яё%])(?!(?:и|или|а|но|до|в|во|на|с|со|по|за|из|от|к|у|о)\b)")
 _TAG = re.compile(r"(<[^>]+>)")
+# «что-то», «как-нибудь», «кое-где»: no line break after the hyphen (U+2060 word joiner — invisible, font-independent)
+_HYPHEN_WORD = re.compile(r"(?<=[а-яё])-(?=(?:то|нибудь|либо|ка|таки)\b)|(?<=\bкое)-(?=[а-яё])", re.IGNORECASE)
+WJ = "\u2060"
 NBSP = " "
 
 
@@ -64,6 +67,7 @@ def _typo_text(s: str) -> str:
     s = _SHORT_WORD.sub(lambda m: m.group(1) + NBSP, s)
     s = _PARTICLE.sub(NBSP, s)
     s = _NUM_UNIT.sub(lambda m: m.group(1) + NBSP, s)
+    s = _HYPHEN_WORD.sub("-" + WJ, s)
     return s
 
 
@@ -369,7 +373,7 @@ CAPS_OK = {"FCI", "ФКС", "ДНК", "ИНН", "ОГРН", "ОГРНИП", "К�
 _CSS_CAPS_RE = re.compile(r"text-transform\s*:\s*uppercase|font-variant(?:-caps)?\s*:\s*(?:all-)?small-caps", re.I)
 _CSS_WEIGHT_RE = re.compile(r"font-weight\s*:\s*(\d{3}|bold|bolder)", re.I)
 # Бренд с 13.10 — «домщенков.рф» (строчными, без дефиса): старое имя и вариант с дефисом не должны попадать на страницы
-_OLD_BRAND_RE = re.compile(r"puppy\s+house|дом-щенков\.рф", re.I)
+_OLD_BRAND_RE = re.compile(r"puppy\s*house|дом-щенков\.рф", re.I)  # «Puppy House», «puppyhouse.ru», hyphenated form
 
 
 def lint_css(rep: "Report") -> None:
