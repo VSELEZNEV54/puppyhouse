@@ -1,5 +1,7 @@
 /* домщенков.рф — страница щенка /shchenki/<slug>/.
-   1. Галерея: миниатюры меняют большой кадр (фото щенка, родитель, видео по запросу, документы).
+   1. Галерея: лента [data-carousel] листает main.js (стрелки, свайп, ← →, лайтбокс по нажатию на кадр).
+      Здесь — миниатюры (нажатие → этот кадр), счётчик «2 / 9» и один шаг табуляции на ленту
+      (кнопка активного кадра в порядке табуляции, остальные — -1; ← → переводят фокус, main.js).
    2. Режимы общей модалки main.js: кнопки с data-pp-modal="video | wait | litter" открывают её
       через [data-pup] (как карточка щенка); заголовок, подпись и пометку заявки main.js берёт
       из data-modal-title / -sub / -note кнопки, а здесь меняются кнопка отправки и текст успеха.
@@ -16,41 +18,35 @@
   const $$ = (sel, ctx = d) => Array.from(ctx.querySelectorAll(sel));
   const breed = page.dataset.ppBreed;
   const status = page.dataset.ppStatus;
+  const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   /* ---------- 1. галерея ---------- */
-  const stage = $('[data-pp-stage]', page);
-  const thumbs = $$('[data-pp-thumb]', page);
-  if (stage && thumbs.length) {
-    const img = $('[data-pp-img]', stage);
-    const cap = $('[data-pp-cap]', stage);
-    const play = $('[data-pp-play]', stage);
-    const pill = $('[data-pp-status-pill]', stage);
-    const show = (btn) => {
-      const src = $('img', btn).getAttribute('src');
-      const kind = btn.dataset.kind;
-      thumbs.forEach((t) => t.setAttribute('aria-pressed', String(t === btn)));
-      if (img.getAttribute('src') !== src) {
-        const t = $('img', btn);
-        img.src = src;
-        img.width = t.width; img.height = t.height;
-      }
-      img.alt = btn.dataset.alt || '';
-      img.style.objectPosition = btn.dataset.pos || '';
-      stage.className = stage.className.replace(/\bpp-stage--\w+/g, '').trim() + ' pp-stage--' + kind;
-      cap.textContent = btn.dataset.cap || '';
-      cap.hidden = !btn.dataset.cap;
-      play.hidden = kind !== 'video';
-      if (pill) pill.hidden = kind !== 'photo';
+  const car = $('[data-pp-car]', page);
+  if (car) {
+    const vp = $('[data-carousel-viewport]', car);
+    const slides = $$('.media-carousel__item', car);
+    const thumbs = $$('[data-pp-thumb]', car);
+    const count = $('[data-pp-count]', car);
+    let current = -1;
+    const sync = () => {
+      const i = Math.max(0, slides.findIndex((li) => li.classList.contains('is-active')));
+      if (i === current) return;
+      current = i;
+      slides.forEach((li, k) => { const b = $('[data-lightbox]', li); if (b) b.tabIndex = k === i ? 0 : -1; });
+      thumbs.forEach((t, k) => t.classList.toggle('is-on', k === i));
+      if (count) count.textContent = String(i + 1);
     };
-    thumbs.forEach((btn) => btn.addEventListener('click', () => show(btn)));
-    // стрелки влево / вправо между миниатюрами
-    thumbs.forEach((btn, i) => btn.addEventListener('keydown', (e) => {
-      if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
-      e.preventDefault();
-      const next = thumbs[(i + (e.key === 'ArrowRight' ? 1 : thumbs.length - 1)) % thumbs.length];
-      next.focus();
-      show(next);
+    if ('MutationObserver' in window) {
+      new MutationObserver(sync).observe(vp, { subtree: true, attributes: true, attributeFilter: ['class'] });
+    }
+    // нажатие на миниатюру — лента едет к этому кадру (main.js по прокрутке отметит его активным)
+    thumbs.forEach((t) => t.addEventListener('click', () => {
+      const li = slides[Number(t.dataset.ppThumb)];
+      if (!li || !vp) return;
+      const dx = li.getBoundingClientRect().left - vp.getBoundingClientRect().left;
+      vp.scrollBy({ left: dx, behavior: reduceMotion ? 'auto' : 'smooth' });
     }));
+    sync();
   }
 
   /* ---------- 2. режимы модалки ---------- */

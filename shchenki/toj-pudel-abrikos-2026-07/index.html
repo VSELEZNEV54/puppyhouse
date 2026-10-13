@@ -12,9 +12,10 @@
   <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500&amp;display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../../assets/css/main.css?v=0cce2551">
   <link rel="stylesheet" href="../../assets/css/pages.css?v=460f7729">
-  <link rel="stylesheet" href="../../assets/css/puppy.css?v=dd1e76ed">
+  <link rel="stylesheet" href="../../assets/css/catalog.css?v=ed95ce7b">
+  <link rel="stylesheet" href="../../assets/css/puppy.css?v=e47bff61">
   <script src="../../assets/js/main.js?v=77017173" defer></script>
-  <script src="../../assets/js/puppy.js?v=826f374d" defer></script>
+  <script src="../../assets/js/puppy.js?v=7405d674" defer></script>
 </head>
 <body>
   <!-- Иконки: инлайн-спрайт 24×24. Линейные — stroke currentColor, заливочные — fill. -->
@@ -207,67 +208,122 @@
 <section class="pp container" id="shchenok" aria-labelledby="page-title">
       <div class="pp__grid tone--butter" data-pup data-name="Марго" data-desc="Той-пудель · 14 недель · девочка" data-img="studio-pudel-yellow.jpg" data-pp data-pp-status="available" data-pp-breed="Той-пудель">
         <div class="pp-gal">
-          <figure class="pp-stage pp-stage--photo" id="pp-stage" data-pp-stage>
-            <img class="pp-stage__img" src="../../assets/img/studio-pudel-yellow.jpg" alt="Абрикосовый щенок той-пуделя Марго на жёлтом фоне" width="1024" height="1024" style="object-position:50% 62%" fetchpriority="high" decoding="async" data-pp-img>
-            <figcaption class="pp-stage__cap" data-pp-cap hidden></figcaption>
-            <button class="pp-play" type="button" data-open-modal data-pp-modal="video" data-modal-title="Видеозвонок: Марго" data-modal-sub="Покажем щенка вживую и ответим на вопросы" data-modal-note="Видеозвонок — Марго" data-pp-play hidden><span class="pp-play__ico" aria-hidden="true"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-play"/></svg></span><span class="pp-play__txt">Видео по&nbsp;запросу</span></button>
-          </figure>
-          <ul class="pp-thumbs" aria-label="Фото и видео щенка">
-            <li>
-              <button class="pp-thumb pp-thumb--photo" type="button" aria-pressed="true" aria-controls="pp-stage" aria-label="Фото: Марго" data-pp-thumb data-kind="photo" data-alt="Абрикосовый щенок той-пуделя Марго на жёлтом фоне" data-pos="50% 62%" data-cap="">
-                <img class="pp-thumb__img" src="../../assets/img/studio-pudel-yellow.jpg" alt="" width="1024" height="1024" style="object-position:50% 62%" loading="lazy" decoding="async">
-                <span class="pp-thumb__label" aria-hidden="true">Марго</span>
-              </button>
-            </li>
-            <li>
-              <button class="pp-thumb pp-thumb--parent" type="button" aria-pressed="false" aria-controls="pp-stage" aria-label="Фото: мама" data-pp-thumb data-kind="parent" data-alt="Взрослый рыжий той-пудель на жёлтом фоне" data-pos="50% 72%" data-cap="Мама · [Кличка мамы]">
-                <img class="pp-thumb__img" src="../../assets/img/parent-pudel.jpg" alt="" width="928" height="1152" style="object-position:50% 62%" loading="lazy" decoding="async">
-                <span class="pp-thumb__label" aria-hidden="true">Мама</span>
-              </button>
-            </li>
-            <li>
-              <button class="pp-thumb pp-thumb--video" type="button" aria-pressed="false" aria-controls="pp-stage" aria-label="Видео по запросу" data-pp-thumb data-kind="video" data-alt="Щенка показывают по видеосвязи на экране смартфона" data-pos="38% 50%" data-cap="">
-                <img class="pp-thumb__img" src="../../assets/img/video-call.jpg" alt="" width="1264" height="848" style="object-position:36% 50%" loading="lazy" decoding="async">
-<span class="pp-thumb__play" aria-hidden="true"><svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-play"/></svg></span>                <span class="pp-thumb__label" aria-hidden="true">Видео<span class="pp-thumb__more"> по&nbsp;запросу</span></span>
-              </button>
-            </li>
-            <li>
-              <button class="pp-thumb pp-thumb--docs" type="button" aria-pressed="false" aria-controls="pp-stage" aria-label="Фото: документы" data-pp-thumb data-kind="docs" data-alt="Лапа щенка рядом с папкой документов и ветпаспортом" data-pos="50% 50%" data-cap="Метрика РКФ · Ветпаспорт · Договор">
-                <img class="pp-thumb__img" src="../../assets/img/documents.jpg" alt="" width="1264" height="848" style="object-position:50% 50%" loading="lazy" decoding="async">
-                <span class="pp-thumb__label" aria-hidden="true">Документы</span>
-              </button>
-            </li>
-          </ul>
+          <div class="media-carousel pp-car" data-carousel data-start="0" data-pp-car role="region" aria-roledescription="карусель" aria-label="Фото и видео: Марго">
+            <div class="pp-car__stage">
+              <div class="media-carousel__viewport pp-car__vp" tabindex="0" data-carousel-viewport>
+                <ul class="media-carousel__track pp-car__track">
+<li class="media-carousel__item pp-slide is-active" aria-roledescription="слайд" aria-label="1 из 7">
+                    <button class="pp-slide__btn" type="button" tabindex="0" data-lightbox data-kind="photo" data-caption="Марго" aria-label="Открыть фото: Марго">
+                      <img src="../../assets/img/studio-pudel-yellow.jpg" alt="Абрикосовый щенок той-пуделя Марго на жёлтом фоне" width="1024" height="1024" style="object-position:50% 60%" fetchpriority="high" decoding="async">
+                    </button>
+                  </li>
+<li class="media-carousel__item pp-slide" aria-roledescription="слайд" aria-label="2 из 7">
+                    <button class="pp-slide__btn pp-slide__btn--video" type="button" tabindex="-1" data-lightbox data-kind="video" data-caption="Видео щенка" aria-label="Смотреть видео: Видео щенка">
+                      <img src="../../assets/img/vet-check.jpg" alt="Ветеринар осматривает щенка той-пуделя" width="1264" height="848" style="object-position:40% 50%" loading="lazy" decoding="async">
+<span class="mcard__play" aria-hidden="true"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-play"/></svg></span><span class="pp-slide__cap" aria-hidden="true"><span class="pp-slide__kind">Видео</span>Видео щенка</span>                    </button>
+                  </li>
+<li class="media-carousel__item pp-slide" aria-roledescription="слайд" aria-label="3 из 7">
+                    <button class="pp-slide__btn" type="button" tabindex="-1" data-lightbox data-kind="photo" data-caption="Мама · [Кличка мамы]" aria-label="Открыть фото: Мама · [Кличка мамы]">
+                      <img src="../../assets/img/parent-pudel.jpg" alt="Взрослый рыжий той-пудель на жёлтом фоне" width="928" height="1152" style="object-position:50% 40%" loading="lazy" decoding="async">
+<span class="pp-slide__cap" aria-hidden="true">Мама · [Кличка мамы]</span>                    </button>
+                  </li>
+<li class="media-carousel__item pp-slide" aria-roledescription="слайд" aria-label="4 из 7">
+                    <button class="pp-slide__btn" type="button" tabindex="-1" data-lightbox data-kind="photo" data-caption="Папа · [Кличка папы]" aria-label="Открыть фото: Папа · [Кличка папы]">
+                      <img src="../../assets/img/grad-woman-pudel.jpg" alt="Той-пудель на руках у хозяйки в кресле у окна" width="1264" height="848" style="object-position:64% 60%" loading="lazy" decoding="async">
+<span class="pp-slide__cap" aria-hidden="true">Папа · [Кличка папы]</span>                    </button>
+                  </li>
+<li class="media-carousel__item pp-slide" aria-roledescription="слайд" aria-label="5 из 7">
+                    <button class="pp-slide__btn pp-slide__btn--video" type="button" tabindex="-1" data-lightbox data-kind="video" data-caption="Видеозвонок со щенком" aria-label="Смотреть видео: Видеозвонок со щенком">
+                      <img src="../../assets/img/video-call.jpg" alt="Щенок на экране смартфона во время видеозвонка" width="1264" height="848" style="object-position:40% 50%" loading="lazy" decoding="async">
+<span class="mcard__play" aria-hidden="true"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-play"/></svg></span><span class="pp-slide__cap" aria-hidden="true"><span class="pp-slide__kind">Видео</span>Видеозвонок со щенком</span>                    </button>
+                  </li>
+<li class="media-carousel__item pp-slide" aria-roledescription="слайд" aria-label="6 из 7">
+                    <button class="pp-slide__btn" type="button" tabindex="-1" data-lightbox data-kind="photo" data-caption="Стартовый набор" aria-label="Открыть фото: Стартовый набор">
+                      <img src="../../assets/img/starter-kit.jpg" alt="Стартовый набор для щенка: лежанка, переноска, миски и игрушки" width="1024" height="1024" style="object-position:50% 50%" loading="lazy" decoding="async">
+<span class="pp-slide__cap" aria-hidden="true">Стартовый набор</span>                    </button>
+                  </li>
+<li class="media-carousel__item pp-slide" aria-roledescription="слайд" aria-label="7 из 7">
+                    <button class="pp-slide__btn" type="button" tabindex="-1" data-lightbox data-kind="photo" data-caption="Ветпаспорт и договор" aria-label="Открыть фото: Ветпаспорт и договор">
+                      <img src="../../assets/img/documents.jpg" alt="Лапа щенка рядом с папкой документов и ветпаспортом" width="1264" height="848" style="object-position:50% 50%" loading="lazy" decoding="async">
+<span class="pp-slide__cap" aria-hidden="true">Ветпаспорт и договор</span>                    </button>
+                  </li>
+                </ul>
+              </div>
+              <p class="pp-car__count" aria-hidden="true"><span data-pp-count>1</span>&nbsp;/&nbsp;7</p>
+              <div class="media-carousel__nav">
+                <button class="media-carousel__btn" type="button" data-carousel-prev aria-label="Предыдущее фото"><svg class="i i--flip" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></button>
+                <button class="media-carousel__btn" type="button" data-carousel-next aria-label="Следующее фото"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></button>
+              </div>
+            </div>
+            <ul class="pp-thumbs" style="--n:7" aria-hidden="true">
+<li><button class="pp-thumb is-on" type="button" tabindex="-1" data-pp-thumb="0" aria-label="1 из 7: Марго"><img src="../../assets/img/studio-pudel-yellow.jpg" alt="" width="1024" height="1024" style="object-position:50% 60%" loading="lazy" decoding="async"></button></li>
+<li><button class="pp-thumb" type="button" tabindex="-1" data-pp-thumb="1" aria-label="2 из 7: Видео щенка"><img src="../../assets/img/vet-check.jpg" alt="" width="1264" height="848" style="object-position:40% 50%" loading="lazy" decoding="async"><span class="pp-thumb__play"><svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-play"/></svg></span></button></li>
+<li><button class="pp-thumb" type="button" tabindex="-1" data-pp-thumb="2" aria-label="3 из 7: Мама · [Кличка мамы]"><img src="../../assets/img/parent-pudel.jpg" alt="" width="928" height="1152" style="object-position:50% 40%" loading="lazy" decoding="async"></button></li>
+<li><button class="pp-thumb" type="button" tabindex="-1" data-pp-thumb="3" aria-label="4 из 7: Папа · [Кличка папы]"><img src="../../assets/img/grad-woman-pudel.jpg" alt="" width="1264" height="848" style="object-position:64% 60%" loading="lazy" decoding="async"></button></li>
+<li><button class="pp-thumb" type="button" tabindex="-1" data-pp-thumb="4" aria-label="5 из 7: Видеозвонок со щенком"><img src="../../assets/img/video-call.jpg" alt="" width="1264" height="848" style="object-position:40% 50%" loading="lazy" decoding="async"><span class="pp-thumb__play"><svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-play"/></svg></span></button></li>
+<li><button class="pp-thumb" type="button" tabindex="-1" data-pp-thumb="5" aria-label="6 из 7: Стартовый набор"><img src="../../assets/img/starter-kit.jpg" alt="" width="1024" height="1024" style="object-position:50% 50%" loading="lazy" decoding="async"></button></li>
+<li><button class="pp-thumb" type="button" tabindex="-1" data-pp-thumb="6" aria-label="7 из 7: Ветпаспорт и договор"><img src="../../assets/img/documents.jpg" alt="" width="1264" height="848" style="object-position:50% 50%" loading="lazy" decoding="async"></button></li>
+            </ul>
+          </div>
         </div>
 
         <div class="pp-info">
           <p class="pp-info__status pp-info__status--ok"><span class="dot dot--ok" aria-hidden="true"></span>В наличии</p>
           <h1 class="pp-title" id="page-title"><span class="pp-title__name">Марго</span><span class="sr-only"> — </span><span class="pp-title__sub">щенок той-пуделя</span></h1>
-          <p class="pp-meta"><span>девочка</span><span>абрикосовый</span><span>14 недель</span><span>родилась 6 июля 2026</span></p>
-
-          <dl class="pp-specs">
-            <div class="pp-spec"><dt>Взрослый вес</dt><dd>около [2,5–3] кг</dd></div>
-            <div class="pp-spec"><dt>Рост в холке</dt><dd>24–28 см</dd></div>
-            <div class="pp-spec"><dt>Шерсть</dt><dd>кудрявая, практически не линяет</dd></div>
-            <div class="pp-spec"><dt>Прививки</dt><dd>по возрасту, в ветпаспорте</dd></div>
-            <div class="pp-spec"><dt>Переезд домой</dt><dd>можно забрать сейчас</dd></div>
-          </dl>
-
-          <div class="pp-docs">
-            <ul class="badges">
-<li><svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-check"/></svg>Метрика РКФ</li><li><svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-check"/></svg>Ветпаспорт</li><li><svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-check"/></svg>Договор</li><li><svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-check"/></svg>Чип</li></ul>
-          </div>
+          <p class="pp-meta"><span>девочка</span><span>абрикосовый</span><span>14 недель</span></p>
 
           <div class="pp-cta" data-hero-ctas>
             <button class="btn btn--ink btn--lg pp-cta__main" type="button" data-open-modal data-pp-main aria-label="Узнать цену: Марго">Узнать цену</button>
             <button class="btn btn--white btn--lg" type="button" data-open-modal data-pp-modal="video" data-modal-title="Видеозвонок: Марго" data-modal-sub="Покажем щенка вживую и ответим на вопросы" data-modal-note="Видеозвонок — Марго"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-video"/></svg>Видеозвонок со&nbsp;щенком</button>
           </div>
-          <ul class="pp-trust" aria-label="Гарантии">
-            <li><svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-doc"/></svg>Бронь по&nbsp;договору</li>
-            <li><svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-shield"/></svg>Ветпаспорт</li>
-            <li><svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-car"/></svg>Доставка по&nbsp;России</li>
-          </ul>
+          <div class="pp-sub">
+            <a class="pp-tg" href="https://t.me/puppyhouse_msk" target="_blank" rel="noopener"><span class="pp-tg__ico" aria-hidden="true"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-tg"/></svg></span>Написать в Telegram</a>
+            <ul class="pp-trust" aria-label="Гарантии">
+              <li><svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-doc"/></svg>Бронь по&nbsp;договору</li>
+              <li><svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-shield"/></svg>Пожизненная гарантия</li>
+              <li><svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-car"/></svg>Доставка по&nbsp;России</li>
+            </ul>
+          </div>
+
+          <div class="pp-tbl">
+            <h2 class="pp-tbl__title" id="harakteristiki">Характеристики</h2>
+            <table class="pp-tbl__table" aria-labelledby="harakteristiki">
+              <tbody>
+                <tr><th scope="row">Порода</th><td><a href="../../toj-pudel/">Той-пудель</a></td></tr>
+                <tr><th scope="row">Разновидность</th><td>той (24–28 см)</td></tr>
+                <tr><th scope="row">Пол</th><td>девочка</td></tr>
+                <tr><th scope="row">Окрас</th><td><a href="../../toj-pudel/vidy-i-okrasy/#abrikosovyj">абрикосовый</a></td></tr>
+                <tr><th scope="row">Дата рождения</th><td>6 июля 2026</td></tr>
+                <tr><th scope="row">Возраст</th><td>14 недель</td></tr>
+                <tr><th scope="row">Вес сейчас</th><td>[0,9 кг]</td></tr>
+                <tr><th scope="row">Вес взрослой собаки</th><td>около [2,5–3] кг</td></tr>
+                <tr><th scope="row">Прививки</th><td>по возрасту, в ветпаспорте</td></tr>
+                <tr><th scope="row">Документы</th><td>Метрика РКФ, ветпаспорт, договор</td></tr>
+                <tr><th scope="row">Чип</th><td>есть</td></tr>
+                <tr><th scope="row">Переезд домой</th><td>можно забрать сейчас</td></tr>
+              </tbody>
+            </table>
+          </div>
         </div>
+      </div>
+    </section>
+
+    <section class="section container" id="harakter" aria-labelledby="harakter-title">
+      <div class="sec-head">
+  <h2 class="h2" id="harakter-title">Характер и описание</h2>
+  
+  
+</div>
+      <div class="pp-about">
+        <div class="pp-about__text">
+<p>[Марго — живая и сообразительная: уже знает своё имя и приходит на зов.]</p><p>Пудель — одна из самых умных пород: той-пудель быстро учится и любит внимание. Шерсть почти не линяет, ей нужна регулярная стрижка.</p><p>Щенок растёт в доме, а не в вольере: знает звуки квартиры, руки людей и пелёнку. До переезда — прививки по возрасту, обработка от паразитов и осмотр ветеринара.</p>        </div>
+        <aside class="pp-about__fits tone--butter" aria-labelledby="pp-fits-title">
+          <h3 class="pp-about__title" id="pp-fits-title">Кому подойдёт</h3>
+          <ul class="pp-about__chips">
+<li><svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-check"/></svg>Для квартиры</li><li><svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-check"/></svg>Почти не линяет</li><li><svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-check"/></svg>Легко учится</li><li><svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-check"/></svg>Маленький компаньон</li>          </ul>
+          <ul class="pp-about__links">
+<li><a class="text-link" href="../../toj-pudel/">Той-пудель: о <span class="nw">породе <svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></span></a></li><li><a class="text-link" href="../../toj-pudel/cena/">Цена щенка <span class="nw">той-пуделя <svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></span></a></li><li><a class="text-link" href="../../toj-pudel/vidy-i-okrasy/">Окрасы <span class="nw">той-пуделя <svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></span></a></li>          </ul>
+        </aside>
       </div>
     </section>
 
@@ -275,14 +331,15 @@
       <div class="sec-head">
   <div class="sec-head__txt">
     <h2 class="h2" id="roditeli-title">Родители</h2>
-    <p class="sec-head__lead">Мама и папа щенка — покажем их по видео</p>
+    <p class="sec-head__lead">Покажем маму и папу щенка по видео</p>
   </div>
   <a class="text-link" href="../../roditeli/">Все <span class="nw">родители <svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></span></a>
   
 </div>
       <ul class="pp-parents" data-reveal="items">
         <li>
-          <article class="pp-parent tone--butter pp-parent--photo" style="--tone-top:#E9C885;--tone-hi:#EECC88;--tone-floor:#F7E2AB;--fa:0.78;--fb:0.94" aria-labelledby="pp-parent-1">
+          <article class="pp-parent" aria-labelledby="pp-parent-1">
+            <span class="pp-parent__photo"><img src="../../assets/img/parent-pudel.jpg" alt="Взрослый рыжий той-пудель на жёлтом фоне" width="928" height="1152" style="object-position:50% 40%" loading="lazy" decoding="async"></span>
             <div class="pp-parent__txt">
               <p class="pp-parent__role">Мама</p>
               <h3 class="pp-parent__name" id="pp-parent-1">[Кличка мамы]</h3>
@@ -290,180 +347,199 @@
               <ul class="pp-parent__facts">
 <li>[3 года]</li><li>[3 кг]</li><li><svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-check"/></svg>Родословная РКФ</li>              </ul>
             </div>
-            <div class="pp-parent__photo"><img src="../../assets/img/parent-pudel.jpg" alt="Взрослый рыжий той-пудель на жёлтом фоне" width="928" height="1152" loading="lazy" decoding="async"></div>
           </article>
         </li>
         <li>
-          <article class="pp-parent tone--butter pp-parent--ask" aria-labelledby="pp-parent-2">
+          <article class="pp-parent" aria-labelledby="pp-parent-2">
+            <span class="pp-parent__photo"><img src="../../assets/img/grad-woman-pudel.jpg" alt="Той-пудель на руках у хозяйки в кресле у окна" width="1264" height="848" style="object-position:64% 60%" loading="lazy" decoding="async"></span>
             <div class="pp-parent__txt">
               <p class="pp-parent__role">Папа</p>
               <h3 class="pp-parent__name" id="pp-parent-2">[Кличка папы]</h3>
               <p class="pp-parent__breed">Той-пудель</p>
               <ul class="pp-parent__facts">
 <li>[3 года]</li><li>[3 кг]</li><li><svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-check"/></svg>Родословная РКФ</li>              </ul>
-<p class="pp-parent__ask"><span class="pp-parent__askico" aria-hidden="true"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-video"/></svg></span>Фото и видео пришлём по запросу</p>            </div>
+            </div>
           </article>
         </li>
       </ul>
     </section>
 
-    <section class="section container" id="chto-poluchite" aria-labelledby="chto-poluchite-title">
-      <div class="sec-head">
-  <h2 class="h2" id="chto-poluchite-title">Что получите вместе со щенком</h2>
+    <section class="section container" id="chto-vhodit" aria-labelledby="chto-vhodit-title">
+  <div class="sec-head">
+  <h2 class="h2" id="chto-vhodit-title">Что входит в покупку</h2>
   <a class="text-link" href="../../dokumenty-i-garantii/">Документы и <span class="nw">гарантии <svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></span></a>
   
 </div>
-      <div class="pp-gets">
-        <ul class="pp-gets__list" data-reveal="items">
-          <li class="pp-get">
-            <span class="ico" style="--c:var(--sky)" aria-hidden="true"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-doc"/></svg></span>
-            <h3 class="pp-get__title">Документы</h3>
-            <p class="pp-get__line">Метрика РКФ, ветпаспорт, договор</p>
-          </li>
-          <li class="pp-get">
-            <span class="ico" style="--c:var(--mint)" aria-hidden="true"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-syringe"/></svg></span>
-            <h3 class="pp-get__title">Прививки и осмотр</h3>
-            <p class="pp-get__line">Прививки по возрасту, осмотр ветеринара перед переездом</p>
-          </li>
-          <li class="pp-get">
-            <span class="ico" style="--c:var(--sun)" aria-hidden="true"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-bowl"/></svg></span>
-            <h3 class="pp-get__title">Стартовый набор</h3>
-            <p class="pp-get__line">[Корм, к которому привык, и пелёнка с запахом мамы]</p>
-          </li>
-          <li class="pp-get">
-            <span class="ico" style="--c:var(--lilac)" aria-hidden="true"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-chat"/></svg></span>
-            <h3 class="pp-get__title">Куратор на связи</h3>
-            <p class="pp-get__line">Ответим на вопросы о корме, прививках и воспитании</p>
-          </li>
-        </ul>
-        <a class="pp-kit" href="../../magazin/">
-          <span class="pp-kit__img"><img src="../../assets/img/starter-kit.jpg" alt="Лежанка, переноска, миски и игрушки для щенка" width="1024" height="1024" loading="lazy" decoding="async"></span>
-          <span class="pp-kit__txt"><span class="pp-kit__title">Соберём набор заранее</span><span class="pp-kit__line">Лежанка, переноска, миски и игрушки</span></span>
-          <span class="tcta tcta--soft">Подробнее <svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></span>
-        </a>
+  <ul class="advs advs--4">
+  <li class="adv">
+    <span class="ico" style="--c:var(--mint)" aria-hidden="true"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-syringe"/></svg></span>
+    <h3 class="adv__title">Привита по возрасту</h3>
+    <p class="adv__line">Прививки и обработки от паразитов</p>
+  </li>
+  <li class="adv">
+    <span class="ico" style="--c:var(--sky)" aria-hidden="true"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-book"/></svg></span>
+    <h3 class="adv__title">Ветпаспорт</h3>
+    <p class="adv__line">С отметками о прививках и осмотре</p>
+  </li>
+  <li class="adv">
+    <span class="ico" style="--c:var(--sand)" aria-hidden="true"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-doc"/></svg></span>
+    <h3 class="adv__title">Договор</h3>
+    <p class="adv__line">Бронь, гарантия и условия — на бумаге</p>
+  </li>
+  <li class="adv">
+    <span class="ico" style="--c:var(--lilac)" aria-hidden="true"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-users"/></svg></span>
+    <h3 class="adv__title">Метрика РКФ</h3>
+    <p class="adv__line">Потом обменяете на родословную РКФ</p>
+  </li>
+  <li class="adv">
+    <span class="ico" style="--c:var(--sun)" aria-hidden="true"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-paw"/></svg></span>
+    <h3 class="adv__title">Чип</h3>
+    <p class="adv__line">Уже стоит, номер — в ветпаспорте</p>
+  </li>
+  <li class="adv">
+    <span class="ico" style="--c:var(--coral)" aria-hidden="true"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-shield"/></svg></span>
+    <h3 class="adv__title">Пожизненная гарантия</h3>
+    <p class="adv__line">Условия гарантии прописаны в договоре</p>
+  </li>
+  <li class="adv">
+    <span class="ico" style="--c:var(--lilac)" aria-hidden="true"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-chat"/></svg></span>
+    <h3 class="adv__title">Пожизненная консультация</h3>
+    <p class="adv__line">На связи по уходу, корму и здоровью</p>
+  </li>
+  <li class="adv">
+    <span class="ico" style="--c:var(--mint)" aria-hidden="true"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-bowl"/></svg></span>
+    <h3 class="adv__title">Стартовый набор</h3>
+    <p class="adv__line">[Корм, к которому привык, и пелёнка с запахом мамы]</p>
+  </li>
+</ul>
+</section>
+
+
+    <section class="section container" id="bron" aria-labelledby="bron-title">
+      <div class="sec-head">
+  <h2 class="h2" id="bron-title">Бронь и доставка</h2>
+  
+  
+</div>
+      <div class="pp-terms">
+        <div class="pp-term pp-term--sun">
+          <span class="ico" style="--c:var(--sun)" aria-hidden="true"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-wallet"/></svg></span>
+          <h3 class="pp-term__title">Бронь и оплата</h3>
+          <ul class="pp-term__list">
+<li><svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-check"/></svg><span>Бронь по договору — щенок закреплён за вами</span></li><li><svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-check"/></svg><span>Предоплата: размер и условия — в договоре</span></li><li><svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-check"/></svg><span>Рассрочка через банк-партнёр на [6 или 12] месяцев</span></li>          </ul>
+          <a class="tcta" href="../../rassrochka/">Бронь и рассрочка <svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></a>
+        </div>
+        <div class="pp-term pp-term--mint">
+          <span class="ico" style="--c:var(--mint)" aria-hidden="true"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-car"/></svg></span>
+          <h3 class="pp-term__title">Доставка</h3>
+          <ul class="pp-term__list">
+<li><svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-check"/></svg><span>Заберёте сами в питомнике по записи</span></li><li><svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-check"/></svg><span>По Москве и области привезём к двери</span></li><li><svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-check"/></svg><span>В 60+ городов — на машине с куратором или самолётом</span></li>          </ul>
+          <a class="tcta" href="../../dostavka/">Условия доставки <svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></a>
+        </div>
       </div>
     </section>
 
-    <section class="section container" id="kak-zabrat" aria-labelledby="kak-zabrat-title">
-      <div class="sec-head">
-  <h2 class="h2" id="kak-zabrat-title">Как забрать щенка</h2>
-  <a class="text-link" href="../../dostavka/">Доставка по <span class="nw">России <svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></span></a>
-  
-</div>
-      <ol class="steps">
-  <li class="step"><span class="step__num" style="--c:var(--coral)" aria-hidden="true">1</span><h3 class="step__title">Заявка</h3><p class="step__text">Оставьте номер — пришлём цену и видео</p></li>
-  <li class="step"><span class="step__num" style="--c:var(--sun)" aria-hidden="true">2</span><h3 class="step__title">Видеозвонок</h3><p class="step__text">Покажем щенка, маму и документы онлайн</p></li>
-  <li class="step"><span class="step__num" style="--c:var(--sky)" aria-hidden="true">3</span><h3 class="step__title">Бронь</h3><p class="step__text">Договор и предоплата — щенок закреплён за вами</p></li>
-  <li class="step"><span class="step__num" style="--c:var(--mint)" aria-hidden="true">4</span><h3 class="step__title">Встреча или доставка</h3><p class="step__text">Заберёте в питомнике или привезём домой</p></li>
-</ol>
-    </section>
-
     <section class="section container" id="pohozhie" aria-labelledby="pohozhie-title">
-  <div class="sec-head">
+      <div class="sec-head">
   <h2 class="h2" id="pohozhie-title">Похожие щенки</h2>
   <a class="text-link" href="../?breed=toj-pudel">Весь каталог — <span class="nw">5 <svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></span></a>
   
 </div>
-  <ul class="pups pups--strip" data-reveal="items">
-    <li class="pups__item">
-      <article class="pup tone--butter" style="--tone:#F6D391;--tone-floor:#FADC9E" data-pup data-name="Уголёк" data-desc="Той-пудель · 12 недель · мальчик" data-img="color-pudel-black.jpg">
-  <div class="pup__media pup__media--studio">
+      <ul class="pups pups--strip ct-list" data-reveal="items">
+  <li class="pups__item">
+    <article class="pup ct-card tone--butter ct-card--studio" style="--tone:#F6D391;--tone-floor:#FADC9E" data-pup data-name="Уголёк" data-desc="Той-пудель · 12 недель · мальчик" data-img="color-pudel-black.jpg">
+  <a class="pup__media ct-card__media pup__media--studio" href="../toj-pudel-chernyj-2026-07/" tabindex="-1" aria-hidden="true">
     <img src="../../assets/img/color-pudel-black.jpg" alt="Чёрный щенок той-пуделя Уголёк на жёлтом фоне" width="1024" height="1024" loading="lazy" decoding="async">
-  </div>
-  <div class="pup__body">
+  </a>
+  <button class="fav ct-card__fav" type="button" aria-pressed="false" aria-label="В избранное: Уголёк"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-heart"/></svg></button>
+  <div class="pup__body ct-card__body">
     <h3 class="pup__name"><span class="dot dot--ok" aria-hidden="true"></span><a href="../toj-pudel-chernyj-2026-07/">Уголёк</a></h3>
-    <p class="pup__meta">Той-пудель · 12 недель · мальчик<span class="sr-only"> · в&nbsp;наличии</span></p>
-    <div class="pup__actions">
+    <p class="pup__meta"><span>Той-пудель&nbsp;·</span> <span>12 недель&nbsp;·</span> <span>мальчик</span><span class="sr-only"> · в&nbsp;наличии</span></p>
+    <div class="ct-card__actions">
+      <a class="btn btn--white ct-card__more" href="../toj-pudel-chernyj-2026-07/" aria-label="Смотреть щенка: Уголёк">Смотреть щенка</a>
       <button class="btn btn--ink" type="button" data-open-modal aria-label="Узнать цену: Уголёк">Узнать цену</button>
-      <button class="fav" type="button" aria-pressed="false" aria-label="В избранное: Уголёк"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-heart"/></svg></button>
     </div>
   </div>
 </article>
-    </li>
-    <li class="pups__item">
-      <article class="pup tone--butter" style="--tone:#EBC586;--tone-floor:#ECCE92" data-pup data-name="Пушинка" data-desc="Той-пудель · 10 недель · девочка" data-img="color-pudel-white.jpg">
-  <div class="pup__media pup__media--studio">
+  </li>
+  <li class="pups__item">
+    <article class="pup ct-card tone--butter ct-card--studio" style="--tone:#EBC586;--tone-floor:#ECCE92" data-pup data-name="Пушинка" data-desc="Той-пудель · 10 недель · девочка" data-img="color-pudel-white.jpg">
+  <a class="pup__media ct-card__media pup__media--studio" href="../toj-pudel-belyj-2026-07/" tabindex="-1" aria-hidden="true">
     <img src="../../assets/img/color-pudel-white.jpg" alt="Белый щенок той-пуделя Пушинка на жёлтом фоне" width="1024" height="1024" loading="lazy" decoding="async">
-  </div>
-  <div class="pup__body">
+  </a>
+  <button class="fav ct-card__fav" type="button" aria-pressed="false" aria-label="В избранное: Пушинка"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-heart"/></svg></button>
+  <div class="pup__body ct-card__body">
     <h3 class="pup__name"><span class="dot dot--ok" aria-hidden="true"></span><a href="../toj-pudel-belyj-2026-07/">Пушинка</a></h3>
-    <p class="pup__meta">Той-пудель · 10 недель · девочка<span class="sr-only"> · в&nbsp;наличии</span></p>
-    <div class="pup__actions">
+    <p class="pup__meta"><span>Той-пудель&nbsp;·</span> <span>10 недель&nbsp;·</span> <span>девочка</span><span class="sr-only"> · в&nbsp;наличии</span></p>
+    <div class="ct-card__actions">
+      <a class="btn btn--white ct-card__more" href="../toj-pudel-belyj-2026-07/" aria-label="Смотреть щенка: Пушинка">Смотреть щенка</a>
       <button class="btn btn--ink" type="button" data-open-modal aria-label="Узнать цену: Пушинка">Узнать цену</button>
-      <button class="fav" type="button" aria-pressed="false" aria-label="В избранное: Пушинка"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-heart"/></svg></button>
     </div>
   </div>
 </article>
-    </li>
-    <li class="pups__item">
-      <article class="pup tone--butter" data-pup data-name="Чарли" data-desc="Той-пудель · 9 недель · мальчик" data-img="breed-toj-pudel.jpg">
-  <div class="pup__media">
+  </li>
+  <li class="pups__item">
+    <article class="pup ct-card tone--butter ct-card--life" data-pup data-name="Чарли" data-desc="Той-пудель · 9 недель · мальчик" data-img="breed-toj-pudel.jpg">
+  <a class="pup__media ct-card__media" href="../toj-pudel-ryzhij-2026-08/" tabindex="-1" aria-hidden="true">
     <img class="pup__img--charli" src="../../assets/img/breed-toj-pudel.jpg" alt="Рыжий щенок той-пуделя Чарли на оливковом бархате" width="928" height="1152" loading="lazy" decoding="async">
     <span class="status"><span class="dot dot--soon" aria-hidden="true"></span>Скоро в продаже</span>
-  </div>
-  <div class="pup__body">
+  </a>
+  <button class="fav ct-card__fav" type="button" aria-pressed="false" aria-label="В избранное: Чарли"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-heart"/></svg></button>
+  <div class="pup__body ct-card__body">
     <h3 class="pup__name"><a href="../toj-pudel-ryzhij-2026-08/">Чарли</a></h3>
-    <p class="pup__meta">Той-пудель · 9 недель · мальчик</p>
-    <div class="pup__actions">
+    <p class="pup__meta"><span>Той-пудель&nbsp;·</span> <span>9 недель&nbsp;·</span> <span>мальчик</span><span class="sr-only"> · скоро в продаже</span></p>
+    <div class="ct-card__actions">
+      <a class="btn btn--white ct-card__more" href="../toj-pudel-ryzhij-2026-08/" aria-label="Смотреть щенка: Чарли">Смотреть щенка</a>
       <button class="btn btn--ink" type="button" data-open-modal aria-label="Узнать цену: Чарли">Узнать цену</button>
-      <button class="fav" type="button" aria-pressed="false" aria-label="В избранное: Чарли"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-heart"/></svg></button>
     </div>
   </div>
 </article>
-    </li>
-    <li class="pups__item">
-      <article class="pup tone--butter" style="--tone:#F4D096;--tone-floor:#F1D29B" data-pup data-name="Какао" data-desc="Той-пудель · 14 недель · мальчик" data-img="color-pudel-chocolate.jpg">
-  <div class="pup__media pup__media--studio">
+  </li>
+  <li class="pups__item">
+    <article class="pup ct-card tone--butter ct-card--studio" style="--tone:#F4D096;--tone-floor:#F1D29B" data-pup data-name="Какао" data-desc="Той-пудель · 14 недель · мальчик" data-img="color-pudel-chocolate.jpg">
+  <a class="pup__media ct-card__media pup__media--studio" href="../toj-pudel-shokolad-2026-07/" tabindex="-1" aria-hidden="true">
     <img src="../../assets/img/color-pudel-chocolate.jpg" alt="Шоколадный щенок той-пуделя Какао на жёлтом фоне" width="1024" height="1024" loading="lazy" decoding="async">
     <span class="status"><span class="dot dot--res" aria-hidden="true"></span>Забронирован</span>
-  </div>
-  <div class="pup__body">
+  </a>
+  <button class="fav ct-card__fav" type="button" aria-pressed="false" aria-label="В избранное: Какао"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-heart"/></svg></button>
+  <div class="pup__body ct-card__body">
     <h3 class="pup__name"><a href="../toj-pudel-shokolad-2026-07/">Какао</a></h3>
-    <p class="pup__meta">Той-пудель · 14 недель · мальчик</p>
-    <div class="pup__actions">
+    <p class="pup__meta"><span>Той-пудель&nbsp;·</span> <span>14 недель&nbsp;·</span> <span>мальчик</span><span class="sr-only"> · забронирован</span></p>
+    <div class="ct-card__actions">
+      <a class="btn btn--white ct-card__more" href="../toj-pudel-shokolad-2026-07/" aria-label="Смотреть щенка: Какао">Смотреть щенка</a>
       <button class="btn btn--ink" type="button" data-open-modal aria-label="Узнать цену: Какао">Узнать цену</button>
-      <button class="fav" type="button" aria-pressed="false" aria-label="В избранное: Какао"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-heart"/></svg></button>
     </div>
   </div>
 </article>
-    </li>
-  </ul>
-</section>
-
-    <section class="section container" id="o-porode" aria-labelledby="o-porode-title">
-      <div class="sec-head">
-  <h2 class="h2" id="o-porode-title">Подробнее о породе</h2>
-  
-  
-</div>
-      <ul class="ltiles ltiles--4">
-  <li>
-    <a class="ltile ltile--white" href="../../toj-pudel/">
-<span class="face tone--butter"><img src="../../assets/img/studio-pudel-yellow.jpg" alt="" width="1024" height="1024" loading="lazy" decoding="async"></span>
-      <span class="ltile__txt"><span class="ltile__title">Той-пудель</span><span class="ltile__line">Умный кроха, почти не линяет</span></span>
-      <span class="tcta tcta--soft">Подробнее <svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></span>
-    </a>
-  </li>
-  <li>
-    <a class="ltile ltile--white" href="../../toj-pudel/cena/">
-<span class="ico" style="--c:var(--sun)" aria-hidden="true"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-wallet"/></svg></span>      <span class="ltile__txt"><span class="ltile__title">Цена той-пуделя</span><span class="ltile__line">От чего зависит цена щенка</span></span>
-      <span class="tcta tcta--soft">Подробнее <svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></span>
-    </a>
-  </li>
-  <li>
-    <a class="ltile ltile--white" href="../../toj-pudel/vidy-i-okrasy/">
-<span class="ico" style="--c:var(--lilac)" aria-hidden="true"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-sparkle"/></svg></span>      <span class="ltile__txt"><span class="ltile__title">Виды и окрасы</span><span class="ltile__line">Той и мини, все окрасы</span></span>
-      <span class="tcta tcta--soft">Подробнее <svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></span>
-    </a>
-  </li>
-  <li>
-    <a class="ltile ltile--white" href="../../dokumenty-i-garantii/">
-<span class="ico" style="--c:var(--sky)" aria-hidden="true"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-doc"/></svg></span>      <span class="ltile__txt"><span class="ltile__title">Документы и гарантии</span><span class="ltile__line">Что входит в договор</span></span>
-      <span class="tcta tcta--soft">Подробнее <svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></span>
-    </a>
   </li>
 </ul>
     </section>
+
+    <section class="section container" id="faq" aria-labelledby="faq-title">
+  <div class="faq">
+    <div class="faq__aside">
+      <h2 class="h2" id="faq-title">Вопросы о покупке</h2>
+<a class="text-link" href="../../faq/">Все <span class="nw">вопросы <svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></span></a>    </div>
+    <ul class="faq__list">
+      <li class="faq__item">
+        <h3 class="faq__q"><button class="faq__btn" type="button" aria-expanded="false" aria-controls="faq-a1" id="faq-q1">От чего зависит цена щенка?<span class="faq__ico" aria-hidden="true"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-plus"/></svg></span></button></h3>
+        <div class="faq__a" id="faq-a1"><div><p>От породы, у мальтипу — ещё от поколения (F1, F1b, F2) и размера. Влияют окрас, пол, родители и перспектива щенка: домашний любимец, разведение или выставки. Точную цену конкретного щенка пришлём в мессенджер сразу после заявки.</p></div></div>
+      </li>
+      <li class="faq__item">
+        <h3 class="faq__q"><button class="faq__btn" type="button" aria-expanded="false" aria-controls="faq-a2" id="faq-q2">Какие прививки уже сделаны?<span class="faq__ico" aria-hidden="true"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-plus"/></svg></span></button></h3>
+        <div class="faq__a" id="faq-a2"><div><p>Комплексная прививка по возрасту — от чумы, парвовирусного энтерита, аденовироза, парагриппа и лептоспироза — и обработка от паразитов. Все отметки есть в ветпаспорте. График следующих прививок, включая прививку от бешенства, дадим с собой и напомним о сроках.</p></div></div>
+      </li>
+      <li class="faq__item">
+        <h3 class="faq__q"><button class="faq__btn" type="button" aria-expanded="false" aria-controls="faq-a3" id="faq-q3">Как забронировать щенка? Нужна ли предоплата?<span class="faq__ico" aria-hidden="true"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-plus"/></svg></span></button></h3>
+        <div class="faq__a" id="faq-a3"><div><p>Да. Подписываем договор, вы вносите предоплату — и щенок закреплён за вами, другим покупателям мы его больше не показываем. Размер предоплаты и условия её возврата прописаны в договоре.</p></div></div>
+      </li>
+      <li class="faq__item">
+        <h3 class="faq__q"><button class="faq__btn" type="button" aria-expanded="false" aria-controls="faq-a4" id="faq-q4">Что, если со щенком что-то не так? Какие гарантии?<span class="faq__ico" aria-hidden="true"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-plus"/></svg></span></button></h3>
+        <div class="faq__a" id="faq-a4"><div><p>В договоре есть гарантия на врождённые и генетические заболевания — [срок]. Если ветеринар подтвердит такое заболевание, вернём деньги или предложим другого щенка. Если изменились обстоятельства, позвоните куратору: поможем найти щенку новую семью.</p></div></div>
+      </li>
+    </ul>
+  </div>
+</section>
 
 
     <section class="section container" id="zayavka" aria-labelledby="lead-title">

@@ -1,0 +1,49 @@
+{#- Puppy card of the catalog /shchenki/ and of «Похожие щенки» on puppy pages (groups catalog + puppy).
+    Same look as cards.puppy_card (main.css .pup: pastel card, studio photo in its measured backdrop, lifestyle photo
+    inset with a 20 px radius) + two clear CTAs (client 13.10): «Смотреть щенка» → the puppy page, «Узнать цену» → the
+    modal for this puppy (main.js reads data-pup). The photo links to the page too (a duplicate link, out of the tab order).
+    Styles: assets/css/catalog.css (.ct-card). Phones ≤ 560 px: a compact row — photo left, name and buttons right.
+    Lifestyle photos: object-fit cover, photo "pos" → object-position (default 50% 60%). eager=true: no lazy loading
+    (the first row of the catalog is on the first screen). -#}
+{% import "macros/ui.html.j2" as ui %}
+{% import "macros/cards.html.j2" as cards %}
+
+{% macro card(p, tag='h3', eager=false) -%}
+{%- set t = photo_tone(p.photo.src) if p.photo.kind == 'studio' and p.photo.get('backdrop') != 'token' else none -%}
+{%- set studio = p.photo.kind == 'studio' -%}
+<article class="pup ct-card {{ p.tone_class }}{{ ' ct-card--studio' if studio else ' ct-card--life' }}"{% if t %} style="--tone:{{ t.top }};--tone-floor:{{ t.floor }}"{% endif %} data-pup data-name="{{ p.name }}" data-desc="{{ p.desc }}" data-img="{{ p.photo.src.rsplit('/', 1)[-1] }}">
+  <a class="pup__media ct-card__media{{ ' pup__media--studio' if studio }}" href="{{ p.url }}" tabindex="-1" aria-hidden="true">
+    <img{% if p.photo['class'] %} class="{{ p.photo['class'] }}"{% endif %} src="{{ p.photo.src }}" alt="{{ p.photo.alt|typo }}" width="{{ p.photo.w }}" height="{{ p.photo.h }}"{% if p.photo.get('pos') %} style="object-position:{{ p.photo.pos }}"{% endif %}{% if not eager %} loading="lazy"{% endif %} decoding="async">
+    {% if p.status != 'available' %}
+    <span class="status"><span class="dot dot--{{ p.status_dot }}" aria-hidden="true"></span>{{ p.status_label|typo }}</span>
+    {% endif %}
+  </a>
+  <button class="fav ct-card__fav" type="button" aria-pressed="false" aria-label="В избранное: {{ p.name }}">{{ ui.icon('heart') }}</button>
+  <div class="pup__body ct-card__body">
+    <{{ tag }} class="pup__name">{% if p.status == 'available' %}<span class="dot dot--ok" aria-hidden="true"></span>{% endif %}<a href="{{ p.url }}">{{ p.name }}</a></{{ tag }}>
+    <p class="pup__meta">{% for m in p.meta.split(' · ') %}<span>{{ m }}{% if not loop.last %}&nbsp;·{% endif %}</span>{{ ' ' if not loop.last }}{% endfor %}{% if p.status == 'available' %}<span class="sr-only"> · в&nbsp;наличии</span>{% else %}<span class="sr-only"> · {{ p.status_label|lower }}</span>{% endif %}</p>
+    <div class="ct-card__actions">
+      <a class="btn btn--white ct-card__more" href="{{ p.url }}" aria-label="Смотреть щенка: {{ p.name }}">Смотреть щенка</a>
+      <button class="btn btn--ink" type="button" data-open-modal aria-label="Узнать цену: {{ p.name }}">Узнать цену</button>
+    </div>
+  </div>
+</article>
+{%- endmacro %}
+
+{#- List of cards + the «Ждёте другого щенка?» tile that fills the last row (same rules as cards.pups_section:
+    --s4 / --s3 / --s2 = columns it spans at 4 / 3 / 2 columns, pages.css). For «Похожие щенки» on puppy pages. -#}
+{% macro strip(items, breed=none, limit=4) -%}
+{%- set n = items|length -%}
+<ul class="pups pups--strip ct-list" data-reveal="items">
+  {% for p in items %}
+  <li class="pups__item">
+    {{ card(p) }}
+  </li>
+  {% endfor %}
+  {% if n < limit %}
+  <li class="pups__more pups__more--fill" style="--s4:{{ 4 - n % 4 }};--s3:{{ 3 - n % 3 }};--s2:{{ 2 - n % 2 }}">
+    {{ cards.soon_tile(breed=breed) }}
+  </li>
+  {% endif %}
+</ul>
+{%- endmacro %}

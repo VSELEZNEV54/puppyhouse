@@ -1,6 +1,11 @@
-{#- /shchenki/ — catalog with filters (assets/js/catalog.js). Reference inner page: copy its structure. -#}
+{#- /shchenki/ — catalog with filters (assets/js/catalog.js). Reference inner page: copy its structure.
+    Cards: catalog/_card.html.j2 («Смотреть щенка» + «Узнать цену»), styles assets/css/catalog.css. -#}
 {% extends "layouts/page.html.j2" %}
+{% import "catalog/_card.html.j2" as ct %}
 
+{% block page_css %}
+  <link rel="stylesheet" href="/assets/css/catalog.css">
+{% endblock %}
 {% block page_js %}
   <script src="/assets/js/catalog.js" defer></script>
 {% endblock %}
@@ -52,10 +57,10 @@
         <p class="sr-only" role="status" aria-live="polite" data-cf-status></p>
       </div>
 
-      <ul class="pups pups--grid" data-cf-list>
+      <ul class="pups pups--grid ct-grid" data-cf-list>
         {% for p in items %}
         <li class="pups__item" data-breed="{{ p.breed }}" data-sex="{{ p.sex }}" data-status="{{ p.status }}">
-          {{ cards.puppy_card(p) }}
+          {{ ct.card(p, eager=loop.index <= 4) }}
         </li>
         {% endfor %}
         <li class="pups__more" data-cf-more>
@@ -67,6 +72,8 @@
       <button class="btn btn--white" type="button" data-cf-reset>Показать всех</button>
       {% endcall %}
     </section>
+
+    {{ ui.advantages(title='Что получите со щенком', id='preimushchestva', link={'url': '/dokumenty-i-garantii/', 'label': 'Документы и гарантии'}) }}
 
     <section class="section container" id="pered-pokupkoj" aria-labelledby="pered-pokupkoj-title">
       {{ ui.section_head('Перед покупкой', id='pered-pokupkoj-title') }}
