@@ -1,29 +1,57 @@
-"""Homepage — approved by the client; its look must not change."""
+"""Homepage — redesigned for the client revisions of 13.10 (docs/brief.md → «Главная (новый порядок)»).
 
-HOME_FAQ = ["price", "docs", "age", "delivery", "booking"]
-HOME_REVIEWS = ["anna-bonya", "igor-tajson", "marina-chapa"]
-# the eight cards of the approved strip, in its order (two per breed); the catalog shows every puppy
-HOME_PUPPIES = [
-    "maltipu-f1-krem-2026-08", "maltipu-f1b-mini-shokolad-2026-07",
-    "francuzskij-buldog-palevyj-2026-07", "francuzskij-buldog-krem-2026-07",
-    "toj-pudel-abrikos-2026-07", "toj-pudel-ryzhij-2026-08",
-    "border-kolli-goluboj-mramor-2026-07", "border-kolli-cherno-belyj-2026-07",
-]
+Order: full-screen hero · «О нашем питомнике» (numbers from site.stats) · breeds two per row · photo and video
+carousel + lead band · advantages · video reviews · how to buy · FAQ (12 questions) · blog · SEO text · lead form.
+Own data: src/data/home.json (stat details, carousel items, reviews, blog picks, FAQ).
+"""
 
 
 def routes(data):
-    faq = {f["id"]: f for f in data["faq"]}
+    home = data["home"]
     reviews = {r["id"]: r for r in data["reviews"]}
-    puppies = {p["slug"]: p for p in data["puppies"]}
+    breed_names = {b["slug"]: b["name"] for b in data["breeds"]}
+    blog_meta = {b["slug"]: b for b in data["blog"]}
+    posts = data["blog_posts"]["posts"]
+
+    # blog teasers: one article per breed (character and care alternate); a cover may be swapped for another photo
+    # of the same breed so the homepage does not repeat the lifestyle shots of the reviews
+    teasers = []
+    for pick in home["blog"]:
+        meta, post = blog_meta[pick["slug"]], posts[pick["slug"]]
+        topic = post["topic"]
+        if meta.get("breed"):
+            topic = f"{breed_names[meta['breed']]} · {topic.lower()}"
+        teasers.append(dict(url=meta["url"], title=post["h1"], line=post["card_line"],
+                            cover=pick.get("cover") or post["cover"], topic=topic))
+
+    rating = data["site"]["ratings"][0]
+    stats = []
+    for s in data["site"]["stats"]:
+        line = home["stat_lines"].get(s["icon"], "")
+        if s["icon"] == "star":  # «4,9 — Яндекс Карты»: «128 отзывов владельцев», the count comes from site.ratings
+            line = f"{rating['count']} {_plural(rating['count'], 'отзыв', 'отзыва', 'отзывов')} владельцев"
+        stats.append(dict(s, line=line))
+
     return [dict(
         url="/",
         template="pages/home.html.j2",
         context=dict(
             title="Купить щенка в Москве — питомник собак домщенков.рф",
-            description="Щенки мальтипу, французского бульдога, той-пуделя и бордер-колли из питомника в Москве. "
-                        "Документы, прививки, договор, доставка по России. Узнайте цену.",
-            faq_items=[faq[i] for i in HOME_FAQ],
-            reviews_home=[reviews[i] for i in HOME_REVIEWS],
-            home_puppies=[puppies[s] for s in HOME_PUPPIES],
+            description="Питомник собак в Москве: щенки мальтипу, французского бульдога, той-пуделя и бордер-колли. "
+                        "Прививки, ветпаспорт, договор, гарантия, доставка по России.",
+            stats=stats,
+            media_items=home["media"],
+            reviews_home=[reviews[i] for i in home["reviews"]],
+            faq_items=home["faq"],
+            teasers=teasers,
         ),
     )]
+
+
+def _plural(n, one, few, many):
+    n = abs(int(n))
+    if n % 10 == 1 and n % 100 != 11:
+        return one
+    if 2 <= n % 10 <= 4 and not 12 <= n % 100 <= 14:
+        return few
+    return many

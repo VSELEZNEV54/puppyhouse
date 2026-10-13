@@ -2,7 +2,8 @@
 
 Static site, built by `tools/build.py` (Python 3 stdlib + Jinja2 3.1) into `<url>/index.html` in the repo root.
 GitHub Pages serves it from `https://vseleznev54.github.io/puppyhouse/` (subpath `/puppyhouse/`).
-Stage 3 (client revisions 13.10, `docs/brief.md` → «Правки клиента 13.10»): the homepage is being redesigned — the old
+Stage 3 (client revisions 13.10, `docs/brief.md` → «Правки клиента 13.10»): the homepage is redesigned (full-screen hero,
+«О нашем питомнике», breeds two per row, photo/video carousel, advantages, video reviews, 12 FAQ, articles) — the old
 pixel-parity baseline no longer applies. Reference inner page: `/shchenki/`.
 
 ## Stage 3 rules for every page (client 13.10) — read first
@@ -55,7 +56,8 @@ Shared, **read-only** for page groups (list any change you need in your final re
 `tools/build.py`, `src/templates/base.html.j2`, `layouts/`, `partials/`, `macros/`, `src/routes/_lib.py`,
 `src/data/site.json`, `breeds.json`, `puppies.json`, `reviews.json`, `faq.json`, `cities.json`, `blog.json`, `media.json`,
 `assets/css/main.css`, `assets/css/pages.css`, `assets/js/main.js`, `tools/photo-tones.json`, `assets/img/`.
-The homepage (group `home`: `src/routes/home.py`, `src/templates/pages/home.html.j2`) extends `base.html.j2` directly and
+The homepage (group `home`: `src/routes/home.py`, `src/templates/pages/home.html.j2`, `src/data/home.json`; its own classes
+in `main.css` are prefixed `.hm-`) extends `base.html.j2` directly and
 loads only `main.css` — every stage-3 shared block lives in `main.css`; if you need the inner-page kit too, add
 `{% block head_css %}<link rel="stylesheet" href="/assets/css/pages.css">{% endblock %}` and import `macros/media.html.j2` yourself.
 
@@ -142,8 +144,8 @@ Computed by the build:
   site comes from `puppies.json` (breed tiles «В наличии: 7», «Весь каталог — 19», the catalog) — never type a number;
 - puppy: `age_weeks` (from `birth_date` on `site.as_of`), `url`, `breed_name`, `tone`, `tone_class`, `sex_label`, `status_label` (Забронирован/а), `status_dot` (ok/res/soon), `status_order`, `meta` («Мальтипу · 10 недель · мальчик»), `desc` (+ generation, for the modal), `photo` (= `photos[0]`).
 
-`puppies.json`: 19 sample puppies (maltipu 7, bulldog 4, toy poodle 5, border collie 3); the homepage strip shows the 8 listed
-in `routes/home.py`. Photo fields: `kind` (`studio` | `life`), `class`, optional `pos` (object-position for a lifestyle shot),
+`puppies.json`: 19 sample puppies (maltipu 7, bulldog 4, toy poodle 5, border collie 3); the homepage has no puppy strip since
+13.10 (it links to the catalog: «Все щенки в наличии — 19»). Photo fields: `kind` (`studio` | `life`), `class`, optional `pos` (object-position for a lifestyle shot),
 `backdrop: "token"` (only the four approved homepage cards — every other studio photo takes its measured backdrop in the card).
 Values in `[square brackets]` are placeholders (see `site.placeholders`); keep them bracketed until the client gives real data.
 `cities.json`: `name`, `prep` («в Казани»), `acc` («в Казань»), `gen` («из Казани»), `km_approx` (rough road distance), `methods` (car/plane/train), `duration` (bracketed estimate from distance and the first method, to confirm).
