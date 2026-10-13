@@ -383,3 +383,13 @@ a.dlv-ct__value:hover { text-decoration: underline; text-decoration-thickness: 1
 @media (min-width: 761px) and (max-width: 1199px) {
   .dlv-cityhero .phero__facts:has(> :nth-child(4)) { display: grid; grid-template-columns: repeat(2, max-content); }
 }
+
+/* телефон: факты города — сетка в две колонки, без ленты, обрезанной краем экрана */
+@media (max-width: 760px) {
+  .dlv-cityhero .phero__facts {
+    display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
+    overflow: visible; margin-inline: 0; padding-inline: 0;
+  }
+  .dlv-cityhero .phero__fact { flex: initial; min-width: 0; }
+  .dlv-cityhero .phero__fact:last-child:nth-child(odd) { grid-column: 1 / -1; }
+}

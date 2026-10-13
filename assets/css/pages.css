@@ -612,4 +612,9 @@ a.stile:hover .round-arrow .i { transform: rotate(45deg); }
 @media (max-width: 420px) {
   .specs { --cols: 1; }
   .filters__meta { margin-left: 0; }
+  /* таблица двух пород целиком входит в 360 px: плотнее поля, колонка подписей уже */
+  .cmp { padding: 2px 2px; }
+  .cmp th, .cmp td { padding: 10px 5px; font-size: 13px; }
+  .cmp thead th { font-size: 13.5px; }
+  .cmp tbody th { width: 23%; font-size: 12.5px; }
 }

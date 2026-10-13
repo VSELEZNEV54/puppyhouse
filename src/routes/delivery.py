@@ -212,7 +212,9 @@ def city_pages(data, cities):
 
         # local FAQ: 3 questions, wording by method, distance and time zone
         f = cc["faq"]
-        trip = dict(f["trip_plane" if travel == "plane" else "trip_car"])
+        trip = dict(f[{"plane": "trip_plane", "train": "trip_train"}.get(travel, "trip_car")])
+        if travel == "plane" and has_car:
+            trip["a"] = trip["a"] + " Бордер-колли везём на машине с куратором."
         if tz:
             trip["a"] = trip["a"] + " " + fill(cc["tz_note"], tz=tz_txt)
         cost = f["cost_car" if has_car else "cost_plane"]
