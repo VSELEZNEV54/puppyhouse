@@ -162,6 +162,8 @@ def city_pages(data, cities):
             lead_key = "plane"
         elif has_car and has_train:
             lead_key = "train_car" if primary == "train" else "car_train"
+        elif primary == "plane" and has_car:
+            lead_key = "plane_car"
         else:
             lead_key = "car_plane"
         facts = [
@@ -172,8 +174,8 @@ def city_pages(data, cities):
         if tz:
             facts.append({"label": "Время", "value": f"{tz_txt} к Москве"})
 
-        # how it works: 3 steps, travel and meeting by the primary method
-        travel = "car" if primary in ("car", "train") else "plane"
+        # how it works: 3 steps, travel and meeting by the primary method (car / plane / train)
+        travel = primary
         st = cc["steps"]
         steps = [nb({k: fill(x, **v) for k, x in s.items()}, "title", "text") for s in (st["book"], st[travel], st["meet_" + travel])]
 
@@ -197,16 +199,20 @@ def city_pages(data, cities):
                             note=fill(p["note_plane"] if fly_in else p["note_car"], **v)),
                        "title", "line", "note"))
 
-        # breeds: stock (computed from puppies.json) + how this breed travels to this city
+        # breeds: stock (computed from puppies.json) + how this breed travels to this city, by the primary method;
+        # a border collie never flies, so where a car is offered too it goes by car
         hint = cc["breed_hint"]
         btiles = []
         for b in breeds:
-            h = hint["car"] if (has_car or has_train) else hint["plane"][b["slug"]]
+            if primary == "plane":
+                h = hint["car"] if (b["slug"] == "border-kolli" and has_car) else hint["plane"][b["slug"]]
+            else:
+                h = hint[primary]
             btiles.append({"url": b["urls"]["hub"], "title": nobr(b["name"]), "line": nobr(f"В наличии: {b['stock']} · {h}"), "breed": b})
 
         # local FAQ: 3 questions, wording by method, distance and time zone
         f = cc["faq"]
-        trip = dict(f["trip_car" if travel == "car" else "trip_plane"])
+        trip = dict(f["trip_plane" if travel == "plane" else "trip_car"])
         if tz:
             trip["a"] = trip["a"] + " " + fill(cc["tz_note"], tz=tz_txt)
         cost = f["cost_car" if has_car else "cost_plane"]
@@ -222,7 +228,7 @@ def city_pages(data, cities):
             f"Щенки с доставкой {c['acc']}" + BRAND, desc,
             [("Доставка", "/dostavka/"), (c["name"], None)],
             city=c,
-            tone="sand" if travel == "car" else "sky",
+            tone="sky" if travel == "plane" else "sand",
             h1=nobr(f"Щенки с доставкой {c['acc']}"),
             lead=nobr(fill(cc["lead"][lead_key], km=dist)),
             facts=facts,

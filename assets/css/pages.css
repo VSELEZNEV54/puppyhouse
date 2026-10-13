@@ -557,7 +557,7 @@ a.stile:hover .round-arrow .i { transform: rotate(45deg); }
 
   .cmp { padding: 2px 6px; }
   .cmp th, .cmp td { padding: 12px 8px; font-size: 14px; }
-  .cmp thead th { font-size: 14.5px; }
+  .cmp thead th { vertical-align: top; font-size: 14.5px; }
   .cmp__head { flex-direction: column; align-items: flex-start; gap: 6px; }
   .cmp__head .face { width: 34px; height: 34px; }
   .cmp tbody th { width: 28%; font-size: 13px; }
