@@ -176,6 +176,7 @@ in the order of `breeds-hub.json` → `media` (+ extra placeholders), so a video
 | `ui.gallery` | `photos[{src,alt,caption?}]` | 1–5+ photos; phones: a grid (first photo full width, the rest two per row). Swipeable row → `media.media_carousel` |
 | `ui.badges`, `ui.empty_state(title,text,button,label,attrs)`, `ui.img(src,alt,…)`, `ui.icon`, `ui.ico`, `ui.face`, `ui.round_arrow`, `ui.text_link` | | small parts |
 | `cards.puppy_card(p)` | puppy | the homepage card; «Узнать цену» opens the modal for that puppy; studio photo → card in that photo's measured colours |
+| `ct.card(p, eager=false)` / `ct.strip(items, breed)` | `{% import "catalog/_card.html.j2" as ct %}` (group catalog) | the catalog card: same look + «Смотреть щенка» and «Узнать цену» (side by side, stacked when the card is narrow; phones ≤ 560 — a compact row, photo left). Used by `/shchenki/` and «Похожие щенки» on puppy pages; needs `/assets/css/catalog.css` |
 | `cards.pups_section` | `title, breed, limit=4, id, exclude=slug` | «Щенки в наличии» strip (`.pups--strip`: at 3 columns a lone 4th card is hidden) |
 | `cards.breed_tile(s)` | `b, count=false, cta='Перейти к породе'` / `items, count=false, cols=4` | pastel breed tiles; `cols=2` → two wide tiles per row on desktop (photo right). «В наличии» only with `count=true` (removed from the homepage 13.10). Phones: one wide tile per row |
 | `cards.review_card(r, short)`, `cards.ratings()`, `cards.soon_tile()` | | |
