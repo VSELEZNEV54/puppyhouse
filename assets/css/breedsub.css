@@ -183,7 +183,7 @@
   .bsub-col__text { grid-column: 1 / -1; grid-row: 3; margin: 14px 10px 0; }
   .bsub-col__btn { grid-column: 1 / -1; grid-row: 4; justify-self: start; margin: 16px 10px 10px; }
   .bsub-col__pnote { left: 50%; bottom: 5px; transform: translateX(-50%); max-width: none; padding: 3px 8px; font-size: 11px; white-space: nowrap; }
-  .bsub-col__swatch { gap: 8px; }
+  .bsub-col__swatch { gap: 11px; }
   .bsub-col__dot { width: clamp(48px, 46%, 64px); box-shadow: 0 0 0 4px rgba(255, 255, 255, .7); }
   .bsub-col--ask { display: flex; }
 }

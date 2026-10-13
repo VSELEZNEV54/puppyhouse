@@ -33,7 +33,7 @@
       <ul class="blg-grid" data-bf-list data-reveal="items">
         {% for c in articles %}
         <li class="blg-grid__item" data-topic="{{ c.topic_key }}">
-          {{ blg.card(c) }}
+          {{ blg.card(c, eager=loop.index <= 3) }}
         </li>
         {% endfor %}
       </ul>

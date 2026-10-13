@@ -21,6 +21,7 @@
 
 {% block body %}
 {% for s in v.blocks %}
+    {%- set first_block = loop.first %}
     <section class="section{{ ' section--tight' if loop.first }} container" id="{{ s.id }}" aria-labelledby="{{ s.id }}-title">
     {% if s.type == 'kinds' %}
       {{ ui.section_head(s.title, id=s.id ~ '-title', lead=s.lead) }}
@@ -28,7 +29,7 @@
         {% for k in s['items'] %}
         <li class="bsub-kind{{ ' bsub-kind--off' if k.off }}">
           <div class="bsub-kind__head">
-            {% if k.face %}<span class="bsub-kind__face" style="--s:{{ k.face }}" aria-hidden="true">{{ ui.face(b) }}</span>
+            {% if k.face %}<span class="bsub-kind__face" style="--s:{{ k.face }}" aria-hidden="true">{{ ui.face(b, eager=first_block) }}</span>
             {% elif k.tag %}<span class="bsub-kind__tag" style="--c:var(--{{ k.color }})" aria-hidden="true">{{ k.tag }}</span>
             {% else %}{{ ui.ico(k.icon, k.color) }}{% endif %}
             {% if k.badge %}<span class="bsub-kind__badge{{ ' bsub-kind__badge--off' if k.off }}">{{ k.badge|typo }}</span>{% endif %}

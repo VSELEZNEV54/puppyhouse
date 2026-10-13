@@ -41,9 +41,9 @@
 <img{% if cls %} class="{{ cls }}"{% endif %} src="{{ src }}" alt="{{ alt|typo }}" width="{{ w or size[0] }}" height="{{ h or size[1] }}"{% if priority %} fetchpriority="high"{% elif loading == 'lazy' %} loading="lazy"{% endif %} decoding="async">
 {%- endmacro %}
 
-{#- Round studio face of a breed (breed = item of breeds.json). size via CSS on .face -#}
-{% macro face(b, alt='') -%}
-<span class="face {{ b.tone_class }}"><img src="{{ b.studio.src }}" alt="{{ alt }}" width="{{ b.studio.w }}" height="{{ b.studio.h }}" loading="lazy" decoding="async"></span>
+{#- Round studio face of a breed (breed = item of breeds.json). size via CSS on .face. eager=true: on the first screen -#}
+{% macro face(b, alt='', eager=false) -%}
+<span class="face {{ b.tone_class }}"><img src="{{ b.studio.src }}" alt="{{ alt }}" width="{{ b.studio.w }}" height="{{ b.studio.h }}"{% if not eager %} loading="lazy"{% endif %} decoding="async"></span>
 {%- endmacro %}
 
 {#- Breadcrumbs. items: [["Главная", "/"], ["Щенки", "/shchenki/"], ["Пломбир", none]] — last item is the current page -#}
@@ -342,7 +342,7 @@
 {#- Comparison table. cols: ["Мальтипу", "Той-пудель"] or breeds.json items (shows faces);
     rows: [["Вес", "2–5 кг", "2–4 кг"], ...]. Scrolls inside its tile on narrow screens, first column sticky.
     Column names never break at a hyphen. -#}
-{% macro cmp_table(cols, rows, caption=none) -%}
+{% macro cmp_table(cols, rows, caption=none, eager=false) -%}
 <div class="cmp{{ ' cmp--wide' if cols|length > 2 }}" role="region" aria-label="{{ caption or 'Сравнение' }}" tabindex="0">
   <table class="cmp__table">
     {% if caption %}<caption class="sr-only">{{ caption }}</caption>{% endif %}
@@ -350,7 +350,7 @@
       <tr>
         <td></td>
         {% for c in cols %}
-        <th scope="col">{% if c is mapping %}<span class="cmp__head">{{ face(c) }}<span>{{ nohyph(c.name) }}</span></span>{% else %}{{ nohyph(c) }}{% endif %}</th>
+        <th scope="col">{% if c is mapping %}<span class="cmp__head">{{ face(c, eager=eager) }}<span>{{ nohyph(c.name) }}</span></span>{% else %}{{ nohyph(c) }}{% endif %}</th>
         {% endfor %}
       </tr>
     </thead>
@@ -365,7 +365,7 @@
   </table>
 </div>
 {% if cols|length > 2 %}
-{#- phones ≤ 760 px: the wide table is hidden and the same data is shown transposed — one tile per column, stacked -#}
+{#- phones and tablets ≤ 900 px: the wide table is hidden and the same data is shown transposed — one tile per column, stacked -#}
 <ul class="cmp-cards" aria-label="{{ caption or 'Сравнение' }}">
   {% for c in cols %}
   {%- set ci = loop.index %}
