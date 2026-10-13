@@ -24,7 +24,7 @@
     <section class="section{{ ' section--tight' if loop.first }} container" id="{{ s.id }}" aria-labelledby="{{ s.id }}-title">
     {% if s.type == 'kinds' %}
       {{ ui.section_head(s.title, id=s.id ~ '-title', lead=s.lead) }}
-      <ul class="bsub-kinds bsub-kinds--{{ s['items']|length }} scroller">
+      <ul class="bsub-kinds bsub-kinds--{{ s['items']|length }}">
         {% for k in s['items'] %}
         <li class="bsub-kind{{ ' bsub-kind--off' if k.off }}">
           <div class="bsub-kind__head">

@@ -18,7 +18,7 @@
       {{ ui.section_head(hub.pups_title, id='shchenki-title', link={'url': '/shchenki/?breed=' ~ b.slug, 'label': 'Смотреть в каталоге'}) }}
       {% if pups %}
       {%- set n = pups|length %}
-      <ul class="pups brd-pups scroller" data-reveal="items">
+      <ul class="pups brd-pups" data-reveal="items">
         {% for p in pups %}
         <li class="pups__item">
           {{ cards.puppy_card(p) }}
@@ -52,16 +52,16 @@
 
     <section class="section container" id="okrasy" aria-labelledby="okrasy-title">
       {{ ui.section_head(hub.colours_title, id='okrasy-title', lead=hub.colours_lead, link={'url': b.urls.varieties, 'label': 'Все виды и окрасы'}) }}
-      <ul class="stiles brd-colours scroller">
+      <ul class="stiles brd-colours">
         {% for t in colour_tiles %}
-        <li>{{ ui.studio_tile(t.photo, t.title, url=b.urls.varieties, badge=t.badge, tone=b.tone) }}</li>
+        <li>{{ ui.studio_tile(t.photo, t.title, url=b.urls.varieties, badge=t.badge, tone=b.tone, cta='Смотреть окрас') }}</li>
         {% endfor %}
         {% if more_colours %}
         <li>
           <a class="brd-more {{ b.tone_class }}" href="{{ b.urls.varieties }}"{% if more_style %} style="{{ more_style }}"{% endif %}>
             <span class="brd-more__title">{{ hub.more_title|typo }}</span>
             <span class="brd-more__list">{% for c in more_colours %}<span>{{ c|typo }}</span>{% endfor %}</span>
-            {{ ui.round_arrow() }}
+            {{ ui.tile_cta('Все окрасы') }}
           </a>
         </li>
         {% endif %}

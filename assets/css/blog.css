@@ -1,5 +1,5 @@
 /* =========================================================
-   Puppy House — блог: /blog/ и статьи /blog/<slug>/ (группа blog).
+   домщенков.рф — блог: /blog/ и статьи /blog/<slug>/ (группа blog).
    Подключается после main.css и pages.css. Классы — с префиксом blg-.
    ========================================================= */
 
@@ -53,9 +53,11 @@
 .blg-card__line { margin-top: 8px; font-size: 15px; line-height: 1.4; color: var(--ink-soft); }
 .blg-card__foot { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: auto; padding-top: 18px; }
 .blg-card__time { display: inline-flex; align-items: center; gap: 7px; font-size: 14px; color: var(--ink-soft); }
-.blg-card__foot .round-arrow { width: 44px; height: 44px; }
-.blg-card:hover .round-arrow { background: var(--ink); color: #fff; }
-.blg-card:hover .round-arrow .i { transform: rotate(45deg); }
+.blg-card__foot .tcta { height: 40px; padding: 0 16px 0 18px; }
+@media (hover: hover) {
+  .blg-card:hover .tcta { background: var(--ink); color: #fff; }
+  .blg-card:hover .tcta .i { transform: translateX(3px); }
+}
 
 /* широкая карточка (статья → «Читайте также»): текст слева, фото справа во всю высоту */
 .blg-related { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--gap); }
@@ -139,11 +141,8 @@
   /* оглавление — лентой пилюль, «Коротко» под ним */
   .blg-aside .toc { padding: 0; background: none; }
   .blg-aside .toc__title { padding-inline: 4px; }
-  .blg-aside .toc__list {
-    display: flex; gap: 8px; margin-top: 8px; overflow-x: auto; scrollbar-width: none;
-    margin-inline: calc(-1 * var(--pad)); padding: 2px var(--pad) 6px;
-  }
-  .blg-aside .toc__list::-webkit-scrollbar { display: none; }
+  /* пункты переносятся на новую строку — без прокрутки вбок */
+  .blg-aside .toc__list { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; padding: 2px 0 6px; }
   .blg-aside .toc__list li { flex: none; }
   .blg-aside .toc__list a {
     margin: 0; display: inline-flex; align-items: center; height: 38px; padding: 0 14px;
@@ -179,8 +178,8 @@
   .blg-card__line { display: none; }
   .blg-card__foot { padding-top: 10px; }
   .blg-card__time { font-size: 13px; }
-  .blg-card__foot .round-arrow { width: 36px; height: 36px; }
-  .blg-card__foot .round-arrow .i { width: 17px; height: 17px; }
+  .blg-card__foot .tcta { height: 34px; padding: 0 12px 0 14px; font-size: 13.5px; gap: 6px; }
+  .blg-card__foot .tcta .i { width: 15px; height: 15px; }
   .blg-card:hover { transform: none; }
 }
 

@@ -1,4 +1,4 @@
-/* Puppy House — блог.
+/* домщенков.рф — блог.
    /blog/: фильтр статей по теме. Состояние в адресе: ?tema=maltipu (значение «all» не пишется).
      Разметка: [data-blog] → кнопки [data-bf-value], список [data-bf-list] > li[data-topic],
      счётчик [data-bf-count], [data-bf-status].

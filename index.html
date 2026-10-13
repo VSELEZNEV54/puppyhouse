@@ -3,15 +3,15 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>Купить щенка в Москве — питомник собак Puppy House</title>
+  <title>Купить щенка в Москве — питомник собак домщенков.рф</title>
   <meta name="description" content="Щенки мальтипу, французского бульдога, той-пуделя и бордер-колли из питомника в Москве. Документы, прививки, договор, доставка по России. Узнайте цену.">
   <meta name="theme-color" content="#F3F2EF">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='12' fill='%23FF6F4F'/%3E%3Cg fill='%23141414'%3E%3Cpath d='M20 20.7c-3.3 0-6.7 3.6-6.7 6.6 0 1.8 1.3 3 3.1 3 1.6 0 2.4-.8 3.6-.8s2 .8 3.6.8c1.8 0 3.1-1.2 3.1-3 0-3-3.4-6.6-6.7-6.6Z'/%3E%3Cellipse cx='12.4' cy='18.6' rx='2.3' ry='2.9'/%3E%3Cellipse cx='17' cy='13.4' rx='2.4' ry='3.1'/%3E%3Cellipse cx='23' cy='13.4' rx='2.4' ry='3.1'/%3E%3Cellipse cx='27.6' cy='18.6' rx='2.3' ry='2.9'/%3E%3C/g%3E%3C/svg%3E">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500&amp;display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/css/main.css?v=484936e7">
-  <script src="assets/js/main.js?v=176abba3" defer></script>
+  <link rel="stylesheet" href="assets/css/main.css?v=78591173">
+  <script src="assets/js/main.js?v=77017173" defer></script>
 </head>
 <body>
   <!-- Иконки: инлайн-спрайт 24×24. Линейные — stroke currentColor, заливочные — fill. -->
@@ -24,6 +24,7 @@
     <symbol id="i-phone" viewBox="0 0 24 24"><path d="M5.6 3.8h3l1.8 4.5-2.2 1.4a11.4 11.4 0 0 0 6.1 6.1l1.4-2.2 4.5 1.8v3a1.6 1.6 0 0 1-1.7 1.6A16 16 0 0 1 4 5.5a1.6 1.6 0 0 1 1.6-1.7z"/></symbol>
     <symbol id="i-tg" viewBox="0 0 24 24"><path d="M20.6 4.3 3.4 11.1c-.6.2-.6 1.1 0 1.3l4.3 1.6 1.7 5.3c.2.5.8.7 1.2.3l2.6-2.4 4.5 3.3c.5.3 1.1.1 1.3-.5l3-14.4c.1-.9-.6-1.5-1.4-1.3Z"/><path d="m7.7 14 9.2-6.2-6.6 7.3"/></symbol>
     <symbol id="i-wa" viewBox="0 0 24 24"><path d="m3.8 20.2 1.3-4A8.6 8.6 0 1 1 8 19Z"/><path d="M9.2 8.4c.3-.4.6-.5.9-.4l.5.2.8 1.8-.8.9a5.4 5.4 0 0 0 2.5 2.5l.9-.8 1.8.8.2.5c.1.3 0 .6-.3.9-.9.8-2 .8-3 .4a8.7 8.7 0 0 1-3.9-3.9c-.4-1-.4-2 .4-2.9Z"/></symbol>
+    <symbol id="i-max" viewBox="0 0 24 24"><path d="M12 3.6a8.4 8.4 0 1 1-3.88 15.85L4.3 20.3l.82-3.48A8.4 8.4 0 0 1 12 3.6Z"/><circle cx="12" cy="12" r="3.3"/></symbol>
     <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5"/></symbol>
     <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
     <symbol id="i-star" viewBox="0 0 24 24"><path fill="currentColor" stroke="none" d="m12 3.2 2.7 5.5 6 .9-4.4 4.2 1 6-5.3-2.8-5.3 2.8 1-6-4.4-4.2 6-.9Z"/></symbol>
@@ -66,14 +67,98 @@
   <!-- ================= ШАПКА ================= -->
   <header class="hdr" data-hdr>
     <div class="hdr__bar">
-      <a class="logo" href="#top" aria-label="Puppy House — наверх страницы">
+      <a class="logo" href="#top" aria-label="домщенков.рф — наверх страницы">
         <span class="logo__mark" aria-hidden="true"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-paw"/></svg></span>
-        <span class="logo__text"><span class="logo__name">Puppy House</span><span class="logo__sub">питомник щенков · Москва</span></span>
+        <span class="logo__text"><span class="logo__name">домщенков.рф</span><span class="logo__sub">питомник щенков · Москва</span></span>
       </a>
+
+      <div class="hdr__menu" data-mega>
+        <button class="hdr__menu-btn" type="button" aria-expanded="false" aria-controls="mega" data-mega-btn><svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-menu"/></svg><span>Меню</span></button>
+        <div class="mega" id="mega" role="region" aria-label="Все разделы сайта" hidden>
+          <div class="mega__box">
+          <div class="mega__grid">
+            <div class="mega__col">
+              <p class="mega__h">Щенки</p>
+              <ul class="mega__list">
+                <li><a class="mega__link" href="shchenki/"><span>Все щенки в наличии</span><span class="mega__count">19</span></a></li>
+                <li><a class="mega__link mega__link--face" href="maltipu/"><span class="face tone--peach"><img src="assets/img/studio-maltipu-peach.jpg" alt="" width="1024" height="1024" loading="lazy" decoding="async"></span><span>Мальтипу</span></a></li>
+                <li><a class="mega__link mega__link--face" href="francuzskij-buldog/"><span class="face tone--powder"><img src="assets/img/studio-buldog-blue.jpg" alt="" width="1024" height="1024" loading="lazy" decoding="async"></span><span>Французский бульдог</span></a></li>
+                <li><a class="mega__link mega__link--face" href="toj-pudel/"><span class="face tone--butter"><img src="assets/img/studio-pudel-yellow.jpg" alt="" width="1024" height="1024" loading="lazy" decoding="async"></span><span><span class="nw">Той-пудель</span></span></a></li>
+                <li><a class="mega__link mega__link--face" href="border-kolli/"><span class="face tone--sage"><img src="assets/img/studio-kolli-green.jpg" alt="" width="1024" height="1024" loading="lazy" decoding="async"></span><span><span class="nw">Бордер-колли</span></span></a></li>
+              </ul>
+            </div>
+            <div class="mega__col mega__col--wide">
+              <p class="mega__h">О породах</p>
+              <ul class="mega__list">
+                <li class="mega__sub">
+                  <span class="mega__subh">Цена щенка</span>
+                  <ul class="mega__pills">
+              <li><a class="mega__pill" href="maltipu/cena/"><span>Мальтипу</span></a></li><li><a class="mega__pill" href="francuzskij-buldog/cena/"><span>Французский бульдог</span></a></li><li><a class="mega__pill" href="toj-pudel/cena/"><span><span class="nw">Той-пудель</span></span></a></li><li><a class="mega__pill" href="border-kolli/cena/"><span><span class="nw">Бордер-колли</span></span></a></li>    </ul>
+                </li>
+                <li class="mega__sub">
+                  <span class="mega__subh">Виды и окрасы</span>
+                  <ul class="mega__pills">
+              <li><a class="mega__pill" href="maltipu/vidy-i-okrasy/"><span>Мальтипу</span></a></li><li><a class="mega__pill" href="francuzskij-buldog/vidy-i-okrasy/"><span>Французский бульдог</span></a></li><li><a class="mega__pill" href="toj-pudel/vidy-i-okrasy/"><span><span class="nw">Той-пудель</span></span></a></li><li><a class="mega__pill" href="border-kolli/vidy-i-okrasy/"><span><span class="nw">Бордер-колли</span></span></a></li>    </ul>
+                </li>
+                <li class="mega__sub">
+                  <span class="mega__subh">Сравнение пород</span>
+                  <ul class="mega__pills">
+              <li><a class="mega__pill" href="sravnenie/maltipu-ili-toj-pudel/"><span>Мальтипу или <span class="nw">той-пудель</span></span></a></li><li><a class="mega__pill" href="sravnenie/maltipu-ili-francuzskij-buldog/"><span>Мальтипу или француз</span></a></li><li><a class="mega__pill" href="sravnenie/maltipu-ili-border-kolli/"><span>Мальтипу или <span class="nw">бордер-колли</span></span></a></li><li><a class="mega__pill" href="sravnenie/francuzskij-buldog-ili-toj-pudel/"><span>Француз или <span class="nw">той-пудель</span></span></a></li><li><a class="mega__pill" href="sravnenie/francuzskij-buldog-ili-border-kolli/"><span>Француз или <span class="nw">бордер-колли</span></span></a></li><li><a class="mega__pill" href="sravnenie/toj-pudel-ili-border-kolli/"><span><span class="nw">Той-пудель</span> или <span class="nw">бордер-колли</span></span></a></li>    </ul>
+                </li>
+                <li><a class="mega__link" href="podbor-porody/"><span class="ico ico--sm" style="--c:var(--lilac)" aria-hidden="true"><svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-sparkle"/></svg></span><span>Подбор породы — тест</span></a></li>
+              </ul>
+            </div>
+            <div class="mega__col">
+              <p class="mega__h">Покупка</p>
+              <ul class="mega__list">
+                <li><a class="mega__link" href="dostavka/"><span>Доставка по России</span></a></li>
+                <li><a class="mega__link" href="rassrochka/"><span>Рассрочка и бронь</span></a></li>
+                <li><a class="mega__link" href="shchenok-v-podarok/"><span>Щенок в подарок</span></a></li>
+                <li><a class="mega__link" href="magazin/"><span>Стартовый набор</span></a></li>
+                <li><a class="mega__link" href="faq/"><span>Вопросы и ответы</span></a></li>
+              </ul>
+            </div>
+            <div class="mega__col">
+              <p class="mega__h">О питомнике</p>
+              <ul class="mega__list">
+                <li><a class="mega__link" href="roditeli/"><span>Родители щенков</span></a></li>
+                <li><a class="mega__link" href="vypuskniki/"><span>Выпускники</span></a></li>
+                <li><a class="mega__link" href="otzyvy/"><span>Отзывы владельцев</span></a></li>
+                <li><a class="mega__link" href="dokumenty-i-garantii/"><span>Документы и гарантии</span></a></li>
+                <li><a class="mega__link" href="kontakty/"><span>Контакты</span></a></li>
+              </ul>
+            </div>
+            <div class="mega__col">
+              <p class="mega__h">Блог</p>
+              <ul class="mega__list">
+                <li><a class="mega__link" href="blog/"><span>Все статьи</span></a></li>
+                <li class="mega__sub">
+                  <span class="mega__subh">Характер породы</span>
+                  <ul class="mega__pills">
+              <li><a class="mega__pill" href="blog/maltipu-harakter/"><span>Мальтипу</span></a></li><li><a class="mega__pill" href="blog/francuzskij-buldog-harakter/"><span>Французский бульдог</span></a></li><li><a class="mega__pill" href="blog/toj-pudel-harakter/"><span><span class="nw">Той-пудель</span></span></a></li><li><a class="mega__pill" href="blog/border-kolli-harakter/"><span><span class="nw">Бордер-колли</span></span></a></li>    </ul>
+                </li>
+                <li class="mega__sub">
+                  <span class="mega__subh">Уход</span>
+                  <ul class="mega__pills">
+              <li><a class="mega__pill" href="blog/maltipu-uhod/"><span>Мальтипу</span></a></li><li><a class="mega__pill" href="blog/francuzskij-buldog-uhod/"><span>Французский бульдог</span></a></li><li><a class="mega__pill" href="blog/toj-pudel-uhod/"><span><span class="nw">Той-пудель</span></span></a></li><li><a class="mega__pill" href="blog/border-kolli-uhod/"><span><span class="nw">Бордер-колли</span></span></a></li>    </ul>
+                </li>
+                <li><a class="mega__link" href="blog/kak-vybrat-shchenka/"><span>Как выбрать щенка</span></a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="mega__foot">
+            <a class="mega__phone" href="tel:+74951234567">+7 (495) 123-45-67<small>Ежедневно с 9:00 до 21:00</small></a>
+            <div class="mega__actions">
+              <button class="btn btn--white" type="button" data-open-modal>Узнать цену</button>
+              <a class="btn btn--tg" href="https://t.me/puppyhouse_msk" target="_blank" rel="noopener"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-tg"/></svg>Написать в Telegram</a>
+            </div>
+          </div>
+          </div>
+        </div>
+      </div>
 
       <nav class="nav" aria-label="Основное меню">
         <ul class="nav__list">
-          <li><a class="nav__link" href="shchenki/">Щенки</a></li>
           <li class="nav__dd" data-dd>
             <button class="nav__link nav__dd-btn" type="button" aria-expanded="false" aria-controls="dd-breeds">Породы <svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-chevron"/></svg></button>
             <div class="dd" id="dd-breeds" hidden>
@@ -86,19 +171,21 @@
               <a class="dd__test" href="podbor-porody/"><span class="ico ico--sm" style="--c:var(--lilac)"><svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-sparkle"/></svg></span><span>Подобрать породу — тест</span><svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></a>
             </div>
           </li>
-          <li><a class="nav__link" href="dostavka/">Доставка</a></li>
-          <li><a class="nav__link" href="otzyvy/">Отзывы</a></li>
-          <li><a class="nav__link" href="roditeli/">О питомнике</a></li>
-          <li><a class="nav__link" href="kontakty/">Контакты</a></li>
+          <li class="nav__item nav__item--p2"><a class="nav__link" href="roditeli/">О питомнике</a></li>
+          <li class="nav__item nav__item--p3"><a class="nav__link" href="dostavka/">Доставка</a></li>
+          <li class="nav__item nav__item--p4"><a class="nav__link" href="otzyvy/">Отзывы</a></li>
+          <li class="nav__item nav__item--p5"><a class="nav__link" href="kontakty/">Контакты</a></li>
+          <li class="nav__item nav__item--p6"><a class="nav__link" href="blog/">Блог</a></li>
         </ul>
       </nav>
 
       <div class="hdr__right">
         <a class="hdr__phone" href="tel:+74951234567">+7 (495) 123-45-67</a>
+        <a class="msgr msgr--call" href="tel:+74951234567" aria-label="Позвонить: +7 (495) 123-45-67"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-phone"/></svg></a>
         <a class="msgr msgr--tg" href="https://t.me/puppyhouse_msk" target="_blank" rel="noopener" aria-label="Написать в Telegram"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-tg"/></svg></a>
         <a class="msgr msgr--wa" href="https://wa.me/74951234567" target="_blank" rel="noopener" aria-label="Написать в WhatsApp"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-wa"/></svg></a>
-        <a class="msgr msgr--call" href="tel:+74951234567" aria-label="Позвонить: +7 (495) 123-45-67"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-phone"/></svg></a>
-        <button class="btn btn--ink hdr__cta" type="button" data-open-modal>Подобрать щенка</button>
+        <a class="msgr msgr--max" href="https://max.ru/domshchenkov" target="_blank" rel="noopener" aria-label="Написать в MAX"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-max"/></svg></a>
+        <a class="btn btn--tg hdr__cta" href="https://t.me/puppyhouse_msk" target="_blank" rel="noopener"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-tg"/></svg><span>Написать в Telegram</span></a>
         <button class="msgr msgr--ink hdr__burger" type="button" aria-label="Открыть меню" aria-expanded="false" aria-controls="mmenu" data-burger><svg class="i" aria-hidden="true" focusable="false"><use href="#i-menu"/></svg></button>
       </div>
     </div>
@@ -139,32 +226,32 @@
   
   
 </div>
-      <ul class="breeds scroller">
+      <ul class="breeds">
   <li>
     <a class="breed breed--maltipu tone--peach" href="maltipu/">
-  <span class="breed__top"><span class="breed__title">Мальтипу</span><span class="breed__desc">Компаньон размером с кошку</span><span class="breed__count"><span class="dot dot--ok" aria-hidden="true"></span>В&nbsp;наличии: 7</span></span>
-  <span class="round-arrow" aria-hidden="true"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-arrow-ur"/></svg></span>
+  <span class="breed__top"><span class="breed__title">Мальтипу</span><span class="breed__desc">Компаньон размером с кошку</span></span>
+  <span class="tcta">Перейти к породе <svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></span>
   <span class="breed__photo"><img src="assets/img/studio-maltipu-peach.jpg" alt="Кремовый щенок мальтипу на персиковом фоне" width="1024" height="1024" loading="lazy" decoding="async"></span>
 </a>
   </li>
   <li>
     <a class="breed breed--buldog tone--powder" href="francuzskij-buldog/">
-  <span class="breed__top"><span class="breed__title">Французский бульдог</span><span class="breed__desc">Спокойный друг для квартиры</span><span class="breed__count"><span class="dot dot--ok" aria-hidden="true"></span>В&nbsp;наличии: 4</span></span>
-  <span class="round-arrow" aria-hidden="true"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-arrow-ur"/></svg></span>
+  <span class="breed__top"><span class="breed__title">Французский бульдог</span><span class="breed__desc">Спокойный друг для квартиры</span></span>
+  <span class="tcta">Перейти к породе <svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></span>
   <span class="breed__photo"><img src="assets/img/studio-buldog-blue.jpg" alt="Палевый щенок французского бульдога на голубом фоне" width="1024" height="1024" loading="lazy" decoding="async"></span>
 </a>
   </li>
   <li>
     <a class="breed breed--pudel tone--butter" href="toj-pudel/">
-  <span class="breed__top"><span class="breed__title">Той-пудель</span><span class="breed__desc">Умный кроха, почти не линяет</span><span class="breed__count"><span class="dot dot--ok" aria-hidden="true"></span>В&nbsp;наличии: 5</span></span>
-  <span class="round-arrow" aria-hidden="true"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-arrow-ur"/></svg></span>
+  <span class="breed__top"><span class="breed__title">Той-пудель</span><span class="breed__desc">Умный кроха, почти не линяет</span></span>
+  <span class="tcta">Перейти к породе <svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></span>
   <span class="breed__photo"><img src="assets/img/studio-pudel-yellow.jpg" alt="Абрикосовый щенок той-пуделя на жёлтом фоне" width="1024" height="1024" loading="lazy" decoding="async"></span>
 </a>
   </li>
   <li>
     <a class="breed breed--kolli tone--sage" href="border-kolli/">
-  <span class="breed__top"><span class="breed__title">Бордер-колли</span><span class="breed__desc">Для активной жизни и спорта</span><span class="breed__count"><span class="dot dot--ok" aria-hidden="true"></span>В&nbsp;наличии: 3</span></span>
-  <span class="round-arrow" aria-hidden="true"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-arrow-ur"/></svg></span>
+  <span class="breed__top"><span class="breed__title">Бордер-колли</span><span class="breed__desc">Для активной жизни и спорта</span></span>
+  <span class="tcta">Перейти к породе <svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></span>
   <span class="breed__photo"><img src="assets/img/studio-kolli-green.jpg" alt="Щенок бордер-колли голубой мрамор на мятном фоне" width="1024" height="1024" loading="lazy" decoding="async"></span>
 </a>
   </li>
@@ -179,7 +266,7 @@
   
 </div>
 
-      <div class="chips scroller" role="group" aria-label="Фильтр по породе">
+      <div class="chips" role="group" aria-label="Фильтр по породе">
         <button class="chip" type="button" data-filter="all" aria-pressed="true">Все</button>
         <button class="chip" type="button" data-filter="maltipu" aria-pressed="false"><span class="chip__dot tone--peach" aria-hidden="true"></span>Мальтипу</button>
         <button class="chip" type="button" data-filter="francuzskij-buldog" aria-pressed="false"><span class="chip__dot tone--powder" aria-hidden="true"></span>Французский бульдог</button>
@@ -188,7 +275,7 @@
       </div>
       <p class="sr-only" role="status" aria-live="polite" data-pups-status></p>
 
-      <ul class="pups scroller" data-pups>
+      <ul class="pups" data-pups>
         <li class="pups__item" data-breed="maltipu">
           <article class="pup tone--peach" data-pup data-name="Пломбир" data-desc="Мальтипу F1 · 10 недель · мальчик" data-img="studio-maltipu-peach.jpg">
   <div class="pup__media pup__media--studio">
@@ -334,47 +421,47 @@
   
   
 </div>
-      <ul class="help scroller">
+      <ul class="help">
         <li class="help__cell help__cell--docs">
           <a class="hcard hcard--icon" href="dokumenty-i-garantii/" style="--bg:var(--sky)">
             <span class="hcard__text"><span class="hcard__title">Документы и&nbsp;договор</span><span class="hcard__line">Договор, ветпаспорт и&nbsp;метрика РКФ</span></span>
             <span class="hcard__badge" aria-hidden="true"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-doc"/></svg></span>
-            <span class="round-arrow" aria-hidden="true"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-arrow-ur"/></svg></span>
+            <span class="tcta">Подробнее <svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></span>
           </a>
         </li>
         <li class="help__cell help__cell--health">
           <a class="hcard hcard--wide" href="dokumenty-i-garantii/" style="--bg:var(--mint)">
             <span class="hcard__text"><span class="hcard__title">Здоровье и&nbsp;прививки</span><span class="hcard__line">Осмотр врача и&nbsp;прививки по&nbsp;возрасту</span></span>
             <span class="hcard__photo"><img src="assets/img/vet-check.jpg" alt="Ветеринар осматривает щенка той-пуделя" width="1264" height="848" loading="lazy" decoding="async"></span>
-            <span class="round-arrow" aria-hidden="true"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-arrow-ur"/></svg></span>
+            <span class="tcta">Подробнее <svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></span>
           </a>
         </li>
         <li class="help__cell help__cell--video">
           <a class="hcard hcard--tall" href="shchenki/" style="--bg:var(--lilac)">
             <span class="hcard__text"><span class="hcard__title">Видео до&nbsp;покупки</span><span class="hcard__line">Покажем щенка по&nbsp;видеосвязи</span></span>
             <span class="hcard__photo"><img class="hcard__img--sofa" src="assets/img/hero-maltipu-sofa.jpg" alt="Абрикосовый щенок мальтипу на светлом диване" width="928" height="1152" loading="lazy" decoding="async"></span>
-            <span class="round-arrow" aria-hidden="true"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-arrow-ur"/></svg></span>
+            <span class="tcta">Подробнее <svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></span>
           </a>
         </li>
         <li class="help__cell help__cell--care">
           <a class="hcard hcard--wide" href="faq/" style="--bg:var(--coral)">
             <span class="hcard__text"><span class="hcard__title">На&nbsp;связи после покупки</span><span class="hcard__line">Корм, прививки, первая стрижка</span></span>
             <span class="hcard__photo"><img src="assets/img/family-maltipu.jpg" alt="Девушка обнимает щенка мальтипу" width="1264" height="848" loading="lazy" decoding="async"></span>
-            <span class="round-arrow" aria-hidden="true"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-arrow-ur"/></svg></span>
+            <span class="tcta">Подробнее <svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></span>
           </a>
         </li>
         <li class="help__cell help__cell--delivery">
           <a class="hcard hcard--tall" href="dostavka/" style="--bg:var(--sand)">
             <span class="hcard__text"><span class="hcard__title">Доставка по&nbsp;России</span><span class="hcard__line">К&nbsp;двери, с&nbsp;видео в&nbsp;дороге</span></span>
             <span class="hcard__photo"><img class="hcard__img--car" src="assets/img/delivery-carrier.jpg" alt="Французский бульдог в&nbsp;переноске на&nbsp;сиденье машины" width="1264" height="848" loading="lazy" decoding="async"></span>
-            <span class="round-arrow" aria-hidden="true"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-arrow-ur"/></svg></span>
+            <span class="tcta">Подробнее <svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></span>
           </a>
         </li>
         <li class="help__cell help__cell--pay">
           <a class="hcard hcard--icon" href="rassrochka/" style="--bg:var(--sun)">
             <span class="hcard__text"><span class="hcard__title">Рассрочка и&nbsp;бронь</span><span class="hcard__line">Бронь по&nbsp;договору, остаток частями</span></span>
             <span class="hcard__badge" aria-hidden="true"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-wallet"/></svg></span>
-            <span class="round-arrow" aria-hidden="true"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-arrow-ur"/></svg></span>
+            <span class="tcta">Подробнее <svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></span>
           </a>
         </li>
       </ul>
@@ -401,29 +488,29 @@
   
   
 </div>
-      <ul class="bento scroller">
+      <ul class="bento">
         <li class="bento__cell bento__cell--pick">
           <a class="ptile ptile--pick" href="podbor-porody/">
             <span class="ptile__faces" aria-hidden="true"><span class="face tone--peach"><img src="assets/img/studio-maltipu-peach.jpg" alt="" width="1024" height="1024" loading="lazy" decoding="async"></span><span class="face tone--powder"><img src="assets/img/studio-buldog-blue.jpg" alt="" width="1024" height="1024" loading="lazy" decoding="async"></span><span class="face tone--butter"><img src="assets/img/studio-pudel-yellow.jpg" alt="" width="1024" height="1024" loading="lazy" decoding="async"></span><span class="face tone--sage"><img src="assets/img/studio-kolli-green.jpg" alt="" width="1024" height="1024" loading="lazy" decoding="async"></span></span>
-            <span class="ptile__cap"><span class="ptile__txt"><span class="ptile__title">Подобрать породу</span><span class="ptile__line">Тест на&nbsp;2&nbsp;минуты</span></span><span class="round-arrow round-arrow--ink" aria-hidden="true"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-arrow-ur"/></svg></span></span>
+            <span class="ptile__cap"><span class="ptile__txt"><span class="ptile__title">Подобрать породу</span><span class="ptile__line">Тест на&nbsp;2&nbsp;минуты</span></span><span class="tcta tcta--ink">Подробнее <svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></span></span>
           </a>
         </li>
         <li class="bento__cell bento__cell--gift">
           <a class="ptile" href="shchenok-v-podarok/">
             <img src="assets/img/gift-maltipu.jpg" alt="Щенок мальтипу в&nbsp;подарочной коробке среди новогодних огней" width="928" height="1152" loading="lazy" decoding="async">
-            <span class="ptile__cap"><span class="ptile__txt"><span class="ptile__title">Щенок в&nbsp;подарок</span><span class="ptile__line">Успеем к&nbsp;празднику</span></span><span class="round-arrow round-arrow--ink" aria-hidden="true"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-arrow-ur"/></svg></span></span>
+            <span class="ptile__cap"><span class="ptile__txt"><span class="ptile__title">Щенок в&nbsp;подарок</span><span class="ptile__line">Успеем к&nbsp;празднику</span></span><span class="tcta tcta--ink">Подробнее <svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></span></span>
           </a>
         </li>
         <li class="bento__cell bento__cell--parents">
           <a class="ptile" href="roditeli/">
             <img src="assets/img/parents-maltipu.jpg" alt="Мама-мальтипу со&nbsp;щенками на&nbsp;лежанке" width="1264" height="848" loading="lazy" decoding="async">
-            <span class="ptile__cap"><span class="ptile__txt"><span class="ptile__title">Родители щенков</span><span class="ptile__line">Домашние, с&nbsp;родословными РКФ</span></span><span class="round-arrow round-arrow--ink" aria-hidden="true"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-arrow-ur"/></svg></span></span>
+            <span class="ptile__cap"><span class="ptile__txt"><span class="ptile__title">Родители щенков</span><span class="ptile__line">Домашние, с&nbsp;родословными РКФ</span></span><span class="tcta tcta--ink">Подробнее <svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></span></span>
           </a>
         </li>
         <li class="bento__cell bento__cell--kit">
           <a class="ptile" href="magazin/">
             <img src="assets/img/starter-kit.jpg" alt="Лежанка, переноска, миски и&nbsp;игрушки для щенка" width="1024" height="1024" loading="lazy" decoding="async">
-            <span class="ptile__cap"><span class="ptile__txt"><span class="ptile__title">Стартовый набор</span><span class="ptile__line">Всё для первых дней</span></span><span class="round-arrow round-arrow--ink" aria-hidden="true"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-arrow-ur"/></svg></span></span>
+            <span class="ptile__cap"><span class="ptile__txt"><span class="ptile__title">Стартовый набор</span><span class="ptile__line">Всё для первых дней</span></span><span class="tcta tcta--ink">Подробнее <svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></span></span>
           </a>
         </li>
       </ul>
@@ -442,7 +529,7 @@
   <li class="rating"><b class="rating__num">4,8</b><span class="rating__txt"><span class="stars" aria-hidden="true"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg></span><span>Google · 64</span></span></li>
   <li class="rating"><b class="rating__num">5,0</b><span class="rating__txt"><span class="stars" aria-hidden="true"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg></span><span>Авито · 87</span></span></li>
 </ul>
-    <ul class="reviews scroller">
+    <ul class="reviews">
       <li class="review">
   <blockquote class="review__text"><p>Каждый вечер показывали щенков по видео. Боня первой подбежала к телефону — так и выбрали.</p></blockquote>
   <p class="review__who"><span class="ava" style="--c:var(--coral)" aria-hidden="true">А</span><span><b>Анна, Москва</b><span>Мальтипу</span></span></p>
@@ -493,9 +580,9 @@
     <!-- ================= SEO-ТЕКСТ ================= -->
 <section class="section container" id="o-pitomnike" aria-labelledby="seo-title">
   <div class="seo">
-    <h2 class="seo__title" id="seo-title">Купить щенка в Москве: питомник Puppy House</h2>
+    <h2 class="seo__title" id="seo-title">Купить щенка в Москве: питомник домщенков.рф</h2>
     <div class="seo__body" data-seo>
-      <p class="seo__lead">Puppy House — питомник собак в Москве. Мы разводим четыре породы: мальтипу, французского бульдога, той-пуделя и бордер-колли. Щенки растут в доме рядом с людьми и привыкают к звукам квартиры, рукам и пелёнке. Поэтому переезд в новую семью проходит спокойнее. Купить щенка у нас можно лично в Москве или с доставкой в другой город.</p>
+      <p class="seo__lead">домщенков.рф — питомник собак в Москве. Мы разводим четыре породы: мальтипу, французского бульдога, той-пуделя и бордер-колли. Щенки растут в доме рядом с людьми и привыкают к звукам квартиры, рукам и пелёнке. Поэтому переезд в новую семью проходит спокойнее. Купить щенка у нас можно лично в Москве или с доставкой в другой город.</p>
       <div class="seo__more" id="seo-more" hidden>
                     <h3>Щенки четырёх пород</h3>
             <p>Щенки мальтипу подойдут тем, кому нужен маленький ласковый компаньон. Мальтипу&nbsp;— помесь мальтийской болонки и&nbsp;той- или миниатюрного пуделя. У&nbsp;нас есть поколения F1 и&nbsp;F1b: взрослые той-мальтипу весят около 2–3&nbsp;кг, мини&nbsp;— около 3–5&nbsp;кг, стандартные&nbsp;— до&nbsp;7&nbsp;кг. Шерсть почти не&nbsp;линяет, но&nbsp;абсолютно гипоаллергенных собак не&nbsp;бывает: реакция зависит от&nbsp;человека.</p>
@@ -524,6 +611,7 @@
         <a class="lead__phone" href="tel:+74951234567">+7 (495) 123-45-67</a>
         <a class="msgr msgr--tg" href="https://t.me/puppyhouse_msk" target="_blank" rel="noopener" aria-label="Написать в Telegram"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-tg"/></svg></a>
         <a class="msgr msgr--wa" href="https://wa.me/74951234567" target="_blank" rel="noopener" aria-label="Написать в WhatsApp"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-wa"/></svg></a>
+        <a class="msgr msgr--max" href="https://max.ru/domshchenkov" target="_blank" rel="noopener" aria-label="Написать в MAX"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-max"/></svg></a>
       </div>
     </div>
 
@@ -540,7 +628,7 @@
             <input class="input" id="lf-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="+7 (___) ___-__-__" required aria-describedby="lf-phone-err" data-phone>
             <p class="field__err" id="lf-phone-err" hidden></p>
           </div>
-          <div class="field field--full">
+          <div class="field">
             <label class="field__label" for="lf-breed">Какая порода интересует</label>
             <select class="input select" id="lf-breed" name="breed">
               <option value="" selected>Выберите породу</option>
@@ -551,16 +639,17 @@
               <option>Пока не&nbsp;решил(а)</option>
             </select>
           </div>
-          <fieldset class="field field--full seg" role="radiogroup" aria-describedby="lf-contact-err">
+          <fieldset class="field seg" role="radiogroup" aria-describedby="lf-contact-err">
             <legend class="field__label">Куда написать</legend>
             <div class="seg__opts">
               <input type="radio" name="contact" id="lf-c-tg" value="telegram"><label for="lf-c-tg"><svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-tg"/></svg>Telegram</label>
               <input type="radio" name="contact" id="lf-c-wa" value="whatsapp"><label for="lf-c-wa"><svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-wa"/></svg>WhatsApp</label>
+              <input type="radio" name="contact" id="lf-c-max" value="max"><label for="lf-c-max"><svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-max"/></svg>MAX</label>
               <input type="radio" name="contact" id="lf-c-call" value="call"><label for="lf-c-call"><svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-phone"/></svg>Звонок</label>
             </div>
             <p class="field__err" id="lf-contact-err" hidden></p>
           </fieldset>
-          <div class="field field--full">
+          <div class="field">
             <div class="check">
               <input type="checkbox" id="lf-consent" name="consent" aria-describedby="lf-consent-err">
               <label for="lf-consent">Соглашаюсь на&nbsp;обработку персональных данных и&nbsp;принимаю <a href="politika-konfidencialnosti/" target="_blank" rel="noopener">политику конфиденциальности</a></label>
@@ -584,9 +673,9 @@
     <div class="footer__tile">
       <div class="footer__top">
         <div class="footer__brand">
-          <a class="logo" href="#top" aria-label="Puppy House — наверх страницы">
+          <a class="logo" href="#top" aria-label="домщенков.рф — наверх страницы">
             <span class="logo__mark" aria-hidden="true"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-paw"/></svg></span>
-            <span class="logo__text"><span class="logo__name">Puppy House</span><span class="logo__sub">питомник щенков · Москва</span></span>
+            <span class="logo__text"><span class="logo__name">домщенков.рф</span><span class="logo__sub">питомник щенков · Москва</span></span>
           </a>
           <a class="footer__phone" href="tel:+74951234567">+7 (495) 123-45-67</a>
           <ul class="footer__info">
@@ -597,6 +686,7 @@
           <div class="footer__msgs">
             <a class="msgr msgr--tg" href="https://t.me/puppyhouse_msk" target="_blank" rel="noopener" aria-label="Написать в Telegram"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-tg"/></svg></a>
             <a class="msgr msgr--wa" href="https://wa.me/74951234567" target="_blank" rel="noopener" aria-label="Написать в WhatsApp"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-wa"/></svg></a>
+            <a class="msgr msgr--max" href="https://max.ru/domshchenkov" target="_blank" rel="noopener" aria-label="Написать в MAX"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-max"/></svg></a>
           </div>
         </div>
         <nav class="footer__nav" aria-label="Разделы сайта">
@@ -635,8 +725,8 @@
         </nav>
       </div>
       <div class="footer__legal">
-        <span>© 2017–2026 Puppy House · ИП [ФИО] · ИНН [000000000000] · ОГРНИП [000000000000000]</span>
-        <span>Сайт не является публичной офертой · <a href="politika-konfidencialnosti/">Политика конфиденциальности</a> · домщенков.рф</span>
+        <span>© 2017–2026 домщенков.рф · ИП [ФИО] · ИНН [000000000000] · ОГРНИП [000000000000000]</span>
+        <span>Сайт не является публичной офертой · <a href="politika-konfidencialnosti/">Политика конфиденциальности</a></span>
       </div>
     </div>
   </footer>
@@ -651,29 +741,92 @@
   <!-- Мобильное меню -->
   <div class="mmenu" id="mmenu" role="dialog" aria-modal="true" aria-label="Меню сайта" hidden>
     <div class="mmenu__top">
-      <a class="logo" href="#top" data-menu-link aria-label="Puppy House — наверх страницы">
+      <a class="logo" href="#top" data-menu-link aria-label="домщенков.рф — наверх страницы">
         <span class="logo__mark" aria-hidden="true"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-paw"/></svg></span>
-        <span class="logo__text"><span class="logo__name">Puppy House</span><span class="logo__sub">питомник щенков · Москва</span></span>
+        <span class="logo__text"><span class="logo__name">домщенков.рф</span><span class="logo__sub">питомник щенков · Москва</span></span>
       </a>
       <button class="msgr msgr--ink" type="button" aria-label="Закрыть меню" data-menu-close><svg class="i" aria-hidden="true" focusable="false"><use href="#i-close"/></svg></button>
     </div>
     <nav class="mmenu__nav" aria-label="Мобильное меню">
       <ul class="mmenu__list">
-        <li><a href="shchenki/">Щенки <svg class="i" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></a></li>
         <li>
-          <button class="mmenu__acc" type="button" aria-expanded="false" aria-controls="mm-breeds">Породы <svg class="i" aria-hidden="true" focusable="false"><use href="#i-chevron"/></svg></button>
-          <ul class="mmenu__sub" id="mm-breeds" hidden>
-            <li><a href="maltipu/"><span class="face tone--peach"><img src="assets/img/studio-maltipu-peach.jpg" alt="" width="1024" height="1024" loading="lazy" decoding="async"></span>Мальтипу</a></li>
-            <li><a href="francuzskij-buldog/"><span class="face tone--powder"><img src="assets/img/studio-buldog-blue.jpg" alt="" width="1024" height="1024" loading="lazy" decoding="async"></span>Французский бульдог</a></li>
-            <li><a href="toj-pudel/"><span class="face tone--butter"><img src="assets/img/studio-pudel-yellow.jpg" alt="" width="1024" height="1024" loading="lazy" decoding="async"></span>Той-пудель</a></li>
-            <li><a href="border-kolli/"><span class="face tone--sage"><img src="assets/img/studio-kolli-green.jpg" alt="" width="1024" height="1024" loading="lazy" decoding="async"></span>Бордер-колли</a></li>
-            <li><a href="podbor-porody/"><span class="ico" style="--c:var(--lilac)" aria-hidden="true"><svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-sparkle"/></svg></span>Подобрать породу — тест</a></li>
-          </ul>
+          <button class="mmenu__acc" type="button" aria-expanded="false" aria-controls="mm-g1">Щенки <svg class="i" aria-hidden="true" focusable="false"><use href="#i-chevron"/></svg></button>
+          <div class="mmenu__group" id="mm-g1" hidden>
+            <ul class="mega__list">
+              <li><a class="mega__link" href="shchenki/"><span>Все щенки в наличии</span><span class="mega__count">19</span></a></li>
+              <li><a class="mega__link mega__link--face" href="maltipu/"><span class="face tone--peach"><img src="assets/img/studio-maltipu-peach.jpg" alt="" width="1024" height="1024" loading="lazy" decoding="async"></span><span>Мальтипу</span></a></li>
+              <li><a class="mega__link mega__link--face" href="francuzskij-buldog/"><span class="face tone--powder"><img src="assets/img/studio-buldog-blue.jpg" alt="" width="1024" height="1024" loading="lazy" decoding="async"></span><span>Французский бульдог</span></a></li>
+              <li><a class="mega__link mega__link--face" href="toj-pudel/"><span class="face tone--butter"><img src="assets/img/studio-pudel-yellow.jpg" alt="" width="1024" height="1024" loading="lazy" decoding="async"></span><span><span class="nw">Той-пудель</span></span></a></li>
+              <li><a class="mega__link mega__link--face" href="border-kolli/"><span class="face tone--sage"><img src="assets/img/studio-kolli-green.jpg" alt="" width="1024" height="1024" loading="lazy" decoding="async"></span><span><span class="nw">Бордер-колли</span></span></a></li>
+            </ul>
+          </div>
         </li>
-        <li><a href="dostavka/">Доставка <svg class="i" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></a></li>
-        <li><a href="otzyvy/">Отзывы <svg class="i" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></a></li>
-        <li><a href="roditeli/">О питомнике <svg class="i" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></a></li>
-        <li><a href="kontakty/">Контакты <svg class="i" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></a></li>
+        <li>
+          <button class="mmenu__acc" type="button" aria-expanded="false" aria-controls="mm-g2">О породах <svg class="i" aria-hidden="true" focusable="false"><use href="#i-chevron"/></svg></button>
+          <div class="mmenu__group" id="mm-g2" hidden>
+            <ul class="mega__list">
+              <li class="mega__sub">
+                <span class="mega__subh">Цена щенка</span>
+                <ul class="mega__pills">
+            <li><a class="mega__pill" href="maltipu/cena/"><span>Мальтипу</span></a></li><li><a class="mega__pill" href="francuzskij-buldog/cena/"><span>Французский бульдог</span></a></li><li><a class="mega__pill" href="toj-pudel/cena/"><span><span class="nw">Той-пудель</span></span></a></li><li><a class="mega__pill" href="border-kolli/cena/"><span><span class="nw">Бордер-колли</span></span></a></li>    </ul>
+              </li>
+              <li class="mega__sub">
+                <span class="mega__subh">Виды и окрасы</span>
+                <ul class="mega__pills">
+            <li><a class="mega__pill" href="maltipu/vidy-i-okrasy/"><span>Мальтипу</span></a></li><li><a class="mega__pill" href="francuzskij-buldog/vidy-i-okrasy/"><span>Французский бульдог</span></a></li><li><a class="mega__pill" href="toj-pudel/vidy-i-okrasy/"><span><span class="nw">Той-пудель</span></span></a></li><li><a class="mega__pill" href="border-kolli/vidy-i-okrasy/"><span><span class="nw">Бордер-колли</span></span></a></li>    </ul>
+              </li>
+              <li class="mega__sub">
+                <span class="mega__subh">Сравнение пород</span>
+                <ul class="mega__pills">
+            <li><a class="mega__pill" href="sravnenie/maltipu-ili-toj-pudel/"><span>Мальтипу или <span class="nw">той-пудель</span></span></a></li><li><a class="mega__pill" href="sravnenie/maltipu-ili-francuzskij-buldog/"><span>Мальтипу или француз</span></a></li><li><a class="mega__pill" href="sravnenie/maltipu-ili-border-kolli/"><span>Мальтипу или <span class="nw">бордер-колли</span></span></a></li><li><a class="mega__pill" href="sravnenie/francuzskij-buldog-ili-toj-pudel/"><span>Француз или <span class="nw">той-пудель</span></span></a></li><li><a class="mega__pill" href="sravnenie/francuzskij-buldog-ili-border-kolli/"><span>Француз или <span class="nw">бордер-колли</span></span></a></li><li><a class="mega__pill" href="sravnenie/toj-pudel-ili-border-kolli/"><span><span class="nw">Той-пудель</span> или <span class="nw">бордер-колли</span></span></a></li>    </ul>
+              </li>
+              <li><a class="mega__link" href="podbor-porody/"><span class="ico ico--sm" style="--c:var(--lilac)" aria-hidden="true"><svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-sparkle"/></svg></span><span>Подбор породы — тест</span></a></li>
+            </ul>
+          </div>
+        </li>
+        <li>
+          <button class="mmenu__acc" type="button" aria-expanded="false" aria-controls="mm-g3">Покупка <svg class="i" aria-hidden="true" focusable="false"><use href="#i-chevron"/></svg></button>
+          <div class="mmenu__group" id="mm-g3" hidden>
+            <ul class="mega__list">
+              <li><a class="mega__link" href="dostavka/"><span>Доставка по России</span></a></li>
+              <li><a class="mega__link" href="rassrochka/"><span>Рассрочка и бронь</span></a></li>
+              <li><a class="mega__link" href="shchenok-v-podarok/"><span>Щенок в подарок</span></a></li>
+              <li><a class="mega__link" href="magazin/"><span>Стартовый набор</span></a></li>
+              <li><a class="mega__link" href="faq/"><span>Вопросы и ответы</span></a></li>
+            </ul>
+          </div>
+        </li>
+        <li>
+          <button class="mmenu__acc" type="button" aria-expanded="false" aria-controls="mm-g4">О питомнике <svg class="i" aria-hidden="true" focusable="false"><use href="#i-chevron"/></svg></button>
+          <div class="mmenu__group" id="mm-g4" hidden>
+            <ul class="mega__list">
+              <li><a class="mega__link" href="roditeli/"><span>Родители щенков</span></a></li>
+              <li><a class="mega__link" href="vypuskniki/"><span>Выпускники</span></a></li>
+              <li><a class="mega__link" href="otzyvy/"><span>Отзывы владельцев</span></a></li>
+              <li><a class="mega__link" href="dokumenty-i-garantii/"><span>Документы и гарантии</span></a></li>
+              <li><a class="mega__link" href="kontakty/"><span>Контакты</span></a></li>
+            </ul>
+          </div>
+        </li>
+        <li>
+          <button class="mmenu__acc" type="button" aria-expanded="false" aria-controls="mm-g5">Блог <svg class="i" aria-hidden="true" focusable="false"><use href="#i-chevron"/></svg></button>
+          <div class="mmenu__group" id="mm-g5" hidden>
+            <ul class="mega__list">
+              <li><a class="mega__link" href="blog/"><span>Все статьи</span></a></li>
+              <li class="mega__sub">
+                <span class="mega__subh">Характер породы</span>
+                <ul class="mega__pills">
+            <li><a class="mega__pill" href="blog/maltipu-harakter/"><span>Мальтипу</span></a></li><li><a class="mega__pill" href="blog/francuzskij-buldog-harakter/"><span>Французский бульдог</span></a></li><li><a class="mega__pill" href="blog/toj-pudel-harakter/"><span><span class="nw">Той-пудель</span></span></a></li><li><a class="mega__pill" href="blog/border-kolli-harakter/"><span><span class="nw">Бордер-колли</span></span></a></li>    </ul>
+              </li>
+              <li class="mega__sub">
+                <span class="mega__subh">Уход</span>
+                <ul class="mega__pills">
+            <li><a class="mega__pill" href="blog/maltipu-uhod/"><span>Мальтипу</span></a></li><li><a class="mega__pill" href="blog/francuzskij-buldog-uhod/"><span>Французский бульдог</span></a></li><li><a class="mega__pill" href="blog/toj-pudel-uhod/"><span><span class="nw">Той-пудель</span></span></a></li><li><a class="mega__pill" href="blog/border-kolli-uhod/"><span><span class="nw">Бордер-колли</span></span></a></li>    </ul>
+              </li>
+              <li><a class="mega__link" href="blog/kak-vybrat-shchenka/"><span>Как выбрать щенка</span></a></li>
+            </ul>
+          </div>
+        </li>
       </ul>
     </nav>
     <div class="mmenu__bottom">
@@ -681,8 +834,10 @@
       <div class="mmenu__msgs">
         <a class="msgr msgr--tg" href="https://t.me/puppyhouse_msk" target="_blank" rel="noopener" aria-label="Написать в Telegram"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-tg"/></svg></a>
         <a class="msgr msgr--wa" href="https://wa.me/74951234567" target="_blank" rel="noopener" aria-label="Написать в WhatsApp"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-wa"/></svg></a>
-        <button class="btn btn--ink btn--lg mmenu__cta" type="button" data-open-modal>Подобрать щенка</button>
+        <a class="msgr msgr--max" href="https://max.ru/domshchenkov" target="_blank" rel="noopener" aria-label="Написать в MAX"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-max"/></svg></a>
+        <button class="btn btn--white mmenu__price" type="button" data-open-modal>Узнать цену</button>
       </div>
+      <a class="btn btn--tg btn--lg btn--block" href="https://t.me/puppyhouse_msk" target="_blank" rel="noopener"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-tg"/></svg>Написать в Telegram</a>
     </div>
   </div>
 
@@ -711,7 +866,7 @@
               <input class="input" id="pm-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="+7 (___) ___-__-__" required aria-describedby="pm-phone-err" data-phone>
               <p class="field__err" id="pm-phone-err" hidden></p>
             </div>
-            <div class="field field--full" data-pm-breed>
+            <div class="field" data-pm-breed>
               <label class="field__label" for="pm-breed">Какая порода интересует</label>
               <select class="input select" id="pm-breed" name="breed">
                 <option value="" selected>Выберите породу</option>
@@ -722,16 +877,17 @@
                 <option>Пока не&nbsp;решил(а)</option>
               </select>
             </div>
-            <fieldset class="field field--full seg" role="radiogroup" aria-describedby="pm-contact-err">
+            <fieldset class="field seg" role="radiogroup" aria-describedby="pm-contact-err">
               <legend class="field__label">Куда написать</legend>
               <div class="seg__opts">
                 <input type="radio" name="contact" id="pm-c-tg" value="telegram"><label for="pm-c-tg"><svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-tg"/></svg>Telegram</label>
                 <input type="radio" name="contact" id="pm-c-wa" value="whatsapp"><label for="pm-c-wa"><svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-wa"/></svg>WhatsApp</label>
+                <input type="radio" name="contact" id="pm-c-max" value="max"><label for="pm-c-max"><svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-max"/></svg>MAX</label>
                 <input type="radio" name="contact" id="pm-c-call" value="call"><label for="pm-c-call"><svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-phone"/></svg>Звонок</label>
               </div>
               <p class="field__err" id="pm-contact-err" hidden></p>
             </fieldset>
-            <div class="field field--full">
+            <div class="field">
               <div class="check">
                 <input type="checkbox" id="pm-consent" name="consent" aria-describedby="pm-consent-err">
                 <label for="pm-consent">Соглашаюсь на&nbsp;обработку персональных данных и&nbsp;принимаю <a href="politika-konfidencialnosti/" target="_blank" rel="noopener">политику конфиденциальности</a></label>
@@ -749,6 +905,27 @@
         <p class="modal__sub" id="pm-done-text"></p>
         <button class="btn btn--ink btn--lg btn--block" type="button" data-close-modal>Хорошо</button>
       </div>
+    </div>
+  </dialog>
+
+  <!-- Просмотр фото и видео -->
+  <dialog class="lightbox" id="lightbox" aria-labelledby="lb-caption">
+    <div class="lightbox__inner">
+      <button class="msgr lightbox__close" type="button" aria-label="Закрыть" data-lb-close><svg class="i" aria-hidden="true" focusable="false"><use href="#i-close"/></svg></button>
+      <figure class="lightbox__figure">
+        <div class="lightbox__stage" data-lb-stage>
+          <img class="lightbox__img" src="assets/img/studio-maltipu-peach.jpg" alt="" width="1024" height="1024" loading="lazy" decoding="async" data-lb-img>
+          <div class="lightbox__soon" data-lb-soon hidden>
+            <span class="lightbox__play" aria-hidden="true"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-play"/></svg></span>
+            <p class="lightbox__soon-title">Видео появится здесь</p>
+            <p class="lightbox__soon-line">А пока пришлём свежие видео щенков в&nbsp;Telegram</p>
+            <a class="btn btn--tg" href="https://t.me/puppyhouse_msk" target="_blank" rel="noopener"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-tg"/></svg>Написать в Telegram</a>
+          </div>
+        </div>
+        <figcaption class="lightbox__caption" id="lb-caption" data-lb-caption>Фото</figcaption>
+      </figure>
+      <button class="msgr lightbox__nav lightbox__nav--prev" type="button" aria-label="Предыдущее" data-lb-prev><svg class="i i--flip" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></button>
+      <button class="msgr lightbox__nav lightbox__nav--next" type="button" aria-label="Следующее" data-lb-next><svg class="i" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></button>
     </div>
   </dialog>
 

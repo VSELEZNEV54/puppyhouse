@@ -1,0 +1,24 @@
+{#- Shared photo / video viewer for [data-lightbox] buttons (macros/media.html.j2). main.js fills it:
+    photo → the photo; video with data-video → <video controls>; video without a file yet → poster + «Видео появится здесь».
+    ← → switch within the same carousel, Esc / the close button / a click on the backdrop close it, focus returns to the card. -#}
+{% import "macros/ui.html.j2" as ui %}
+  <!-- Просмотр фото и видео -->
+  <dialog class="lightbox" id="lightbox" aria-labelledby="lb-caption">
+    <div class="lightbox__inner">
+      <button class="msgr lightbox__close" type="button" aria-label="Закрыть" data-lb-close>{{ ui.icon('close') }}</button>
+      <figure class="lightbox__figure">
+        <div class="lightbox__stage" data-lb-stage>
+          <img class="lightbox__img" src="{{ breeds[0].studio.src }}" alt="" width="1024" height="1024" loading="lazy" decoding="async" data-lb-img>
+          <div class="lightbox__soon" data-lb-soon hidden>
+            <span class="lightbox__play" aria-hidden="true">{{ ui.icon('play') }}</span>
+            <p class="lightbox__soon-title">Видео появится здесь</p>
+            <p class="lightbox__soon-line">А пока пришлём свежие видео щенков в&nbsp;Telegram</p>
+            <a class="btn btn--tg" href="{{ site.messengers.telegram.url }}" target="_blank" rel="noopener">{{ ui.icon('tg') }}{{ site.tg_cta.label }}</a>
+          </div>
+        </div>
+        <figcaption class="lightbox__caption" id="lb-caption" data-lb-caption>Фото</figcaption>
+      </figure>
+      <button class="msgr lightbox__nav lightbox__nav--prev" type="button" aria-label="Предыдущее" data-lb-prev>{{ ui.icon('arrow', cls='i--flip') }}</button>
+      <button class="msgr lightbox__nav lightbox__nav--next" type="button" aria-label="Следующее" data-lb-next>{{ ui.icon('arrow') }}</button>
+    </div>
+  </dialog>

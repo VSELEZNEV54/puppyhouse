@@ -1,4 +1,4 @@
-/* Puppy House — каталог /shchenki/: фильтры по породе, полу и статусу.
+/* домщенков.рф — каталог /shchenki/: фильтры по породе, полу и статусу.
    Состояние в адресе: ?breed=maltipu&sex=female&status=available (значение «all» не пишется).
    Разметка: [data-catalog] → кнопки [data-cf-key][data-cf-value], карточки [data-cf-list] > li[data-breed][data-sex][data-status]. */
 (() => {

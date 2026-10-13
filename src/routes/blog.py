@@ -146,15 +146,15 @@ def _card(meta, post, breed, tones, general):
     )
 
 
-def _ld(meta, post, site_url, page_url):
+def _ld(meta, post, site_url, page_url, brand):
     """JSON-LD: BlogPosting + FAQPage (plain text, absolute URLs). No dates: the publication date is a placeholder."""
     url = site_url + page_url
     image = site_url + (post["hero"] or post["cover"])["src"]
     graph = [
         {"@type": "BlogPosting", "headline": post["h1"], "description": post["description"], "image": image,
          "inLanguage": "ru", "mainEntityOfPage": url, "keywords": ", ".join(meta.get("keywords") or []),
-         "author": {"@type": "Organization", "name": "Puppy House", "url": site_url + "/"},
-         "publisher": {"@type": "Organization", "name": "Puppy House", "url": site_url + "/"}},
+         "author": {"@type": "Organization", "name": brand, "url": site_url + "/"},
+         "publisher": {"@type": "Organization", "name": brand, "url": site_url + "/"}},
         {"@type": "FAQPage", "mainEntity": [
             {"@type": "Question", "name": q["q"], "acceptedAnswer": {"@type": "Answer", "text": plain(q["a"])}}
             for q in post["faq"]]},
@@ -244,7 +244,7 @@ def routes(data):
                 hero_photo=dict(src=hero["src"], alt=hero["alt"]) if hero else None,  # size: imgsize() in the template
                 tone=breed["tone"] if breed else "cream",
                 breed=breed,
-                ld=_ld(meta, post, site_url, meta["url"]),
+                ld=_ld(meta, post, site_url, meta["url"], data["site"]["brand"]),
                 pups_breed=breed,
                 lead_breed=breed["slug"] if breed else None,
             ),

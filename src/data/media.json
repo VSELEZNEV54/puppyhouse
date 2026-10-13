@@ -1,0 +1,285 @@
+{
+  "_note": "Photo and video sets for ui media carousels (macros/media.html.j2). PLACEHOLDERS: existing photos stand in for real shots; kind=video items have no file yet (\"video\": null → the lightbox says «Видео появится здесь»). When the client sends videos, put the .mp4 path into \"video\" and a frame into \"src\". pos = object-position for the 9:16 crop. READ-ONLY for page groups (pick a set or build your own list in the route).",
+  "home": [
+    {
+      "src": "/assets/img/hero-maltipu-sofa.jpg",
+      "kind": "video",
+      "alt": "Абрикосовый щенок мальтипу на светлом диване",
+      "caption": "Мальтипу: первый день дома",
+      "video": null
+    },
+    {
+      "src": "/assets/img/studio-buldog-blue.jpg",
+      "kind": "photo",
+      "alt": "Палевый щенок французского бульдога на голубом фоне",
+      "caption": "Французский бульдог"
+    },
+    {
+      "src": "/assets/img/parents-maltipu.jpg",
+      "kind": "video",
+      "alt": "Мама-мальтипу со щенками на лежанке",
+      "caption": "Мама со щенками",
+      "pos": "45% 50%",
+      "video": null
+    },
+    {
+      "src": "/assets/img/studio-pudel-yellow.jpg",
+      "kind": "photo",
+      "alt": "Абрикосовый щенок той-пуделя на жёлтом фоне",
+      "caption": "Той-пудель"
+    },
+    {
+      "src": "/assets/img/grad-man-kolli.jpg",
+      "kind": "video",
+      "alt": "Мужчина играет с бордер-колли в осеннем парке",
+      "caption": "Бордер-колли на прогулке",
+      "pos": "62% 50%",
+      "video": null
+    },
+    {
+      "src": "/assets/img/pup-buldog-cream.jpg",
+      "kind": "photo",
+      "alt": "Кремовый щенок французского бульдога в светлой квартире",
+      "caption": "Француз в новой квартире"
+    },
+    {
+      "src": "/assets/img/video-call.jpg",
+      "kind": "video",
+      "alt": "Щенок мальтипу на экране смартфона во время видеозвонка",
+      "caption": "Знакомство по видео",
+      "pos": "48% 50%",
+      "video": null
+    },
+    {
+      "src": "/assets/img/studio-kolli-green.jpg",
+      "kind": "photo",
+      "alt": "Щенок бордер-колли голубого мраморного окраса на мятном фоне",
+      "caption": "Бордер-колли"
+    },
+    {
+      "src": "/assets/img/gift-maltipu.jpg",
+      "kind": "video",
+      "alt": "Щенок мальтипу в подарочной коробке среди новогодних огней",
+      "caption": "Щенок в подарок",
+      "video": null
+    }
+  ],
+  "maltipu": [
+    {
+      "src": "/assets/img/hero-maltipu-sofa.jpg",
+      "kind": "video",
+      "alt": "Абрикосовый щенок мальтипу на светлом диване",
+      "caption": "Первый день дома",
+      "video": null
+    },
+    {
+      "src": "/assets/img/studio-maltipu-peach.jpg",
+      "kind": "photo",
+      "alt": "Кремовый щенок мальтипу на персиковом фоне",
+      "caption": "Кремовый мальтипу"
+    },
+    {
+      "src": "/assets/img/color-maltipu-red.jpg",
+      "kind": "video",
+      "alt": "Рыжий щенок мальтипу на персиковом фоне",
+      "caption": "Рыжий окрас",
+      "video": null
+    },
+    {
+      "src": "/assets/img/pup-maltipu-chocolate.jpg",
+      "kind": "photo",
+      "alt": "Шоколадный щенок мальтипу на вязаном пледе",
+      "caption": "Шоколадный мальтипу"
+    },
+    {
+      "src": "/assets/img/parents-maltipu.jpg",
+      "kind": "video",
+      "alt": "Мама-мальтипу со щенками на лежанке",
+      "caption": "Мама со щенками",
+      "pos": "45% 50%",
+      "video": null
+    },
+    {
+      "src": "/assets/img/color-maltipu-parti.jpg",
+      "kind": "photo",
+      "alt": "Щенок мальтипу окраса партиколор на персиковом фоне",
+      "caption": "Партиколор"
+    },
+    {
+      "src": "/assets/img/family-maltipu.jpg",
+      "kind": "video",
+      "alt": "Девушка обнимает щенка мальтипу на диване",
+      "caption": "В новой семье",
+      "pos": "56% 50%",
+      "video": null
+    },
+    {
+      "src": "/assets/img/color-maltipu-chocolate.jpg",
+      "kind": "photo",
+      "alt": "Шоколадный щенок мальтипу на персиковом фоне",
+      "caption": "Шоколадный окрас"
+    },
+    {
+      "src": "/assets/img/parent-maltipu.jpg",
+      "kind": "photo",
+      "alt": "Взрослый абрикосовый мальтипу на персиковом фоне",
+      "caption": "Взрослый мальтипу"
+    },
+    {
+      "src": "/assets/img/video-call.jpg",
+      "kind": "video",
+      "alt": "Щенок мальтипу на экране смартфона во время видеозвонка",
+      "caption": "Знакомство по видео",
+      "pos": "48% 50%",
+      "video": null
+    }
+  ],
+  "francuzskij-buldog": [
+    {
+      "src": "/assets/img/studio-buldog-blue.jpg",
+      "kind": "video",
+      "alt": "Палевый щенок французского бульдога на голубом фоне",
+      "caption": "Палевый француз",
+      "video": null
+    },
+    {
+      "src": "/assets/img/pup-buldog-cream.jpg",
+      "kind": "photo",
+      "alt": "Кремовый щенок французского бульдога в светлой квартире",
+      "caption": "Кремовый окрас"
+    },
+    {
+      "src": "/assets/img/color-buldog-brindle.jpg",
+      "kind": "video",
+      "alt": "Тигровый щенок французского бульдога на голубом фоне",
+      "caption": "Тигровый окрас",
+      "video": null
+    },
+    {
+      "src": "/assets/img/grad-family-buldog.jpg",
+      "kind": "photo",
+      "alt": "Семья с дочкой и щенком французского бульдога на диване",
+      "caption": "В новой семье",
+      "pos": "50% 50%"
+    },
+    {
+      "src": "/assets/img/color-buldog-pied.jpg",
+      "kind": "video",
+      "alt": "Пегий щенок французского бульдога на голубом фоне",
+      "caption": "Пегий окрас",
+      "video": null
+    },
+    {
+      "src": "/assets/img/delivery-carrier.jpg",
+      "kind": "photo",
+      "alt": "Щенок французского бульдога в переноске на сиденье машины",
+      "caption": "Едет домой",
+      "pos": "55% 50%"
+    },
+    {
+      "src": "/assets/img/color-buldog-blue.jpg",
+      "kind": "video",
+      "alt": "Голубой щенок французского бульдога на голубом фоне",
+      "caption": "Голубой окрас",
+      "video": null
+    },
+    {
+      "src": "/assets/img/parent-buldog.jpg",
+      "kind": "photo",
+      "alt": "Взрослый палевый французский бульдог на голубом фоне",
+      "caption": "Взрослый француз"
+    }
+  ],
+  "toj-pudel": [
+    {
+      "src": "/assets/img/studio-pudel-yellow.jpg",
+      "kind": "video",
+      "alt": "Абрикосовый щенок той-пуделя на жёлтом фоне",
+      "caption": "Абрикосовый той-пудель",
+      "video": null
+    },
+    {
+      "src": "/assets/img/grad-woman-pudel.jpg",
+      "kind": "photo",
+      "alt": "Женщина с той-пуделем в кресле у окна",
+      "caption": "В новой семье",
+      "pos": "50% 50%"
+    },
+    {
+      "src": "/assets/img/color-pudel-black.jpg",
+      "kind": "video",
+      "alt": "Чёрный щенок той-пуделя на жёлтом фоне",
+      "caption": "Чёрный окрас",
+      "video": null
+    },
+    {
+      "src": "/assets/img/vet-check.jpg",
+      "kind": "photo",
+      "alt": "Ветеринар осматривает щенка той-пуделя",
+      "caption": "Осмотр ветеринара",
+      "pos": "40% 50%"
+    },
+    {
+      "src": "/assets/img/color-pudel-white.jpg",
+      "kind": "video",
+      "alt": "Белый щенок той-пуделя на жёлтом фоне",
+      "caption": "Белый окрас",
+      "video": null
+    },
+    {
+      "src": "/assets/img/color-pudel-chocolate.jpg",
+      "kind": "photo",
+      "alt": "Шоколадный щенок той-пуделя на жёлтом фоне",
+      "caption": "Шоколадный окрас"
+    },
+    {
+      "src": "/assets/img/parent-pudel.jpg",
+      "kind": "video",
+      "alt": "Взрослый рыжий той-пудель на жёлтом фоне",
+      "caption": "Взрослый той-пудель",
+      "video": null
+    }
+  ],
+  "border-kolli": [
+    {
+      "src": "/assets/img/studio-kolli-green.jpg",
+      "kind": "video",
+      "alt": "Щенок бордер-колли голубого мраморного окраса на мятном фоне",
+      "caption": "Голубой мрамор",
+      "video": null
+    },
+    {
+      "src": "/assets/img/grad-man-kolli.jpg",
+      "kind": "photo",
+      "alt": "Мужчина играет с бордер-колли в осеннем парке",
+      "caption": "На прогулке",
+      "pos": "62% 50%"
+    },
+    {
+      "src": "/assets/img/color-kolli-red.jpg",
+      "kind": "video",
+      "alt": "Красно-белый щенок бордер-колли на мятном фоне",
+      "caption": "Красно-белый окрас",
+      "video": null
+    },
+    {
+      "src": "/assets/img/color-kolli-tricolor.jpg",
+      "kind": "photo",
+      "alt": "Щенок бордер-колли окраса триколор на мятном фоне",
+      "caption": "Триколор"
+    },
+    {
+      "src": "/assets/img/parent-kolli.jpg",
+      "kind": "video",
+      "alt": "Взрослый чёрно-белый бордер-колли на мятном фоне",
+      "caption": "Взрослый бордер-колли",
+      "video": null
+    },
+    {
+      "src": "/assets/img/breed-border-kolli.jpg",
+      "kind": "photo",
+      "alt": "Чёрно-белый щенок бордер-колли в траве на закате",
+      "caption": "На закате"
+    }
+  ]
+}

@@ -47,9 +47,7 @@
   border-radius: 19px; background: rgba(255, 255, 255, .62);
   font-size: 15px; font-weight: 500; line-height: 1.25;
 }
-.brd-more .round-arrow { position: absolute; z-index: 2; left: clamp(18px, 1.6vw, 24px); bottom: clamp(18px, 1.6vw, 24px); }
-a.brd-more:hover .round-arrow { background: var(--ink); color: #fff; }
-a.brd-more:hover .round-arrow .i { transform: rotate(45deg); }
+.brd-more .tcta { position: absolute; z-index: 2; left: clamp(18px, 1.6vw, 24px); bottom: clamp(18px, 1.6vw, 24px); }
 
 /* =========================================================
    «Перед покупкой» — родители (студийное фото «в цвет»), цена, документы
@@ -92,7 +90,7 @@ a.brd-more:hover .round-arrow .i { transform: rotate(45deg); }
   min-height: 0; padding: 22px 22px 22px 24px;
 }
 .brd-links .ltile .face, .brd-links .ltile .ico { width: 52px; height: 52px; }
-.brd-links .ltile .round-arrow { margin: 0; }
+.brd-links .ltile .tcta { margin: 0; }
 .brd-links .ltile__title { font-size: clamp(18px, 1.3vw, 21px); }
 
 /* =========================================================
@@ -138,9 +136,9 @@ a.brd-more:hover .round-arrow .i { transform: rotate(45deg); }
   .brd-trait__title { margin-top: 18px; font-size: 19px; }
   .brd-trait__line { margin-top: 6px; font-size: 14.5px; }
 
-  /* лента окрасов */
-  .brd-colours .stile, .brd-colours .brd-more { aspect-ratio: 3 / 4; }
-  .brd-more { padding: 18px; }
+  /* окрасы — по одному в ряд (широкие студийные плитки из pages.css), «Ещё окрасы» — плиткой по содержимому */
+  .brd-colours .stile, .brd-colours .brd-more { aspect-ratio: auto; }
+  .brd-more { min-height: 0; padding: 18px 18px 80px; }
   .brd-more__list span { min-height: 34px; padding: 5px 13px; font-size: 14px; }
 
   /* одна колонка: цена, документы, затем родители широкой плиткой */
@@ -154,7 +152,8 @@ a.brd-more:hover .round-arrow .i { transform: rotate(45deg); }
   .brd-card__actions { padding-top: 20px; }
   .brd-card__actions .btn { flex: 1 1 100%; }
 
-  .brd-links .ltile { gap: 14px; padding: 14px 14px 14px 16px; }
+  .brd-links .ltile { grid-template-columns: auto minmax(0, 1fr); gap: 12px 14px; padding: 16px; }
+  .brd-links .ltile .tcta { grid-column: 2; justify-self: start; }
   .brd-links .ltile .face, .brd-links .ltile .ico { width: 44px; height: 44px; }
   .brd-links .ltile__title { font-size: 18px; }
 }

@@ -13,7 +13,7 @@ from _lib import by_id, crumbs
 
 NBSP = " "
 TITLE_MAX, DESC_MAX = 60, 160
-BRAND = " | Puppy House"
+BRAND = " | домщенков.рф"
 
 
 # ---------------------------------------------------------------- helpers
@@ -326,8 +326,8 @@ def contacts_page(data):
     c["visit"] = [nb(x, "title", "text") for x in c["visit"]]
     return page(
         "/kontakty/", "delivery/contacts.html.j2",
-        "Контакты питомника Puppy House в Москве",
-        "Телефон, Telegram и WhatsApp питомника щенков Puppy House. Москва, приезд по записи. "
+        "Контакты питомника домщенков.рф в Москве",
+        "Телефон, Telegram и WhatsApp питомника щенков домщенков.рф. Москва, приезд по записи. "
         "Ответим за 15 минут, ежедневно с 9:00 до 21:00.",
         [("Контакты", None)],
         c=c,
@@ -343,7 +343,7 @@ def privacy_page(data):
     return page(
         "/politika-konfidencialnosti/", "delivery/privacy.html.j2",
         "Политика конфиденциальности" + BRAND,
-        "Как питомник Puppy House получает, хранит и защищает персональные данные посетителей сайта: "
+        "Как питомник домщенков.рф получает, хранит и защищает персональные данные посетителей сайта: "
         "цели, основания, сроки и ваши права по 152-ФЗ.",
         [("Политика конфиденциальности", None)],
         p=p,

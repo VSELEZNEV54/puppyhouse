@@ -1,4 +1,4 @@
-/* Puppy House — общий скрипт всех страниц. Ванильный JS, без библиотек.
+/* домщенков.рф — общий скрипт всех страниц. Ванильный JS, без библиотек.
    Страницы собирает tools/build.py: ссылки на собранные страницы — относительные,
    на ещё не собранные — от корня ("/maltipu/"), их клик показывает тост. */
 (() => {
@@ -13,7 +13,7 @@
   // папка фото относительно самого скрипта (assets/js/main.js → assets/img/): работает на любой глубине и под подпутём
   const IMG_BASE = d.currentScript && d.currentScript.src ? new URL('../img/', d.currentScript.src).href : 'assets/img/';
   const TOAST_TEXT = 'Раздел появится на следующем этапе';
-  const CONTACT_LABEL = { telegram: 'Telegram', whatsapp: 'WhatsApp', call: 'звонок' };
+  const CONTACT_LABEL = { telegram: 'Telegram', whatsapp: 'WhatsApp', max: 'MAX', call: 'звонок' };
   const ERR = {
     name: 'Напишите, как к вам обращаться',
     phone: 'Проверьте номер: после +7 нужно 10 цифр',
@@ -81,40 +81,76 @@
   window.addEventListener('scroll', onScroll, { passive: true });
   onScroll();
 
-  /* ---------- выпадающее меню «Породы» ---------- */
-  const ddWrap = $('[data-dd]');
-  const ddBtn = ddWrap && $('.nav__dd-btn', ddWrap);
-  const ddPanel = ddWrap && $('#dd-breeds');
-  let ddTimer;
-  function setDropdown(open) {
-    if (!ddBtn) return;
-    ddBtn.setAttribute('aria-expanded', String(open));
-    ddPanel.hidden = !open;
-  }
-  const ddIsOpen = () => !!ddBtn && ddBtn.getAttribute('aria-expanded') === 'true';
-  if (ddBtn) {
-    ddBtn.addEventListener('click', (e) => {
-      // клик мышью на устройстве с ховером только открывает (ховер мог открыть раньше)
-      if (canHover && e.detail > 0) { setDropdown(true); return; }
-      setDropdown(!ddIsOpen());
-    });
-    ddBtn.addEventListener('keydown', (e) => {
-      if (e.key === 'ArrowDown') {
-        e.preventDefault();
-        setDropdown(true);
-        const first = $('a', ddPanel);
-        first && first.focus();
+  /* ---------- выпадающие панели шапки: «Меню» (карта сайта) и «Породы» ----------
+     Ховер с небольшой задержкой (намерение), клик / тап, клавиатура: Enter / Space — открыть-закрыть,
+     ↓ — открыть и перейти к первой ссылке, ↑ / ↓ внутри — по ссылкам, Esc — закрыть и вернуть фокус на кнопку.
+     Открытая кликом панель не закрывается, когда курсор уходит; открытая ховером — закрывается. */
+  const drops = [];
+  function dropdown(wrap, btn, panel, enterDelay) {
+    let timer = 0;
+    let pinned = false;
+    let byHover = false;
+    const api = {
+      btn,
+      isOpen: () => btn.getAttribute('aria-expanded') === 'true',
+      set(open) {
+        clearTimeout(timer);
+        if (open) drops.forEach((o) => { if (o !== api && o.isOpen()) o.set(false); });
+        btn.setAttribute('aria-expanded', String(open));
+        panel.hidden = !open;
+        wrap.classList.toggle('is-open', open);
+        if (!open) { pinned = false; byHover = false; }
       }
+    };
+    const links = () => $$('a[href], button:not([disabled])', panel).filter((el) => el.offsetParent !== null);
+    btn.addEventListener('click', (e) => {
+      // мышью на устройстве с ховером: панель уже открыта наведением — клик её закрепляет, а не закрывает
+      if (canHover && e.detail > 0 && api.isOpen() && byHover) { byHover = false; pinned = true; return; }
+      const open = !api.isOpen();
+      api.set(open);
+      pinned = open;
+    });
+    btn.addEventListener('keydown', (e) => {
+      if (e.key !== 'ArrowDown') return;
+      e.preventDefault();
+      api.set(true);
+      pinned = true;
+      const first = links()[0];
+      first && first.focus();
+    });
+    panel.addEventListener('keydown', (e) => {
+      if (e.key !== 'ArrowDown' && e.key !== 'ArrowUp') return;
+      const items = links();
+      const i = items.indexOf(d.activeElement);
+      if (i < 0) return;
+      e.preventDefault();
+      const next = e.key === 'ArrowDown' ? items[Math.min(i + 1, items.length - 1)] : items[i - 1];
+      (next || btn).focus();
     });
     if (canHover) {
-      ddWrap.addEventListener('mouseenter', () => { clearTimeout(ddTimer); setDropdown(true); });
-      ddWrap.addEventListener('mouseleave', () => { ddTimer = setTimeout(() => setDropdown(false), 200); });
+      wrap.addEventListener('mouseenter', () => {
+        clearTimeout(timer);
+        if (!api.isOpen()) timer = setTimeout(() => { api.set(true); byHover = true; }, enterDelay);
+      });
+      wrap.addEventListener('mouseleave', () => {
+        clearTimeout(timer);
+        if (api.isOpen() && !pinned) timer = setTimeout(() => api.set(false), 260);
+      });
     }
-    ddWrap.addEventListener('focusout', (e) => {
-      if (!ddWrap.contains(e.relatedTarget)) setDropdown(false);
+    // фокус ушёл из панели (Tab дальше) — закрыть; клик по пустому месту панели фокус никуда не переводит
+    wrap.addEventListener('focusout', (e) => {
+      if (e.relatedTarget && !wrap.contains(e.relatedTarget)) api.set(false);
     });
-    d.addEventListener('click', (e) => { if (ddIsOpen() && !ddWrap.contains(e.target)) setDropdown(false); });
+    d.addEventListener('click', (e) => { if (api.isOpen() && !wrap.contains(e.target)) api.set(false); });
+    drops.push(api);
+    return api;
   }
+  const ddWrap = $('[data-dd]');
+  if (ddWrap) dropdown(ddWrap, $('.nav__dd-btn', ddWrap), $('#dd-breeds'), 60);
+  const megaWrap = $('[data-mega]');
+  const mega = megaWrap ? dropdown(megaWrap, $('[data-mega-btn]', megaWrap), $('#mega'), 140) : null;
+  // на планшете и телефоне вместо панелей — бургер
+  window.matchMedia('(max-width: 1099px)').addEventListener('change', (m) => { if (m.matches) drops.forEach((o) => o.set(false)); });
 
   /* ---------- мобильное меню ---------- */
   const burger = $('[data-burger]');
@@ -144,12 +180,15 @@
     $('[data-menu-close]', menu).addEventListener('click', () => closeMenu());
     $$('[data-menu-link]', menu).forEach((a) => a.addEventListener('click', () => closeMenu(false)));
     // ссылки на несвёрстанные страницы: тост поверх меню, меню остаётся открытым
-    const acc = $('.mmenu__acc', menu);
-    const sub = $('#mm-breeds');
-    acc.addEventListener('click', () => {
-      const open = acc.getAttribute('aria-expanded') !== 'true';
-      acc.setAttribute('aria-expanded', String(open));
-      sub.hidden = !open;
+    // группы разделов — аккордеоны: каждая кнопка открывает свой список (aria-controls)
+    $$('.mmenu__acc', menu).forEach((acc) => {
+      const sub = $('#' + acc.getAttribute('aria-controls'));
+      if (!sub) return;
+      acc.addEventListener('click', () => {
+        const open = acc.getAttribute('aria-expanded') !== 'true';
+        acc.setAttribute('aria-expanded', String(open));
+        sub.hidden = !open;
+      });
     });
     // ловушка фокуса
     menu.addEventListener('keydown', (e) => {
@@ -167,9 +206,10 @@
   /* ---------- Esc ---------- */
   d.addEventListener('keydown', (e) => {
     if (e.key !== 'Escape') return;
-    if (modal && modal.open) return; // <dialog> закрывается сам
+    if (d.querySelector('dialog[open]')) return; // модалка и лайтбокс (<dialog>) закрываются сами
     if (menuIsOpen()) { closeMenu(); return; }
-    if (ddIsOpen()) { setDropdown(false); ddBtn.focus(); }
+    const open = drops.find((o) => o.isOpen());
+    if (open) { open.set(false); open.btn.focus(); }
   });
 
   /* ---------- маска телефона +7 (XXX) XXX-XX-XX ---------- */
@@ -338,6 +378,8 @@
       // кнопка из бургер-меню исчезнет вместе с меню — фокус вернём на бургер
       let opener = trigger;
       if (menuIsOpen() && menu.contains(trigger)) { closeMenu(false); opener = burger; }
+      // кнопка из панели «Меню» спрячется вместе с панелью — фокус вернём на «Меню»
+      if (mega && megaWrap.contains(trigger)) { mega.set(false); opener = mega.btn; }
       const pup = card ? {
         name: card.dataset.name,
         desc: card.dataset.desc,
@@ -501,19 +543,164 @@
     }
   }
 
-  /* ---------- ленты на мобиле: фото дальних карточек грузим, когда лента подъехала к экрану ----------
-     (lazy-загрузка браузера не видит карточки далеко справа, и при свайпе они появлялись бы пустыми) */
-  if ('IntersectionObserver' in window) {
-    const stripIO = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (!entry.isIntersecting) return;
-        const strip = entry.target;
-        if (getComputedStyle(strip).overflowX === 'visible') return; // на десктопе это обычная сетка
-        $$('img[loading="lazy"]', strip).forEach((img) => { img.loading = 'eager'; });
-        stripIO.unobserve(strip);
-      });
-    }, { rootMargin: '600px 0px' });
-    $$('.scroller').forEach((strip) => stripIO.observe(strip));
+  /* ---------- карусели фото и видео [data-carousel] (macros/media.html.j2) ----------
+     Нативная прокрутка с прилипанием (свайп на телефоне), стрелки, ← → на ленте или карточке,
+     активная карточка — ближайшая к центру (у .media-carousel--reviews — к левому краю).
+     Фото дальних карточек грузим, когда карусель подъехала к экрану: lazy-загрузка браузера
+     не видит карточки далеко справа, и при свайпе они появлялись бы пустыми. */
+  const carouselIO = 'IntersectionObserver' in window ? new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) return;
+      $$('img[loading="lazy"]', entry.target).forEach((img) => { img.loading = 'eager'; });
+      carouselIO.unobserve(entry.target);
+    });
+  }, { rootMargin: '600px 0px' }) : null;
+
+  $$('[data-carousel]').forEach((root) => {
+    const vp = $('[data-carousel-viewport]', root);
+    const items = $$('.media-carousel__item', root);
+    const prev = $('[data-carousel-prev]', root);
+    const next = $('[data-carousel-next]', root);
+    if (!vp || !items.length) return;
+    if (carouselIO) carouselIO.observe(root);
+    const fromStart = root.classList.contains('media-carousel--reviews');
+    let active = -1;
+    // точка, к которой прилипает карточка: центр ленты или её левый край (с учётом scroll-padding)
+    const anchor = () => {
+      const r = vp.getBoundingClientRect();
+      return fromStart ? r.left + (parseFloat(getComputedStyle(vp).scrollPaddingLeft) || 0) : r.left + r.width / 2;
+    };
+    const pos = (li) => { const r = li.getBoundingClientRect(); return fromStart ? r.left : r.left + r.width / 2; };
+    const setActive = (i) => {
+      if (i === active) return;
+      active = i;
+      items.forEach((li, k) => li.classList.toggle('is-active', k === i));
+      if (prev) prev.disabled = i <= 0;
+      if (next) next.disabled = i >= items.length - 1 || (fromStart && vp.scrollLeft + vp.clientWidth >= vp.scrollWidth - 2);
+    };
+    const nearest = () => {
+      const a = anchor();
+      let best = 0; let dist = Infinity;
+      items.forEach((li, k) => { const dd = Math.abs(pos(li) - a); if (dd < dist) { dist = dd; best = k; } });
+      return best;
+    };
+    const go = (i, smooth = true) => {
+      const k = Math.max(0, Math.min(items.length - 1, i));
+      vp.scrollBy({ left: pos(items[k]) - anchor(), behavior: smooth && !reduceMotion ? 'smooth' : 'auto' });
+      setActive(k);
+      return k;
+    };
+    let raf = 0;
+    vp.addEventListener('scroll', () => {
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(() => { const k = nearest(); active = -1; setActive(k); });
+    }, { passive: true });
+    if (prev) prev.addEventListener('click', () => go(active - 1));
+    if (next) next.addEventListener('click', () => go(active + 1));
+    // клавиатура: на самой ленте или на карточке внутри — стрелки листают, фокус переходит на новую карточку
+    vp.addEventListener('keydown', (e) => {
+      if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
+      e.preventDefault();
+      const k = go(active + (e.key === 'ArrowRight' ? 1 : -1));
+      if (d.activeElement !== vp) {
+        const btn = $('button', items[k]);
+        btn && btn.focus({ preventScroll: true });
+      }
+    });
+    // Tab по карточкам — карточка с фокусом выезжает к центру
+    vp.addEventListener('focusin', (e) => {
+      const li = e.target.closest('.media-carousel__item');
+      if (li) go(items.indexOf(li));
+    });
+    // старт: средняя карточка (data-start), без анимации; после смены ширины — снова к активной
+    const start = Math.min(items.length - 1, Math.max(0, Number(root.dataset.start) || 0));
+    requestAnimationFrame(() => go(start, false));
+    let rt;
+    window.addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(() => go(Math.max(active, 0), false), 150); });
+  });
+
+  /* ---------- лайтбокс #lightbox: [data-lightbox] открывает фото или видео ----------
+     data-kind="photo" | "video"; data-src — файл видео (нет — постер и «Видео появится здесь»); data-caption — подпись.
+     ← → — соседние карточки той же карусели, Esc / крестик / клик по фону — закрыть, фокус возвращается на карточку. */
+  const lb = $('#lightbox');
+  if (lb) {
+    const stage = $('[data-lb-stage]', lb);
+    const lbImg = $('[data-lb-img]', lb);
+    const soon = $('[data-lb-soon]', lb);
+    const cap = $('[data-lb-caption]', lb);
+    const lbPrev = $('[data-lb-prev]', lb);
+    const lbNext = $('[data-lb-next]', lb);
+    let group = [];
+    let idx = 0;
+    let opener = null;
+    let video = null;
+    const stopVideo = () => { if (video) { video.pause(); video.remove(); video = null; } };
+    const show = (i) => {
+      idx = (i + group.length) % group.length;
+      const b = group[idx];
+      const pic = $('img', b);
+      const isVideo = b.dataset.kind === 'video';
+      stopVideo();
+      lbImg.loading = 'eager';
+      lbImg.src = pic ? (pic.currentSrc || pic.src) : '';
+      lbImg.alt = pic ? pic.alt : '';
+      lbImg.style.objectPosition = pic ? pic.style.objectPosition : '';
+      if (pic && pic.naturalWidth) { lbImg.width = pic.naturalWidth; lbImg.height = pic.naturalHeight; }
+      stage.classList.toggle('is-video', isVideo);
+      const file = isVideo ? b.getAttribute('data-src') : '';
+      soon.hidden = !isVideo || !!file;
+      if (file) {
+        video = d.createElement('video');
+        video.src = file;
+        video.controls = true;
+        video.playsInline = true;
+        video.poster = lbImg.src;
+        stage.appendChild(video);
+        video.play().catch(() => {});
+      }
+      cap.textContent = b.dataset.caption || lbImg.alt || (isVideo ? 'Видео' : 'Фото');
+      lbPrev.hidden = lbNext.hidden = group.length < 2;
+    };
+    d.addEventListener('click', (e) => {
+      const b = e.target.closest('[data-lightbox]');
+      if (!b) return;
+      e.preventDefault();
+      opener = b;
+      const scope = b.closest('[data-carousel]') || b.closest('section') || d.body;
+      group = $$('[data-lightbox]', scope);
+      show(Math.max(0, group.indexOf(b)));
+      if (typeof lb.showModal === 'function') lb.showModal(); else lb.setAttribute('open', '');
+      lockScroll('lightbox', true);
+      $('[data-lb-close]', lb).focus();
+    });
+    lbPrev.addEventListener('click', () => show(idx - 1));
+    lbNext.addEventListener('click', () => show(idx + 1));
+    $('[data-lb-close]', lb).addEventListener('click', () => lb.close());
+    lb.addEventListener('close', () => {
+      stopVideo();
+      lockScroll('lightbox', false);
+      if (toast && toast.parentElement !== d.body) d.body.appendChild(toast);
+      if (opener && opener.isConnected) opener.focus({ preventScroll: true });
+      opener = null;
+    });
+    lb.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
+        if (group.length < 2 || (video && d.activeElement === video)) return;
+        e.preventDefault();
+        show(idx + (e.key === 'ArrowRight' ? 1 : -1));
+        return;
+      }
+      if (e.key !== 'Tab') return;
+      const els = $$('a[href], button:not([disabled]), video', lb).filter((el) => el.offsetParent !== null);
+      if (!els.length) return;
+      const first = els[0];
+      const last = els[els.length - 1];
+      if (e.shiftKey && (d.activeElement === first || !lb.contains(d.activeElement))) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && d.activeElement === last) { e.preventDefault(); first.focus(); }
+    });
+    let downOnBackdrop = false;
+    lb.addEventListener('pointerdown', (e) => { downOnBackdrop = e.target === lb; });
+    lb.addEventListener('click', (e) => { if (e.target === lb && downOnBackdrop) lb.close(); });
   }
 
   /* ---------- мягкое появление при скролле ---------- */
@@ -524,7 +711,7 @@
     };
     const targets = $$([
       'main .section .sec-head',
-      '.breeds > li', '.pups > li', '.help > li', '.steps > li', '.bento > li',
+      '.breeds > li', '.pups > li', '.help > li', '.steps > li', '.bento > li', '.advs > li', '.bteasers > li', '.lband',
       '.ratings > li', '.reviews > li', '.faq__aside', '.faq__list', '.seo', '.lead', '.footer__tile',
       // внутренние страницы: data-reveal — сам блок, data-reveal="items" — его дети по очереди
       '[data-reveal]:not([data-reveal="items"])', '[data-reveal="items"] > *'

@@ -8,9 +8,19 @@
 <svg class="i{{ ' i--sm' if sm }}{{ ' ' ~ cls if cls }}" aria-hidden="true" focusable="false"><use href="#i-{{ name }}"/></svg>
 {%- endmacro %}
 
-{#- Round arrow badge used on clickable tiles. variant: '' | 'ink' | 'glass' -#}
+{#- Round arrow badge. DECORATIVE ONLY — never the main action of a tile (client rule 13.10): use tile_cta(). -#}
 {% macro round_arrow(variant='') -%}
 <span class="round-arrow{{ ' round-arrow--' ~ variant if variant }}" aria-hidden="true">{{ icon('arrow-ur') }}</span>
+{%- endmacro %}
+
+{#- Clear CTA of a clickable tile or card: pill with a label and an arrow (client rule 13.10 — no arrow-only buttons).
+    Inside a tile that is already a link it renders a <span> (the tile is the link); pass url to get a real <a>.
+    label (one wording per context, site-wide): 'Подробнее' (default) · 'Перейти к породе' (breed tiles) · 'Смотреть щенка'
+    (puppy) · 'Все окрасы' (colours) · 'Читать' (articles). variant: '' (white, on colour tiles) | 'soft' (grey, on white
+    tiles) | 'ink' (black, on photos). -#}
+{% macro tile_cta(label='Подробнее', variant='', url=none) -%}
+{%- set cls = 'tcta' ~ (' tcta--' ~ variant if variant else '') -%}
+{%- if url %}<a class="{{ cls }}" href="{{ url }}">{% else %}<span class="{{ cls }}">{% endif %}{{ label|typo }} {{ icon('arrow', sm=true) }}{% if url %}</a>{% else %}</span>{% endif -%}
 {%- endmacro %}
 
 {#- Coloured circle with an icon. color: coral | sun | sky | mint | lilac | sand (any CSS colour token name) -#}
@@ -71,12 +81,16 @@
     faces:  true → four breed faces on the right (general pages)
     facts:  [{"label": "Вес", "value": "2–5 кг"}] → small fact tiles under the lead
     chips:  [{"icon": "doc", "label": "Договор"}] → small pills under the lead
-    eyebrow: short label above H1.  caller() → buttons row.
+    eyebrow: short label above H1.  caller() → buttons row.  note: one muted line under the buttons
+    («Подберём щенка за 1 час — пришлём видео и цену»).
+    full=true: first screen on the whole screen (100svh minus the header, min 560 px), copy centred vertically,
+    on phones the photo grows to fill the screen. Desktop ≥ 1200 px: the studio photo is larger than before (client 13.10).
+    Buttons: btn--white (main, white) + btn--outline (white outline, no fill) on breed pages; btn--ink elsewhere.
     Exactly one H1 per page: this macro renders it. -#}
-{% macro page_hero(title, lead=none, tone=none, breed=none, photo=none, faces=false, facts=none, chips=none, eyebrow=none, id='page-title') -%}
+{% macro page_hero(title, lead=none, tone=none, breed=none, photo=none, faces=false, facts=none, chips=none, eyebrow=none, id='page-title', full=false, note=none) -%}
 {%- set tone = tone or (breed.tone if breed else 'cream') -%}
 {%- set photo = photo or (breed.studio if breed else none) -%}
-<section class="phero container" aria-labelledby="{{ id }}">
+<section class="phero container{{ ' phero--full' if full }}" aria-labelledby="{{ id }}">
   <div class="phero__tile tone--{{ tone }}{{ ' phero--photo' if photo }}{{ ' phero--faces' if faces and not photo }}"{% if photo and tone_style(photo.src) %} style="{{ tone_style(photo.src) }}"{% endif %} data-hero-ctas>
     {% if photo %}
     <div class="phero__photo"><img src="{{ photo.src }}" alt="{{ photo.alt|typo }}" width="{{ photo.w }}" height="{{ photo.h }}" fetchpriority="high" decoding="async"></div>
@@ -98,6 +112,7 @@
       </ul>
       {% endif %}
       {% if caller is defined %}<div class="phero__actions">{{ caller() }}</div>{% endif %}
+      {% if note %}<p class="phero__note">{{ note|typo }}</p>{% endif %}
     </div>
   </div>
 </section>
@@ -106,9 +121,10 @@
 {#- Studio photo tile — the homepage breed-tile technique for ANY measured studio photo (color-*, parent-*, studio-*):
     the tile takes the photo's own measured backdrop (tools/photo-tones.json), the photo stands on the tile floor
     full width, only its top edge fades. photo: {"src", "alt"} (+ optional "w", "h").
-    tone: fallback tone class if the photo is not measured. url → the tile is a link with a round arrow. badge: small pill.
-    priority=true: first-screen tile — the photo loads at once with fetchpriority="high" (not lazy). -#}
-{% macro studio_tile(photo, title, line=none, url=none, badge=none, tone='cream', priority=false) -%}
+    tone: fallback tone class if the photo is not measured. url → the tile is a link with a CTA pill (cta = its label).
+    badge: small pill. priority=true: first-screen tile — the photo loads at once with fetchpriority="high" (not lazy).
+    Phones: one wide tile per row (photo on the right); in .stiles--pair two small 3:4 tiles per row. -#}
+{% macro studio_tile(photo, title, line=none, url=none, badge=none, tone='cream', priority=false, cta='Подробнее') -%}
 {%- set size = imgsize(photo.src) or [photo.w, photo.h] -%}
 {%- set tag = 'a' if url else 'div' -%}
 <{{ tag }} class="stile tone--{{ tone }}"{% if url %} href="{{ url }}"{% endif %} style="--ar:{{ size[0] }}/{{ size[1] }};{{ tone_style(photo.src) }}">
@@ -117,17 +133,17 @@
     {% if line %}<span class="stile__line">{{ line|typo }}</span>{% endif %}
     {% if badge %}<span class="stile__badge">{{ badge|typo }}</span>{% endif %}
   </span>
-  {% if url %}{{ round_arrow() }}{% endif %}
+  {% if url %}{{ tile_cta(cta) }}{% endif %}
   <span class="stile__photo"><img src="{{ photo.src }}" alt="{{ photo.alt|typo }}" width="{{ size[0] }}" height="{{ size[1] }}"{% if priority %} fetchpriority="high"{% else %} loading="lazy"{% endif %} decoding="async"></span>
 </{{ tag }}>
 {%- endmacro %}
 
-{#- Row of studio tiles (4 per row on desktop, 2 on tablet, ribbon on mobile).
-    items: [{"photo": {...}, "title": "...", "line": "...", "url": "...", "badge": "...", "tone": "peach"}] -#}
-{% macro studio_tiles(items) -%}
-<ul class="stiles stiles--{{ items|length if items|length < 4 else 4 }} scroller">
+{#- Row of studio tiles (4 per row on desktop, 2 on tablet, one wide tile per row on phones; pair=true → two small per row).
+    items: [{"photo": {...}, "title": "...", "line": "...", "url": "...", "badge": "...", "tone": "peach", "cta": "Все окрасы"}] -#}
+{% macro studio_tiles(items, pair=false) -%}
+<ul class="stiles stiles--{{ items|length if items|length < 4 else 4 }}{{ ' stiles--pair' if pair }}">
   {% for t in items %}
-  <li>{{ studio_tile(t.photo, t.title, line=t.line if t.line is defined else none, url=t.url if t.url is defined else none, badge=t.badge if t.badge is defined else none, tone=t.tone if t.tone is defined else 'cream') }}</li>
+  <li>{{ studio_tile(t.photo, t.title, line=t.line if t.line is defined else none, url=t.url if t.url is defined else none, badge=t.badge if t.badge is defined else none, tone=t.tone if t.tone is defined else 'cream', cta=t.cta if t.cta is defined else 'Подробнее') }}</li>
   {% endfor %}
 </ul>
 {%- endmacro %}
@@ -154,6 +170,50 @@
   <li class="stat">{{ ico(s.icon, s.color) }}<b class="stat__num">{{ s.num|typo }}</b><span class="stat__cap">{{ s.cap|typo }}</span></li>
   {% endfor %}
 </ul>
+{%- endmacro %}
+
+{#- Advantages of the kennel: tiles with a pastel icon circle, a 2–3 word title and one line.
+    items: [{"icon", "color", "title", "line"}] — default site.advantages (привиты, ветпаспорт и договор, пожизненная
+    гарантия, пожизненная консультация, видео до покупки, доставка). 3 per row on desktop (cols=2..6), one per row on phones.
+    title → a whole section with H2 (id, lead, link); without title — just the list. -#}
+{% macro advantages(items=none, title=none, id='preimushchestva', lead=none, link=none, cols=3) -%}
+{%- set items = items or site.advantages -%}
+{%- set body -%}
+<ul class="advs advs--{{ cols }}">
+  {% for a in items %}
+  <li class="adv">
+    {{ ico(a.icon, a.color) }}
+    <h3 class="adv__title">{{ a.title|typo }}</h3>
+    <p class="adv__line">{{ a.line|typo }}</p>
+  </li>
+  {% endfor %}
+</ul>
+{%- endset -%}
+{% if title %}
+<section class="section container" id="{{ id }}" aria-labelledby="{{ id }}-title">
+  {{ section_head(title, id=id ~ '-title', link=link, lead=lead) }}
+  {{ body }}
+</section>
+{% else %}
+{{ body }}
+{% endif %}
+{%- endmacro %}
+
+{#- Lead band: sits right under a media carousel (or anywhere) — short question, one line, «Оставить заявку»
+    (opens the price modal with its own title / note) + «Написать в Telegram». Faces of the four breeds on the right.
+    tag: 'h3' inside a section that already has its H2 (default), 'h2' + title_id when it is the section itself. -#}
+{% macro lead_band(title='Хотите увидеть щенков вживую по видео?', line='Покажем щенков по видеосвязи и пришлём цену — в удобное вам время', label='Оставить заявку', tone='lilac', tag='h3', title_id=none, faces=true, note='Видеозвонок', modal_title='Покажем щенков по видео') -%}
+<div class="lband tone--{{ tone }}">
+  <div class="lband__txt">
+    <{{ tag }} class="lband__title"{% if title_id %} id="{{ title_id }}"{% endif %}>{{ title|typo }}</{{ tag }}>
+    {% if line %}<p class="lband__line">{{ line|typo }}</p>{% endif %}
+  </div>
+  {% if faces %}<span class="lband__faces" aria-hidden="true">{% for b in breeds %}{{ face(b) }}{% endfor %}</span>{% endif %}
+  <div class="lband__actions">
+    <button class="btn btn--ink btn--lg" type="button" data-open-modal data-modal-title="{{ modal_title }}" data-modal-sub="{{ line }}" data-modal-note="{{ note }}">{{ label|typo }}</button>
+    <a class="btn btn--tg btn--lg" href="{{ site.messengers.telegram.url }}" target="_blank" rel="noopener">{{ icon('tg') }}{{ site.tg_cta.label }}</a>
+  </div>
+</div>
 {%- endmacro %}
 
 {#- Numbered steps in white tiles (homepage «Как купить»). items: [{"title": "Заявка", "text": "..."}]
@@ -184,7 +244,8 @@
 
 {#- Related links tiles. items: [{"url": "/dostavka/", "title": "Доставка", "line": "По Москве и в 60+ городов",
     "icon": "car", "color": "mint"}] — or "breed": breeds.json item (shows its face), or "image": "/assets/img/x.jpg".
-    style: 'white' (white tiles, coloured icon) | 'color' (whole tile in its colour, like homepage «С чем поможем») -#}
+    style: 'white' (white tiles, coloured icon) | 'color' (whole tile in its colour, like homepage «С чем поможем»).
+    Every tile ends with a CTA pill: t.cta or «Подробнее». -#}
 {% macro link_tiles(items, style='white') -%}
 <ul class="ltiles ltiles--{{ items|length if items|length <= 4 else 4 }}">
   {% for t in items %}
@@ -194,7 +255,7 @@
       {% elif t.image is defined and t.image %}<span class="ltile__img">{{ img(t.image, '') }}</span>
       {% elif t.icon is defined and t.icon %}{{ ico(t.icon, t.color if t.color is defined else 'sun') }}{% endif %}
       <span class="ltile__txt"><span class="ltile__title">{{ t.title|typo }}</span>{% if t.line is defined and t.line %}<span class="ltile__line">{{ t.line|typo }}</span>{% endif %}</span>
-      {{ round_arrow() }}
+      {{ tile_cta(t.cta if t.cta is defined and t.cta else 'Подробнее', variant='soft' if style == 'white' else '') }}
     </a>
   </li>
   {% endfor %}
@@ -254,9 +315,10 @@
 {%- endmacro %}
 
 {#- Photo gallery. photos: [{"src": "/assets/img/x.jpg", "alt": "...", "caption": "..."}] (caption optional).
-    The first photo is large on desktop. -#}
+    The first photo is large; on phones a grid (first photo full width, the rest two per row). For a swipeable
+    row of photos and videos use media.media_carousel. -#}
 {% macro gallery(photos, label='Фото') -%}
-<ul class="gallery gallery--{{ photos|length if photos|length <= 5 else 5 }} scroller" aria-label="{{ label }}">
+<ul class="gallery gallery--{{ photos|length if photos|length <= 5 else 5 }}" aria-label="{{ label }}">
   {% for p in photos %}
   <li class="gallery__item">
     <figure>

@@ -1,5 +1,5 @@
 /* =========================================================
-   Puppy House — страница щенка /shchenki/<slug>/ (группа puppy).
+   домщенков.рф — страница щенка /shchenki/<slug>/ (группа puppy).
    Подключается после main.css и pages.css. Только раскладка страницы, токены — из main.css.
    ========================================================= */
 
@@ -178,12 +178,10 @@
 @media (hover: hover) { .pp-kit:hover { transform: translateY(-4px); box-shadow: var(--shadow-lift); } }
 .pp-kit__img { position: relative; flex: 1; min-height: 150px; border-radius: var(--r-img); overflow: hidden; background: #E7E1D8; }
 .pp-kit__img img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-.pp-kit__txt { display: grid; gap: 4px; padding: 16px 76px 20px calc(var(--tile-pad) - var(--inset)); }
+.pp-kit__txt { display: grid; gap: 4px; padding: 16px 16px 14px calc(var(--tile-pad) - var(--inset)); }
 .pp-kit__title { font-size: var(--fs-h3); font-weight: 500; letter-spacing: -0.025em; line-height: 1.15; }
 .pp-kit__line { font-size: 15px; line-height: 1.4; color: var(--muted); }
-.pp-kit .round-arrow { position: absolute; right: 20px; bottom: 20px; background: var(--page); }
-.pp-kit:hover .round-arrow { background: var(--ink); color: #fff; }
-.pp-kit:hover .round-arrow .i { transform: rotate(45deg); }
+.pp-kit .tcta { align-self: flex-start; margin: 0 0 calc(var(--tile-pad) - var(--inset)) calc(var(--tile-pad) - var(--inset)); }
 
 /* =========================================================
    АДАПТИВ
@@ -193,10 +191,10 @@
   .pp-thumb__label { font-size: 12px; padding: 4px 9px; }
   .pp-thumb__more { display: none; }
   .pp-gets { grid-template-columns: minmax(0, 1fr); }
-  .pp-kit { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); align-items: center; min-height: 0; padding: var(--inset); }
-  .pp-kit__img { flex: none; aspect-ratio: 2.4 / 1; min-height: 0; }
-  .pp-kit__txt { padding: 12px 76px 12px clamp(12px, 2vw, 24px); }
-  .pp-kit .round-arrow { top: 50%; bottom: auto; transform: translateY(-50%); }
+  .pp-kit { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); grid-template-rows: 1fr auto; align-items: center; min-height: 0; padding: var(--inset); }
+  .pp-kit__img { grid-row: 1 / 3; flex: none; aspect-ratio: 2.4 / 1; min-height: 0; }
+  .pp-kit__txt { align-self: end; padding: 12px 16px 12px clamp(12px, 2vw, 24px); }
+  .pp-kit .tcta { grid-column: 2; align-self: start; margin: 0 0 8px clamp(12px, 2vw, 24px); }
 }
 
 @media (max-width: 1000px) {
@@ -247,10 +245,10 @@
   .pp-get__line { font-size: 14px; }
   .pp-kit { display: flex; align-items: stretch; padding: var(--inset) var(--inset) 0; }
   .pp-kit__img { aspect-ratio: 16 / 9; }
-  .pp-kit__txt { padding: 14px 68px 16px 12px; }
+  .pp-kit__txt { padding: 14px 12px 12px; }
   .pp-kit__title { font-size: 18px; }
   .pp-kit__line { font-size: 14px; }
-  .pp-kit .round-arrow { top: auto; bottom: 16px; right: 14px; transform: none; width: 44px; height: 44px; }
+  .pp-kit .tcta { margin: 0 0 14px 12px; }
 }
 
 @media (max-width: 420px) {

@@ -202,9 +202,10 @@
 }
 
 @media (max-width: 760px) {
+  /* родители — по одному в ряд, широкими плитками (pages.css: .stiles на телефоне) */
+  .tr-parents { --n: 1; }
   .tr-hero__media { aspect-ratio: 4 / 3; }
   .tr-hero__copy { padding: 18px 12px 12px; }
-  .tr-hero .phero__chips { margin-inline: -20px; padding-inline: 20px; }
 
   /* плитки с иконкой — компактной строкой: иконка слева, текст справа */
   .tr-feats, .tr-feats--4 { grid-template-columns: minmax(0, 1fr); }

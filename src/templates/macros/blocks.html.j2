@@ -30,13 +30,13 @@
 </section>
 {%- endmacro %}
 
-{#- Reviews section: rating tiles + review cards (ribbon on mobile). reviews: reviews.json items. -#}
+{#- Reviews section: rating tiles + review cards (one per row on phones). reviews: reviews.json items. -#}
 {% macro reviews_section(reviews, title='Отзывы владельцев', id='otzyvy', title_id='reviews-title', link={'url': '/otzyvy/', 'label': 'Все отзывы'}, short=true) -%}
 <section class="section container" id="{{ id }}" aria-labelledby="{{ title_id }}">
   {{ ui.section_head(title, id=title_id, link=link) }}
   <div class="reviews-wrap">
     {{ cards.ratings() }}
-    <ul class="reviews scroller">
+    <ul class="reviews">
       {% for r in reviews %}
       {{ cards.review_card(r, short=short) }}
       {% endfor %}
@@ -60,4 +60,50 @@
     <button class="seo__toggle" type="button" aria-expanded="false" aria-controls="{{ key }}-more" data-seo-toggle><span data-seo-label>Читать полностью</span>{{ ui.icon('chevron', sm=true) }}</button>
   </div>
 </section>
+{%- endmacro %}
+
+{#- Blog teasers: cards with a photo, title, one line and «Читать» (article cards for the homepage, breed and puppy pages).
+    slugs: blog slugs in order (default: the first `limit` of data.blog), or posts: ready dicts
+    [{"url", "title", "line", "cover": {"src", "alt", "pos"?}, "topic"}]. 3 per row on desktop (4 posts → 4),
+    a compact list on phones (thumbnail left, text right). title → section with H2; without title — just the list. -#}
+{% macro blog_teasers(slugs=none, posts=none, title='Гид по породам', id='blog', lead=none, link={'url': '/blog/', 'label': 'Все статьи'}, limit=3) -%}
+{%- if posts is none -%}
+  {%- set all = data.blog -%}
+  {%- set slugs = slugs or (all|map(attribute='slug')|list)[:limit] -%}
+  {%- set posts = [] -%}
+  {%- for sl in slugs -%}
+    {%- set meta = all|selectattr('slug', 'equalto', sl)|first -%}
+    {%- set post = data.blog_posts.posts[sl] -%}
+    {%- set topic = (breed_map[meta.breed].name ~ ' · ' ~ post.topic|lower) if meta.breed else post.topic -%}
+    {%- set _ = posts.append({'url': meta.url, 'title': post.h1, 'line': post.card_line, 'cover': post.cover, 'topic': topic}) -%}
+  {%- endfor -%}
+{%- endif -%}
+{%- set body -%}
+<ul class="bteasers bteasers--{{ posts|length if posts|length <= 4 else 3 }}">
+  {% for c in posts %}
+  {%- set size = imgsize(c.cover.src) or [1264, 848] %}
+  <li>
+    <article class="bteaser">
+      <div class="bteaser__media">
+        <img src="{{ c.cover.src }}" alt="{{ c.cover.alt|typo }}" width="{{ size[0] }}" height="{{ size[1] }}"{% if c.cover.pos is defined and c.cover.pos %} style="object-position:{{ c.cover.pos }}"{% endif %} loading="lazy" decoding="async">
+        {% if c.topic %}<span class="bteaser__topic">{{ c.topic|typo }}</span>{% endif %}
+      </div>
+      <div class="bteaser__body">
+        <h3 class="bteaser__title"><a class="bteaser__link" href="{{ c.url }}">{{ ui.nohyph(c.title) }}</a></h3>
+        <p class="bteaser__line">{{ c.line|typo }}</p>
+        <span class="tcta tcta--soft" aria-hidden="true">Читать {{ ui.icon('arrow', sm=true) }}</span>
+      </div>
+    </article>
+  </li>
+  {% endfor %}
+</ul>
+{%- endset -%}
+{% if title %}
+<section class="section container" id="{{ id }}" aria-labelledby="{{ id }}-title">
+  {{ ui.section_head(title, id=id ~ '-title', link=link, lead=lead) }}
+  {{ body }}
+</section>
+{% else %}
+{{ body }}
+{% endif %}
 {%- endmacro %}

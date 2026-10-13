@@ -10,7 +10,7 @@ from markupsafe import Markup, escape
 
 from _lib import by_id, crumbs, sort_puppies
 
-BRAND = " | Puppy House"
+BRAND = " | домщенков.рф"
 TITLE_MAX = 60
 
 # Visible copy never breaks inside «той-пуделя», «бордер-колли» or a range like «2–5 кг»: such words go into

@@ -1,16 +1,10 @@
 /* =========================================================
-   Puppy House — внутренние страницы. Подключается после main.css
+   домщенков.рф — внутренние страницы. Подключается после main.css
    (layouts/page.html.j2), на главной не загружается.
    Общий файл: группы страниц его не правят, а добавляют свой assets/css/<группа>.css.
    ========================================================= */
 
-/* пастельные тинты для плиток без студийного фото: стена → чуть светлее «пол» */
-.tone--sun   { --tone: #FFF1C4; --tone-floor: #FFF7DF; --tone-hi: #FFF4CF; }
-.tone--sky   { --tone: #E1EEFF; --tone-floor: #EEF5FF; --tone-hi: #E4F0FF; }
-.tone--mint  { --tone: #DAF3E5; --tone-floor: #EAF8F0; --tone-hi: #DDF5E8; }
-.tone--lilac { --tone: #ECE5FF; --tone-floor: #F5F1FF; --tone-hi: #EEE8FF; }
-.tone--coral { --tone: #FFE5DC; --tone-floor: #FFF1EC; --tone-hi: #FFE9E2; }
-.tone--sand  { --tone: #EFE3D2; --tone-floor: #F6EEE3; --tone-hi: #F1E6D7; }
+/* пастельные тинты .tone--sun / sky / mint / lilac / coral / sand — в main.css (нужны и главной) */
 
 /* ---------- раскладка ---------- */
 .section--tight { margin-top: clamp(40px, 4.4vw, 64px); }
@@ -76,6 +70,22 @@
 }
 .phero__actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px; }
 .phero__title + .phero__actions, .phero__lead + .phero__actions { margin-top: auto; padding-top: 26px; }
+.phero__note { margin-top: 14px; font-size: 14.5px; line-height: 1.45; color: var(--ink-soft); max-width: 42ch; }
+
+/* первый экран на весь экран (ui.page_hero(full=true)): 100svh минус шапка и крошки, не ниже 560 px;
+   текст — по центру по вертикали, кнопки сразу под подзаголовком */
+.phero--full .phero__tile { min-height: max(560px, calc(100svh - var(--head-h) - 76px)); align-items: center; }
+.phero--full .phero__copy { justify-content: center; }
+.phero--full .phero__title { font-size: var(--fs-h1); line-height: .95; }
+.phero--full .phero__lead { margin-top: 22px; }
+.phero--full .phero__title + .phero__actions, .phero--full .phero__lead + .phero__actions,
+.phero--full .phero__facts, .phero--full .phero__chips { margin-top: 0; padding-top: 32px; }
+
+/* десктоп: студийный кадр крупнее (правка клиента 13.10) — плитка выше, кадр по-прежнему во всю её высоту,
+   без обрезки: собака целиком, края кадра гаснут в замеренные стену и пол */
+@media (min-width: 1200px) {
+  .phero--photo { min-height: clamp(420px, 34vw, 560px); }
+}
 
 /* студийное фото «в цвет»: квадрат во всю высоту справа. Верх, низ и правый край совпадают
    с краями плитки, левый и верхний гаснут в стену; «пол» плитки — на линии пола кадра */
@@ -114,7 +124,7 @@
 .stile__title { font-size: clamp(20px, 1.6vw, 26px); font-weight: 500; letter-spacing: -0.03em; line-height: 1.08; }
 .stile__line { font-size: 15px; line-height: 1.35; color: var(--ink-soft); }
 .stile__badge { margin-top: 4px; padding: 5px 11px; border-radius: var(--r-pill); background: rgba(255, 255, 255, .62); font-size: 12.5px; font-weight: 500; }
-.stile .round-arrow { position: absolute; z-index: 2; left: clamp(18px, 1.6vw, 24px); bottom: clamp(18px, 1.6vw, 24px); }
+.stile .tcta { position: absolute; z-index: 2; left: clamp(18px, 1.6vw, 24px); bottom: clamp(18px, 1.6vw, 24px); }
 /* кадр во всю ширину стоит на «полу» плитки; гаснет только верхний край — в цвет верха кадра */
 .stile__photo { position: absolute; z-index: 1; left: 0; right: 0; bottom: 0; aspect-ratio: var(--ar, 1); }
 .stile__photo img {
@@ -124,8 +134,6 @@
   transform-origin: 50% 92%; transition: transform .9s var(--ease);
 }
 a.stile:hover .stile__photo img { transform: scale(1.04); }
-a.stile:hover .round-arrow { background: var(--ink); color: #fff; }
-a.stile:hover .round-arrow .i { transform: rotate(45deg); }
 
 /* четыре мордочки пород — для общих страниц без своего фото */
 .phero__faces {
@@ -219,11 +227,8 @@ a.stile:hover .round-arrow .i { transform: rotate(45deg); }
 .ltile__title { font-size: clamp(20px, 1.5vw, 24px); font-weight: 500; letter-spacing: -0.025em; line-height: 1.1; }
 .ltile__line { font-size: 15px; line-height: 1.4; color: var(--muted); }
 .ltile--color .ltile__line { color: rgba(20, 20, 20, .8); }
-.ltile .round-arrow { margin-top: auto; background: var(--page); }
-.ltile--color .round-arrow { background: #fff; }
+.ltile .tcta { margin-top: auto; }
 .ltile--color .ico { background: rgba(255, 255, 255, .9); }
-.ltile:hover .round-arrow { background: var(--ink); color: #fff; }
-.ltile:hover .round-arrow .i { transform: rotate(45deg); }
 
 .cta-band {
   display: grid; grid-template-columns: minmax(0, 1fr) auto auto; align-items: center;
@@ -504,11 +509,10 @@ a.stile:hover .round-arrow .i { transform: rotate(45deg); }
   .phero__title { font-size: clamp(34px, 9.4vw, 44px); max-width: none; }
   .phero__lead { margin-top: 12px; }
   .phero__facts, .phero__chips { padding-top: 20px; }
-  /* чипы и факты — лентой внутри плитки, чтобы шапка оставалась короткой */
-  .phero__chips, .phero__facts { align-self: stretch; flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; margin-inline: -20px; padding-inline: 20px; }
-  .phero__chips::-webkit-scrollbar, .phero__facts::-webkit-scrollbar { display: none; }
-  .phero__chips li { flex: none; height: 34px; font-size: 13.5px; padding: 0 13px 0 11px; }
-  .phero__fact { flex: none; padding: 8px 13px 9px; border-radius: 16px; }
+  /* чипы и факты переносятся на новую строку (без прокрутки вбок) */
+  .phero__chips, .phero__facts { gap: 6px; }
+  .phero__chips li { height: 34px; font-size: 13.5px; padding: 0 13px 0 11px; }
+  .phero__fact { padding: 8px 13px 9px; border-radius: 16px; }
   .phero__fact dd { font-size: 15px; }
   .phero__title + .phero__actions, .phero__lead + .phero__actions { padding-top: 20px; }
   .phero__actions { width: 100%; }
@@ -524,14 +528,39 @@ a.stile:hover .round-arrow .i { transform: rotate(45deg); }
     mask-image: linear-gradient(180deg, #000 88%, transparent 100%);
   }
   .phero__faces { display: flex; position: relative; order: -1; right: auto; top: auto; transform: none; margin: 4px 0 18px; }
+  /* на весь экран: кадр растёт и заполняет экран над текстом */
+  .phero--full .phero__tile { min-height: max(520px, calc(100svh - 120px)); align-items: stretch; justify-content: flex-end; }
+  .phero--full .phero__photo { flex: 1 1 auto; min-height: 220px; aspect-ratio: auto; }
+  .phero--full .phero__title { font-size: clamp(36px, 10vw, 48px); }
+  .phero--full .phero__lead { margin-top: 12px; }
+  .phero--full .phero__title + .phero__actions, .phero--full .phero__lead + .phero__actions,
+  .phero--full .phero__facts, .phero--full .phero__chips { padding-top: 20px; }
   .phero__faces .face { width: 64px; height: 64px; border-width: 3px; }
   .phero__faces .face + .face { margin-left: -12px; }
   .phero__faces .face:nth-child(odd), .phero__faces .face:nth-child(even) { transform: none; }
 
   .grid, .grid--2 { --cols: 1; }
-  .stiles.scroller { display: flex; }
-  .stiles > li { width: 66%; max-width: 280px; }
+  /* студийные плитки в списке .stiles — по одной в ряд, широкие: кадр справа во всю высоту, левый край гаснет в стену
+     (замер кадра: --tone-top / --tone-hi / --tone-floor / --fa / --fb). .stiles--pair — две маленькие плитки 3 : 4 в ряд */
+  .stiles, .stiles--2, .stiles--3 { --n: 1; }
+  .stiles--pair { --n: 2; }
   .stile { padding: 18px; }
+  .stile .tcta { left: 18px; bottom: 18px; }
+  .stiles:not(.stiles--pair) .stile {
+    aspect-ratio: auto; height: clamp(220px, 62vw, 280px);
+    background: linear-gradient(180deg, var(--tone-top, var(--tone-hi)) 0, var(--tone-hi) 22%, var(--tone-hi) calc(var(--fa, .78) * 100%), var(--tone-floor) calc(var(--fb, .97) * 100%));
+  }
+  .stiles:not(.stiles--pair) .stile__top { max-width: 56%; }
+  .stiles:not(.stiles--pair) .stile__photo { left: auto; right: -6%; top: 0; bottom: 0; height: 100%; }
+  .stiles:not(.stiles--pair) .stile__photo img {
+    -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 34%), linear-gradient(180deg, transparent 0, #000 12%);
+    mask-image: linear-gradient(90deg, transparent 0, #000 34%), linear-gradient(180deg, transparent 0, #000 12%);
+    -webkit-mask-composite: source-in; mask-composite: intersect;
+  }
+  .stiles--pair .stile { padding: 14px; }
+  .stiles--pair .stile__title { font-size: 17px; }
+  .stiles--pair .stile__line { display: none; }
+  .stiles--pair .stile .tcta { display: none; }
   .specs { --cols: 2; }
   .spec { padding: 16px 16px 18px; }
   .spec .ico { margin-bottom: 12px; }
@@ -539,12 +568,13 @@ a.stile:hover .round-arrow .i { transform: rotate(45deg); }
   .kpis--3 > :last-child { grid-column: 1 / -1; }
 
   .ltiles, .ltiles--2, .ltiles--3 { --n: 1; }
-  .ltile { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 14px; min-height: 0; padding: 14px 14px 14px 16px; }
+  .ltile { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: center; gap: 12px 14px; min-height: 0; padding: 16px; }
   .ltile .face, .ltile .ico { width: 44px; height: 44px; }
-  .ltile .round-arrow { margin: 0; width: 44px; height: 44px; }
+  .ltile .tcta { grid-column: 2; justify-self: start; margin: 0; height: 40px; padding: 0 16px 0 18px; font-size: 14.5px; }
   .ltile__title { font-size: 18px; }
   .ltile__line { font-size: 14px; }
-  .ltile__img { grid-column: 1 / -1; width: auto; margin: -6px -6px 0 -8px; }
+  .ltile__img { grid-column: 1 / -1; width: auto; margin: -8px -8px 0; }
+  .ltile:has(.ltile__img) .ltile__txt, .ltile:has(.ltile__img) .tcta { grid-column: 1 / -1; }
 
   .cta-band { grid-template-columns: minmax(0, 1fr); padding: 24px 20px; }
   .cta-band__actions .btn { flex: 1 1 100%; }
@@ -567,8 +597,12 @@ a.stile:hover .round-arrow .i { transform: rotate(45deg); }
   .prose { font-size: 16.5px; }
   .callout { grid-template-columns: minmax(0, 1fr); gap: 10px; padding: 16px 18px; }
 
-  .gallery { display: flex; grid-auto-rows: auto; }
-  .gallery > .gallery__item { width: 82%; max-width: 360px; aspect-ratio: 4 / 3; }
+  /* галерея — сеткой: первое фото во всю ширину, остальные по два */
+  .gallery { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-auto-rows: clamp(120px, 38vw, 220px); }
+  .gallery .gallery__item:not(:first-child) { grid-column: auto; grid-row: auto; }
+  .gallery--2 .gallery__item { grid-column: 1 / -1; grid-row: span 2; }
+  .gallery--4 .gallery__item:last-child { grid-column: 1 / -1; }
+  .gallery--1 { grid-template-columns: minmax(0, 1fr); grid-auto-rows: clamp(220px, 70vw, 420px); }
 
   /* фильтры: породы — лентой, пол и статус — в раскрывающейся панели */
   .filters { gap: 12px; }
@@ -579,15 +613,10 @@ a.stile:hover .round-arrow .i { transform: rotate(45deg); }
   /* min-width: 0 — the panel is as wide as the screen; a long segment scrolls inside its pill */
   .filters__more { min-width: 0; }
   .fgroup { flex-direction: column; align-items: flex-start; gap: 8px; min-width: 0; max-width: 100%; }
-  .fseg { min-width: 0; max-width: 100%; overflow-x: auto; scrollbar-width: none; }
-  .fseg::-webkit-scrollbar { display: none; }
+  .fseg { min-width: 0; max-width: 100%; flex-wrap: wrap; border-radius: 22px; }
   .fseg button { padding: 0 13px; font-size: 14px; }
   .filters__meta { gap: 4px 14px; }
 
-  .pups--grid { display: grid; overflow: visible; margin: 0; padding: 0; scroll-snap-type: none; }
-  .pups--grid .pups__item, .pups--grid .pups__more { width: auto; max-width: none; }
-  .pups__more--fill { grid-column: auto; }
-  .scroller > .pups__more--fill { width: 76%; max-width: 320px; }
 }
 
 @media (max-width: 560px) {
@@ -605,6 +634,7 @@ a.stile:hover .round-arrow .i { transform: rotate(45deg); }
   }
 
   .pups--grid { grid-template-columns: minmax(0, 1fr); }
+  .pups__more--fill { grid-column: auto; }
   /* одна колонка: кадр чуть шире, чтобы карточка не была выше экрана */
   .pups--grid .pup__media { aspect-ratio: 1 / .86; }
 }

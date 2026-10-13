@@ -27,7 +27,7 @@
 {%- endmacro %}
 
 {#- «Щенки в наличии» section for inner pages: up to `limit` cards (available first) and a link to the catalog.
-    breed: breeds.json item → only that breed, link to the filtered catalog. Ribbon on mobile, grid on desktop.
+    breed: breeds.json item → only that breed, link to the filtered catalog. Grid: 4 / 3 / 2 columns, one per row ≤ 560 px.
     .pups--strip: at 3 columns (901–1199 px) a 4th card that would sit alone in the second row is hidden (pages.css). -#}
 {% macro pups_section(title='Щенки в наличии', breed=none, limit=4, id='pups', exclude=none) -%}
 {%- set pool = (breed.puppies if breed else puppies)|rejectattr('slug', 'equalto', exclude)|sort(attribute='status_order')|list -%}
@@ -36,7 +36,7 @@
 <section class="section container" id="{{ id }}" aria-labelledby="{{ id }}-title">
   {{ ui.section_head(title, id=id ~ '-title', link={'url': '/shchenki/' ~ ('?breed=' ~ breed.slug if breed else ''), 'label': 'Весь каталог — ' ~ total}) }}
   {% if list %}
-  <ul class="pups pups--strip scroller" data-reveal="items">
+  <ul class="pups pups--strip" data-reveal="items">
     {% for p in list %}
     <li class="pups__item">
       {{ puppy_card(p) }}
@@ -65,21 +65,22 @@
 </div>
 {%- endmacro %}
 
-{#- Breed tile — the homepage pastel tile with the studio photo standing on the tile «floor». b = breeds.json item -#}
-{% macro breed_tile(b) -%}
+{#- Breed tile — the homepage pastel tile with the studio photo standing on the tile «floor». b = breeds.json item.
+    CTA «Перейти к породе». count=true adds «В наличии: N» (the client removed it from the homepage tiles 13.10). -#}
+{% macro breed_tile(b, count=false, cta='Перейти к породе') -%}
 <a class="breed breed--{{ b.key }} {{ b.tone_class }}" href="{{ b.urls.hub }}">
-  <span class="breed__top"><span class="breed__title">{{ b.name }}</span><span class="breed__desc">{{ b.tile_line|typo }}</span><span class="breed__count"><span class="dot dot--ok" aria-hidden="true"></span>В&nbsp;наличии: {{ b.stock }}</span></span>
-  {{ ui.round_arrow() }}
+  <span class="breed__top"><span class="breed__title">{{ b.name }}</span><span class="breed__desc">{{ b.tile_line|typo }}</span>{% if count %}<span class="breed__count"><span class="dot dot--ok" aria-hidden="true"></span>В&nbsp;наличии: {{ b.stock }}</span>{% endif %}</span>
+  {{ ui.tile_cta(cta) }}
   <span class="breed__photo"><img src="{{ b.studio.src }}" alt="{{ b.studio.alt|typo }}" width="{{ b.studio.w }}" height="{{ b.studio.h }}" loading="lazy" decoding="async"></span>
 </a>
 {%- endmacro %}
 
-{#- Grid of the four breed tiles (ribbon on mobile) -#}
-{% macro breed_tiles(items=none) -%}
-<ul class="breeds scroller">
+{#- Grid of the four breed tiles (4 in a row on desktop, 2 on tablet, one per row on phones; .breeds--2 → 2 per row) -#}
+{% macro breed_tiles(items=none, count=false, cols=4) -%}
+<ul class="breeds{{ ' breeds--2' if cols == 2 }}">
   {% for b in items or breeds %}
   <li>
-    {{ breed_tile(b) }}
+    {{ breed_tile(b, count=count) }}
   </li>
   {% endfor %}
 </ul>

@@ -12,6 +12,7 @@
       <a class="btn btn--ink btn--lg" href="{{ site.phone.tel }}">{{ ui.icon('phone') }}Позвонить</a>
       {{ forms.msgr('telegram') }}
       {{ forms.msgr('whatsapp') }}
+      {{ forms.msgr('max') }}
     {% endcall %}
     </div>
 {% endblock %}
@@ -30,7 +31,7 @@
           {{ ui.ico('chat', 'sky') }}
           <p class="dlv-ct__label">Мессенджеры</p>
           <div class="dlv-ct__msgrs">
-            {% for k in ('telegram', 'whatsapp') %}
+            {% for k in ('telegram', 'whatsapp', 'max') %}
             {%- set m = site.messengers[k] %}
             <a class="dlv-msgr" href="{{ m.url }}" target="_blank" rel="noopener" aria-label="{{ m.aria }}"><span class="msgr msgr--{{ m.icon }}" aria-hidden="true">{{ ui.icon(m.icon) }}</span>{{ m.label }}</a>
             {% endfor %}

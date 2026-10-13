@@ -1,5 +1,5 @@
 /* =========================================================
-   Puppy House — подбор породы, сравнения пород, стартовый набор (группа choice).
+   домщенков.рф — подбор породы, сравнения пород, стартовый набор (группа choice).
    Подключается после main.css и pages.css. Только раскладка этих страниц:
    токены, плитки, кнопки, студийные плитки, таблица, CTA — из общих файлов.
    ========================================================= */
@@ -318,21 +318,17 @@ html:not(.js) .cho-quiz { display: none; }
   .cho-res__why li { font-size: 15px; }
   .cho-res__row, .cho-res__row:has(> .cho-res__alt[hidden]) { grid-template-columns: minmax(0, 1fr); }
 
-  .cho-ans { display: flex; } /* лента (.scroller из main.css) */
-  .cho-ans > li { width: 80%; max-width: 320px; }
+  .cho-ans { grid-template-columns: minmax(0, 1fr); } /* карточки одна под другой */
   .cho-ans__card > .ico { margin-bottom: 20px; }
 
-  .cho-pairs__list {
-    flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none;
-    margin-inline: calc(-1 * var(--pad)); padding: 4px var(--pad); scroll-padding-inline: var(--pad);
-  }
-  .cho-pairs__list::-webkit-scrollbar { display: none; }
-  .cho-pairs__list > li { flex: none; }
+  .cho-pairs__list { flex-wrap: wrap; }
+  .cho-pairs__list > li { max-width: 100%; }
+  .cho-pair { height: auto; min-height: 48px; padding-block: 6px; white-space: normal; line-height: 1.25; }
 
   .cho-vs__pair .stile { aspect-ratio: 3 / 4; padding: 14px; }
   .cho-vs__pair .stile__title { font-size: 18px; }
   .cho-vs__pair .stile__line { display: none; }
-  .cho-vs__pair .round-arrow { width: 40px; height: 40px; left: 12px; bottom: 12px; }
+  .cho-vs__pair .tcta { left: 12px; bottom: 12px; height: 36px; padding: 0 12px 0 14px; font-size: 13.5px; gap: 6px; }
   .cho-vs__or { width: 52px; height: 52px; margin: -26px 0 0 -26px; border-width: 5px; font-size: 15px; }
 
   .cho-pick__card { padding: 22px 20px; }

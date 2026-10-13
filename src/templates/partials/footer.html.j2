@@ -16,8 +16,9 @@
             <li><svg class="i i--sm" aria-hidden="true"><use href="#i-mail"/></svg><a href="mailto:{{ site.email }}">{{ site.email }}</a></li>
           </ul>
           <div class="footer__msgs">
-            <a class="msgr msgr--tg" href="{{ site.messengers.telegram.url }}" target="_blank" rel="noopener" aria-label="{{ site.messengers.telegram.aria }}">{{ ui.icon('tg') }}</a>
-            <a class="msgr msgr--wa" href="{{ site.messengers.whatsapp.url }}" target="_blank" rel="noopener" aria-label="{{ site.messengers.whatsapp.aria }}">{{ ui.icon('wa') }}</a>
+            {% for k in ('telegram', 'whatsapp', 'max') %}{% set m = site.messengers[k] %}
+            <a class="msgr msgr--{{ m.icon }}" href="{{ m.url }}" target="_blank" rel="noopener" aria-label="{{ m.aria }}">{{ ui.icon(m.icon) }}</a>
+            {% endfor %}
           </div>
         </div>
         <nav class="footer__nav" aria-label="Разделы сайта">
@@ -35,7 +36,7 @@
       </div>
       <div class="footer__legal">
         <span>{{ site.footer.legal.requisites|typo }}</span>
-        <span>{{ site.footer.legal.offer|typo }} · <a href="{{ site.footer.legal.privacy.url }}">{{ site.footer.legal.privacy.label }}</a> · {{ site.mirror }}</span>
+        <span>{{ site.footer.legal.offer|typo }} · <a href="{{ site.footer.legal.privacy.url }}">{{ site.footer.legal.privacy.label }}</a></span>
       </div>
     </div>
   </footer>

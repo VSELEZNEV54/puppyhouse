@@ -1,6 +1,7 @@
-{#- Full-screen burger menu (< 1100 px). main.js: [data-burger], #mmenu, .mmenu__acc, #mm-breeds, [data-menu-close], [data-menu-link]. -#}
+{#- Full-screen mobile menu (< 1100 px): every group of site.menu as an accordion, then contacts.
+    main.js: [data-burger], #mmenu, .mmenu__acc (aria-controls → its list), [data-menu-close], [data-menu-link]. -#}
 {% import "macros/ui.html.j2" as ui %}
-{% import "macros/forms.html.j2" as forms %}
+{% import "partials/menu.html.j2" as menu %}
 {% set is_home = page.url == '/' %}
   <!-- Мобильное меню -->
   <div class="mmenu" id="mmenu" role="dialog" aria-modal="true" aria-label="Меню сайта" hidden>
@@ -13,29 +14,24 @@
     </div>
     <nav class="mmenu__nav" aria-label="Мобильное меню">
       <ul class="mmenu__list">
-        {% for item in site.nav %}
-        {% if item.dropdown is defined %}
+        {% for g in site.menu %}
         <li>
-          <button class="mmenu__acc" type="button" aria-expanded="false" aria-controls="mm-breeds">{{ item.label }} {{ ui.icon('chevron') }}</button>
-          <ul class="mmenu__sub" id="mm-breeds" hidden>
-            {% for b in breeds %}
-            <li><a href="{{ b.urls.hub }}">{{ ui.face(b) }}{{ b.name }}</a></li>
-            {% endfor %}
-            <li><a href="{{ site.breed_test.url }}"><span class="ico" style="--c:var(--lilac)" aria-hidden="true">{{ ui.icon('sparkle', sm=true) }}</span>{{ site.breed_test.label|typo }}</a></li>
-          </ul>
+          <button class="mmenu__acc" type="button" aria-expanded="false" aria-controls="mm-g{{ loop.index }}">{{ g.title|typo }} {{ ui.icon('chevron') }}</button>
+          <div class="mmenu__group" id="mm-g{{ loop.index }}" hidden>
+            {{ menu.items(g, page.url)|indent(12) }}
+          </div>
         </li>
-        {% else %}
-        <li><a href="{{ item.url }}"{% if not is_home and page.url.startswith(item.url) %} aria-current="page"{% endif %}>{{ item.label|typo }} {{ ui.icon('arrow') }}</a></li>
-        {% endif %}
         {% endfor %}
       </ul>
     </nav>
     <div class="mmenu__bottom">
       <a class="mmenu__phone" href="{{ site.phone.tel }}">{{ site.phone.display }}<small>{{ site.phone.hours|typo }}</small></a>
       <div class="mmenu__msgs">
-        {{ forms.msgr('telegram') }}
-        {{ forms.msgr('whatsapp') }}
-        <button class="btn btn--ink btn--lg mmenu__cta" type="button" data-open-modal>{{ site.cta_label }}</button>
+        {% for k in ('telegram', 'whatsapp', 'max') %}{% set m = site.messengers[k] %}
+        <a class="msgr msgr--{{ m.icon }}" href="{{ m.url }}" target="_blank" rel="noopener" aria-label="{{ m.aria }}">{{ ui.icon(m.icon) }}</a>
+        {% endfor %}
+        <button class="btn btn--white mmenu__price" type="button" data-open-modal>Узнать цену</button>
       </div>
+      <a class="btn btn--tg btn--lg btn--block" href="{{ site.messengers.telegram.url }}" target="_blank" rel="noopener">{{ ui.icon('tg') }}{{ site.tg_cta.label }}</a>
     </div>
   </div>

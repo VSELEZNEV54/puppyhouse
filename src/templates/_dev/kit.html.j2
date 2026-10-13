@@ -15,13 +15,32 @@
 {% endblock %}
 
 {% block hero %}
-    {% call ui.page_hero('Мальтипу', lead='Кудрявый компаньон размером с кошку. Почти не линяет', breed=mal, eyebrow='ui.page_hero(breed=…, facts=…)', facts=mal.facts[:3]) %}
-      {{ forms.price_button(cls='btn btn--ink btn--lg') }}
-      <a class="btn btn--white btn--lg" href="/maltipu/vidy-i-okrasy/">Виды и окрасы</a>
+    {% call ui.page_hero('Щенки мальтипу в Москве', lead='Кудрявый компаньон размером с кошку. Почти не линяет', breed=mal, eyebrow='ui.page_hero(breed=…, full=true, note=…)', full=true, note='Подберём щенка за 1 час: пришлём видео, родителей и цену') %}
+      {{ forms.price_button(label='Подобрать щенка', cls='btn btn--white btn--lg', breed=mal.name) }}
+      <a class="btn btn--outline btn--lg" href="#media">Смотреть фото и видео</a>
     {% endcall %}
 {% endblock %}
 
 {% block body %}
+    {% call media.media_carousel(data.media.maltipu, title='Фото и видео щенков', id='media', lead='media.media_carousel(data.media.maltipu) + caller() → ui.lead_band()') %}
+      {{ ui.lead_band() }}
+    {% endcall %}
+
+    {{ ui.advantages(title='Почему нам доверяют', lead='ui.advantages() — site.advantages') }}
+
+    <section class="section container">
+      <p class="kit-label">ui.advantages(cols=6)</p>
+      {{ ui.advantages(cols=6) }}
+    </section>
+
+    {{ media.video_reviews(data.reviews, id='kit-vrev') }}
+
+    {{ blocks.blog_teasers(['maltipu-harakter', 'toj-pudel-uhod', 'kak-vybrat-shchenka'], lead='blocks.blog_teasers(slugs)') }}
+
+    <section class="section container" aria-labelledby="kit-breeds2">
+      {{ ui.section_head('Породы по две', id='kit-breeds2', lead='cards.breed_tiles(cols=2)') }}
+      {{ cards.breed_tiles(cols=2) }}
+    </section>
     <section class="section container">
       <p class="kit-label">Шапка с фото в тонах других пород (так выглядит ui.page_hero(breed=…) у каждой породы)</p>
       <div class="grid grid--3">

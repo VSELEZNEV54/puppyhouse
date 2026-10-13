@@ -1,5 +1,5 @@
 /* =========================================================
-   Puppy House — цена породы и «Виды и окрасы» (группа breedsub).
+   домщенков.рф — цена породы и «Виды и окрасы» (группа breedsub).
    Подключается после main.css и pages.css. Только раскладка этих страниц:
    токены, плитки, кнопки, студийные плитки, шаги, CTA — из общих файлов.
    ========================================================= */
@@ -141,10 +141,8 @@
   .bsub-vs__name { font-size: 16px; }
   .bsub-vs__line { font-size: 14.5px; }
 
-  /* лента: .bsub-kinds объявлена сеткой и перекрывает .scroller из main.css — возвращаем flex */
-  .bsub-kinds.scroller { display: flex; }
-  /* сравнительные плитки — лентой, как карточки щенков и студийные плитки */
-  .bsub-kinds.scroller > li { width: 76%; max-width: 300px; }
+  /* сравнительные плитки — одна под другой */
+  .bsub-kinds, .bsub-kinds--2, .bsub-kinds--3, .bsub-kinds--4 { grid-template-columns: minmax(0, 1fr); }
   .bsub-kind { padding: 20px; }
   .bsub-kind__head { margin-bottom: 18px; }
   .bsub-kinds:has(.bsub-kind__tag) .bsub-kind__head { min-height: 56px; }
@@ -160,6 +158,4 @@
   .bsub-more__name { font-size: 16px; }
 }
 
-@media (max-width: 420px) {
-  .bsub-kinds.scroller > li { width: 82%; }
-}
+

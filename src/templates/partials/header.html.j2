@@ -1,5 +1,10 @@
-{#- Sticky header pill. On the homepage the logo scrolls to #top, elsewhere it goes home. -#}
+{#- Sticky header pill (every page). READ-ONLY for page groups.
+    logo · «Меню» (site map panel: hover / click / keyboard) · «Породы ▾» · links from site.nav · phone · Telegram, WhatsApp, MAX ·
+    «Написать в Telegram» (site.tg_cta, Telegram gradient) · burger (< 1100 px → #mmenu).
+    site.nav items have "prio": the higher the number, the earlier the link hides on a narrower desktop (it stays in «Меню»).
+    On the homepage the logo scrolls to #top, elsewhere it goes home. main.js: [data-hdr], [data-dd], [data-mega], [data-burger]. -#}
 {% import "macros/ui.html.j2" as ui %}
+{% import "partials/menu.html.j2" as menu %}
 {% set is_home = page.url == '/' %}
   <!-- ================= ШАПКА ================= -->
   <header class="hdr" data-hdr>
@@ -8,6 +13,29 @@
         <span class="logo__mark" aria-hidden="true">{{ ui.icon('paw') }}</span>
         <span class="logo__text"><span class="logo__name">{{ site.brand }}</span><span class="logo__sub">{{ site.tagline }}</span></span>
       </a>
+
+      <div class="hdr__menu" data-mega>
+        <button class="hdr__menu-btn" type="button" aria-expanded="false" aria-controls="mega" data-mega-btn>{{ ui.icon('menu', sm=true) }}<span>Меню</span></button>
+        <div class="mega" id="mega" role="region" aria-label="Все разделы сайта" hidden>
+          <div class="mega__box">
+          <div class="mega__grid">
+            {% for g in site.menu %}
+            <div class="mega__col{{ ' mega__col--wide' if g.wide is defined and g.wide }}">
+              <p class="mega__h">{{ g.title|typo }}</p>
+              {{ menu.items(g, page.url)|indent(14) }}
+            </div>
+            {% endfor %}
+          </div>
+          <div class="mega__foot">
+            <a class="mega__phone" href="{{ site.phone.tel }}">{{ site.phone.display }}<small>{{ site.phone.hours|typo }}</small></a>
+            <div class="mega__actions">
+              <button class="btn btn--white" type="button" data-open-modal>Узнать цену</button>
+              <a class="btn btn--tg" href="{{ site.messengers.telegram.url }}" target="_blank" rel="noopener">{{ ui.icon('tg') }}{{ site.tg_cta.label }}</a>
+            </div>
+          </div>
+          </div>
+        </div>
+      </div>
 
       <nav class="nav" aria-label="Основное меню">
         <ul class="nav__list">
@@ -25,7 +53,7 @@
             </div>
           </li>
           {% else %}
-          <li><a class="nav__link" href="{{ item.url }}"{% if not is_home and page.url.startswith(item.url) %} aria-current="page"{% endif %}>{{ item.label|typo }}</a></li>
+          <li class="nav__item nav__item--p{{ item.prio | default(1) }}"><a class="nav__link" href="{{ item.url }}"{% if not is_home and page.url.startswith(item.url) %} aria-current="page"{% endif %}>{{ item.label|typo }}</a></li>
           {% endif %}
           {% endfor %}
         </ul>
@@ -33,10 +61,11 @@
 
       <div class="hdr__right">
         <a class="hdr__phone" href="{{ site.phone.tel }}">{{ site.phone.display }}</a>
-        <a class="msgr msgr--tg" href="{{ site.messengers.telegram.url }}" target="_blank" rel="noopener" aria-label="{{ site.messengers.telegram.aria }}">{{ ui.icon('tg') }}</a>
-        <a class="msgr msgr--wa" href="{{ site.messengers.whatsapp.url }}" target="_blank" rel="noopener" aria-label="{{ site.messengers.whatsapp.aria }}">{{ ui.icon('wa') }}</a>
         <a class="msgr msgr--call" href="{{ site.phone.tel }}" aria-label="Позвонить: {{ site.phone.display }}">{{ ui.icon('phone') }}</a>
-        <button class="btn btn--ink hdr__cta" type="button" data-open-modal>{{ site.cta_label }}</button>
+        {% for k in ('telegram', 'whatsapp', 'max') %}{% set m = site.messengers[k] %}
+        <a class="msgr msgr--{{ m.icon }}" href="{{ m.url }}" target="_blank" rel="noopener" aria-label="{{ m.aria }}">{{ ui.icon(m.icon) }}</a>
+        {% endfor %}
+        <a class="btn btn--tg hdr__cta" href="{{ site.messengers.telegram.url }}" target="_blank" rel="noopener">{{ ui.icon('tg') }}<span>{{ site.tg_cta.label }}</span></a>
         <button class="msgr msgr--ink hdr__burger" type="button" aria-label="Открыть меню" aria-expanded="false" aria-controls="mmenu" data-burger>{{ ui.icon('menu') }}</button>
       </div>
     </div>

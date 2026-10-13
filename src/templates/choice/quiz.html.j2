@@ -114,7 +114,7 @@
 
     <section class="section container" id="otvety" aria-labelledby="otvety-title">
       {{ ui.section_head(qz.answers_title, id='otvety-title', lead=qz.answers_lead) }}
-      <ul class="cho-ans scroller" data-reveal="items">
+      <ul class="cho-ans" data-reveal="items">
         {% for a in qz.answers %}
         <li class="cho-ans__card">
           {{ ui.ico(a.icon, a.color) }}

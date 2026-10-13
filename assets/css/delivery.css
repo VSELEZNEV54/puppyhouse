@@ -119,7 +119,7 @@
   min-height: 0; padding: 18px 18px 18px 20px;
 }
 .dlv-breeds .ltile .face { width: 60px; height: 60px; }
-.dlv-breeds .ltile .round-arrow { margin: 0; }
+.dlv-breeds .ltile .tcta { margin: 0; }
 .dlv-breeds .ltile__title { font-size: clamp(19px, 1.4vw, 22px); }
 
 /* =========================================================
@@ -322,7 +322,6 @@ a.dlv-ct__value:hover { text-decoration: underline; text-decoration-thickness: 1
   .dlv-chip { min-height: 44px; } /* зона нажатия на телефоне */
   .dlv-hero__media { aspect-ratio: 4 / 3; }
   .dlv-hero__copy { padding: 18px 12px 12px; }
-  .dlv-hero .phero__chips { margin-inline: -20px; padding-inline: 20px; }
   .dlv-legal .phero__title { font-size: clamp(27px, 7.4vw, 44px); }
 
   .dlv-ways, .dlv-ways--2, .dlv-ways--4 { --n: 1; }
@@ -336,7 +335,7 @@ a.dlv-ct__value:hover { text-decoration: underline; text-decoration-thickness: 1
   .dlv-chip { min-height: 40px; padding: 8px 14px; font-size: 14.5px; }
 
   .dlv-breeds .ltiles { --n: 1; }
-  .dlv-breeds .ltile { gap: 14px; padding: 14px 14px 14px 16px; }
+  .dlv-breeds .ltile { grid-template-columns: auto minmax(0, 1fr); gap: 12px 14px; padding: 16px; }
   .dlv-breeds .ltile .face { width: 48px; height: 48px; }
 
   .dlv-bank__facts dd { font-size: 16px; }

@@ -1,4 +1,4 @@
-/* Puppy House — страница щенка /shchenki/<slug>/.
+/* домщенков.рф — страница щенка /shchenki/<slug>/.
    1. Галерея: миниатюры меняют большой кадр (фото щенка, родитель, видео по запросу, документы).
    2. Режимы общей модалки main.js: кнопки с data-pp-modal="video | wait | litter" открывают её
       через [data-pup] (как карточка щенка); заголовок, подпись и пометку заявки main.js берёт
@@ -62,7 +62,7 @@
   const breedSelect = $('#pm-breed');
   const breedField = $('[data-pm-breed]', modal);
   const DEFAULT_LABEL = submit.dataset.label;
-  const CONTACT = { telegram: 'Telegram', whatsapp: 'WhatsApp' };
+  const CONTACT = { telegram: 'Telegram', whatsapp: 'WhatsApp', max: 'MAX' };
   const NIGHT = ' Ночью — утром, после 9:00.';
 
   const MODES = {

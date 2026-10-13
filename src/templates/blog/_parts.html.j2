@@ -22,7 +22,7 @@
   <div class="blg-card__body">
     <h3 class="blg-card__title"><a class="blg-card__link" href="{{ c.url }}">{{ c.title|typo }}</a></h3>
     <p class="blg-card__line">{{ c.line|typo }}</p>
-    <p class="blg-card__foot"><span class="blg-card__time">{{ ui.icon('clock', sm=true) }}<span class="sr-only">Время чтения: </span>{{ c.read }}</span>{{ ui.round_arrow() }}</p>
+    <p class="blg-card__foot"><span class="blg-card__time">{{ ui.icon('clock', sm=true) }}<span class="sr-only">Время чтения: </span>{{ c.read }}</span>{{ ui.tile_cta('Читать') }}</p>
   </div>
 </article>
 {%- endmacro %}

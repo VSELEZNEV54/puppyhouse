@@ -22,7 +22,7 @@
 
     <section class="section container" id="mamy-i-papy" aria-labelledby="mamy-i-papy-title">
       {{ ui.section_head(pg.parents.title, id='mamy-i-papy-title', lead=pg.parents.lead, link={'url': '/dokumenty-i-garantii/', 'label': 'Документы и гарантии'}) }}
-      <ul class="stiles tr-parents scroller" data-reveal="items">
+      <ul class="stiles tr-parents" data-reveal="items">
         {% for p in parents %}
         <li>{{ tr.parent_tile(p) }}</li>
         {% endfor %}

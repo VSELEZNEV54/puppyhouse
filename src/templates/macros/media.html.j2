@@ -1,0 +1,97 @@
+{#- Photo / video carousel, video reviews and the lightbox opener. READ-ONLY for page-group agents.
+    Import:  {% import "macros/media.html.j2" as media %}   (layouts/page.html.j2 already imports it)
+    JS: main.js — [data-carousel] (arrows, swipe, keys, active card) and [data-lightbox] (shared #lightbox dialog).
+    Sideways swipe is allowed ONLY here (client rule 13.10): every other card list stacks on phones. -#}
+{% import "macros/ui.html.j2" as ui %}
+{% import "macros/cards.html.j2" as cards %}
+
+{#- One 9:16 card. m: {"src", "alt", "kind": "photo"|"video", "caption", "video": null|"/assets/video/x.mp4", "pos": "50% 40%"}.
+    A button: opens the lightbox (photo — the photo; video — the player from data-src, or the poster + «Видео появится здесь»). -#}
+{% macro media_card(m, index=0, total=1, priority=false) -%}
+{%- set is_video = m.kind == 'video' -%}
+{%- set size = imgsize(m.src) or [900, 1600] -%}
+<button class="mcard{{ ' mcard--video' if is_video }}" type="button" data-lightbox data-kind="{{ m.kind }}"{% if is_video and m.video is defined and m.video %} data-src="{{ m.video }}"{% endif %} data-caption="{{ m.caption }}" aria-label="{{ ('Смотреть видео: ' if is_video else 'Открыть фото: ') ~ (m.caption or m.alt) }}">
+  <img src="{{ m.src }}" alt="{{ m.alt|typo }}" width="{{ size[0] }}" height="{{ size[1] }}"{% if m.pos is defined and m.pos %} style="object-position:{{ m.pos }}"{% endif %}{% if priority %} fetchpriority="high"{% else %} loading="lazy"{% endif %} decoding="async">
+  {% if is_video %}<span class="mcard__play" aria-hidden="true">{{ ui.icon('play') }}</span>{% endif %}
+  {% if m.caption %}<span class="mcard__cap">{% if is_video %}<span class="mcard__kind">Видео</span>{% endif %}{{ m.caption|typo }}</span>{% endif %}
+</button>
+{%- endmacro %}
+
+{#- Carousel row of vertical 9:16 cards; the centred card is the active one (slightly larger). Prev / next round
+    buttons, swipe on touch, ← → keys, scroll snap. Starts on the middle card (start: index to begin with instead).
+    items: media.json set (data.media.home, data.media['maltipu']…) or your own list of media_card dicts.
+    title → a whole <section class="section container" id=id> with H2 (+ lead, link); without title — just the carousel
+    (put it inside your own section). caller() → content under the carousel inside the section (e.g. ui.lead_band). -#}
+{% macro media_carousel(items, title=none, id='media', lead=none, link=none, label=none, start=none, priority=false) -%}
+{%- set n = items|length -%}
+{%- set first = start if start is not none else (n // 2) -%}
+{%- set body -%}
+<div class="media-carousel" data-carousel data-start="{{ first }}" role="region" aria-roledescription="карусель" aria-label="{{ label or title or 'Фото и видео щенков' }}">
+  <div class="media-carousel__viewport" tabindex="0" data-carousel-viewport>
+    <ul class="media-carousel__track">
+      {% for m in items %}
+      <li class="media-carousel__item{{ ' is-active' if loop.index0 == first }}" aria-roledescription="слайд" aria-label="{{ loop.index }} из {{ n }}">
+        {{ media_card(m, loop.index0, n, priority=priority and (loop.index0 - first)|abs <= 2)|indent(8) }}
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+  <div class="media-carousel__nav">
+    <button class="media-carousel__btn" type="button" data-carousel-prev aria-label="Предыдущее">{{ ui.icon('arrow', cls='i--flip') }}</button>
+    <button class="media-carousel__btn" type="button" data-carousel-next aria-label="Следующее">{{ ui.icon('arrow') }}</button>
+  </div>
+</div>
+{%- endset -%}
+{% if title %}
+<section class="section container" id="{{ id }}" aria-labelledby="{{ id }}-title">
+  {{ ui.section_head(title, id=id ~ '-title', link=link, lead=lead) }}
+  {{ body }}
+  {% if caller is defined %}{{ caller() }}{% endif %}
+</section>
+{% else %}
+{{ body }}
+{% endif %}
+{%- endmacro %}
+
+{#- Video review card: vertical 9:16 poster with a play button, the review text (r.short, ≤ 160 chars) and
+    name · city · breed. r = reviews.json item (poster {src, alt}, video: null|url). Opens the lightbox. -#}
+{% macro video_review_card(r) -%}
+{%- set size = imgsize(r.poster.src) or [900, 1600] -%}
+{%- set breed = breed_map[r.breed].name if r.breed in breed_map else r.breed_label -%}
+<article class="vrev">
+  <button class="vrev__media" type="button" data-lightbox data-kind="video"{% if r.video %} data-src="{{ r.video }}"{% endif %} data-caption="Отзыв: {{ r.name }}, {{ r.city }}" aria-label="Смотреть видеоотзыв: {{ r.name }}, {{ r.city }}">
+    <img src="{{ r.poster.src }}" alt="{{ r.poster.alt|typo }}" width="{{ size[0] }}" height="{{ size[1] }}"{% if r.poster.pos is defined and r.poster.pos %} style="object-position:{{ r.poster.pos }}"{% endif %} loading="lazy" decoding="async">
+    <span class="mcard__play" aria-hidden="true">{{ ui.icon('play') }}</span>
+  </button>
+  <div class="vrev__body">
+    <span class="stars" role="img" aria-label="Оценка {{ r.rating }} из 5">{% for _ in range(r.rating) %}{{ ui.icon('star') }}{% endfor %}</span>
+    <blockquote class="vrev__text"><p>{{ (r.short or r.text)|typo }}</p></blockquote>
+    <p class="vrev__who"><span class="ava" style="--c:var(--{{ r.color }})" aria-hidden="true">{{ r.name[0] }}</span><span><b>{{ r.name }}, {{ r.city }}</b><span>{{ breed }}</span></span></p>
+  </div>
+</article>
+{%- endmacro %}
+
+{#- Video reviews section: H2 + rating tiles + a carousel of video_review_card (swipe on phones, arrows on desktop).
+    reviews: reviews.json items. ratings=false hides the Яндекс / Google / Авито tiles. -#}
+{% macro video_reviews(reviews, title='Отзывы владельцев', id='otzyvy', title_id=none, link={'url': '/otzyvy/', 'label': 'Все отзывы'}, lead=none, ratings=true) -%}
+{%- set tid = title_id or (id ~ '-title') -%}
+<section class="section container" id="{{ id }}" aria-labelledby="{{ tid }}">
+  {{ ui.section_head(title, id=tid, link=link, lead=lead) }}
+  {% if ratings %}<div class="vrevs__ratings">{{ cards.ratings() }}</div>{% endif %}
+  <div class="media-carousel media-carousel--reviews" data-carousel data-start="0" role="region" aria-roledescription="карусель" aria-label="{{ title }}">
+    <div class="media-carousel__viewport" tabindex="0" data-carousel-viewport>
+      <ul class="media-carousel__track">
+        {% for r in reviews %}
+        <li class="media-carousel__item{{ ' is-active' if loop.first }}" aria-roledescription="слайд" aria-label="{{ loop.index }} из {{ reviews|length }}">
+          {{ video_review_card(r)|indent(10) }}
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+    <div class="media-carousel__nav">
+      <button class="media-carousel__btn" type="button" data-carousel-prev aria-label="Предыдущий отзыв">{{ ui.icon('arrow', cls='i--flip') }}</button>
+      <button class="media-carousel__btn" type="button" data-carousel-next aria-label="Следующий отзыв">{{ ui.icon('arrow') }}</button>
+    </div>
+  </div>
+</section>
+{%- endmacro %}

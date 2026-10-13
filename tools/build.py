@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Puppy House static site generator.
+"""домщенков.рф — static site generator.
 
     python3 tools/build.py            build every route into <url>/index.html
     python3 tools/build.py --clean    also delete pages from earlier builds that no route produces now
@@ -368,6 +368,8 @@ _CAPS_WORD_RE = re.compile(r"\b[А-ЯЁA-Z]{4,}\b")
 CAPS_OK = {"FCI", "ФКС", "ДНК", "ИНН", "ОГРН", "ОГРНИП", "КПП", "БИК", "ОКПО", "ОКВЭД", "MAX", "HTML", "SMS", "PDF", "WhatsApp"}
 _CSS_CAPS_RE = re.compile(r"text-transform\s*:\s*uppercase|font-variant(?:-caps)?\s*:\s*(?:all-)?small-caps", re.I)
 _CSS_WEIGHT_RE = re.compile(r"font-weight\s*:\s*(\d{3}|bold|bolder)", re.I)
+# Бренд с 13.10 — «домщенков.рф» (строчными, без дефиса): старое имя и вариант с дефисом не должны попадать на страницы
+_OLD_BRAND_RE = re.compile(r"puppy\s+house|дом-щенков\.рф", re.I)
 
 
 def lint_css(rep: "Report") -> None:
@@ -416,6 +418,9 @@ def lint(html: str, url: str, rep: Report) -> None:
         rep.warn(f"{where} looks like a price: «{_PRICE_RE.search(text).group(0)}» (no prices on the site)")
     if _BANNED_RE.search(text):
         rep.warn(f"{where} banned wording: «{_BANNED_RE.search(text).group(0)}»")
+    m = _OLD_BRAND_RE.search(htmllib.unescape(text + " " + title + " " + desc))
+    if m:
+        rep.warn(f"{where} old brand name «{m.group(0)}» — the brand is «домщенков.рф» (site.brand)")
     caps = sorted({w for w in _CAPS_WORD_RE.findall(htmllib.unescape(text)) if w not in CAPS_OK and not re.fullmatch(r"[A-Z]\d*", w)})
     if caps:
         rep.warn(f"{where} words in capitals: {', '.join(caps[:6])} — write in normal case (client style rule)")
@@ -480,7 +485,7 @@ def make_env(data: dict) -> jinja2.Environment:
 
 
 def main(argv=None) -> int:
-    ap = argparse.ArgumentParser(description="Build the Puppy House static site.")
+    ap = argparse.ArgumentParser(description="Build the домщенков.рф static site.")
     ap.add_argument("--clean", action="store_true", help="delete pages listed in the manifest that this build no longer produces")
     ap.add_argument("--kit", action="store_true", help="also write the UI kit page to /_kit/ (git-ignored)")
     ap.add_argument("--verbose", action="store_true", help="list every unbuilt link target and the pages using it")
@@ -495,7 +500,7 @@ def main(argv=None) -> int:
     routes, failed_modules = discover_routes(data, rep)
     if args.kit:
         routes.append(("(kit)", {"url": KIT_URL, "template": "_dev/kit.html.j2",
-                                 "context": {"title": "UI-кит — Puppy House", "description": "Компоненты внутренних страниц",
+                                 "context": {"title": "UI-кит — домщенков.рф", "description": "Компоненты внутренних страниц",
                                              "breadcrumbs": [("Главная", "/"), ("UI-кит", None)]}}))
 
     # 1. validate + render
@@ -587,7 +592,7 @@ def main(argv=None) -> int:
         os.replace(tmp, MANIFEST)
 
     # 5. summary
-    print("Puppy House build")
+    print("домщенков.рф build")
     mods = ", ".join(f"{m} ({n})" for m, n in sorted(per_module.items()))
     print(f"  routes: {mods or '—'}")
     print(f"  pages written: {len(rendered)} ({changed} changed, {len(rendered) - changed} unchanged)")

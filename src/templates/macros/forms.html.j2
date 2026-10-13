@@ -3,7 +3,7 @@
     main.js validates and «sends» #lead-form (one per page) and the shared price modal. -#}
 {% import "macros/ui.html.j2" as ui %}
 
-{#- Messenger round button: kind = telegram | whatsapp -#}
+{#- Messenger round button: kind = telegram | whatsapp | max -#}
 {% macro msgr(kind) -%}
 {%- set m = site.messengers[kind] -%}
 <a class="msgr msgr--{{ m.icon }}" href="{{ m.url }}" target="_blank" rel="noopener" aria-label="{{ m.aria }}">{{ ui.icon(m.icon) }}</a>
@@ -23,7 +23,23 @@
 <button class="{{ cls }}" type="button" data-open-modal{% if breed %} data-modal-breed="{{ breed }}"{% endif %}>{{ label }}</button>
 {%- endmacro %}
 
+{#- «Куда написать»: Telegram / WhatsApp / MAX / Звонок (radio chips). prefix: 'lf' (lead form) | 'pm' (price modal).
+    main.js reads the value: telegram | whatsapp | max | call. -#}
+{% macro contact_field(prefix) -%}
+<fieldset class="field seg" role="radiogroup" aria-describedby="{{ prefix }}-contact-err">
+  <legend class="field__label">Куда написать</legend>
+  <div class="seg__opts">
+    <input type="radio" name="contact" id="{{ prefix }}-c-tg" value="telegram"><label for="{{ prefix }}-c-tg">{{ ui.icon('tg', sm=true) }}Telegram</label>
+    <input type="radio" name="contact" id="{{ prefix }}-c-wa" value="whatsapp"><label for="{{ prefix }}-c-wa">{{ ui.icon('wa', sm=true) }}WhatsApp</label>
+    <input type="radio" name="contact" id="{{ prefix }}-c-max" value="max"><label for="{{ prefix }}-c-max">{{ ui.icon('max', sm=true) }}MAX</label>
+    <input type="radio" name="contact" id="{{ prefix }}-c-call" value="call"><label for="{{ prefix }}-c-call">{{ ui.icon('phone', sm=true) }}Звонок</label>
+  </div>
+  <p class="field__err" id="{{ prefix }}-contact-err" hidden></p>
+</fieldset>
+{%- endmacro %}
+
 {#- Final lead form section (homepage «Заявка»). One per page — keep id="zayavka": the mobile sticky bar hides over it.
+    The form is ONE column at every width: each field on its own row (client rule 13.10).
     title ≤ 5 words, line ≤ 90 chars. tone: studio/tint tone of the tile. breed: slug to preselect in the select. -#}
 {% macro lead_form(title='Подберём щенка за 15 минут', line='Пришлём щенков в наличии, цены и свежие видео', tone='peach', breed=none, id='zayavka') -%}
 <section class="section container" id="{{ id }}" aria-labelledby="lead-title">
@@ -35,6 +51,7 @@
         <a class="lead__phone" href="{{ site.phone.tel }}">{{ site.phone.display }}</a>
         {{ msgr('telegram') }}
         {{ msgr('whatsapp') }}
+        {{ msgr('max') }}
       </div>
     </div>
 
@@ -51,22 +68,14 @@
             <input class="input" id="lf-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="+7 (___) ___-__-__" required aria-describedby="lf-phone-err" data-phone>
             <p class="field__err" id="lf-phone-err" hidden></p>
           </div>
-          <div class="field field--full">
+          <div class="field">
             <label class="field__label" for="lf-breed">Какая порода интересует</label>
             <select class="input select" id="lf-breed" name="breed">
               {{ breed_options(breed)|indent(14) }}
             </select>
           </div>
-          <fieldset class="field field--full seg" role="radiogroup" aria-describedby="lf-contact-err">
-            <legend class="field__label">Куда написать</legend>
-            <div class="seg__opts">
-              <input type="radio" name="contact" id="lf-c-tg" value="telegram"><label for="lf-c-tg">{{ ui.icon('tg', sm=true) }}Telegram</label>
-              <input type="radio" name="contact" id="lf-c-wa" value="whatsapp"><label for="lf-c-wa">{{ ui.icon('wa', sm=true) }}WhatsApp</label>
-              <input type="radio" name="contact" id="lf-c-call" value="call"><label for="lf-c-call">{{ ui.icon('phone', sm=true) }}Звонок</label>
-            </div>
-            <p class="field__err" id="lf-contact-err" hidden></p>
-          </fieldset>
-          <div class="field field--full">
+          {{ contact_field('lf')|indent(10) }}
+          <div class="field">
             <div class="check">
               <input type="checkbox" id="lf-consent" name="consent" aria-describedby="lf-consent-err">
               <label for="lf-consent">Соглашаюсь на&nbsp;обработку персональных данных и&nbsp;принимаю <a href="{{ site.footer.legal.privacy.url }}" target="_blank" rel="noopener">политику конфиденциальности</a></label>

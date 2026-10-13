@@ -1,6 +1,6 @@
 {
   "_note": "Shared site data. READ-ONLY for page-group agents. Values in [square brackets] are placeholders to replace with real data (see placeholders).",
-  "brand": "Puppy House",
+  "brand": "домщенков.рф",
   "tagline": "питомник щенков · Москва",
   "domain": "puppyhouse.ru",
   "mirror": "домщенков.рф",
@@ -20,75 +20,469 @@
     "visit": "Приезд по предварительной записи"
   },
   "messengers": {
-    "telegram": { "label": "Telegram", "url": "https://t.me/puppyhouse_msk", "aria": "Написать в Telegram", "icon": "tg" },
-    "whatsapp": { "label": "WhatsApp", "url": "https://wa.me/74951234567", "aria": "Написать в WhatsApp", "icon": "wa" },
-    "max": { "label": "MAX", "url": "[ссылка на профиль в MAX]", "aria": "Написать в MAX", "icon": null }
+    "telegram": {
+      "label": "Telegram",
+      "url": "https://t.me/puppyhouse_msk",
+      "aria": "Написать в Telegram",
+      "icon": "tg"
+    },
+    "whatsapp": {
+      "label": "WhatsApp",
+      "url": "https://wa.me/74951234567",
+      "aria": "Написать в WhatsApp",
+      "icon": "wa"
+    },
+    "max": {
+      "label": "MAX",
+      "url": "https://max.ru/domshchenkov",
+      "aria": "Написать в MAX",
+      "icon": "max"
+    }
   },
   "nav": [
-    { "label": "Щенки", "url": "/shchenki/" },
-    { "label": "Породы", "dropdown": "breeds" },
-    { "label": "Доставка", "url": "/dostavka/" },
-    { "label": "Отзывы", "url": "/otzyvy/" },
-    { "label": "О питомнике", "url": "/roditeli/" },
-    { "label": "Контакты", "url": "/kontakty/" }
+    {
+      "label": "Породы",
+      "dropdown": "breeds"
+    },
+    {
+      "label": "О питомнике",
+      "url": "/roditeli/",
+      "prio": 2
+    },
+    {
+      "label": "Доставка",
+      "url": "/dostavka/",
+      "prio": 3
+    },
+    {
+      "label": "Отзывы",
+      "url": "/otzyvy/",
+      "prio": 4
+    },
+    {
+      "label": "Контакты",
+      "url": "/kontakty/",
+      "prio": 5
+    },
+    {
+      "label": "Блог",
+      "url": "/blog/",
+      "prio": 6
+    }
   ],
-  "breed_test": { "label": "Подобрать породу — тест", "url": "/podbor-porody/" },
+  "menu": [
+    {
+      "title": "Щенки",
+      "items": [
+        {
+          "label": "Все щенки в наличии",
+          "url": "/shchenki/",
+          "count": true
+        },
+        {
+          "label": "Мальтипу",
+          "url": "/maltipu/",
+          "breed": "maltipu"
+        },
+        {
+          "label": "Французский бульдог",
+          "url": "/francuzskij-buldog/",
+          "breed": "francuzskij-buldog"
+        },
+        {
+          "label": "Той-пудель",
+          "url": "/toj-pudel/",
+          "breed": "toj-pudel"
+        },
+        {
+          "label": "Бордер-колли",
+          "url": "/border-kolli/",
+          "breed": "border-kolli"
+        }
+      ]
+    },
+    {
+      "title": "О породах",
+      "wide": true,
+      "items": [
+        {
+          "label": "Цена щенка",
+          "sub": [
+            {
+              "label": "Мальтипу",
+              "url": "/maltipu/cena/"
+            },
+            {
+              "label": "Французский бульдог",
+              "url": "/francuzskij-buldog/cena/"
+            },
+            {
+              "label": "Той-пудель",
+              "url": "/toj-pudel/cena/"
+            },
+            {
+              "label": "Бордер-колли",
+              "url": "/border-kolli/cena/"
+            }
+          ]
+        },
+        {
+          "label": "Виды и окрасы",
+          "sub": [
+            {
+              "label": "Мальтипу",
+              "url": "/maltipu/vidy-i-okrasy/"
+            },
+            {
+              "label": "Французский бульдог",
+              "url": "/francuzskij-buldog/vidy-i-okrasy/"
+            },
+            {
+              "label": "Той-пудель",
+              "url": "/toj-pudel/vidy-i-okrasy/"
+            },
+            {
+              "label": "Бордер-колли",
+              "url": "/border-kolli/vidy-i-okrasy/"
+            }
+          ]
+        },
+        {
+          "label": "Сравнение пород",
+          "sub": [
+            {
+              "label": "Мальтипу или той-пудель",
+              "url": "/sravnenie/maltipu-ili-toj-pudel/"
+            },
+            {
+              "label": "Мальтипу или француз",
+              "url": "/sravnenie/maltipu-ili-francuzskij-buldog/"
+            },
+            {
+              "label": "Мальтипу или бордер-колли",
+              "url": "/sravnenie/maltipu-ili-border-kolli/"
+            },
+            {
+              "label": "Француз или той-пудель",
+              "url": "/sravnenie/francuzskij-buldog-ili-toj-pudel/"
+            },
+            {
+              "label": "Француз или бордер-колли",
+              "url": "/sravnenie/francuzskij-buldog-ili-border-kolli/"
+            },
+            {
+              "label": "Той-пудель или бордер-колли",
+              "url": "/sravnenie/toj-pudel-ili-border-kolli/"
+            }
+          ]
+        },
+        {
+          "label": "Подбор породы — тест",
+          "url": "/podbor-porody/",
+          "icon": "sparkle"
+        }
+      ]
+    },
+    {
+      "title": "Покупка",
+      "items": [
+        {
+          "label": "Доставка по России",
+          "url": "/dostavka/"
+        },
+        {
+          "label": "Рассрочка и бронь",
+          "url": "/rassrochka/"
+        },
+        {
+          "label": "Щенок в подарок",
+          "url": "/shchenok-v-podarok/"
+        },
+        {
+          "label": "Стартовый набор",
+          "url": "/magazin/"
+        },
+        {
+          "label": "Вопросы и ответы",
+          "url": "/faq/"
+        }
+      ]
+    },
+    {
+      "title": "О питомнике",
+      "items": [
+        {
+          "label": "Родители щенков",
+          "url": "/roditeli/"
+        },
+        {
+          "label": "Выпускники",
+          "url": "/vypuskniki/"
+        },
+        {
+          "label": "Отзывы владельцев",
+          "url": "/otzyvy/"
+        },
+        {
+          "label": "Документы и гарантии",
+          "url": "/dokumenty-i-garantii/"
+        },
+        {
+          "label": "Контакты",
+          "url": "/kontakty/"
+        }
+      ]
+    },
+    {
+      "title": "Блог",
+      "items": [
+        {
+          "label": "Все статьи",
+          "url": "/blog/"
+        },
+        {
+          "label": "Характер породы",
+          "sub": [
+            {
+              "label": "Мальтипу",
+              "url": "/blog/maltipu-harakter/"
+            },
+            {
+              "label": "Французский бульдог",
+              "url": "/blog/francuzskij-buldog-harakter/"
+            },
+            {
+              "label": "Той-пудель",
+              "url": "/blog/toj-pudel-harakter/"
+            },
+            {
+              "label": "Бордер-колли",
+              "url": "/blog/border-kolli-harakter/"
+            }
+          ]
+        },
+        {
+          "label": "Уход",
+          "sub": [
+            {
+              "label": "Мальтипу",
+              "url": "/blog/maltipu-uhod/"
+            },
+            {
+              "label": "Французский бульдог",
+              "url": "/blog/francuzskij-buldog-uhod/"
+            },
+            {
+              "label": "Той-пудель",
+              "url": "/blog/toj-pudel-uhod/"
+            },
+            {
+              "label": "Бордер-колли",
+              "url": "/blog/border-kolli-uhod/"
+            }
+          ]
+        },
+        {
+          "label": "Как выбрать щенка",
+          "url": "/blog/kak-vybrat-shchenka/"
+        }
+      ]
+    }
+  ],
+  "tg_cta": {
+    "label": "Написать в Telegram",
+    "short": "Telegram"
+  },
+  "breed_test": {
+    "label": "Подобрать породу — тест",
+    "url": "/podbor-porody/"
+  },
   "cta_label": "Подобрать щенка",
   "footer": {
     "columns": [
       {
         "title": "Щенки и породы",
         "links": [
-          { "label": "Все щенки в наличии", "url": "/shchenki/" },
-          { "label": "Мальтипу", "url": "/maltipu/" },
-          { "label": "Французский бульдог", "url": "/francuzskij-buldog/" },
-          { "label": "Той-пудель", "url": "/toj-pudel/" },
-          { "label": "Бордер-колли", "url": "/border-kolli/" },
-          { "label": "Подбор породы — тест", "url": "/podbor-porody/" }
+          {
+            "label": "Все щенки в наличии",
+            "url": "/shchenki/"
+          },
+          {
+            "label": "Мальтипу",
+            "url": "/maltipu/"
+          },
+          {
+            "label": "Французский бульдог",
+            "url": "/francuzskij-buldog/"
+          },
+          {
+            "label": "Той-пудель",
+            "url": "/toj-pudel/"
+          },
+          {
+            "label": "Бордер-колли",
+            "url": "/border-kolli/"
+          },
+          {
+            "label": "Подбор породы — тест",
+            "url": "/podbor-porody/"
+          }
         ]
       },
       {
         "title": "Покупка",
         "links": [
-          { "label": "Документы и гарантии", "url": "/dokumenty-i-garantii/" },
-          { "label": "Доставка", "url": "/dostavka/" },
-          { "label": "Рассрочка и бронь", "url": "/rassrochka/" },
-          { "label": "Щенок в подарок", "url": "/shchenok-v-podarok/" },
-          { "label": "Стартовый набор", "url": "/magazin/" },
-          { "label": "Вопросы и ответы", "url": "/faq/" }
+          {
+            "label": "Документы и гарантии",
+            "url": "/dokumenty-i-garantii/"
+          },
+          {
+            "label": "Доставка",
+            "url": "/dostavka/"
+          },
+          {
+            "label": "Рассрочка и бронь",
+            "url": "/rassrochka/"
+          },
+          {
+            "label": "Щенок в подарок",
+            "url": "/shchenok-v-podarok/"
+          },
+          {
+            "label": "Стартовый набор",
+            "url": "/magazin/"
+          },
+          {
+            "label": "Вопросы и ответы",
+            "url": "/faq/"
+          }
         ]
       },
       {
         "title": "О питомнике",
         "links": [
-          { "label": "Родители", "url": "/roditeli/" },
-          { "label": "Выпускники", "url": "/vypuskniki/" },
-          { "label": "Отзывы", "url": "/otzyvy/" },
-          { "label": "Блог", "url": "/blog/" },
-          { "label": "Контакты", "url": "/kontakty/" }
+          {
+            "label": "Родители",
+            "url": "/roditeli/"
+          },
+          {
+            "label": "Выпускники",
+            "url": "/vypuskniki/"
+          },
+          {
+            "label": "Отзывы",
+            "url": "/otzyvy/"
+          },
+          {
+            "label": "Блог",
+            "url": "/blog/"
+          },
+          {
+            "label": "Контакты",
+            "url": "/kontakty/"
+          }
         ]
       }
     ],
     "legal": {
-      "requisites": "© 2017–2026 Puppy House · ИП [ФИО] · ИНН [000000000000] · ОГРНИП [000000000000000]",
+      "requisites": "© 2017–2026 домщенков.рф · ИП [ФИО] · ИНН [000000000000] · ОГРНИП [000000000000000]",
       "offer": "Сайт не является публичной офертой",
-      "privacy": { "label": "Политика конфиденциальности", "url": "/politika-konfidencialnosti/" }
+      "privacy": {
+        "label": "Политика конфиденциальности",
+        "url": "/politika-konfidencialnosti/"
+      }
     }
   },
   "stats": [
-    { "num": "9 лет", "cap": "растим щенков", "icon": "calendar", "color": "coral" },
-    { "num": "640+", "cap": "выпускников дома", "icon": "home", "color": "sun" },
-    { "num": "4,9", "cap": "Яндекс Карты", "icon": "star", "color": "sky" },
-    { "num": "60+", "cap": "городов доставки", "icon": "pin", "color": "mint" }
+    {
+      "num": "9 лет",
+      "cap": "растим щенков",
+      "icon": "calendar",
+      "color": "coral"
+    },
+    {
+      "num": "640+",
+      "cap": "выпускников дома",
+      "icon": "home",
+      "color": "sun"
+    },
+    {
+      "num": "4,9",
+      "cap": "Яндекс Карты",
+      "icon": "star",
+      "color": "sky"
+    },
+    {
+      "num": "60+",
+      "cap": "городов доставки",
+      "icon": "pin",
+      "color": "mint"
+    }
+  ],
+  "advantages": [
+    {
+      "icon": "syringe",
+      "color": "mint",
+      "title": "Привиты по возрасту",
+      "line": "Прививки и обработки — в ветпаспорте"
+    },
+    {
+      "icon": "doc",
+      "color": "sky",
+      "title": "Ветпаспорт и договор",
+      "line": "Документы на щенка с первого дня"
+    },
+    {
+      "icon": "shield",
+      "color": "coral",
+      "title": "Пожизненная гарантия",
+      "line": "Условия гарантии прописаны в договоре"
+    },
+    {
+      "icon": "chat",
+      "color": "lilac",
+      "title": "Пожизненная консультация",
+      "line": "На связи по уходу, корму и здоровью"
+    },
+    {
+      "icon": "video",
+      "color": "sun",
+      "title": "Видео до покупки",
+      "line": "Покажем щенка по видеосвязи"
+    },
+    {
+      "icon": "car",
+      "color": "sand",
+      "title": "Доставка по России",
+      "line": "Привезём к двери в 60+ городов"
+    }
   ],
   "ratings": [
-    { "num": "4,9", "label": "Яндекс", "full": "Яндекс Карты", "count": 128, "url": "[ссылка на карточку]" },
-    { "num": "4,8", "label": "Google", "full": "Google", "count": 64, "url": "[ссылка на карточку]" },
-    { "num": "5,0", "label": "Авито", "full": "Авито", "count": 87, "url": "[ссылка на профиль]" }
+    {
+      "num": "4,9",
+      "label": "Яндекс",
+      "full": "Яндекс Карты",
+      "count": 128,
+      "url": "[ссылка на карточку]"
+    },
+    {
+      "num": "4,8",
+      "label": "Google",
+      "full": "Google",
+      "count": 64,
+      "url": "[ссылка на карточку]"
+    },
+    {
+      "num": "5,0",
+      "label": "Авито",
+      "full": "Авито",
+      "count": 87,
+      "url": "[ссылка на профиль]"
+    }
   ],
   "toast": "Раздел появится на следующем этапе",
   "placeholders": [
-    "Телефон +7 (495) 123-45-67, ссылки Telegram / WhatsApp / MAX, почта, адрес питомника",
+    "Телефон +7 (495) 123-45-67, ссылки Telegram (t.me/puppyhouse_msk) / WhatsApp / MAX (max.ru/domshchenkov), почта, адрес питомника",
     "Реквизиты ИП / ООО, ИНН, ОГРН / ОГРНИП, год основания [2017]",
     "Цифры доверия: 9 лет, 640+ выпускников, рейтинг 4,9, 60+ городов",
     "Рейтинги и число отзывов: Яндекс 4,9 / 128, Google 4,8 / 64, Авито 5,0 / 87 + ссылки",

@@ -1,0 +1,27 @@
+{#- Site map for the header «Меню» panel and the mobile menu. Data: site.menu (groups → items).
+    item: {"label", "url"} — a link; + "breed": slug → round breed face; + "count": true → number of puppies;
+          + "icon": sprite name → small coloured circle; {"label", "sub": [{"label", "url"}]} — a caption with small pills.
+    Import: {% import "partials/menu.html.j2" as menu %} -#}
+{% import "macros/ui.html.j2" as ui %}
+
+{#- Links of one group. current: page.url (marks the current page with aria-current). -#}
+{% macro items(group, current) -%}
+<ul class="mega__list">
+  {% for it in group['items'] %}
+  {% if it.sub is defined %}
+  <li class="mega__sub">
+    <span class="mega__subh">{{ it.label|typo }}</span>
+    <ul class="mega__pills">
+      {% for s in it.sub %}<li><a class="mega__pill" href="{{ s.url }}"{% if current == s.url %} aria-current="page"{% endif %}><span>{{ ui.nohyph(s.label) }}</span></a></li>{% endfor %}
+    </ul>
+  </li>
+  {% else %}
+  <li><a class="mega__link{{ ' mega__link--face' if it.breed is defined }}" href="{{ it.url }}"{% if current == it.url %} aria-current="page"{% endif %}>
+    {%- if it.breed is defined %}{{ ui.face(breed_map[it.breed]) }}{% elif it.icon is defined %}{{ ui.ico(it.icon, 'lilac', sm=true) }}{% endif -%}
+    <span>{{ ui.nohyph(it.label) }}</span>
+    {%- if it.count is defined and it.count %}<span class="mega__count">{{ puppies|length }}</span>{% endif -%}
+  </a></li>
+  {% endif %}
+  {% endfor %}
+</ul>
+{%- endmacro %}
