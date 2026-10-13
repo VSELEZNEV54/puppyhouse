@@ -1,0 +1,75 @@
+{#- Blog article /blog/<slug>/ — one template for all nine. Copy: data/blog-posts.json → posts[slug]; prepared in routes/blog.py.
+    Context: post (h1, lead, eyebrow, date, read, intro, keyfacts, toc, sections, faq_title, faq, cta, related),
+    hero_photo ({src, alt} of a studio photo or none → four breed faces), tone, breed (or none), ld (JSON-LD). -#}
+{% extends "layouts/page.html.j2" %}
+{% import "blog/_parts.html.j2" as blg %}
+
+{% block page_css %}
+  <link rel="stylesheet" href="/assets/css/blog.css">
+{% endblock %}
+
+{% block page_js %}
+  <script src="/assets/js/blog.js" defer></script>
+{% endblock %}
+
+{% block head_extra %}
+  <script type="application/ld+json">{{ ld }}</script>
+{% endblock %}
+
+{% block body_attrs %} class="blg-post"{% endblock %}
+
+{% block sprite_extra %}{{ blg.icons() }}{% endblock %}
+
+{% block hero %}
+    {%- set size = imgsize(hero_photo.src) if hero_photo else none %}
+    {%- set photo = dict(hero_photo, w=size[0], h=size[1]) if hero_photo else none %}
+    {{ ui.page_hero(post.h1, lead=post.lead, tone=tone, photo=photo, faces=not photo, eyebrow=post.eyebrow,
+        chips=[{'icon': 'clock', 'label': post.read}, {'icon': 'calendar', 'label': post.date}]) }}
+{% endblock %}
+
+{% block body %}
+    <div class="section section--tight container blg-wrap">
+      <div class="article">
+        <article class="article__body prose blg-prose" aria-labelledby="page-title">
+          <p class="blg-intro">{{ post.intro|typo }}</p>
+          {% for s in post.sections %}
+          <h2 id="{{ s.id }}">{{ s.h2|typo }}</h2>
+          {{ blg.copy(s.blocks) }}
+          {% endfor %}
+        </article>
+        <div class="article__aside blg-aside">
+          {{ ui.toc(post.toc) }}
+          {{ ui.keyfacts(post.keyfacts) }}
+        </div>
+      </div>
+    </div>
+
+    {{ blocks.faq_section(post.faq, title=post.faq_title, id='voprosy') }}
+
+    <section class="section container" id="dalshe" aria-labelledby="dalshe-title">
+      <div class="cta-band tone--{{ tone }} blg-cta">
+        <div class="cta-band__txt">
+          <h2 class="cta-band__title" id="dalshe-title">{{ post.cta.title|typo }}</h2>
+          <p class="cta-band__line">{{ post.cta.line|typo }}</p>
+        </div>
+        <span class="cta-band__faces" aria-hidden="true">{% if breed %}{{ ui.face(breed) }}{% else %}{% for b in breeds %}{{ ui.face(b) }}{% endfor %}{% endif %}</span>
+        <div class="cta-band__actions">
+          <a class="btn btn--ink btn--lg" href="{{ post.cta.button.url }}">{{ post.cta.button.label|typo }} {{ ui.icon('arrow') }}</a>
+          {% if post.cta.second %}<a class="btn btn--white btn--lg" href="{{ post.cta.second.url }}">{{ post.cta.second.label|typo }}</a>{% endif %}
+        </div>
+      </div>
+    </section>
+
+    <section class="section container" id="chitat" aria-labelledby="chitat-title">
+      {{ ui.section_head('Читайте также', id='chitat-title', link={'url': '/blog/', 'label': 'Все статьи'}) }}
+      <ul class="blg-related" data-reveal="items">
+        {% for c in post.related %}
+        <li>{{ blg.card(c, row=true) }}</li>
+        {% endfor %}
+      </ul>
+    </section>
+{% endblock %}
+
+{% block lead %}
+    {{ forms.lead_form(tone=tone, breed=lead_breed) }}
+{% endblock %}

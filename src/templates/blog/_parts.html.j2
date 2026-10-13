@@ -1,0 +1,86 @@
+{#- Blog parts (group blog): article card, «Подобрать породу» tile, article copy blocks, extra icons.
+    Import: {% import "blog/_parts.html.j2" as blg %} -#}
+{% import "macros/ui.html.j2" as ui %}
+
+{#- Extra icons for {% block sprite_extra %} (24×24, stroke = currentColor like the shared sprite). Prefix i-blg-. -#}
+{% macro icons() -%}
+    <symbol id="i-blg-minus" viewBox="0 0 24 24"><path d="M5.5 12h13"/></symbol>
+{%- endmacro %}
+
+{#- Article card. c: card dict from routes/blog.py (url, title, line, topic, read, cover, studio, tone_class, style).
+    A studio cover stands on the card «floor» in its measured colours (like the puppy card); a lifestyle cover sits
+    inside the tile with an inset and a 20 px radius. row=true: photo left, text right (related articles). -#}
+{% macro card(c, row=false) -%}
+{%- set size = imgsize(c.cover.src) -%}
+{#- studio cover: --tone / --tone-floor for the card, + the full measurement for the wide (row) layout -#}
+{%- set st = (c.style ~ ';' ~ tone_style(c.cover.src)) if c.studio else '' -%}
+<article class="blg-card {{ c.tone_class }}{{ ' blg-card--row' if row }}{{ ' blg-card--studio' if c.studio }}"{% if st %} style="{{ st }}"{% endif %}>
+  <div class="blg-card__media{{ ' blg-card__media--studio' if c.studio }}">
+    <img src="{{ c.cover.src }}" alt="{{ c.cover.alt|typo }}" width="{{ size[0] }}" height="{{ size[1] }}"{% if c.cover.pos is defined and c.cover.pos %} style="object-position:{{ c.cover.pos }}"{% endif %} loading="lazy" decoding="async">
+    <span class="blg-card__topic">{{ c.topic }}</span>
+  </div>
+  <div class="blg-card__body">
+    <h3 class="blg-card__title"><a class="blg-card__link" href="{{ c.url }}">{{ c.title|typo }}</a></h3>
+    <p class="blg-card__line">{{ c.line|typo }}</p>
+    <p class="blg-card__foot"><span class="blg-card__time">{{ ui.icon('clock', sm=true) }}<span class="sr-only">Время чтения: </span>{{ c.read }}</span>{{ ui.round_arrow() }}</p>
+  </div>
+</article>
+{%- endmacro %}
+
+{#- «Не знаете, какую породу выбрать?» — fills the rest of the last row of the article grid (a band when the row is full). -#}
+{% macro more_tile(m) -%}
+<div class="soon-tile blg-more">
+  <span class="soon-tile__faces" aria-hidden="true">{% for b in breeds %}{{ ui.face(b) }}{% endfor %}</span>
+  <span class="soon-tile__txt"><span class="soon-tile__title">{{ m.title|typo }}</span><span class="soon-tile__line">{{ m.line|typo }}</span></span>
+  <a class="btn btn--ink" href="{{ m.url }}">{{ m.label }}</a>
+</div>
+{%- endmacro %}
+
+{#- Article copy: blocks from routes/blog.py (Markup already escaped, links and <b> resolved). -#}
+{% macro copy(blocks) -%}
+{% for b in blocks %}
+{% if b.type == 'p' %}
+          <p>{{ b.html|typo }}</p>
+{% elif b.type == 'h3' %}
+          <h3>{{ b.html|typo }}</h3>
+{% elif b.type in ('ul', 'ol') %}
+          <{{ b.type }}>
+            {% for i in b['items'] %}<li>{{ i|typo }}</li>
+            {% endfor %}
+          </{{ b.type }}>
+{% elif b.type == 'table' %}
+          {#- 3+ columns: on phones every row becomes a small card, the column name comes from data-label #}
+          <div class="table-wrap blg-table{{ ' blg-table--stack' if b.head|length > 2 }}" role="region" aria-label="{{ b.caption }}" tabindex="0">
+            <table>
+              <caption class="sr-only">{{ b.caption }}</caption>
+              <thead><tr>{% for h in b.head %}{% if h %}<th scope="col">{{ h|typo }}</th>{% else %}<td></td>{% endif %}{% endfor %}</tr></thead>
+              <tbody>
+                {% for r in b.rows %}<tr><th scope="row">{{ r[0]|typo }}</th>{% for v in r[1:] %}<td data-label="{{ b.labels[loop.index] }}">{{ v|typo }}</td>{% endfor %}</tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+{% elif b.type == 'callout' %}
+          {% call ui.callout(b.kind, b.title) %}<p>{{ b.html|typo }}</p>{% endcall %}
+{% elif b.type == 'proscons' %}
+          <div class="blg-pc">
+            <div class="blg-pc__col blg-pc__col--pro">
+              <h3 class="blg-pc__title">{{ ui.ico('check', 'mint', sm=true) }}Плюсы</h3>
+              <ul class="blg-pc__list">
+                {% for i in b.pros %}<li>{{ i|typo }}</li>
+                {% endfor %}
+              </ul>
+            </div>
+            <div class="blg-pc__col blg-pc__col--con">
+              <h3 class="blg-pc__title">{{ ui.ico('blg-minus', 'coral', sm=true) }}Минусы</h3>
+              <ul class="blg-pc__list">
+                {% for i in b.cons %}<li>{{ i|typo }}</li>
+                {% endfor %}
+              </ul>
+            </div>
+          </div>
+{% elif b.type == 'figure' %}
+          <figure class="blg-figure">{{ ui.img(b.src, b.alt) }}{% if b.caption %}<figcaption>{{ b.caption|typo }}</figcaption>{% endif %}</figure>
+{% endif %}
+{% endfor %}
+{%- endmacro %}

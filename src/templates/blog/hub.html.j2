@@ -1,0 +1,51 @@
+{#- /blog/ — list of articles with topic chips (assets/js/blog.js). Copy: data/blog-posts.json → hub; cards: routes/blog.py.
+    Context: hub, articles (cards), topics, hero_chips. -#}
+{% extends "layouts/page.html.j2" %}
+{% import "blog/_parts.html.j2" as blg %}
+
+{% block page_css %}
+  <link rel="stylesheet" href="/assets/css/blog.css">
+{% endblock %}
+
+{% block page_js %}
+  <script src="/assets/js/blog.js" defer></script>
+{% endblock %}
+
+{% block hero %}
+    {{ ui.page_hero(hub.h1, lead=hub.lead, eyebrow=hub.eyebrow, tone='sand', faces=true, chips=hero_chips) }}
+{% endblock %}
+
+{% block body %}
+    {%- set n = articles|length %}
+    <section class="section section--tight container" id="stati" aria-labelledby="stati-title" data-blog>
+      <h2 class="sr-only" id="stati-title">Все статьи</h2>
+      <div class="filters blg-filters">
+        <div class="chips" role="group" aria-label="Тема статей">
+          <button class="chip" type="button" data-bf-value="all" aria-pressed="true">{{ hub.all_label }}</button>
+          {% for t in topics %}
+          <button class="chip" type="button" data-bf-value="{{ t.key }}" aria-pressed="false"><span class="chip__dot {{ t.tone_class }}" aria-hidden="true"></span>{{ t.label }}</button>
+          {% endfor %}
+        </div>
+        <p class="filters__count blg-filters__count" data-bf-count>{{ n }}&nbsp;{{ n|plural('статья', 'статьи', 'статей') }}</p>
+        <p class="sr-only" role="status" aria-live="polite" data-bf-status></p>
+      </div>
+
+      <ul class="blg-grid" data-bf-list data-reveal="items">
+        {% for c in articles %}
+        <li class="blg-grid__item" data-topic="{{ c.topic_key }}">
+          {{ blg.card(c) }}
+        </li>
+        {% endfor %}
+        <li class="blg-grid__more" data-bf-more style="--s3:{{ 3 - n % 3 }};--s2:{{ 2 - n % 2 }}">
+          {{ blg.more_tile(hub.more) }}
+        </li>
+      </ul>
+    </section>
+
+    {% call blocks.seo_block(hub.seo.title, hub.seo.lead, id='o-bloge') %}
+        {% for s in hub.seo.blocks %}
+        <h3>{{ s.h|typo }}</h3>
+        <p>{{ s.p|typo }}</p>
+        {% endfor %}
+    {% endcall %}
+{% endblock %}

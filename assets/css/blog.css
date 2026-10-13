@@ -1,0 +1,215 @@
+/* =========================================================
+   Puppy House — блог: /blog/ и статьи /blog/<slug>/ (группа blog).
+   Подключается после main.css и pages.css. Классы — с префиксом blg-.
+   ========================================================= */
+
+/* ---------- фильтр тем ---------- */
+.blg-filters { grid-template-columns: minmax(0, 1fr) auto; align-items: center; column-gap: 24px; }
+.blg-filters__count { color: var(--muted); font-weight: 400; }
+
+/* ---------- сетка статей ---------- */
+.blg-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--gap); }
+.blg-grid__item { min-width: 0; }
+/* «Не знаете, какую породу выбрать?» добирает последний ряд; если ряд полный — встаёт полосой (считают шаблон и blog.js) */
+.blg-grid__more { min-width: 0; grid-column: span var(--s3, 1); container-type: inline-size; }
+.blg-more { background: var(--lilac-50); }
+.blg-more .soon-tile__faces .face { border-color: var(--lilac-50); }
+
+/* ---------- карточка статьи ---------- */
+.blg-card {
+  position: relative; isolation: isolate; overflow: hidden;
+  height: 100%; display: flex; flex-direction: column;
+  border-radius: var(--r-tile);
+  background: var(--tone-floor); color: var(--ink);
+  transition: transform .35s var(--ease), box-shadow .35s var(--ease);
+}
+@media (hover: hover) { .blg-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lift); } }
+.blg-card:has(.blg-card__link:focus-visible) { outline: 2px solid var(--ink); outline-offset: 3px; }
+
+.blg-card__media { position: relative; flex: none; aspect-ratio: 10 / 9; }
+/* лайфстайл-фото: внутри плитки, отступ 8 px и радиус 20 px */
+.blg-card__media img {
+  position: absolute; inset: var(--inset) var(--inset) 0;
+  width: calc(100% - 2 * var(--inset)); height: calc(100% - var(--inset));
+  object-fit: cover; border-radius: var(--r-img);
+  transition: transform .9s var(--ease);
+}
+/* студийное фото: квадрат во всю ширину стоит на «полу», верх уходит за край плитки, низ гаснет в пол карточки */
+.blg-card__media--studio { background: linear-gradient(180deg, var(--tone) 0 40%, var(--tone-floor) 100%); }
+.blg-card__media--studio img {
+  inset: auto 0 0 0; width: 100%; height: auto; aspect-ratio: 1; border-radius: 0;
+  object-position: 50% 100%; transform-origin: 50% 92%;
+  -webkit-mask-image: linear-gradient(180deg, #000 90%, transparent 100%);
+  mask-image: linear-gradient(180deg, #000 90%, transparent 100%);
+}
+@media (hover: hover) { .blg-card:hover .blg-card__media--studio img { transform: scale(1.04); } }
+
+.blg-card__topic {
+  position: absolute; z-index: 2; top: 18px; left: 18px;
+  display: inline-flex; align-items: center; height: 30px; padding: 0 12px; border-radius: var(--r-pill);
+  background: rgba(255, 255, 255, .9); font-size: 13px; font-weight: 500; white-space: nowrap;
+}
+.blg-card__body { display: flex; flex-direction: column; flex: 1; padding: 16px 20px 20px; }
+.blg-card__title { font-size: clamp(20px, 1.6vw, 24px); font-weight: 500; letter-spacing: -0.025em; line-height: 1.12; }
+.blg-card__link { text-decoration: none; }
+.blg-card__link::after { content: ""; position: absolute; inset: 0; z-index: 3; border-radius: inherit; }
+.blg-card__link:focus-visible { outline: none; }
+.blg-card__line { margin-top: 8px; font-size: 15px; line-height: 1.4; color: var(--ink-soft); }
+.blg-card__foot { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: auto; padding-top: 18px; }
+.blg-card__time { display: inline-flex; align-items: center; gap: 7px; font-size: 14px; color: var(--ink-soft); }
+.blg-card__foot .round-arrow { width: 44px; height: 44px; }
+.blg-card:hover .round-arrow { background: var(--ink); color: #fff; }
+.blg-card:hover .round-arrow .i { transform: rotate(45deg); }
+
+/* широкая карточка (статья → «Читайте также»): текст слева, фото справа во всю высоту */
+.blg-related { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--gap); }
+.blg-related > li { min-width: 0; }
+.blg-card--row { display: grid; grid-template-columns: minmax(0, 1fr) 44%; min-height: 280px; }
+.blg-card--row .blg-card__media { grid-column: 2; grid-row: 1; aspect-ratio: auto; min-height: 100%; }
+.blg-card--row .blg-card__body { grid-column: 1; grid-row: 1; padding: clamp(20px, 2vw, 28px); }
+.blg-card--row .blg-card__body { justify-content: flex-start; }
+.blg-card--row .blg-card__media img { inset: var(--inset) var(--inset) var(--inset) 0; width: calc(100% - var(--inset)); height: calc(100% - 2 * var(--inset)); }
+/* студийная широкая карточка — приём шапки страницы: плитка в замер кадра, квадрат справа во всю высоту,
+   правый край с виньеткой — за плиткой, левый и верхний гаснут в стену */
+.blg-card--row.blg-card--studio {
+  background: linear-gradient(180deg, var(--tone-top, var(--tone)) 0, var(--tone-hi, var(--tone)) 22%, var(--tone-hi, var(--tone)) calc(var(--fa, .78) * 100%), var(--tone-floor) calc(var(--fb, .97) * 100%));
+}
+.blg-card--row .blg-card__media--studio { background: none; position: relative; overflow: visible; }
+.blg-card--row .blg-card__media--studio img {
+  inset: 0 auto 0 auto; right: 0; height: 100%; width: auto; aspect-ratio: 1; max-width: none;
+  transform: translateX(8%); transform-origin: 50% 92%;
+  -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 34%), linear-gradient(180deg, transparent 0, #000 14%);
+  mask-image: linear-gradient(90deg, transparent 0, #000 34%), linear-gradient(180deg, transparent 0, #000 14%);
+  -webkit-mask-composite: source-in; mask-composite: intersect;
+}
+@media (hover: hover) { .blg-card--row:hover .blg-card__media--studio img { transform: translateX(8%) scale(1.03); } }
+.blg-card--row:not(.blg-card--studio):hover .blg-card__media img { transform: scale(1.02); }
+
+/* =========================================================
+   СТАТЬЯ
+   ========================================================= */
+.blg-post .phero__title { max-width: 15ch; font-size: clamp(36px, 3.9vw, 60px); }
+.blg-post .phero__lead { max-width: 40ch; }
+
+.blg-intro { font-size: clamp(18px, 1.35vw, 21px); line-height: 1.55; letter-spacing: -0.005em; }
+.blg-prose > h2 { padding-top: 1.1em; border-top: 1px solid var(--line); max-width: 68ch; }
+.blg-prose > .blg-intro + h2 { margin-top: 1.6em; }
+/* html already has scroll-padding-top: 96px (main.css) — without this the anchor lands 192px low */
+.blg-prose h2, .blg-prose h3 { scroll-margin-top: 0; }
+.blg-prose > figure, .blg-prose > .blg-pc { max-width: 68ch; }
+.blg-figure img { aspect-ratio: 3 / 2; object-fit: cover; }
+.blg-table th, .blg-table td { min-width: 120px; }
+@media (max-width: 1199px) and (min-width: 1001px) {
+  .blg-wrap .article { grid-template-columns: minmax(0, 1fr) 296px; }
+}
+.blg-table tbody th { white-space: normal; }
+
+/* плюсы и минусы — две пастельные плитки */
+.blg-pc { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--gap); }
+.prose > .blg-pc { margin-top: 1.2em; }
+.blg-pc__col { padding: 20px 22px 22px; border-radius: var(--r-img); }
+.blg-pc__col--pro { background: var(--mint-50); }
+.blg-pc__col--con { background: var(--coral-50); }
+.prose .blg-pc__title { display: flex; align-items: center; gap: 10px; margin: 0; font-size: 19px; }
+.prose .blg-pc__list { margin-top: 14px; }
+.prose .blg-pc__list > li { font-size: 15.5px; line-height: 1.45; }
+.prose .blg-pc__list > li + li { margin-top: .55em; }
+.prose .blg-pc__col--pro .blg-pc__list > li::before { background: var(--ok); }
+.blg-pc .ico { flex: none; }
+
+/* оглавление: текущий раздел подсвечен (blog.js ставит aria-current) */
+.blg-aside .toc__list a { margin-inline: -10px; padding-inline: 40px 10px; transition: background-color .2s; }
+.blg-aside .toc__list a::before { left: 10px; }
+.blg-aside .toc__list a[aria-current="true"] { background: var(--page); }
+.blg-aside .toc__list a[aria-current="true"]::before { color: var(--coral-strong); }
+
+/* CTA после статьи: одна мордочка породы — крупнее */
+.blg-cta .cta-band__faces .face:only-child { width: clamp(76px, 6.4vw, 104px); height: clamp(76px, 6.4vw, 104px); }
+
+/* =========================================================
+   АДАПТИВ
+   ========================================================= */
+@media (max-width: 1199px) {
+  /* счётчик — под темами, чтобы шесть пилюль помещались в одну строку */
+  .blg-filters { grid-template-columns: minmax(0, 1fr); row-gap: 4px; }
+  .blg-filters__count { font-size: 14px; }
+}
+
+@media (max-width: 1000px) {
+  .blg-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .blg-grid__more { grid-column: span var(--s2, 1); }
+  .blg-related { grid-template-columns: minmax(0, 1fr); }
+  .blg-card--row { min-height: 240px; grid-template-columns: minmax(0, 1fr) 40%; }
+}
+
+@media (max-width: 760px) {
+  /* оглавление — лентой пилюль, «Коротко» под ним */
+  .blg-aside .toc { padding: 0; background: none; }
+  .blg-aside .toc__title { padding-inline: 4px; }
+  .blg-aside .toc__list {
+    display: flex; gap: 8px; margin-top: 8px; overflow-x: auto; scrollbar-width: none;
+    margin-inline: calc(-1 * var(--pad)); padding: 2px var(--pad) 6px;
+  }
+  .blg-aside .toc__list::-webkit-scrollbar { display: none; }
+  .blg-aside .toc__list li { flex: none; }
+  .blg-aside .toc__list a {
+    margin: 0; display: inline-flex; align-items: center; height: 38px; padding: 0 14px;
+    border: 1px solid var(--line-2); border-radius: var(--r-pill); background: #fff;
+    font-size: 14px; font-weight: 500; white-space: nowrap;
+  }
+  .blg-aside .toc__list a::before { display: none; }
+  .blg-aside .toc__list a[aria-current="true"] { background: #fff; }
+  .blg-prose > h2 { padding-top: .9em; }
+  .blg-pc { grid-template-columns: minmax(0, 1fr); }
+  .blg-pc__col { padding: 18px 18px 20px; }
+  .blg-table th, .blg-table td { min-width: 96px; padding: 10px 12px; font-size: 14px; }
+}
+
+/* мобильный список: миниатюра слева, текст справа */
+@media (max-width: 560px) {
+  .blg-grid { grid-template-columns: minmax(0, 1fr); }
+  .blg-grid__more { grid-column: auto; }
+  .blg-card, .blg-card--row, .blg-card--row.blg-card--studio {
+    display: grid; grid-template-columns: 112px minmax(0, 1fr); align-items: stretch; min-height: 0;
+    background: var(--tone-floor);
+  }
+  .blg-card__media, .blg-card--row .blg-card__media { grid-column: 1; grid-row: 1; aspect-ratio: auto; min-height: 128px; }
+  .blg-card__media img, .blg-card--row .blg-card__media img,
+  .blg-card__media--studio img, .blg-card--row .blg-card__media--studio img {
+    inset: var(--inset) 0 var(--inset) var(--inset); right: auto; width: calc(100% - var(--inset)); height: calc(100% - 2 * var(--inset));
+    aspect-ratio: auto; border-radius: 16px; transform: none; object-fit: cover; object-position: 50% 60%;
+    -webkit-mask-image: none; mask-image: none;
+  }
+  .blg-card__media--studio, .blg-card--row .blg-card__media--studio { background: none; }
+  .blg-card__body, .blg-card--row .blg-card__body { grid-column: 2; grid-row: 1; padding: 14px 16px 14px 14px; }
+  .blg-card__topic { display: none; }
+  .blg-card__title { font-size: 18px; line-height: 1.18; }
+  .blg-card__line { display: none; }
+  .blg-card__foot { padding-top: 10px; }
+  .blg-card__time { font-size: 13px; }
+  .blg-card__foot .round-arrow { width: 36px; height: 36px; }
+  .blg-card__foot .round-arrow .i { width: 17px; height: 17px; }
+  .blg-card:hover { transform: none; }
+}
+
+@media (max-width: 560px) {
+  /* плитка теста в списке — компактнее: мордочки в ряд */
+  .blg-more { gap: 12px; min-height: 0; padding: 22px 18px 20px; }
+  .blg-more .soon-tile__faces { display: flex; }
+  .blg-more .soon-tile__faces .face { width: 54px; height: 54px; border: 3px solid var(--lilac-50); }
+  .blg-more .soon-tile__faces .face + .face { margin-left: -10px; }
+  .blg-more .soon-tile__title { font-size: 21px; }
+}
+
+@media (max-width: 560px) {
+  /* таблицы на 3+ колонки: каждая строка — карточка «заголовок строки + подпись: значение» */
+  .blg-table--stack { overflow: visible; }
+  .blg-table--stack table, .blg-table--stack tbody, .blg-table--stack tr, .blg-table--stack th, .blg-table--stack td { display: block; }
+  .blg-table--stack thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .blg-table--stack tr { padding: 12px 14px 12px; border-bottom: 1px solid var(--line); }
+  .blg-table--stack tbody tr:last-child { border-bottom: 0; }
+  .blg-table--stack tbody th, .blg-table--stack td { min-width: 0; padding: 0; border: 0; font-size: 14.5px; }
+  .blg-table--stack tbody th { margin-bottom: 4px; font-size: 15px; }
+  .blg-table--stack td { display: grid; grid-template-columns: minmax(0, 42%) minmax(0, 1fr); gap: 10px; padding: 3px 0; }
+  .blg-table--stack td::before { content: attr(data-label); color: var(--muted); font-size: 13px; line-height: 1.6; }
+}
