@@ -8,26 +8,6 @@
 @media (min-width: 1001px) { .phero__copy { max-width: min(720px, 58%); } }
 
 /* =========================================================
-   Щенки породы — все карточки сеткой (лентой на мобиле). «Ждёте другого щенка?» добирает последний ряд;
-   если делит ряд с карточками (а не стоит отдельной полосой), раскладка — колонкой по центру плитки
-   ========================================================= */
-@media (min-width: 1200px) {
-  .brd-fill:not(.brd-fill--a4) .soon-tile { flex-direction: column; justify-content: center; gap: 22px; text-align: center; }
-  .brd-fill:not(.brd-fill--a4) .soon-tile__txt { justify-items: center; }
-  .brd-fill:not(.brd-fill--a4) .soon-tile .btn { margin-left: 0; }
-}
-@media (min-width: 901px) and (max-width: 1199px) {
-  .brd-fill:not(.brd-fill--a3) .soon-tile { flex-direction: column; justify-content: center; gap: 22px; text-align: center; }
-  .brd-fill:not(.brd-fill--a3) .soon-tile__txt { justify-items: center; }
-  .brd-fill:not(.brd-fill--a3) .soon-tile .btn { margin-left: 0; }
-}
-@media (min-width: 761px) and (max-width: 900px) {
-  .brd-fill:not(.brd-fill--a2) .soon-tile { flex-direction: column; justify-content: center; gap: 22px; text-align: center; }
-  .brd-fill:not(.brd-fill--a2) .soon-tile__txt { justify-items: center; }
-  .brd-fill:not(.brd-fill--a2) .soon-tile .btn { margin-left: 0; }
-}
-
-/* =========================================================
    «Какой он» — фото из жизни + четыре короткие карточки 2×2
    ========================================================= */
 .brd-about { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: var(--gap); }
@@ -158,8 +138,7 @@ a.brd-more:hover .round-arrow .i { transform: rotate(45deg); }
   .brd-trait__title { margin-top: 18px; font-size: 19px; }
   .brd-trait__line { margin-top: 6px; font-size: 14.5px; }
 
-  /* лента окрасов (pages.css: .stiles { display: grid } перекрывает ленту .scroller из main.css) */
-  .brd-colours.scroller { display: flex; }
+  /* лента окрасов */
   .brd-colours .stile, .brd-colours .brd-more { aspect-ratio: 3 / 4; }
   .brd-more { padding: 18px; }
   .brd-more__list span { min-height: 34px; padding: 5px 13px; font-size: 14px; }

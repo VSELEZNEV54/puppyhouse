@@ -1,6 +1,6 @@
 {#- /shchenki/<slug>/ — puppy page (conversion). Context from routes/puppy.py:
     p (puppy), b (its breed), meta, specs, docs, docs_note, colour_note, parents, gallery, gets, steps, related, lead_line.
-    Gallery and modal modes: assets/js/puppy.js. -#}
+    Gallery and modal modes: assets/js/puppy.js (title, subtitle and note of each mode: data-modal-* on its buttons, applied by main.js). -#}
 {% extends "layouts/page.html.j2" %}
 
 {% block page_css %}
@@ -15,7 +15,7 @@
 {%- set g0 = gallery[0] -%}
 {%- set g0size = imgsize(g0.src) -%}
     <section class="pp container" id="shchenok" aria-labelledby="page-title">
-      <div class="pp__grid {{ p.tone_class }}"{% if t %} style="--tone:{{ t.top }};--tone-floor:{{ t.floor }}"{% endif %} data-pup data-name="{{ p.name }}" data-desc="{{ p.desc }}" data-img="{{ p.photo.src.rsplit('/', 1)[-1] }}" data-pp data-pp-status="{{ p.status }}" data-pp-breed="{{ b.name }}" data-pp-breed-gen="{{ b.name_plural_gen }}">
+      <div class="pp__grid {{ p.tone_class }}"{% if t %} style="--tone:{{ t.top }};--tone-floor:{{ t.floor }}"{% endif %} data-pup data-name="{{ p.name }}" data-desc="{{ p.desc }}" data-img="{{ p.photo.src.rsplit('/', 1)[-1] }}" data-pp data-pp-status="{{ p.status }}" data-pp-breed="{{ b.name }}">
         <div class="pp-gal">
           <figure class="pp-stage pp-stage--{{ g0.kind }}" id="pp-stage" data-pp-stage>
             <img class="pp-stage__img" src="{{ g0.src }}" alt="{{ g0.alt|typo }}" width="{{ g0size[0] }}" height="{{ g0size[1] }}" style="object-position:{{ g0.pos }}" fetchpriority="high" decoding="async" data-pp-img>
@@ -23,7 +23,7 @@
             <span class="status pp-stage__status" data-pp-status-pill><span class="dot dot--{{ p.status_dot }}" aria-hidden="true"></span>{{ p.status_label|typo }}</span>
             {% endif %}
             <figcaption class="pp-stage__cap" data-pp-cap hidden></figcaption>
-            <button class="pp-play" type="button" data-open-modal data-pp-modal="video" data-pp-play hidden><span class="pp-play__ico" aria-hidden="true">{{ ui.icon('play') }}</span><span class="pp-play__txt">Видео по&nbsp;запросу</span></button>
+            <button class="pp-play" type="button" data-open-modal data-pp-modal="video" data-modal-title="Видеозвонок: {{ p.name }}" data-modal-sub="Покажем щенка вживую и ответим на вопросы" data-modal-note="Видеозвонок — {{ p.name }}" data-pp-play hidden><span class="pp-play__ico" aria-hidden="true">{{ ui.icon('play') }}</span><span class="pp-play__txt">Видео по&nbsp;запросу</span></button>
           </figure>
           <ul class="pp-thumbs" aria-label="Фото и видео щенка">
             {% for g in gallery %}
@@ -64,13 +64,13 @@
           <div class="pp-cta" data-hero-ctas>
             {% if p.status == 'available' %}
             <button class="btn btn--ink btn--lg pp-cta__main" type="button" data-open-modal data-pp-main aria-label="Узнать цену: {{ p.name }}">Узнать цену</button>
-            <button class="btn btn--white btn--lg" type="button" data-open-modal data-pp-modal="video">{{ ui.icon('video') }}Видеозвонок со&nbsp;щенком</button>
+            <button class="btn btn--white btn--lg" type="button" data-open-modal data-pp-modal="video" data-modal-title="Видеозвонок: {{ p.name }}" data-modal-sub="Покажем щенка вживую и ответим на вопросы" data-modal-note="Видеозвонок — {{ p.name }}">{{ ui.icon('video') }}Видеозвонок со&nbsp;щенком</button>
             {% elif p.status == 'soon' %}
-            <button class="btn btn--ink btn--lg pp-cta__main" type="button" data-open-modal data-pp-modal="wait">Записаться в&nbsp;лист ожидания</button>
-            <button class="btn btn--white btn--lg" type="button" data-open-modal data-pp-modal="video">{{ ui.icon('video') }}Видеозвонок со&nbsp;щенком</button>
+            <button class="btn btn--ink btn--lg pp-cta__main" type="button" data-open-modal data-pp-modal="wait" data-modal-title="Лист ожидания: {{ p.name }}" data-modal-sub="Напишем первыми, когда откроем бронь, и пришлём цену" data-modal-note="Лист ожидания — {{ p.name }}">Записаться в&nbsp;лист ожидания</button>
+            <button class="btn btn--white btn--lg" type="button" data-open-modal data-pp-modal="video" data-modal-title="Видеозвонок: {{ p.name }}" data-modal-sub="Покажем щенка вживую и ответим на вопросы" data-modal-note="Видеозвонок — {{ p.name }}">{{ ui.icon('video') }}Видеозвонок со&nbsp;щенком</button>
             {% else %}
             <a class="btn btn--ink btn--lg pp-cta__main" href="#pohozhie">Похожие щенки {{ ui.icon('arrow', cls='pp-i-down') }}</a>
-            <button class="btn btn--white btn--lg" type="button" data-open-modal data-pp-modal="litter">Узнать о&nbsp;следующем помёте</button>
+            <button class="btn btn--white btn--lg" type="button" data-open-modal data-pp-modal="litter" data-modal-title="Следующий помёт" data-modal-sub="Напишем, когда появятся новые щенки {{ b.name_plural_gen }}" data-modal-note="Следующий помёт — {{ b.name }}">Узнать о&nbsp;следующем помёте</button>
             {% endif %}
           </div>
           <ul class="pp-trust" aria-label="Гарантии">

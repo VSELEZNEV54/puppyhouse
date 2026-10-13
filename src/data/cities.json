@@ -11,7 +11,7 @@
       "car",
       "train"
     ],
-    "duration": "[8–10 часов]"
+    "duration": "[8–10 часов на машине]"
   },
   {
     "slug": "novosibirsk",
@@ -24,7 +24,7 @@
     "methods": [
       "plane"
     ],
-    "duration": "[уточнить]"
+    "duration": "[1 день самолётом]"
   },
   {
     "slug": "ekaterinburg",
@@ -38,7 +38,7 @@
       "plane",
       "car"
     ],
-    "duration": "[уточнить]"
+    "duration": "[1 день самолётом]"
   },
   {
     "slug": "kazan",
@@ -52,7 +52,7 @@
       "car",
       "train"
     ],
-    "duration": "[уточнить]"
+    "duration": "[≈ 10 часов на машине]"
   },
   {
     "slug": "nizhnij-novgorod",
@@ -65,7 +65,7 @@
     "methods": [
       "car"
     ],
-    "duration": "[уточнить]"
+    "duration": "[≈ 5 часов на машине]"
   },
   {
     "slug": "krasnoyarsk",
@@ -78,7 +78,7 @@
     "methods": [
       "plane"
     ],
-    "duration": "[уточнить]"
+    "duration": "[1 день самолётом]"
   },
   {
     "slug": "chelyabinsk",
@@ -92,7 +92,7 @@
       "plane",
       "car"
     ],
-    "duration": "[уточнить]"
+    "duration": "[1 день самолётом]"
   },
   {
     "slug": "samara",
@@ -106,7 +106,7 @@
       "car",
       "train"
     ],
-    "duration": "[уточнить]"
+    "duration": "[≈ 13 часов на машине]"
   },
   {
     "slug": "ufa",
@@ -120,7 +120,7 @@
       "car",
       "plane"
     ],
-    "duration": "[уточнить]"
+    "duration": "[1–2 дня на машине]"
   },
   {
     "slug": "rostov-na-donu",
@@ -134,7 +134,7 @@
       "car",
       "train"
     ],
-    "duration": "[уточнить]"
+    "duration": "[≈ 13 часов на машине]"
   },
   {
     "slug": "krasnodar",
@@ -148,7 +148,7 @@
       "car",
       "plane"
     ],
-    "duration": "[уточнить]"
+    "duration": "[1–2 дня на машине]"
   },
   {
     "slug": "omsk",
@@ -161,7 +161,7 @@
     "methods": [
       "plane"
     ],
-    "duration": "[уточнить]"
+    "duration": "[1 день самолётом]"
   },
   {
     "slug": "voronezh",
@@ -174,7 +174,7 @@
     "methods": [
       "car"
     ],
-    "duration": "[уточнить]"
+    "duration": "[≈ 7 часов на машине]"
   },
   {
     "slug": "perm",
@@ -188,7 +188,7 @@
       "car",
       "plane"
     ],
-    "duration": "[уточнить]"
+    "duration": "[1–2 дня на машине]"
   },
   {
     "slug": "volgograd",
@@ -202,7 +202,7 @@
       "car",
       "train"
     ],
-    "duration": "[уточнить]"
+    "duration": "[≈ 12 часов на машине]"
   },
   {
     "slug": "saratov",
@@ -216,7 +216,7 @@
       "car",
       "train"
     ],
-    "duration": "[уточнить]"
+    "duration": "[≈ 11 часов на машине]"
   },
   {
     "slug": "tyumen",
@@ -229,7 +229,7 @@
     "methods": [
       "plane"
     ],
-    "duration": "[уточнить]"
+    "duration": "[1 день самолётом]"
   },
   {
     "slug": "tolyatti",
@@ -242,7 +242,7 @@
     "methods": [
       "car"
     ],
-    "duration": "[уточнить]"
+    "duration": "[≈ 13 часов на машине]"
   },
   {
     "slug": "mahachkala",
@@ -255,7 +255,7 @@
     "methods": [
       "plane"
     ],
-    "duration": "[уточнить]"
+    "duration": "[1 день самолётом]"
   },
   {
     "slug": "barnaul",
@@ -268,7 +268,7 @@
     "methods": [
       "plane"
     ],
-    "duration": "[уточнить]"
+    "duration": "[1 день самолётом]"
   },
   {
     "slug": "izhevsk",
@@ -282,7 +282,7 @@
       "car",
       "plane"
     ],
-    "duration": "[уточнить]"
+    "duration": "[1–2 дня на машине]"
   },
   {
     "slug": "habarovsk",
@@ -295,7 +295,7 @@
     "methods": [
       "plane"
     ],
-    "duration": "[уточнить]"
+    "duration": "[1–2 дня самолётом]"
   },
   {
     "slug": "ulyanovsk",
@@ -308,7 +308,7 @@
     "methods": [
       "car"
     ],
-    "duration": "[уточнить]"
+    "duration": "[≈ 11 часов на машине]"
   },
   {
     "slug": "irkutsk",
@@ -321,7 +321,7 @@
     "methods": [
       "plane"
     ],
-    "duration": "[уточнить]"
+    "duration": "[1–2 дня самолётом]"
   },
   {
     "slug": "vladivostok",
@@ -334,7 +334,7 @@
     "methods": [
       "plane"
     ],
-    "duration": "[уточнить]"
+    "duration": "[1–2 дня самолётом]"
   },
   {
     "slug": "yaroslavl",
@@ -347,7 +347,7 @@
     "methods": [
       "car"
     ],
-    "duration": "[уточнить]"
+    "duration": "[≈ 3 часа на машине]"
   },
   {
     "slug": "sevastopol",
@@ -361,7 +361,7 @@
       "car",
       "train"
     ],
-    "duration": "[уточнить]"
+    "duration": "[≈ 2 дня на машине]"
   },
   {
     "slug": "stavropol",
@@ -375,7 +375,7 @@
       "car",
       "plane"
     ],
-    "duration": "[уточнить]"
+    "duration": "[1–2 дня на машине]"
   },
   {
     "slug": "tomsk",
@@ -388,7 +388,7 @@
     "methods": [
       "plane"
     ],
-    "duration": "[уточнить]"
+    "duration": "[1 день самолётом]"
   },
   {
     "slug": "kemerovo",
@@ -401,6 +401,6 @@
     "methods": [
       "plane"
     ],
-    "duration": "[уточнить]"
+    "duration": "[1 день самолётом]"
   }
 ]

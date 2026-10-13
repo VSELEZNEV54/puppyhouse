@@ -1,7 +1,8 @@
 /* Puppy House — страница щенка /shchenki/<slug>/.
    1. Галерея: миниатюры меняют большой кадр (фото щенка, родитель, видео по запросу, документы).
    2. Режимы общей модалки main.js: кнопки с data-pp-modal="video | wait | litter" открывают её
-      через [data-pup] (как карточка щенка), а здесь меняются заголовок, подпись, кнопка и текст успеха.
+      через [data-pup] (как карточка щенка); заголовок, подпись и пометку заявки main.js берёт
+      из data-modal-title / -sub / -note кнопки, а здесь меняются кнопка отправки и текст успеха.
    3. Нижняя панель на мобиле: «Узнать цену» открывает модалку этого щенка (если он в наличии),
       иначе — общую с выбранной породой. */
 (() => {
@@ -13,9 +14,7 @@
 
   const $ = (sel, ctx = d) => ctx.querySelector(sel);
   const $$ = (sel, ctx = d) => Array.from(ctx.querySelectorAll(sel));
-  const name = page.dataset.name;
   const breed = page.dataset.ppBreed;
-  const breedGen = page.dataset.ppBreedGen;
   const status = page.dataset.ppStatus;
 
   /* ---------- 1. галерея ---------- */
@@ -58,8 +57,6 @@
   const modal = $('#price-modal');
   const form = $('#price-form');
   if (!modal || !form) return;
-  const title = $('#pm-title');
-  const sub = $('#pm-sub');
   const submit = $('[data-submit]', form);
   const doneText = $('#pm-done-text');
   const breedSelect = $('#pm-breed');
@@ -70,28 +67,19 @@
 
   const MODES = {
     video: {
-      title: () => 'Видеозвонок: ' + name,
-      sub: () => 'Покажем щенка вживую и ответим на вопросы',
       label: 'Записаться на звонок',
-      puppy: () => 'Видеозвонок — ' + name,
       done: (c) => (c === 'call'
         ? 'Куратор позвонит в течение 15 минут и договорится о времени видеозвонка.'
         : 'Куратор напишет в ' + CONTACT[c] + ' в течение 15 минут и предложит время видеозвонка.') + NIGHT
     },
     wait: {
-      title: () => 'Лист ожидания: ' + name,
-      sub: () => 'Напишем первыми, когда откроем бронь, и пришлём цену',
       label: 'Записаться',
-      puppy: () => 'Лист ожидания — ' + name,
       done: (c) => (c === 'call'
         ? 'Вы в листе ожидания. Куратор позвонит, когда откроем бронь.'
         : 'Вы в листе ожидания. Куратор напишет в ' + CONTACT[c] + ', когда откроем бронь.') + NIGHT
     },
     litter: {
-      title: () => 'Следующий помёт',
-      sub: () => 'Напишем, когда появятся новые щенки ' + breedGen,
       label: 'Узнать о помёте',
-      puppy: () => 'Следующий помёт — ' + breed,
       done: (c) => (c === 'call'
         ? 'Куратор позвонит, как только появятся новые щенки.'
         : 'Куратор напишет в ' + CONTACT[c] + ', как только появятся новые щенки.') + NIGHT
@@ -107,16 +95,9 @@
     if (!trigger || !modal.open) return;
     const m = MODES[trigger.dataset.ppModal];
     mode = m || null;
-    if (m) {
-      title.textContent = m.title();
-      sub.textContent = m.sub();
-      setLabel(m.label);
-      form.elements.puppy.value = m.puppy();
-    } else {
-      setLabel(DEFAULT_LABEL);
-    }
-    // общая заявка (без щенка) — порода этой страницы уже выбрана
-    if (breedField && !breedField.hidden && breedSelect) breedSelect.value = breed;
+    setLabel(m ? m.label : DEFAULT_LABEL);
+    // общая заявка (без щенка, кнопки шапки и меню) — порода этой страницы уже выбрана
+    if (breedField && !breedField.hidden && breedSelect && !trigger.dataset.modalBreed) breedSelect.value = breed;
   });
 
   // текст успеха: main.js пишет свой, для режимов заменяем его

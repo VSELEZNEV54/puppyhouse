@@ -34,15 +34,3 @@
   </ul>
 </div>
 {%- endmacro %}
-
-{#- Hero studio tile (the ui.studio_tile markup) for the first screen: eager, high priority -#}
-{% macro hero_stile(b) -%}
-<a class="stile tone--{{ b.tone }}" href="{{ b.urls.hub }}" style="--ar:{{ b.studio.w }}/{{ b.studio.h }};{{ tone_style(b.studio.src) }}">
-  <span class="stile__top">
-    <span class="stile__title">{{ b.name|typo }}</span>
-    <span class="stile__line">{{ b.tile_line|typo }}</span>
-  </span>
-  {{ ui.round_arrow() }}
-  <span class="stile__photo"><img src="{{ b.studio.src }}" alt="{{ b.studio.alt|typo }}" width="{{ b.studio.w }}" height="{{ b.studio.h }}" fetchpriority="high" decoding="async"></span>
-</a>
-{%- endmacro %}

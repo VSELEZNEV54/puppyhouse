@@ -276,11 +276,22 @@
     const thumb = $('[data-pm-thumb]', modal);
     const thumbImg = $('img', thumb);
     const breedField = $('[data-pm-breed]', modal);
+    const breedSelect = $('select', breedField);
     const doneTitle = $('#pm-done-title');
     const doneText = $('#pm-done-text');
     let returnTo = null;
 
-    const openModal = (pup, opener) => {
+    // порода в списке: по значению или по названию («Мальтипу»), без учёта регистра
+    const selectBreed = (name) => {
+      if (!breedSelect) return;
+      const key = String(name).trim().toLowerCase();
+      const opt = Array.from(breedSelect.options).find((o) => o.value.toLowerCase() === key || o.text.trim().toLowerCase() === key);
+      if (opt) breedSelect.value = opt.value;
+    };
+
+    // ds — data-атрибуты кнопки: data-modal-title / -sub (заголовок и подпись окна),
+    // data-modal-breed (порода в списке, если окно без щенка), data-modal-note (скрытая пометка заявки)
+    const openModal = (pup, opener, ds = {}) => {
       returnTo = opener;
       clearForm(pForm);
       viewForm.hidden = false;
@@ -304,6 +315,10 @@
         breedField.hidden = false;
         pForm.elements.puppy.value = '';
       }
+      if (ds.modalTitle) title.textContent = ds.modalTitle;
+      if (ds.modalSub) sub.textContent = ds.modalSub;
+      if (ds.modalNote) pForm.elements.puppy.value = ds.modalNote;
+      if (ds.modalBreed && !breedField.hidden) selectBreed(ds.modalBreed);
       if (typeof modal.showModal === 'function') modal.showModal(); else modal.setAttribute('open', '');
       lockScroll('modal', true);
       setTimeout(() => pForm.elements.name.focus(), 30);
@@ -323,7 +338,7 @@
         img: card.dataset.img,
         tone: getComputedStyle(card).getPropertyValue('--tone').trim()
       } : null;
-      openModal(pup, opener);
+      openModal(pup, opener, trigger.dataset);
     });
 
     const closeModal = () => { if (modal.open) modal.close(); };

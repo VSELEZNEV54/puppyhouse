@@ -185,11 +185,6 @@
   .tr-health__media { min-height: 0; aspect-ratio: 16 / 9; }
 }
 
-/* три ссылки-плитки — тремя колонками и на планшете, без «сироты» во втором ряду */
-@media (min-width: 761px) and (max-width: 1000px) {
-  .ltiles--3 { --n: 3; }
-}
-
 @media (max-width: 900px) {
   /* шапка с фото: фото сверху во всю ширину плитки, текст под ним */
   .tr-hero__tile { grid-template-columns: minmax(0, 1fr); gap: 0; min-height: 0; padding: var(--inset); }
@@ -211,10 +206,6 @@
   .tr-feat .ico { grid-row: 1 / 3; margin: 0; }
   .tr-feat__title { margin-top: 0; font-size: 19px; align-self: end; }
   .tr-feat__line { margin-top: 0; font-size: 14.5px; }
-
-  /* лента родителей: pages.css объявляет .stiles сеткой позже, чем main.css — ленту .scroller, возвращаем flex */
-  .tr-parents.scroller { display: flex; }
-  .tr-parents.scroller > li { width: 66%; max-width: 280px; }
 
   .tr-story { display: flex; align-items: stretch; gap: 16px; padding: 20px; }
   .tr-story .face { width: 48px; height: 48px; }

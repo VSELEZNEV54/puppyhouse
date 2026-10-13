@@ -112,7 +112,7 @@ Computed by the build:
 in `routes/home.py`. Photo fields: `kind` (`studio` | `life`), `class`, optional `pos` (object-position for a lifestyle shot),
 `backdrop: "token"` (only the four approved homepage cards — every other studio photo takes its measured backdrop in the card).
 Values in `[square brackets]` are placeholders (see `site.placeholders`); keep them bracketed until the client gives real data.
-`cities.json`: `name`, `prep` («в Казани»), `acc` («в Казань»), `gen` («из Казани»), `km_approx` (rough road distance), `methods` (car/plane/train), `duration` (placeholder).
+`cities.json`: `name`, `prep` («в Казани»), `acc` («в Казань»), `gen` («из Казани»), `km_approx` (rough road distance), `methods` (car/plane/train), `duration` (bracketed estimate from distance and the first method, to confirm).
 `breeds.json` also has `facts`, `compare` (comparison rows), `docs`, `studio` / `mood` / `adult` photos, `varieties`, `colours` (drafts — check, some with `standard` and `photo`).
 
 ## Macros (`ui.`, `cards.`, `forms.`, `blocks.`) — text params are plain text, escaped and run through `|typo`
@@ -122,18 +122,18 @@ Values in `[square brackets]` are placeholders (see `site.placeholders`); keep t
 | `ui.page_hero` | `title, lead, tone, breed, photo, faces, facts, chips, eyebrow, id` + `call` → buttons | H1 tile. `breed=` → its tone and studio photo blended |
 | `ui.section_head` | `title, id, link={url,label}, lead` + `call` → buttons | H2 row |
 | `ui.breadcrumbs` | `items` | used by the layout |
-| `ui.studio_tile(s)` | `photo{src,alt}, title, line, url, badge, tone` / `items` | colour / parent photo tile, backdrop = measured photo tone |
+| `ui.studio_tile(s)` | `photo{src,alt}, title, line, url, badge, tone, priority` / `items` | colour / parent photo tile, backdrop = measured photo tone; `priority=true` on the first screen |
 | `ui.spec_grid` | `items[{label,value,icon?,color?}], cols=2..4` | facts in white tiles |
 | `ui.stat_tiles` | `items[{num,cap,icon,color}]` (`site.stats`) | trust numbers |
 | `ui.steps` / `ui.timeline` | `items[{title,text}]`, `cols=3/5` / `items[{when?,title,text?}]` | how-to |
 | `ui.link_tiles` | `items[{url,title,line,icon,color \| breed \| image}], style='white'\|'color'` | related links (don't mix image + icon tiles in one row) |
-| `ui.cta_band` | `title, line, button='modal'\|{url,label}, label, tone, faces` | mid-page CTA (wrap in a section) |
+| `ui.cta_band` | `title, line, button='modal'\|{url,label}, label, tone, faces, title_id` | mid-page CTA (wrap in a section, `title_id` → its `aria-labelledby`) |
 | `ui.keyfacts`, `ui.callout(kind,title)` + call, `ui.toc([[id,label]])` | | articles (`.article`, `.prose`) |
-| `ui.cmp_table` | `cols` (names or breed dicts), `rows[[label, v1, v2…]]`, `caption` | comparison, scrolls inside its tile |
+| `ui.cmp_table` | `cols` (names or breed dicts), `rows[[label, v1, v2…]]`, `caption` | comparison, scrolls inside its tile; column names never break at a hyphen |
 | `ui.gallery` | `photos[{src,alt,caption?}]` | 1–5+ photos, ribbon on mobile |
 | `ui.badges`, `ui.empty_state(title,text,button,label,attrs)`, `ui.img(src,alt,…)`, `ui.icon`, `ui.ico`, `ui.face`, `ui.round_arrow`, `ui.text_link` | | small parts |
 | `cards.puppy_card(p)` | puppy | the homepage card; «Узнать цену» opens the modal for that puppy; studio photo → card in that photo's measured colours |
-| `cards.pups_section` | `title, breed, limit=4, id, exclude=slug` | «Щенки в наличии» strip |
+| `cards.pups_section` | `title, breed, limit=4, id, exclude=slug` | «Щенки в наличии» strip (`.pups--strip`: at 3 columns a lone 4th card is hidden) |
 | `cards.breed_tile(s)`, `cards.review_card(r, short)`, `cards.ratings()`, `cards.soon_tile()` | | |
 | `forms.lead_form` | `title, line, tone, breed, id='zayavka'` | one per page (the layout adds it) |
 | `forms.price_button(label, cls)`, `forms.msgr(kind)` | | generic «Узнать цену» / messenger button |
@@ -147,7 +147,7 @@ Values in `[square brackets]` are placeholders (see `site.placeholders`); keep t
   (`.crumbs .phero .specs .kpis .badges .tline .ltiles .cta-band .empty .article .prose .table-wrap .keyfacts .callout .toc .cmp .gallery .filters .fseg .pups--grid .soon-tile .stiles .tile .grid .split`).
 - Your CSS: only page-specific layout, prefix classes with your group (`.dlv-…`). Use tokens (`var(--gap)`, `--r-tile`, `--tile-pad`, `--sec`, colours). No new fonts, no shadows/colours outside the palette.
 - Breakpoints used everywhere: 1199 / 1000 / 900 / 760 (mobile: ribbons via `.scroller`) / 560 / 420. Check 360–1920, no horizontal page scroll.
-- `main.js` (all pages) gives you, by markup: `[data-open-modal]` (inside `[data-pup]` card → prefilled), `.faq__btn` accordions, `[data-seo-toggle]`, `.fav`, `[data-phone]` mask, `#lead-form`, toast for root-absolute links, `[data-hero-ctas]` (mobile bar appears after it), `[data-reveal]` / `[data-reveal="items"]` (fade-in on scroll), `.scroller` lazy images. Own logic → `assets/js/<group>.js`, vanilla, wrapped in an IIFE, no libraries.
+- `main.js` (all pages) gives you, by markup: `[data-open-modal]` (inside `[data-pup]` card → prefilled; `data-modal-title` / `-sub` / `-breed` / `-note` on the button set the title, subtitle, breed and hidden note), `.faq__btn` accordions, `[data-seo-toggle]`, `.fav`, `[data-phone]` mask, `#lead-form`, toast for root-absolute links, `[data-hero-ctas]` (mobile bar appears after it), `[data-reveal]` / `[data-reveal="items"]` (fade-in on scroll), `.scroller` lazy images. Own logic → `assets/js/<group>.js`, vanilla, wrapped in an IIFE, no libraries.
 
 ## Photos and tones
 
@@ -178,7 +178,7 @@ Tools live in the session scratchpad `$S = /tmp/claude-0/-home-user-puppyhouse/e
 
 1. `python3 tools/build.py` twice → no errors, no warnings for your pages, second run «0 changed», `git status` shows only your files + generated pages.
 2. Screenshots at 1440, 1024, 768, 390 (and 360): `node $S/shot/shot.mjs <url> $S/<name> 1440,1024,768,390 1600` → JSON (overflowX, brokenImages, consoleErrors) + PNG slices: read them. (After a scroll pass the viewport is stretched to the whole page, so every lazy image is decoded; the mobile sticky bar is therefore not in the shots.)
-3. Homepage must stay pixel-identical: `node $S/shot/shot.mjs http://127.0.0.1:8765/ $S/h 1920,1440,1024,768,390,360 100000`, then `python3 $S/pixcmp.py $S/baseline/v2/home-<w>.png $S/h-<w>.png` → «differing px: 0» (the older `$S/baseline/home-*.png` have blank lazy images — capture artifact, don't use); `node $S/qa-home.mjs` (expected: the same 9 known failures as before the migration — breed white-text contrast ×2, sticker geometry ×2, burger Shift+Tab wrap, «marquee» matching .sticker, 1024/768 breed-title layout ×2, /politika-konfidencialnosti/ href).
+3. Homepage must stay pixel-identical: `node $S/shot/shot.mjs http://127.0.0.1:8765/ $S/h 1920,1440,1024,768,390,360 100000`, then `python3 $S/pixcmp.py $S/baseline/v2/home-<w>.png $S/h-<w>.png` → «differing px: 0» (the older `$S/baseline/home-*.png` have blank lazy images — capture artifact, don't use); `node $S/qa-home.mjs` (expected: the same 8 known failures as before the migration — breed white-text contrast ×2, sticker geometry ×2, burger Shift+Tab wrap, «marquee» matching .sticker, 1024/768 breed-title layout ×2; toast checks are skipped while no link points to an unbuilt page).
 4. Interaction test for your JS: copy the pattern of `$S/qa-catalog.mjs`.
 5. Subpath: `python3 $S/found/subpath_server.py 8766 &` serves the repo at `http://127.0.0.1:8766/puppyhouse/`; `node $S/found/qa-subpath.mjs` shows the checks.
 6. Final report: pages built, unbuilt link targets you introduced, shared changes you need (file + exact change + why), placeholders added.

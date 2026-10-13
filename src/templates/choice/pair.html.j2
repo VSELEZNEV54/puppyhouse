@@ -28,8 +28,8 @@
           </div>
         </div>
         <div class="cho-vs__pair">
-          {{ part.hero_stile(a) }}
-          {{ part.hero_stile(b) }}
+          {{ ui.studio_tile(a.studio, a.name, line=a.tile_line, url=a.urls.hub, tone=a.tone, priority=true) }}
+          {{ ui.studio_tile(b.studio, b.name, line=b.tile_line, url=b.urls.hub, tone=b.tone, priority=true) }}
           <span class="cho-vs__or" aria-hidden="true">или</span>
         </div>
       </div>
@@ -90,7 +90,7 @@
 {% block pups %}
     <section class="section container" id="pups" aria-labelledby="pups-title">
       {{ ui.section_head(pg.pups_title, id='pups-title', link={'url': '/shchenki/', 'label': 'Весь каталог — ' ~ puppies|length}) }}
-      <ul class="pups scroller" data-reveal="items">
+      <ul class="pups pups--strip scroller" data-reveal="items">
         {% for p in pair_pups %}
         <li class="pups__item">
           {{ cards.puppy_card(p) }}

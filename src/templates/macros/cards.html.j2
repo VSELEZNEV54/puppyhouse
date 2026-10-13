@@ -27,7 +27,8 @@
 {%- endmacro %}
 
 {#- «Щенки в наличии» section for inner pages: up to `limit` cards (available first) and a link to the catalog.
-    breed: breeds.json item → only that breed, link to the filtered catalog. Ribbon on mobile, grid on desktop. -#}
+    breed: breeds.json item → only that breed, link to the filtered catalog. Ribbon on mobile, grid on desktop.
+    .pups--strip: at 3 columns (901–1199 px) a 4th card that would sit alone in the second row is hidden (pages.css). -#}
 {% macro pups_section(title='Щенки в наличии', breed=none, limit=4, id='pups', exclude=none) -%}
 {%- set pool = (breed.puppies if breed else puppies)|rejectattr('slug', 'equalto', exclude)|sort(attribute='status_order')|list -%}
 {%- set list = pool[:limit] -%}
@@ -35,7 +36,7 @@
 <section class="section container" id="{{ id }}" aria-labelledby="{{ id }}-title">
   {{ ui.section_head(title, id=id ~ '-title', link={'url': '/shchenki/' ~ ('?breed=' ~ breed.slug if breed else ''), 'label': 'Весь каталог — ' ~ total}) }}
   {% if list %}
-  <ul class="pups scroller" data-reveal="items">
+  <ul class="pups pups--strip scroller" data-reveal="items">
     {% for p in list %}
     <li class="pups__item">
       {{ puppy_card(p) }}

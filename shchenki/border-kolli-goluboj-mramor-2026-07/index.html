@@ -11,10 +11,10 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500&amp;display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../../assets/css/main.css?v=484936e7">
-  <link rel="stylesheet" href="../../assets/css/pages.css?v=e19fbbc4">
-  <link rel="stylesheet" href="../../assets/css/puppy.css?v=536314e6">
-  <script src="../../assets/js/main.js?v=966993aa" defer></script>
-  <script src="../../assets/js/puppy.js?v=40364a55" defer></script>
+  <link rel="stylesheet" href="../../assets/css/pages.css?v=2817630a">
+  <link rel="stylesheet" href="../../assets/css/puppy.css?v=8aca366a">
+  <script src="../../assets/js/main.js?v=560579a9" defer></script>
+  <script src="../../assets/js/puppy.js?v=c22570f0" defer></script>
 </head>
 <body>
   <!-- Иконки: инлайн-спрайт 24×24. Линейные — stroke currentColor, заливочные — fill. -->
@@ -118,12 +118,12 @@
 </nav>
 
 <section class="pp container" id="shchenok" aria-labelledby="page-title">
-      <div class="pp__grid tone--sage" data-pup data-name="Скай" data-desc="Бордер-колли · 11 недель · мальчик" data-img="studio-kolli-green.jpg" data-pp data-pp-status="available" data-pp-breed="Бордер-колли" data-pp-breed-gen="бордер-колли">
+      <div class="pp__grid tone--sage" data-pup data-name="Скай" data-desc="Бордер-колли · 11 недель · мальчик" data-img="studio-kolli-green.jpg" data-pp data-pp-status="available" data-pp-breed="Бордер-колли">
         <div class="pp-gal">
           <figure class="pp-stage pp-stage--photo" id="pp-stage" data-pp-stage>
             <img class="pp-stage__img" src="../../assets/img/studio-kolli-green.jpg" alt="Щенок бордер-колли Скай, окрас голубой мрамор, на мятном фоне" width="1024" height="1024" style="object-position:50% 62%" fetchpriority="high" decoding="async" data-pp-img>
             <figcaption class="pp-stage__cap" data-pp-cap hidden></figcaption>
-            <button class="pp-play" type="button" data-open-modal data-pp-modal="video" data-pp-play hidden><span class="pp-play__ico" aria-hidden="true"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-play"/></svg></span><span class="pp-play__txt">Видео по&nbsp;запросу</span></button>
+            <button class="pp-play" type="button" data-open-modal data-pp-modal="video" data-modal-title="Видеозвонок: Скай" data-modal-sub="Покажем щенка вживую и ответим на вопросы" data-modal-note="Видеозвонок — Скай" data-pp-play hidden><span class="pp-play__ico" aria-hidden="true"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-play"/></svg></span><span class="pp-play__txt">Видео по&nbsp;запросу</span></button>
           </figure>
           <ul class="pp-thumbs" aria-label="Фото и видео щенка">
             <li>
@@ -173,7 +173,7 @@
 
           <div class="pp-cta" data-hero-ctas>
             <button class="btn btn--ink btn--lg pp-cta__main" type="button" data-open-modal data-pp-main aria-label="Узнать цену: Скай">Узнать цену</button>
-            <button class="btn btn--white btn--lg" type="button" data-open-modal data-pp-modal="video"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-video"/></svg>Видеозвонок со&nbsp;щенком</button>
+            <button class="btn btn--white btn--lg" type="button" data-open-modal data-pp-modal="video" data-modal-title="Видеозвонок: Скай" data-modal-sub="Покажем щенка вживую и ответим на вопросы" data-modal-note="Видеозвонок — Скай"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-video"/></svg>Видеозвонок со&nbsp;щенком</button>
           </div>
           <ul class="pp-trust" aria-label="Гарантии">
             <li><svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-doc"/></svg>Бронь по&nbsp;договору</li>
@@ -278,7 +278,7 @@
   <a class="text-link" href="../?breed=border-kolli">Весь каталог — <span class="nw">3 <svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></span></a>
   
 </div>
-  <ul class="pups scroller" data-reveal="items">
+  <ul class="pups pups--strip scroller" data-reveal="items">
     <li class="pups__item">
       <article class="pup tone--sage" style="--tone:#A3BFA9;--tone-floor:#C2DAC7" data-pup data-name="Ральф" data-desc="Бордер-колли · 11 недель · мальчик" data-img="color-kolli-tricolor.jpg">
   <div class="pup__media pup__media--studio">
@@ -404,7 +404,7 @@
           <div class="field field--full">
             <div class="check">
               <input type="checkbox" id="lf-consent" name="consent" aria-describedby="lf-consent-err">
-              <label for="lf-consent">Соглашаюсь на&nbsp;обработку персональных данных и&nbsp;принимаю <a href="../../politika-konfidencialnosti/">политику конфиденциальности</a></label>
+              <label for="lf-consent">Соглашаюсь на&nbsp;обработку персональных данных и&nbsp;принимаю <a href="../../politika-konfidencialnosti/" target="_blank" rel="noopener">политику конфиденциальности</a></label>
             </div>
             <p class="field__err" id="lf-consent-err" hidden></p>
           </div>
@@ -575,7 +575,7 @@
             <div class="field field--full">
               <div class="check">
                 <input type="checkbox" id="pm-consent" name="consent" aria-describedby="pm-consent-err">
-                <label for="pm-consent">Соглашаюсь на&nbsp;обработку персональных данных и&nbsp;принимаю <a href="../../politika-konfidencialnosti/">политику конфиденциальности</a></label>
+                <label for="pm-consent">Соглашаюсь на&nbsp;обработку персональных данных и&nbsp;принимаю <a href="../../politika-konfidencialnosti/" target="_blank" rel="noopener">политику конфиденциальности</a></label>
               </div>
               <p class="field__err" id="pm-consent-err" hidden></p>
             </div>

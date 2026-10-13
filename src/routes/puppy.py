@@ -108,7 +108,7 @@ def documents(p, b):
     else:
         gen = (p.get("generation") or "").split()[0] if p.get("generation") else ""
         # F1: оба родителя чистопородные. F1b / F2: мама (и папа у F2) — мальтипу F1, у них родословной нет
-        docs = ["Ветпаспорт", "Договор", "Копии родословных родителей" if gen in ("", "F1") else "Копии родословных предков"]
+        docs = ["Ветпаспорт", "Договор", "Копии родословных родителей" if gen in ("", "F1") else "Копии родословных породистых предков"]
     if "Чип" in p.get("badges", []):
         docs.append("Чип")
     return docs
@@ -124,8 +124,6 @@ def colour_note(p, b):
 def specs(p, b, as_of):
     facts = {f["key"]: f["value"] for f in b["facts"]}
     height = facts["height"].replace(" в холке", "")
-    if p.get("variety") and "до 28" in p["variety"]:
-        height = "до 28 см"
     rows = [
         {"label": "Взрослый вес", "value": p["weight_forecast"]},
         {"label": "Рост в холке", "value": height},

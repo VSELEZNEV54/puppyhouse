@@ -1,4 +1,5 @@
-{#- Shared «Узнать цену» modal. Any [data-open-modal] opens it; inside a [data-pup] card it is prefilled with that puppy. -#}
+{#- Shared «Узнать цену» modal. Any [data-open-modal] opens it; inside a [data-pup] card it is prefilled with that puppy.
+    data-modal-title / -sub / -breed / -note on the button set the title, subtitle, breed (no puppy) and the hidden note (main.js). -#}
 {% import "macros/ui.html.j2" as ui %}
 {% import "macros/forms.html.j2" as forms %}
   <!-- Модалка «Узнать цену» -->
@@ -44,7 +45,7 @@
             <div class="field field--full">
               <div class="check">
                 <input type="checkbox" id="pm-consent" name="consent" aria-describedby="pm-consent-err">
-                <label for="pm-consent">Соглашаюсь на&nbsp;обработку персональных данных и&nbsp;принимаю <a href="{{ site.footer.legal.privacy.url }}">политику конфиденциальности</a></label>
+                <label for="pm-consent">Соглашаюсь на&nbsp;обработку персональных данных и&nbsp;принимаю <a href="{{ site.footer.legal.privacy.url }}" target="_blank" rel="noopener">политику конфиденциальности</a></label>
               </div>
               <p class="field__err" id="pm-consent-err" hidden></p>
             </div>

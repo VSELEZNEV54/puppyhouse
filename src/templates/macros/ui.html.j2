@@ -106,8 +106,9 @@
 {#- Studio photo tile — the homepage breed-tile technique for ANY measured studio photo (color-*, parent-*, studio-*):
     the tile takes the photo's own measured backdrop (tools/photo-tones.json), the photo stands on the tile floor
     full width, only its top edge fades. photo: {"src", "alt"} (+ optional "w", "h").
-    tone: fallback tone class if the photo is not measured. url → the tile is a link with a round arrow. badge: small pill. -#}
-{% macro studio_tile(photo, title, line=none, url=none, badge=none, tone='cream') -%}
+    tone: fallback tone class if the photo is not measured. url → the tile is a link with a round arrow. badge: small pill.
+    priority=true: first-screen tile — the photo loads at once with fetchpriority="high" (not lazy). -#}
+{% macro studio_tile(photo, title, line=none, url=none, badge=none, tone='cream', priority=false) -%}
 {%- set size = imgsize(photo.src) or [photo.w, photo.h] -%}
 {%- set tag = 'a' if url else 'div' -%}
 <{{ tag }} class="stile tone--{{ tone }}"{% if url %} href="{{ url }}"{% endif %} style="--ar:{{ size[0] }}/{{ size[1] }};{{ tone_style(photo.src) }}">
@@ -117,7 +118,7 @@
     {% if badge %}<span class="stile__badge">{{ badge|typo }}</span>{% endif %}
   </span>
   {% if url %}{{ round_arrow() }}{% endif %}
-  <span class="stile__photo"><img src="{{ photo.src }}" alt="{{ photo.alt|typo }}" width="{{ size[0] }}" height="{{ size[1] }}" loading="lazy" decoding="async"></span>
+  <span class="stile__photo"><img src="{{ photo.src }}" alt="{{ photo.alt|typo }}" width="{{ size[0] }}" height="{{ size[1] }}"{% if priority %} fetchpriority="high"{% else %} loading="lazy"{% endif %} decoding="async"></span>
 </{{ tag }}>
 {%- endmacro %}
 
@@ -201,16 +202,18 @@
 {%- endmacro %}
 
 {#- CTA band: pastel tile with a short title, one line and a button. button: 'modal' (opens «Узнать цену»)
-    or {"url": "/shchenki/", "label": "Смотреть щенков"}. faces=true shows the four breed faces. -#}
-{% macro cta_band(title, line=none, button='modal', label='Узнать цену', tone='lilac', faces=true, id=none) -%}
+    or {"url": "/shchenki/", "label": "Смотреть щенков"}. faces=true shows the four breed faces.
+    title_id: id of the H2, for the wrapping section's aria-labelledby:
+      <section class="section container" id="x" aria-labelledby="x-title">{{ ui.cta_band('…', title_id='x-title') }}</section> -#}
+{% macro cta_band(title, line=none, button='modal', label='Узнать цену', tone='lilac', faces=true, id=none, title_id=none) -%}
 <div class="cta-band tone--{{ tone }}"{% if id %} id="{{ id }}"{% endif %}>
   <div class="cta-band__txt">
-    <h2 class="cta-band__title">{{ title|typo }}</h2>
+    <h2 class="cta-band__title"{% if title_id %} id="{{ title_id }}"{% endif %}>{{ title|typo }}</h2>
     {% if line %}<p class="cta-band__line">{{ line|typo }}</p>{% endif %}
   </div>
   {% if faces %}<span class="cta-band__faces" aria-hidden="true">{% for b in breeds %}{{ face(b) }}{% endfor %}</span>{% endif %}
   <div class="cta-band__actions">
-    {% if button == 'modal' %}<button class="btn btn--ink btn--lg" type="button" data-open-modal>{{ label }}</button>
+    {% if button == 'modal' %}<button class="btn btn--ink btn--lg" type="button" data-open-modal>{{ label|typo }}</button>
     {% else %}<a class="btn btn--ink btn--lg" href="{{ button.url }}">{{ button.label|typo }} {{ icon('arrow') }}</a>{% endif %}
     {% if caller is defined %}{{ caller() }}{% endif %}
   </div>
@@ -265,8 +268,18 @@
 </ul>
 {%- endmacro %}
 
+{#- Text with every hyphenated word kept on one line («Бордер-колли», «Той-пудель»): it may still wrap between words.
+    Markup that already has tags is printed as is. -#}
+{% macro nohyph(text) -%}
+{%- set t = text|typo -%}
+{%- if '<' in t -%}{{ t }}{%- else -%}
+{%- for w in t.split(' ') -%}{{ ' ' if not loop.first }}{% if '-' in w %}<span class="nw">{{ w }}</span>{% else %}{{ w }}{% endif %}{%- endfor -%}
+{%- endif -%}
+{%- endmacro %}
+
 {#- Comparison table. cols: ["Мальтипу", "Той-пудель"] or breeds.json items (shows faces);
-    rows: [["Вес", "2–5 кг", "2–4 кг"], ...]. Scrolls inside its tile on narrow screens, first column sticky. -#}
+    rows: [["Вес", "2–5 кг", "2–4 кг"], ...]. Scrolls inside its tile on narrow screens, first column sticky.
+    Column names never break at a hyphen. -#}
 {% macro cmp_table(cols, rows, caption=none) -%}
 <div class="cmp{{ ' cmp--wide' if cols|length > 2 }}" role="region" aria-label="{{ caption or 'Сравнение' }}" tabindex="0">
   <table class="cmp__table">
@@ -275,7 +288,7 @@
       <tr>
         <td></td>
         {% for c in cols %}
-        <th scope="col">{% if c is mapping %}<span class="cmp__head">{{ face(c) }}<span>{{ c.name|typo }}</span></span>{% else %}{{ c|typo }}{% endif %}</th>
+        <th scope="col">{% if c is mapping %}<span class="cmp__head">{{ face(c) }}<span>{{ nohyph(c.name) }}</span></span>{% else %}{{ nohyph(c) }}{% endif %}</th>
         {% endfor %}
       </tr>
     </thead>

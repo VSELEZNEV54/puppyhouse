@@ -1,8 +1,7 @@
 /* Puppy House — подбор породы, сравнения, стартовый набор (группа choice). Ванильный JS, без библиотек.
    1. Тест /podbor-porody/: шаги-радиогруппы, прогресс, «Назад», результат без перезагрузки (#rezultat-<порода>).
-   2. Кнопки [data-open-modal] с data-modal-title / -sub / -breed / -note: после того как main.js открыл общую
-      модалку «Узнать цену», меняем заголовок, подпись, породу в списке и пометку заявки.
-   3. Чек-лист /magazin/: отметки запоминаются в этом браузере, кнопка «Распечатать». */
+   2. Чек-лист /magazin/: отметки запоминаются в этом браузере, кнопка «Распечатать».
+   Кнопки «Узнать цену» с data-modal-title / -sub / -breed / -note настраивает общая модалка в main.js. */
 (() => {
   'use strict';
 
@@ -166,23 +165,7 @@
     if (m && order.includes(m[1])) showResult(m[1], null, null);
   }
 
-  /* ---------- 2. общая модалка с другим заголовком или породой ---------- */
-  // main.js открывает модалку в своём обработчике click на document (он подключён раньше) — здесь она уже открыта
-  d.addEventListener('click', (e) => {
-    const t = e.target.closest('[data-open-modal]');
-    if (!t || !(t.dataset.modalTitle || t.dataset.modalBreed || t.dataset.modalSub)) return;
-    const modal = $('#price-modal');
-    if (!modal || !modal.open) return;
-    const ds = t.dataset;
-    if (ds.modalTitle) $('#pm-title').textContent = ds.modalTitle;
-    if (ds.modalSub) $('#pm-sub').textContent = ds.modalSub;
-    const select = $('#pm-breed');
-    if (select && ds.modalBreed) select.value = ds.modalBreed;
-    const pf = $('#price-form');
-    if (pf && pf.elements.puppy && ds.modalNote) pf.elements.puppy.value = ds.modalNote;
-  });
-
-  /* ---------- 3. чек-лист ---------- */
+  /* ---------- 2. чек-лист ---------- */
   const list = $('[data-checklist]');
   if (list) {
     const KEY = 'ph-kit-checklist';

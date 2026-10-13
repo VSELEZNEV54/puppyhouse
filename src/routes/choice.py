@@ -62,11 +62,6 @@ def _rows(cfg, cols):
     return out
 
 
-def _cols(breeds):
-    """Table header columns for ui.cmp_table: breed dicts with the name kept on one line («Бордер-колли»)."""
-    return [dict(b, name=nobr(b["name"])) for b in breeds]
-
-
 def _pair_links(pairs, bm, exclude=None):
     """Pill links to the comparison pages: [{url, a, b, label}]"""
     return [dict(url=f"/sravnenie/{p['slug']}/", a=bm[p["a"]], b=bm[p["b"]], label=nobr(p["h1"]))
@@ -112,7 +107,7 @@ def _quiz(cfg, breeds, bm):
         q[k] = nobr(q[k])
     q["seo"] = _seo(cfg["quiz"]["seo"])
     q["rows"] = _rows(cfg, q["breeds"])
-    q["cols"] = _cols(q["breeds"])
+    q["cols"] = q["breeds"]  # ui.cmp_table keeps «Бордер-колли» on one line itself
     return q
 
 
@@ -170,7 +165,7 @@ def routes(data):
                 breadcrumbs=crumbs(("Подбор породы", "/podbor-porody/"), (p["h1"], None)),
                 pg=pg, a=a, b=b,
                 rows=_rows(cfg, [a, b]),
-                cols=_cols([a, b]),
+                cols=[a, b],
                 pair_pups=_pair_pups(a, b),
                 pair_links=_pair_links(pairs, bm, exclude=p["slug"]),
                 links=[

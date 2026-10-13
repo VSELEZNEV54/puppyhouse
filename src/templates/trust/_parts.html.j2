@@ -97,20 +97,3 @@
   {% for x in items %}<li><span class="tr-checks__ico" aria-hidden="true">{{ ui.icon('check', sm=true) }}</span><span>{{ x|typo }}</span></li>{% endfor %}
 </ul>
 {%- endmacro %}
-
-{#- CTA band (the ui.cta_band look) wrapped in its own section, so the H2 gets an id for aria-labelledby.
-    attrs: the button's opening attribute — 'data-open-modal' (shared «Узнать цену» modal) or 'data-rv-open' (review modal). -#}
-{% macro band(id, title, line=none, label='Узнать цену', tone='lilac', attrs='data-open-modal') -%}
-<section class="section container" id="{{ id }}" aria-labelledby="{{ id }}-title">
-  <div class="cta-band tone--{{ tone }}">
-    <div class="cta-band__txt">
-      <h2 class="cta-band__title" id="{{ id }}-title">{{ title|typo }}</h2>
-      {% if line %}<p class="cta-band__line">{{ line|typo }}</p>{% endif %}
-    </div>
-    <span class="cta-band__faces" aria-hidden="true">{% for b in breeds %}{{ ui.face(b) }}{% endfor %}</span>
-    <div class="cta-band__actions">
-      <button class="btn btn--ink btn--lg" type="button" {{ attrs }}>{{ label|typo }}</button>
-    </div>
-  </div>
-</section>
-{%- endmacro %}

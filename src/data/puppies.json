@@ -29,7 +29,7 @@
     "birth_date": "2026-07-20",
     "age_weeks": 12,
     "status": "available",
-    "badges": ["Родители с РКФ", "Прививки по возрасту", "Чип"],
+    "badges": ["Ветпаспорт", "Договор", "Копии родословных породистых предков", "Прививки по возрасту", "Чип"],
     "weight_forecast": "около [3–4] кг",
     "photos": [
       { "src": "/assets/img/pup-maltipu-chocolate.jpg", "w": 928, "h": 1152, "kind": "life", "class": "pup__img--mokka", "alt": "Шоколадный щенок мальтипу Мокка на вязаном пледе" }
@@ -80,7 +80,7 @@
     "name": "Марго",
     "breed": "toj-pudel",
     "generation": null,
-    "variety": "той (до 28 см)",
+    "variety": "той (24–28 см)",
     "sex": "female",
     "colour": "абрикосовый",
     "birth_date": "2026-07-06",
@@ -99,7 +99,7 @@
     "name": "Чарли",
     "breed": "toj-pudel",
     "generation": null,
-    "variety": "той (до 28 см)",
+    "variety": "той (24–28 см)",
     "sex": "male",
     "colour": "рыжий (красный)",
     "birth_date": "2026-08-10",
@@ -174,7 +174,7 @@
     "name": "Уголёк",
     "breed": "toj-pudel",
     "generation": null,
-    "variety": "той (до 28 см)",
+    "variety": "той (24–28 см)",
     "sex": "male",
     "colour": "чёрный",
     "birth_date": "2026-07-18",
@@ -228,7 +228,7 @@
     "name": "Пушинка",
     "breed": "toj-pudel",
     "generation": null,
-    "variety": "той (до 28 см)",
+    "variety": "той (24–28 см)",
     "sex": "female",
     "colour": "белый",
     "birth_date": "2026-07-30",
@@ -251,7 +251,7 @@
     "colour": "партиколор",
     "birth_date": "2026-07-15",
     "status": "available",
-    "badges": ["Родители с РКФ", "Прививки по возрасту", "Ветпаспорт"],
+    "badges": ["Ветпаспорт", "Договор", "Копии родословных породистых предков", "Прививки по возрасту"],
     "weight_forecast": "около [3–4] кг",
     "photos": [
       { "src": "/assets/img/color-maltipu-parti.jpg", "w": 1024, "h": 1024, "kind": "studio", "class": null, "alt": "Щенок мальтипу F1b Бусинка, белая с чёрными пятнами, на персиковом фоне" }
@@ -269,7 +269,7 @@
     "colour": "кремовый",
     "birth_date": "2026-08-05",
     "status": "available",
-    "badges": ["Родители с РКФ", "Прививки по возрасту", "Чип"],
+    "badges": ["Ветпаспорт", "Договор", "Копии родословных породистых предков", "Прививки по возрасту", "Чип"],
     "weight_forecast": "около [2,5–3,5] кг",
     "photos": [
       { "src": "/assets/img/gift-maltipu.jpg", "w": 928, "h": 1152, "kind": "life", "class": null, "alt": "Кремовый щенок мальтипу Зефир в подарочной коробке", "pos": "50% 42%" }
@@ -305,7 +305,7 @@
     "colour": "шоколадный",
     "birth_date": "2026-08-24",
     "status": "soon",
-    "badges": ["Родители с РКФ", "Прививки по возрасту"],
+    "badges": ["Ветпаспорт", "Договор", "Копии родословных породистых предков", "Прививки по возрасту"],
     "weight_forecast": "около [4–6] кг",
     "photos": [
       { "src": "/assets/img/color-maltipu-chocolate.jpg", "w": 1024, "h": 1024, "kind": "studio", "class": null, "alt": "Шоколадный щенок мальтипу F2 Трюфель на персиковом фоне" }
@@ -336,7 +336,7 @@
     "name": "Какао",
     "breed": "toj-pudel",
     "generation": null,
-    "variety": "той (до 28 см)",
+    "variety": "той (24–28 см)",
     "sex": "male",
     "colour": "коричневый (шоколадный)",
     "birth_date": "2026-07-04",

@@ -30,7 +30,9 @@
       <p class="tr-note">{{ ui.icon('info', sm=true) }}<span>{{ pg.parents.note|typo }}</span></p>
     </section>
 
-    {{ tr.band('uvidet-roditelej', pg.cta.title, line=pg.cta.line, label=pg.cta.label, tone='sun') }}
+    <section class="section container" id="uvidet-roditelej" aria-labelledby="uvidet-roditelej-title">
+      {{ ui.cta_band(pg.cta.title, line=pg.cta.line, label=pg.cta.label, tone='sun', title_id='uvidet-roditelej-title') }}
+    </section>
 
     <section class="section container" id="kak-vybiraem" aria-labelledby="kak-vybiraem-title">
       {{ ui.section_head(pg.pairs.title, id='kak-vybiraem-title') }}

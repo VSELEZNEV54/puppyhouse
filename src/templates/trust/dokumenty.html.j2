@@ -68,7 +68,9 @@
 
     {{ blocks.faq_section(faq_items, title=pg.faq_title, id='voprosy') }}
 
-    {{ tr.band('vybrali-shchenka', pg.cta.title, line=pg.cta.line, label=pg.cta.label, tone='sky') }}
+    <section class="section container" id="vybrali-shchenka" aria-labelledby="vybrali-shchenka-title">
+      {{ ui.cta_band(pg.cta.title, line=pg.cta.line, label=pg.cta.label, tone='sky', title_id='vybrali-shchenka-title') }}
+    </section>
 
     {% call blocks.seo_block(pg.seo.title, pg.seo.lead, id='o-dokumentah', key='seo') %}
         {% for s in pg.seo.blocks %}

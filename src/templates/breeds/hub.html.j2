@@ -24,8 +24,7 @@
           {{ cards.puppy_card(p) }}
         </li>
         {% endfor %}
-        {#- brd-fill--aN: at N columns the tile has a row of its own (a wide band); otherwise it shares the last row with cards #}
-        <li class="pups__more pups__more--fill brd-fill{{ ' brd-fill--a4' if n % 4 == 0 }}{{ ' brd-fill--a3' if n % 3 == 0 }}{{ ' brd-fill--a2' if n % 2 == 0 }}" style="--s4:{{ 4 - n % 4 }};--s3:{{ 3 - n % 3 }};--s2:{{ 2 - n % 2 }}">
+        <li class="pups__more pups__more--fill" style="--s4:{{ 4 - n % 4 }};--s3:{{ 3 - n % 3 }};--s2:{{ 2 - n % 2 }}">
           {{ cards.soon_tile() }}
         </li>
       </ul>

@@ -34,7 +34,9 @@
       </ul>
     </section>
 
-    {{ tr.band('najdyom-shchenka', pg.cta.title, line=pg.cta.line, label=pg.cta.label, tone='mint') }}
+    <section class="section container" id="najdyom-shchenka" aria-labelledby="najdyom-shchenka-title">
+      {{ ui.cta_band(pg.cta.title, line=pg.cta.line, label=pg.cta.label, tone='mint', title_id='najdyom-shchenka-title') }}
+    </section>
 
     <section class="section container" id="eshchyo" aria-labelledby="eshchyo-title">
       {{ ui.section_head(pg.links_title, id='eshchyo-title') }}
