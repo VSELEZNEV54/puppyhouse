@@ -46,6 +46,7 @@
 
     const show = (i, focus) => {
       clearTimeout(timer);
+      form.classList.remove('is-auto');
       cur = i;
       steps.forEach((s, k) => { s.hidden = k !== i; });
       countEl.textContent = String(i + 1);
@@ -145,6 +146,7 @@
       lastPointer = 0;
       hint.textContent = '';
       clearTimeout(timer);
+      form.classList.add('is-auto'); // «Дальше» не мигает, пока ведём к следующему вопросу (choice.css)
       timer = setTimeout(goNext, reduceMotion ? 0 : 280);
     });
     form.addEventListener('change', () => { hint.textContent = ''; });
@@ -177,7 +179,7 @@
       const on = boxes.filter((b) => b.checked).map((b) => b.name);
       if (on.length) store.set(KEY, JSON.stringify(on)); else store.del(KEY);
     });
-    const print = $('[data-print]', list);
+    const print = $('[data-print]', list.closest('section') || list);
     if (print && typeof window.print === 'function') {
       print.hidden = false;
       print.addEventListener('click', () => window.print());

@@ -88,7 +88,7 @@ a.brd-more:hover .round-arrow .i { transform: rotate(45deg); }
 /* ссылок много — плитки компактные, в одну строку: кружок, текст, стрелка */
 .brd-links .ltiles { --n: 3; }
 .brd-links .ltile {
-  display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 18px;
+  display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: start; gap: 18px;
   min-height: 0; padding: 22px 22px 22px 24px;
 }
 .brd-links .ltile .face, .brd-links .ltile .ico { width: 52px; height: 52px; }

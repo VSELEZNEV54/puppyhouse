@@ -10,10 +10,6 @@
 /* ---------- сетка статей ---------- */
 .blg-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--gap); }
 .blg-grid__item { min-width: 0; }
-/* «Не знаете, какую породу выбрать?» добирает последний ряд; если ряд полный — встаёт полосой (считают шаблон и blog.js) */
-.blg-grid__more { min-width: 0; grid-column: span var(--s3, 1); container-type: inline-size; }
-.blg-more { background: var(--lilac-50); }
-.blg-more .soon-tile__faces .face { border-color: var(--lilac-50); }
 
 /* ---------- карточка статьи ---------- */
 .blg-card {
@@ -128,14 +124,13 @@
    АДАПТИВ
    ========================================================= */
 @media (max-width: 1199px) {
-  /* счётчик — под темами, чтобы шесть пилюль помещались в одну строку */
-  .blg-filters { grid-template-columns: minmax(0, 1fr); row-gap: 4px; }
-  .blg-filters__count { font-size: 14px; }
+  /* темы занимают всю строку; число статей объявляет [data-bf-status] для экранных дикторов */
+  .blg-filters { grid-template-columns: minmax(0, 1fr); }
+  .blg-filters__count { display: none; }
 }
 
 @media (max-width: 1000px) {
   .blg-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .blg-grid__more { grid-column: span var(--s2, 1); }
   .blg-related { grid-template-columns: minmax(0, 1fr); }
   .blg-card--row { min-height: 240px; grid-template-columns: minmax(0, 1fr) 40%; }
 }
@@ -166,7 +161,6 @@
 /* мобильный список: миниатюра слева, текст справа */
 @media (max-width: 560px) {
   .blg-grid { grid-template-columns: minmax(0, 1fr); }
-  .blg-grid__more { grid-column: auto; }
   .blg-card, .blg-card--row, .blg-card--row.blg-card--studio {
     display: grid; grid-template-columns: 112px minmax(0, 1fr); align-items: stretch; min-height: 0;
     background: var(--tone-floor);
@@ -188,15 +182,6 @@
   .blg-card__foot .round-arrow { width: 36px; height: 36px; }
   .blg-card__foot .round-arrow .i { width: 17px; height: 17px; }
   .blg-card:hover { transform: none; }
-}
-
-@media (max-width: 560px) {
-  /* плитка теста в списке — компактнее: мордочки в ряд */
-  .blg-more { gap: 12px; min-height: 0; padding: 22px 18px 20px; }
-  .blg-more .soon-tile__faces { display: flex; }
-  .blg-more .soon-tile__faces .face { width: 54px; height: 54px; border: 3px solid var(--lilac-50); }
-  .blg-more .soon-tile__faces .face + .face { margin-left: -10px; }
-  .blg-more .soon-tile__title { font-size: 21px; }
 }
 
 @media (max-width: 560px) {

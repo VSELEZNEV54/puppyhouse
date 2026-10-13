@@ -97,12 +97,10 @@
               <ul class="pp-parent__facts">
                 {% for f in par.facts %}<li>{% if not f.startswith('[') %}{{ ui.icon('check', sm=true) }}{% endif %}{{ f|typo }}</li>{% endfor %}
               </ul>
-              {% if not par.photo %}<p class="pp-parent__ask">{{ 'Фото и видео пришлём по запросу'|typo }}</p>{% endif %}
+              {% if not par.photo %}<p class="pp-parent__ask"><span class="pp-parent__askico" aria-hidden="true">{{ ui.icon('video') }}</span>{{ 'Фото и видео пришлём по запросу'|typo }}</p>{% endif %}
             </div>
             {% if par.photo %}
             <div class="pp-parent__photo">{{ ui.img(par.photo.src, par.photo.alt) }}</div>
-            {% else %}
-            <span class="pp-parent__badge" aria-hidden="true">{{ ui.icon('video') }}</span>
             {% endif %}
           </article>
         </li>

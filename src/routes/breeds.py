@@ -98,7 +98,9 @@ def routes(data):
             url = _pair_url(b["slug"], other["slug"], order)
             pair = url.strip("/").split("/")[-1]
             first, second = (b, other) if order.index(b["slug"]) < order.index(other["slug"]) else (other, b)
-            compare.append(dict(url=url, title=nobr(f"{first['name']} или {_lower(second['name'])}"),
+            # «Мальтипу или француз», «Француз или той-пудель»: the long bulldog name would wrap the tile title
+            short = lambda x: "Француз" if x["slug"] == "francuzskij-buldog" else x["name"]
+            compare.append(dict(url=url, title=nobr(f"{short(first)} или {_lower(short(second))}"),
                                 line=nobr(hubs["compare"][pair]), breed=other))
 
         reading = [dict(url=blog[a["slug"]]["url"], title=nobr(a["title"]), line=nobr(a["line"]), icon="book",

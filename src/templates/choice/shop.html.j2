@@ -1,4 +1,4 @@
-{#- /magazin/ — starter kit: what to buy for a puppy (categories), printable checklist, breed extras, «Соберём набор» CTA
+{#- /magazin/ — starter kit: what to buy for a puppy as a printable checklist, breed extras, «Соберём набор» CTA
     (shared modal, title set by assets/js/choice.js), FAQ, collapsed SEO text. No prices. Context: sh (copy, Markup). -#}
 {% extends "layouts/page.html.j2" %}
 {% import "choice/_parts.html.j2" as part %}
@@ -38,26 +38,13 @@
 {% endblock %}
 
 {% block body %}
-    <section class="section section--tight container" id="nabor" aria-labelledby="nabor-title">
-      {{ ui.section_head(sh.cats_title, id='nabor-title', lead=sh.cats_lead) }}
-      <ul class="cho-cats" data-reveal="items">
-        {% for c in sh.cats %}
-        <li class="cho-cat">
-          {{ ui.ico(c.icon, c.color) }}
-          <h3 class="cho-cat__title">{{ c.title|typo }}</h3>
-          <p class="cho-cat__line">{{ c.line|typo }}</p>
-        </li>
-        {% endfor %}
-      </ul>
-    </section>
-
-    <section class="section container" id="chek-list" aria-labelledby="chek-list-title">
-      {{ ui.section_head(sh.list_title, id='chek-list-title', lead=sh.list_lead) }}
+    <section class="section section--tight container" id="chek-list" aria-labelledby="chek-list-title">
+      {% call ui.section_head(sh.list_title, id='chek-list-title', lead=sh.list_lead) %}<button class="btn btn--white cho-list__print" type="button" data-print hidden>{{ ui.icon('ch-print', sm=true) }}{{ sh.print }}</button>{% endcall %}
       <div class="cho-list" data-checklist>
+        {#- logo and title only on paper (choice.css @media print) #}
         <div class="cho-list__head">
           <p class="cho-list__brand">{{ ui.icon('paw') }}Puppy House</p>
           <p class="cho-list__title">{{ sh.list_head|typo }}</p>
-          <button class="btn btn--white cho-list__print" type="button" data-print hidden>{{ ui.icon('ch-print', sm=true) }}{{ sh.print }}</button>
         </div>
         <div class="cho-list__cols">
           {% for g in sh.groups %}

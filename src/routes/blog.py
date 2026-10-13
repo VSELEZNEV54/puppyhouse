@@ -199,7 +199,6 @@ def routes(data):
             articles=[cards[s] for s in hub["order"]],
             topics=topics,
             hero_chips=[
-                dict(icon="book", label=f"{len(cards)}{NBSP}{plural(len(cards), 'статья', 'статьи', 'статей')}"),
                 dict(icon="paw", label=f"{len(data['breeds'])}{NBSP}{plural(len(data['breeds']), 'порода', 'породы', 'пород')}"),
                 dict(icon="clock", label="до " + minutes_label(max(read_minutes(posts[s]) for s in hub["order"])) + " чтения"),
             ],

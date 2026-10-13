@@ -358,10 +358,10 @@
     "url": "/dostavka/sevastopol/",
     "km_approx": 1900,
     "methods": [
-      "car",
-      "train"
+      "train",
+      "car"
     ],
-    "duration": "[≈ 2 дня на машине]"
+    "duration": "[≈ 1,5–2 дня поездом]"
   },
   {
     "slug": "stavropol",

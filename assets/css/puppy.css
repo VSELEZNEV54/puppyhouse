@@ -145,7 +145,11 @@
   background: rgba(255, 255, 255, .62); font-size: 13.5px; font-weight: 500; line-height: 1.25;
 }
 .pp-parent__facts .i { color: var(--ink); stroke-width: 2.2; }
-.pp-parent__ask { margin-top: 12px; font-size: 14px; line-height: 1.4; color: var(--ink-soft); }
+/* родитель без фото: вместо пустого кружка — маленькая иконка видео рядом со строкой, плитка по содержимому */
+.pp-parent--ask .pp-parent__txt { max-width: none; }
+.pp-parent__ask { display: flex; align-items: center; gap: 12px; margin-top: 14px; font-size: 14px; line-height: 1.4; color: var(--ink-soft); }
+.pp-parent__askico { flex: none; width: 56px; height: 56px; border-radius: 50%; display: grid; place-items: center; background: rgba(255, 255, 255, .9); color: var(--ink); }
+.pp-parent__askico .i { width: 24px; height: 24px; stroke-width: 1.6; }
 .pp-parent__photo { position: absolute; z-index: 1; top: 0; bottom: 0; right: 0; aspect-ratio: 928 / 1152; transform: translateX(8%); }
 .pp-parent__photo img {
   width: 100%; height: 100%; object-fit: cover;
@@ -153,12 +157,6 @@
   mask-image: linear-gradient(90deg, transparent 0, #000 34%), linear-gradient(180deg, transparent 0, #000 14%);
   -webkit-mask-composite: source-in; mask-composite: intersect;
 }
-.pp-parent__badge {
-  position: absolute; z-index: 1; right: clamp(24px, 3.4vw, 52px); top: 50%; transform: translateY(-50%);
-  width: clamp(104px, 10vw, 148px); height: clamp(104px, 10vw, 148px); border-radius: 50%;
-  display: grid; place-items: center; background: rgba(255, 255, 255, .9);
-}
-.pp-parent__badge .i { width: 40%; height: 40%; stroke-width: 1.5; }
 
 /* ---------- что получите ---------- */
 .pp-gets { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); gap: var(--gap); }
@@ -240,7 +238,7 @@
   .pp-parent__facts { padding-top: 14px; gap: 5px; }
   .pp-parent__facts li { min-height: 28px; padding: 4px 10px; font-size: 12.5px; }
   .pp-parent__photo { transform: translateX(12%); }
-  .pp-parent__badge { right: 20px; width: 88px; height: 88px; }
+  .pp-parent--ask { min-height: 0; }
 
   .pp-gets__list { grid-template-columns: minmax(0, 1fr); }
   .pp-get { column-gap: 14px; row-gap: 2px; padding: 16px 18px; }

@@ -1,7 +1,7 @@
 /* Puppy House — блог.
    /blog/: фильтр статей по теме. Состояние в адресе: ?tema=maltipu (значение «all» не пишется).
      Разметка: [data-blog] → кнопки [data-bf-value], список [data-bf-list] > li[data-topic],
-     плитка [data-bf-more] (добирает последний ряд: --s3 / --s2), счётчик [data-bf-count], [data-bf-status].
+     счётчик [data-bf-count], [data-bf-status].
    Статья: оглавление .toc подсвечивает текущий раздел (aria-current="true"). */
 (() => {
   'use strict';
@@ -19,7 +19,6 @@
   if (root) {
     const buttons = Array.from(root.querySelectorAll('[data-bf-value]'));
     const items = Array.from(root.querySelectorAll('[data-bf-list] > li[data-topic]'));
-    const more = root.querySelector('[data-bf-more]');
     const count = root.querySelector('[data-bf-count]');
     const status = root.querySelector('[data-bf-status]');
     const allowed = buttons.map((b) => b.dataset.bfValue);
@@ -45,10 +44,6 @@
         li.hidden = !show;
         if (show) visible++;
       });
-      if (more) {
-        more.style.setProperty('--s3', String(3 - (visible % 3)));
-        more.style.setProperty('--s2', String(2 - (visible % 2)));
-      }
       const text = visible + ' ' + plural(visible, 'статья', 'статьи', 'статей');
       if (count) count.textContent = text;
       if (status && announce) {

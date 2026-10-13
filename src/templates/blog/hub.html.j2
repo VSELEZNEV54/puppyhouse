@@ -1,5 +1,5 @@
-{#- /blog/ — list of articles with topic chips (assets/js/blog.js). Copy: data/blog-posts.json → hub; cards: routes/blog.py.
-    Context: hub, articles (cards), topics, hero_chips. -#}
+{#- /blog/ — list of articles with topic chips (assets/js/blog.js), then the «Подобрать породу» band.
+    Copy: data/blog-posts.json → hub; cards: routes/blog.py. Context: hub, articles (cards), topics, hero_chips. -#}
 {% extends "layouts/page.html.j2" %}
 {% import "blog/_parts.html.j2" as blg %}
 
@@ -36,10 +36,11 @@
           {{ blg.card(c) }}
         </li>
         {% endfor %}
-        <li class="blg-grid__more" data-bf-more style="--s3:{{ 3 - n % 3 }};--s2:{{ 2 - n % 2 }}">
-          {{ blg.more_tile(hub.more) }}
-        </li>
       </ul>
+    </section>
+
+    <section class="section section--tight container" id="podbor" aria-labelledby="podbor-title">
+      {{ ui.cta_band(hub.more.title, line=hub.more.line, button={'url': hub.more.url, 'label': hub.more.label}, tone='lilac', faces=true, title_id='podbor-title') }}
     </section>
 
     {% call blocks.seo_block(hub.seo.title, hub.seo.lead, id='o-bloge') %}

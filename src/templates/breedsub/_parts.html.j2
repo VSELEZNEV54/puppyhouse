@@ -33,8 +33,8 @@
 {%- endmacro %}
 
 {#- CTA band (pages.css .cta-band) with its title as the section's H2 and round faces of the breed's colours.
-    faces: [{src, alt}] studio photos of puppies; tint: tone class of the band -#}
-{% macro cta(title, line, tint, faces=(), id='cena') -%}
+    faces: [{src, alt}] studio photos of puppies; tint: tone class of the band; breed: breed name to preselect in the modal -#}
+{% macro cta(title, line, tint, faces=(), id='cena', breed=none) -%}
 <section class="section container" id="{{ id }}" aria-labelledby="{{ id }}-title">
   <div class="cta-band tone--{{ tint }} bsub-cta">
     <div class="cta-band__txt">
@@ -45,7 +45,7 @@
     <span class="cta-band__faces bsub-cta__faces" aria-hidden="true">{% for f in faces %}<span class="face"{% if tone_style(f.src) %} style="--tone:{{ photo_tone(f.src).top }}"{% endif %}><img src="{{ f.src }}" alt="" width="{{ imgsize(f.src)[0] }}" height="{{ imgsize(f.src)[1] }}" loading="lazy" decoding="async"></span>{% endfor %}</span>
     {% endif %}
     <div class="cta-band__actions">
-      <button class="btn btn--ink btn--lg" type="button" data-open-modal>Узнать цену</button>
+      <button class="btn btn--ink btn--lg" type="button" data-open-modal{% if breed %} data-modal-breed="{{ breed }}"{% endif %}>Узнать цену</button>
     </div>
   </div>
 </section>

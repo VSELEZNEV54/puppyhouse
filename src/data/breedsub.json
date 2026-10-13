@@ -254,7 +254,7 @@
               { "title": "Тигровый", "line": "Полосы разной густоты на палевом" },
               { "title": "Пегий", "line": "Любой из них с белыми пятнами" }
             ],
-            "note": "Мы разводим [палевых, тигровых и пегих] французов по стандарту FCI."
+            "note": "Мы разводим [палевых, тигровых и пегих] французов. Окрас вне стандарта честно отмечаем в карточке щенка."
           },
           "no": {
             "title": "Вне стандарта",
@@ -372,10 +372,10 @@
           "title": "Окрасы той-пуделя",
           "lead": "По стандарту FCI окрас однотонный и ровный",
           "tiles": [
-            { "photo": "/assets/img/studio-pudel-yellow.jpg", "name": "Абрикосовый", "line": "Светлый оттенок палевого", "badge": "стандарт FCI" },
+            { "photo": "/assets/img/studio-pudel-yellow.jpg", "name": "Абрикосовый", "line": "Светлый палевый", "badge": "стандарт FCI" },
             { "photo": "/assets/img/color-pudel-black.jpg", "name": "Чёрный", "line": "Насыщенный и ровный", "badge": "стандарт FCI" },
-            { "photo": "/assets/img/color-pudel-white.jpg", "name": "Белый", "line": "Чисто белый, без желтизны", "badge": "стандарт FCI" },
-            { "photo": "/assets/img/color-pudel-chocolate.jpg", "name": "Коричневый", "line": "Тёплый тёмный оттенок, нос в тон", "badge": "стандарт FCI" }
+            { "photo": "/assets/img/color-pudel-white.jpg", "name": "Белый", "line": "Без желтизны", "badge": "стандарт FCI" },
+            { "photo": "/assets/img/color-pudel-chocolate.jpg", "name": "Коричневый", "line": "Тёплый, нос в тон", "badge": "стандарт FCI" }
           ],
           "more": {
             "title": "Ещё по стандарту",

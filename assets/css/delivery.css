@@ -15,6 +15,11 @@
 }
 .dlv-hero--portrait { grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); }
 .dlv-hero__copy { max-width: none; padding-block: clamp(20px, 2.6vw, 44px); }
+/* шапка без чипов: подпись и кнопки — одним блоком по центру по высоте, без пустой полосы между ними */
+@media (min-width: 761px) {
+  .dlv-hero__copy:not(:has(.phero__chips)) { justify-content: center; }
+  .dlv-hero__copy:not(:has(.phero__chips)) .phero__actions { margin-top: 0; }
+}
 .dlv-hero__media { position: relative; margin: 0; border-radius: var(--r-img); overflow: hidden; background: #E7E1D8; }
 .dlv-hero__media img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: var(--pos, 50% 50%); }
 
@@ -314,6 +319,7 @@ a.dlv-ct__value:hover { text-decoration: underline; text-decoration-thickness: 1
 }
 
 @media (max-width: 760px) {
+  .dlv-chip { min-height: 44px; } /* зона нажатия на телефоне */
   .dlv-hero__media { aspect-ratio: 4 / 3; }
   .dlv-hero__copy { padding: 18px 12px 12px; }
   .dlv-hero .phero__chips { margin-inline: -20px; padding-inline: 20px; }

@@ -43,7 +43,7 @@
 
 {#- City links as compact pills. cities: cities.json items. -#}
 {% macro city_chips(cities, label='Города доставки') -%}
-<ul class="dlv-chips" aria-label="{{ label }}">
+<ul class="dlv-chips" aria-label="{{ label|striptags }}">
   {% for c in cities %}<li><a class="dlv-chip" href="{{ c.url }}">{{ c.name|typo }}</a></li>{% endfor %}
 </ul>
 {%- endmacro %}

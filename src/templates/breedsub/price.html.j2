@@ -12,7 +12,7 @@
 
 {% block hero %}
     {% call ui.page_hero(pg.h1, lead=pg.lead, breed=b, eyebrow=pg.eyebrow, chips=pg.chips) %}
-      {{ forms.price_button(cls='btn btn--ink btn--lg') }}
+      {{ forms.price_button(cls='btn btn--ink btn--lg', breed=b.name) }}
       <a class="btn btn--white btn--lg" href="#pups">Щенки в&nbsp;наличии</a>
     {% endcall %}
 {% endblock %}
@@ -53,7 +53,7 @@
       {{ part.vs({'title': pg.cheap_bad_title, 'items': pg.cheap_bad}, {'title': pg.cheap_good_title, 'items': pg.cheap_good}, tint, id='nedorogo') }}
     </section>
 
-    {{ part.cta(pg.cta_title, pg.cta_line, tint, faces=faces) }}
+    {{ part.cta(pg.cta_title, pg.cta_line, tint, faces=faces, breed=b.name) }}
 
     <section class="section container" id="bron" aria-labelledby="bron-title">
       {{ ui.section_head(pg.booking_title, id='bron-title', lead=pg.booking_lead, link={'url': '/rassrochka/', 'label': 'Условия брони и рассрочки'}) }}

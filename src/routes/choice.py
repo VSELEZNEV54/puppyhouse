@@ -114,11 +114,10 @@ def _quiz(cfg, breeds, bm):
 def _shop(cfg, bm):
     s = dict(cfg["shop"])
     order = cfg["breed_order"]
-    s["cats"] = [dict(c, title=nobr(c["title"]), line=nobr(c["line"])) for c in s["cats"]]
     s["groups"] = [dict(title=nobr(g["title"]), items=[nobr(i) for i in g["items"]]) for g in s["groups"]]
     s["tips"] = [dict(url=f"/blog/{slug}-uhod/", breed=bm[slug], title=bm[slug]["name"],
                       line=s["breed_tips"][slug]) for slug in order]
-    for k in ("h1", "lead", "cats_title", "cats_lead", "list_title", "list_lead", "breeds_title", "breeds_lead",
+    for k in ("h1", "lead", "list_title", "list_lead", "breeds_title", "breeds_lead",
               "band_title", "band_line"):
         s[k] = nobr(s[k])
     s["faq"] = _faq(s["faq"])

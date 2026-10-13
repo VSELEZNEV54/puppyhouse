@@ -40,6 +40,7 @@
           <div class="tr-box tr-box--tone tone--mint" id="chip">
             <h3 class="tr-box__title">{{ ui.ico('chip', 'mint', sm=true) }}{{ pg.vax.chip_title|typo }}</h3>
             <p class="tr-box__text">{{ pg.vax.chip_line|typo }}</p>
+            {% if pg.vax.chip_note %}<p class="tr-box__note">{{ pg.vax.chip_note|typo }}</p>{% endif %}
           </div>
         </div>
       </div>

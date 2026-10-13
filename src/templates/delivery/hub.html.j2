@@ -57,7 +57,7 @@
               <p class="dlv-geo__line">{{ g.line|typo }}</p>
             </div>
           </div>
-          {{ dlv.city_chips(g.cities, label='Города: ' ~ g.title) }}
+          {{ dlv.city_chips(g.cities, label='Города: ' ~ (g.title|striptags)) }}
         </div>
         {% endfor %}
       </div>

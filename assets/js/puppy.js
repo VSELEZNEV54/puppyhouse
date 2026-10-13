@@ -95,7 +95,7 @@
     if (!trigger || !modal.open) return;
     const m = MODES[trigger.dataset.ppModal];
     mode = m || null;
-    setLabel(m ? m.label : DEFAULT_LABEL);
+    setLabel(m ? m.label : (trigger.dataset.modalSubmit || DEFAULT_LABEL));
     // общая заявка (без щенка, кнопки шапки и меню) — порода этой страницы уже выбрана
     if (breedField && !breedField.hidden && breedSelect && !trigger.dataset.modalBreed) breedSelect.value = breed;
   });

@@ -21,7 +21,7 @@
 {#- Underlined text link with an arrow glued to the last word: ui.text_link('/faq/', 'Все вопросы') -#}
 {% macro text_link(url, label) -%}
 {%- set words = label.rsplit(' ', 1) -%}
-<a class="text-link" href="{{ url }}">{% if words|length > 1 %}{{ words[0]|typo }} {% endif %}<span class="nw">{{ words[-1]|typo }} {{ icon('arrow', sm=true) }}</span></a>
+<a class="text-link" href="{{ url }}">{% if words|length > 1 %}{{ (words[0] ~ ' ')|typo }}{% endif %}<span class="nw">{{ words[-1]|typo }} {{ icon('arrow', sm=true) }}</span></a>
 {%- endmacro %}
 
 {#- Image with width/height read from the file: ui.img('/assets/img/x.jpg', 'Описание').

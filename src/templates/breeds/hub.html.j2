@@ -8,7 +8,7 @@
 
 {% block hero %}
     {% call ui.page_hero(hub.h1, lead=hub.lead, breed=b, eyebrow=hub.eyebrow, facts=hub.facts) %}
-      {{ forms.price_button(cls='btn btn--ink btn--lg') }}
+      {{ forms.price_button(cls='btn btn--ink btn--lg', breed=b.name) }}
       <a class="btn btn--white btn--lg" href="#shchenki">Смотреть щенков</a>
     {% endcall %}
 {% endblock %}
@@ -25,7 +25,7 @@
         </li>
         {% endfor %}
         <li class="pups__more pups__more--fill" style="--s4:{{ 4 - n % 4 }};--s3:{{ 3 - n % 3 }};--s2:{{ 2 - n % 2 }}">
-          {{ cards.soon_tile() }}
+          {{ cards.soon_tile(breed=b) }}
         </li>
       </ul>
       {% else %}
@@ -84,7 +84,7 @@
             {% for f in hub.price_factors %}<li>{{ f|typo }}</li>{% endfor %}
           </ul>
           <div class="brd-card__actions">
-            {{ forms.price_button() }}
+            {{ forms.price_button(breed=b.name) }}
             {{ ui.text_link(b.urls.price, 'Подробнее о цене') }}
           </div>
         </div>

@@ -45,7 +45,7 @@
     {% if list|length < limit %}
     {%- set n = list|length %}
     <li class="pups__more pups__more--fill" style="--s4:{{ 4 - n % 4 }};--s3:{{ 3 - n % 3 }};--s2:{{ 2 - n % 2 }}">
-      {{ soon_tile() }}
+      {{ soon_tile(breed=breed) }}
     </li>
     {% endif %}
   </ul>
@@ -55,12 +55,13 @@
 </section>
 {%- endmacro %}
 
-{#- «Ждёте другого щенка?» tile: fills the rest of a puppy row, opens the modal. -#}
-{% macro soon_tile(title='Ждёте другого щенка?', line='Напишем, когда появится новый помёт', label='Оставить заявку') -%}
+{#- «Ждёте другого щенка?» tile: fills the rest of a puppy row, opens the modal as a waiting-list request
+    (its own title, line, submit label and success text; hidden note «Лист ожидания»). breed: breeds.json item → preselected. -#}
+{% macro soon_tile(title='Ждёте другого щенка?', line='Напишем, когда появится новый помёт', label='Оставить заявку', breed=none) -%}
 <div class="soon-tile">
   <span class="soon-tile__faces" aria-hidden="true">{% for b in breeds %}{{ ui.face(b) }}{% endfor %}</span>
   <span class="soon-tile__txt"><span class="soon-tile__title">{{ title|typo }}</span><span class="soon-tile__line">{{ line|typo }}</span></span>
-  <button class="btn btn--ink" type="button" data-open-modal>{{ label }}</button>
+  <button class="btn btn--ink" type="button" data-open-modal data-modal-title="{{ title }}" data-modal-sub="{{ line }}" data-modal-note="Лист ожидания" data-modal-submit="Записаться" data-modal-done="Вы в листе ожидания. Куратор свяжется с вами, когда появится новый помёт."{% if breed %} data-modal-breed="{{ breed.name }}"{% endif %}>{{ label }}</button>
 </div>
 {%- endmacro %}
 

@@ -14,7 +14,7 @@
 {% block hero %}
 {%- set hs = imgsize(v.hero_photo.src) -%}
     {% call ui.page_hero(v.h1, lead=v.lead, breed=b, photo={'src': v.hero_photo.src, 'alt': v.hero_photo.alt, 'w': hs[0], 'h': hs[1]}, eyebrow=v.eyebrow, facts=v.facts) %}
-      {{ forms.price_button(cls='btn btn--ink btn--lg') }}
+      {{ forms.price_button(cls='btn btn--ink btn--lg', breed=b.name) }}
       <a class="btn btn--white btn--lg" href="#okrasy">Смотреть окрасы</a>
     {% endcall %}
 {% endblock %}
@@ -31,7 +31,7 @@
             {% if k.face %}<span class="bsub-kind__face" style="--s:{{ k.face }}" aria-hidden="true">{{ ui.face(b) }}</span>
             {% elif k.tag %}<span class="bsub-kind__tag" style="--c:var(--{{ k.color }})" aria-hidden="true">{{ k.tag }}</span>
             {% else %}{{ ui.ico(k.icon, k.color) }}{% endif %}
-            {% if k.badge %}<span class="bsub-kind__badge{{ ' bsub-kind__badge--off' if k.off }}">{{ k.badge }}</span>{% endif %}
+            {% if k.badge %}<span class="bsub-kind__badge{{ ' bsub-kind__badge--off' if k.off }}">{{ k.badge|typo }}</span>{% endif %}
           </div>
           <h3 class="bsub-kind__title">{% if k.tag %}<span class="sr-only">{{ k.tag }}: </span>{% endif %}{{ k.title|typo }}</h3>
           <p class="bsub-kind__line">{{ k.line|typo }}</p>

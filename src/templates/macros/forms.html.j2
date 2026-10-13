@@ -18,9 +18,9 @@
 <option>Пока не&nbsp;решил(а)</option>
 {%- endmacro %}
 
-{#- Button that opens the price modal without a puppy (generic request). -#}
-{% macro price_button(label='Узнать цену', cls='btn btn--ink') -%}
-<button class="{{ cls }}" type="button" data-open-modal>{{ label }}</button>
+{#- Button that opens the price modal without a puppy (generic request). breed: breed name to preselect («Мальтипу»). -#}
+{% macro price_button(label='Узнать цену', cls='btn btn--ink', breed=none) -%}
+<button class="{{ cls }}" type="button" data-open-modal{% if breed %} data-modal-breed="{{ breed }}"{% endif %}>{{ label }}</button>
 {%- endmacro %}
 
 {#- Final lead form section (homepage «Заявка»). One per page — keep id="zayavka": the mobile sticky bar hides over it.

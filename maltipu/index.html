@@ -11,9 +11,9 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500&amp;display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../assets/css/main.css?v=484936e7">
-  <link rel="stylesheet" href="../assets/css/pages.css?v=2817630a">
-  <link rel="stylesheet" href="../assets/css/breeds.css?v=6d797277">
-  <script src="../assets/js/main.js?v=560579a9" defer></script>
+  <link rel="stylesheet" href="../assets/css/pages.css?v=e45d80c4">
+  <link rel="stylesheet" href="../assets/css/breeds.css?v=6b1f8e2d">
+  <script src="../assets/js/main.js?v=176abba3" defer></script>
 </head>
 <body>
   <!-- Иконки: инлайн-спрайт 24×24. Линейные — stroke currentColor, заливочные — fill. -->
@@ -121,7 +121,7 @@
 <p class="eyebrow"><span class="eyebrow__dot" aria-hidden="true"></span>Питомник мальтипу · Москва</p>      <h1 class="phero__title" id="page-title">Щенки мальтипу в Москве</h1>
 <p class="phero__lead">Кудрявый компаньон размером с кошку. Почти не линяет и любит быть рядом</p>      <dl class="phero__facts">
 <div class="phero__fact"><dt>Вес</dt><dd><span class="nw">2–7</span> кг</dd></div><div class="phero__fact"><dt>Рост</dt><dd><span class="nw">20–35</span> см</dd></div><div class="phero__fact"><dt>Шерсть</dt><dd>почти не линяет</dd></div><div class="phero__fact"><dt>Живут</dt><dd><span class="nw">12–15</span> лет</dd></div>      </dl>
-<div class="phero__actions">      <button class="btn btn--ink btn--lg" type="button" data-open-modal>Узнать цену</button>
+<div class="phero__actions">      <button class="btn btn--ink btn--lg" type="button" data-open-modal data-modal-breed="Мальтипу">Узнать цену</button>
       <a class="btn btn--white btn--lg" href="#shchenki">Смотреть щенков</a>
 </div>    </div>
   </div>
@@ -129,7 +129,7 @@
     <section class="section section--tight container" id="shchenki" aria-labelledby="shchenki-title">
       <div class="sec-head">
   <h2 class="h2" id="shchenki-title">Мальтипу в наличии</h2>
-  <a class="text-link" href="../shchenki/?breed=maltipu">Смотреть в <span class="nw">каталоге <svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></span></a>
+  <a class="text-link" href="../shchenki/?breed=maltipu">Смотреть в <span class="nw">каталоге <svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></span></a>
   
 </div>
       <ul class="pups brd-pups scroller" data-reveal="items">
@@ -244,7 +244,7 @@
           <div class="soon-tile">
   <span class="soon-tile__faces" aria-hidden="true"><span class="face tone--peach"><img src="../assets/img/studio-maltipu-peach.jpg" alt="" width="1024" height="1024" loading="lazy" decoding="async"></span><span class="face tone--powder"><img src="../assets/img/studio-buldog-blue.jpg" alt="" width="1024" height="1024" loading="lazy" decoding="async"></span><span class="face tone--butter"><img src="../assets/img/studio-pudel-yellow.jpg" alt="" width="1024" height="1024" loading="lazy" decoding="async"></span><span class="face tone--sage"><img src="../assets/img/studio-kolli-green.jpg" alt="" width="1024" height="1024" loading="lazy" decoding="async"></span></span>
   <span class="soon-tile__txt"><span class="soon-tile__title">Ждёте другого щенка?</span><span class="soon-tile__line">Напишем, когда появится новый помёт</span></span>
-  <button class="btn btn--ink" type="button" data-open-modal>Оставить заявку</button>
+  <button class="btn btn--ink" type="button" data-open-modal data-modal-title="Ждёте другого щенка?" data-modal-sub="Напишем, когда появится новый помёт" data-modal-note="Лист ожидания" data-modal-submit="Записаться" data-modal-done="Вы в листе ожидания. Куратор свяжется с вами, когда появится новый помёт." data-modal-breed="Мальтипу">Оставить заявку</button>
 </div>
         </li>
       </ul>
@@ -293,7 +293,7 @@
     <h2 class="h2" id="okrasy-title">Окрасы мальтипу</h2>
     <p class="sec-head__lead">От кремового до шоколадного. С возрастом окрас может посветлеть</p>
   </div>
-  <a class="text-link" href="vidy-i-okrasy/">Все виды и <span class="nw">окрасы <svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></span></a>
+  <a class="text-link" href="vidy-i-okrasy/">Все виды и <span class="nw">окрасы <svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></span></a>
   
 </div>
       <ul class="stiles brd-colours scroller">
@@ -349,8 +349,8 @@
           <ul class="brd-card__chips">
 <li>Поколение: F1, F1b, F2</li><li>Размер: мини или стандарт</li><li>Окрас</li><li>Пол</li><li>Родители</li>          </ul>
           <div class="brd-card__actions">
-            <button class="btn btn--ink" type="button" data-open-modal>Узнать цену</button>
-            <a class="text-link" href="cena/">Подробнее о <span class="nw">цене <svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></span></a>
+            <button class="btn btn--ink" type="button" data-open-modal data-modal-breed="Мальтипу">Узнать цену</button>
+            <a class="text-link" href="cena/">Подробнее о <span class="nw">цене <svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></span></a>
           </div>
         </div>
         <div class="brd-pre__docs brd-card">
@@ -360,9 +360,9 @@
           </div>
           <p class="brd-card__line">Мальтипу — гибрид, поэтому без метрики РКФ</p>
           <ul class="badges">
-<li><svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-check"/></svg>Договор купли-продажи</li><li><svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-check"/></svg>Ветпаспорт с прививками</li><li><svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-check"/></svg>Копии родословных родителей</li></ul>
+<li><svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-check"/></svg>Договор купли-продажи</li><li><svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-check"/></svg>Ветпаспорт с прививками</li><li><svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-check"/></svg>Копии родословных предков</li></ul>
           <div class="brd-card__actions">
-            <a class="text-link" href="../dokumenty-i-garantii/">Документы и <span class="nw">гарантии <svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></span></a>
+            <a class="text-link" href="../dokumenty-i-garantii/">Документы и <span class="nw">гарантии <svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></span></a>
           </div>
         </div>
       </div>
@@ -376,7 +376,7 @@
     <ul class="faq__list">
       <li class="faq__item">
         <h3 class="faq__q"><button class="faq__btn" type="button" aria-expanded="false" aria-controls="faq-a1" id="faq-q1"><span>Мальтипу — это порода?</span><span class="faq__ico" aria-hidden="true"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-plus"/></svg></span></button></h3>
-        <div class="faq__a" id="faq-a1"><div><p>Нет, это гибрид мальтийской болонки и пуделя. РКФ и FCI его не признают, поэтому вместо метрики даём договор, ветпаспорт и копии родословных родителей.</p></div></div>
+        <div class="faq__a" id="faq-a1"><div><p>Нет, это гибрид мальтийской болонки и пуделя. РКФ и FCI его не признают, поэтому вместо метрики даём договор, ветпаспорт и копии родословных породистых предков.</p></div></div>
       </li>
       <li class="faq__item">
         <h3 class="faq__q"><button class="faq__btn" type="button" aria-expanded="false" aria-controls="faq-a2" id="faq-q2"><span>Чем отличаются F1, F1b и F2?</span><span class="faq__ico" aria-hidden="true"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-plus"/></svg></span></button></h3>
@@ -408,14 +408,14 @@
   <li>
     <a class="ltile ltile--white" href="../sravnenie/maltipu-ili-francuzskij-buldog/">
 <span class="face tone--powder"><img src="../assets/img/studio-buldog-blue.jpg" alt="" width="1024" height="1024" loading="lazy" decoding="async"></span>
-      <span class="ltile__txt"><span class="ltile__title">Мальтипу или французский бульдог</span><span class="ltile__line">Кудрявый компаньон или спокойный француз</span></span>
+      <span class="ltile__txt"><span class="ltile__title">Мальтипу или француз</span><span class="ltile__line">Кудряш или спокойный француз</span></span>
       <span class="round-arrow" aria-hidden="true"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-arrow-ur"/></svg></span>
     </a>
   </li>
   <li>
     <a class="ltile ltile--white" href="../sravnenie/maltipu-ili-toj-pudel/">
 <span class="face tone--butter"><img src="../assets/img/studio-pudel-yellow.jpg" alt="" width="1024" height="1024" loading="lazy" decoding="async"></span>
-      <span class="ltile__txt"><span class="ltile__title">Мальтипу или <span class="nw">той-пудель</span></span><span class="ltile__line">Два кудрявых малыша: в чём разница</span></span>
+      <span class="ltile__txt"><span class="ltile__title">Мальтипу или <span class="nw">той-пудель</span></span><span class="ltile__line">Два кудрявых малыша</span></span>
       <span class="round-arrow" aria-hidden="true"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-arrow-ur"/></svg></span>
     </a>
   </li>
@@ -454,7 +454,7 @@
       <p class="seo__lead">Puppy House — питомник мальтипу в Москве. Щенки растут в доме рядом с людьми: привыкают к рукам, звукам квартиры и пелёнке. Поэтому переезд в новую семью проходит спокойнее.</p>
       <div class="seo__more" id="seo-more" hidden>
                 <h3>Мальтипу — что за собака</h3>
-        <p>Мальтипу — гибрид мальтийской болонки и той- или миниатюрного пуделя. От болонки он взял мягкий характер, от пуделя — ум и кудрявую шерсть. Это <span class="nw">собака-компаньон</span>: ласковая, общительная и привязанная к хозяину. РКФ и FCI не признают мальтипу породой, поэтому метрики РКФ у щенка нет — мы даём договор, ветпаспорт и копии родословных родителей.</p>
+        <p>Мальтипу — гибрид мальтийской болонки и той- или миниатюрного пуделя. От болонки он взял мягкий характер, от пуделя — ум и кудрявую шерсть. Это <span class="nw">собака-компаньон</span>: ласковая, общительная и привязанная к хозяину. РКФ и FCI не признают мальтипу породой, поэтому метрики РКФ у щенка нет — мы даём договор, ветпаспорт и копии родословных породистых предков.</p>
         <h3>Поколения и размеры</h3>
         <p>Щенки мальтипу F1 рождаются от мальтийской болонки и пуделя. F1b — от мальтипу F1 и пуделя: шерсть у них кудрявее и линяет меньше. F2 — от двух мальтипу, их внешность предсказать сложнее. <span class="nw">Той-мальтипу</span> весят около <span class="nw">2–3</span> кг, мини — около <span class="nw">3–5</span> кг, стандартные — до 7 кг. Живут мальтипу <span class="nw">12–15</span> лет.</p>
         <h3>Шерсть и аллергия</h3>

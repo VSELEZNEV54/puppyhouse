@@ -290,9 +290,15 @@
     };
 
     // ds — data-атрибуты кнопки: data-modal-title / -sub (заголовок и подпись окна),
-    // data-modal-breed (порода в списке, если окно без щенка), data-modal-note (скрытая пометка заявки)
+    // data-modal-breed (порода в списке, если окно без щенка), data-modal-note (скрытая пометка заявки),
+    // data-modal-submit (текст кнопки отправки), data-modal-done (текст после отправки)
+    const pSubmit = $('[data-submit]', pForm);
+    const SUBMIT_LABEL = pSubmit.dataset.label;
+    let doneOverride = '';
     const openModal = (pup, opener, ds = {}) => {
       returnTo = opener;
+      pSubmit.dataset.label = ds.modalSubmit || SUBMIT_LABEL;
+      doneOverride = ds.modalDone || '';
       clearForm(pForm);
       viewForm.hidden = false;
       viewDone.hidden = true;
@@ -373,9 +379,9 @@
         const name = pForm.elements.name.value.trim();
         const c = contactOf(pForm);
         doneTitle.textContent = 'Спасибо, ' + name;
-        doneText.textContent = c === 'call'
+        doneText.textContent = doneOverride || (c === 'call'
           ? 'Куратор позвонит вам в течение 15 минут. Ночью — утром, после 9:00.'
-          : 'Куратор пришлёт цену и видео в ' + CONTACT_LABEL[c] + ' в течение 15 минут. Ночью — утром, после 9:00.';
+          : 'Куратор пришлёт цену и видео в ' + CONTACT_LABEL[c] + ' в течение 15 минут. Ночью — утром, после 9:00.');
         viewForm.hidden = true;
         viewDone.hidden = false;
         modal.setAttribute('aria-labelledby', 'pm-done-title');

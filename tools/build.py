@@ -50,7 +50,7 @@ URL_ATTRS = ("href", "src", "poster", "action", "data-src", "data-href")
 
 
 # ---------------------------------------------------------------- typography
-_SHORT_WORD = re.compile(r"(?<![\w&;\-])(?!(?:ли|же|бы|кг|см|мм|км|мл)\b)([а-яёa-z]{1,2}) (?=\S)", re.IGNORECASE)
+_SHORT_WORD = re.compile(r"(?<![\w&;\-])(?!(?:ли|же|бы|кг|см|мм|км|мл)\b)([а-яёa-z]{1,2}) (?=\S|$)", re.IGNORECASE)
 _PARTICLE = re.compile(r" (?=(?:ли|же|бы)\b)", re.IGNORECASE)
 _DASH = re.compile(r" (?=[—–](?:\s|$))")
 # 15 минут, 2,5 кг; not times («9:00 до»), not «2026 Puppy», not before a preposition

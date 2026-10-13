@@ -48,16 +48,16 @@ html:not(.js) .cho-quiz { display: none; }
 .cho-opt__input { position: absolute; opacity: 0; width: 1px; height: 1px; pointer-events: none; }
 .cho-opt {
   position: relative; isolation: isolate;
-  display: flex; flex-direction: column; align-items: flex-start; gap: 18px;
-  min-height: clamp(176px, 14.5vw, 216px); padding: clamp(18px, 1.8vw, 26px);
-  border-radius: 22px; border: 2px solid transparent;
+  display: flex; flex-direction: column; align-items: flex-start; gap: 16px;
+  padding: clamp(18px, 1.8vw, 26px);
+  border-radius: var(--r-img); border: 2px solid transparent;
   background: var(--bg, var(--sand));
   cursor: pointer; -webkit-tap-highlight-color: transparent;
   transition: border-color .2s, transform .35s var(--ease);
 }
 .cho-opt .ico { width: 48px; height: 48px; }
 .cho-opt .ico .i { width: 22px; height: 22px; }
-.cho-opt__txt { display: grid; gap: 5px; margin-top: auto; padding-right: 8px; }
+.cho-opt__txt { display: grid; gap: 5px; padding-right: 8px; }
 .cho-opt__label { font-size: clamp(19px, 1.5vw, 23px); font-weight: 500; letter-spacing: -0.022em; line-height: 1.15; }
 .cho-opt__line { font-size: 14.5px; line-height: 1.4; color: var(--ink-soft); }
 .cho-opt__mark {
@@ -76,6 +76,9 @@ html:not(.js) .cho-quiz { display: none; }
 .cho-opt__input:focus-visible + .cho-opt { outline: 2px solid var(--ink); outline-offset: 3px; }
 
 .cho-q__foot { display: flex; align-items: center; justify-content: flex-end; gap: 12px 20px; margin-top: clamp(20px, 2.4vw, 32px); }
+/* «Дальше» — только когда в открытом вопросе уже выбран ответ (клавиатура, «Назад»): нажатие на вариант и так ведёт дальше */
+.cho-q:not(:has(.cho-q__step:not([hidden]) .cho-opt__input:checked)) .cho-q__next,
+.cho-q.is-auto .cho-q__next { display: none; }
 .cho-q__hint { flex: 1 1 auto; font-size: 15px; font-weight: 500; color: var(--err); }
 .cho-q__hint:empty { visibility: hidden; }
 
@@ -208,28 +211,19 @@ html:not(.js) .cho-quiz { display: none; }
 .cho-kit__media { position: relative; min-height: 300px; border-radius: var(--r-tile); overflow: hidden; background: var(--sand); }
 .cho-kit__media img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 45%; }
 
-.cho-cats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--gap); }
-.cho-cat {
-  min-width: 0; display: flex; flex-direction: column; align-items: flex-start;
-  min-height: clamp(184px, 15vw, 224px); padding: var(--tile-pad);
-  border-radius: var(--r-tile); background: var(--tile);
-}
-.cho-cat .ico { width: 48px; height: 48px; }
-.cho-cat__title { margin-top: auto; padding-top: 22px; font-size: var(--fs-h3); font-weight: 500; letter-spacing: -0.025em; line-height: 1.15; }
-.cho-cat__line { margin-top: 6px; font-size: 15px; line-height: 1.4; color: var(--muted); }
-
 /* чек-лист: «лист бумаги» в белой плитке */
 .cho-list { padding: clamp(24px, 3.4vw, 52px); border-radius: var(--r-tile); background: var(--tile); }
+/* шапка листа (логотип и заголовок) — только на бумаге; на экране заголовок даёт H2 секции, кнопка «Распечатать» — рядом с ним */
 .cho-list__head {
-  display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 6px 20px;
-  padding-bottom: clamp(18px, 2vw, 26px); border-bottom: 1.5px dashed var(--line-2);
+  display: none; gap: 6px;
+  padding-bottom: 18px; margin-bottom: 20px; border-bottom: 1.5px dashed var(--line-2);
 }
 .cho-list__brand { display: inline-flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 500; color: var(--muted); }
 .cho-list__brand .i { color: var(--coral-strong); }
-.cho-list__title { grid-column: 1; font-size: clamp(22px, 2vw, 30px); font-weight: 500; letter-spacing: -0.028em; line-height: 1.1; }
-.cho-list__print { grid-column: 2; grid-row: 1 / 3; }
+.cho-list__title { font-size: clamp(22px, 2vw, 30px); font-weight: 500; letter-spacing: -0.028em; line-height: 1.1; }
+.cho-list__print { flex: none; }
 .cho-list__print .i { transform: none; }
-.cho-list__cols { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px clamp(20px, 2.6vw, 40px); padding-top: clamp(20px, 2.4vw, 32px); }
+.cho-list__cols { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px clamp(20px, 2.6vw, 40px); }
 .cho-list__group { min-width: 0; margin: 0; padding: 0; border: 0; }
 .cho-list__gtitle { padding: 0; margin-bottom: 6px; font-size: 15px; font-weight: 500; color: var(--muted); }
 .cho-list__items li + li { border-top: 1px solid var(--line); }
@@ -263,6 +257,7 @@ html:not(.js) .cho-quiz { display: none; }
   body.cho-print-list #chek-list { margin: 0; width: 100%; }
   body.cho-print-list #chek-list .sec-head, body.cho-print-list .cho-list__print { display: none !important; }
   body.cho-print-list .cho-list { padding: 0; }
+  body.cho-print-list .cho-list__head { display: grid; }
   body.cho-print-list .cho-list__cols { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 
@@ -282,9 +277,6 @@ html:not(.js) .cho-quiz { display: none; }
   .cho-vs .phero__title { max-width: 16ch; }
   .cho-vs__pair .stile { aspect-ratio: 4 / 5; height: auto; min-height: 0; }
   .cho-kit { grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); }
-  .cho-cats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .cho-cat { min-height: 0; }
-  .cho-cat__title { margin-top: 0; padding-top: 22px; } /* заголовки в ряду — на одной высоте */
   .cho-res__copy { max-width: 62%; }
 }
 
@@ -300,13 +292,13 @@ html:not(.js) .cho-quiz { display: none; }
 }
 
 @media (max-width: 760px) {
-  .cho-q { padding: 18px 16px 18px; border-radius: 24px; }
+  .cho-q { padding: 18px 16px 18px; border-radius: var(--r-tile); }
   .cho-q__top { gap: 12px; }
   .cho-q__count { min-width: 0; font-size: 14px; }
   .cho-q__back { height: 36px; padding: 0 13px 0 10px; font-size: 13.5px; }
   .cho-q__step { margin-top: 22px; }
   .cho-q__title { font-size: clamp(24px, 6.6vw, 30px); margin-bottom: 16px; }
-  .cho-opt { padding: 14px 52px 14px 14px; gap: 14px; border-radius: 18px; }
+  .cho-opt { padding: 14px 52px 14px 14px; gap: 14px; border-radius: var(--r-img); }
   .cho-opt .ico { width: 44px; height: 44px; }
   .cho-opt__label { font-size: 18px; }
   .cho-opt__line { font-size: 13.5px; }
@@ -354,13 +346,7 @@ html:not(.js) .cho-quiz { display: none; }
   .cho-kit { grid-template-columns: minmax(0, 1fr); }
   .cho-kit__copy { min-height: 0; }
   .cho-kit__media { order: -1; min-height: 0; aspect-ratio: 4 / 3; }
-  .cho-cat { min-height: 0; padding: 16px; }
-  .cho-cat .ico { width: 40px; height: 40px; }
-  .cho-cat__title { padding-top: 16px; font-size: 18px; }
-  .cho-cat__line { font-size: 13.5px; }
   .cho-list { padding: 20px 18px; }
-  .cho-list__head { grid-template-columns: minmax(0, 1fr); }
-  .cho-list__print { grid-column: 1; grid-row: auto; justify-self: start; margin-top: 10px; }
   .cho-check { font-size: 15.5px; padding: 10px 0; }
 }
 
@@ -373,9 +359,6 @@ html:not(.js) .cho-quiz { display: none; }
   .cho-q__opts--4 { --n: 1; }
   .cho-q__opts--4 .cho-opt { flex-direction: row; align-items: center; padding: 14px 52px 14px 14px; }
   .cho-q__opts--4 .cho-opt__mark { top: 50%; margin-top: -13px; right: 14px; }
-  .cho-cats { gap: 8px; }
-  .cho-cat { padding: 14px; }
-  .cho-cat__title { font-size: 17px; }
 }
 
 @media (prefers-reduced-motion: reduce) {

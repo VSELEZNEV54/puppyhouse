@@ -61,6 +61,7 @@
     const cols = cs.display === 'grid' ? cs.gridTemplateColumns.split(' ').filter(Boolean).length || 1 : 1;
     const rest = visible % cols;
     more.style.gridColumn = 'span ' + (rest ? cols - rest : cols);
+    more.classList.toggle('is-shared', rest > 0); // делит ряд с карточками → колонкой (pages.css)
   };
 
   let state = readUrl();

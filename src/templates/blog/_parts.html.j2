@@ -1,4 +1,4 @@
-{#- Blog parts (group blog): article card, «Подобрать породу» tile, article copy blocks, extra icons.
+{#- Blog parts (group blog): article card, article copy blocks, extra icons.
     Import: {% import "blog/_parts.html.j2" as blg %} -#}
 {% import "macros/ui.html.j2" as ui %}
 
@@ -27,15 +27,6 @@
 </article>
 {%- endmacro %}
 
-{#- «Не знаете, какую породу выбрать?» — fills the rest of the last row of the article grid (a band when the row is full). -#}
-{% macro more_tile(m) -%}
-<div class="soon-tile blg-more">
-  <span class="soon-tile__faces" aria-hidden="true">{% for b in breeds %}{{ ui.face(b) }}{% endfor %}</span>
-  <span class="soon-tile__txt"><span class="soon-tile__title">{{ m.title|typo }}</span><span class="soon-tile__line">{{ m.line|typo }}</span></span>
-  <a class="btn btn--ink" href="{{ m.url }}">{{ m.label }}</a>
-</div>
-{%- endmacro %}
-
 {#- Article copy: blocks from routes/blog.py (Markup already escaped, links and <b> resolved). -#}
 {% macro copy(blocks) -%}
 {% for b in blocks %}
@@ -55,7 +46,7 @@
               <caption class="sr-only">{{ b.caption }}</caption>
               <thead><tr>{% for h in b.head %}{% if h %}<th scope="col">{{ h|typo }}</th>{% else %}<td></td>{% endif %}{% endfor %}</tr></thead>
               <tbody>
-                {% for r in b.rows %}<tr><th scope="row">{{ r[0]|typo }}</th>{% for v in r[1:] %}<td data-label="{{ b.labels[loop.index] }}">{{ v|typo }}</td>{% endfor %}</tr>
+                {% for r in b.rows %}<tr><th scope="row">{{ r[0]|typo }}</th>{% for v in r[1:] %}<td data-label="{{ b.labels[loop.index] }}"><span>{{ v|typo }}</span></td>{% endfor %}</tr>
                 {% endfor %}
               </tbody>
             </table>

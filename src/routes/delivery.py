@@ -161,7 +161,7 @@ def city_pages(data, cities):
         elif ms == ["plane"]:
             lead_key = "plane"
         elif has_car and has_train:
-            lead_key = "car_train"
+            lead_key = "train_car" if primary == "train" else "car_train"
         else:
             lead_key = "car_plane"
         facts = [

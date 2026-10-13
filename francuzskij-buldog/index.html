@@ -11,9 +11,9 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500&amp;display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../assets/css/main.css?v=484936e7">
-  <link rel="stylesheet" href="../assets/css/pages.css?v=2817630a">
-  <link rel="stylesheet" href="../assets/css/breeds.css?v=6d797277">
-  <script src="../assets/js/main.js?v=560579a9" defer></script>
+  <link rel="stylesheet" href="../assets/css/pages.css?v=e45d80c4">
+  <link rel="stylesheet" href="../assets/css/breeds.css?v=6b1f8e2d">
+  <script src="../assets/js/main.js?v=176abba3" defer></script>
 </head>
 <body>
   <!-- Иконки: инлайн-спрайт 24×24. Линейные — stroke currentColor, заливочные — fill. -->
@@ -121,7 +121,7 @@
 <p class="eyebrow"><span class="eyebrow__dot" aria-hidden="true"></span>Питомник французов · Москва</p>      <h1 class="phero__title" id="page-title">Щенки французского бульдога в Москве</h1>
 <p class="phero__lead">Спокойный городской друг. Любит диван, неспешные прогулки и вашу компанию</p>      <dl class="phero__facts">
 <div class="phero__fact"><dt>Вес</dt><dd><span class="nw">8–14</span> кг</dd></div><div class="phero__fact"><dt>Рост</dt><dd><span class="nw">24–35</span> см</dd></div><div class="phero__fact"><dt>Шерсть</dt><dd>короткая</dd></div><div class="phero__fact"><dt>Живут</dt><dd><span class="nw">10–12</span> лет</dd></div>      </dl>
-<div class="phero__actions">      <button class="btn btn--ink btn--lg" type="button" data-open-modal>Узнать цену</button>
+<div class="phero__actions">      <button class="btn btn--ink btn--lg" type="button" data-open-modal data-modal-breed="Французский бульдог">Узнать цену</button>
       <a class="btn btn--white btn--lg" href="#shchenki">Смотреть щенков</a>
 </div>    </div>
   </div>
@@ -129,7 +129,7 @@
     <section class="section section--tight container" id="shchenki" aria-labelledby="shchenki-title">
       <div class="sec-head">
   <h2 class="h2" id="shchenki-title">Французы в наличии</h2>
-  <a class="text-link" href="../shchenki/?breed=francuzskij-buldog">Смотреть в <span class="nw">каталоге <svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></span></a>
+  <a class="text-link" href="../shchenki/?breed=francuzskij-buldog">Смотреть в <span class="nw">каталоге <svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></span></a>
   
 </div>
       <ul class="pups brd-pups scroller" data-reveal="items">
@@ -199,7 +199,7 @@
           <div class="soon-tile">
   <span class="soon-tile__faces" aria-hidden="true"><span class="face tone--peach"><img src="../assets/img/studio-maltipu-peach.jpg" alt="" width="1024" height="1024" loading="lazy" decoding="async"></span><span class="face tone--powder"><img src="../assets/img/studio-buldog-blue.jpg" alt="" width="1024" height="1024" loading="lazy" decoding="async"></span><span class="face tone--butter"><img src="../assets/img/studio-pudel-yellow.jpg" alt="" width="1024" height="1024" loading="lazy" decoding="async"></span><span class="face tone--sage"><img src="../assets/img/studio-kolli-green.jpg" alt="" width="1024" height="1024" loading="lazy" decoding="async"></span></span>
   <span class="soon-tile__txt"><span class="soon-tile__title">Ждёте другого щенка?</span><span class="soon-tile__line">Напишем, когда появится новый помёт</span></span>
-  <button class="btn btn--ink" type="button" data-open-modal>Оставить заявку</button>
+  <button class="btn btn--ink" type="button" data-open-modal data-modal-title="Ждёте другого щенка?" data-modal-sub="Напишем, когда появится новый помёт" data-modal-note="Лист ожидания" data-modal-submit="Записаться" data-modal-done="Вы в листе ожидания. Куратор свяжется с вами, когда появится новый помёт." data-modal-breed="Французский бульдог">Оставить заявку</button>
 </div>
         </li>
       </ul>
@@ -248,7 +248,7 @@
     <h2 class="h2" id="okrasy-title">Окрасы французского бульдога</h2>
     <p class="sec-head__lead">Стандарт FCI признаёт палевый и тигровый — с белыми пятнами или без</p>
   </div>
-  <a class="text-link" href="vidy-i-okrasy/">Все виды и <span class="nw">окрасы <svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></span></a>
+  <a class="text-link" href="vidy-i-okrasy/">Все виды и <span class="nw">окрасы <svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></span></a>
   
 </div>
       <ul class="stiles brd-colours scroller">
@@ -304,8 +304,8 @@
           <ul class="brd-card__chips">
 <li>Окрас</li><li>Пол</li><li>Родители</li><li>Перспектива: дом или выставки</li>          </ul>
           <div class="brd-card__actions">
-            <button class="btn btn--ink" type="button" data-open-modal>Узнать цену</button>
-            <a class="text-link" href="cena/">Подробнее о <span class="nw">цене <svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></span></a>
+            <button class="btn btn--ink" type="button" data-open-modal data-modal-breed="Французский бульдог">Узнать цену</button>
+            <a class="text-link" href="cena/">Подробнее о <span class="nw">цене <svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></span></a>
           </div>
         </div>
         <div class="brd-pre__docs brd-card">
@@ -317,7 +317,7 @@
           <ul class="badges">
 <li><svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-check"/></svg>Договор купли-продажи</li><li><svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-check"/></svg>Ветпаспорт с прививками</li><li><svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-check"/></svg>Метрика РКФ</li></ul>
           <div class="brd-card__actions">
-            <a class="text-link" href="../dokumenty-i-garantii/">Документы и <span class="nw">гарантии <svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></span></a>
+            <a class="text-link" href="../dokumenty-i-garantii/">Документы и <span class="nw">гарантии <svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></span></a>
           </div>
         </div>
       </div>
@@ -363,21 +363,21 @@
   <li>
     <a class="ltile ltile--white" href="../sravnenie/maltipu-ili-francuzskij-buldog/">
 <span class="face tone--peach"><img src="../assets/img/studio-maltipu-peach.jpg" alt="" width="1024" height="1024" loading="lazy" decoding="async"></span>
-      <span class="ltile__txt"><span class="ltile__title">Мальтипу или французский бульдог</span><span class="ltile__line">Кудрявый компаньон или спокойный француз</span></span>
+      <span class="ltile__txt"><span class="ltile__title">Мальтипу или француз</span><span class="ltile__line">Кудряш или спокойный француз</span></span>
       <span class="round-arrow" aria-hidden="true"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-arrow-ur"/></svg></span>
     </a>
   </li>
   <li>
     <a class="ltile ltile--white" href="../sravnenie/francuzskij-buldog-ili-toj-pudel/">
 <span class="face tone--butter"><img src="../assets/img/studio-pudel-yellow.jpg" alt="" width="1024" height="1024" loading="lazy" decoding="async"></span>
-      <span class="ltile__txt"><span class="ltile__title">Французский бульдог или <span class="nw">той-пудель</span></span><span class="ltile__line">Короткая шерсть или кудри без линьки</span></span>
+      <span class="ltile__txt"><span class="ltile__title">Француз или <span class="nw">той-пудель</span></span><span class="ltile__line">Короткая шерсть или кудри</span></span>
       <span class="round-arrow" aria-hidden="true"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-arrow-ur"/></svg></span>
     </a>
   </li>
   <li>
     <a class="ltile ltile--white" href="../sravnenie/francuzskij-buldog-ili-border-kolli/">
 <span class="face tone--sage"><img src="../assets/img/studio-kolli-green.jpg" alt="" width="1024" height="1024" loading="lazy" decoding="async"></span>
-      <span class="ltile__txt"><span class="ltile__title">Французский бульдог или <span class="nw">бордер-колли</span></span><span class="ltile__line">Спокойные прогулки или спорт каждый день</span></span>
+      <span class="ltile__txt"><span class="ltile__title">Француз или <span class="nw">бордер-колли</span></span><span class="ltile__line">Спокойные прогулки или спорт</span></span>
       <span class="round-arrow" aria-hidden="true"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-arrow-ur"/></svg></span>
     </a>
   </li>
@@ -416,7 +416,7 @@
         <p>Стандарт FCI признаёт палевый и тигровый окрас — с белыми пятнами или без. Голубой, кремовый, шоколадный, мраморный и другие редкие окрасы стандартом не признаны. Такой щенок станет прекрасным другом, но не выставочной собакой — мы честно говорим об этом до покупки.</p>
         <h3>Как выбрать щенка французского бульдога</h3>
         <p>Смотрите на дыхание, активность и характер, а не только на окрас. Попросите видео, где щенок играет и спит: дышать он должен ровно. Мы покажем щенка по видеосвязи, расскажем о родителях и пришлём цену. Каждый щенок уезжает с договором, ветпаспортом и метрикой РКФ.</p>
-        <h3>Щенок французского бульдога в <span class="nw">2–3</span> месяца</h3>
+        <h3>Щенок французского бульдога в <span class="nw">2–3</span> месяца</h3>
         <p>В этом возрасте щенок много играет и много спит. Домой он переезжает не раньше 10 недель — привитым по возрасту и осмотренным ветеринаром. В первые дни держите режим, к которому малыш привык в питомнике: график прививок дадим с собой, а о кормлении расскажем до переезда.</p>
         <h3>Купить француза в Москве и области</h3>
         <p>Приезжайте в питомник по записи или выберите щенка по видео. Привезём француза к дому в Москве и Московской области, а в другие города отправим с куратором.</p>
