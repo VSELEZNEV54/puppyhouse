@@ -1,0 +1,44 @@
+name: Fetch messenger logos
+
+on:
+  push:
+    paths:
+      - tools/brand-assets.json
+      - .github/workflows/fetch-brand.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref }}
+      - name: Download logos (raw files, no conversion)
+        run: |
+          mkdir -p tools/brand
+          python3 - <<'PY'
+          import json, pathlib, urllib.request
+          UA = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36"
+          out = pathlib.Path("tools/brand")
+          for item in json.loads(pathlib.Path("tools/brand-assets.json").read_text(encoding="utf-8")):
+              try:
+                  req = urllib.request.Request(item["url"], headers={"User-Agent": UA})
+                  with urllib.request.urlopen(req, timeout=60) as r:
+                      data = r.read()
+                  (out / item["name"]).write_bytes(data)
+                  print(item["name"], len(data), "bytes")
+              except Exception as e:
+                  print(item["name"], "FAILED", e)
+          PY
+      - name: Commit logos
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add tools/brand
+          git diff --cached --quiet && exit 0
+          git commit -m "Add messenger logo sources (MAX) for the icon set"
+          git push
