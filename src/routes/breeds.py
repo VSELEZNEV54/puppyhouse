@@ -2,13 +2,20 @@
 Owns: src/templates/breeds/, src/data/breeds-hub.json (copy per breed + "common"), assets/css/breeds.css.
 Breed photos come from breeds.json; puppies (and every count) from puppies.json; the photo / video carousel from
 media.json (the breed's set, ordered and topped up in breeds-hub.json → media); the colours from breedsub.json
-(the colour cards of /<breed>/vidy-i-okrasy/ — the hub links to each one by its anchor)."""
+(the colour cards of /<breed>/vidy-i-okrasy/ — the hub links to each one by its anchor).
+
+Two layouts. "layout": "v2" in breeds-hub.json (maltipu first, client revisions 15.10) → breeds/breed.html.j2:
+hero «Щенки в наличии» + «Получить консультацию» → every puppy of the breed → photo / video carousel like the
+homepage → colour cards to scroll through, each with «Подобрать …» → «Какой он» → «Как мы отдаём щенка» (what
+travels with the puppy, documents, guarantee, delivery, price) → FAQ → articles about the breed → SEO text and the
+lead form as on the homepage. Without it — the first hub layout, breeds/hub.html.j2."""
 
 import re
 
 from markupsafe import Markup, escape
 
 from _lib import by_id, crumbs, sort_puppies
+from blog import rich
 from breedsub import breed_colours
 
 
@@ -61,6 +68,45 @@ def copy_markup(hub):
     return h
 
 
+def copy_v2(hub):
+    """Copy of a v2 breed page with every visible string passed through nobr() (SEO paragraphs: rich(), links allowed)."""
+    h = dict(hub)
+    for k in ("h1", "lead", "note", "pups_title", "pups_lead", "media_title", "media_lead", "colours_title",
+              "colours_lead", "about_title", "faq_title", "blog_title", "blog_lead", "lead_title", "lead_line"):
+        h[k] = nobr(h[k])
+    h["media_label"] = hub["media_title"]
+    h["band"] = dict(title=hub["band"]["title"], line=hub["band"]["line"])  # plain: the macro escapes it, also into data-*
+    h["traits"] = [{k: (nobr(v) if k in ("label", "title", "line") else v) for k, v in t.items()} for t in h["traits"]]
+    h["faq"] = [dict(q=Markup("<span>") + nobr(f["q"]) + Markup("</span>"), a=nobr(f["a"])) for f in h["faq"]]
+    ho = hub["handover"]
+    h["handover"] = dict(
+        title=nobr(ho["title"]), lead=nobr(ho["lead"]),
+        kit=dict(ho["kit"], title=nobr(ho["kit"]["title"]), line=nobr(ho["kit"]["line"]),
+                 items=[dict(i, label=nobr(i["label"])) for i in ho["kit"]["items"]]),
+        tiles=[dict(t, title=nobr(t["title"]), line=nobr(t["line"])) for t in ho["tiles"]],
+    )
+    h["seo"] = dict(title=nobr(hub["seo"]["title"]), lead=nobr(hub["seo"]["lead"]),
+                    blocks=[dict(h=nobr(b["h"]), p=[rich(x) for x in (b["p"] if isinstance(b["p"], list) else [b["p"]])])
+                            for b in hub["seo"]["blocks"]])
+    return h
+
+
+def _teasers(items, data, b):
+    """Article cards «Всё о породе»: a blog slug (title, line, cover from blog-posts.json; cover may be overridden)
+    or a ready card {url, title, line, cover, topic} (the breed's own guide pages: colours, price)."""
+    meta = by_id(data["blog"], "slug")
+    posts = data["blog_posts"]["posts"]
+    out = []
+    for it in items:
+        if "slug" in it:
+            post = posts[it["slug"]]
+            out.append(dict(url=meta[it["slug"]]["url"], title=post["h1"], line=post["card_line"],
+                            cover=it.get("cover") or post["cover"], topic=f"{b['name']} · {post['topic'].lower()}"))
+        else:
+            out.append(dict(it))
+    return out
+
+
 def _lower(name):
     """«Той-пудель» → «той-пудель» inside a title: «Чем хорош той-пудель»."""
     return name[:1].lower() + name[1:]
@@ -75,6 +121,31 @@ def routes(data):
     for b in breeds:
         own = dict(hubs[b["slug"]])
         own["faq"] = own["faq"] + common["faq_more"]   # every hub: vaccinations and the lifelong guarantee
+        if own.get("layout") == "v2":
+            hub = copy_v2(own)
+            colours = breed_colours(data, b)
+            out.append(dict(
+                url=b["urls"]["hub"],
+                template="breeds/breed.html.j2",
+                context=dict(
+                    title=own["title"],
+                    description=own["description"],
+                    breadcrumbs=crumbs((b["name"], None)),
+                    b=b,
+                    hub=hub,
+                    common=common,
+                    reel=_media(own, data["media"].get(b["slug"], []), b["slug"]),
+                    pups=sort_puppies(b["puppies"]),
+                    colours=colours,
+                    # round faces in the band under the carousel: the breed's colours named in breeds-hub.json
+                    band_faces=[dict(src=c["photo"]["src"], tone=b["tone"]) for slug in own["band"]["faces"]
+                                for c in colours if c["slug"] == slug and c["photo"]],
+                    posts=_teasers(own["blog"], data, b),
+                    pups_strip=False,          # the page lists every puppy of the breed itself
+                    lead_breed=b["slug"],
+                ),
+            ))
+            continue
         hub = copy_markup(own)
 
         # «Сравнение пород» (client 15.10): the breed's own page «Чем хорош щенок …» instead of three pair pages,

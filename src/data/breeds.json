@@ -105,7 +105,21 @@
           }
         },
         {
-          "name": "рыжий (абрикос)",
+          "name": "белый",
+          "photo": {
+            "src": "/assets/img/color-maltipu-white.jpg",
+            "alt": "Белый щенок мальтипу на персиковом фоне"
+          }
+        },
+        {
+          "name": "абрикосовый",
+          "photo": {
+            "src": "/assets/img/color-maltipu-apricot.jpg",
+            "alt": "Абрикосовый щенок мальтипу на персиковом фоне"
+          }
+        },
+        {
+          "name": "рыжий",
           "photo": {
             "src": "/assets/img/color-maltipu-red.jpg",
             "alt": "Рыжий щенок мальтипу на персиковом фоне"
@@ -119,6 +133,20 @@
           }
         },
         {
+          "name": "чёрный",
+          "photo": {
+            "src": "/assets/img/color-maltipu-black.jpg",
+            "alt": "Чёрный щенок мальтипу на персиковом фоне"
+          }
+        },
+        {
+          "name": "серебристый",
+          "photo": {
+            "src": "/assets/img/color-maltipu-silver.jpg",
+            "alt": "Серебристо-серый щенок мальтипу на персиковом фоне"
+          }
+        },
+        {
           "name": "партиколор",
           "photo": {
             "src": "/assets/img/color-maltipu-parti.jpg",
@@ -126,12 +154,18 @@
           }
         },
         {
-          "name": "белый",
-          "photo": null
+          "name": "фантом",
+          "photo": {
+            "src": "/assets/img/color-maltipu-phantom.jpg",
+            "alt": "Щенок мальтипу окраса фантом — чёрный с рыжими подпалинами"
+          }
         },
         {
-          "name": "чёрный",
-          "photo": null
+          "name": "соболиный",
+          "photo": {
+            "src": "/assets/img/color-maltipu-sable.jpg",
+            "alt": "Соболиный щенок мальтипу на персиковом фоне"
+          }
         }
       ]
     }

@@ -1,5 +1,5 @@
 {
-  "_note": "Photo and video sets for ui media carousels (macros/media.html.j2). PLACEHOLDERS: existing photos stand in for real shots; kind=video items have no file yet (\"video\": null → the lightbox says «Видео появится здесь»). When the client sends videos, put the .mp4 path into \"video\" and a frame into \"src\". pos = object-position for the 9:16 crop. READ-ONLY for page groups (pick a set or build your own list in the route).",
+  "_note": "Photo and video sets for ui media carousels (macros/media.html.j2). maltipu: the client's live photos and video (tools/yadisk-pick.json, 15.10); other sets — PLACEHOLDERS: existing photos stand in for real shots; kind=video items have no file yet (\"video\": null → the lightbox says «Видео появится здесь»). When the client sends videos, put the .mp4 path into \"video\" and a frame into \"src\". pos = object-position for the 9:16 crop. READ-ONLY for page groups (pick a set or build your own list in the route).",
   "home": [
     {
       "src": "/assets/img/hero-maltipu-sofa.jpg",
@@ -66,72 +66,103 @@
   ],
   "maltipu": [
     {
-      "src": "/assets/img/hero-maltipu-sofa.jpg",
-      "kind": "video",
-      "alt": "Абрикосовый щенок мальтипу на светлом диване",
-      "caption": "Первый день дома",
-      "video": null
-    },
-    {
-      "src": "/assets/img/studio-maltipu-peach.jpg",
+      "src": "/assets/img/ml-maltipu-389.jpg",
       "kind": "photo",
-      "alt": "Кремовый щенок мальтипу на персиковом фоне",
-      "caption": "Кремовый мальтипу"
+      "alt": "Кремово-белый щенок мальтипу на розовой лежанке",
+      "caption": "На любимой лежанке"
     },
     {
-      "src": "/assets/img/color-maltipu-red.jpg",
-      "kind": "video",
-      "alt": "Рыжий щенок мальтипу на персиковом фоне",
-      "caption": "Рыжий окрас",
-      "video": null
-    },
-    {
-      "src": "/assets/img/pup-maltipu-chocolate.jpg",
+      "src": "/assets/img/ml-maltipu-377.jpg",
       "kind": "photo",
-      "alt": "Шоколадный щенок мальтипу на вязаном пледе",
-      "caption": "Шоколадный мальтипу"
+      "alt": "Рыжий щенок мальтипу стоит на розовой лежанке",
+      "caption": "Рыжий мальтипу"
     },
     {
-      "src": "/assets/img/parents-maltipu.jpg",
-      "kind": "video",
-      "alt": "Мама-мальтипу со щенками на лежанке",
-      "caption": "Мама со щенками",
-      "pos": "45% 50%",
-      "video": null
-    },
-    {
-      "src": "/assets/img/color-maltipu-parti.jpg",
+      "src": "/assets/img/ml-maltipu-372.jpg",
       "kind": "photo",
-      "alt": "Щенок мальтипу окраса партиколор на персиковом фоне",
-      "caption": "Партиколор"
+      "alt": "Белый щенок мальтипу на руках на фоне елей",
+      "caption": "Прогулка в саду",
+      "pos": "40% 50%"
     },
     {
-      "src": "/assets/img/family-maltipu.jpg",
-      "kind": "video",
-      "alt": "Девушка обнимает щенка мальтипу на диване",
-      "caption": "В новой семье",
-      "pos": "56% 50%",
-      "video": null
-    },
-    {
-      "src": "/assets/img/color-maltipu-chocolate.jpg",
+      "src": "/assets/img/ml-maltipu-489.jpg",
       "kind": "photo",
-      "alt": "Шоколадный щенок мальтипу на персиковом фоне",
-      "caption": "Шоколадный окрас"
+      "alt": "Абрикосовый щенок мальтипу в праздничном кружевном воротничке",
+      "caption": "Нарядный малыш"
     },
     {
-      "src": "/assets/img/parent-maltipu.jpg",
+      "src": "/assets/img/ml-maltipu-470.jpg",
       "kind": "photo",
-      "alt": "Взрослый абрикосовый мальтипу на персиковом фоне",
-      "caption": "Взрослый мальтипу"
+      "alt": "Абрикосовый щенок мальтипу на руках у хозяйки",
+      "caption": "На руках"
     },
     {
-      "src": "/assets/img/video-call.jpg",
+      "src": "/assets/img/ml-maltipu-475.jpg",
+      "kind": "photo",
+      "alt": "Рыжий кудрявый щенок мальтипу выглядывает из розовой чашки",
+      "caption": "Мальтипу в чашке"
+    },
+    {
+      "src": "/assets/img/ml-maltipu-451.jpg",
+      "kind": "photo",
+      "alt": "Щенок мальтипу в плетёной корзинке с мягкими игрушками",
+      "caption": "В корзинке с игрушками"
+    },
+    {
+      "src": "/assets/img/ml-maltipu-386.jpg",
+      "kind": "photo",
+      "alt": "Абрикосовый щенок мальтипу стоит на сером диване",
+      "caption": "Абрикосовый мальтипу"
+    },
+    {
+      "src": "/assets/img/vid-maltipu-439.jpg",
       "kind": "video",
-      "alt": "Щенок мальтипу на экране смартфона во время видеозвонка",
-      "caption": "Знакомство по видео",
-      "pos": "48% 50%",
-      "video": null
+      "alt": "Щенок мальтипу на руках на прогулке",
+      "caption": "Мальтипу на прогулке",
+      "video": "/assets/video/vid-maltipu-439.mp4"
+    },
+    {
+      "src": "/assets/img/cl-maltipu-396.jpg",
+      "kind": "photo",
+      "alt": "Абрикосовый щенок мальтипу на розовой лежанке",
+      "caption": "Плюшевый мишка",
+      "pos": "50% 42%"
+    },
+    {
+      "src": "/assets/img/ml-maltipu-477.jpg",
+      "kind": "photo",
+      "alt": "Рыжий щенок мальтипу сидит на напольных весах",
+      "caption": "Взвешиваемся"
+    },
+    {
+      "src": "/assets/img/ml-maltipu-479.jpg",
+      "kind": "photo",
+      "alt": "Рыжий щенок мальтипу в кружевном воротничке",
+      "caption": "В кружевном воротничке"
+    },
+    {
+      "src": "/assets/img/ml-maltipu-457.jpg",
+      "kind": "photo",
+      "alt": "Рыжий щенок мальтипу на ладони во дворе",
+      "caption": "Помещается на ладони"
+    },
+    {
+      "src": "/assets/img/ml-maltipu-462.jpg",
+      "kind": "photo",
+      "alt": "Кремовый щенок мальтипу на мягкой подушке в машине",
+      "caption": "Едет домой"
+    },
+    {
+      "src": "/assets/img/ml-maltipu-499.jpg",
+      "kind": "photo",
+      "alt": "Рыжий щенок мальтипу с белой грудкой на руках",
+      "caption": "Рыжий с белой грудкой"
+    },
+    {
+      "src": "/assets/img/ml-maltipu-438.jpg",
+      "kind": "photo",
+      "alt": "Пушистый кремовый щенок мальтипу на руках у крыльца",
+      "caption": "Знакомство с улицей"
     }
   ],
   "francuzskij-buldog": [

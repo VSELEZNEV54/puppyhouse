@@ -1,0 +1,156 @@
+{#- Breed page, layout v2 (client revisions 15.10 — maltipu first; "layout": "v2" in breeds-hub.json switches a breed to it).
+    Context (routes/breeds.py): b (breed), hub (copy, Markup), common (copy shared by the breed pages), reel (photo / video
+    carousel), pups (every puppy of the breed, sorted), colours (breedsub.colour_items, all with photos), band_faces, posts.
+    Order: full-screen hero («Щенки в наличии» + «Получить консультацию») → the breed's puppies → photo / video carousel and
+    the lead band (homepage size) → colour cards to scroll through («Подобрать кремового мальтипу») → «Какой он» →
+    «Как мы отдаём щенка» (what travels with the puppy + documents, guarantee, delivery, price) → FAQ → articles about the
+    breed → SEO text and the lead form with contact tiles, as on the homepage. body.page-breed: coral main buttons and the
+    homepage-size carousel / SEO text (main.css). -#}
+{% extends "layouts/page.html.j2" %}
+
+{% block body_attrs %} class="page-breed"{% endblock %}
+
+{% block page_css %}
+  <link rel="stylesheet" href="/assets/css/breeds.css">
+{% endblock %}
+
+{% block hero %}
+    {% call ui.page_hero(hub.h1, lead=hub.lead, breed=b, eyebrow=hub.eyebrow, chips=common.chips, full=true, note=hub.note) %}
+      <a class="btn btn--ink btn--lg" href="#shchenki">{{ hub.cta_stock }} {{ ui.icon('arrow') }}</a>
+      <button class="btn btn--white btn--lg" type="button" data-open-modal data-modal-breed="{{ b.name }}" data-modal-title="{{ hub.consult.label }}" data-modal-sub="{{ hub.consult.sub }}" data-modal-note="{{ hub.consult.note }}" data-modal-submit="{{ hub.consult.label }}" data-modal-done="{{ hub.consult.done }}">{{ hub.consult.label }}</button>
+    {% endcall %}
+{% endblock %}
+
+{% block body %}
+    <!-- ================= ЩЕНКИ В НАЛИЧИИ — весь каталог породы ================= -->
+    <section class="section container" id="shchenki" aria-labelledby="shchenki-title">
+      {% call ui.section_head(hub.pups_title, id='shchenki-title', lead=hub.pups_lead) %}
+        <button class="btn btn--ink brd-help" type="button" data-open-modal data-modal-breed="{{ b.name }}" data-modal-title="{{ hub.pups_help.title }}" data-modal-sub="{{ hub.pups_help.sub }}" data-modal-note="{{ hub.pups_help.note }}">{{ hub.pups_help.label }}</button>
+      {% endcall %}
+      {% if pups %}
+      {%- set n = pups|length %}
+      <ul class="pups" data-reveal="items">
+        {% for p in pups %}
+        <li class="pups__item">
+          {{ cards.puppy_card(p) }}
+        </li>
+        {% endfor %}
+        <li class="pups__more pups__more--fill" style="--s4:{{ 4 - n % 4 }};--s3:{{ 3 - n % 3 }};--s2:{{ 2 - n % 2 }}">
+          {{ cards.soon_tile(breed=b) }}
+        </li>
+      </ul>
+      {% else %}
+      {{ ui.empty_state('Сейчас щенков нет в наличии', 'Оставьте заявку — напишем, когда появится новый помёт.') }}
+      {% endif %}
+    </section>
+
+    <!-- ================= ФОТО И ВИДЕО — как на главной, с полосой заявки ================= -->
+    {% call media.media_carousel(reel, title=hub.media_title, id='foto-video', lead=hub.media_lead, label=hub.media_label) %}
+      {{ ui.lead_band(title=hub.band.title, line=hub.band.line, faces=band_faces, note='Видеозвонок: ' ~ b.name|lower) }}
+    {% endcall %}
+
+    <!-- ================= ОКРАСЫ — карточки листаются, у каждой «Подобрать …» ================= -->
+    {%- set nc = colours|length %}
+    <section class="section container" id="okrasy" aria-labelledby="okrasy-title">
+      {{ ui.section_head(hub.colours_title, id='okrasy-title', lead=hub.colours_lead, link={'url': b.urls.varieties ~ '#okrasy', 'label': 'Все окрасы подробно'}) }}
+      <div class="media-carousel brd-cols" data-carousel data-align="start" data-start="0" role="region" aria-roledescription="карусель" aria-label="{{ hub.colours_title|striptags }}">
+        <div class="media-carousel__viewport" tabindex="0" data-carousel-viewport>
+          <ul class="media-carousel__track">
+            {% for c in colours %}
+            <li class="media-carousel__item{{ ' is-active' if loop.first }}" aria-roledescription="слайд" aria-label="{{ loop.index }} из {{ nc }}: {{ c.label }}">
+              <article class="brd-col">
+                {%- set size = imgsize(c.photo.src) %}
+                <div class="brd-col__media" style="{{ tone_style(c.photo.src) }}">
+                  <img src="{{ c.photo.src }}" alt="{{ c.photo.alt|typo }}" width="{{ size[0] }}" height="{{ size[1] }}" loading="lazy" decoding="async">
+                </div>
+                <div class="brd-col__body">
+                  <h3 class="brd-col__name">{{ c.name|typo }}</h3>
+                  <p class="brd-col__text">{{ c.text|typo }}</p>
+                  <button class="btn btn--ink brd-col__btn" type="button" data-open-modal data-modal-breed="{{ b.name }}" data-modal-title="Подберём {{ c.pick }}" data-modal-sub="Пришлём щенков этого окраса с фото, видео и ценой. Нет сейчас — напишем, когда появятся" data-modal-note="Окрас: {{ c.label|lower }}" data-modal-submit="Подобрать щенка">Подобрать {{ c.pick|typo }}</button>
+                </div>
+              </article>
+            </li>
+            {% endfor %}
+          </ul>
+        </div>
+        <div class="media-carousel__nav">
+          <button class="media-carousel__btn" type="button" data-carousel-prev aria-label="Предыдущий окрас">{{ ui.icon('arrow', cls='i--flip') }}</button>
+          <button class="media-carousel__btn" type="button" data-carousel-next aria-label="Следующий окрас">{{ ui.icon('arrow') }}</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= КАКОЙ ОН ================= -->
+    <section class="section container" id="kakoj-on" aria-labelledby="kakoj-on-title">
+      {{ ui.section_head(hub.about_title, id='kakoj-on-title') }}
+      <div class="brd-about">
+        <div class="brd-about__media">{{ ui.img(hub.about_photo.src, hub.about_photo.alt) }}</div>
+        <ul class="brd-about__list">
+          {% for t in hub.traits %}
+          <li class="brd-trait">
+            <p class="brd-trait__label">{{ t.label|typo }}</p>
+            {{ ui.ico(t.icon, t.color, sm=true) }}
+            <h3 class="brd-trait__title">{{ t.title|typo }}</h3>
+            <p class="brd-trait__line">{{ t.line|typo }}</p>
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
+    </section>
+
+    <!-- ================= КАК МЫ ОТДАЁМ ЩЕНКА — приданое + документы, гарантия, доставка, цена ================= -->
+    {%- set ho = hub.handover %}
+    <section class="section container" id="kak-otdaem" aria-labelledby="kak-otdaem-title">
+      {{ ui.section_head(ho.title, id='kak-otdaem-title', lead=ho.lead) }}
+      <div class="brd-kit">
+        <figure class="brd-kit__media">{{ ui.img(ho.kit.photo.src, ho.kit.photo.alt) }}</figure>
+        <div class="brd-kit__body">
+          <h3 class="brd-kit__title">{{ ho.kit.title|typo }}</h3>
+          <p class="brd-kit__line">{{ ho.kit.line|typo }}</p>
+          <ul class="brd-kit__list">
+            {% for i in ho.kit['items'] %}
+            <li class="brd-kit__item">{{ ui.ico(i.icon, i.color, sm=true) }}<span>{{ i.label|typo }}</span></li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+      <ul class="brd-gives">
+        {% for t in ho.tiles %}
+        <li class="brd-give">
+          {%- set size = imgsize(t.photo.src) %}
+          <div class="brd-give__media"><img src="{{ t.photo.src }}" alt="{{ t.photo.alt|typo }}" width="{{ size[0] }}" height="{{ size[1] }}"{% if t.photo.get('pos') %} style="object-position:{{ t.photo.pos }}"{% endif %} loading="lazy" decoding="async"></div>
+          <div class="brd-give__body">
+            {{ ui.ico(t.icon, t.color) }}
+            <h3 class="brd-give__title">{{ t.title|typo }}</h3>
+            <p class="brd-give__line">{{ t.line|typo }}</p>
+            {% if t.get('price') %}
+            <div class="brd-give__cta">{{ forms.price_button(breed=b.name) }}</div>
+            {% elif t.get('link') %}
+            <div class="brd-give__cta">{{ ui.text_link(t.link.url, t.link.label) }}</div>
+            {% endif %}
+          </div>
+        </li>
+        {% endfor %}
+      </ul>
+    </section>
+
+    <!-- ================= ВОПРОСЫ ================= -->
+    {{ blocks.faq_section(hub.faq, title=hub.faq_title) }}
+
+    <!-- ================= СТАТЬИ О ПОРОДЕ ================= -->
+    {{ blocks.blog_teasers(posts=posts, title=hub.blog_title, id='stati', lead=hub.blog_lead, link={'url': '/blog/?tema=' ~ b.slug, 'label': hub.blog_link}) }}
+
+    <!-- ================= SEO-ТЕКСТ — как на главной: на всю ширину, раскрытая часть в две колонки ================= -->
+    {% call blocks.seo_block(hub.seo.title, hub.seo.lead, id='o-porode', key='seo') %}
+        {% for s in hub.seo.blocks %}
+        <h3>{{ s.h|typo }}</h3>
+        {% for para in s.p %}<p>{{ para|typo }}</p>{% endfor %}
+        {% endfor %}
+    {% endcall %}
+{% endblock %}
+
+{% block lead %}
+    {% call forms.lead_form(title=hub.lead_title, line=hub.lead_line, breed=b.slug, contacts=false, cls='hm-lead') %}
+      {{ forms.contact_tiles() }}
+    {% endcall %}
+{% endblock %}
