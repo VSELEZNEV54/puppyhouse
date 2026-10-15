@@ -5,8 +5,8 @@
     the lead band (homepage size) → colour cards to scroll through («Подобрать кремового мальтипу» + «Подробнее» → the
     colour page /<breed>/<colour>/, breeds/colour.html.j2) → «Какой он» →
     «Как мы отдаём щенка» (what travels with the puppy + documents, guarantee, delivery, price) → FAQ → articles about the
-    breed → SEO text and the lead form with contact tiles, as on the homepage. body.page-breed: coral main buttons and the
-    homepage-size carousel / SEO text (main.css). -#}
+    breed (four in a row, the rest beyond the edge) → SEO text and the lead form with contact tiles, as on the homepage.
+    body.page-breed: coral main buttons and the homepage-size carousel / SEO text (main.css). -#}
 {% extends "layouts/page.html.j2" %}
 {% import "breeds/_parts.html.j2" as part %}
 
@@ -113,8 +113,11 @@
     <!-- ================= ВОПРОСЫ ================= -->
     {{ blocks.faq_section(hub.faq, title=hub.faq_title) }}
 
-    <!-- ================= СТАТЬИ О ПОРОДЕ ================= -->
-    {{ blocks.blog_teasers(posts=posts, title=hub.blog_title, id='stati', lead=hub.blog_lead, link={'url': '/blog/?tema=' ~ b.slug, 'label': hub.blog_link}) }}
+    <!-- ================= СТАТЬИ О ПОРОДЕ — четыре в ряд, остальные за краем (стрелки, свайп) ================= -->
+    <section class="section container" id="stati" aria-labelledby="stati-title">
+      {{ ui.section_head(hub.blog_title, id='stati-title', link={'url': '/blog/?tema=' ~ b.slug, 'label': hub.blog_link}, lead=hub.blog_lead) }}
+      {{ part.post_carousel(posts, label=hub.blog_title|striptags) }}
+    </section>
 
     <!-- ================= SEO-ТЕКСТ — как на главной: на всю ширину, раскрытая часть в две колонки ================= -->
     {% call blocks.seo_block(hub.seo.title, hub.seo.lead, id='o-porode', key='seo') %}

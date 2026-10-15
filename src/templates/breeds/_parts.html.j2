@@ -41,3 +41,36 @@
 {% macro colour_consult(b) -%}
 <button class="btn btn--white brd-help" type="button" data-open-modal data-modal-breed="{{ b.name }}" data-modal-title="Поможем выбрать окрас" data-modal-sub="Расскажем, как меняется окрас с возрастом, и пришлём щенков нужного цвета с видео" data-modal-note="Консультация: окрас, {{ b.name|lower }}" data-modal-submit="Получить консультацию">Получить консультацию</button>
 {%- endmacro %}
+
+{#- Articles about the breed (client 15.10): four wide article cards in a row, the rest beyond the edge — arrows and
+    swipe ([data-carousel] data-align="start", main.js), on phones a compact list as everywhere (no sideways swipe).
+    The cards are blocks.blog_teasers' .bteaser (same look). posts: [{"url", "title", "line", "cover", "topic"}]. -#}
+{% macro post_carousel(posts, label) -%}
+{%- set n = posts|length -%}
+<div class="media-carousel brd-posts" data-carousel data-align="start" data-start="0" role="region" aria-roledescription="карусель" aria-label="{{ label }}">
+  <div class="media-carousel__viewport" tabindex="0" data-carousel-viewport>
+    <ul class="media-carousel__track">
+      {% for c in posts %}
+      {%- set size = imgsize(c.cover.src) or [1264, 848] %}
+      <li class="media-carousel__item{{ ' is-active' if loop.first }}" aria-roledescription="слайд" aria-label="{{ loop.index }} из {{ n }}">
+        <article class="bteaser">
+          <div class="bteaser__media">
+            <img src="{{ c.cover.src }}" alt="{{ c.cover.alt|typo }}" width="{{ size[0] }}" height="{{ size[1] }}"{% if c.cover.pos is defined and c.cover.pos %} style="object-position:{{ c.cover.pos }}"{% endif %} loading="lazy" decoding="async">
+            {% if c.topic %}<span class="bteaser__topic">{{ c.topic|typo }}</span>{% endif %}
+          </div>
+          <div class="bteaser__body">
+            <h3 class="bteaser__title"><a class="bteaser__link" href="{{ c.url }}">{{ ui.nohyph(c.title) }}</a></h3>
+            <p class="bteaser__line">{{ c.line|typo }}</p>
+            <span class="tcta tcta--soft" aria-hidden="true">Читать {{ ui.icon('arrow', sm=true) }}</span>
+          </div>
+        </article>
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+  <div class="media-carousel__nav">
+    <button class="media-carousel__btn" type="button" data-carousel-prev aria-label="Предыдущие статьи">{{ ui.icon('arrow', cls='i--flip') }}</button>
+    <button class="media-carousel__btn" type="button" data-carousel-next aria-label="Следующие статьи">{{ ui.icon('arrow') }}</button>
+  </div>
+</div>
+{%- endmacro %}

@@ -85,12 +85,13 @@
     («Подберём щенка за 1 час — пришлём видео и цену»).
     full=true: first screen on the whole screen (100svh minus the header, min 560 px), copy centred vertically,
     on phones the photo grows to fill the screen. Desktop ≥ 1200 px: the studio photo is larger than before (client 13.10).
+    cls: extra class of the section (phero--colour: the colour page, a taller tile with the close-up photo, breeds.css).
     Buttons: btn--white (main, white) + btn--outline (white outline, no fill) on breed pages; btn--ink elsewhere.
     Exactly one H1 per page: this macro renders it. -#}
-{% macro page_hero(title, lead=none, tone=none, breed=none, photo=none, faces=false, facts=none, chips=none, eyebrow=none, id='page-title', full=false, note=none) -%}
+{% macro page_hero(title, lead=none, tone=none, breed=none, photo=none, faces=false, facts=none, chips=none, eyebrow=none, id='page-title', full=false, note=none, cls=none) -%}
 {%- set tone = tone or (breed.tone if breed else 'cream') -%}
 {%- set photo = photo or (breed.studio if breed else none) -%}
-<section class="phero container{{ ' phero--full' if full }}" aria-labelledby="{{ id }}">
+<section class="phero container{{ ' phero--full' if full }}{{ ' ' ~ cls if cls }}" aria-labelledby="{{ id }}">
   <div class="phero__tile tone--{{ tone }}{{ ' phero--photo' if photo }}{{ ' phero--faces' if faces and not photo }}"{% if photo and tone_style(photo.src) %} style="{{ tone_style(photo.src) }}"{% endif %} data-hero-ctas>
     {% if photo %}
     <div class="phero__photo"><img src="{{ photo.src }}" alt="{{ photo.alt|typo }}" width="{{ photo.w }}" height="{{ photo.h }}" fetchpriority="high" decoding="async"></div>

@@ -120,16 +120,335 @@
   "floor": "#ECCE92",
   "floor_line": 0.91
  },
+ "okras-buldog-goluboj": {
+  "size": [
+   1024,
+   1024
+  ],
+  "top": "#B0CFE3",
+  "wall": "#AECDE4",
+  "wall_right": "#B3D2E7",
+  "floor": "#C9DEEF",
+  "floor_line": 0.78
+ },
+ "okras-buldog-goluboj-big": {
+  "size": [
+   1024,
+   1024
+  ],
+  "top": "#B0CFE4",
+  "wall": "#AECEE3",
+  "wall_right": "#B1D1E6",
+  "floor": "#C3DAEB",
+  "floor_line": 0.89
+ },
+ "okras-buldog-kremovyj": {
+  "size": [
+   1024,
+   1024
+  ],
+  "top": "#AECEE3",
+  "wall": "#BFDCEE",
+  "wall_right": "#A1C5DD",
+  "floor": "#C5DDF0",
+  "floor_line": 0.72
+ },
+ "okras-buldog-kremovyj-big": {
+  "size": [
+   1024,
+   1024
+  ],
+  "top": "#B0CFE5",
+  "wall": "#BCD8ED",
+  "wall_right": "#A3C6DF",
+  "floor": "#CDE2F3",
+  "floor_line": 0.8
+ },
+ "okras-buldog-mramornyj": {
+  "size": [
+   1024,
+   1024
+  ],
+  "top": "#B1D0E4",
+  "wall": "#BCDAEE",
+  "wall_right": "#A4C6DF",
+  "floor": "#C9E0F0",
+  "floor_line": 0.77
+ },
+ "okras-buldog-mramornyj-big": {
+  "size": [
+   1024,
+   1024
+  ],
+  "top": "#B1D0E4",
+  "wall": "#B9D7EC",
+  "wall_right": "#A6C8DF",
+  "floor": "#C4DEEE",
+  "floor_line": 0.86
+ },
+ "okras-buldog-palevyj": {
+  "size": [
+   1024,
+   1024
+  ],
+  "top": "#B3D2E7",
+  "wall": "#B9D6EB",
+  "wall_right": "#AACAE2",
+  "floor": "#CDE0EF",
+  "floor_line": 0.79
+ },
+ "okras-buldog-palevyj-big": {
+  "size": [
+   1024,
+   1024
+  ],
+  "top": "#AFD0E6",
+  "wall": "#B5D5EA",
+  "wall_right": "#A8CBE2",
+  "floor": "#C6DCED",
+  "floor_line": 0.87
+ },
+ "okras-buldog-pegij": {
+  "size": [
+   1024,
+   1024
+  ],
+  "top": "#B2D0E5",
+  "wall": "#BEDBF0",
+  "wall_right": "#A2C4DD",
+  "floor": "#D7E8F4",
+  "floor_line": 0.79
+ },
+ "okras-buldog-pegij-big": {
+  "size": [
+   1024,
+   1024
+  ],
+  "top": "#B2D0E5",
+  "wall": "#BBD8ED",
+  "wall_right": "#A6C7DE",
+  "floor": "#CDE0EE",
+  "floor_line": 0.86
+ },
+ "okras-buldog-shokoladnyj": {
+  "size": [
+   1024,
+   1024
+  ],
+  "top": "#B5D2E4",
+  "wall": "#BBD6EB",
+  "wall_right": "#A6C9E2",
+  "floor": "#D4E6F4",
+  "floor_line": 0.71
+ },
+ "okras-buldog-shokoladnyj-big": {
+  "size": [
+   1024,
+   1024
+  ],
+  "top": "#B4D2E4",
+  "wall": "#B9D5E9",
+  "wall_right": "#A8CAE1",
+  "floor": "#CDE2F0",
+  "floor_line": 0.79
+ },
+ "okras-buldog-tigrovyj": {
+  "size": [
+   1024,
+   1024
+  ],
+  "top": "#A6C9DF",
+  "wall": "#BAD7E8",
+  "wall_right": "#A3C8E1",
+  "floor": "#CADFEE",
+  "floor_line": 0.7
+ },
+ "okras-buldog-tigrovyj-big": {
+  "size": [
+   1024,
+   1024
+  ],
+  "top": "#A7CAE0",
+  "wall": "#B8D6E9",
+  "wall_right": "#A4C9E2",
+  "floor": "#C9E0EE",
+  "floor_line": 0.79
+ },
+ "okras-kolli-cherno-belyj": {
+  "size": [
+   1024,
+   1024
+  ],
+  "top": "#A8B7A4",
+  "wall": "#B5C4B1",
+  "wall_right": "#A1B2A0",
+  "floor": "#B7C6B4",
+  "floor_line": 0.79
+ },
+ "okras-kolli-cherno-belyj-big": {
+  "size": [
+   1024,
+   1024
+  ],
+  "top": "#A8B8A5",
+  "wall": "#B2C1AE",
+  "wall_right": "#A2B3A1",
+  "floor": "#BDCAB9",
+  "floor_line": 0.89
+ },
+ "okras-kolli-goluboj-mramor": {
+  "size": [
+   1024,
+   1024
+  ],
+  "top": "#AEBEAB",
+  "wall": "#B8C7B4",
+  "wall_right": "#A0B29F",
+  "floor": "#C8D3C7",
+  "floor_line": 0.74
+ },
+ "okras-kolli-goluboj-mramor-big": {
+  "size": [
+   1024,
+   1024
+  ],
+  "top": "#ABBAA7",
+  "wall": "#B5C4B2",
+  "wall_right": "#A1B29F",
+  "floor": "#C8D3C5",
+  "floor_line": 0.83
+ },
+ "okras-kolli-krasno-belyj": {
+  "size": [
+   1024,
+   1024
+  ],
+  "top": "#AEBEAB",
+  "wall": "#B6C5B3",
+  "wall_right": "#A1B39F",
+  "floor": "#C3CFC1",
+  "floor_line": 0.71
+ },
+ "okras-kolli-krasno-belyj-big": {
+  "size": [
+   1024,
+   1024
+  ],
+  "top": "#ACBCA9",
+  "wall": "#B4C2B1",
+  "wall_right": "#A0B19F",
+  "floor": "#D0DBCE",
+  "floor_line": 0.8
+ },
+ "okras-kolli-krasnyj-mramor": {
+  "size": [
+   1024,
+   1024
+  ],
+  "top": "#ACBCA9",
+  "wall": "#B0BFAC",
+  "wall_right": "#A6B8A5",
+  "floor": "#CBD7CC",
+  "floor_line": 0.67
+ },
+ "okras-kolli-krasnyj-mramor-big": {
+  "size": [
+   1024,
+   1024
+  ],
+  "top": "#ADBDAB",
+  "wall": "#AFBFAC",
+  "wall_right": "#A5B8A5",
+  "floor": "#C8D3C8",
+  "floor_line": 0.71
+ },
+ "okras-kolli-lilovyj": {
+  "size": [
+   1024,
+   1024
+  ],
+  "top": "#ACBDAB",
+  "wall": "#B6C7B5",
+  "wall_right": "#9EB19E",
+  "floor": "#C3CFC3",
+  "floor_line": 0.68
+ },
+ "okras-kolli-lilovyj-big": {
+  "size": [
+   1024,
+   1024
+  ],
+  "top": "#ACBBAA",
+  "wall": "#B5C3B2",
+  "wall_right": "#A1B29F",
+  "floor": "#C8D3C5",
+  "floor_line": 0.75
+ },
+ "okras-kolli-mramornyj-trikolor": {
+  "size": [
+   1024,
+   1024
+  ],
+  "top": "#AABBA8",
+  "wall": "#BBCAB7",
+  "wall_right": "#9BAD9A",
+  "floor": "#D1DDCE",
+  "floor_line": 0.76
+ },
+ "okras-kolli-mramornyj-trikolor-big": {
+  "size": [
+   1024,
+   1024
+  ],
+  "top": "#AABAA8",
+  "wall": "#B6C4B3",
+  "wall_right": "#9EB09D",
+  "floor": "#CBD7C9",
+  "floor_line": 0.84
+ },
+ "okras-kolli-trehcvetnyj": {
+  "size": [
+   1024,
+   1024
+  ],
+  "top": "#A7B7A4",
+  "wall": "#B9C8B6",
+  "wall_right": "#9CAE9A",
+  "floor": "#C9D4C6",
+  "floor_line": 0.71
+ },
+ "okras-kolli-trehcvetnyj-big": {
+  "size": [
+   1024,
+   1024
+  ],
+  "top": "#A8B8A5",
+  "wall": "#B5C5B2",
+  "wall_right": "#9FB19E",
+  "floor": "#C4D0C1",
+  "floor_line": 0.84
+ },
  "okras-maltipu-abrikosovyj": {
   "size": [
    1024,
    1024
   ],
   "top": "#F5BF99",
-  "wall": "#FFCFA9",
+  "wall": "#FFCEA9",
   "wall_right": "#EFB58F",
   "floor": "#FFDFC2",
   "floor_line": 0.75
+ },
+ "okras-maltipu-abrikosovyj-big": {
+  "size": [
+   1024,
+   1024
+  ],
+  "top": "#F5C099",
+  "wall": "#FECDA6",
+  "wall_right": "#EEB890",
+  "floor": "#FFE0C1",
+  "floor_line": 0.86
  },
  "okras-maltipu-belyj": {
   "size": [
@@ -139,30 +458,63 @@
   "top": "#F8C49E",
   "wall": "#FDCBA4",
   "wall_right": "#F1BA94",
-  "floor": "#FFE2C5",
-  "floor_line": 0.75
+  "floor": "#FFE0C6",
+  "floor_line": 0.74
+ },
+ "okras-maltipu-belyj-big": {
+  "size": [
+   1024,
+   1024
+  ],
+  "top": "#F7C39C",
+  "wall": "#FBC9A2",
+  "wall_right": "#F2BC96",
+  "floor": "#FFDFC3",
+  "floor_line": 0.83
  },
  "okras-maltipu-chernyj": {
   "size": [
    1024,
    1024
   ],
-  "top": "#F8C59E",
-  "wall": "#FAC8A1",
-  "wall_right": "#F3BF97",
-  "floor": "#FFE0C3",
-  "floor_line": 0.73
+  "top": "#F9C49E",
+  "wall": "#FBC7A1",
+  "wall_right": "#F3BD98",
+  "floor": "#FFDEC3",
+  "floor_line": 0.72
+ },
+ "okras-maltipu-chernyj-big": {
+  "size": [
+   1024,
+   1024
+  ],
+  "top": "#F6C49E",
+  "wall": "#F9C7A1",
+  "wall_right": "#F3BE98",
+  "floor": "#FDD9BC",
+  "floor_line": 0.84
  },
  "okras-maltipu-fantom": {
   "size": [
    1024,
    1024
   ],
-  "top": "#F4BD94",
-  "wall": "#FCCBA4",
-  "wall_right": "#F0BA92",
-  "floor": "#FFDEBC",
-  "floor_line": 0.75
+  "top": "#F4BE95",
+  "wall": "#FBCAA2",
+  "wall_right": "#F0BA93",
+  "floor": "#FFDEBB",
+  "floor_line": 0.74
+ },
+ "okras-maltipu-fantom-big": {
+  "size": [
+   1024,
+   1024
+  ],
+  "top": "#F6C29A",
+  "wall": "#FAC9A1",
+  "wall_right": "#F2BD96",
+  "floor": "#FFDAB9",
+  "floor_line": 0.83
  },
  "okras-maltipu-kremovyj": {
   "size": [
@@ -175,6 +527,17 @@
   "floor": "#FFDDBA",
   "floor_line": 0.78
  },
+ "okras-maltipu-kremovyj-big": {
+  "size": [
+   1024,
+   1024
+  ],
+  "top": "#F7C49E",
+  "wall": "#FBC9A2",
+  "wall_right": "#F3BE96",
+  "floor": "#FFDBBA",
+  "floor_line": 0.86
+ },
  "okras-maltipu-partikolor": {
   "size": [
    1024,
@@ -186,38 +549,82 @@
   "floor": "#FFD9B8",
   "floor_line": 0.73
  },
+ "okras-maltipu-partikolor-big": {
+  "size": [
+   1024,
+   1024
+  ],
+  "top": "#F8C8A3",
+  "wall": "#FAC8A1",
+  "wall_right": "#F4BF98",
+  "floor": "#FFDABA",
+  "floor_line": 0.82
+ },
  "okras-maltipu-ryzhij": {
   "size": [
    1024,
    1024
   ],
-  "top": "#F6C5A2",
-  "wall": "#FCCCA6",
-  "wall_right": "#F0B890",
-  "floor": "#FFDDBC",
-  "floor_line": 0.79
+  "top": "#F9C79E",
+  "wall": "#FCCCA4",
+  "wall_right": "#F2BC94",
+  "floor": "#FFE4C9",
+  "floor_line": 0.7
+ },
+ "okras-maltipu-ryzhij-big": {
+  "size": [
+   1024,
+   1024
+  ],
+  "top": "#F5C29A",
+  "wall": "#FAC9A1",
+  "wall_right": "#F2BB95",
+  "floor": "#FFDBBD",
+  "floor_line": 0.78
  },
  "okras-maltipu-serebristyj": {
   "size": [
    1024,
    1024
   ],
-  "top": "#F7C29A",
-  "wall": "#F3BD95",
+  "top": "#F7C299",
+  "wall": "#F4BD95",
   "wall_right": "#FAC8A2",
   "floor": "#FDCFA8",
   "floor_line": 0.72
+ },
+ "okras-maltipu-serebristyj-big": {
+  "size": [
+   1024,
+   1024
+  ],
+  "top": "#F6C098",
+  "wall": "#F5BF97",
+  "wall_right": "#F8C69F",
+  "floor": "#FED0A9",
+  "floor_line": 0.82
  },
  "okras-maltipu-shokoladnyj": {
   "size": [
    1024,
    1024
   ],
-  "top": "#F7C6A1",
-  "wall": "#FECDA7",
-  "wall_right": "#EEB790",
-  "floor": "#FFE4C7",
-  "floor_line": 0.76
+  "top": "#F8C59D",
+  "wall": "#FAC69F",
+  "wall_right": "#F5C099",
+  "floor": "#FFD8B9",
+  "floor_line": 0.65
+ },
+ "okras-maltipu-shokoladnyj-big": {
+  "size": [
+   1024,
+   1024
+  ],
+  "top": "#F6C39B",
+  "wall": "#F8C59E",
+  "wall_right": "#F4C099",
+  "floor": "#FFD9B9",
+  "floor_line": 0.72
  },
  "okras-maltipu-sobolinyj": {
   "size": [
@@ -227,8 +634,151 @@
   "top": "#F8C49C",
   "wall": "#FBCAA3",
   "wall_right": "#F3BB95",
-  "floor": "#FFDEC0",
+  "floor": "#FFDDC0",
   "floor_line": 0.72
+ },
+ "okras-maltipu-sobolinyj-big": {
+  "size": [
+   1024,
+   1024
+  ],
+  "top": "#F8C39B",
+  "wall": "#FBC9A1",
+  "wall_right": "#F3BB94",
+  "floor": "#FFDBBA",
+  "floor_line": 0.8
+ },
+ "okras-pudel-abrikosovyj": {
+  "size": [
+   1024,
+   1024
+  ],
+  "top": "#ECCF97",
+  "wall": "#F6DCA8",
+  "wall_right": "#E8CA91",
+  "floor": "#F7E3B8",
+  "floor_line": 0.75
+ },
+ "okras-pudel-abrikosovyj-big": {
+  "size": [
+   1024,
+   1024
+  ],
+  "top": "#EDD097",
+  "wall": "#F4DAA5",
+  "wall_right": "#EACC92",
+  "floor": "#F7E0B1",
+  "floor_line": 0.83
+ },
+ "okras-pudel-belyj": {
+  "size": [
+   1024,
+   1024
+  ],
+  "top": "#F1D49C",
+  "wall": "#F5DAA7",
+  "wall_right": "#EACB92",
+  "floor": "#F8E5C0",
+  "floor_line": 0.68
+ },
+ "okras-pudel-belyj-big": {
+  "size": [
+   1024,
+   1024
+  ],
+  "top": "#F0D39C",
+  "wall": "#F2D7A2",
+  "wall_right": "#EBCE95",
+  "floor": "#F7E2BB",
+  "floor_line": 0.74
+ },
+ "okras-pudel-chernyj": {
+  "size": [
+   1024,
+   1024
+  ],
+  "top": "#F3D8A1",
+  "wall": "#F5DBA5",
+  "wall_right": "#EBCE95",
+  "floor": "#F8E6BC",
+  "floor_line": 0.74
+ },
+ "okras-pudel-chernyj-big": {
+  "size": [
+   1024,
+   1024
+  ],
+  "top": "#F0D59D",
+  "wall": "#F2D9A3",
+  "wall_right": "#ECCF97",
+  "floor": "#F6E6BC",
+  "floor_line": 0.83
+ },
+ "okras-pudel-korichnevyj": {
+  "size": [
+   1024,
+   1024
+  ],
+  "top": "#F5DBA6",
+  "wall": "#EACB91",
+  "wall_right": "#F6DEAB",
+  "floor": "#FCE8BC",
+  "floor_line": 0.75
+ },
+ "okras-pudel-korichnevyj-big": {
+  "size": [
+   1024,
+   1024
+  ],
+  "top": "#F3D9A3",
+  "wall": "#ECCE94",
+  "wall_right": "#F3DBA6",
+  "floor": "#FBE6B7",
+  "floor_line": 0.89
+ },
+ "okras-pudel-ryzhij": {
+  "size": [
+   1024,
+   1024
+  ],
+  "top": "#EFD29A",
+  "wall": "#F4DBA7",
+  "wall_right": "#EACB93",
+  "floor": "#FCEBC5",
+  "floor_line": 0.78
+ },
+ "okras-pudel-ryzhij-big": {
+  "size": [
+   1024,
+   1024
+  ],
+  "top": "#EFD199",
+  "wall": "#F4DAA5",
+  "wall_right": "#ECCD94",
+  "floor": "#F9E5BD",
+  "floor_line": 0.83
+ },
+ "okras-pudel-seryj": {
+  "size": [
+   1024,
+   1024
+  ],
+  "top": "#EED39E",
+  "wall": "#F1D7A2",
+  "wall_right": "#EDD098",
+  "floor": "#EED7AC",
+  "floor_line": 0.55
+ },
+ "okras-pudel-seryj-big": {
+  "size": [
+   1024,
+   1024
+  ],
+  "top": "#EFD29B",
+  "wall": "#F1D7A1",
+  "wall_right": "#EDCF96",
+  "floor": "#F0D9AE",
+  "floor_line": 0.58
  },
  "parent-buldog": {
   "size": [
