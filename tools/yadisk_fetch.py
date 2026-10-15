@@ -8,6 +8,11 @@ python3 tools/yadisk_fetch.py pick   — качает выбранное из to
 """
 import io, json, pathlib, subprocess, sys, urllib.parse, urllib.request
 from PIL import Image, ImageDraw, ImageOps
+try:  # фото с iPhone (.heic)
+    from pillow_heif import register_heif_opener
+    register_heif_opener()
+except ImportError:
+    pass
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 OUT = ROOT / "tools" / "yadisk"

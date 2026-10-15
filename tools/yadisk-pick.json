@@ -1,0 +1,152 @@
+[
+ {
+  "name": "cl-kolli-140",
+  "key": "https://disk.yandex.ru/d/0uxkLI96w78fjQ",
+  "path": "/Бордер колли/IMG_20260922_001912.jpg",
+  "kind": "photo",
+  "n": 140
+ },
+ {
+  "name": "cl-maltipu-396",
+  "key": "https://disk.yandex.ru/d/lPCGTlZCVRMMSw",
+  "path": "/щенок14/IMG_0392.heic",
+  "kind": "photo",
+  "n": 396
+ },
+ {
+  "name": "cl-buldog-53",
+  "key": "https://disk.yandex.ru/d/0wJvVWaVm3bomQ",
+  "path": "/IMG_3756.PNG",
+  "kind": "photo",
+  "n": 53
+ },
+ {
+  "name": "cl-pudel-278",
+  "key": "https://disk.yandex.ru/d/0uxkLI96w78fjQ",
+  "path": "/Той пудель/IMG_20260921_215622.jpg",
+  "kind": "photo",
+  "n": 278
+ },
+ {
+  "name": "cl-maltipu-410",
+  "key": "https://disk.yandex.ru/d/lPCGTlZCVRMMSw",
+  "path": "/щенок16/ae6aba76-14fa-4ace-8bb3-3cc8f3cb9e75.JPG",
+  "kind": "photo",
+  "n": 410
+ },
+ {
+  "name": "cl-buldog-47",
+  "key": "https://disk.yandex.ru/d/0wJvVWaVm3bomQ",
+  "path": "/IMG_3744.PNG",
+  "kind": "photo",
+  "n": 47
+ },
+ {
+  "name": "cl-kolli-143",
+  "key": "https://disk.yandex.ru/d/0uxkLI96w78fjQ",
+  "path": "/Бордер колли/IMG_20260922_001919.jpg",
+  "kind": "photo",
+  "n": 143
+ },
+ {
+  "name": "cl-pudel-301",
+  "key": "https://disk.yandex.ru/d/0uxkLI96w78fjQ",
+  "path": "/Той пудель/IMG_20260922_001157.jpg",
+  "kind": "photo",
+  "n": 301
+ },
+ {
+  "name": "cl-buldog-8",
+  "key": "https://disk.yandex.ru/d/0wJvVWaVm3bomQ",
+  "path": "/187a27a5-195b-4ecc-8453-140934a2e5d5.JPG",
+  "kind": "photo",
+  "n": 8
+ },
+ {
+  "name": "cl-maltipu-481",
+  "key": "https://disk.yandex.ru/d/lPCGTlZCVRMMSw",
+  "path": "/щенок7/telegram-photo-0-5472028145062974444.JPG",
+  "kind": "photo",
+  "n": 481
+ },
+ {
+  "name": "cl-kolli-200",
+  "key": "https://disk.yandex.ru/d/0uxkLI96w78fjQ",
+  "path": "/Бордер колли/IMG_20260922_002215.jpg",
+  "kind": "photo",
+  "n": 200
+ },
+ {
+  "name": "cl-pudel-336",
+  "key": "https://disk.yandex.ru/d/0uxkLI96w78fjQ",
+  "path": "/Той пудель/IMG_20260922_001319.jpg",
+  "kind": "photo",
+  "n": 336
+ },
+ {
+  "name": "rv-maltipu-431",
+  "key": "https://disk.yandex.ru/d/lPCGTlZCVRMMSw",
+  "path": "/щенок2/telegram-photo-0-5264947928973909818.JPG",
+  "kind": "photo",
+  "n": 431
+ },
+ {
+  "name": "rv-buldog-17",
+  "key": "https://disk.yandex.ru/d/0wJvVWaVm3bomQ",
+  "path": "/3fec2223-b2b1-4522-9778-b725e2cc9ee9.jpg",
+  "kind": "photo",
+  "n": 17
+ },
+ {
+  "name": "rv-pudel-338",
+  "key": "https://disk.yandex.ru/d/0uxkLI96w78fjQ",
+  "path": "/Той пудель/IMG_20260922_001323.jpg",
+  "kind": "photo",
+  "n": 338
+ },
+ {
+  "name": "rv-kolli-157",
+  "key": "https://disk.yandex.ru/d/0uxkLI96w78fjQ",
+  "path": "/Бордер колли/IMG_20260922_001951.jpg",
+  "kind": "photo",
+  "n": 157
+ },
+ {
+  "name": "rv-maltipu-381",
+  "key": "https://disk.yandex.ru/d/lPCGTlZCVRMMSw",
+  "path": "/щенок10/telegram-photo-0-5440830971503644574.JPG",
+  "kind": "photo",
+  "n": 381
+ },
+ {
+  "name": "rv-buldog-75",
+  "key": "https://disk.yandex.ru/d/0wJvVWaVm3bomQ",
+  "path": "/edc7c98b-259d-4085-b8b6-4786906adccc.JPG",
+  "kind": "photo",
+  "n": 75
+ },
+ {
+  "name": "about-pudel-364",
+  "key": "https://disk.yandex.ru/d/0uxkLI96w78fjQ",
+  "path": "/Той пудель/IMG_20260922_001446.jpg",
+  "kind": "photo",
+  "n": 364
+ },
+ {
+  "name": "about-pudel-309",
+  "key": "https://disk.yandex.ru/d/0uxkLI96w78fjQ",
+  "path": "/Той пудель/IMG_20260922_001214.jpg",
+  "kind": "photo",
+  "n": 309
+ },
+ {
+  "name": "vid-maltipu-439",
+  "key": "https://disk.yandex.ru/d/lPCGTlZCVRMMSw",
+  "path": "/щенок22/IMG_2449.mov",
+  "kind": "video",
+  "n": 439,
+  "max_seconds": 20,
+  "mute": true,
+  "poster_at": 2
+ }
+]
