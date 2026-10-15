@@ -668,7 +668,43 @@ main:focus, section[tabindex="-1"]:focus, [data-anchor-focus]:focus { outline: n
 .hm-about__cta { margin-top: auto; }
 .hm-about__photo { position: relative; overflow: hidden; min-height: clamp(420px, 38vw, 580px); border-radius: var(--r-tile); background: #E7E1D8; }
 .hm-about__photo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 56% 60%; transition: transform 1.4s var(--ease); }
-@media (hover: hover) { .hm-about__photo:hover img { transform: scale(1.03); } }
+@media (hover: hover) { .hm-about__photo:not(.hm-slider):hover img { transform: scale(1.03); } }
+/* слайдер в «О нашем питомнике» (правка 15.10): кадры стопкой, смена — плавным наплывом с лёгким приближением.
+   Полоски сверху — как в сторис: заполняются за время кадра, по клику — переход к кадру. Кнопка паузы — снизу справа */
+.hm-slider { touch-action: pan-y; } /* горизонтальный свайп — листать кадры, вертикальный — страницу */
+.hm-slider__slide { position: absolute; inset: 0; opacity: 0; transition: opacity .8s var(--ease); }
+.hm-slider__slide.is-idle { display: none; } /* ещё не на очереди: файл не грузится */
+.hm-slider__slide.is-on { opacity: 1; z-index: 2; }
+.hm-slider__slide.is-prev { opacity: 1; z-index: 1; transition: none; } /* прежний кадр держится под новым, пока тот проявляется */
+.hm-slider__slide.is-prev :is(img, video) { transform: none; transition: none; }
+.hm-slider__slide :is(img, video) {
+  position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 50%;
+  transform: scale(1.06); transition: transform 3.6s linear;
+}
+.hm-slider__slide.is-on :is(img, video) { transform: none; }
+.hm-slider::after { /* тень под полосками — их видно и на светлом кадре */
+  content: ""; position: absolute; z-index: 3; inset: 0 0 auto; height: 84px; pointer-events: none;
+  background: linear-gradient(rgba(20, 20, 20, .32), rgba(20, 20, 20, 0));
+}
+.hm-slider__bars { position: absolute; z-index: 4; top: 12px; left: 14px; right: 14px; display: flex; gap: 4px; }
+.hm-slider__bar { flex: 1 1 0; min-width: 0; height: 22px; padding: 0; border: 0; background: none; cursor: pointer; display: grid; align-items: center; }
+.hm-slider__bar i { display: block; height: 3px; border-radius: 3px; background: rgba(255, 255, 255, .42); overflow: hidden; }
+.hm-slider__bar i::before { content: ""; display: block; height: 100%; width: 100%; background: #fff; transform-origin: 0 50%; transform: scaleX(var(--p, 0)); }
+.hm-slider__bar:focus-visible { outline: 2px solid #fff; outline-offset: 0; border-radius: 4px; }
+.hm-slider__pause {
+  position: absolute; z-index: 4; right: 14px; bottom: 14px; width: 40px; height: 40px; padding: 0; border: 0; border-radius: 50%;
+  display: grid; place-items: center; background: rgba(255, 255, 255, .9); color: var(--ink); cursor: pointer;
+  -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); box-shadow: 0 10px 24px -14px rgba(20, 20, 20, .5);
+  opacity: .82; transition: opacity .2s;
+}
+.hm-slider__pause:hover, .hm-slider__pause:focus-visible { opacity: 1; }
+/* значок паузы — две полоски; на паузе — треугольник «дальше» */
+.hm-slider__pause::before { content: ""; width: 12px; height: 13px; background: linear-gradient(90deg, currentColor 0 4px, transparent 4px 8px, currentColor 8px); }
+.hm-slider__pause[aria-pressed="true"]::before { width: 12px; height: 14px; margin-left: 3px; background: currentColor; clip-path: polygon(0 0, 100% 50%, 0 100%); }
+.hm-slider:not(.is-ready) .hm-slider__pause { display: none; }
+@media (prefers-reduced-motion: reduce) {
+  .hm-slider__slide, .hm-slider__slide :is(img, video) { transition: none; transform: none; }
+}
 
 .hm-stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--gap); margin-top: var(--gap); }
 .hm-stats > li { min-width: 0; }
@@ -1256,6 +1292,26 @@ legend.field__label { margin-bottom: 8px; }
 .vrev__who span > span { font-size: 13px; color: var(--ink-soft); } /* на полупрозрачной подложке поверх фото --muted даёт < 4,5:1 */
 .vrev .ava { width: 36px; height: 36px; font-size: 15px; }
 
+/* ---------- отзыв с фото (media.photo_review_card, главная, правка 15.10): белая плитка, фото щенка, текст,
+   имя и город, под ними порода. Длинный текст свёрнут до 8 строк — «Читать полностью» раскрывает только эту карточку ---------- */
+.rvws { --mc-w: clamp(280px, 25vw, 360px); }
+.rvws .media-carousel__track { align-items: flex-start; }
+.rvw { display: flex; flex-direction: column; padding: var(--inset); border-radius: var(--r-tile); background: var(--tile); }
+.rvw__media { display: block; width: 100%; aspect-ratio: 4 / 3; padding: 0; border: 0; overflow: hidden; border-radius: var(--r-img); background: #E7E1D8; cursor: zoom-in; }
+.rvw__media img { width: 100%; height: 100%; object-fit: cover; transition: transform 1.1s var(--ease); }
+@media (hover: hover) { .rvw__media:hover img { transform: scale(1.04); } }
+.rvw__body { display: flex; flex-direction: column; gap: 10px; padding: 16px 12px 12px; }
+.rvw .stars .i { width: 14px; height: 14px; }
+.rvw__text { --lines: 8; font-size: 15px; line-height: 1.5; letter-spacing: -0.005em; min-height: calc(var(--lines) * 1.5em); }
+.rvw__text p + p { margin-top: .55em; }
+.rvw__text.is-folded { max-height: calc(var(--lines) * 1.5em); overflow: hidden; -webkit-mask-image: linear-gradient(#000 62%, transparent); mask-image: linear-gradient(#000 62%, transparent); }
+.rvw__more { align-self: flex-start; margin-top: -4px; padding: 0; border: 0; background: none; color: var(--ink); font: inherit; font-size: 14px; font-weight: 500; text-decoration: underline; text-decoration-color: var(--line-2); text-underline-offset: 3px; cursor: pointer; }
+.rvw__more:hover { text-decoration-color: currentColor; }
+.rvw__who { margin-top: 4px; padding-top: 12px; border-top: 1px solid var(--line); font-size: 14px; line-height: 1.3; }
+.rvw__who b { display: block; font-weight: 500; }
+.rvw__who span { display: block; margin-top: 2px; font-size: 13px; color: var(--muted); }
+.rvws__more { display: none; }
+
 /* видеоотзывы стопкой: сетка на /otzyvy/ (.vrev-grid) и отзывы на телефоне. Карточка растёт по тексту:
    над белой подложкой с текстом всегда остаётся кадр высотой --vrev-photo, постер — на всю карточку */
 .vrevs__more { display: none; }
@@ -1277,6 +1333,13 @@ legend.field__label { margin-bottom: 8px; }
   .media-carousel--reviews .vrev { --vrev-photo: min(62vw, 300px); aspect-ratio: auto; display: flex; flex-direction: column; justify-content: flex-end; }
   .media-carousel--reviews .vrev__body { position: relative; inset: auto; margin: var(--vrev-photo) var(--inset) var(--inset); }
   .vrevs__more { display: flex; margin-top: 14px; }
+  /* главная, отзывы с фото: сначала четыре карточки, «Показать ещё отзывы» открывает по четыре; «Все отзывы» — когда открыты все */
+  .rvws .media-carousel__item:nth-child(n+4) { display: block; }
+  .rvws .media-carousel__item:nth-child(n+5):not(.is-open) { display: none; }
+  .rvws ~ .rvws__more:not([hidden]) { display: flex; margin-top: 14px; }
+  .rvws.has-more:not(.is-all) ~ .vrevs__more { display: none; }
+  .rvws .media-carousel__track { gap: 12px; }
+  .rvw__text { --lines: 7; min-height: 0; }
 }
 
 /* ---------- лайтбокс (#lightbox): фото целиком, видео — плеер или постер «Видео появится здесь» ---------- */

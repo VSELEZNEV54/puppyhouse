@@ -57,8 +57,26 @@
           </ul>
           <a class="btn btn--ink hm-about__cta" href="/roditeli/">Подробнее о&nbsp;питомнике {{ ui.icon('arrow') }}</a>
         </div>
-        <figure class="hm-about__photo">
-          <img src="/assets/img/about-pudel-309.jpg" alt="Два рыжих щенка той-пуделя дома на&nbsp;пушистом пледе" width="1426" height="1478" style="object-position:62% 74%" loading="lazy" decoding="async">
+        {#- слайдер: фото по 2,6 с, видео — до конца; полоски сверху — прогресс и переход к кадру.
+            Дальние кадры спрятаны (.is-idle — display:none, а lazy-картинку в нём браузер не грузит);
+            main.js открывает их по одному вперёд. Без JS виден первый кадр -#}
+        <figure class="hm-about__photo hm-slider" data-hm-slider role="region" aria-roledescription="слайдер" aria-label="Фото и видео из питомника">
+          {% for s in about_slides %}
+          {%- set size = imgsize(s.src) or [1200, 1500] %}
+          <div class="hm-slider__slide{{ ' is-on' if loop.first else ' is-idle' }}"{% if not loop.first %} aria-hidden="true"{% endif %}>
+            {% if s.get('video') %}
+            <video src="{{ s.video }}" poster="{{ s.src }}" muted playsinline preload="none" aria-label="{{ s.alt }}"{% if s.get('pos') %} style="object-position:{{ s.pos }}"{% endif %}></video>
+            {% else %}
+            <img src="{{ s.src }}" alt="{{ s.alt|typo }}" width="{{ size[0] }}" height="{{ size[1] }}"{% if s.get('pos') %} style="object-position:{{ s.pos }}"{% endif %} loading="lazy" decoding="async">
+            {% endif %}
+          </div>
+          {% endfor %}
+          <div class="hm-slider__bars">
+            {% for s in about_slides %}
+            <button class="hm-slider__bar" type="button" aria-label="Кадр {{ loop.index }} из {{ about_slides|length }}"{% if loop.first %} aria-current="true"{% endif %}><i></i></button>
+            {% endfor %}
+          </div>
+          <button class="hm-slider__pause" type="button" data-hm-pause aria-label="Пауза" aria-pressed="false"></button>
         </figure>
       </div>
       <ul class="hm-stats" aria-label="Питомник в цифрах">
@@ -87,8 +105,8 @@
     <!-- ================= ПРЕИМУЩЕСТВА ================= -->
     {{ ui.advantages(title='Почему выбирают нас', lead='Отвечаем за щенка не только в день покупки', link={'url': '/dokumenty-i-garantii/', 'label': 'Документы и гарантии'}) }}
 
-    <!-- ================= ОТЗЫВЫ — видеокарточки ================= -->
-    {{ media.video_reviews(reviews_home, title='Отзывы владельцев', id='otzyvy') }}
+    <!-- ================= ОТЗЫВЫ — фото щенка и текст владельца ================= -->
+    {{ media.video_reviews(reviews_home, title='Отзывы владельцев', id='otzyvy', photo=true) }}
 
     <!-- ================= КАК КУПИТЬ ================= -->
     <section class="section container" id="kak-kupit" aria-labelledby="steps-title">

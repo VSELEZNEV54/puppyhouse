@@ -555,12 +555,13 @@
   /* ---------- карусели фото и видео [data-carousel] (macros/media.html.j2) ----------
      Нативная прокрутка с прилипанием (свайп на телефоне), стрелки, ← → на ленте или карточке,
      активная карточка — ближайшая к центру (у .media-carousel--reviews и data-align="start" — к левому краю).
-     Фото дальних карточек грузим, когда карусель подъехала к экрану: lazy-загрузка браузера
-     не видит карточки далеко справа, и при свайпе они появлялись бы пустыми. */
+     Фото карточек рядом с активной грузим заранее, когда карусель подъехала к экрану: lazy-загрузка браузера
+     не видит карточки справа, и при свайпе они появлялись бы пустыми. Дальние — по мере листания
+     (в ленте на главной ~40 кадров — все сразу не тянем). */
   const carouselIO = 'IntersectionObserver' in window ? new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
       if (!entry.isIntersecting) return;
-      $$('img[loading="lazy"]', entry.target).forEach((img) => { img.loading = 'eager'; });
+      entry.target.dispatchEvent(new CustomEvent('carousel:near'));
       carouselIO.unobserve(entry.target);
     });
   }, { rootMargin: '600px 0px' }) : null;
@@ -574,6 +575,12 @@
     if (carouselIO) carouselIO.observe(root);
     const fromStart = root.classList.contains('media-carousel--reviews') || root.dataset.align === 'start';
     let active = -1;
+    let near = !carouselIO;
+    const warm = (k) => {
+      if (!near) return;
+      items.slice(Math.max(0, k - 4), k + 7).forEach((li) => $$('img[loading="lazy"]', li).forEach((img) => { img.loading = 'eager'; }));
+    };
+    root.addEventListener('carousel:near', () => { near = true; warm(Math.max(active, 0)); });
     // точка, к которой прилипает карточка: центр ленты или её левый край (с учётом scroll-padding)
     const anchor = () => {
       const r = vp.getBoundingClientRect();
@@ -583,6 +590,7 @@
     const setActive = (i) => {
       if (i === active) return;
       active = i;
+      warm(i);
       items.forEach((li, k) => li.classList.toggle('is-active', k === i));
       if (prev) prev.disabled = i <= 0;
       if (next) next.disabled = i >= items.length - 1 || (fromStart && vp.scrollLeft + vp.clientWidth >= vp.scrollWidth - 2);
@@ -640,6 +648,159 @@
     let rt;
     window.addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(() => go(Math.max(active, 0), false), 150); });
   });
+
+  /* ---------- слайдер «О нашем питомнике» [data-hm-slider] (главная) ----------
+     Фото — по PHOTO_MS, видео — до конца (не играет — ведёт себя как фото). Полоски сверху заполняются по ходу кадра,
+     клик по полоске — к кадру, свайп — соседний кадр. Листается, только пока слайдер на экране и вкладка открыта;
+     кнопка «Пауза» останавливает. При «уменьшить движение» не листается сам. Кадры открываем (и грузим) по одному вперёд. */
+  const hs = $('[data-hm-slider]');
+  if (hs) {
+    const PHOTO_MS = 2600;
+    const slides = $$('.hm-slider__slide', hs);
+    const bars = $$('.hm-slider__bar', hs);
+    const pauseBtn = $('[data-hm-pause]', hs);
+    const n = slides.length;
+    let cur = 0; let elapsed = 0; let last = 0; let raf = 0;
+    let onScreen = false; let paused = reduceMotion; let prevTimer = 0;
+    const media = (k) => slides[k].querySelector('img, video');
+    const load = (k) => {
+      const sl = slides[(k + n) % n];
+      if (!sl.classList.contains('is-idle')) return;
+      sl.classList.remove('is-idle');
+      const m = media((k + n) % n);
+      if (m && m.tagName === 'VIDEO') m.preload = 'auto';
+    };
+    const playable = (v) => v && v.tagName === 'VIDEO' && !v.dataset.failed;
+    const running = () => onScreen && !paused && !d.hidden;
+    const fill = (k, p) => bars[k].style.setProperty('--p', p);
+    const startVideo = (v) => {
+      v.muted = true;
+      const p = v.play();
+      if (p && p.catch) p.catch(() => { v.dataset.failed = '1'; });
+    };
+    const show = (k) => {
+      const old = media(cur);
+      if (old && old.tagName === 'VIDEO') old.pause();
+      // прежний кадр остаётся под новым, пока тот проявляется, — без провала в фон посередине смены
+      slides.forEach((sl) => sl.classList.remove('is-prev'));
+      const was = slides[cur];
+      if ((k + n) % n !== cur) {
+        was.classList.add('is-prev');
+        clearTimeout(prevTimer);
+        prevTimer = setTimeout(() => was.classList.remove('is-prev'), 900);
+      }
+      was.classList.remove('is-on');
+      was.setAttribute('aria-hidden', 'true');
+      cur = (k + n) % n;
+      slides[cur].classList.add('is-on');
+      slides[cur].removeAttribute('aria-hidden');
+      bars.forEach((b, j) => { fill(j, j < cur ? 1 : 0); if (j === cur) b.setAttribute('aria-current', 'true'); else b.removeAttribute('aria-current'); });
+      load(cur); load(cur + 1);
+      elapsed = 0; last = performance.now();
+      const v = media(cur);
+      if (playable(v)) { try { v.currentTime = 0; } catch (e) { /* ещё не загружено */ } if (running()) startVideo(v); }
+    };
+    const tick = (now) => {
+      raf = 0;
+      if (!running()) return;
+      const v = media(cur);
+      let p;
+      elapsed += now - last;
+      last = now;
+      // видео, которое за 5 с так и не пошло (сеть, кодек), дальше ведёт себя как фото
+      if (playable(v) && !v.currentTime && elapsed > 5000) v.dataset.failed = '1';
+      if (playable(v)) p = v.duration ? v.currentTime / v.duration : 0;
+      else p = elapsed / PHOTO_MS;
+      if (p >= 1 && !playable(v)) { show(cur + 1); } else fill(cur, Math.min(p, 1));
+      raf = requestAnimationFrame(tick);
+    };
+    const sync = () => {
+      const v = media(cur);
+      if (running()) {
+        last = performance.now();
+        if (playable(v)) startVideo(v);
+        if (!raf) raf = requestAnimationFrame(tick);
+      } else {
+        if (v && v.tagName === 'VIDEO') v.pause();
+        cancelAnimationFrame(raf); raf = 0;
+      }
+      pauseBtn.setAttribute('aria-pressed', paused ? 'true' : 'false');
+      pauseBtn.setAttribute('aria-label', paused ? 'Смотреть дальше' : 'Пауза');
+    };
+    $$('video', hs).forEach((v) => {
+      v.addEventListener('ended', () => { if (slides[cur].contains(v)) show(cur + 1); });
+      v.addEventListener('error', () => { v.dataset.failed = '1'; });
+    });
+    bars.forEach((b, j) => b.addEventListener('click', () => { show(j); sync(); }));
+    pauseBtn.addEventListener('click', () => { paused = !paused; sync(); });
+    // свайп пальцем: влево — следующий кадр, вправо — предыдущий
+    let x0 = null;
+    hs.addEventListener('pointerdown', (e) => { if (e.pointerType !== 'mouse') x0 = e.clientX; }, { passive: true });
+    hs.addEventListener('pointerup', (e) => {
+      if (x0 === null) return;
+      const dx = e.clientX - x0; x0 = null;
+      if (Math.abs(dx) > 40) { show(cur + (dx < 0 ? 1 : -1)); sync(); }
+    }, { passive: true });
+    hs.addEventListener('pointercancel', () => { x0 = null; }, { passive: true });
+    d.addEventListener('visibilitychange', sync);
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(([entry]) => {
+        if (entry.isIntersecting && !onScreen) load(cur + 1);
+        onScreen = entry.isIntersecting; sync();
+      }, { threshold: 0.35 }).observe(hs);
+    } else { onScreen = true; load(cur + 1); }
+    hs.classList.add('is-ready');
+    sync();
+  }
+
+  /* ---------- отзывы с фото на главной (media.photo_review_card) ----------
+     Длинный текст свёрнут до 8 строк: «Читать полностью» / «Свернуть» — только если текст правда не влез.
+     На телефоне видно четыре отзыва, «Показать ещё отзывы» открывает следующие четыре. */
+  const rvTexts = $$('[data-rvw-text]');
+  const fold = (t) => {
+    const btn = t.parentElement.querySelector('[data-rvw-toggle]');
+    if (!btn || btn.getAttribute('aria-expanded') === 'true') return;
+    t.classList.add('is-folded');
+    const over = t.scrollHeight > t.clientHeight + 2;
+    t.classList.toggle('is-folded', over);
+    btn.hidden = !over;
+  };
+  if (rvTexts.length) {
+    rvTexts.forEach((t) => {
+      fold(t);
+      const btn = t.parentElement.querySelector('[data-rvw-toggle]');
+      btn && btn.addEventListener('click', () => {
+        const open = btn.getAttribute('aria-expanded') !== 'true';
+        btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+        btn.textContent = open ? 'Свернуть' : 'Читать полностью';
+        t.classList.toggle('is-folded', !open);
+      });
+    });
+    let rvt;
+    window.addEventListener('resize', () => { clearTimeout(rvt); rvt = setTimeout(() => rvTexts.forEach(fold), 200); });
+    if (d.fonts && d.fonts.ready) d.fonts.ready.then(() => rvTexts.forEach(fold));
+  }
+  const rvws = $('.rvws');
+  const rvMore = $('[data-rvw-more]');
+  if (rvws && rvMore) {
+    const STEP = 4;
+    const rest = $$('.media-carousel__item', rvws).slice(STEP);
+    const closed = () => rest.filter((li) => !li.classList.contains('is-open'));
+    const upd = () => {
+      const left = closed().length;
+      rvMore.hidden = !left;
+      rvws.classList.toggle('has-more', !!left);
+      rvws.classList.toggle('is-all', !left);
+    };
+    rvMore.addEventListener('click', () => {
+      const next = closed().slice(0, STEP);
+      next.forEach((li) => li.classList.add('is-open'));
+      next.forEach((li) => $$('[data-rvw-text]', li).forEach(fold));
+      upd();
+      if (rvMore.hidden && next[0]) { const b = $('button', next[0]); b && b.focus({ preventScroll: true }); }
+    });
+    upd();
+  }
 
   /* ---------- лайтбокс #lightbox: [data-lightbox] открывает фото или видео ----------
      data-kind="photo" | "video"; data-src — файл видео (нет — постер и «Видео появится здесь»); data-caption — подпись.

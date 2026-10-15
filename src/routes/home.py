@@ -8,7 +8,6 @@ Own data: src/data/home.json (stat details, carousel items, reviews, blog picks,
 
 def routes(data):
     home = data["home"]
-    reviews = {r["id"]: r for r in data["reviews"]}
     breed_names = {b["slug"]: b["name"] for b in data["breeds"]}
     blog_meta = {b["slug"]: b for b in data["blog"]}
     posts = data["blog_posts"]["posts"]
@@ -41,8 +40,10 @@ def routes(data):
                         "Прививки, ветпаспорт, договор, гарантия, доставка по России.",
             stats=stats,
             media_items=home["media"],
-            # обложки отзывов на главной — живые фото клиента (правка 15.10); на /otzyvy/ и других страницах — прежние
-            reviews_home=[dict(reviews[i], poster=home.get("review_posters", {}).get(i, reviews[i]["poster"])) for i in home["reviews"]],
+            # «О нашем питомнике»: фото листаются сами, видео доигрывает до конца (правка 15.10)
+            about_slides=home["about_slides"],
+            # отзывы на главной — свои (правка 15.10): фото щенка, текст, имя, город, порода; /otzyvy/ — reviews.json
+            reviews_home=home["reviews_home"],
             faq_items=home["faq"],
             teasers=teasers,
         ),

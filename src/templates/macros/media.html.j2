@@ -72,20 +72,44 @@
 </article>
 {%- endmacro %}
 
+{#- Photo review (homepage, client 15.10): the puppy's photo (opens in the lightbox, no play badge), stars,
+    the text in paragraphs (r.text, split on \n; long ones fold to 8 lines with «Читать полностью»),
+    then name, city and the breed under them — no letter avatar.
+    r: {id, name, city, breed (slug) or breed_label, rating, text, photo{src, alt, pos?}} -#}
+{% macro photo_review_card(r) -%}
+{%- set size = imgsize(r.photo.src) or [1200, 1600] -%}
+{%- set breed = breed_map[r.breed].name if r.breed in breed_map else r.breed_label -%}
+<article class="rvw">
+  <button class="rvw__media" type="button" data-lightbox data-kind="photo" data-caption="{{ r.name }}, {{ r.city }} · {{ breed }}" aria-label="Фото щенка: {{ r.name }}, {{ r.city }}">
+    <img src="{{ r.photo.src }}" alt="{{ r.photo.alt|typo }}" width="{{ size[0] }}" height="{{ size[1] }}"{% if r.photo.pos is defined and r.photo.pos %} style="object-position:{{ r.photo.pos }}"{% endif %} loading="lazy" decoding="async">
+  </button>
+  <div class="rvw__body">
+    <span class="stars" role="img" aria-label="Оценка {{ r.rating }} из 5">{% for _ in range(r.rating) %}{{ ui.icon('star') }}{% endfor %}</span>
+    <blockquote class="rvw__text" id="rvw-{{ r.id }}" data-rvw-text>
+      {% for para in r.text.split('\n') %}<p>{{ para|typo }}</p>{% endfor %}
+    </blockquote>
+    <button class="rvw__more" type="button" data-rvw-toggle aria-controls="rvw-{{ r.id }}" aria-expanded="false" hidden>Читать полностью</button>
+    <p class="rvw__who"><b>{{ r.name }}, {{ r.city }}</b><span>{{ breed }}</span></p>
+  </div>
+</article>
+{%- endmacro %}
+
 {#- Video reviews section: H2 + rating tiles + a carousel of video_review_card (arrows under the row on desktop).
     Phones ≤ 760 px (client 13.10: no sideways card scrolling): the first three cards stacked + «Все отзывы» button.
     reviews: reviews.json items. ratings=false hides the Яндекс / Google / Авито tiles. -#}
-{% macro video_reviews(reviews, title='Отзывы владельцев', id='otzyvy', title_id=none, link={'url': '/otzyvy/', 'label': 'Все отзывы'}, lead=none, ratings=true) -%}
+{#- photo=true (homepage): photo_review_card instead of the video card; on phones the first four cards,
+    then «Показать ещё отзывы» opens four more at a time (main.js), and «Все отзывы» once all are open. -#}
+{% macro video_reviews(reviews, title='Отзывы владельцев', id='otzyvy', title_id=none, link={'url': '/otzyvy/', 'label': 'Все отзывы'}, lead=none, ratings=true, photo=false) -%}
 {%- set tid = title_id or (id ~ '-title') -%}
 <section class="section container" id="{{ id }}" aria-labelledby="{{ tid }}">
   {{ ui.section_head(title, id=tid, link=link, lead=lead) }}
   {% if ratings %}<div class="vrevs__ratings">{{ cards.ratings() }}</div>{% endif %}
-  <div class="media-carousel media-carousel--reviews" data-carousel data-start="0" role="region" aria-roledescription="карусель" aria-label="{{ title }}">
+  <div class="media-carousel media-carousel--reviews{{ ' rvws' if photo }}" data-carousel data-start="0" role="region" aria-roledescription="карусель" aria-label="{{ title }}">
     <div class="media-carousel__viewport" tabindex="0" data-carousel-viewport>
       <ul class="media-carousel__track">
         {% for r in reviews %}
         <li class="media-carousel__item{{ ' is-active' if loop.first }}" aria-roledescription="слайд" aria-label="{{ loop.index }} из {{ reviews|length }}">
-          {{ video_review_card(r)|indent(10) }}
+          {{ (photo_review_card(r) if photo else video_review_card(r))|indent(10) }}
         </li>
         {% endfor %}
       </ul>
@@ -95,6 +119,7 @@
       <button class="media-carousel__btn" type="button" data-carousel-next aria-label="Следующий отзыв">{{ ui.icon('arrow') }}</button>
     </div>
   </div>
+  {% if photo %}<button class="btn btn--white btn--lg btn--block rvws__more" type="button" data-rvw-more hidden>Показать ещё отзывы</button>{% endif %}
   {% if link %}<a class="btn btn--white btn--lg btn--block vrevs__more" href="{{ link.url }}">{{ link.label }}</a>{% endif %}
 </section>
 {%- endmacro %}

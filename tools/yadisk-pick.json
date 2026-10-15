@@ -528,13 +528,6 @@
   "n": 55
  },
  {
-  "name": "rv-buldog-37",
-  "key": "https://disk.yandex.ru/d/0wJvVWaVm3bomQ",
-  "path": "/9d81a498-fb50-42d6-a7b7-6b228e2a92b2.JPG",
-  "kind": "photo",
-  "n": 37
- },
- {
   "name": "rv-pudel-335",
   "key": "https://disk.yandex.ru/d/0uxkLI96w78fjQ",
   "path": "/Той пудель/IMG_20260922_001317.jpg",
@@ -584,25 +577,11 @@
   "n": 124
  },
  {
-  "name": "cl-buldog-2",
-  "key": "https://disk.yandex.ru/d/0wJvVWaVm3bomQ",
-  "path": "/04e4af0c-7eed-4bec-85d3-48fd3be08d7a.JPG",
-  "kind": "photo",
-  "n": 2
- },
- {
   "name": "cl-buldog-12",
   "key": "https://disk.yandex.ru/d/0wJvVWaVm3bomQ",
   "path": "/2b39e910-abbf-44a2-9652-c295388f7c39.JPG",
   "kind": "photo",
   "n": 12
- },
- {
-  "name": "cl-buldog-39",
-  "key": "https://disk.yandex.ru/d/0wJvVWaVm3bomQ",
-  "path": "/IMG_3652.jpg",
-  "kind": "photo",
-  "n": 39
  },
  {
   "name": "cl-buldog-48",
@@ -624,27 +603,6 @@
   "path": "/IMG_3758.PNG",
   "kind": "photo",
   "n": 54
- },
- {
-  "name": "cl-buldog-65",
-  "key": "https://disk.yandex.ru/d/0wJvVWaVm3bomQ",
-  "path": "/b887937f-5f8c-45fe-a979-8bce986a0ef6.JPG",
-  "kind": "photo",
-  "n": 65
- },
- {
-  "name": "cl-buldog-67",
-  "key": "https://disk.yandex.ru/d/0wJvVWaVm3bomQ",
-  "path": "/c159d92a-b2a2-4871-992b-6a4d5e63cb62.JPG",
-  "kind": "photo",
-  "n": 67
- },
- {
-  "name": "cl-buldog-81",
-  "key": "https://disk.yandex.ru/d/0wJvVWaVm3bomQ",
-  "path": "/f7f13b86-22fb-4466-a080-3e19d6b3f96b.JPG",
-  "kind": "photo",
-  "n": 81
  },
  {
   "name": "pup-maltipu-412",
@@ -792,5 +750,12 @@
   "path": "/щенок8/telegram-photo-0-5472028145062974253.JPG",
   "kind": "photo",
   "n": 492
+ },
+ {
+  "name": "rv-buldog-65",
+  "key": "https://disk.yandex.ru/d/0wJvVWaVm3bomQ",
+  "path": "/b887937f-5f8c-45fe-a979-8bce986a0ef6.JPG",
+  "kind": "photo",
+  "n": 65
  }
 ]
