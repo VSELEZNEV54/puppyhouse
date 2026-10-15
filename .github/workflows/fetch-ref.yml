@@ -1,0 +1,44 @@
+name: Fetch reference pages
+
+on:
+  push:
+    paths:
+      - tools/ref-pages.json
+      - .github/workflows/fetch-ref.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref }}
+      - name: Download pages (raw HTML)
+        run: |
+          mkdir -p tools/ref
+          python3 - <<'PY'
+          import json, pathlib, urllib.request
+          UA = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36"
+          out = pathlib.Path("tools/ref")
+          for item in json.loads(pathlib.Path("tools/ref-pages.json").read_text(encoding="utf-8")):
+              try:
+                  req = urllib.request.Request(item["url"], headers={"User-Agent": UA, "Accept-Language": "ru-RU,ru;q=0.9"})
+                  with urllib.request.urlopen(req, timeout=60) as r:
+                      data = r.read()
+                  (out / item["name"]).write_bytes(data)
+                  print(item["name"], len(data), "bytes")
+              except Exception as e:
+                  print(item["name"], "FAILED", e)
+          PY
+      - name: Commit pages
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add tools/ref
+          git diff --cached --quiet && exit 0
+          git commit -m "Reference page for the review texts"
+          git push
