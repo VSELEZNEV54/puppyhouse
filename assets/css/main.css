@@ -189,6 +189,10 @@ main:focus, section[tabindex="-1"]:focus, [data-anchor-focus]:focus { outline: n
 /* основная: чёрная пилюля; на ховере — коралл с тёмным текстом (контраст 6,6:1) */
 .btn--ink { background: var(--ink); color: #fff; }
 @media (hover: hover) { .btn--ink:hover { background: var(--coral); color: var(--ink); } }
+/* главная (правка 15.10): основные кнопки — коралловые (цвет прежнего наведения), при наведении — темнее; белые — как были */
+.page-home { --cta: var(--coral); --cta-hover: #F7805F; }
+.page-home .btn--ink, .page-home .mbar__btn--ink { background: var(--cta); color: var(--ink); }
+@media (hover: hover) { .page-home .btn--ink:hover, .page-home .mbar__btn--ink:hover { background: var(--cta-hover); color: var(--ink); } }
 .btn--white { background: #fff; color: var(--ink); border-color: var(--line-2); }
 .btn--white:hover { border-color: var(--ink); }
 /* контурная: белая обводка без заливки — на цветной плитке рядом с белой кнопкой */
@@ -547,8 +551,8 @@ main:focus, section[tabindex="-1"]:focus, [data-anchor-focus]:focus { outline: n
 }
 /* пол студии во всю ширину плитки — на той же высоте, что пол в кадре (84% → 97% высоты фото) */
 .hero__floor {
-  position: absolute; inset: 0; z-index: -1; pointer-events: none;
-  background: linear-gradient(180deg, transparent 0 calc(100cqh - var(--ph) * .16), var(--tone-floor) calc(100cqh - var(--ph) * .03));
+  position: absolute; left: 0; right: 0; bottom: 0; height: calc(var(--ph) * .16); z-index: -1; pointer-events: none;
+  background: linear-gradient(180deg, transparent 0, var(--tone-floor) 81.25%);
 }
 .hero__copy {
   position: relative; z-index: 2;
@@ -564,7 +568,20 @@ main:focus, section[tabindex="-1"]:focus, [data-anchor-focus]:focus { outline: n
 .eyebrow__dot { width: 8px; height: 8px; border-radius: 50%; background: var(--coral-strong); }
 .hero .h1 { margin-top: clamp(20px, 2.4vw, 32px); max-width: 10.6ch; }
 .hero__sub { margin-top: 22px; font-size: 16px; line-height: 1.45; max-width: 36ch; color: var(--ink-soft); }
-.hero__actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: auto; padding-top: 24px; }
+/* кнопки — сразу под текстом (правка 15.10), плашки преимуществ — внизу плитки */
+.hero__actions { display: flex; flex-wrap: wrap; gap: 10px; padding-top: clamp(24px, 2.4vw, 32px); }
+.hero .hero__sub { max-width: 44ch; }
+.hm-chips {
+  display: flex; flex-wrap: wrap; gap: 8px; margin-top: auto; padding-top: 24px;
+}
+.hm-chip {
+  display: inline-flex; align-items: center; gap: 9px;
+  height: 42px; padding: 0 16px 0 7px; border-radius: var(--r-pill);
+  background: rgba(255, 255, 255, .7);
+  font-size: 14.5px; font-weight: 500; letter-spacing: -0.005em; white-space: nowrap;
+}
+.hm-chip__ico { flex: none; display: grid; place-items: center; width: 30px; height: 30px; border-radius: 50%; background: var(--c); }
+.hm-chip__ico .i { width: 16px; height: 16px; }
 
 /* кадр прижат к правому и нижнему краю плитки: эти края совпадают с краями плитки,
    левый и верхний гаснут в цвет стены */
@@ -579,21 +596,6 @@ main:focus, section[tabindex="-1"]:focus, [data-anchor-focus]:focus { outline: n
   -webkit-mask-composite: source-in; mask-composite: intersect;
 }
 
-/* стикер — один, повёрнутый */
-.sticker {
-  position: absolute; z-index: 3;
-  top: clamp(28px, 3.4vw, 52px); right: clamp(28px, 4cqw, 64px);
-  display: inline-flex; align-items: center; gap: 10px;
-  padding: 10px 18px 10px 10px;
-  border: 3px solid #fff; border-radius: 20px;
-  background: var(--sun); color: var(--ink);
-  box-shadow: 0 16px 30px -18px rgba(20, 20, 20, .5);
-  transform: rotate(-6deg);
-  line-height: 1.1;
-}
-.sticker__ico { width: 36px; height: 36px; border-radius: 12px; background: rgba(255, 255, 255, .55); display: grid; place-items: center; }
-.sticker b { display: block; font-size: 16px; font-weight: 500; letter-spacing: -0.01em; }
-.sticker small { display: block; margin-top: 2px; font-size: 13px; font-weight: 500; }
 
 
 /* цифры доверия (ui.stat_tiles на внутренних страницах; на главной — .hm-stat в «О нашем питомнике») */
@@ -622,9 +624,14 @@ main:focus, section[tabindex="-1"]:focus, [data-anchor-focus]:focus { outline: n
   transition: text-decoration-color .2s;
 }
 .hm-about__lead a:hover { text-decoration-color: currentColor; }
-.hm-about__text { margin: 18px 0 28px; max-width: 54ch; font-size: 16px; line-height: 1.55; color: var(--ink-soft); }
+/* три страха покупателя — и что мы с ними делаем (правка 15.10) */
+.hm-about__list { display: grid; gap: 16px; margin: clamp(22px, 2.2vw, 30px) 0 clamp(26px, 2.6vw, 36px); max-width: 56ch; }
+.hm-about__list li { display: grid; grid-template-columns: 36px minmax(0, 1fr); gap: 14px; align-items: start; font-size: 16px; line-height: 1.5; color: var(--ink-soft); }
+.hm-about__list b { color: var(--ink); }
+.hm-about__ico { display: grid; place-items: center; width: 36px; height: 36px; border-radius: 50%; background: var(--c); color: var(--ink); }
+.hm-about__ico .i { width: 18px; height: 18px; }
 .hm-about__cta { margin-top: auto; }
-.hm-about__photo { position: relative; overflow: hidden; min-height: 320px; border-radius: var(--r-tile); background: #E7E1D8; }
+.hm-about__photo { position: relative; overflow: hidden; min-height: clamp(420px, 38vw, 580px); border-radius: var(--r-tile); background: #E7E1D8; }
 .hm-about__photo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 56% 60%; transition: transform 1.4s var(--ease); }
 @media (hover: hover) { .hm-about__photo:hover img { transform: scale(1.03); } }
 
@@ -865,6 +872,17 @@ main:focus, section[tabindex="-1"]:focus, [data-anchor-focus]:focus { outline: n
 .seo__toggle .i { transition: transform .25s var(--ease); }
 .seo__toggle[aria-expanded="true"] .i { transform: rotate(180deg); }
 .seo__toggle:hover span { text-decoration: underline; text-underline-offset: 3px; }
+/* главная (правка 15.10): текст на всю ширину плитки; раскрытая часть на широком экране — в две колонки */
+.page-home .seo__body { max-width: none; }
+.page-home .seo__more a { color: var(--ink); text-decoration: underline; text-decoration-color: var(--line-2); text-underline-offset: 3px; }
+.page-home .seo__more a:hover { text-decoration-color: currentColor; }
+@media (min-width: 1200px) {
+  /* верх обеих колонок на одной линии: отступ — у блока, у первого подзаголовка его нет (у колонки справа его съедает разрыв) */
+  .page-home .seo__more { columns: 2; column-gap: clamp(40px, 4vw, 72px); padding-top: 20px; }
+  .page-home .seo__more h3 { break-after: avoid; }
+  .page-home .seo__more p { break-inside: avoid; }
+  .page-home .seo__more > h3:first-child { margin-top: 0; }
+}
 
 /* =========================================================
    ЗАЯВКА
@@ -883,6 +901,55 @@ main:focus, section[tabindex="-1"]:focus, [data-anchor-focus]:focus { outline: n
 .lead__phone { margin-right: 8px; font-size: clamp(22px, 1.9vw, 28px); font-weight: 500; letter-spacing: -0.03em; text-decoration: none; white-space: nowrap; }
 .lead__phone:hover { text-decoration: underline; text-underline-offset: 4px; text-decoration-thickness: 2px; }
 .lead__box { padding: clamp(22px, 2.8vw, 40px); border-radius: var(--r-img); background: var(--tile); }
+
+/* главная, «Подберём щенка за 1 час» (правка 15.10): лапки разного размера и наклона по плитке, крупный заголовок;
+   телефон и мессенджеры — не в плитке, а отдельными плашками под ней (.hm-cts, как на /kontakty/) */
+.hm-lead .lead__intro { background: url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22420%22 height=%22300%22 viewBox=%220 0 420 300%22%3E%3Cdefs%3E%3Cg id=%22p%22%3E%3Cpath d=%22M12 12.4c-2.7 0-5.6 3-5.6 5.5 0 1.5 1.1 2.5 2.6 2.5 1.3 0 2-.7 3-.7s1.7.7 3 .7c1.5 0 2.6-1 2.6-2.5 0-2.5-2.9-5.5-5.6-5.5Z%22/%3E%3Cellipse cx=%225.6%22 cy=%2210.6%22 rx=%221.9%22 ry=%222.4%22 transform=%22rotate(-22 5.6 10.6)%22/%3E%3Cellipse cx=%229.5%22 cy=%226.3%22 rx=%222%22 ry=%222.6%22 transform=%22rotate(-8 9.5 6.3)%22/%3E%3Cellipse cx=%2214.5%22 cy=%226.3%22 rx=%222%22 ry=%222.6%22 transform=%22rotate(8 14.5 6.3)%22/%3E%3Cellipse cx=%2218.4%22 cy=%2210.6%22 rx=%221.9%22 ry=%222.4%22 transform=%22rotate(22 18.4 10.6)%22/%3E%3C/g%3E%3C/defs%3E%3Cuse href=%22%23p%22 fill=%22rgba(255,255,255,.58)%22 transform=%22translate(330 6) scale(2.4) rotate(18 12 12)%22/%3E%3Cuse href=%22%23p%22 fill=%22rgba(173,92,48,.14)%22 transform=%22translate(196 52) scale(1.3) rotate(-22 12 12)%22/%3E%3Cuse href=%22%23p%22 fill=%22rgba(173,92,48,.14)%22 transform=%22translate(286 128) scale(1.8) rotate(30 12 12)%22/%3E%3Cuse href=%22%23p%22 fill=%22rgba(255,255,255,.58)%22 transform=%22translate(104 140) scale(2.0) rotate(-12 12 12)%22/%3E%3Cuse href=%22%23p%22 fill=%22rgba(255,255,255,.58)%22 transform=%22translate(360 224) scale(1.5) rotate(-35 12 12)%22/%3E%3Cuse href=%22%23p%22 fill=%22rgba(255,255,255,.58)%22 transform=%22translate(204 214) scale(2.6) rotate(12 12 12)%22/%3E%3Cuse href=%22%23p%22 fill=%22rgba(173,92,48,.14)%22 transform=%22translate(40 96) scale(1.1) rotate(25 12 12)%22/%3E%3C/svg%3E") right bottom / 420px 300px no-repeat; }
+.hm-lead .lead__intro { gap: 20px; }
+.hm-lead .lead__intro .h2 { max-width: 7.4em; font-size: clamp(44px, 5.4vw, 88px); letter-spacing: -0.045em; }
+.hm-lead .lead__line { font-size: clamp(17px, 1.3vw, 19px); max-width: 30ch; }
+.lead__note {
+  display: inline-flex; align-items: center; gap: 8px; margin-top: auto;
+  padding: 9px 14px 9px 11px; border-radius: var(--r-pill); background: rgba(255, 255, 255, .62);
+  font-size: 14px; font-weight: 500; line-height: 1.3;
+}
+.lead__note .i { flex: none; width: 18px; height: 18px; }
+.hm-cts { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--gap); margin-top: var(--gap); }
+.hm-ct { display: flex; flex-direction: column; align-items: flex-start; min-width: 0; padding: var(--tile-pad); border-radius: var(--r-tile); background: var(--tile); }
+.hm-ct .ico { margin-bottom: clamp(22px, 2.4vw, 36px); }
+.hm-ct__label { font-size: 14px; line-height: 1.35; color: var(--muted); }
+.hm-ct__value {
+  max-width: 100%; margin-top: 4px;
+  font-size: clamp(20px, 1.6vw, 26px); font-weight: 500; letter-spacing: -0.025em; line-height: 1.2;
+  text-decoration: none; overflow-wrap: anywhere;
+}
+a.hm-ct__value:hover { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 4px; }
+.hm-ct__value--mail { font-size: clamp(18px, 1.35vw, 22px); }
+.hm-ct__line { margin-top: auto; padding-top: 14px; font-size: 14px; line-height: 1.4; color: var(--muted); }
+.hm-ct__msgrs { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+.hm-msgr {
+  display: inline-flex; align-items: center; gap: 7px; height: 44px; padding: 0 14px 0 4px;
+  border-radius: var(--r-pill); background: var(--page);
+  font-size: 14.5px; font-weight: 500; text-decoration: none;
+  transition: background-color .2s, color .2s;
+}
+.hm-msgr .msgr { width: 36px; height: 36px; }
+.hm-msgr .msgr .i { width: 18px; height: 18px; }
+.hm-msgr:hover { background: var(--ink); color: #fff; }
+@media (max-width: 1199px) { .hm-cts { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 1000px) {
+  .hm-lead .lead__intro .h2 { max-width: 9em; }
+  .hm-lead .lead__intro { padding-bottom: 72px; background: url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22600%22 height=%2264%22 viewBox=%220 0 600 64%22%3E%3Cdefs%3E%3Cg id=%22p%22%3E%3Cpath d=%22M12 12.4c-2.7 0-5.6 3-5.6 5.5 0 1.5 1.1 2.5 2.6 2.5 1.3 0 2-.7 3-.7s1.7.7 3 .7c1.5 0 2.6-1 2.6-2.5 0-2.5-2.9-5.5-5.6-5.5Z%22/%3E%3Cellipse cx=%225.6%22 cy=%2210.6%22 rx=%221.9%22 ry=%222.4%22 transform=%22rotate(-22 5.6 10.6)%22/%3E%3Cellipse cx=%229.5%22 cy=%226.3%22 rx=%222%22 ry=%222.6%22 transform=%22rotate(-8 9.5 6.3)%22/%3E%3Cellipse cx=%2214.5%22 cy=%226.3%22 rx=%222%22 ry=%222.6%22 transform=%22rotate(8 14.5 6.3)%22/%3E%3Cellipse cx=%2218.4%22 cy=%2210.6%22 rx=%221.9%22 ry=%222.4%22 transform=%22rotate(22 18.4 10.6)%22/%3E%3C/g%3E%3C/defs%3E%3Cuse href=%22%23p%22 fill=%22rgba(255,255,255,.58)%22 transform=%22translate(6 30) scale(1.25) rotate(80 12 12)%22/%3E%3Cuse href=%22%23p%22 fill=%22rgba(173,92,48,.14)%22 transform=%22translate(96 4) scale(1.05) rotate(100 12 12)%22/%3E%3Cuse href=%22%23p%22 fill=%22rgba(255,255,255,.58)%22 transform=%22translate(186 30) scale(1.4) rotate(82 12 12)%22/%3E%3Cuse href=%22%23p%22 fill=%22rgba(173,92,48,.14)%22 transform=%22translate(276 4) scale(1.15) rotate(98 12 12)%22/%3E%3Cuse href=%22%23p%22 fill=%22rgba(255,255,255,.58)%22 transform=%22translate(366 28) scale(1.3) rotate(84 12 12)%22/%3E%3Cuse href=%22%23p%22 fill=%22rgba(173,92,48,.14)%22 transform=%22translate(456 2) scale(1.0) rotate(96 12 12)%22/%3E%3Cuse href=%22%23p%22 fill=%22rgba(255,255,255,.58)%22 transform=%22translate(540 26) scale(1.2) rotate(88 12 12)%22/%3E%3C/svg%3E") left calc(100% - 4px) / auto 54px repeat-x; }
+}
+@media (max-width: 560px) {
+  .hm-cts { grid-template-columns: minmax(0, 1fr); }
+  .hm-ct { display: grid; grid-template-columns: 44px minmax(0, 1fr); column-gap: 16px; align-items: start; padding: 18px; }
+  .hm-ct .ico { grid-row: 1 / span 3; margin: 0; }
+  .hm-ct > :not(.ico) { grid-column: 2; }
+  .hm-ct__line { padding-top: 6px; }
+  .hm-lead .lead__intro .h2 { font-size: clamp(38px, 11vw, 48px); }
+  .lead__note { margin-top: 4px; }
+}
 
 /* поля */
 /* формы заявки — строго одна колонка на любой ширине: каждое поле в своей строке (правка клиента 13.10) */
@@ -1057,6 +1124,8 @@ legend.field__label { margin-bottom: 8px; }
 /* ---------- карусель фото и видео (media.media_carousel) — единственная лента со свайпом вбок ----------
    Вертикальные карточки 9:16, активная (по центру) чуть крупнее; стрелки, свайп, ← →, прилипание к центру */
 .media-carousel { --mc-w: clamp(228px, 21vw, 300px); position: relative; }
+/* главная, «Фото и видео щенков»: карточки крупнее (правка 15.10) */
+.page-home #foto-video .media-carousel { --mc-w: clamp(260px, 25vw, 370px); }
 /* лента выходит за поля страницы до края экрана — соседние карточки уходят под край, а не обрезаются полем */
 .media-carousel__viewport {
   overflow-x: auto; overscroll-behavior-x: contain;
@@ -1280,8 +1349,20 @@ legend.field__label { margin-bottom: 8px; }
 
 /* ---------- первый экран главной на весь экран (.hero--full): 100svh минус шапка, не ниже 560 px ---------- */
 .hero--full .hero__main { height: max(560px, calc(100svh - var(--head-h) - 30px)); }
-/* на весь экран плитка выше — кадр «четыре щенка» крупнее (до 64% ширины), текст слева остаётся свободным */
-@media (min-width: 1001px) { .hero--full .hero__main { --ph: min(88cqh, calc(64cqw / 1.4906)); } }
+/* десктоп: плитка на весь экран, но если текст, кнопки и плашки не помещаются (низкий экран) — растёт, а не
+   вылезает за край. Кадр «четыре щенка» до 70% ширины (правка 15.10: щенки крупнее) и до 90% высоты экрана */
+@media (min-width: 1001px) {
+  .hero--full .hero__main {
+    --pad-h: clamp(28px, 3.4vw, 52px);
+    --ph: min(calc((max(560px, 100svh - var(--head-h) - 30px) - 2 * var(--pad-h)) * .9), calc(70cqw / 1.4906));
+    height: auto; min-height: max(560px, calc(100svh - var(--head-h) - 30px));
+    container-type: inline-size;
+    display: flex; flex-direction: column;
+  }
+  .hero--full .hero__copy { flex: 1; height: auto; }
+  /* плашки — до щенков: щенки занимают 13–87 % ширины кадра, кадр прижат к правому краю плитки */
+  .hero--full .hm-chips { max-width: calc(100cqw + var(--pad-h) - var(--ph) * 1.297 - 24px); }
+}
 /* узкий десктоп: кнопки столбиком, чтобы вторая не заходила на щенков */
 @media (min-width: 1001px) and (max-width: 1199px) {
   .hero--full .hero__actions { flex-direction: column; align-items: flex-start; }
@@ -1308,8 +1389,10 @@ legend.field__label { margin-bottom: 8px; }
   }
   .hero--full .hero__copy { flex: 1; height: auto; }
   .hero--full .h1 { margin-top: 18px; max-width: 15ch; font-size: clamp(44px, 6.4vw, 60px); }
-  .hero--full .hero__sub { max-width: 46ch; }
+  .hero--full .hero__sub { max-width: 52ch; }
   .hero--full .hero__actions { flex-direction: row; }
+  .hero--full .hero__photo img { transform: scale(1.1); transform-origin: 50% 100%; }
+  .hm-chips { max-width: none; }
 }
 
 @media (max-width: 1199px) {
@@ -1324,6 +1407,7 @@ legend.field__label { margin-bottom: 8px; }
 @media (max-width: 760px) {
   /* карусель — во всю ширину экрана, карточка ≈ две трети экрана, стрелки поменьше */
   .media-carousel { --mc-w: min(64vw, 300px); }
+  .page-home #foto-video .media-carousel { --mc-w: min(74vw, 340px); }
   .media-carousel__btn { width: 44px; height: 44px; margin-top: -22px; }
   .media-carousel__btn[data-carousel-prev] { left: 4px; }
   .media-carousel__btn[data-carousel-next] { right: 4px; }
@@ -1408,7 +1492,7 @@ legend.field__label { margin-bottom: 8px; }
 /* «О нашем питомнике»: на планшете фото над текстом во всю ширину; цифры уже 1200 — столбиком (иконка сверху) */
 @media (max-width: 1000px) {
   .hm-about { grid-template-columns: minmax(0, 1fr); }
-  .hm-about__photo { order: -1; min-height: 0; aspect-ratio: 16 / 8; }
+  .hm-about__photo { order: -1; min-height: 0; aspect-ratio: 16 / 9.5; }
   .hm-about__lead { max-width: 34ch; }
 }
 @media (max-width: 1199px) {
@@ -1467,7 +1551,7 @@ legend.field__label { margin-bottom: 8px; }
   .hero__photo {
     position: relative; order: -1; right: auto; bottom: auto;
     width: calc(100% + 40px); height: auto; margin: 0 -20px;
-    aspect-ratio: 1264 / 790; /* запас стены над ушами — под стикер */
+    aspect-ratio: 1264 / 740;
   }
   .hero__photo img {
     object-position: 50% 100%;
@@ -1479,20 +1563,22 @@ legend.field__label { margin-bottom: 8px; }
   .hero__sub { margin-top: 14px; font-size: 16px; }
   .hero__actions { margin-top: 0; padding-top: 22px; width: 100%; }
   .hero__actions .btn { flex: 1 1 100%; }
-  .sticker { top: 16px; right: 12px; padding: 6px 12px 6px 6px; border-radius: 16px; gap: 8px; }
-  .sticker small { display: none; }
-  .sticker__ico { width: 28px; height: 28px; border-radius: 9px; }
-  .sticker__ico .i { width: 16px; height: 16px; }
-  .sticker b { font-size: 13.5px; }
-  .sticker small { font-size: 11.5px; }
+  /* щенки крупнее (правка 15.10): кадр увеличен от нижнего края, пустая стена по бокам уходит за край плитки */
+  .hero__photo img { transform: scale(1.16); transform-origin: 50% 100%; }
+  .hm-chips { max-width: none; padding-top: 18px; gap: 6px; }
+  .hm-chip { height: 38px; padding: 0 13px 0 5px; gap: 7px; font-size: 13.5px; }
+  .hm-chip__ico { width: 28px; height: 28px; }
 
   .stat { padding: 18px; }
 
   .hm-about__txt { padding: 22px 20px 20px; }
   .hm-about__lead { font-size: 21px; line-height: 1.3; }
-  .hm-about__text { margin: 14px 0 22px; font-size: 15.5px; }
   .hm-about__cta { width: 100%; }
-  .hm-about__photo { aspect-ratio: 3 / 2; }
+  .hm-about__photo { aspect-ratio: 4 / 3.3; }
+  .hm-about__list { gap: 14px; margin: 18px 0 22px; }
+  .hm-about__list li { grid-template-columns: 32px minmax(0, 1fr); gap: 12px; font-size: 15px; }
+  .hm-about__ico { width: 32px; height: 32px; }
+  .hm-about__ico .i { width: 16px; height: 16px; }
   .hm-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .hm-stat { padding: 16px; }
   .hm-stat__num { font-size: 32px; }
@@ -1551,8 +1637,6 @@ legend.field__label { margin-bottom: 8px; }
 /* узкий телефон: группы ссылок в одну колонку, ссылки текут строкой и не рвутся посередине */
 /* узкий экран: стикер без иконки, чтобы не заходить на голову щенка */
 @media (max-width: 429px) {
-  .sticker { padding: 6px 12px; }
-  .sticker__ico { display: none; }
 }
 
 @media (max-width: 480px) {

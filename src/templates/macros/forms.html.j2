@@ -40,17 +40,23 @@
 
 {#- Final lead form section (homepage «Заявка»). One per page — keep id="zayavka": the mobile sticky bar hides over it.
     The form is ONE column at every width: each field on its own row (client rule 13.10).
-    title ≤ 5 words, line ≤ 90 chars. tone: studio/tint tone of the tile. breed: slug to preselect in the select. -#}
-{% macro lead_form(title='Подберём щенка за 1 час', line='Пришлём щенков в наличии, цены и свежие видео', tone='peach', breed=none, id='zayavka') -%}
+    title ≤ 5 words, line ≤ 90 chars. tone: studio/tint tone of the tile. breed: slug to preselect in the select.
+    contacts=false: no phone / messengers in the tile (the page shows them itself, e.g. via caller); cls: extra class
+    on the tile; caller() → content after the tile inside the same section (homepage: contact tiles). -#}
+{% macro lead_form(title='Подберём щенка за 1 час', line='Пришлём щенков в наличии, цены и свежие видео', tone='peach', breed=none, id='zayavka', contacts=true, cls='') -%}
 <section class="section container" id="{{ id }}" aria-labelledby="lead-title">
-  <div class="lead tone--{{ tone }}">
+  <div class="lead tone--{{ tone }}{{ ' ' ~ cls if cls }}">
     <div class="lead__intro">
       <h2 class="h2" id="lead-title">{{ title|typo }}</h2>
       <p class="lead__line">{{ line|typo }}</p>
+      {% if contacts %}
       <div class="lead__contacts">
         <a class="lead__phone" href="{{ site.phone.tel }}">{{ site.phone.display }}</a>
         <span class="lead__msgrs">{{ msgr('telegram') }}{{ msgr('whatsapp') }}{{ msgr('max') }}</span>
       </div>
+      {% else %}
+      <p class="lead__note">{{ ui.icon('clock', sm=true) }}{{ site.phone.response|typo }}</p>
+      {% endif %}
     </div>
 
     <div class="lead__box">
@@ -89,5 +95,6 @@
       </div>
     </div>
   </div>
+  {% if caller is defined %}{{ caller() }}{% endif %}
 </section>
 {%- endmacro %}
