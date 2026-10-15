@@ -282,5 +282,68 @@
     "w": 1264,
     "h": 848,
     "about": "Лапка щенка рядом с папкой документов и ветпаспортом"
+  },
+  {
+    "name": "color-maltipu-white",
+    "url": "https://www.figma.com/api/mcp/asset/72be144a-1a63-41bf-b602-6b2c6e4c9155.png",
+    "w": 1024,
+    "h": 1024,
+    "about": "Мальтипу, белый, персиковый фон"
+  },
+  {
+    "name": "color-maltipu-black",
+    "url": "https://www.figma.com/api/mcp/asset/119cee6d-d4ef-4177-86b0-0d00e5ba71c9.png",
+    "w": 1024,
+    "h": 1024,
+    "about": "Мальтипу, чёрный, персиковый фон"
+  },
+  {
+    "name": "color-maltipu-apricot",
+    "url": "https://www.figma.com/api/mcp/asset/c551abab-b5e5-49b8-9caa-b8bcd59b91a8.png",
+    "w": 1024,
+    "h": 1024,
+    "about": "Мальтипу, светлый абрикос, персиковый фон"
+  },
+  {
+    "name": "color-maltipu-silver",
+    "url": "https://www.figma.com/api/mcp/asset/e8e85d50-4e11-40bd-93a8-cbbe642663da.png",
+    "w": 1024,
+    "h": 1024,
+    "about": "Мальтипу, серебристый, персиковый фон"
+  },
+  {
+    "name": "color-maltipu-phantom",
+    "url": "https://www.figma.com/api/mcp/asset/b8b81132-ab87-47af-b7be-e012479b9985.png",
+    "w": 1024,
+    "h": 1024,
+    "about": "Мальтипу, фантом (чёрный с подпалом), персиковый фон"
+  },
+  {
+    "name": "color-maltipu-sable",
+    "url": "https://www.figma.com/api/mcp/asset/d794ff2c-52d8-4f08-9fb3-3239ecea4b09.png",
+    "w": 1024,
+    "h": 1024,
+    "about": "Мальтипу, соболиный, персиковый фон"
+  },
+  {
+    "name": "maltipu-kit",
+    "url": "https://www.figma.com/api/mcp/asset/1d934d32-edda-423f-97b9-179239f8c06e.png",
+    "w": 1264,
+    "h": 848,
+    "about": "Кремовый мальтипу на лежанке, рядом корм, игрушка, миска, документы и ветпаспорт"
+  },
+  {
+    "name": "maltipu-vet",
+    "url": "https://www.figma.com/api/mcp/asset/01ff630f-121d-4b1a-aa52-3bfe2f321789.png",
+    "w": 1264,
+    "h": 848,
+    "about": "Ветеринар осматривает абрикосового мальтипу"
+  },
+  {
+    "name": "maltipu-carrier",
+    "url": "https://www.figma.com/api/mcp/asset/5d1ad428-6a8b-41a3-a4d9-5a5461203726.png",
+    "w": 1264,
+    "h": 848,
+    "about": "Абрикосовый мальтипу в переноске на заднем сиденье авто"
   }
 ]

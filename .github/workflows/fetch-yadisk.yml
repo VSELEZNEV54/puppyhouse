@@ -36,5 +36,5 @@ jobs:
           for d in tools/yadisk assets/img assets/video; do [ -e "$d" ] && git add -A "$d"; done
           git diff --cached --quiet && exit 0
           git commit -m "Client photos from Yandex Disk"
-          git pull --rebase origin "${GITHUB_REF_NAME}"
-          git push
+          # the photo workflow may push to the same branch at the same time: rebase and retry
+          for i in 1 2 3 4; do git pull --rebase origin "${GITHUB_REF_NAME}" && git push && break; sleep $((i * 5)); done

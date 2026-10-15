@@ -51,7 +51,27 @@ def download_url(key, path):
 
 
 def fetch(key, path):
-    return get(download_url(key, path), raw=True)
+    """Оригинал файла. API скачивания Диска иногда отвечает 500: пауза и ещё раз, потом прямая ссылка из
+    метаданных файла, в крайнем случае — самое крупное превью (XXXL, до 1280 px), чтобы не терять кадр."""
+    import time
+    err = None
+    for attempt in range(4):
+        try:
+            return get(download_url(key, path), raw=True)
+        except Exception as e:
+            err = e
+            print(f"  retry {attempt + 1}: {path}: {e}", flush=True)
+            time.sleep(3 + attempt * 5)
+    q = urllib.parse.urlencode({"public_key": key, "path": path, "preview_size": "XXXL"})
+    for field in ("file", "preview"):
+        try:
+            href = get(f"{API}?{q}").get(field)
+            if href:
+                print(f"  fallback to {field}: {path}", flush=True)
+                return get(href, raw=True)
+        except Exception as e:
+            err = e
+    raise err
 
 
 def cmd_list():
@@ -120,29 +140,43 @@ def cmd_pick():
     img_dir, vid_dir = ROOT / "assets" / "img", ROOT / "assets" / "video"
     img_dir.mkdir(parents=True, exist_ok=True)
     vid_dir.mkdir(parents=True, exist_ok=True)
+    failed = []
     for p in picks:
-        data = fetch(p["key"], p["path"])
-        if p.get("kind") == "video":
-            src = pathlib.Path("/tmp") / ("in-" + p["name"])
-            src.write_bytes(data)
-            out = vid_dir / f"{p['name']}.mp4"
-            vf = "scale='if(gt(iw,ih),-2,720)':'if(gt(iw,ih),720,-2)',fps=30"
-            args = ["ffmpeg", "-y", "-loglevel", "error", "-i", str(src)]
-            if p.get("start"):
-                args[4:4] = ["-ss", str(p["start"])]
-            args += ["-t", str(p.get("max_seconds", 30)), "-vf", vf, "-c:v", "libx264", "-preset", "slow", "-crf", "26",
-                     "-pix_fmt", "yuv420p", "-movflags", "+faststart"]
-            args += ["-an"] if p.get("mute") else ["-c:a", "aac", "-b:a", "96k"]
-            subprocess.run(args + [str(out)], check=True)
-            poster = img_dir / f"{p['name']}.jpg"
-            subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-ss", str(p.get("poster_at", 1)), "-i", str(out), "-frames:v", "1", "-q:v", "3", str(poster)], check=True)
-            print(out.relative_to(ROOT), out.stat().st_size // 1024, "KB")
-        else:
-            im = ImageOps.exif_transpose(Image.open(io.BytesIO(data))).convert("RGB")
-            im.thumbnail((1600, 1600))
-            dest = img_dir / f"{p['name']}.jpg"
-            im.save(dest, "JPEG", quality=86, optimize=True, progressive=True)
-            print(dest.relative_to(ROOT), im.size, dest.stat().st_size // 1024, "KB")
+        done = vid_dir / f"{p['name']}.mp4" if p.get("kind") == "video" else img_dir / f"{p['name']}.jpg"
+        if done.exists():  # уже скачан прошлым запуском
+            continue
+        try:
+            _pick_one(p, img_dir, vid_dir)
+        except Exception as e:  # один сбойный файл не останавливает остальные
+            failed.append(p["name"])
+            print("FAILED", p["name"], p["path"], e, flush=True)
+    print("failed:", ", ".join(failed) if failed else "none", flush=True)
+
+
+def _pick_one(p, img_dir, vid_dir):
+    """Скачивает один выбранный файл: фото → assets/img/<name>.jpg, видео → assets/video/<name>.mp4 + постер."""
+    data = fetch(p["key"], p["path"])
+    if p.get("kind") == "video":
+        src = pathlib.Path("/tmp") / ("in-" + p["name"])
+        src.write_bytes(data)
+        out = vid_dir / f"{p['name']}.mp4"
+        vf = "scale='if(gt(iw,ih),-2,720)':'if(gt(iw,ih),720,-2)',fps=30"
+        args = ["ffmpeg", "-y", "-loglevel", "error", "-i", str(src)]
+        if p.get("start"):
+            args[4:4] = ["-ss", str(p["start"])]
+        args += ["-t", str(p.get("max_seconds", 30)), "-vf", vf, "-c:v", "libx264", "-preset", "slow", "-crf", "26",
+                 "-pix_fmt", "yuv420p", "-movflags", "+faststart"]
+        args += ["-an"] if p.get("mute") else ["-c:a", "aac", "-b:a", "96k"]
+        subprocess.run(args + [str(out)], check=True)
+        poster = img_dir / f"{p['name']}.jpg"
+        subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-ss", str(p.get("poster_at", 1)), "-i", str(out), "-frames:v", "1", "-q:v", "3", str(poster)], check=True)
+        print(out.relative_to(ROOT), out.stat().st_size // 1024, "KB")
+    else:
+        im = ImageOps.exif_transpose(Image.open(io.BytesIO(data))).convert("RGB")
+        im.thumbnail((1600, 1600))
+        dest = img_dir / f"{p['name']}.jpg"
+        im.save(dest, "JPEG", quality=86, optimize=True, progressive=True)
+        print(dest.relative_to(ROOT), im.size, dest.stat().st_size // 1024, "KB")
 
 
 if __name__ == "__main__":

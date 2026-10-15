@@ -148,5 +148,103 @@
   "max_seconds": 20,
   "mute": true,
   "poster_at": 2
+ },
+ {
+  "name": "ml-maltipu-475",
+  "key": "https://disk.yandex.ru/d/lPCGTlZCVRMMSw",
+  "path": "/щенок5/16CE6430-B5A2-4D43-A5A1-C545A3AC7DB0.webp",
+  "kind": "photo",
+  "n": 475
+ },
+ {
+  "name": "ml-maltipu-451",
+  "key": "https://disk.yandex.ru/d/lPCGTlZCVRMMSw",
+  "path": "/щенок26/IMG_8821.heic",
+  "kind": "photo",
+  "n": 451
+ },
+ {
+  "name": "ml-maltipu-389",
+  "key": "https://disk.yandex.ru/d/lPCGTlZCVRMMSw",
+  "path": "/щенок12/IMG_0681.heic",
+  "kind": "photo",
+  "n": 389
+ },
+ {
+  "name": "ml-maltipu-377",
+  "key": "https://disk.yandex.ru/d/lPCGTlZCVRMMSw",
+  "path": "/щенок10/telegram-photo-0-5440538166403206592.JPG",
+  "kind": "photo",
+  "n": 377
+ },
+ {
+  "name": "ml-maltipu-489",
+  "key": "https://disk.yandex.ru/d/lPCGTlZCVRMMSw",
+  "path": "/щенок8/telegram-photo-0-5472028145062974247.JPG",
+  "kind": "photo",
+  "n": 489
+ },
+ {
+  "name": "ml-maltipu-372",
+  "key": "https://disk.yandex.ru/d/lPCGTlZCVRMMSw",
+  "path": "/щенок1/telegram-photo-0-5264947928973909823.JPG",
+  "kind": "photo",
+  "n": 372
+ },
+ {
+  "name": "ml-maltipu-386",
+  "key": "https://disk.yandex.ru/d/lPCGTlZCVRMMSw",
+  "path": "/щенок11/telegram-photo-0-5395400469598899240.JPG",
+  "kind": "photo",
+  "n": 386
+ },
+ {
+  "name": "ml-maltipu-457",
+  "key": "https://disk.yandex.ru/d/lPCGTlZCVRMMSw",
+  "path": "/щенок27/8ec0769a-1ff3-45aa-804f-6aeae7389564.JPG",
+  "kind": "photo",
+  "n": 457
+ },
+ {
+  "name": "ml-maltipu-470",
+  "key": "https://disk.yandex.ru/d/lPCGTlZCVRMMSw",
+  "path": "/щенок4/9998443C-AA1C-4DCE-AE97-169BBE8FEB4B.webp",
+  "kind": "photo",
+  "n": 470
+ },
+ {
+  "name": "ml-maltipu-477",
+  "key": "https://disk.yandex.ru/d/lPCGTlZCVRMMSw",
+  "path": "/щенок6/IMG_1642.heic",
+  "kind": "photo",
+  "n": 477
+ },
+ {
+  "name": "ml-maltipu-438",
+  "key": "https://disk.yandex.ru/d/lPCGTlZCVRMMSw",
+  "path": "/щенок20/f56b07ce-e6e4-47de-a496-9fe9f93c2c59.JPG",
+  "kind": "photo",
+  "n": 438
+ },
+ {
+  "name": "ml-maltipu-499",
+  "key": "https://disk.yandex.ru/d/lPCGTlZCVRMMSw",
+  "path": "/щенок9/IMG_1063.JPG",
+  "kind": "photo",
+  "n": 499
+ },
+ {
+  "name": "ml-maltipu-462",
+  "key": "https://disk.yandex.ru/d/lPCGTlZCVRMMSw",
+  "path": "/щенок28/8542848e-8b90-4ec3-ac62-e39117b59093.JPG",
+  "kind": "photo",
+  "n": 462
+ },
+ {
+  "name": "ml-maltipu-479",
+  "key": "https://disk.yandex.ru/d/lPCGTlZCVRMMSw",
+  "path": "/щенок7/telegram-photo-0-5472028145062974442.JPG",
+  "kind": "photo",
+  "n": 479
  }
 ]
