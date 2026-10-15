@@ -6,7 +6,7 @@
 {#- Messenger round button: kind = telegram | whatsapp | max -#}
 {% macro msgr(kind) -%}
 {%- set m = site.messengers[kind] -%}
-<a class="msgr msgr--{{ m.icon }}" href="{{ m.url }}" target="_blank" rel="noopener" aria-label="{{ m.aria }}" title="{{ m.label }}">{{ ui.icon(m.get('round_icon') or m.icon) }}</a>
+<a class="msgr msgr--{{ m.icon }}" href="{{ m.url }}" target="_blank" rel="noopener" aria-label="{{ m.aria }}" title="{{ m.label }}">{{ ui.icon(m.logo, cls='i--logo') }}</a>
 {%- endmacro %}
 
 {#- Breed <select> options. selected: breed slug to preselect (breed pages) -#}
@@ -29,9 +29,9 @@
 <fieldset class="field seg" role="radiogroup" aria-describedby="{{ prefix }}-contact-err">
   <legend class="field__label">Куда написать</legend>
   <div class="seg__opts">
-    <input type="radio" name="contact" id="{{ prefix }}-c-tg" value="telegram"><label for="{{ prefix }}-c-tg">{{ ui.icon('tg', sm=true) }}Telegram</label>
-    <input type="radio" name="contact" id="{{ prefix }}-c-wa" value="whatsapp"><label for="{{ prefix }}-c-wa">{{ ui.icon('wa', sm=true) }}WhatsApp</label>
-    <input type="radio" name="contact" id="{{ prefix }}-c-max" value="max"><label for="{{ prefix }}-c-max">{{ ui.icon('max', sm=true) }}MAX</label>
+    <input type="radio" name="contact" id="{{ prefix }}-c-tg" value="telegram"><label for="{{ prefix }}-c-tg">{{ ui.icon('tg-logo', cls='i--logo') }}Telegram</label>
+    <input type="radio" name="contact" id="{{ prefix }}-c-wa" value="whatsapp"><label for="{{ prefix }}-c-wa">{{ ui.icon('wa-logo', cls='i--logo') }}WhatsApp</label>
+    <input type="radio" name="contact" id="{{ prefix }}-c-max" value="max"><label for="{{ prefix }}-c-max">{{ ui.icon('max-logo', cls='i--logo') }}MAX</label>
     <input type="radio" name="contact" id="{{ prefix }}-c-call" value="call"><label for="{{ prefix }}-c-call">{{ ui.icon('phone', sm=true) }}Звонок</label>
   </div>
   <p class="field__err" id="{{ prefix }}-contact-err" hidden></p>

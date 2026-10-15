@@ -43,11 +43,6 @@ def md(text):
     return out + nobr(text[pos:])
 
 
-def plain(text):
-    """«[label](/url/)» → «label» (meta, alts)."""
-    return _LINK.sub(r"\1", text)
-
-
 def _title(t):
     return t + BRAND if len(t + BRAND) <= TITLE_MAX else t
 

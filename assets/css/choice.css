@@ -337,6 +337,7 @@ html:not(.js) .cho-quiz { display: none; }
   .cho-fit__list li { font-size: 16px; }
 
   .cho-other { display: flex; flex-direction: column; padding: 22px 20px; gap: 12px; }
+  .cho-other__title, .cho-other__more { align-self: stretch; }
   .cho-other__faces .face { width: 48px; height: 48px; }
   .cho-other__title { font-size: 21px; }
   .cho-other__picks { margin-top: 2px; padding: 16px 0 0; border-left: 0; border-top: 1px solid var(--line); }

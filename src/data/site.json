@@ -26,13 +26,15 @@
       "url": "https://t.me/puppyhouse_msk",
       "url_placeholder": "[ссылка Telegram — заглушка со старым названием, заменить на канал домщенков.рф]",
       "aria": "Написать в Telegram",
-      "icon": "tg"
+      "icon": "tg",
+      "logo": "tg-logo"
     },
     "whatsapp": {
       "label": "WhatsApp",
       "url": "https://wa.me/74951234567",
       "aria": "Написать в WhatsApp",
-      "icon": "wa"
+      "icon": "wa",
+      "logo": "wa-logo"
     },
     "max": {
       "label": "MAX",
@@ -40,7 +42,7 @@
       "url_placeholder": "[ссылка MAX — заглушка]",
       "aria": "Написать в MAX",
       "icon": "max",
-      "round_icon": "max-word"
+      "logo": "max-logo"
     }
   },
   "nav": [

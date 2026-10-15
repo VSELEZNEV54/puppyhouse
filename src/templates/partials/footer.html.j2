@@ -17,7 +17,7 @@
           </ul>
           <div class="footer__msgs">
             {% for k in ('telegram', 'whatsapp', 'max') %}{% set m = site.messengers[k] %}
-            <a class="msgr msgr--{{ m.icon }}" href="{{ m.url }}" target="_blank" rel="noopener" aria-label="{{ m.aria }}" title="{{ m.label }}">{{ ui.icon(m.get('round_icon') or m.icon) }}</a>
+            <a class="msgr msgr--{{ m.icon }}" href="{{ m.url }}" target="_blank" rel="noopener" aria-label="{{ m.aria }}" title="{{ m.label }}">{{ ui.icon(m.logo, cls='i--logo') }}</a>
             {% endfor %}
           </div>
         </div>

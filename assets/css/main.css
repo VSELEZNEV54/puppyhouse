@@ -215,9 +215,10 @@ main:focus, section[tabindex="-1"]:focus, [data-anchor-focus]:focus { outline: n
   transition: transform .25s var(--ease), background-color .2s, color .2s;
 }
 @media (hover: hover) { .msgr:hover { transform: translateY(-2px); } }
-.msgr--tg { background: var(--sky); }
-.msgr--wa { background: var(--mint); }
-.msgr--max { background: var(--lilac); }
+/* мессенджеры — официальные логотипы в фирменных цветах (правка 15.10): круглый логотип заполняет кружок целиком */
+.msgr--tg, .msgr--wa, .msgr--max { background: none; }
+.msgr > svg.i.i--logo { width: 100%; height: 100%; }
+.i--logo { flex: none; }
 .msgr--call { background: #fff; border: 1px solid var(--line-2); }
 .msgr--ink { background: var(--ink); color: #fff; }
 .msgr--ink:hover { transform: none; background: #333; }
