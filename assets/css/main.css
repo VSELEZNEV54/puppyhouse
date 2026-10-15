@@ -215,10 +215,9 @@ main:focus, section[tabindex="-1"]:focus, [data-anchor-focus]:focus { outline: n
   transition: transform .25s var(--ease), background-color .2s, color .2s;
 }
 @media (hover: hover) { .msgr:hover { transform: translateY(-2px); } }
-/* мессенджеры — официальные логотипы в фирменных цветах (правка 15.10): круглый логотип заполняет кружок целиком */
-.msgr--tg, .msgr--wa, .msgr--max { background: none; }
-.msgr > svg.i.i--logo { width: 100%; height: 100%; }
-.i--logo { flex: none; }
+/* мессенджеры (правка 15.10, по образцу клиента): тёмный знак официальной формы на мягком персиковом круге */
+.msgr--tg, .msgr--wa, .msgr--max { background: linear-gradient(145deg, #FCEEE7 0%, #F3D8CA 100%); color: #3B2216; }
+@media (hover: hover) { .msgr--tg:hover, .msgr--wa:hover, .msgr--max:hover { background: linear-gradient(145deg, #F8E2D7 0%, #EDC7B6 100%); } }
 .msgr--call { background: #fff; border: 1px solid var(--line-2); }
 .msgr--ink { background: var(--ink); color: #fff; }
 .msgr--ink:hover { transform: none; background: #333; }

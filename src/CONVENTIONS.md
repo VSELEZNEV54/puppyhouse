@@ -145,8 +145,8 @@ Globals: `site`, `breeds` (list), `breed_map` (slug → breed), `puppies`, `data
 groups for «Меню» and the burger: items `{label, url}` + `breed` face / `count` / `icon`, or `{label, sub: [...]}` — a caption
 with a short list of links, one per row, thin rule on the left; client 15.10: no pills; phones: every item on its own row, the
 burger's top bar with the close button never scrolls away — only `.mmenu__scroll` scrolls; footer links on phones: one per row, 46 px),
-`tg_cta` («Написать в Telegram»), `messengers.telegram|whatsapp|max` (`url_placeholder` marks placeholder links; `logo` — the official round brand mark in the sprite:
-`tg-logo`, `wa-logo`, `max-logo`, use `ui.icon(m.logo, cls='i--logo')`; it fills a `.msgr` circle; `tg` / `wa` / `max` are the same marks in one colour),
+`tg_cta` («Написать в Telegram»), `messengers.telegram|whatsapp|max` (`url_placeholder` marks placeholder links; `icon` — `tg` / `wa` / `max`: the official mark shapes
+in one colour; in a `.msgr` circle they are dark brown on a soft peach gradient — client sample 15.10, no brand-colour logos),
 `advantages`, `stats`; `domain` «домщенков.рф» + `domain_ascii` (punycode `xn--b1adduihee9g.xn--p1ai`, for JSON-LD URLs),
 `email` (placeholder «[почта]@домщенков.рф»).
 `media.json`: photo/video sets for carousels — `home`, `maltipu`, `francuzskij-buldog`, `toj-pudel`, `border-kolli`; item

@@ -143,7 +143,7 @@
       <div class="hm-ct__msgrs">
         {% for k in ('telegram', 'whatsapp', 'max') %}
         {%- set m = site.messengers[k] %}
-        <a class="hm-msgr" href="{{ m.url }}" target="_blank" rel="noopener" aria-label="{{ m.aria }}"><span class="msgr msgr--{{ m.icon }}" aria-hidden="true">{{ ui.icon(m.logo, cls='i--logo') }}</span>{{ m.label }}</a>
+        <a class="hm-msgr" href="{{ m.url }}" target="_blank" rel="noopener" aria-label="{{ m.aria }}"><span class="msgr msgr--{{ m.icon }}" aria-hidden="true">{{ ui.icon(m.icon) }}</span>{{ m.label }}</a>
         {% endfor %}
       </div>
       <p class="hm-ct__line">Пришлём видео щенков и&nbsp;цену</p>
