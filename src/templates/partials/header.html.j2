@@ -1,5 +1,6 @@
 {#- Sticky header pill (every page). READ-ONLY for page groups.
-    logo · «Меню» (site map panel: hover / click / keyboard) · «Породы ▾» · links from site.nav · phone · Telegram, WhatsApp, MAX ·
+    logo · «Меню» (site map panel: hover / click / keyboard) · «Каталог щенков» (first nav link, accent colour; client 15.10) ·
+    «Породы ▾» · links from site.nav · phone · Telegram, WhatsApp, MAX ·
     «Написать в Telegram» (site.tg_cta, Telegram gradient) · burger (< 1100 px → #mmenu).
     site.nav items have "prio": the higher the number, the earlier the link hides on a narrower desktop (it stays in «Меню»).
     On the homepage the logo scrolls to #top, elsewhere it goes home. main.js: [data-hdr], [data-dd], [data-mega], [data-burger]. -#}
@@ -53,7 +54,7 @@
             </div>
           </li>
           {% else %}
-          <li class="nav__item nav__item--p{{ item.prio | default(1) }}"><a class="nav__link" href="{{ item.url }}"{% if not is_home and page.url.startswith(item.url) %} aria-current="page"{% endif %}>{{ item.label|typo }}</a></li>
+          <li class="nav__item nav__item--p{{ item.prio | default(1) }}"><a class="nav__link{{ ' nav__link--accent' if item.accent is defined and item.accent }}" href="{{ item.url }}"{% if not is_home and page.url.startswith(item.url) %} aria-current="page"{% endif %}>{{ item.label|typo }}</a></li>
           {% endif %}
           {% endfor %}
         </ul>

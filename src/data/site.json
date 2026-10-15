@@ -47,6 +47,12 @@
   },
   "nav": [
     {
+      "label": "Каталог щенков",
+      "url": "/shchenki/",
+      "prio": 1,
+      "accent": true
+    },
+    {
       "label": "Породы",
       "dropdown": "breeds"
     },
@@ -81,7 +87,7 @@
       "title": "Щенки",
       "items": [
         {
-          "label": "Все щенки в наличии",
+          "label": "Каталог щенков",
           "url": "/shchenki/",
           "count": true
         },

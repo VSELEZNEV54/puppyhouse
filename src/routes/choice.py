@@ -113,21 +113,23 @@ def _breed_page(cfg, b, bm, order, blog, colours):
     pg["pups_title"] = nobr(_fmt(com["pups_title"], b))
     pg["faq"] = _faq(own["faq"])
 
-    # «<порода> и другие породы»: one card per other breed (breeds.json order), this breed always first
+    # «<порода> и другие породы»: one card per other breed (breeds.json order), this breed always first.
+    # A pair's «lead» is written in a → b order; on b's page «lead_b» (if any) names the two breeds the other way round.
     pairs = {frozenset((p["a"], p["b"])): p for p in cfg["pairs"]}
-    others, seo_blocks = [], []
+    others = []
     for o in sorted((x for x in bm.values() if x is not b), key=lambda x: order.index(x["slug"])):
         p = pairs[frozenset((b["slug"], o["slug"]))]
-        mine, theirs = (p["a_if"], p["b_if"]) if p["a"] == b["slug"] else (p["b_if"], p["a_if"])
-        title = f"{b['name']} или {_lower(o['name'])}"
+        is_a = p["a"] == b["slug"]
+        mine, theirs = (p["a_if"], p["b_if"]) if is_a else (p["b_if"], p["a_if"])
         others.append(dict(
-            id=f"ili-{o['slug']}", b=b, o=o, title=nobr(title), lead=nobr(p["lead"]),
+            id=f"ili-{o['slug']}", b=b, o=o, title=nobr(f"{b['name']} или {_lower(o['name'])}"),
+            lead=nobr(p["lead"] if is_a else p.get("lead_b") or p["lead"]),
             picks=[dict(b=x, name=nobr(x["name"]), text=nobr(com["pick"].format(text=t))) for x, t in ((b, mine), (o, theirs))],
             more=dict(url=_why_url(o), label=_fmt(com["more"], o)),
         ))
-        seo_blocks.append(dict(h=nobr(title), p=nobr(p["text"])))
     pg["others"] = others
-    pg["seo"] = dict(title=nobr(own["seo"]["title"]), lead=nobr(own["seo"]["lead"]), blocks=seo_blocks)
+    # collapsed SEO text «Почему выбирают …»: about this breed only (client 15.10: no comparison with our other dogs)
+    pg["seo"] = _seo(own["seo"])
 
     ln, cl = com["links"], own["links"]
     links = [

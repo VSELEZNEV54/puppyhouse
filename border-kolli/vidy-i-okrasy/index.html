@@ -10,7 +10,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500&amp;display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../../assets/css/main.css?v=5a5571d1">
+  <link rel="stylesheet" href="../../assets/css/main.css?v=9235f129">
   <link rel="stylesheet" href="../../assets/css/pages.css?v=0506347c">
   <link rel="stylesheet" href="../../assets/css/breedsub.css?v=dc73b370">
   <script src="../../assets/js/main.js?v=37f14d61" defer></script>
@@ -95,7 +95,7 @@
             <div class="mega__col">
               <p class="mega__h">Щенки</p>
               <ul class="mega__list">
-                <li><a class="mega__link" href="../../shchenki/"><span>Все щенки в наличии</span><span class="mega__count">19</span></a></li>
+                <li><a class="mega__link" href="../../shchenki/"><span>Каталог щенков</span><span class="mega__count">19</span></a></li>
                 <li><a class="mega__link mega__link--face" href="../../maltipu/"><span class="face tone--peach"><img src="../../assets/img/studio-maltipu-peach.jpg" alt="" width="1024" height="1024" loading="lazy" decoding="async"></span><span>Мальтипу</span></a></li>
                 <li><a class="mega__link mega__link--face" href="../../francuzskij-buldog/"><span class="face tone--powder"><img src="../../assets/img/studio-buldog-blue.jpg" alt="" width="1024" height="1024" loading="lazy" decoding="async"></span><span>Французский бульдог</span></a></li>
                 <li><a class="mega__link mega__link--face" href="../../toj-pudel/"><span class="face tone--butter"><img src="../../assets/img/studio-pudel-yellow.jpg" alt="" width="1024" height="1024" loading="lazy" decoding="async"></span><span><span class="nw">Той-пудель</span></span></a></li>
@@ -179,6 +179,7 @@
 
       <nav class="nav" aria-label="Основное меню">
         <ul class="nav__list">
+          <li class="nav__item nav__item--p1"><a class="nav__link nav__link--accent" href="../../shchenki/">Каталог щенков</a></li>
           <li class="nav__dd" data-dd>
             <button class="nav__link nav__dd-btn" type="button" aria-expanded="false" aria-controls="dd-breeds">Породы <svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-chevron"/></svg></button>
             <div class="dd" id="dd-breeds" hidden>
@@ -714,8 +715,7 @@
   <!-- Липкая панель на мобиле -->
   <nav class="mbar" aria-label="Быстрая связь" data-mbar>
     <a class="mbar__btn" href="tel:+74951234567"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-phone"/></svg>Позвонить</a>
-    <a class="mbar__btn" href="https://t.me/puppyhouse_msk" target="_blank" rel="noopener"><svg class="i i--logo" aria-hidden="true" focusable="false"><use href="#i-tg-logo"/></svg>Telegram</a>
-    <button class="mbar__btn mbar__btn--ink" type="button" data-open-modal>Узнать цену</button>
+    <a class="mbar__btn" href="https://t.me/puppyhouse_msk" target="_blank" rel="noopener"><svg class="i i--logo" aria-hidden="true" focusable="false"><use href="#i-tg-logo"/></svg>Telegram</a>    <button class="mbar__btn mbar__btn--ink" type="button" data-open-modal data-modal-breed="Бордер-колли">Узнать цену</button>
   </nav>
 
   <!-- Мобильное меню -->
@@ -730,11 +730,12 @@
     <div class="mmenu__scroll">
     <nav class="mmenu__nav" aria-label="Мобильное меню">
       <ul class="mmenu__list">
+        <li><a class="mmenu__link" href="../../shchenki/" data-menu-link>Каталог щенков</a></li>
         <li>
           <button class="mmenu__acc" type="button" aria-expanded="false" aria-controls="mm-g1">Щенки <svg class="i" aria-hidden="true" focusable="false"><use href="#i-chevron"/></svg></button>
           <div class="mmenu__group" id="mm-g1" hidden>
             <ul class="mega__list">
-              <li><a class="mega__link" href="../../shchenki/"><span>Все щенки в наличии</span><span class="mega__count">19</span></a></li>
+              <li><a class="mega__link" href="../../shchenki/"><span>Каталог щенков</span><span class="mega__count">19</span></a></li>
               <li><a class="mega__link mega__link--face" href="../../maltipu/"><span class="face tone--peach"><img src="../../assets/img/studio-maltipu-peach.jpg" alt="" width="1024" height="1024" loading="lazy" decoding="async"></span><span>Мальтипу</span></a></li>
               <li><a class="mega__link mega__link--face" href="../../francuzskij-buldog/"><span class="face tone--powder"><img src="../../assets/img/studio-buldog-blue.jpg" alt="" width="1024" height="1024" loading="lazy" decoding="async"></span><span>Французский бульдог</span></a></li>
               <li><a class="mega__link mega__link--face" href="../../toj-pudel/"><span class="face tone--butter"><img src="../../assets/img/studio-pudel-yellow.jpg" alt="" width="1024" height="1024" loading="lazy" decoding="async"></span><span><span class="nw">Той-пудель</span></span></a></li>

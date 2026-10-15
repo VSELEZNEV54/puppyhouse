@@ -16,6 +16,7 @@
     <div class="mmenu__scroll">
     <nav class="mmenu__nav" aria-label="Мобильное меню">
       <ul class="mmenu__list">
+        <li><a class="mmenu__link" href="/shchenki/" data-menu-link{% if page.url == '/shchenki/' %} aria-current="page"{% endif %}>Каталог щенков</a></li>
         {% for g in site.menu %}
         <li>
           <button class="mmenu__acc" type="button" aria-expanded="false" aria-controls="mm-g{{ loop.index }}">{{ g.title|typo }} {{ ui.icon('chevron') }}</button>

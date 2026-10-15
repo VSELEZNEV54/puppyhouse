@@ -378,6 +378,8 @@ main:focus, section[tabindex="-1"]:focus, [data-anchor-focus]:focus { outline: n
 .mega__phone small { font-size: 13px; color: var(--muted); font-weight: 400; letter-spacing: 0; }
 .mega__actions { display: flex; flex-wrap: wrap; gap: 8px; }
 
+/* «Каталог щенков» — обычный пункт меню, выделен только цветом текста (правка 15.10); #D4441E — 4,5 : 1 на белом */
+.nav__link--accent { color: #D4441E; }
 .nav { min-width: 0; }
 .nav__list { display: flex; align-items: center; gap: 0; }
 .nav__link {
@@ -434,26 +436,30 @@ main:focus, section[tabindex="-1"]:focus, [data-anchor-focus]:focus { outline: n
 
 /* узкий десктоп: сначала прячем подпись логотипа, потом номер (он в «Меню» и в подвале), потом ссылки с конца —
    все разделы остаются в «Меню». Номер — элемент заявки: на 1440–1599 он виден, место ему уступает «Блог» */
-@media (max-width: 1599px) {
+/* «Каталог щенков» — ещё один пункт в шапке (правка 15.10): остальные уходят в «Меню» на ~140 px раньше */
+@media (max-width: 1679px) {
   .logo__sub { display: none; }
 }
-@media (min-width: 1440px) and (max-width: 1519px) {
+@media (min-width: 1580px) and (max-width: 1659px) {
   .nav__item--p6 { display: none; }
 }
-@media (max-width: 1439px) {
+@media (max-width: 1579px) {
   .hdr__phone { display: none; }
 }
-@media (max-width: 1339px) {
+@media (max-width: 1479px) {
   .nav__item--p6 { display: none; }
 }
-@media (max-width: 1279px) {
+@media (max-width: 1419px) {
   .nav__item--p5 { display: none; }
 }
-@media (max-width: 1199px) {
+@media (max-width: 1339px) {
   .hdr .msgr--tg { display: none; }
 }
-@media (max-width: 1149px) {
+@media (max-width: 1289px) {
   .nav__item--p4 { display: none; }
+}
+@media (max-width: 1199px) {
+  .nav__item--p3 { display: none; }
 }
 @media (max-width: 1099px) {
   .hdr__menu, .nav { display: none; }
@@ -472,6 +478,14 @@ main:focus, section[tabindex="-1"]:focus, [data-anchor-focus]:focus { outline: n
   .logo__mark { width: 38px; height: 38px; }
   .logo__name { font-size: 16px; }
   .logo__sub { font-size: 11.5px; }
+}
+
+/* 320 px: подпись логотипа уходит, иначе меню выезжает за край */
+@media (max-width: 349px) {
+  .logo__sub { display: none; }
+  .mbar { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1.3fr); }
+  .mbar__btn { padding-inline: 6px; font-size: 13px; }
+  .mbar__btn .i { display: none; }
 }
 
 /* ---------- мобильное меню ---------- */
@@ -504,6 +518,11 @@ main:focus, section[tabindex="-1"]:focus, [data-anchor-focus]:focus { outline: n
   font-size: 22px; font-weight: 500; letter-spacing: -0.03em; line-height: 1.15; color: var(--ink);
 }
 .mmenu__acc .i { color: var(--muted); transition: transform .25s var(--ease); }
+/* «Каталог щенков» — первая строка мобильного меню: как заголовок группы, но ссылка и цветом (правка 15.10) */
+.mmenu__link {
+  display: flex; align-items: center; width: 100%; padding: 15px 2px;
+  font-size: 22px; font-weight: 500; letter-spacing: -0.03em; line-height: 1.15; color: #D4441E; text-decoration: none;
+}
 .mmenu__acc[aria-expanded="true"] .i { transform: rotate(180deg); }
 .mmenu__group { padding: 0 0 14px; }
 .mmenu__group .mega__list { margin-inline: -8px; }

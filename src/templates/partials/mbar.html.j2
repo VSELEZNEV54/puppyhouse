@@ -1,8 +1,10 @@
-{#- Mobile sticky bar: main.js shows it once [data-hero-ctas] (homepage buttons / inner page hero) scrolls away, hides it over #zayavka. -#}
+{#- Mobile sticky bar: main.js shows it once [data-hero-ctas] (homepage buttons / inner page hero) scrolls away, hides it over #zayavka.
+    On a single-breed page (context lead_breed) «Узнать цену» opens the modal with that breed selected. -#}
 {% import "macros/ui.html.j2" as ui %}
   <!-- Липкая панель на мобиле -->
   <nav class="mbar" aria-label="Быстрая связь" data-mbar>
     <a class="mbar__btn" href="{{ site.phone.tel }}">{{ ui.icon('phone') }}Позвонить</a>
     <a class="mbar__btn" href="{{ site.messengers.telegram.url }}" target="_blank" rel="noopener">{{ ui.icon('tg-logo', cls='i--logo') }}Telegram</a>
-    <button class="mbar__btn mbar__btn--ink" type="button" data-open-modal>Узнать цену</button>
+    {%- set lb = lead_breed | default(none) %}
+    <button class="mbar__btn mbar__btn--ink" type="button" data-open-modal{% if lb and lb in breed_map %} data-modal-breed="{{ breed_map[lb].name }}"{% endif %}>Узнать цену</button>
   </nav>
