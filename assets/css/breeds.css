@@ -42,6 +42,11 @@
   .phero--colour .phero__tile { --ph: 380px; }
 }
 @media (max-width: 760px) {
+  /* «Подобрать бордер-колли мраморный триколор» не помещается в строку на 360–390 — подпись переносится */
+  .phero--colour .phero__actions .btn, .brd-colinfo__cta .btn {
+    height: auto; min-height: 52px; padding-block: 12px; white-space: normal; line-height: 1.2; text-align: center;
+  }
+  .brd-colinfo__cta .btn { width: 100%; }
   .phero--colour .phero__photo { aspect-ratio: 1; }
   .phero--colour .phero__photo img {
     -webkit-mask-image: linear-gradient(180deg, #000 93%, transparent 100%);

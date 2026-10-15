@@ -40,17 +40,20 @@ pixel-parity baseline no longer applies. Reference inner page: `/shchenki/`.
   backdrop, puppy centred) — list them in `tools/images.json` (the fetch workflow downloads them), measure the backdrop into
   `tools/photo-tones.json`. Client's live photos: pick them from the contact sheets in `tools/yadisk/` into
   `tools/yadisk-pick.json` (the Yandex Disk workflow downloads them).
-- **Breed page v2** (client 15.10, maltipu first): `"layout": "v2"` in `breeds-hub.json` → `breeds/breed.html.j2`, body
+- **Breed page v2** (client 15.10, all four breeds): `"layout": "v2"` in `breeds-hub.json` → `breeds/breed.html.j2`, body
   `.page-breed` (coral main buttons, homepage-size photo carousel and SEO text — the `.page-home` rules in `main.css` cover both).
   Order: hero («Щенки в наличии» + «Получить консультацию») · every puppy of the breed + «Помочь с выбором» · photo / video
   carousel + lead band (round faces of the breed's colours) · colour cards to scroll (`.brd-cols`, a `[data-carousel]` with
   `data-align="start"`, each card «Подобрать кремового мальтипу» — `pick` in `breedsub.json`) · «Какой он» · «Как мы отдаём
   щенка» (what travels with the puppy + photo tiles: documents, guarantee, delivery, price) · FAQ · «Всё о <породе>» (articles +
-  the breed's colours and price pages) · SEO text · lead form with contact tiles (`forms.contact_tiles()`), as on the homepage.
-  The other three breeds keep `breeds/hub.html.j2` until their data gets `"layout": "v2"`.
+  the breed's colours and price pages: `part.post_carousel` — four wide cards in a row, the rest beyond the edge with arrows,
+  a list on phones) · SEO text · lead form with contact tiles (`forms.contact_tiles()`), as on the homepage. 15 puppies per
+  breed with the client's real photos (`puppies.json`), no studio renders in the catalog. `breeds/hub.html.j2` is unused now.
   Colour pages `/<breed>/<colour>/` (`breeds/colour.html.j2`, copy in `breedsub.json` colour items: `title`, `short`,
-  `rarity` / `age` / `nose`, `about`, `care`); colour photos `okras-<breed>-<colour>.jpg` from `tools/okras_tiles.py`
-  (rerun it after replacing a source photo, then measure the backdrop into `tools/photo-tones.json`).
+  `rarity` / `age` / `nose`, `about`, `care`; `colour_price` in `breeds-hub.json` = what the price depends on). Colour photos
+  `okras-<breed>-<colour>.jpg` (cards) and `okras-<breed>-<colour>-big.jpg` (the same puppy close up for the colour page
+  hero) from `tools/okras_tiles.py`: one backdrop tone per breed, varied poses (sitting, lying, standing sideways, from
+  behind). Rerun it after replacing a source photo, then measure the backdrop into `tools/photo-tones.json`.
 
 ## Build and look
 

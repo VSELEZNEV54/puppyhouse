@@ -240,54 +240,63 @@
       "items": []
     },
     "colours": {
-      "_note": "черновик — standard: признан стандартом FCI/РКФ; остальные окрасы нестандартные, писать об этом честно",
+      "_note": "черновик — standard: признан стандартом FCI/РКФ; остальные окрасы нестандартные, писать об этом честно; photo — студийный кадр окраса (tools/okras_tiles.py, фон замерен в tools/photo-tones.json)",
       "items": [
         {
           "name": "палевый",
           "standard": true,
           "photo": {
-            "src": "/assets/img/studio-buldog-blue.jpg",
-            "alt": "Палевый щенок французского бульдога на голубом фоне"
+            "src": "/assets/img/okras-buldog-palevyj.jpg",
+            "alt": "Палевый щенок французского бульдога сидит, наклонив голову, на голубом фоне"
           }
         },
         {
           "name": "тигровый",
           "standard": true,
           "photo": {
-            "src": "/assets/img/color-buldog-brindle.jpg",
-            "alt": "Тигровый щенок французского бульдога на голубом фоне"
+            "src": "/assets/img/okras-buldog-tigrovyj.jpg",
+            "alt": "Тигровый щенок французского бульдога лежит, положив морду на лапы, на голубом фоне"
           }
         },
         {
           "name": "пегий (белый с пятнами)",
           "standard": true,
           "photo": {
-            "src": "/assets/img/color-buldog-pied.jpg",
-            "alt": "Пегий щенок французского бульдога на голубом фоне"
+            "src": "/assets/img/okras-buldog-pegij.jpg",
+            "alt": "Пегий щенок французского бульдога стоит боком на голубом фоне"
           }
         },
         {
           "name": "голубой",
           "standard": false,
           "photo": {
-            "src": "/assets/img/color-buldog-blue.jpg",
-            "alt": "Голубой щенок французского бульдога на голубом фоне"
+            "src": "/assets/img/okras-buldog-goluboj.jpg",
+            "alt": "Голубой щенок французского бульдога сидит и смотрит в сторону на голубом фоне"
           }
         },
         {
           "name": "кремовый",
           "standard": false,
-          "photo": null
+          "photo": {
+            "src": "/assets/img/okras-buldog-kremovyj.jpg",
+            "alt": "Кремовый щенок французского бульдога лежит на боку и машет лапой на голубом фоне"
+          }
         },
         {
           "name": "шоколадный",
           "standard": false,
-          "photo": null
+          "photo": {
+            "src": "/assets/img/okras-buldog-shokoladnyj.jpg",
+            "alt": "Шоколадный щенок французского бульдога сидит спиной и оглядывается на голубом фоне"
+          }
         },
         {
           "name": "мраморный (мерль)",
           "standard": false,
-          "photo": null
+          "photo": {
+            "src": "/assets/img/okras-buldog-mramornyj.jpg",
+            "alt": "Мраморный щенок французского бульдога сидит, подняв лапу, на голубом фоне"
+          }
         }
       ]
     }
@@ -373,43 +382,49 @@
       ]
     },
     "colours": {
-      "_note": "черновик — окрасы пуделя по стандарту FCI",
+      "_note": "черновик — окрасы пуделя по стандарту FCI; photo — студийный кадр окраса (tools/okras_tiles.py, фон замерен в tools/photo-tones.json)",
       "items": [
         {
           "name": "абрикосовый",
           "photo": {
-            "src": "/assets/img/studio-pudel-yellow.jpg",
-            "alt": "Абрикосовый щенок той-пуделя на жёлтом фоне"
+            "src": "/assets/img/okras-pudel-abrikosovyj.jpg",
+            "alt": "Абрикосовый щенок той-пуделя сидит, наклонив голову, на жёлтом фоне"
           }
         },
         {
           "name": "чёрный",
           "photo": {
-            "src": "/assets/img/color-pudel-black.jpg",
-            "alt": "Чёрный щенок той-пуделя на жёлтом фоне"
+            "src": "/assets/img/okras-pudel-chernyj.jpg",
+            "alt": "Чёрный щенок той-пуделя стоит боком на жёлтом фоне"
           }
         },
         {
           "name": "белый",
           "photo": {
-            "src": "/assets/img/color-pudel-white.jpg",
-            "alt": "Белый щенок той-пуделя на жёлтом фоне"
+            "src": "/assets/img/okras-pudel-belyj.jpg",
+            "alt": "Белый щенок той-пуделя лежит на жёлтом фоне"
           }
         },
         {
           "name": "коричневый (шоколадный)",
           "photo": {
-            "src": "/assets/img/color-pudel-chocolate.jpg",
-            "alt": "Шоколадный щенок той-пуделя на жёлтом фоне"
+            "src": "/assets/img/okras-pudel-korichnevyj.jpg",
+            "alt": "Коричневый щенок той-пуделя сидит и смотрит в сторону на жёлтом фоне"
           }
         },
         {
           "name": "рыжий",
-          "photo": null
+          "photo": {
+            "src": "/assets/img/okras-pudel-ryzhij.jpg",
+            "alt": "Рыжий щенок той-пуделя идёт к камере на жёлтом фоне"
+          }
         },
         {
           "name": "серый",
-          "photo": null
+          "photo": {
+            "src": "/assets/img/okras-pudel-seryj.jpg",
+            "alt": "Серый щенок той-пуделя сидит спиной и оглядывается на жёлтом фоне"
+          }
         }
       ]
     }
@@ -495,40 +510,56 @@
       ]
     },
     "colours": {
-      "_note": "черновик — стандарт допускает разные окрасы, белый не должен преобладать",
+      "_note": "черновик — стандарт допускает разные окрасы, белый не должен преобладать; photo — студийный кадр окраса (tools/okras_tiles.py, фон замерен в tools/photo-tones.json)",
       "items": [
         {
           "name": "голубой мрамор",
           "photo": {
-            "src": "/assets/img/studio-kolli-green.jpg",
-            "alt": "Щенок бордер-колли голубой мрамор на мятном фоне"
+            "src": "/assets/img/okras-kolli-goluboj-mramor.jpg",
+            "alt": "Щенок бордер-колли голубой мрамор сидит на мятном фоне"
           }
         },
         {
           "name": "красно-белый",
           "photo": {
-            "src": "/assets/img/color-kolli-red.jpg",
-            "alt": "Красно-белый щенок бордер-колли на мятном фоне"
+            "src": "/assets/img/okras-kolli-krasno-belyj.jpg",
+            "alt": "Красно-белый щенок бордер-колли стоит боком на мятном фоне"
           }
         },
         {
           "name": "трёхцветный",
           "photo": {
-            "src": "/assets/img/color-kolli-tricolor.jpg",
-            "alt": "Трёхцветный щенок бордер-колли на мятном фоне"
+            "src": "/assets/img/okras-kolli-trehcvetnyj.jpg",
+            "alt": "Трёхцветный щенок бордер-колли лежит, вытянув лапы, на мятном фоне"
           }
         },
         {
           "name": "чёрно-белый",
-          "photo": null
+          "photo": {
+            "src": "/assets/img/okras-kolli-cherno-belyj.jpg",
+            "alt": "Чёрно-белый щенок бордер-колли сидит и смотрит в сторону на мятном фоне"
+          }
         },
         {
           "name": "красный мрамор",
-          "photo": null
+          "photo": {
+            "src": "/assets/img/okras-kolli-krasnyj-mramor.jpg",
+            "alt": "Щенок бордер-колли красный мрамор сидит спиной и оглядывается на мятном фоне"
+          }
+        },
+        {
+          "name": "мраморный триколор",
+          "photo": {
+            "src": "/assets/img/okras-kolli-mramornyj-trikolor.jpg",
+            "alt": "Щенок бордер-колли мраморный триколор лежит на мятном фоне"
+          }
         },
         {
           "name": "лиловый",
-          "photo": null
+          "photo": {
+            "src": "/assets/img/okras-kolli-lilovyj.jpg",
+            "alt": "Лиловый щенок бордер-колли идёт к камере на мятном фоне"
+          }
         }
       ]
     }
