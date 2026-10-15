@@ -1,4 +1,5 @@
 {#- Full-screen mobile menu (< 1100 px): every group of site.menu as an accordion, then contacts.
+    The top bar (logo + close) never scrolls away: only .mmenu__scroll scrolls (client 15.10).
     main.js: [data-burger], #mmenu, .mmenu__acc (aria-controls → its list), [data-menu-close], [data-menu-link]. -#}
 {% import "macros/ui.html.j2" as ui %}
 {% import "partials/menu.html.j2" as menu %}
@@ -12,6 +13,7 @@
       </a>
       <button class="msgr msgr--ink" type="button" aria-label="Закрыть меню" data-menu-close>{{ ui.icon('close') }}</button>
     </div>
+    <div class="mmenu__scroll">
     <nav class="mmenu__nav" aria-label="Мобильное меню">
       <ul class="mmenu__list">
         {% for g in site.menu %}
@@ -33,5 +35,6 @@
         <button class="btn btn--white mmenu__price" type="button" data-open-modal>Узнать цену</button>
       </div>
       <a class="btn btn--tg btn--lg btn--block" href="{{ site.messengers.telegram.url }}" target="_blank" rel="noopener">{{ ui.icon('tg') }}{{ site.tg_cta.label }}</a>
+    </div>
     </div>
   </div>

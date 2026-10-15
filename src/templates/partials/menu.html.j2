@@ -1,6 +1,7 @@
 {#- Site map for the header «Меню» panel and the mobile menu. Data: site.menu (groups → items).
     item: {"label", "url"} — a link; + "breed": slug → round breed face; + "count": true → number of puppies;
-          + "icon": sprite name → small coloured circle; {"label", "sub": [{"label", "url"}]} — a caption with small pills.
+          + "icon": sprite name → small coloured circle; {"label", "sub": [{"label", "url"}]} — a caption with a short list
+          of links under it (one per row, a thin rule on the left; client 15.10: no pills).
     Import: {% import "partials/menu.html.j2" as menu %} -#}
 {% import "macros/ui.html.j2" as ui %}
 
@@ -11,8 +12,8 @@
   {% if it.sub is defined %}
   <li class="mega__sub">
     <span class="mega__subh">{{ it.label|typo }}</span>
-    <ul class="mega__pills">
-      {% for s in it.sub %}<li><a class="mega__pill" href="{{ s.url }}"{% if current == s.url %} aria-current="page"{% endif %}><span>{{ ui.nohyph(s.label) }}</span></a></li>{% endfor %}
+    <ul class="mega__subl">
+      {% for s in it.sub %}<li><a class="mega__sublink" href="{{ s.url }}"{% if current == s.url %} aria-current="page"{% endif %}><span>{{ ui.nohyph(s.label) }}</span></a></li>{% endfor %}
     </ul>
   </li>
   {% else %}

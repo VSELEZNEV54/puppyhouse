@@ -155,33 +155,25 @@
           "label": "Сравнение пород",
           "sub": [
             {
-              "label": "Мальтипу или той-пудель",
-              "url": "/sravnenie/maltipu-ili-toj-pudel/"
+              "label": "Чем хорош мальтипу",
+              "url": "/sravnenie/maltipu/"
             },
             {
-              "label": "Мальтипу или француз",
-              "url": "/sravnenie/maltipu-ili-francuzskij-buldog/"
+              "label": "Чем хорош французский бульдог",
+              "url": "/sravnenie/francuzskij-buldog/"
             },
             {
-              "label": "Мальтипу или бордер-колли",
-              "url": "/sravnenie/maltipu-ili-border-kolli/"
+              "label": "Чем хорош той-пудель",
+              "url": "/sravnenie/toj-pudel/"
             },
             {
-              "label": "Француз или той-пудель",
-              "url": "/sravnenie/francuzskij-buldog-ili-toj-pudel/"
-            },
-            {
-              "label": "Француз или бордер-колли",
-              "url": "/sravnenie/francuzskij-buldog-ili-border-kolli/"
-            },
-            {
-              "label": "Той-пудель или бордер-колли",
-              "url": "/sravnenie/toj-pudel-ili-border-kolli/"
+              "label": "Чем хорош бордер-колли",
+              "url": "/sravnenie/border-kolli/"
             }
           ]
         },
         {
-          "label": "Подбор породы — тест",
+          "label": "Подбор породы — пройдите тест",
           "url": "/podbor-porody/",
           "icon": "sparkle"
         }
@@ -214,19 +206,7 @@
               "url": "/dostavka/kazan/"
             },
             {
-              "label": "Нижний Новгород",
-              "url": "/dostavka/nizhnij-novgorod/"
-            },
-            {
-              "label": "Краснодар",
-              "url": "/dostavka/krasnodar/"
-            },
-            {
-              "label": "Самара",
-              "url": "/dostavka/samara/"
-            },
-            {
-              "label": "Все города",
+              "label": "Все 30 городов",
               "url": "/dostavka/#goroda"
             }
           ]
@@ -365,7 +345,7 @@
             "url": "/border-kolli/"
           },
           {
-            "label": "Подбор породы — тест",
+            "label": "Подбор породы — пройдите тест",
             "url": "/podbor-porody/"
           }
         ]

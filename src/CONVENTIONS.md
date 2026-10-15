@@ -142,7 +142,9 @@ The layout renders: breadcrumbs → hero → body → «Щенки в налич
 
 Globals: `site`, `breeds` (list), `breed_map` (slug → breed), `puppies`, `data` (everything, incl. your files), `imgsize(src)`, `photo_tone(src)`, `tone_style(src)`.
 `site.json` (stage 3): `brand` «домщенков.рф», `nav` (header links, `prio` 2–6 = hide order on narrow desktops), `menu` (site-map
-groups for «Меню» and the burger: items `{label, url}` + `breed` face / `count` / `icon`, or `{label, sub: [...]}` pills),
+groups for «Меню» and the burger: items `{label, url}` + `breed` face / `count` / `icon`, or `{label, sub: [...]}` — a caption
+with a short list of links, one per row, thin rule on the left; client 15.10: no pills; phones: every item on its own row, the
+burger's top bar with the close button never scrolls away — only `.mmenu__scroll` scrolls; footer links on phones: one per row, 46 px),
 `tg_cta` («Написать в Telegram»), `messengers.telegram|whatsapp|max` (`url_placeholder` marks placeholder links; `max.round_icon`),
 `advantages`, `stats`; `domain` «домщенков.рф» + `domain_ascii` (punycode `xn--b1adduihee9g.xn--p1ai`, for JSON-LD URLs),
 `email` (placeholder «[почта]@домщенков.рф»).
