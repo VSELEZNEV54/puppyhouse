@@ -52,10 +52,10 @@
     "birth_date": "2026-07-13",
     "age_weeks": 13,
     "status": "available",
-    "badges": ["Метрика РКФ", "Прививки по возрасту", "Чип"],
-    "weight_forecast": "около [11–13] кг",
+    "badges": ["Метрика РКФ", "Прививки по возрасту", "Ветпаспорт"],
+    "weight_forecast": "около [9–13] кг",
     "photos": [
-      { "src": "/assets/img/studio-buldog-blue.jpg", "w": 1024, "h": 1024, "kind": "studio", "class": null, "backdrop": "token", "alt": "Палевый щенок французского бульдога Бруно на голубом фоне" }
+      { "src": "/assets/img/cl-buldog-47.jpg", "w": 1001, "h": 1200, "kind": "life", "class": null, "alt": "Палевый щенок французского бульдога Бруно с плюшевым тапком", "pos": "50% 40%" }
     ],
     "parents": { "mother": { "name": "[кличка мамы]", "breed": "французский бульдог" }, "father": { "name": "[кличка папы]", "breed": "французский бульдог" } },
     "video": null
@@ -72,9 +72,9 @@
     "age_weeks": 11,
     "status": "reserved",
     "badges": ["Метрика РКФ", "Прививки по возрасту", "Ветпаспорт"],
-    "weight_forecast": "около [9–11] кг",
+    "weight_forecast": "около [9–13] кг",
     "photos": [
-      { "src": "/assets/img/pup-buldog-cream.jpg", "w": 928, "h": 1152, "kind": "life", "class": "pup__img--luiza", "alt": "Кремовый щенок французского бульдога Луиза в светлой квартире" }
+      { "src": "/assets/img/cl-buldog-8.jpg", "w": 1035, "h": 1041, "kind": "life", "class": null, "alt": "Кремовый щенок французского бульдога Луиза на подушке", "pos": "50% 50%" }
     ],
     "parents": { "mother": { "name": "[кличка мамы]", "breed": "французский бульдог" }, "father": { "name": "[кличка папы]", "breed": "французский бульдог" } },
     "video": null
@@ -91,9 +91,9 @@
     "age_weeks": 14,
     "status": "available",
     "badges": ["Метрика РКФ", "Прививки по возрасту", "Чип"],
-    "weight_forecast": "около [2,5–3] кг",
+    "weight_forecast": "около [2–3] кг",
     "photos": [
-      { "src": "/assets/img/studio-pudel-yellow.jpg", "w": 1024, "h": 1024, "kind": "studio", "class": null, "backdrop": "token", "alt": "Абрикосовый щенок той-пуделя Марго на жёлтом фоне" }
+      { "src": "/assets/img/pup-pudel-352.jpg", "w": 960, "h": 1280, "kind": "life", "class": null, "alt": "Абрикосовый щенок той-пуделя Марго сидит в саду", "pos": "50% 45%" }
     ],
     "parents": { "mother": { "name": "[кличка мамы]", "breed": "той-пудель" }, "father": { "name": "[кличка папы]", "breed": "той-пудель" } },
     "video": null
@@ -109,10 +109,12 @@
     "birth_date": "2026-08-10",
     "age_weeks": 9,
     "status": "soon",
-    "badges": ["Метрика РКФ", "Прививки по возрасту"],
-    "weight_forecast": "около [3–4] кг",
+    "badges": ["Метрика РКФ", "Прививки по возрасту", "Чип"],
+    "weight_forecast": "около [2–3] кг",
     "photos": [
-      { "src": "/assets/img/breed-toj-pudel.jpg", "w": 928, "h": 1152, "kind": "life", "class": "pup__img--charli", "alt": "Рыжий щенок той-пуделя Чарли на оливковом бархате" }
+      { "src": "/assets/img/pup-pudel-299.jpg", "w": 1280, "h": 853, "kind": "life", "class": null, "alt": "Рыжий щенок той-пуделя Чарли на прогулке", "pos": "70% 50%" },
+      { "src": "/assets/img/cl-pudel-300.jpg", "w": 1280, "h": 853, "kind": "life", "class": null, "alt": "Чарли сидит на осенней траве", "pos": "55% 50%" },
+      { "src": "/assets/img/cl-pudel-305.jpg", "w": 1280, "h": 853, "kind": "life", "class": null, "alt": "Чарли бежит по поляне", "pos": "65% 50%" }
     ],
     "parents": { "mother": { "name": "[кличка мамы]", "breed": "той-пудель" }, "father": { "name": "[кличка папы]", "breed": "той-пудель" } },
     "video": null
@@ -129,9 +131,9 @@
     "age_weeks": 11,
     "status": "available",
     "badges": ["Метрика РКФ", "Прививки по возрасту", "Чип"],
-    "weight_forecast": "около [18–20] кг",
+    "weight_forecast": "около [14–20] кг",
     "photos": [
-      { "src": "/assets/img/studio-kolli-green.jpg", "w": 1024, "h": 1024, "kind": "studio", "class": null, "backdrop": "token", "alt": "Щенок бордер-колли Скай, окрас голубой мрамор, на мятном фоне" }
+      { "src": "/assets/img/pup-kolli-109.jpg", "w": 1254, "h": 1254, "kind": "life", "class": null, "alt": "Щенок бордер-колли Скай, голубой мрамор, лежит на траве", "pos": "50% 50%" }
     ],
     "parents": { "mother": { "name": "[кличка мамы]", "breed": "бордер-колли" }, "father": { "name": "[кличка папы]", "breed": "бордер-колли" } },
     "video": null
@@ -148,29 +150,11 @@
     "age_weeks": 10,
     "status": "reserved",
     "badges": ["Метрика РКФ", "Прививки по возрасту", "Чип"],
-    "weight_forecast": "около [14–16] кг",
+    "weight_forecast": "около [14–20] кг",
     "photos": [
-      { "src": "/assets/img/breed-border-kolli.jpg", "w": 928, "h": 1152, "kind": "life", "class": "pup__img--tessa", "alt": "Чёрно-белый щенок бордер-колли Тесса в траве на закате" }
+      { "src": "/assets/img/pup-kolli-203.jpg", "w": 657, "h": 876, "kind": "life", "class": null, "alt": "Чёрно-белый щенок бордер-колли Тесса на траве", "pos": "50% 50%" }
     ],
     "parents": { "mother": { "name": "[кличка мамы]", "breed": "бордер-колли" }, "father": { "name": "[кличка папы]", "breed": "бордер-колли" } },
-    "video": null
-  },
-  {
-    "slug": "francuzskij-buldog-tigrovyj-2026-07",
-    "name": "Оскар",
-    "breed": "francuzskij-buldog",
-    "generation": null,
-    "variety": null,
-    "sex": "male",
-    "colour": "тигровый",
-    "birth_date": "2026-07-20",
-    "status": "available",
-    "badges": ["Метрика РКФ", "Прививки по возрасту", "Чип"],
-    "weight_forecast": "около [11–13] кг",
-    "photos": [
-      { "src": "/assets/img/color-buldog-brindle.jpg", "w": 1024, "h": 1024, "kind": "studio", "class": null, "alt": "Тигровый щенок французского бульдога Оскар на голубом фоне" }
-    ],
-    "parents": { "mother": { "name": "[кличка мамы]", "breed": "французский бульдог" }, "father": { "name": "[кличка папы]", "breed": "французский бульдог" } },
     "video": null
   },
   {
@@ -182,11 +166,12 @@
     "sex": "male",
     "colour": "чёрный",
     "birth_date": "2026-07-18",
+    "age_weeks": 12,
     "status": "available",
     "badges": ["Метрика РКФ", "Прививки по возрасту", "Чип"],
-    "weight_forecast": "около [2,5–3] кг",
+    "weight_forecast": "около [2–3] кг",
     "photos": [
-      { "src": "/assets/img/color-pudel-black.jpg", "w": 1024, "h": 1024, "kind": "studio", "class": null, "alt": "Чёрный щенок той-пуделя Уголёк на жёлтом фоне" }
+      { "src": "/assets/img/pup-pudel-341.jpg", "w": 720, "h": 1280, "kind": "life", "class": null, "alt": "Чёрный щенок той-пуделя Уголёк на руках в саду", "pos": "50% 35%" }
     ],
     "parents": { "mother": { "name": "[кличка мамы]", "breed": "той-пудель" }, "father": { "name": "[кличка папы]", "breed": "той-пудель" } },
     "video": null
@@ -219,32 +204,15 @@
     "variety": null,
     "sex": "male",
     "colour": "трёхцветный",
-    "birth_date": "2026-07-25",
+    "birth_date": "2026-07-15",
+    "age_weeks": 12,
     "status": "available",
     "badges": ["Метрика РКФ", "Прививки по возрасту", "Чип"],
-    "weight_forecast": "около [18–20] кг",
+    "weight_forecast": "около [14–20] кг",
     "photos": [
-      { "src": "/assets/img/color-kolli-tricolor.jpg", "w": 1024, "h": 1024, "kind": "studio", "class": null, "alt": "Трёхцветный щенок бордер-колли Ральф на мятном фоне" }
+      { "src": "/assets/img/pup-kolli-112.jpg", "w": 1254, "h": 1254, "kind": "life", "class": null, "alt": "Трёхцветный щенок бордер-колли Ральф сидит на траве", "pos": "50% 50%" }
     ],
     "parents": { "mother": { "name": "[кличка мамы]", "breed": "бордер-колли" }, "father": { "name": "[кличка папы]", "breed": "бордер-колли" } },
-    "video": null
-  },
-  {
-    "slug": "toj-pudel-belyj-2026-07",
-    "name": "Пушинка",
-    "breed": "toj-pudel",
-    "generation": null,
-    "variety": "той (24–28 см)",
-    "sex": "female",
-    "colour": "белый",
-    "birth_date": "2026-07-30",
-    "status": "available",
-    "badges": ["Метрика РКФ", "Прививки по возрасту", "Ветпаспорт"],
-    "weight_forecast": "около [2–2,5] кг",
-    "photos": [
-      { "src": "/assets/img/color-pudel-white.jpg", "w": 1024, "h": 1024, "kind": "studio", "class": null, "alt": "Белый щенок той-пуделя Пушинка на жёлтом фоне" }
-    ],
-    "parents": { "mother": { "name": "[кличка мамы]", "breed": "той-пудель" }, "father": { "name": "[кличка папы]", "breed": "той-пудель" } },
     "video": null
   },
   {
@@ -295,12 +263,13 @@
     "variety": null,
     "sex": "female",
     "colour": "пегий (белый с пятнами)",
-    "birth_date": "2026-08-17",
+    "birth_date": "2026-08-03",
+    "age_weeks": 10,
     "status": "soon",
-    "badges": ["Метрика РКФ", "Прививки по возрасту"],
-    "weight_forecast": "около [9–11] кг",
+    "badges": ["Метрика РКФ", "Прививки по возрасту", "Ветпаспорт"],
+    "weight_forecast": "около [9–13] кг",
     "photos": [
-      { "src": "/assets/img/color-buldog-pied.jpg", "w": 1024, "h": 1024, "kind": "studio", "class": null, "alt": "Пегий щенок французского бульдога Белла на голубом фоне" }
+      { "src": "/assets/img/pup-buldog-5.jpg", "w": 768, "h": 1024, "kind": "life", "class": null, "alt": "Пегий щенок французского бульдога Белла на руках", "pos": "50% 25%" }
     ],
     "parents": { "mother": { "name": "[кличка мамы]", "breed": "французский бульдог" }, "father": { "name": "[кличка папы]", "breed": "французский бульдог" } },
     "video": null
@@ -353,12 +322,14 @@
     "variety": "той (24–28 см)",
     "sex": "male",
     "colour": "коричневый (шоколадный)",
-    "birth_date": "2026-07-04",
+    "birth_date": "2026-07-11",
+    "age_weeks": 13,
     "status": "reserved",
     "badges": ["Метрика РКФ", "Прививки по возрасту", "Чип"],
-    "weight_forecast": "около [2,5–3] кг",
+    "weight_forecast": "около [2–3] кг",
     "photos": [
-      { "src": "/assets/img/color-pudel-chocolate.jpg", "w": 1024, "h": 1024, "kind": "studio", "class": null, "alt": "Шоколадный щенок той-пуделя Какао на жёлтом фоне" }
+      { "src": "/assets/img/pup-pudel-315.jpg", "w": 768, "h": 1024, "kind": "life", "class": null, "alt": "Коричневый щенок той-пуделя Какао рядом с орхидеей", "pos": "55% 55%" },
+      { "src": "/assets/img/pup-pudel-328.jpg", "w": 768, "h": 1024, "kind": "life", "class": null, "alt": "Какао лежит на подушке", "pos": "55% 55%" }
     ],
     "parents": { "mother": { "name": "[кличка мамы]", "breed": "той-пудель" }, "father": { "name": "[кличка папы]", "breed": "той-пудель" } },
     "video": null
@@ -513,6 +484,678 @@
       { "src": "/assets/img/pup-maltipu-464.jpg", "w": 1200, "h": 1600, "kind": "life", "class": null, "alt": "Кремовый щенок мальтипу Бублик на руках на улице", "pos": "40% 35%" }
     ],
     "parents": { "mother": { "name": "[кличка мамы]", "breed": "[мальтипу F1]" }, "father": { "name": "[кличка папы]", "breed": "[мальтипу F1]" } },
+    "video": null
+  },
+  {
+    "slug": "francuzskij-buldog-goluboj-2026-07",
+    "name": "Граф",
+    "breed": "francuzskij-buldog",
+    "generation": null,
+    "variety": null,
+    "sex": "male",
+    "colour": "голубой",
+    "birth_date": "2026-07-20",
+    "age_weeks": 12,
+    "status": "available",
+    "badges": ["Метрика РКФ", "Прививки по возрасту", "Ветпаспорт"],
+    "weight_forecast": "около [9–13] кг",
+    "photos": [
+      { "src": "/assets/img/cl-buldog-16.jpg", "w": 1067, "h": 1600, "kind": "life", "class": null, "alt": "Голубой щенок французского бульдога Граф сидит на светлом фоне", "pos": "50% 45%" },
+      { "src": "/assets/img/cl-buldog-51.jpg", "w": 1069, "h": 1600, "kind": "life", "class": null, "alt": "Граф стоит и смотрит в камеру", "pos": "50% 50%" },
+      { "src": "/assets/img/cl-buldog-53.jpg", "w": 1069, "h": 1600, "kind": "life", "class": null, "alt": "Голубой француз Граф с белым пятном на груди", "pos": "50% 45%" }
+    ],
+    "parents": { "mother": { "name": "[кличка мамы]", "breed": "французский бульдог" }, "father": { "name": "[кличка папы]", "breed": "французский бульдог" } },
+    "video": null
+  },
+  {
+    "slug": "francuzskij-buldog-goluboj-2026-08",
+    "name": "Ника",
+    "breed": "francuzskij-buldog",
+    "generation": null,
+    "variety": null,
+    "sex": "female",
+    "colour": "голубой",
+    "birth_date": "2026-08-08",
+    "age_weeks": 9,
+    "status": "available",
+    "badges": ["Метрика РКФ", "Прививки по возрасту", "Ветпаспорт"],
+    "weight_forecast": "около [9–13] кг",
+    "photos": [
+      { "src": "/assets/img/cl-buldog-12.jpg", "w": 1024, "h": 768, "kind": "life", "class": null, "alt": "Голубой щенок французского бульдога Ника рядом с игрушечной машинкой", "pos": "62% 50%" }
+    ],
+    "parents": { "mother": { "name": "[кличка мамы]", "breed": "французский бульдог" }, "father": { "name": "[кличка папы]", "breed": "французский бульдог" } },
+    "video": null
+  },
+  {
+    "slug": "francuzskij-buldog-podpal-2026-07",
+    "name": "Джек",
+    "breed": "francuzskij-buldog",
+    "generation": null,
+    "variety": null,
+    "sex": "male",
+    "colour": "чёрный с подпалом",
+    "birth_date": "2026-07-24",
+    "age_weeks": 11,
+    "status": "available",
+    "badges": ["Метрика РКФ", "Прививки по возрасту", "Ветпаспорт"],
+    "weight_forecast": "около [9–13] кг",
+    "photos": [
+      { "src": "/assets/img/cl-buldog-48.jpg", "w": 1600, "h": 1064, "kind": "life", "class": null, "alt": "Чёрно-подпалый щенок французского бульдога Джек", "pos": "50% 50%" }
+    ],
+    "parents": { "mother": { "name": "[кличка мамы]", "breed": "французский бульдог" }, "father": { "name": "[кличка папы]", "breed": "французский бульдог" } },
+    "video": null
+  },
+  {
+    "slug": "francuzskij-buldog-palevyj-2026-08",
+    "name": "Мила",
+    "breed": "francuzskij-buldog",
+    "generation": null,
+    "variety": null,
+    "sex": "female",
+    "colour": "палевый",
+    "birth_date": "2026-08-01",
+    "age_weeks": 10,
+    "status": "available",
+    "badges": ["Метрика РКФ", "Прививки по возрасту", "Ветпаспорт"],
+    "weight_forecast": "около [9–13] кг",
+    "photos": [
+      { "src": "/assets/img/cl-buldog-49.jpg", "w": 1200, "h": 900, "kind": "life", "class": null, "alt": "Палевая девочка французского бульдога Мила идёт к мячику", "pos": "55% 50%" }
+    ],
+    "parents": { "mother": { "name": "[кличка мамы]", "breed": "французский бульдог" }, "father": { "name": "[кличка папы]", "breed": "французский бульдог" } },
+    "video": null
+  },
+  {
+    "slug": "francuzskij-buldog-goluboj-2026-07-tosha",
+    "name": "Тоша",
+    "breed": "francuzskij-buldog",
+    "generation": null,
+    "variety": null,
+    "sex": "male",
+    "colour": "голубой",
+    "birth_date": "2026-07-30",
+    "age_weeks": 10,
+    "status": "available",
+    "badges": ["Метрика РКФ", "Прививки по возрасту", "Ветпаспорт"],
+    "weight_forecast": "около [9–13] кг",
+    "photos": [
+      { "src": "/assets/img/cl-buldog-54.jpg", "w": 1600, "h": 1068, "kind": "life", "class": null, "alt": "Голубой щенок французского бульдога Тоша лежит на светлом фоне", "pos": "48% 50%" }
+    ],
+    "parents": { "mother": { "name": "[кличка мамы]", "breed": "французский бульдог" }, "father": { "name": "[кличка папы]", "breed": "французский бульдог" } },
+    "video": null
+  },
+  {
+    "slug": "francuzskij-buldog-palevyj-2026-07-bonni",
+    "name": "Бонни",
+    "breed": "francuzskij-buldog",
+    "generation": null,
+    "variety": null,
+    "sex": "female",
+    "colour": "палевый",
+    "birth_date": "2026-07-17",
+    "age_weeks": 12,
+    "status": "available",
+    "badges": ["Метрика РКФ", "Прививки по возрасту", "Ветпаспорт"],
+    "weight_forecast": "около [9–13] кг",
+    "photos": [
+      { "src": "/assets/img/cl-buldog-79.jpg", "w": 962, "h": 1280, "kind": "life", "class": null, "alt": "Рыже-палевая девочка французского бульдога Бонни", "pos": "50% 45%" }
+    ],
+    "parents": { "mother": { "name": "[кличка мамы]", "breed": "французский бульдог" }, "father": { "name": "[кличка папы]", "breed": "французский бульдог" } },
+    "video": null
+  },
+  {
+    "slug": "francuzskij-buldog-palevyj-2026-08-barni",
+    "name": "Барни",
+    "breed": "francuzskij-buldog",
+    "generation": null,
+    "variety": null,
+    "sex": "male",
+    "colour": "палевый",
+    "birth_date": "2026-08-12",
+    "age_weeks": 8,
+    "status": "available",
+    "badges": ["Метрика РКФ", "Прививки по возрасту", "Ветпаспорт"],
+    "weight_forecast": "около [9–13] кг",
+    "photos": [
+      { "src": "/assets/img/pup-buldog-9.jpg", "w": 960, "h": 1280, "kind": "life", "class": null, "alt": "Палевый щенок французского бульдога Барни на руках", "pos": "50% 35%" }
+    ],
+    "parents": { "mother": { "name": "[кличка мамы]", "breed": "французский бульдог" }, "father": { "name": "[кличка папы]", "breed": "французский бульдог" } },
+    "video": null
+  },
+  {
+    "slug": "francuzskij-buldog-palevyj-2026-08-keks",
+    "name": "Кекс",
+    "breed": "francuzskij-buldog",
+    "generation": null,
+    "variety": null,
+    "sex": "male",
+    "colour": "палевый",
+    "birth_date": "2026-08-05",
+    "age_weeks": 9,
+    "status": "reserved",
+    "badges": ["Метрика РКФ", "Прививки по возрасту", "Ветпаспорт"],
+    "weight_forecast": "около [9–13] кг",
+    "photos": [
+      { "src": "/assets/img/pup-buldog-13.jpg", "w": 768, "h": 1024, "kind": "life", "class": null, "alt": "Палевый щенок французского бульдога Кекс на руках у ели", "pos": "50% 25%" }
+    ],
+    "parents": { "mother": { "name": "[кличка мамы]", "breed": "французский бульдог" }, "father": { "name": "[кличка папы]", "breed": "французский бульдог" } },
+    "video": null
+  },
+  {
+    "slug": "francuzskij-buldog-goluboj-2026-08-grej",
+    "name": "Грей",
+    "breed": "francuzskij-buldog",
+    "generation": null,
+    "variety": null,
+    "sex": "male",
+    "colour": "голубой",
+    "birth_date": "2026-08-16",
+    "age_weeks": 8,
+    "status": "available",
+    "badges": ["Метрика РКФ", "Прививки по возрасту", "Ветпаспорт"],
+    "weight_forecast": "около [9–13] кг",
+    "photos": [
+      { "src": "/assets/img/pup-buldog-19.jpg", "w": 899, "h": 1280, "kind": "life", "class": null, "alt": "Голубой щенок французского бульдога Грей на коленях", "pos": "45% 40%" }
+    ],
+    "parents": { "mother": { "name": "[кличка мамы]", "breed": "французский бульдог" }, "father": { "name": "[кличка папы]", "breed": "французский бульдог" } },
+    "video": null
+  },
+  {
+    "slug": "francuzskij-buldog-goluboj-2026-08-mars",
+    "name": "Марс",
+    "breed": "francuzskij-buldog",
+    "generation": null,
+    "variety": null,
+    "sex": "male",
+    "colour": "голубой",
+    "birth_date": "2026-08-22",
+    "age_weeks": 7,
+    "status": "soon",
+    "badges": ["Метрика РКФ", "Прививки по возрасту", "Ветпаспорт"],
+    "weight_forecast": "около [9–13] кг",
+    "photos": [
+      { "src": "/assets/img/pup-buldog-62.jpg", "w": 768, "h": 1024, "kind": "life", "class": null, "alt": "Голубой щенок французского бульдога Марс на руках", "pos": "50% 40%" }
+    ],
+    "parents": { "mother": { "name": "[кличка мамы]", "breed": "французский бульдог" }, "father": { "name": "[кличка папы]", "breed": "французский бульдог" } },
+    "video": null
+  },
+  {
+    "slug": "francuzskij-buldog-goluboj-2026-07-eva",
+    "name": "Ева",
+    "breed": "francuzskij-buldog",
+    "generation": null,
+    "variety": null,
+    "sex": "female",
+    "colour": "голубой",
+    "birth_date": "2026-07-26",
+    "age_weeks": 11,
+    "status": "available",
+    "badges": ["Метрика РКФ", "Прививки по возрасту", "Ветпаспорт"],
+    "weight_forecast": "около [9–13] кг",
+    "photos": [
+      { "src": "/assets/img/ab-buldog-63.jpg", "w": 960, "h": 1280, "kind": "life", "class": null, "alt": "Голубая девочка французского бульдога Ева сидит на полу", "pos": "50% 45%" }
+    ],
+    "parents": { "mother": { "name": "[кличка мамы]", "breed": "французский бульдог" }, "father": { "name": "[кличка папы]", "breed": "французский бульдог" } },
+    "video": null
+  },
+  {
+    "slug": "francuzskij-buldog-goluboj-2026-08-sonya",
+    "name": "Соня",
+    "breed": "francuzskij-buldog",
+    "generation": null,
+    "variety": null,
+    "sex": "female",
+    "colour": "голубой",
+    "birth_date": "2026-08-10",
+    "age_weeks": 9,
+    "status": "available",
+    "badges": ["Метрика РКФ", "Прививки по возрасту", "Ветпаспорт"],
+    "weight_forecast": "около [9–13] кг",
+    "photos": [
+      { "src": "/assets/img/ab-buldog-27.jpg", "w": 1080, "h": 1047, "kind": "life", "class": null, "alt": "Голубой щенок французского бульдога Соня спит на мягком пледе", "pos": "50% 50%" }
+    ],
+    "parents": { "mother": { "name": "[кличка мамы]", "breed": "французский бульдог" }, "father": { "name": "[кличка папы]", "breed": "французский бульдог" } },
+    "video": null
+  },
+  {
+    "slug": "border-kolli-goluboj-mramor-2026-08",
+    "name": "Джесси",
+    "breed": "border-kolli",
+    "generation": null,
+    "variety": null,
+    "sex": "female",
+    "colour": "голубой мрамор",
+    "birth_date": "2026-08-04",
+    "age_weeks": 9,
+    "status": "available",
+    "badges": ["Метрика РКФ", "Прививки по возрасту", "Чип"],
+    "weight_forecast": "около [14–20] кг",
+    "photos": [
+      { "src": "/assets/img/pup-kolli-103.jpg", "w": 1254, "h": 1254, "kind": "life", "class": null, "alt": "Щенок бордер-колли Джесси, голубой мрамор, сидит у дерева", "pos": "45% 50%" }
+    ],
+    "parents": { "mother": { "name": "[кличка мамы]", "breed": "бордер-колли" }, "father": { "name": "[кличка папы]", "breed": "бордер-колли" } },
+    "video": null
+  },
+  {
+    "slug": "border-kolli-cherno-belyj-2026-07-rokki",
+    "name": "Рокки",
+    "breed": "border-kolli",
+    "generation": null,
+    "variety": null,
+    "sex": "male",
+    "colour": "чёрно-белый",
+    "birth_date": "2026-07-19",
+    "age_weeks": 12,
+    "status": "available",
+    "badges": ["Метрика РКФ", "Прививки по возрасту", "Чип"],
+    "weight_forecast": "около [14–20] кг",
+    "photos": [
+      { "src": "/assets/img/pup-kolli-106.jpg", "w": 1254, "h": 1254, "kind": "life", "class": null, "alt": "Чёрно-белый щенок бордер-колли Рокки на прогулке", "pos": "45% 50%" }
+    ],
+    "parents": { "mother": { "name": "[кличка мамы]", "breed": "бордер-колли" }, "father": { "name": "[кличка папы]", "breed": "бордер-колли" } },
+    "video": null
+  },
+  {
+    "slug": "border-kolli-krasnyj-mramor-2026-08",
+    "name": "Луна",
+    "breed": "border-kolli",
+    "generation": null,
+    "variety": null,
+    "sex": "female",
+    "colour": "красный мрамор",
+    "birth_date": "2026-08-09",
+    "age_weeks": 9,
+    "status": "available",
+    "badges": ["Метрика РКФ", "Прививки по возрасту", "Чип"],
+    "weight_forecast": "около [14–20] кг",
+    "photos": [
+      { "src": "/assets/img/pup-kolli-107.jpg", "w": 1254, "h": 1254, "kind": "life", "class": null, "alt": "Щенок бордер-колли Луна, красный мрамор, с голубыми глазами", "pos": "50% 50%" }
+    ],
+    "parents": { "mother": { "name": "[кличка мамы]", "breed": "бордер-колли" }, "father": { "name": "[кличка папы]", "breed": "бордер-колли" } },
+    "video": null
+  },
+  {
+    "slug": "border-kolli-krasnyj-mramor-2026-07",
+    "name": "Бадди",
+    "breed": "border-kolli",
+    "generation": null,
+    "variety": null,
+    "sex": "male",
+    "colour": "красный мрамор",
+    "birth_date": "2026-07-25",
+    "age_weeks": 11,
+    "status": "available",
+    "badges": ["Метрика РКФ", "Прививки по возрасту", "Чип"],
+    "weight_forecast": "около [14–20] кг",
+    "photos": [
+      { "src": "/assets/img/pup-kolli-121.jpg", "w": 1067, "h": 1600, "kind": "life", "class": null, "alt": "Щенок бордер-колли Бадди бежит к игрушке", "pos": "50% 45%" }
+    ],
+    "parents": { "mother": { "name": "[кличка мамы]", "breed": "бордер-колли" }, "father": { "name": "[кличка папы]", "breed": "бордер-колли" } },
+    "video": null
+  },
+  {
+    "slug": "border-kolli-krasno-belyj-2026-07",
+    "name": "Айла",
+    "breed": "border-kolli",
+    "generation": null,
+    "variety": null,
+    "sex": "female",
+    "colour": "красно-белый",
+    "birth_date": "2026-07-12",
+    "age_weeks": 13,
+    "status": "available",
+    "badges": ["Метрика РКФ", "Прививки по возрасту", "Чип"],
+    "weight_forecast": "около [14–20] кг",
+    "photos": [
+      { "src": "/assets/img/pup-kolli-138.jpg", "w": 470, "h": 646, "kind": "life", "class": null, "alt": "Красно-белый щенок бордер-колли Айла на снегу", "pos": "50% 50%" }
+    ],
+    "parents": { "mother": { "name": "[кличка мамы]", "breed": "бордер-колли" }, "father": { "name": "[кличка папы]", "breed": "бордер-колли" } },
+    "video": null
+  },
+  {
+    "slug": "border-kolli-goluboj-mramor-2026-07-dymka",
+    "name": "Дымка",
+    "breed": "border-kolli",
+    "generation": null,
+    "variety": null,
+    "sex": "female",
+    "colour": "голубой мрамор",
+    "birth_date": "2026-07-14",
+    "age_weeks": 12,
+    "status": "soon",
+    "badges": ["Метрика РКФ", "Прививки по возрасту", "Чип"],
+    "weight_forecast": "около [14–20] кг",
+    "photos": [
+      { "src": "/assets/img/pup-kolli-147.jpg", "w": 1066, "h": 1600, "kind": "life", "class": null, "alt": "Щенок бордер-колли Дымка, голубой мрамор, смотрит в сторону", "pos": "50% 40%" }
+    ],
+    "parents": { "mother": { "name": "[кличка мамы]", "breed": "бордер-колли" }, "father": { "name": "[кличка папы]", "breed": "бордер-колли" } },
+    "video": null
+  },
+  {
+    "slug": "border-kolli-krasno-belyj-2026-08",
+    "name": "Ханни",
+    "breed": "border-kolli",
+    "generation": null,
+    "variety": null,
+    "sex": "female",
+    "colour": "красно-белый",
+    "birth_date": "2026-08-06",
+    "age_weeks": 9,
+    "status": "available",
+    "badges": ["Метрика РКФ", "Прививки по возрасту", "Чип"],
+    "weight_forecast": "около [14–20] кг",
+    "photos": [
+      { "src": "/assets/img/pup-kolli-149.jpg", "w": 1280, "h": 960, "kind": "life", "class": null, "alt": "Рыже-белый щенок бордер-колли Ханни отдыхает у мисок", "pos": "55% 50%" }
+    ],
+    "parents": { "mother": { "name": "[кличка мамы]", "breed": "бордер-колли" }, "father": { "name": "[кличка папы]", "breed": "бордер-колли" } },
+    "video": null
+  },
+  {
+    "slug": "border-kolli-krasno-belyj-2026-08-oskar",
+    "name": "Оскар",
+    "breed": "border-kolli",
+    "generation": null,
+    "variety": null,
+    "sex": "male",
+    "colour": "красно-белый",
+    "birth_date": "2026-08-18",
+    "age_weeks": 7,
+    "status": "available",
+    "badges": ["Метрика РКФ", "Прививки по возрасту", "Чип"],
+    "weight_forecast": "около [14–20] кг",
+    "photos": [
+      { "src": "/assets/img/pup-kolli-152.jpg", "w": 1200, "h": 1600, "kind": "life", "class": null, "alt": "Коричнево-белый щенок бордер-колли Оскар на лежанке", "pos": "45% 55%" }
+    ],
+    "parents": { "mother": { "name": "[кличка мамы]", "breed": "бордер-колли" }, "father": { "name": "[кличка папы]", "breed": "бордер-колли" } },
+    "video": null
+  },
+  {
+    "slug": "border-kolli-cherno-belyj-2026-08",
+    "name": "Лаки",
+    "breed": "border-kolli",
+    "generation": null,
+    "variety": null,
+    "sex": "male",
+    "colour": "чёрно-белый",
+    "birth_date": "2026-08-11",
+    "age_weeks": 8,
+    "status": "available",
+    "badges": ["Метрика РКФ", "Прививки по возрасту", "Чип"],
+    "weight_forecast": "около [14–20] кг",
+    "photos": [
+      { "src": "/assets/img/pup-kolli-185.jpg", "w": 1200, "h": 1600, "kind": "life", "class": null, "alt": "Чёрно-белый щенок бордер-колли Лаки в саду", "pos": "50% 55%" }
+    ],
+    "parents": { "mother": { "name": "[кличка мамы]", "breed": "бордер-колли" }, "father": { "name": "[кличка папы]", "breed": "бордер-колли" } },
+    "video": null
+  },
+  {
+    "slug": "border-kolli-goluboj-mramor-2026-08-kira",
+    "name": "Кира",
+    "breed": "border-kolli",
+    "generation": null,
+    "variety": null,
+    "sex": "female",
+    "colour": "голубой мрамор",
+    "birth_date": "2026-08-14",
+    "age_weeks": 8,
+    "status": "available",
+    "badges": ["Метрика РКФ", "Прививки по возрасту", "Чип"],
+    "weight_forecast": "около [14–20] кг",
+    "photos": [
+      { "src": "/assets/img/pup-kolli-186.jpg", "w": 1500, "h": 1469, "kind": "life", "class": null, "alt": "Щенок бордер-колли Кира, голубой мрамор, с голубыми глазами", "pos": "60% 50%" }
+    ],
+    "parents": { "mother": { "name": "[кличка мамы]", "breed": "бордер-колли" }, "father": { "name": "[кличка папы]", "breed": "бордер-колли" } },
+    "video": null
+  },
+  {
+    "slug": "border-kolli-cherno-belyj-2026-07-grom",
+    "name": "Гром",
+    "breed": "border-kolli",
+    "generation": null,
+    "variety": null,
+    "sex": "male",
+    "colour": "чёрно-белый",
+    "birth_date": "2026-07-21",
+    "age_weeks": 11,
+    "status": "reserved",
+    "badges": ["Метрика РКФ", "Прививки по возрасту", "Чип"],
+    "weight_forecast": "около [14–20] кг",
+    "photos": [
+      { "src": "/assets/img/pup-kolli-92.jpg", "w": 1254, "h": 1254, "kind": "life", "class": null, "alt": "Чёрно-белый щенок бордер-колли Гром стоит на траве", "pos": "50% 50%" }
+    ],
+    "parents": { "mother": { "name": "[кличка мамы]", "breed": "бордер-колли" }, "father": { "name": "[кличка папы]", "breed": "бордер-колли" } },
+    "video": null
+  },
+  {
+    "slug": "border-kolli-krasno-belyj-2026-08-sanni",
+    "name": "Санни",
+    "breed": "border-kolli",
+    "generation": null,
+    "variety": null,
+    "sex": "female",
+    "colour": "красно-белый",
+    "birth_date": "2026-08-24",
+    "age_weeks": 7,
+    "status": "soon",
+    "badges": ["Метрика РКФ", "Прививки по возрасту", "Чип"],
+    "weight_forecast": "около [14–20] кг",
+    "photos": [
+      { "src": "/assets/img/cl-kolli-118.jpg", "w": 1067, "h": 1600, "kind": "life", "class": null, "alt": "Рыже-белый щенок бордер-колли Санни сидит на дорожке", "pos": "50% 55%" }
+    ],
+    "parents": { "mother": { "name": "[кличка мамы]", "breed": "бордер-колли" }, "father": { "name": "[кличка папы]", "breed": "бордер-колли" } },
+    "video": null
+  },
+  {
+    "slug": "toj-pudel-ryzhij-2026-07",
+    "name": "Роза",
+    "breed": "toj-pudel",
+    "generation": null,
+    "variety": "той (24–28 см)",
+    "sex": "female",
+    "colour": "рыжий (красный)",
+    "birth_date": "2026-07-20",
+    "age_weeks": 12,
+    "status": "available",
+    "badges": ["Метрика РКФ", "Прививки по возрасту", "Чип"],
+    "weight_forecast": "около [2–3] кг",
+    "photos": [
+      { "src": "/assets/img/pup-pudel-258.jpg", "w": 1105, "h": 1600, "kind": "life", "class": null, "alt": "Рыжий щенок той-пуделя Роза с голубым бантом", "pos": "45% 50%" }
+    ],
+    "parents": { "mother": { "name": "[кличка мамы]", "breed": "той-пудель" }, "father": { "name": "[кличка папы]", "breed": "той-пудель" } },
+    "video": null
+  },
+  {
+    "slug": "toj-pudel-korichnevyj-2026-08",
+    "name": "Майя",
+    "breed": "toj-pudel",
+    "generation": null,
+    "variety": "той (24–28 см)",
+    "sex": "female",
+    "colour": "коричневый",
+    "birth_date": "2026-08-02",
+    "age_weeks": 10,
+    "status": "available",
+    "badges": ["Метрика РКФ", "Прививки по возрасту", "Чип"],
+    "weight_forecast": "около [2–3] кг",
+    "photos": [
+      { "src": "/assets/img/pup-pudel-276.jpg", "w": 1341, "h": 1600, "kind": "life", "class": null, "alt": "Коричневый щенок той-пуделя Майя с кулоном-сердечком", "pos": "50% 40%" },
+      { "src": "/assets/img/cl-pudel-278.jpg", "w": 1314, "h": 1600, "kind": "life", "class": null, "alt": "Майя на светлой драпировке", "pos": "50% 45%" }
+    ],
+    "parents": { "mother": { "name": "[кличка мамы]", "breed": "той-пудель" }, "father": { "name": "[кличка папы]", "breed": "той-пудель" } },
+    "video": null
+  },
+  {
+    "slug": "toj-pudel-ryzhij-2026-07-timosha",
+    "name": "Тимоша",
+    "breed": "toj-pudel",
+    "generation": null,
+    "variety": "той (24–28 см)",
+    "sex": "male",
+    "colour": "рыжий (красный)",
+    "birth_date": "2026-07-24",
+    "age_weeks": 11,
+    "status": "available",
+    "badges": ["Метрика РКФ", "Прививки по возрасту", "Чип"],
+    "weight_forecast": "около [2–3] кг",
+    "photos": [
+      { "src": "/assets/img/cl-pudel-281.jpg", "w": 1080, "h": 1440, "kind": "life", "class": null, "alt": "Рыжий щенок той-пуделя Тимоша стоит на диване", "pos": "50% 45%" },
+      { "src": "/assets/img/pup-pudel-284.jpg", "w": 1016, "h": 762, "kind": "life", "class": null, "alt": "Тимоша отдыхает у каменной стены", "pos": "55% 55%" }
+    ],
+    "parents": { "mother": { "name": "[кличка мамы]", "breed": "той-пудель" }, "father": { "name": "[кличка папы]", "breed": "той-пудель" } },
+    "video": null
+  },
+  {
+    "slug": "toj-pudel-ryzhij-2026-08-leo",
+    "name": "Лео",
+    "breed": "toj-pudel",
+    "generation": null,
+    "variety": "той (24–28 см)",
+    "sex": "male",
+    "colour": "рыжий (красный)",
+    "birth_date": "2026-08-07",
+    "age_weeks": 9,
+    "status": "available",
+    "badges": ["Метрика РКФ", "Прививки по возрасту", "Чип"],
+    "weight_forecast": "около [2–3] кг",
+    "photos": [
+      { "src": "/assets/img/pup-pudel-287.jpg", "w": 1200, "h": 1600, "kind": "life", "class": null, "alt": "Рыжий щенок той-пуделя Лео в плетёной лежанке", "pos": "50% 40%" },
+      { "src": "/assets/img/cl-pudel-286.jpg", "w": 1200, "h": 1600, "kind": "life", "class": null, "alt": "Лео крупным планом", "pos": "50% 40%" }
+    ],
+    "parents": { "mother": { "name": "[кличка мамы]", "breed": "той-пудель" }, "father": { "name": "[кличка папы]", "breed": "той-пудель" } },
+    "video": null
+  },
+  {
+    "slug": "toj-pudel-ryzhij-2026-08-ogonek",
+    "name": "Огонёк",
+    "breed": "toj-pudel",
+    "generation": null,
+    "variety": "той (24–28 см)",
+    "sex": "male",
+    "colour": "рыжий (красный)",
+    "birth_date": "2026-08-13",
+    "age_weeks": 8,
+    "status": "available",
+    "badges": ["Метрика РКФ", "Прививки по возрасту", "Чип"],
+    "weight_forecast": "около [2–3] кг",
+    "photos": [
+      { "src": "/assets/img/pup-pudel-295.jpg", "w": 1200, "h": 1600, "kind": "life", "class": null, "alt": "Рыжий щенок той-пуделя Огонёк сидит на сером диване", "pos": "50% 45%" },
+      { "src": "/assets/img/cl-pudel-296.jpg", "w": 1200, "h": 1600, "kind": "life", "class": null, "alt": "Огонёк смотрит в камеру", "pos": "50% 40%" }
+    ],
+    "parents": { "mother": { "name": "[кличка мамы]", "breed": "той-пудель" }, "father": { "name": "[кличка папы]", "breed": "той-пудель" } },
+    "video": null
+  },
+  {
+    "slug": "toj-pudel-ryzhij-2026-07-plyusha",
+    "name": "Плюша",
+    "breed": "toj-pudel",
+    "generation": null,
+    "variety": "той (24–28 см)",
+    "sex": "female",
+    "colour": "рыжий (красный)",
+    "birth_date": "2026-07-28",
+    "age_weeks": 10,
+    "status": "available",
+    "badges": ["Метрика РКФ", "Прививки по возрасту", "Чип"],
+    "weight_forecast": "около [2–3] кг",
+    "photos": [
+      { "src": "/assets/img/pup-pudel-308.jpg", "w": 1312, "h": 1433, "kind": "life", "class": null, "alt": "Рыжий щенок той-пуделя Плюша среди плюшевых игрушек", "pos": "60% 60%" }
+    ],
+    "parents": { "mother": { "name": "[кличка мамы]", "breed": "той-пудель" }, "father": { "name": "[кличка папы]", "breed": "той-пудель" } },
+    "video": null
+  },
+  {
+    "slug": "toj-pudel-korichnevyj-2026-07",
+    "name": "Мокко",
+    "breed": "toj-pudel",
+    "generation": null,
+    "variety": "той (24–28 см)",
+    "sex": "male",
+    "colour": "коричневый",
+    "birth_date": "2026-07-16",
+    "age_weeks": 12,
+    "status": "available",
+    "badges": ["Метрика РКФ", "Прививки по возрасту", "Чип"],
+    "weight_forecast": "около [2–3] кг",
+    "photos": [
+      { "src": "/assets/img/pup-pudel-334.jpg", "w": 1200, "h": 1600, "kind": "life", "class": null, "alt": "Коричневый щенок той-пуделя Мокко стоит на полотенце", "pos": "55% 45%" }
+    ],
+    "parents": { "mother": { "name": "[кличка мамы]", "breed": "той-пудель" }, "father": { "name": "[кличка папы]", "breed": "той-пудель" } },
+    "video": null
+  },
+  {
+    "slug": "toj-pudel-ryzhij-2026-08-lisa",
+    "name": "Лиса",
+    "breed": "toj-pudel",
+    "generation": null,
+    "variety": "той (24–28 см)",
+    "sex": "female",
+    "colour": "рыжий (красный)",
+    "birth_date": "2026-08-19",
+    "age_weeks": 7,
+    "status": "available",
+    "badges": ["Метрика РКФ", "Прививки по возрасту", "Чип"],
+    "weight_forecast": "около [2–3] кг",
+    "photos": [
+      { "src": "/assets/img/pup-pudel-357.jpg", "w": 1600, "h": 1067, "kind": "life", "class": null, "alt": "Рыжий щенок той-пуделя Лиса в плетёной корзинке", "pos": "50% 55%" },
+      { "src": "/assets/img/cl-pudel-363.jpg", "w": 1600, "h": 1067, "kind": "life", "class": null, "alt": "Лиса в корзинке на бирюзовом фоне", "pos": "50% 55%" }
+    ],
+    "parents": { "mother": { "name": "[кличка мамы]", "breed": "той-пудель" }, "father": { "name": "[кличка папы]", "breed": "той-пудель" } },
+    "video": null
+  },
+  {
+    "slug": "toj-pudel-ryzhij-2026-08-knopka",
+    "name": "Кнопка",
+    "breed": "toj-pudel",
+    "generation": null,
+    "variety": "той (24–28 см)",
+    "sex": "female",
+    "colour": "рыжий (красный)",
+    "birth_date": "2026-08-25",
+    "age_weeks": 6,
+    "status": "soon",
+    "badges": ["Метрика РКФ", "Прививки по возрасту", "Чип"],
+    "weight_forecast": "около [2–3] кг",
+    "photos": [
+      { "src": "/assets/img/pup-pudel-365.jpg", "w": 1600, "h": 1064, "kind": "life", "class": null, "alt": "Крошечный рыжий щенок той-пуделя Кнопка на бирюзовом фоне", "pos": "50% 62%" }
+    ],
+    "parents": { "mother": { "name": "[кличка мамы]", "breed": "той-пудель" }, "father": { "name": "[кличка папы]", "breed": "той-пудель" } },
+    "video": null
+  },
+  {
+    "slug": "toj-pudel-korichnevyj-2026-08-vishnya",
+    "name": "Вишня",
+    "breed": "toj-pudel",
+    "generation": null,
+    "variety": "той (24–28 см)",
+    "sex": "female",
+    "colour": "коричневый",
+    "birth_date": "2026-08-09",
+    "age_weeks": 9,
+    "status": "available",
+    "badges": ["Метрика РКФ", "Прививки по возрасту", "Чип"],
+    "weight_forecast": "около [2–3] кг",
+    "photos": [
+      { "src": "/assets/img/cl-pudel-336.jpg", "w": 960, "h": 1280, "kind": "life", "class": null, "alt": "Коричневый щенок той-пуделя Вишня на руках", "pos": "50% 40%" }
+    ],
+    "parents": { "mother": { "name": "[кличка мамы]", "breed": "той-пудель" }, "father": { "name": "[кличка папы]", "breed": "той-пудель" } },
+    "video": null
+  },
+  {
+    "slug": "toj-pudel-ryzhij-2026-07-boni",
+    "name": "Бони",
+    "breed": "toj-pudel",
+    "generation": null,
+    "variety": "той (24–28 см)",
+    "sex": "female",
+    "colour": "рыжий (красный)",
+    "birth_date": "2026-07-30",
+    "age_weeks": 10,
+    "status": "reserved",
+    "badges": ["Метрика РКФ", "Прививки по возрасту", "Чип"],
+    "weight_forecast": "около [2–3] кг",
+    "photos": [
+      { "src": "/assets/img/ab-pudel-360.jpg", "w": 1600, "h": 1064, "kind": "life", "class": null, "alt": "Рыжий щенок той-пуделя Бони на мягком пледе", "pos": "60% 50%" }
+    ],
+    "parents": { "mother": { "name": "[кличка мамы]", "breed": "той-пудель" }, "father": { "name": "[кличка папы]", "breed": "той-пудель" } },
     "video": null
   }
 ]

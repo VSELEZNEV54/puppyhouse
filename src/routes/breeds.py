@@ -92,8 +92,9 @@ def copy_v2(hub):
 
 
 def _teasers(items, data, b):
-    """Article cards «Всё о породе»: a blog slug (title, line, cover from blog-posts.json; cover may be overridden)
-    or a ready card {url, title, line, cover, topic} (the breed's own guide pages: colours, price)."""
+    """Article cards «Всё о породе»: a blog slug (title, line, cover from blog-posts.json; cover and topic may be
+    overridden — a general article on a breed page) or a ready card {url, title, line, cover, topic} (the breed's own
+    guide pages: colours, price)."""
     meta = by_id(data["blog"], "slug")
     posts = data["blog_posts"]["posts"]
     out = []
@@ -101,7 +102,8 @@ def _teasers(items, data, b):
         if "slug" in it:
             post = posts[it["slug"]]
             out.append(dict(url=meta[it["slug"]]["url"], title=post["h1"], line=post["card_line"],
-                            cover=it.get("cover") or post["cover"], topic=f"{b['name']} · {post['topic'].lower()}"))
+                            cover=it.get("cover") or post["cover"],
+                            topic=it.get("topic") or f"{b['name']} · {post['topic'].lower()}"))
         else:
             out.append(dict(it))
     return out
@@ -116,15 +118,19 @@ def _colour_pages(b, hub, colours):
             dict(q=f"{c['title']}: насколько редкий окрас?",
                  a=f"{c['facts'][0]['value']}. Расскажем, есть ли сейчас такие щенки или когда ждём помёт с этим окрасом."),
             dict(q="Изменится ли окрас с возрастом?",
-                 a=f"{c['facts'][1]['value']}. Окончательный оттенок видно ближе к году — каким он станет, подскажем по родителям щенка."),
+                 a=f"{c['facts'][1]['value']}. Каким станет окрас взрослой собаки, подскажем по родителям щенка."),
             dict(q=f"Сколько стоит {low}?",
-                 a="Цена зависит от поколения, размера, пола и родителей щенка. Пришлём цену щенков этого окраса за 15 минут после заявки."),
+                 a=f"Цена зависит от {hub.get('colour_price') or 'поколения, размера, пола и родителей щенка'}. "
+                   "Пришлём цену щенков этого окраса за 15 минут после заявки."),
             dict(q=f"Можно ли заказать {c['pick']}?",
                  a="Да. Оставьте заявку — подберём щенка из текущих помётов или запишем в лист ожидания и напишем, когда появится малыш этого окраса."),
         ]
         faq = [dict(q=Markup("<span>") + nobr(f["q"]) + Markup("</span>"), a=nobr(f["a"])) for f in faq]
         pups = [p for p in sort_puppies(b["puppies"]) if p["colour"].lower().split(" (")[0] == c["label"].lower()]
-        title = f"{c['title']} — купить щенка в Москве | домщенков.рф"
+        # <title> ≤ 60 characters: the long colour names («Бордер-колли мраморный триколор») get a shorter tail
+        title = next(t for t in (f"{c['title']} — купить щенка в Москве | домщенков.рф",
+                                 f"{c['title']} — щенки в Москве | домщенков.рф",
+                                 f"{c['title']} | домщенков.рф") if len(t) <= 60 or t.startswith(f"{c['title']} |"))
         desc = (f"{c['title']}: {str(c['short'] or '').lower()}. {c['facts'][0]['value']}. Фото и описание окраса, "
                 f"щенки в наличии, видео и цена за 15 минут.")
         if len(desc) > 160:   # без строки о редкости

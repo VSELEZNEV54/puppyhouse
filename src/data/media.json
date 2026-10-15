@@ -1,5 +1,5 @@
 {
-  "_note": "Photo and video sets for ui media carousels (macros/media.html.j2). maltipu: the client's live photos and video (tools/yadisk-pick.json, 15.10); other sets — PLACEHOLDERS: existing photos stand in for real shots; kind=video items have no file yet (\"video\": null → the lightbox says «Видео появится здесь»). When the client sends videos, put the .mp4 path into \"video\" and a frame into \"src\". pos = object-position for the 9:16 crop. READ-ONLY for page groups (pick a set or build your own list in the route).",
+  "_note": "Photo and video sets for ui media carousels (macros/media.html.j2). breed sets (maltipu, francuzskij-buldog, toj-pudel, border-kolli): the client's live photos (tools/yadisk-pick.json, 15.10), maltipu also a video; home — PLACEHOLDERS: existing photos stand in for real shots; kind=video items without a file (\"video\": null → the lightbox says «Видео появится здесь»). When the client sends videos, put the .mp4 path into \"video\" and a frame into \"src\". pos = object-position for the 9:16 crop. READ-ONLY for page groups (pick a set or build your own list in the route).",
   "home": [
     {
       "src": "/assets/img/hero-maltipu-sofa.jpg",
@@ -167,150 +167,302 @@
   ],
   "francuzskij-buldog": [
     {
-      "src": "/assets/img/studio-buldog-blue.jpg",
-      "kind": "video",
-      "alt": "Палевый щенок французского бульдога на голубом фоне",
-      "caption": "Палевый француз",
-      "video": null
-    },
-    {
-      "src": "/assets/img/pup-buldog-cream.jpg",
+      "src": "/assets/img/cl-buldog-53.jpg",
       "kind": "photo",
-      "alt": "Кремовый щенок французского бульдога в светлой квартире",
-      "caption": "Кремовый окрас"
+      "alt": "Голубой щенок французского бульдога сидит на светлом фоне",
+      "caption": "Голубой француз"
     },
     {
-      "src": "/assets/img/color-buldog-brindle.jpg",
-      "kind": "video",
-      "alt": "Тигровый щенок французского бульдога на голубом фоне",
-      "caption": "Тигровый окрас",
-      "video": null
-    },
-    {
-      "src": "/assets/img/grad-family-buldog.jpg",
+      "src": "/assets/img/cl-buldog-47.jpg",
       "kind": "photo",
-      "alt": "Семья с дочкой и щенком французского бульдога на диване",
-      "caption": "В новой семье",
-      "pos": "50% 50%"
+      "alt": "Палевый щенок французского бульдога с плюшевым тапком",
+      "caption": "Палевый окрас"
     },
     {
-      "src": "/assets/img/color-buldog-pied.jpg",
-      "kind": "video",
-      "alt": "Пегий щенок французского бульдога на голубом фоне",
+      "src": "/assets/img/cl-buldog-8.jpg",
+      "kind": "photo",
+      "alt": "Кремовый щенок французского бульдога отдыхает на подушке",
+      "caption": "На любимой подушке",
+      "pos": "60% 50%"
+    },
+    {
+      "src": "/assets/img/pup-buldog-19.jpg",
+      "kind": "photo",
+      "alt": "Голубой щенок французского бульдога на коленях у хозяйки",
+      "caption": "На коленях"
+    },
+    {
+      "src": "/assets/img/cl-buldog-49.jpg",
+      "kind": "photo",
+      "alt": "Палевый щенок французского бульдога идёт к мячику",
+      "caption": "Игра с мячиком",
+      "pos": "62% 50%"
+    },
+    {
+      "src": "/assets/img/cl-buldog-12.jpg",
+      "kind": "photo",
+      "alt": "Голубой щенок французского бульдога рядом с красной машинкой",
+      "caption": "С новой игрушкой",
+      "pos": "62% 50%"
+    },
+    {
+      "src": "/assets/img/pup-buldog-9.jpg",
+      "kind": "photo",
+      "alt": "Палевый щенок французского бульдога на руках",
+      "caption": "Знакомство",
+      "pos": "50% 40%"
+    },
+    {
+      "src": "/assets/img/cl-buldog-48.jpg",
+      "kind": "photo",
+      "alt": "Чёрно-подпалый щенок французского бульдога сидит на светлом фоне",
+      "caption": "Чёрный с подпалом"
+    },
+    {
+      "src": "/assets/img/ab-buldog-27.jpg",
+      "kind": "photo",
+      "alt": "Голубой щенок французского бульдога спит на мягком пледе",
+      "caption": "Тихий час"
+    },
+    {
+      "src": "/assets/img/cl-buldog-79.jpg",
+      "kind": "photo",
+      "alt": "Рыже-палевый щенок французского бульдога на деревянном полу",
+      "caption": "Рыжий оттенок"
+    },
+    {
+      "src": "/assets/img/pup-buldog-5.jpg",
+      "kind": "photo",
+      "alt": "Пегий щенок французского бульдога на руках у дома",
       "caption": "Пегий окрас",
-      "video": null
+      "pos": "50% 30%"
     },
     {
-      "src": "/assets/img/delivery-carrier.jpg",
+      "src": "/assets/img/cl-buldog-54.jpg",
       "kind": "photo",
-      "alt": "Щенок французского бульдога в переноске на сиденье машины",
-      "caption": "Едет домой",
-      "pos": "55% 50%"
+      "alt": "Голубой щенок французского бульдога лежит на светлом фоне",
+      "caption": "Отдых после игры",
+      "pos": "48% 50%"
     },
     {
-      "src": "/assets/img/color-buldog-blue.jpg",
-      "kind": "video",
-      "alt": "Голубой щенок французского бульдога на голубом фоне",
+      "src": "/assets/img/ab-buldog-63.jpg",
+      "kind": "photo",
+      "alt": "Голубой щенок французского бульдога сидит на полу в квартире",
+      "caption": "Дома"
+    },
+    {
+      "src": "/assets/img/pup-buldog-13.jpg",
+      "kind": "photo",
+      "alt": "Палевый щенок французского бульдога на руках у ели",
+      "caption": "На прогулке",
+      "pos": "50% 30%"
+    },
+    {
+      "src": "/assets/img/cl-buldog-51.jpg",
+      "kind": "photo",
+      "alt": "Голубой щенок французского бульдога стоит и смотрит в камеру",
+      "caption": "Первая фотосессия"
+    },
+    {
+      "src": "/assets/img/pup-buldog-62.jpg",
+      "kind": "photo",
+      "alt": "Голубой щенок французского бульдога на руках",
       "caption": "Голубой окрас",
-      "video": null
-    },
-    {
-      "src": "/assets/img/parent-buldog.jpg",
-      "kind": "photo",
-      "alt": "Взрослый палевый французский бульдог на голубом фоне",
-      "caption": "Взрослый француз"
+      "pos": "50% 40%"
     }
   ],
   "toj-pudel": [
     {
-      "src": "/assets/img/studio-pudel-yellow.jpg",
-      "kind": "video",
-      "alt": "Абрикосовый щенок той-пуделя на жёлтом фоне",
-      "caption": "Абрикосовый той-пудель",
-      "video": null
-    },
-    {
-      "src": "/assets/img/grad-woman-pudel.jpg",
+      "src": "/assets/img/pup-pudel-352.jpg",
       "kind": "photo",
-      "alt": "Женщина с той-пуделем в кресле у окна",
-      "caption": "В новой семье",
-      "pos": "50% 50%"
+      "alt": "Абрикосовый щенок той-пуделя сидит в саду",
+      "caption": "Абрикосовый окрас"
     },
     {
-      "src": "/assets/img/color-pudel-black.jpg",
-      "kind": "video",
-      "alt": "Чёрный щенок той-пуделя на жёлтом фоне",
+      "src": "/assets/img/cl-pudel-301.jpg",
+      "kind": "photo",
+      "alt": "Рыжий щенок той-пуделя на бревне в осеннем лесу",
+      "caption": "Прогулка в лесу"
+    },
+    {
+      "src": "/assets/img/cl-pudel-336.jpg",
+      "kind": "photo",
+      "alt": "Коричневый щенок той-пуделя на руках",
+      "caption": "На руках"
+    },
+    {
+      "src": "/assets/img/cl-pudel-278.jpg",
+      "kind": "photo",
+      "alt": "Коричневый щенок той-пуделя с кулоном на светлой драпировке",
+      "caption": "Фотосессия"
+    },
+    {
+      "src": "/assets/img/pup-pudel-341.jpg",
+      "kind": "photo",
+      "alt": "Чёрный щенок той-пуделя на руках в саду",
       "caption": "Чёрный окрас",
-      "video": null
+      "pos": "50% 35%"
     },
     {
-      "src": "/assets/img/vet-check.jpg",
+      "src": "/assets/img/cl-pudel-305.jpg",
       "kind": "photo",
-      "alt": "Ветеринар осматривает щенка той-пуделя",
-      "caption": "Осмотр ветеринара",
-      "pos": "40% 50%"
+      "alt": "Рыжий щенок той-пуделя бежит по поляне",
+      "caption": "Бегом за мячиком",
+      "pos": "62% 50%"
     },
     {
-      "src": "/assets/img/color-pudel-white.jpg",
-      "kind": "video",
-      "alt": "Белый щенок той-пуделя на жёлтом фоне",
-      "caption": "Белый окрас",
-      "video": null
-    },
-    {
-      "src": "/assets/img/color-pudel-chocolate.jpg",
+      "src": "/assets/img/cl-pudel-363.jpg",
       "kind": "photo",
-      "alt": "Шоколадный щенок той-пуделя на жёлтом фоне",
-      "caption": "Шоколадный окрас"
+      "alt": "Рыжий щенок той-пуделя в плетёной корзинке",
+      "caption": "В корзинке"
     },
     {
-      "src": "/assets/img/parent-pudel.jpg",
-      "kind": "video",
-      "alt": "Взрослый рыжий той-пудель на жёлтом фоне",
-      "caption": "Взрослый той-пудель",
-      "video": null
+      "src": "/assets/img/cl-pudel-286.jpg",
+      "kind": "photo",
+      "alt": "Рыжий щенок той-пуделя крупным планом",
+      "caption": "Крупным планом"
+    },
+    {
+      "src": "/assets/img/pup-pudel-258.jpg",
+      "kind": "photo",
+      "alt": "Рыжий щенок той-пуделя с голубым бантом",
+      "caption": "С бантом"
+    },
+    {
+      "src": "/assets/img/cl-pudel-296.jpg",
+      "kind": "photo",
+      "alt": "Рыжий щенок той-пуделя сидит на сером диване",
+      "caption": "Рыжий той-пудель"
+    },
+    {
+      "src": "/assets/img/ab-pudel-360.jpg",
+      "kind": "photo",
+      "alt": "Рыжий щенок той-пуделя на мягком пледе",
+      "caption": "Тёплый плед",
+      "pos": "60% 50%"
+    },
+    {
+      "src": "/assets/img/pup-pudel-308.jpg",
+      "kind": "photo",
+      "alt": "Рыжий щенок той-пуделя среди плюшевых игрушек",
+      "caption": "С игрушками",
+      "pos": "60% 50%"
+    },
+    {
+      "src": "/assets/img/cl-pudel-281.jpg",
+      "kind": "photo",
+      "alt": "Рыжий щенок той-пуделя стоит на диване",
+      "caption": "Первые шаги"
+    },
+    {
+      "src": "/assets/img/cl-pudel-300.jpg",
+      "kind": "photo",
+      "alt": "Рыжий щенок той-пуделя сидит на осенней траве",
+      "caption": "Осенняя прогулка",
+      "pos": "55% 50%"
+    },
+    {
+      "src": "/assets/img/pup-pudel-334.jpg",
+      "kind": "photo",
+      "alt": "Коричневый щенок той-пуделя стоит на полотенце",
+      "caption": "Коричневый окрас"
     }
   ],
   "border-kolli": [
     {
-      "src": "/assets/img/studio-kolli-green.jpg",
-      "kind": "video",
-      "alt": "Щенок бордер-колли голубого мраморного окраса на мятном фоне",
+      "src": "/assets/img/cl-kolli-140.jpg",
+      "kind": "photo",
+      "alt": "Шоколадно-белый щенок бордер-колли со снегом на ушах",
+      "caption": "Первый снег"
+    },
+    {
+      "src": "/assets/img/cl-kolli-200.jpg",
+      "kind": "photo",
+      "alt": "Чёрно-белый щенок бордер-колли бежит по дорожке",
+      "caption": "Бегом навстречу"
+    },
+    {
+      "src": "/assets/img/pup-kolli-109.jpg",
+      "kind": "photo",
+      "alt": "Щенок бордер-колли голубой мрамор лежит на траве",
       "caption": "Голубой мрамор",
-      "video": null
+      "pos": "55% 50%"
     },
     {
-      "src": "/assets/img/grad-man-kolli.jpg",
+      "src": "/assets/img/cl-kolli-125.jpg",
       "kind": "photo",
-      "alt": "Мужчина играет с бордер-колли в осеннем парке",
-      "caption": "На прогулке",
-      "pos": "62% 50%"
+      "alt": "Чёрно-белый щенок бордер-колли прыгает в снегу",
+      "caption": "Игра в снегу"
     },
     {
-      "src": "/assets/img/color-kolli-red.jpg",
-      "kind": "video",
-      "alt": "Красно-белый щенок бордер-колли на мятном фоне",
-      "caption": "Красно-белый окрас",
-      "video": null
-    },
-    {
-      "src": "/assets/img/color-kolli-tricolor.jpg",
+      "src": "/assets/img/cl-kolli-143.jpg",
       "kind": "photo",
-      "alt": "Щенок бордер-колли окраса триколор на мятном фоне",
-      "caption": "Триколор"
+      "alt": "Щенок бордер-колли голубой мрамор на руках",
+      "caption": "На руках"
     },
     {
-      "src": "/assets/img/parent-kolli.jpg",
-      "kind": "video",
-      "alt": "Взрослый чёрно-белый бордер-колли на мятном фоне",
-      "caption": "Взрослый бордер-колли",
-      "video": null
-    },
-    {
-      "src": "/assets/img/breed-border-kolli.jpg",
+      "src": "/assets/img/pup-kolli-112.jpg",
       "kind": "photo",
-      "alt": "Чёрно-белый щенок бордер-колли в траве на закате",
-      "caption": "На закате"
+      "alt": "Трёхцветный щенок бордер-колли сидит на траве",
+      "caption": "Трёхцветный окрас"
+    },
+    {
+      "src": "/assets/img/cl-kolli-173.jpg",
+      "kind": "photo",
+      "alt": "Чёрно-белый щенок бордер-колли бежит по осенним листьям",
+      "caption": "Осенняя прогулка"
+    },
+    {
+      "src": "/assets/img/cl-kolli-181.jpg",
+      "kind": "photo",
+      "alt": "Щенок бордер-колли красный мрамор рядом с овцами",
+      "caption": "Знакомство с овцами",
+      "pos": "40% 50%"
+    },
+    {
+      "src": "/assets/img/pup-kolli-107.jpg",
+      "kind": "photo",
+      "alt": "Щенок бордер-колли красный мрамор с голубыми глазами",
+      "caption": "Красный мрамор",
+      "pos": "55% 50%"
+    },
+    {
+      "src": "/assets/img/cl-kolli-124.jpg",
+      "kind": "photo",
+      "alt": "Чёрно-белый щенок бордер-колли на заснеженной дорожке",
+      "caption": "Зимняя прогулка"
+    },
+    {
+      "src": "/assets/img/cl-kolli-206.jpg",
+      "kind": "photo",
+      "alt": "Пушистый чёрно-белый щенок бордер-колли сидит на траве",
+      "caption": "Чёрно-белый окрас"
+    },
+    {
+      "src": "/assets/img/pup-kolli-186.jpg",
+      "kind": "photo",
+      "alt": "Щенок бордер-колли голубой мрамор в соломе",
+      "caption": "Весёлый характер",
+      "pos": "60% 50%"
+    },
+    {
+      "src": "/assets/img/cl-kolli-100.jpg",
+      "kind": "photo",
+      "alt": "Щенок бордер-колли голубой мрамор бежит по дороге",
+      "caption": "Всегда в движении"
+    },
+    {
+      "src": "/assets/img/cl-kolli-118.jpg",
+      "kind": "photo",
+      "alt": "Рыже-белый щенок бордер-колли сидит на дорожке",
+      "caption": "Рыже-белый окрас"
+    },
+    {
+      "src": "/assets/img/pup-kolli-149.jpg",
+      "kind": "photo",
+      "alt": "Рыже-белый щенок бордер-колли отдыхает дома",
+      "caption": "Дома",
+      "pos": "55% 50%"
     }
   ]
 }

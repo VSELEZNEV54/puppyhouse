@@ -499,5 +499,54 @@
     "w": 1024,
     "h": 1024,
     "about": "Бордер-колли, лиловый, идёт к камере, мятный фон"
+  },
+  {
+    "name": "buldog-kit",
+    "url": "https://www.figma.com/api/mcp/asset/8d8ff53e-1aa1-4522-928d-968e135b45ba.png",
+    "w": 1536,
+    "h": 1024,
+    "about": "Палевый щенок французского бульдога на лежанке, рядом корм, игрушка, миска и документы"
+  },
+  {
+    "name": "buldog-vet",
+    "url": "https://www.figma.com/api/mcp/asset/08b09a3b-e406-41bc-8fb7-b127b48ca3af.png",
+    "w": 1536,
+    "h": 1024,
+    "about": "Ветеринар осматривает голубого щенка французского бульдога"
+  },
+  {
+    "name": "pudel-kit",
+    "url": "https://www.figma.com/api/mcp/asset/ca627b7b-cf66-4626-b661-28a3265df605.png",
+    "w": 1536,
+    "h": 1024,
+    "about": "Абрикосовый той-пудель на лежанке, рядом корм, игрушка, миска и документы"
+  },
+  {
+    "name": "pudel-carrier",
+    "url": "https://www.figma.com/api/mcp/asset/3518201d-60ca-4dc2-af9d-00a513e92849.png",
+    "w": 1536,
+    "h": 1024,
+    "about": "Чёрный той-пудель в переноске на заднем сиденье авто"
+  },
+  {
+    "name": "kolli-kit",
+    "url": "https://www.figma.com/api/mcp/asset/9162822b-b8c0-479a-9925-e76fc66af81e.png",
+    "w": 1536,
+    "h": 1024,
+    "about": "Чёрно-белый щенок бордер-колли на лежанке, рядом корм, игрушка, миска и документы"
+  },
+  {
+    "name": "kolli-vet",
+    "url": "https://www.figma.com/api/mcp/asset/e82dc2d4-89e0-4d27-8209-358d8748cbb8.png",
+    "w": 1536,
+    "h": 1024,
+    "about": "Ветеринар осматривает щенка бордер-колли голубой мрамор"
+  },
+  {
+    "name": "kolli-carrier",
+    "url": "https://www.figma.com/api/mcp/asset/481368c0-1164-4c9f-a6c3-b09e64ccd4a4.png",
+    "w": 1536,
+    "h": 1024,
+    "about": "Красно-белый щенок бордер-колли в автолежанке на заднем сиденье"
   }
 ]
