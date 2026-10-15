@@ -107,6 +107,46 @@ def _teasers(items, data, b):
     return out
 
 
+def _colour_pages(b, hub, colours):
+    """/<breed>/<colour>/ for every colour of a v2 breed page — one template, copy from breedsub.json."""
+    out = []
+    for c in colours:
+        low = c["title"][:1].lower() + c["title"][1:]
+        faq = [
+            dict(q=f"{c['title']}: насколько редкий окрас?",
+                 a=f"{c['facts'][0]['value']}. Расскажем, есть ли сейчас такие щенки или когда ждём помёт с этим окрасом."),
+            dict(q="Изменится ли окрас с возрастом?",
+                 a=f"{c['facts'][1]['value']}. Окончательный оттенок видно ближе к году — каким он станет, подскажем по родителям щенка."),
+            dict(q=f"Сколько стоит {low}?",
+                 a="Цена зависит от поколения, размера, пола и родителей щенка. Пришлём цену щенков этого окраса за 15 минут после заявки."),
+            dict(q=f"Можно ли заказать {c['pick']}?",
+                 a="Да. Оставьте заявку — подберём щенка из текущих помётов или запишем в лист ожидания и напишем, когда появится малыш этого окраса."),
+        ]
+        faq = [dict(q=Markup("<span>") + nobr(f["q"]) + Markup("</span>"), a=nobr(f["a"])) for f in faq]
+        pups = [p for p in sort_puppies(b["puppies"]) if p["colour"].lower().split(" (")[0] == c["label"].lower()]
+        title = f"{c['title']} — купить щенка в Москве | домщенков.рф"
+        desc = (f"{c['title']}: {str(c['short'] or '').lower()}. {c['facts'][0]['value']}. Фото и описание окраса, "
+                f"щенки в наличии, видео и цена за 15 минут.")
+        if len(desc) > 160:   # без строки о редкости
+            desc = f"{c['title']}: {str(c['short'] or '').lower()}. Фото и описание окраса, щенки в наличии, видео и цена за 15 минут."
+        out.append(dict(
+            url=f"{b['urls']['hub']}{c['slug']}/",
+            template="breeds/colour.html.j2",
+            context=dict(
+                title=title,
+                description=desc,
+                breadcrumbs=crumbs((b["name"], b["urls"]["hub"]), (c["title"], None)),
+                b=b, hub=hub, c=c,
+                others=[o for o in colours if o["slug"] != c["slug"]],
+                pups=pups,
+                faq=faq,
+                pups_strip=False,
+                lead_breed=b["slug"],
+            ),
+        ))
+    return out
+
+
 def _lower(name):
     """«Той-пудель» → «той-пудель» inside a title: «Чем хорош той-пудель»."""
     return name[:1].lower() + name[1:]
@@ -145,6 +185,7 @@ def routes(data):
                     lead_breed=b["slug"],
                 ),
             ))
+            out += _colour_pages(b, hub, colours)
             continue
         hub = copy_markup(own)
 

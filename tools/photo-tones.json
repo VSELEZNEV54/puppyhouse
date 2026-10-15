@@ -54,28 +54,6 @@
   "floor": "#C2DAC7",
   "floor_line": 0.78
  },
- "color-maltipu-apricot": {
-  "size": [
-   1024,
-   1024
-  ],
-  "top": "#F8C49F",
-  "wall": "#F7C19A",
-  "wall_right": "#F8C49D",
-  "floor": "#FDD3B0",
-  "floor_line": 0.85
- },
- "color-maltipu-black": {
-  "size": [
-   1024,
-   1024
-  ],
-  "top": "#F3BF99",
-  "wall": "#F6C199",
-  "wall_right": "#F4BF97",
-  "floor": "#FED4B3",
-  "floor_line": 0.71
- },
  "color-maltipu-chocolate": {
   "size": [
    1024,
@@ -98,17 +76,6 @@
   "floor": "#FBCBA7",
   "floor_line": 0.77
  },
- "color-maltipu-phantom": {
-  "size": [
-   1024,
-   1024
-  ],
-  "top": "#F3BE99",
-  "wall": "#F7C299",
-  "wall_right": "#F4BC97",
-  "floor": "#FED4B2",
-  "floor_line": 0.82
- },
  "color-maltipu-red": {
   "size": [
    1024,
@@ -119,39 +86,6 @@
   "wall_right": "#EEB88E",
   "floor": "#FED5B2",
   "floor_line": 0.87
- },
- "color-maltipu-sable": {
-  "size": [
-   1024,
-   1024
-  ],
-  "top": "#F5C19A",
-  "wall": "#F6C199",
-  "wall_right": "#F7C299",
-  "floor": "#FFD4B2",
-  "floor_line": 0.75
- },
- "color-maltipu-silver": {
-  "size": [
-   1024,
-   1024
-  ],
-  "top": "#F6C09A",
-  "wall": "#F6C199",
-  "wall_right": "#F7C29A",
-  "floor": "#FDD4B2",
-  "floor_line": 0.72
- },
- "color-maltipu-white": {
-  "size": [
-   1024,
-   1024
-  ],
-  "top": "#F6C29C",
-  "wall": "#F6C099",
-  "wall_right": "#F7C29A",
-  "floor": "#FDD3B1",
-  "floor_line": 0.73
  },
  "color-pudel-black": {
   "size": [
@@ -185,6 +119,116 @@
   "wall_right": "#ECC783",
   "floor": "#ECCE92",
   "floor_line": 0.91
+ },
+ "okras-maltipu-abrikosovyj": {
+  "size": [
+   1024,
+   1024
+  ],
+  "top": "#F5BF99",
+  "wall": "#FFCFA9",
+  "wall_right": "#EFB58F",
+  "floor": "#FFDFC2",
+  "floor_line": 0.75
+ },
+ "okras-maltipu-belyj": {
+  "size": [
+   1024,
+   1024
+  ],
+  "top": "#F8C49E",
+  "wall": "#FDCBA4",
+  "wall_right": "#F1BA94",
+  "floor": "#FFE2C5",
+  "floor_line": 0.75
+ },
+ "okras-maltipu-chernyj": {
+  "size": [
+   1024,
+   1024
+  ],
+  "top": "#F8C59E",
+  "wall": "#FAC8A1",
+  "wall_right": "#F3BF97",
+  "floor": "#FFE0C3",
+  "floor_line": 0.73
+ },
+ "okras-maltipu-fantom": {
+  "size": [
+   1024,
+   1024
+  ],
+  "top": "#F4BD94",
+  "wall": "#FCCBA4",
+  "wall_right": "#F0BA92",
+  "floor": "#FFDEBC",
+  "floor_line": 0.75
+ },
+ "okras-maltipu-kremovyj": {
+  "size": [
+   1024,
+   1024
+  ],
+  "top": "#F6C49D",
+  "wall": "#FAC9A2",
+  "wall_right": "#F1BC94",
+  "floor": "#FFDDBA",
+  "floor_line": 0.78
+ },
+ "okras-maltipu-partikolor": {
+  "size": [
+   1024,
+   1024
+  ],
+  "top": "#F6C6A1",
+  "wall": "#FAC8A0",
+  "wall_right": "#F2BC95",
+  "floor": "#FFD9B8",
+  "floor_line": 0.73
+ },
+ "okras-maltipu-ryzhij": {
+  "size": [
+   1024,
+   1024
+  ],
+  "top": "#F6C5A2",
+  "wall": "#FCCCA6",
+  "wall_right": "#F0B890",
+  "floor": "#FFDDBC",
+  "floor_line": 0.79
+ },
+ "okras-maltipu-serebristyj": {
+  "size": [
+   1024,
+   1024
+  ],
+  "top": "#F7C29A",
+  "wall": "#F3BD95",
+  "wall_right": "#FAC8A2",
+  "floor": "#FDCFA8",
+  "floor_line": 0.72
+ },
+ "okras-maltipu-shokoladnyj": {
+  "size": [
+   1024,
+   1024
+  ],
+  "top": "#F7C6A1",
+  "wall": "#FECDA7",
+  "wall_right": "#EEB790",
+  "floor": "#FFE4C7",
+  "floor_line": 0.76
+ },
+ "okras-maltipu-sobolinyj": {
+  "size": [
+   1024,
+   1024
+  ],
+  "top": "#F8C49C",
+  "wall": "#FBCAA3",
+  "wall_right": "#F3BB95",
+  "floor": "#FFDEC0",
+  "floor_line": 0.72
  },
  "parent-buldog": {
   "size": [

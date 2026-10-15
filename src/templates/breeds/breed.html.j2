@@ -2,11 +2,13 @@
     Context (routes/breeds.py): b (breed), hub (copy, Markup), common (copy shared by the breed pages), reel (photo / video
     carousel), pups (every puppy of the breed, sorted), colours (breedsub.colour_items, all with photos), band_faces, posts.
     Order: full-screen hero («Щенки в наличии» + «Получить консультацию») → the breed's puppies → photo / video carousel and
-    the lead band (homepage size) → colour cards to scroll through («Подобрать кремового мальтипу») → «Какой он» →
+    the lead band (homepage size) → colour cards to scroll through («Подобрать кремового мальтипу» + «Подробнее» → the
+    colour page /<breed>/<colour>/, breeds/colour.html.j2) → «Какой он» →
     «Как мы отдаём щенка» (what travels with the puppy + documents, guarantee, delivery, price) → FAQ → articles about the
     breed → SEO text and the lead form with contact tiles, as on the homepage. body.page-breed: coral main buttons and the
     homepage-size carousel / SEO text (main.css). -#}
 {% extends "layouts/page.html.j2" %}
+{% import "breeds/_parts.html.j2" as part %}
 
 {% block body_attrs %} class="page-breed"{% endblock %}
 
@@ -32,7 +34,7 @@
       <ul class="pups" data-reveal="items">
         {% for p in pups %}
         <li class="pups__item">
-          {{ cards.puppy_card(p) }}
+          {{ cards.puppy_card(p, simple=true) }}
         </li>
         {% endfor %}
         <li class="pups__more pups__more--fill" style="--s4:{{ 4 - n % 4 }};--s3:{{ 3 - n % 3 }};--s2:{{ 2 - n % 2 }}">
@@ -49,35 +51,10 @@
       {{ ui.lead_band(title=hub.band.title, line=hub.band.line, faces=band_faces, note='Видеозвонок: ' ~ b.name|lower) }}
     {% endcall %}
 
-    <!-- ================= ОКРАСЫ — карточки листаются, у каждой «Подобрать …» ================= -->
-    {%- set nc = colours|length %}
+    <!-- ================= ОКРАСЫ — карточки листаются: «Подобрать …» и «Подробнее» (страница окраса) ================= -->
     <section class="section container" id="okrasy" aria-labelledby="okrasy-title">
-      {{ ui.section_head(hub.colours_title, id='okrasy-title', lead=hub.colours_lead, link={'url': b.urls.varieties ~ '#okrasy', 'label': 'Все окрасы подробно'}) }}
-      <div class="media-carousel brd-cols" data-carousel data-align="start" data-start="0" role="region" aria-roledescription="карусель" aria-label="{{ hub.colours_title|striptags }}">
-        <div class="media-carousel__viewport" tabindex="0" data-carousel-viewport>
-          <ul class="media-carousel__track">
-            {% for c in colours %}
-            <li class="media-carousel__item{{ ' is-active' if loop.first }}" aria-roledescription="слайд" aria-label="{{ loop.index }} из {{ nc }}: {{ c.label }}">
-              <article class="brd-col">
-                {%- set size = imgsize(c.photo.src) %}
-                <div class="brd-col__media" style="{{ tone_style(c.photo.src) }}">
-                  <img src="{{ c.photo.src }}" alt="{{ c.photo.alt|typo }}" width="{{ size[0] }}" height="{{ size[1] }}" loading="lazy" decoding="async">
-                </div>
-                <div class="brd-col__body">
-                  <h3 class="brd-col__name">{{ c.name|typo }}</h3>
-                  <p class="brd-col__text">{{ c.text|typo }}</p>
-                  <button class="btn btn--ink brd-col__btn" type="button" data-open-modal data-modal-breed="{{ b.name }}" data-modal-title="Подберём {{ c.pick }}" data-modal-sub="Пришлём щенков этого окраса с фото, видео и ценой. Нет сейчас — напишем, когда появятся" data-modal-note="Окрас: {{ c.label|lower }}" data-modal-submit="Подобрать щенка">Подобрать {{ c.pick|typo }}</button>
-                </div>
-              </article>
-            </li>
-            {% endfor %}
-          </ul>
-        </div>
-        <div class="media-carousel__nav">
-          <button class="media-carousel__btn" type="button" data-carousel-prev aria-label="Предыдущий окрас">{{ ui.icon('arrow', cls='i--flip') }}</button>
-          <button class="media-carousel__btn" type="button" data-carousel-next aria-label="Следующий окрас">{{ ui.icon('arrow') }}</button>
-        </div>
-      </div>
+      {% call ui.section_head(hub.colours_title, id='okrasy-title', lead=hub.colours_lead) %}{{ part.colour_consult(b) }}{% endcall %}
+      {{ part.colour_carousel(colours, b, label=hub.colours_title|striptags) }}
     </section>
 
     <!-- ================= КАКОЙ ОН ================= -->
@@ -120,7 +97,6 @@
           {%- set size = imgsize(t.photo.src) %}
           <div class="brd-give__media"><img src="{{ t.photo.src }}" alt="{{ t.photo.alt|typo }}" width="{{ size[0] }}" height="{{ size[1] }}"{% if t.photo.get('pos') %} style="object-position:{{ t.photo.pos }}"{% endif %} loading="lazy" decoding="async"></div>
           <div class="brd-give__body">
-            {{ ui.ico(t.icon, t.color) }}
             <h3 class="brd-give__title">{{ t.title|typo }}</h3>
             <p class="brd-give__line">{{ t.line|typo }}</p>
             {% if t.get('price') %}

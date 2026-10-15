@@ -1,0 +1,83 @@
+{#- Colour page of a breed, /<breed>/<colour>/ (client 15.10: «Подробнее» in the colour cards of the breed page v2).
+    One template for every colour; copy in breedsub.json → <breed> → varieties → the colours block (title, text, short,
+    rarity / age / nose, about, care). Context (routes/breeds.py): b, c (this colour, breedsub.colour_items), others (the
+    other colours), pups (puppies of this colour, simple cards), faq, hub (the breed page copy).
+    Order: hero (photo of the colour, three facts, «Подобрать …» + «Получить консультацию») → «Особенности окраса» (text,
+    care, «Подобрать …») → puppies of this colour or a waiting-list band → the other colours → FAQ → lead form with contact tiles. -#}
+{% extends "layouts/page.html.j2" %}
+{% import "breeds/_parts.html.j2" as part %}
+
+{% block body_attrs %} class="page-breed"{% endblock %}
+
+{% block page_css %}
+  <link rel="stylesheet" href="/assets/css/breeds.css">
+{% endblock %}
+
+{% block hero %}
+    {%- set size = imgsize(c.photo.src) %}
+    {% call ui.page_hero(c.title, lead=c.text, tone=b.tone, photo={'src': c.photo.src, 'w': size[0], 'h': size[1], 'alt': c.photo.alt}, eyebrow='Окрасы ' ~ b.name_gen, facts=c.facts) %}
+      <button class="btn btn--ink btn--lg" type="button" data-open-modal data-modal-breed="{{ b.name }}" data-modal-title="Подберём {{ c.pick }}" data-modal-sub="Пришлём щенков этого окраса с фото, видео и ценой. Нет сейчас — напишем, когда появятся" data-modal-note="Окрас: {{ c.label|lower }}" data-modal-submit="Подобрать щенка">Подобрать {{ c.pick|typo }}</button>
+      <button class="btn btn--white btn--lg" type="button" data-open-modal data-modal-breed="{{ b.name }}" data-modal-title="{{ hub.consult.label }}" data-modal-sub="{{ hub.consult.sub }}" data-modal-note="Консультация: {{ c.title|lower }}" data-modal-submit="{{ hub.consult.label }}" data-modal-done="{{ hub.consult.done }}">{{ hub.consult.label }}</button>
+    {% endcall %}
+{% endblock %}
+
+{% block body %}
+    <!-- ================= ОСОБЕННОСТИ ОКРАСА ================= -->
+    <section class="section container" id="ob-okrase" aria-labelledby="ob-okrase-title">
+      {{ ui.section_head('Особенности окраса', id='ob-okrase-title') }}
+      <div class="brd-colinfo">
+        <div class="brd-colinfo__text prose">
+          {% for para in c.about %}<p>{{ para|typo }}</p>{% endfor %}
+        </div>
+        <div class="brd-colinfo__side">
+          <div class="brd-colinfo__cta">
+            <h3 class="brd-colinfo__cta-title">Хотите {{ c.pick|typo }}?</h3>
+            <p class="brd-colinfo__cta-text">Пришлём щенков этого окраса с&nbsp;фото, видео и&nbsp;ценой или запишем в&nbsp;лист ожидания</p>
+            <button class="btn btn--ink" type="button" data-open-modal data-modal-breed="{{ b.name }}" data-modal-title="Подберём {{ c.pick }}" data-modal-sub="Пришлём щенков этого окраса с фото, видео и ценой. Нет сейчас — напишем, когда появятся" data-modal-note="Окрас: {{ c.label|lower }}" data-modal-submit="Подобрать щенка">Подобрать {{ c.pick|typo }}</button>
+          </div>
+          {% if c.care %}
+          <div class="brd-colinfo__care">
+            {{ ui.ico('scissors', 'mint', sm=true) }}
+            <div>
+              <h3 class="brd-colinfo__care-title">Уход за&nbsp;шерстью</h3>
+              <p class="brd-colinfo__care-text">{{ c.care|typo }}</p>
+            </div>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= ЩЕНКИ ЭТОГО ОКРАСА или лист ожидания ================= -->
+    <section class="section container" id="shchenki" aria-labelledby="shchenki-title">
+      {% if pups %}
+      {{ ui.section_head(c.title ~ ' в наличии', id='shchenki-title', lead='Цену и свежее видео пришлём за 15 минут') }}
+      {%- set n = pups|length %}
+      <ul class="pups" data-reveal="items">
+        {% for p in pups %}
+        <li class="pups__item">{{ cards.puppy_card(p, simple=true) }}</li>
+        {% endfor %}
+        <li class="pups__more pups__more--fill" style="--s4:{{ 4 - n % 4 }};--s3:{{ 3 - n % 3 }};--s2:{{ 2 - n % 2 }}">
+          {{ cards.soon_tile(title='Нужен другой щенок?', breed=b) }}
+        </li>
+      </ul>
+      {% else %}
+      {{ ui.lead_band(title=c.title ~ ' — по записи', line='Сейчас таких щенков нет. Запишем в лист ожидания и напишем, когда появится малыш этого окраса', label='Записаться', tag='h2', title_id='shchenki-title', faces=[{'src': c.photo.src, 'tone': b.tone}], note='Лист ожидания: ' ~ c.label|lower, modal_title='Подберём ' ~ c.pick, submit='Записаться', done='Вы в листе ожидания. Куратор напишет, когда появится щенок этого окраса.') }}
+      {% endif %}
+    </section>
+
+    <!-- ================= ДРУГИЕ ОКРАСЫ ================= -->
+    <section class="section container" id="okrasy" aria-labelledby="okrasy-title">
+      {% call ui.section_head('Другие окрасы ' ~ b.name_gen, id='okrasy-title') %}{{ part.colour_consult(b) }}{% endcall %}
+      {{ part.colour_carousel(others, b, label='Другие окрасы ' ~ b.name_gen) }}
+    </section>
+
+    <!-- ================= ВОПРОСЫ ================= -->
+    {{ blocks.faq_section(faq, title='Вопросы об окрасе', link={'url': b.urls.hub ~ '#faq', 'label': 'Все вопросы о ' ~ b.name_gen}) }}
+{% endblock %}
+
+{% block lead %}
+    {% call forms.lead_form(title='Подберём ' ~ c.pick, line='Пришлём щенков этого окраса с фото, видео и ценой', breed=b.slug, contacts=false, cls='hm-lead') %}
+      {{ forms.contact_tiles() }}
+    {% endcall %}
+{% endblock %}
