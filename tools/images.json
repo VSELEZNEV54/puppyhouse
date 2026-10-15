@@ -345,5 +345,159 @@
     "w": 1264,
     "h": 848,
     "about": "Абрикосовый мальтипу в переноске на заднем сиденье авто"
+  },
+  {
+    "name": "colsrc-maltipu-ryzhij",
+    "url": "https://www.figma.com/api/mcp/asset/f04aa799-a0d1-45ae-82d0-557d360f5b6d.png",
+    "w": 1024,
+    "h": 1024,
+    "about": "Мальтипу, рыжий, стоит боком, персиковый фон"
+  },
+  {
+    "name": "colsrc-maltipu-shokoladnyj",
+    "url": "https://www.figma.com/api/mcp/asset/0ce63cce-d344-42dc-bb8c-cd3de044cce2.png",
+    "w": 1024,
+    "h": 1024,
+    "about": "Мальтипу, шоколадный, оглядывается через плечо, персиковый фон"
+  },
+  {
+    "name": "colsrc-buldog-palevyj",
+    "url": "https://www.figma.com/api/mcp/asset/69463b37-e7e5-418e-a96b-218d3f5af087.png",
+    "w": 1024,
+    "h": 1024,
+    "about": "Французский бульдог, палевый, наклонил голову, голубой фон"
+  },
+  {
+    "name": "colsrc-buldog-tigrovyj",
+    "url": "https://www.figma.com/api/mcp/asset/84436bba-64de-4ced-a166-757307f64b82.png",
+    "w": 1024,
+    "h": 1024,
+    "about": "Французский бульдог, тигровый, лежит, голубой фон"
+  },
+  {
+    "name": "colsrc-buldog-pegij",
+    "url": "https://www.figma.com/api/mcp/asset/deb7d9c8-78ac-45a0-87f6-b796d48d5b23.png",
+    "w": 1024,
+    "h": 1024,
+    "about": "Французский бульдог, пегий, стоит боком, голубой фон"
+  },
+  {
+    "name": "colsrc-buldog-goluboj",
+    "url": "https://www.figma.com/api/mcp/asset/a1d766e3-3e0a-4aa5-9942-904ec6c251cc.png",
+    "w": 1024,
+    "h": 1024,
+    "about": "Французский бульдог, голубой, смотрит в сторону, голубой фон"
+  },
+  {
+    "name": "colsrc-buldog-kremovyj",
+    "url": "https://www.figma.com/api/mcp/asset/61ba3b7c-f8ab-4e2b-997d-7c67f4d6ea24.png",
+    "w": 1024,
+    "h": 1024,
+    "about": "Французский бульдог, кремовый, лежит на боку, голубой фон"
+  },
+  {
+    "name": "colsrc-buldog-shokoladnyj",
+    "url": "https://www.figma.com/api/mcp/asset/a876f023-5e86-4b80-bb01-c34996637801.png",
+    "w": 1024,
+    "h": 1024,
+    "about": "Французский бульдог, шоколадный, оглядывается, голубой фон"
+  },
+  {
+    "name": "colsrc-buldog-mramornyj",
+    "url": "https://www.figma.com/api/mcp/asset/c64f7428-b8a3-433f-a9f6-fbc0366ad6f7.png",
+    "w": 1024,
+    "h": 1024,
+    "about": "Французский бульдог, мерль, поднял лапу, голубой фон"
+  },
+  {
+    "name": "colsrc-pudel-abrikosovyj",
+    "url": "https://www.figma.com/api/mcp/asset/01661b5b-22a0-4c4e-8154-ac39a1d04381.png",
+    "w": 1024,
+    "h": 1024,
+    "about": "Той-пудель, абрикосовый, наклонил голову, жёлтый фон"
+  },
+  {
+    "name": "colsrc-pudel-chernyj",
+    "url": "https://www.figma.com/api/mcp/asset/4b77af57-03ab-4db6-bfd0-d1568daf51fe.png",
+    "w": 1024,
+    "h": 1024,
+    "about": "Той-пудель, чёрный, стоит боком, жёлтый фон"
+  },
+  {
+    "name": "colsrc-pudel-belyj",
+    "url": "https://www.figma.com/api/mcp/asset/0469b306-1227-432d-a510-72c147cecaa1.png",
+    "w": 1024,
+    "h": 1024,
+    "about": "Той-пудель, белый, лежит, жёлтый фон"
+  },
+  {
+    "name": "colsrc-pudel-korichnevyj",
+    "url": "https://www.figma.com/api/mcp/asset/7f068deb-7ddc-4f2c-867e-00b740227e83.png",
+    "w": 1024,
+    "h": 1024,
+    "about": "Той-пудель, коричневый, смотрит вверх, жёлтый фон"
+  },
+  {
+    "name": "colsrc-pudel-ryzhij",
+    "url": "https://www.figma.com/api/mcp/asset/a19e04f0-44f0-4e7c-9997-0317707aa18a.png",
+    "w": 1024,
+    "h": 1024,
+    "about": "Той-пудель, рыжий, идёт к камере, жёлтый фон"
+  },
+  {
+    "name": "colsrc-pudel-seryj",
+    "url": "https://www.figma.com/api/mcp/asset/f8115b4f-a540-4b83-bf65-905afd5c88a0.png",
+    "w": 1024,
+    "h": 1024,
+    "about": "Той-пудель, серый, оглядывается, жёлтый фон"
+  },
+  {
+    "name": "colsrc-kolli-goluboj-mramor",
+    "url": "https://www.figma.com/api/mcp/asset/ec67f18e-76d1-4302-8bc7-8a9a327f4c51.png",
+    "w": 1024,
+    "h": 1024,
+    "about": "Бордер-колли, голубой мрамор, наклонил голову, мятный фон"
+  },
+  {
+    "name": "colsrc-kolli-trehcvetnyj",
+    "url": "https://www.figma.com/api/mcp/asset/8c950073-b6f5-4de8-9b96-da11cfc07698.png",
+    "w": 1024,
+    "h": 1024,
+    "about": "Бордер-колли, триколор, лежит, мятный фон"
+  },
+  {
+    "name": "colsrc-kolli-krasno-belyj",
+    "url": "https://www.figma.com/api/mcp/asset/05e77211-db13-480c-995f-13da37b5ddb7.png",
+    "w": 1024,
+    "h": 1024,
+    "about": "Бордер-колли, красно-белый, стоит боком, мятный фон"
+  },
+  {
+    "name": "colsrc-kolli-cherno-belyj",
+    "url": "https://www.figma.com/api/mcp/asset/00083de0-6dbb-4593-9875-d4cedd18775e.png",
+    "w": 1024,
+    "h": 1024,
+    "about": "Бордер-колли, чёрно-белый, смотрит в сторону, мятный фон"
+  },
+  {
+    "name": "colsrc-kolli-krasnyj-mramor",
+    "url": "https://www.figma.com/api/mcp/asset/b880ddbc-63a9-4aad-9283-f71a35b57e84.png",
+    "w": 1024,
+    "h": 1024,
+    "about": "Бордер-колли, красный мрамор, оглядывается, мятный фон"
+  },
+  {
+    "name": "colsrc-kolli-mramornyj-trikolor",
+    "url": "https://www.figma.com/api/mcp/asset/fcb7b398-b01f-40cd-840c-ee9a1af93c91.png",
+    "w": 1024,
+    "h": 1024,
+    "about": "Бордер-колли, мраморный триколор, лежит на боку, мятный фон"
+  },
+  {
+    "name": "colsrc-kolli-lilovyj",
+    "url": "https://www.figma.com/api/mcp/asset/2a74074a-a15b-437e-ad4c-5bd4cb4bf76e.png",
+    "w": 1024,
+    "h": 1024,
+    "about": "Бордер-колли, лиловый, идёт к камере, мятный фон"
   }
 ]
