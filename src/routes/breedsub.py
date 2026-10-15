@@ -119,6 +119,11 @@ def colour_items(b, items, alts=None):
             slug=c["slug"], label=c["name"], name=nobr(c["name"]), text=nobr(c["text"]),
             badge=c["badge"], std=c.get("std"), swatch=c.get("swatch"), photo_note=c.get("photo_note"),
             pick=c.get("pick"),  # «кремового мальтипу» — the CTA of the colour card on the breed page
+            # breed pages v2: the colour's own page /<breed>/<slug>/ (title, one-line card text, facts, about, care)
+            title=c.get("title") or c["name"], short=nobr(c["short"]) if c.get("short") else None,
+            facts=[dict(label=lb, value=c[k]) for k, lb in (("rarity", "Как часто"), ("age", "С возрастом"), ("nose", "Нос и глаза"))
+                   if c.get(k)],
+            about=[nobr(x) for x in c.get("about", [])], care=nobr(c["care"]) if c.get("care") else None,
             photo=dict(src=src, alt=alts.get(src, f"{c['name']} щенок {b['name_gen']}")) if src else None,
         ))
     return out

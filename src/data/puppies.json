@@ -13,26 +13,30 @@
     "badges": ["Родители с РКФ", "Прививки по возрасту", "Ветпаспорт"],
     "weight_forecast": "около [4–5] кг",
     "photos": [
-      { "src": "/assets/img/studio-maltipu-peach.jpg", "w": 1024, "h": 1024, "kind": "studio", "class": null, "backdrop": "token", "alt": "Щенок мальтипу F1 Пломбир, кремовый мальчик" }
+      { "src": "/assets/img/pup-maltipu-408.jpg", "w": 1200, "h": 1600, "kind": "life", "class": null, "alt": "Кремовый щенок мальтипу Пломбир на руках", "pos": "50% 38%" },
+      { "src": "/assets/img/pup-maltipu-412.jpg", "w": 1600, "h": 1200, "kind": "life", "class": null, "alt": "Пломбир сидит на сером диване", "pos": "34% 50%" },
+      { "src": "/assets/img/pup-maltipu-409.jpg", "w": 1600, "h": 1200, "kind": "life", "class": null, "alt": "Кремовый мальтипу Пломбир на диване", "pos": "40% 50%" }
     ],
     "parents": { "mother": { "name": "[кличка мамы]", "breed": "[мальтийская болонка]" }, "father": { "name": "[кличка папы]", "breed": "[той-пудель]" } },
     "video": null
   },
   {
-    "slug": "maltipu-f1b-mini-shokolad-2026-07",
-    "name": "Мокка",
+    "slug": "maltipu-f1b-mini-ryzhij-2026-07",
+    "name": "Ириска",
     "breed": "maltipu",
     "generation": "F1b мини",
     "variety": null,
     "sex": "female",
-    "colour": "шоколадный",
+    "colour": "рыжий",
     "birth_date": "2026-07-20",
     "age_weeks": 12,
     "status": "available",
     "badges": ["Ветпаспорт", "Договор", "Копии родословных породистых предков", "Прививки по возрасту", "Чип"],
     "weight_forecast": "около [3–4] кг",
     "photos": [
-      { "src": "/assets/img/pup-maltipu-chocolate.jpg", "w": 928, "h": 1152, "kind": "life", "class": "pup__img--mokka", "alt": "Шоколадный щенок мальтипу Мокка на вязаном пледе" }
+      { "src": "/assets/img/pup-maltipu-480.jpg", "w": 960, "h": 1280, "kind": "life", "class": null, "alt": "Рыжая малышка мальтипу Ириска в кружевном воротничке", "pos": "50% 40%" },
+      { "src": "/assets/img/pup-maltipu-483.jpg", "w": 960, "h": 1280, "kind": "life", "class": null, "alt": "Ириска на светлой подушке" },
+      { "src": "/assets/img/pup-maltipu-484.jpg", "w": 960, "h": 1280, "kind": "life", "class": null, "alt": "Рыжий щенок мальтипу Ириска" }
     ],
     "parents": { "mother": { "name": "[кличка мамы]", "breed": "[мальтипу F1]" }, "father": { "name": "[кличка папы]", "breed": "[той-пудель]" } },
     "video": null
@@ -200,7 +204,9 @@
     "badges": ["Родители с РКФ", "Прививки по возрасту", "Чип"],
     "weight_forecast": "около [4–5] кг",
     "photos": [
-      { "src": "/assets/img/color-maltipu-red.jpg", "w": 1024, "h": 1024, "kind": "studio", "class": null, "alt": "Рыжий щенок мальтипу F1 Персик на персиковом фоне" }
+      { "src": "/assets/img/pup-maltipu-376.jpg", "w": 1120, "h": 1280, "kind": "life", "class": null, "alt": "Рыжий щенок мальтипу Персик на розовой лежанке", "pos": "50% 38%" },
+      { "src": "/assets/img/pup-maltipu-375.jpg", "w": 960, "h": 1280, "kind": "life", "class": null, "alt": "Персик сидит на розовой лежанке" },
+      { "src": "/assets/img/pup-maltipu-378.jpg", "w": 960, "h": 1280, "kind": "life", "class": null, "alt": "Рыжий мальтипу Персик стоит на лежанке" }
     ],
     "parents": { "mother": { "name": "[кличка мамы]", "breed": "[мальтийская болонка]" }, "father": { "name": "[кличка папы]", "breed": "[той-пудель]" } },
     "video": null
@@ -254,7 +260,9 @@
     "badges": ["Ветпаспорт", "Договор", "Копии родословных породистых предков", "Прививки по возрасту"],
     "weight_forecast": "около [3–4] кг",
     "photos": [
-      { "src": "/assets/img/color-maltipu-parti.jpg", "w": 1024, "h": 1024, "kind": "studio", "class": null, "alt": "Щенок мальтипу F1b Бусинка, белая с чёрными пятнами, на персиковом фоне" }
+      { "src": "/assets/img/pup-maltipu-391.jpg", "w": 1200, "h": 1600, "kind": "life", "class": null, "alt": "Бело-абрикосовая малышка мальтипу Бусинка на розовом пледе", "pos": "50% 40%" },
+      { "src": "/assets/img/pup-maltipu-390.jpg", "w": 1200, "h": 1600, "kind": "life", "class": null, "alt": "Бусинка на розовом пледе" },
+      { "src": "/assets/img/pup-maltipu-392.jpg", "w": 1200, "h": 1600, "kind": "life", "class": null, "alt": "Щенок мальтипу Бусинка, белый с абрикосовыми пятнами" }
     ],
     "parents": { "mother": { "name": "[кличка мамы]", "breed": "[мальтипу F1]" }, "father": { "name": "[кличка папы]", "breed": "[той-пудель]" } },
     "video": null
@@ -272,7 +280,9 @@
     "badges": ["Ветпаспорт", "Договор", "Копии родословных породистых предков", "Прививки по возрасту", "Чип"],
     "weight_forecast": "около [2,5–3,5] кг",
     "photos": [
-      { "src": "/assets/img/gift-maltipu.jpg", "w": 928, "h": 1152, "kind": "life", "class": null, "alt": "Кремовый щенок мальтипу Зефир в подарочной коробке", "pos": "50% 42%" }
+      { "src": "/assets/img/pup-maltipu-383.jpg", "w": 1200, "h": 1600, "kind": "life", "class": null, "alt": "Кремовый щенок мальтипу Зефир выглядывает из лежанки", "pos": "50% 34%" },
+      { "src": "/assets/img/pup-maltipu-384.jpg", "w": 1200, "h": 1600, "kind": "life", "class": null, "alt": "Зефир сидит на розовом пледе" },
+      { "src": "/assets/img/pup-maltipu-385.jpg", "w": 1280, "h": 960, "kind": "life", "class": null, "alt": "Зефир положил лапку на край лежанки" }
     ],
     "parents": { "mother": { "name": "[кличка мамы]", "breed": "[мальтипу F1]" }, "father": { "name": "[кличка папы]", "breed": "[той-пудель]" } },
     "video": null
@@ -296,19 +306,21 @@
     "video": null
   },
   {
-    "slug": "maltipu-f2-shokolad-2026-08",
-    "name": "Трюфель",
+    "slug": "maltipu-f2-abrikos-2026-08",
+    "name": "Тедди",
     "breed": "maltipu",
     "generation": "F2",
     "variety": null,
     "sex": "male",
-    "colour": "шоколадный",
+    "colour": "абрикосовый",
     "birth_date": "2026-08-24",
     "status": "soon",
     "badges": ["Ветпаспорт", "Договор", "Копии родословных породистых предков", "Прививки по возрасту"],
     "weight_forecast": "около [4–6] кг",
     "photos": [
-      { "src": "/assets/img/color-maltipu-chocolate.jpg", "w": 1024, "h": 1024, "kind": "studio", "class": null, "alt": "Шоколадный щенок мальтипу F2 Трюфель на персиковом фоне" }
+      { "src": "/assets/img/pup-maltipu-491.jpg", "w": 960, "h": 1280, "kind": "life", "class": null, "alt": "Абрикосовый щенок мальтипу Тедди в праздничном воротничке", "pos": "50% 34%" },
+      { "src": "/assets/img/pup-maltipu-490.jpg", "w": 960, "h": 1280, "kind": "life", "class": null, "alt": "Тедди на сером диване" },
+      { "src": "/assets/img/pup-maltipu-492.jpg", "w": 960, "h": 1280, "kind": "life", "class": null, "alt": "Абрикосовый мальтипу Тедди стоит на диване" }
     ],
     "parents": { "mother": { "name": "[кличка мамы]", "breed": "[мальтипу F1]" }, "father": { "name": "[кличка папы]", "breed": "[мальтипу F1]" } },
     "video": null
@@ -326,7 +338,9 @@
     "badges": ["Родители с РКФ", "Прививки по возрасту", "Чип"],
     "weight_forecast": "около [3–4] кг",
     "photos": [
-      { "src": "/assets/img/breed-maltipu.jpg", "w": 928, "h": 1152, "kind": "life", "class": null, "alt": "Абрикосовый щенок мальтипу Карамель на кожаном кресле", "pos": "50% 74%" }
+      { "src": "/assets/img/pup-maltipu-399.jpg", "w": 1200, "h": 1600, "kind": "life", "class": null, "alt": "Абрикосовая малышка мальтипу Карамель на розовом пледе", "pos": "50% 40%" },
+      { "src": "/assets/img/pup-maltipu-397.jpg", "w": 960, "h": 1280, "kind": "life", "class": null, "alt": "Карамель сидит на розовом пледе" },
+      { "src": "/assets/img/pup-maltipu-400.jpg", "w": 1200, "h": 1600, "kind": "life", "class": null, "alt": "Абрикосовый щенок мальтипу Карамель" }
     ],
     "parents": { "mother": { "name": "[кличка мамы]", "breed": "[мальтийская болонка]" }, "father": { "name": "[кличка папы]", "breed": "[той-пудель]" } },
     "video": null

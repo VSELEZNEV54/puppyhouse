@@ -100,71 +100,71 @@
         {
           "name": "кремовый",
           "photo": {
-            "src": "/assets/img/studio-maltipu-peach.jpg",
+            "src": "/assets/img/okras-maltipu-kremovyj.jpg",
             "alt": "Кремовый щенок мальтипу на персиковом фоне"
           }
         },
         {
           "name": "белый",
           "photo": {
-            "src": "/assets/img/color-maltipu-white.jpg",
-            "alt": "Белый щенок мальтипу на персиковом фоне"
+            "src": "/assets/img/okras-maltipu-belyj.jpg",
+            "alt": "Белый щенок мальтипу с наклонённой головой на персиковом фоне"
           }
         },
         {
           "name": "абрикосовый",
           "photo": {
-            "src": "/assets/img/color-maltipu-apricot.jpg",
+            "src": "/assets/img/okras-maltipu-abrikosovyj.jpg",
             "alt": "Абрикосовый щенок мальтипу на персиковом фоне"
           }
         },
         {
           "name": "рыжий",
           "photo": {
-            "src": "/assets/img/color-maltipu-red.jpg",
+            "src": "/assets/img/okras-maltipu-ryzhij.jpg",
             "alt": "Рыжий щенок мальтипу на персиковом фоне"
           }
         },
         {
           "name": "шоколадный",
           "photo": {
-            "src": "/assets/img/color-maltipu-chocolate.jpg",
+            "src": "/assets/img/okras-maltipu-shokoladnyj.jpg",
             "alt": "Шоколадный щенок мальтипу на персиковом фоне"
           }
         },
         {
           "name": "чёрный",
           "photo": {
-            "src": "/assets/img/color-maltipu-black.jpg",
-            "alt": "Чёрный щенок мальтипу на персиковом фоне"
+            "src": "/assets/img/okras-maltipu-chernyj.jpg",
+            "alt": "Чёрный щенок мальтипу лежит на персиковом фоне"
           }
         },
         {
           "name": "серебристый",
           "photo": {
-            "src": "/assets/img/color-maltipu-silver.jpg",
-            "alt": "Серебристо-серый щенок мальтипу на персиковом фоне"
+            "src": "/assets/img/okras-maltipu-serebristyj.jpg",
+            "alt": "Серебристый щенок мальтипу сидит вполоборота на персиковом фоне"
           }
         },
         {
           "name": "партиколор",
           "photo": {
-            "src": "/assets/img/color-maltipu-parti.jpg",
+            "src": "/assets/img/okras-maltipu-partikolor.jpg",
             "alt": "Щенок мальтипу партиколор — белый с чёрными пятнами"
           }
         },
         {
           "name": "фантом",
           "photo": {
-            "src": "/assets/img/color-maltipu-phantom.jpg",
-            "alt": "Щенок мальтипу окраса фантом — чёрный с рыжими подпалинами"
+            "src": "/assets/img/okras-maltipu-fantom.jpg",
+            "alt": "Щенок мальтипу окраса фантом с поднятой лапкой"
           }
         },
         {
           "name": "соболиный",
           "photo": {
-            "src": "/assets/img/color-maltipu-sable.jpg",
-            "alt": "Соболиный щенок мальтипу на персиковом фоне"
+            "src": "/assets/img/okras-maltipu-sobolinyj.jpg",
+            "alt": "Соболиный щенок мальтипу смотрит вверх"
           }
         }
       ]

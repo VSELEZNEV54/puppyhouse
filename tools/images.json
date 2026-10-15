@@ -285,45 +285,45 @@
   },
   {
     "name": "color-maltipu-white",
-    "url": "https://www.figma.com/api/mcp/asset/72be144a-1a63-41bf-b602-6b2c6e4c9155.png",
+    "url": "https://www.figma.com/api/mcp/asset/9325b98f-fe69-4dd0-a82c-b8ad2ef90ee7.png",
     "w": 1024,
     "h": 1024,
-    "about": "Мальтипу, белый, персиковый фон; фон в assets/img выровнен под кремового, рыжего, шоколадного и партиколор (баланс белого собаки, кривая фона по стене и полу)"
+    "about": "Мальтипу, белый, 7 недель, голова наклонена, персиковый фон"
   },
   {
     "name": "color-maltipu-black",
-    "url": "https://www.figma.com/api/mcp/asset/119cee6d-d4ef-4177-86b0-0d00e5ba71c9.png",
+    "url": "https://www.figma.com/api/mcp/asset/dca31db3-5662-4574-ab4f-93fb5a1c6931.png",
     "w": 1024,
     "h": 1024,
-    "about": "Мальтипу, чёрный, персиковый фон; фон в assets/img выровнен под кремового, рыжего, шоколадного и партиколор (баланс белого собаки, кривая фона по стене и полу)"
+    "about": "Мальтипу, чёрный, лежит, лапы вперёд, персиковый фон"
   },
   {
     "name": "color-maltipu-apricot",
-    "url": "https://www.figma.com/api/mcp/asset/c551abab-b5e5-49b8-9caa-b8bcd59b91a8.png",
+    "url": "https://www.figma.com/api/mcp/asset/6efa7f4e-96a8-45f4-968d-1b36e87255ba.png",
     "w": 1024,
     "h": 1024,
-    "about": "Мальтипу, светлый абрикос, персиковый фон; фон в assets/img выровнен под кремового, рыжего, шоколадного и партиколор (баланс белого собаки, кривая фона по стене и полу)"
+    "about": "Мальтипу, абрикосовый, 7 недель, голова наклонена, персиковый фон"
   },
   {
     "name": "color-maltipu-silver",
-    "url": "https://www.figma.com/api/mcp/asset/e8e85d50-4e11-40bd-93a8-cbbe642663da.png",
+    "url": "https://www.figma.com/api/mcp/asset/eb7201fc-a3f8-447b-8aad-eaaaf8706c81.png",
     "w": 1024,
     "h": 1024,
-    "about": "Мальтипу, серебристый, персиковый фон; фон в assets/img выровнен под кремового, рыжего, шоколадного и партиколор (баланс белого собаки, кривая фона по стене и полу)"
+    "about": "Мальтипу, серебристый, сидит вполоборота, персиковый фон"
   },
   {
     "name": "color-maltipu-phantom",
-    "url": "https://www.figma.com/api/mcp/asset/b8b81132-ab87-47af-b7be-e012479b9985.png",
+    "url": "https://www.figma.com/api/mcp/asset/eb5ee0bd-3707-4ee9-a4ee-b81527acdcad.png",
     "w": 1024,
     "h": 1024,
-    "about": "Мальтипу, фантом (чёрный с подпалом), персиковый фон; фон в assets/img выровнен под кремового, рыжего, шоколадного и партиколор (баланс белого собаки, кривая фона по стене и полу)"
+    "about": "Мальтипу, фантом (чёрный с подпалом), лапа поднята, персиковый фон"
   },
   {
     "name": "color-maltipu-sable",
-    "url": "https://www.figma.com/api/mcp/asset/d794ff2c-52d8-4f08-9fb3-3239ecea4b09.png",
+    "url": "https://www.figma.com/api/mcp/asset/97d10abb-9186-477e-b5f9-be02a5c0a4b3.png",
     "w": 1024,
     "h": 1024,
-    "about": "Мальтипу, соболиный, персиковый фон; фон в assets/img выровнен под кремового, рыжего, шоколадного и партиколор (баланс белого собаки, кривая фона по стене и полу)"
+    "about": "Мальтипу, соболиный, смотрит вверх, персиковый фон"
   },
   {
     "name": "maltipu-kit",

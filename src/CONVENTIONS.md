@@ -48,6 +48,9 @@ pixel-parity baseline no longer applies. Reference inner page: `/shchenki/`.
   щенка» (what travels with the puppy + photo tiles: documents, guarantee, delivery, price) · FAQ · «Всё о <породе>» (articles +
   the breed's colours and price pages) · SEO text · lead form with contact tiles (`forms.contact_tiles()`), as on the homepage.
   The other three breeds keep `breeds/hub.html.j2` until their data gets `"layout": "v2"`.
+  Colour pages `/<breed>/<colour>/` (`breeds/colour.html.j2`, copy in `breedsub.json` colour items: `title`, `short`,
+  `rarity` / `age` / `nose`, `about`, `care`); colour photos `okras-<breed>-<colour>.jpg` from `tools/okras_tiles.py`
+  (rerun it after replacing a source photo, then measure the backdrop into `tools/photo-tones.json`).
 
 ## Build and look
 
@@ -202,7 +205,7 @@ in the order of `breeds-hub.json` → `media` (+ extra placeholders), so a video
 | `ui.cmp_table` | `cols` (names or breed dicts), `rows[[label, v1, v2…]]`, `caption` | comparison table in a white tile; column names never break at a hyphen. 3+ columns: phones ≤ 760 get one tile per column (`.cmp-cards`) instead of the table |
 | `ui.gallery` | `photos[{src,alt,caption?}]` | 1–5+ photos; phones: a grid (first photo full width, the rest two per row). Swipeable row → `media.media_carousel` |
 | `ui.badges`, `ui.empty_state(title,text,button,label,attrs)`, `ui.img(src,alt,…)`, `ui.icon`, `ui.ico`, `ui.face`, `ui.round_arrow`, `ui.text_link` | | small parts |
-| `cards.puppy_card(p, tag='h3', eager=false)` | puppy | THE puppy card of the whole site (every strip, hub, catalog, «Похожие щенки»): photo (a link), «Смотреть щенка» + «Узнать цену» (modal for that puppy), heart in the photo corner; studio photo → card in that photo's measured colours; phones ≤ 560 — a compact row, photo left. Styles: `main.css` (`.pup` + `.ct-card`) |
+| `cards.puppy_card(p, tag='h3', eager=false, simple=false)` | puppy | THE puppy card of the whole site (every strip, hub, catalog, «Похожие щенки»): photo (a link), «Смотреть щенка» + «Узнать цену» (modal for that puppy), heart in the photo corner; studio photo → card in that photo's measured colours; phones ≤ 560 — a compact row, photo left. `simple=true` (breed pages v2): name, sex · colour, one white «Узнать цену», no age / page link / heart. Styles: `main.css` (`.pup` + `.ct-card`) |
 | `ct.card(p, eager=false)` / `ct.strip(items, breed)` | `{% import "catalog/_card.html.j2" as ct %}` | `ct.card` = `cards.puppy_card`; `ct.strip` = a strip of cards + «Ждёте другого щенка?» («Похожие щенки») |
 | `cards.pups_section` | `title, breed, limit=4, id, exclude=slug` | «Щенки в наличии» strip (`.pups--strip`: at 3 columns a lone 4th card is hidden) |
 | `cards.breed_tile(s)` | `b, count=false, cta='Перейти к породе'` / `items, count=false, cols=4` | pastel breed tiles; `cols=2` → two wide tiles per row on desktop (photo right). «В наличии» only with `count=true` (removed from the homepage 13.10). Phones: one wide tile per row |
