@@ -280,13 +280,11 @@
     "lead_title": "Подберём вам бордер-колли",
     "lead_line": "Пришлём щенков в наличии, цены и свежие видео"
   },
-  "compare": {
-    "_note": "line under each comparison link (/sravnenie/<a>-ili-<b>/), key = pair URL slug",
-    "maltipu-ili-toj-pudel": "Два кудрявых малыша",
-    "maltipu-ili-francuzskij-buldog": "Кудряш или спокойный француз",
-    "maltipu-ili-border-kolli": "Диванный друг или спортсмен",
-    "francuzskij-buldog-ili-toj-pudel": "Короткая шерсть или кудри",
-    "francuzskij-buldog-ili-border-kolli": "Спокойные прогулки или спорт",
-    "toj-pudel-ili-border-kolli": "Два умника разного размера"
+  "more": {
+    "_note": "«Сравнить и почитать»: lines under the links to /sravnenie/<breed>/ («Чем хорош …»), the price and the varieties pages",
+    "why": "Преимущества и отличия от других пород",
+    "price": "От чего зависит и что входит",
+    "varieties_title": "Виды и окрасы",
+    "varieties": "Размеры и окрасы породы"
   }
 }

@@ -1,6 +1,7 @@
-"""Group «choice»: breed quiz /podbor-porody/, six breed comparisons /sravnenie/<a>-ili-<b>/ (one template + data)
+"""Group «choice»: breed quiz /podbor-porody/, «Сравнение пород» — four breed pages /sravnenie/<breed>/
+«Чем хорош щенок …» (one template + data; client 15.10: they replaced the six pair pages /sravnenie/<a>-ili-<b>/)
 and the starter-kit page /magazin/.
-Owns: src/routes/choice.py, src/templates/choice/, src/data/choice.json, src/data/choice-pairs.json,
+Owns: src/routes/choice.py, src/templates/choice/, src/data/choice.json, src/data/choice-breeds.json,
 assets/css/choice.css, assets/js/choice.js.
 Breed facts (compare rows, studio photos, urls) come from breeds.json; copy lives in choice*.json. No prices anywhere."""
 
@@ -8,7 +9,8 @@ import re
 
 from markupsafe import Markup, escape
 
-from _lib import by_id, crumbs, sort_puppies
+from _lib import by_id, crumbs
+from breedsub import breed_colours
 
 BRAND = " | домщенков.рф"
 TITLE_MAX = 60
@@ -29,13 +31,30 @@ def nobr(text):
     return Markup(s)
 
 
+_LINK = re.compile(r"\[([^\]]+)\]\((/[^)\s]*)\)")
+
+
+def md(text):
+    """nobr() + «[label](/url/)» links (FAQ answers): the URL itself is never touched by nobr()."""
+    out, pos = Markup(""), 0
+    for m in _LINK.finditer(text):
+        out += nobr(text[pos:m.start()]) + Markup('<a href="%s">') % m.group(2) + nobr(m.group(1)) + Markup("</a>")
+        pos = m.end()
+    return out + nobr(text[pos:])
+
+
+def plain(text):
+    """«[label](/url/)» → «label» (meta, alts)."""
+    return _LINK.sub(r"\1", text)
+
+
 def _title(t):
     return t + BRAND if len(t + BRAND) <= TITLE_MAX else t
 
 
 def _faq(items):
     # the question sits in a flex button next to the «+» icon: one wrapping span keeps it a single flex item
-    return [dict(q=Markup("<span>") + nobr(f["q"]) + Markup("</span>"), a=nobr(f["a"])) for f in items]
+    return [dict(q=Markup("<span>") + nobr(f["q"]) + Markup("</span>"), a=md(f["a"])) for f in items]
 
 
 def _seo(s):
@@ -62,22 +81,71 @@ def _rows(cfg, cols):
     return out
 
 
-def _pair_links(pairs, bm, exclude=None):
-    """Pill links to the comparison pages: [{url, a, b, label}]"""
-    return [dict(url=f"/sravnenie/{p['slug']}/", a=bm[p["a"]], b=bm[p["b"]], label=nobr(p["h1"]))
-            for p in pairs if p["slug"] != exclude]
+def _lower(name):
+    """«Той-пудель» → «той-пудель» (inside a sentence)."""
+    return name[:1].lower() + name[1:]
 
 
-def _pair_pups(a, b, limit=4):
-    """Puppies of both breeds for the comparison strip: alternate A and B (available first), fill up from the other."""
-    pa, pb = sort_puppies(a["puppies"]), sort_puppies(b["puppies"])
-    out = []
-    while len(out) < limit and (pa or pb):
-        for pool in (pa, pb):
-            if pool and len(out) < limit:
-                out.append(pool.pop(0))
-    # available first inside the strip as well
-    return sorted(out, key=lambda p: p["status_order"])
+def _why_url(b, other=None):
+    """/sravnenie/<breed>/ — «Чем хорош щенок …»; other → the card «<breed> или <other>» on that page."""
+    return f"/sravnenie/{b['slug']}/" + (f"#ili-{other['slug']}" if other else "")
+
+
+def _why_links(cfg, breeds):
+    """Pill links to the four breed pages: [{url, faces, label}]"""
+    tpl = cfg["common"]["more"]
+    return [dict(url=_why_url(b), faces=[b], label=nobr(tpl.format(lname=_lower(b["name"])))) for b in breeds]
+
+
+def _fmt(tpl, b):
+    return tpl.format(name=b["name"], lname=_lower(b["name"]), gen=b["name_gen"], pgen=b["name_plural_gen"])
+
+
+def _breed_page(cfg, b, bm, order, blog, colours):
+    """Context of /sravnenie/<breed>/: copy (Markup), the other three breeds as pair cards, links."""
+    com, own = cfg["common"], cfg["breeds"][b["slug"]]
+    pg = dict(own)
+    for k in ("h1", "lead"):
+        pg[k] = nobr(own[k])
+    pg["adv"] = [dict(a, title=nobr(a["title"]), line=nobr(a["line"])) for a in own["advantages"]]
+    pg["adv_title"] = nobr(own["adv_title"])
+    pg["adv_lead"] = nobr(_fmt(com["adv_lead"], b))
+    pg["fit_title"] = nobr(_fmt(com["fit_title"], b))
+    pg["fit"] = [nobr(t) for t in own["fit"]]
+    pg["unfit"] = [nobr(t) for t in own["unfit"]]
+    pg["others_title"] = nobr(_fmt(com["others_title"], b))
+    pg["band_line"] = nobr(_fmt(com["band_line"], b))
+    pg["pups_title"] = nobr(_fmt(com["pups_title"], b))
+    pg["faq"] = _faq(own["faq"])
+
+    # «<порода> и другие породы»: one card per other breed (breeds.json order), this breed always first
+    pairs = {frozenset((p["a"], p["b"])): p for p in cfg["pairs"]}
+    others, seo_blocks = [], []
+    for o in sorted((x for x in bm.values() if x is not b), key=lambda x: order.index(x["slug"])):
+        p = pairs[frozenset((b["slug"], o["slug"]))]
+        mine, theirs = (p["a_if"], p["b_if"]) if p["a"] == b["slug"] else (p["b_if"], p["a_if"])
+        title = f"{b['name']} или {_lower(o['name'])}"
+        others.append(dict(
+            id=f"ili-{o['slug']}", b=b, o=o, title=nobr(title), lead=nobr(p["lead"]),
+            picks=[dict(b=x, name=nobr(x["name"]), text=nobr(com["pick"].format(text=t))) for x, t in ((b, mine), (o, theirs))],
+            more=dict(url=_why_url(o), label=_fmt(com["more"], o)),
+        ))
+        seo_blocks.append(dict(h=nobr(title), p=nobr(p["text"])))
+    pg["others"] = others
+    pg["seo"] = dict(title=nobr(own["seo"]["title"]), lead=nobr(own["seo"]["lead"]), blocks=seo_blocks)
+
+    ln, cl = com["links"], own["links"]
+    links = [
+        dict(url=b["urls"]["hub"], breed=b, title=nobr(f"Щенки {b['name_gen']}"), line=ln["hub_line"]),
+        dict(url=b["urls"]["price"], icon="wallet", color="sun", title=nobr(f"Цена щенка {b['name_gen']}"), line=ln["price_line"]),
+        dict(url=b["urls"]["varieties"], icon="ruler", color="mint", title=ln["varieties_title"], line=ln["varieties_line"]),
+        dict(url=blog[f"{b['slug']}-harakter"]["url"], icon="book", color="coral", title=nobr(cl["char_title"]), line=cl["char_line"], cta="Читать"),
+        dict(url=blog[f"{b['slug']}-uhod"]["url"], icon="book", color="sky", title=nobr(cl["care_title"]), line=cl["care_line"], cta="Читать"),
+        dict(url="/podbor-porody/", icon="sparkle", color="lilac", title=ln["quiz_title"], line=ln["quiz_line"]),
+    ]
+    # round faces in the CTA band: the breed's colours (studio shots of puppies, as on /<breed>/cena/)
+    faces = [c["photo"] for c in colours if c["photo"] and "/parent-" not in c["photo"]["src"]][:4]
+    return pg, links, faces
 
 
 def _quiz(cfg, breeds, bm):
@@ -127,9 +195,11 @@ def _shop(cfg, bm):
 
 def routes(data):
     cfg = data["choice"]
-    pairs = data["choice_pairs"]
+    why = data["choice_breeds"]
     breeds = data["breeds"]
     bm = by_id(breeds, "slug")
+    order = [b["slug"] for b in breeds]
+    blog = by_id(data["blog"], "slug")
     out = []
 
     quiz = _quiz(cfg, breeds, bm)
@@ -141,37 +211,26 @@ def routes(data):
             description=cfg["quiz"]["description"],
             breadcrumbs=crumbs((cfg["quiz"]["crumb"], None)),
             qz=quiz,
-            pair_links=_pair_links(pairs, bm),
+            why_links=_why_links(why, quiz["breeds"]),
         ),
     ))
 
-    for p in pairs:
-        a, b = bm[p["a"]], bm[p["b"]]
-        pg = dict(p)
-        for k in ("h1", "lead", "verdict"):
-            pg[k] = nobr(p[k])
-        pg["pick"] = [dict(b=br, title=nobr(f"Выбирайте {br['name_gen']}, если…"), items=[nobr(t) for t in items])
-                      for br, items in ((a, p["choose_a"]), (b, p["choose_b"]))]
-        pg["pups_title"] = nobr(f"Щенки {a['name_plural_gen']} и {b['name_plural_gen']}")
-        pg["faq"] = _faq(p["faq"])
-        pg["seo"] = _seo(p["seo"])
+    com = why["common"]
+    for b in breeds:
+        own = why["breeds"][b["slug"]]
+        pg, links, faces = _breed_page(why, b, bm, order, blog, breed_colours(data, b))
         out.append(dict(
-            url=f"/sravnenie/{p['slug']}/",
-            template="choice/pair.html.j2",
+            url=_why_url(b),
+            template="choice/breed.html.j2",
             context=dict(
-                title=_title(p["title"]),
-                description=p["description"],
-                breadcrumbs=crumbs(("Подбор породы", "/podbor-porody/"), (p["h1"], None)),
-                pg=pg, a=a, b=b,
-                rows=_rows(cfg, [a, b]),
-                cols=[a, b],
-                pair_pups=_pair_pups(a, b),
-                pair_links=_pair_links(pairs, bm, exclude=p["slug"]),
-                links=[
-                    dict(url=a["urls"]["price"], breed=a, title=nobr(f"Цена щенка {a['name_gen']}"), line="От чего зависит и что входит"),
-                    dict(url=b["urls"]["price"], breed=b, title=nobr(f"Цена щенка {b['name_gen']}"), line="От чего зависит и что входит"),
-                    dict(url="/podbor-porody/", icon="sparkle", color="lilac", title="Подбор породы", line="Тест на 2 минуты"),
-                ],
+                title=_title(own["title"]),
+                description=own["description"],
+                breadcrumbs=crumbs((b["name"], b["urls"]["hub"]), (own["crumb"], None)),
+                pg=pg, com=com, b=b,
+                links=links,
+                faces=faces,
+                pups_breed=b,
+                lead_breed=b["slug"],
             ),
         ))
 

@@ -29,12 +29,6 @@ def _media(hub, shared, slug):
     return out
 
 
-def _pair_url(a, b, order):
-    """/sravnenie/<a>-ili-<b>/ — the pair is always written in breeds.json order (as in the brief)."""
-    a, b = sorted((a, b), key=order.index)
-    return f"/sravnenie/{a}-ili-{b}/"
-
-
 # Visible copy never breaks inside «той-пуделя», «о бордер-колли» or a range like «2–5 кг»: such words go into
 # <span class="nw"> (the macros' |typo keeps Markup tags). Meta title/description, photo alts and text that sits
 # directly in a flex box (eyebrow, badges, chips — a span there would become a separate flex item) stay plain text.
@@ -68,13 +62,12 @@ def copy_markup(hub):
 
 
 def _lower(name):
-    """«Той-пудель» → «той-пудель» for the second name in «Мальтипу или той-пудель»."""
+    """«Той-пудель» → «той-пудель» inside a title: «Чем хорош той-пудель»."""
     return name[:1].lower() + name[1:]
 
 
 def routes(data):
     breeds = data["breeds"]
-    order = [b["slug"] for b in breeds]
     hubs = data["breeds_hub"]
     common = hubs["common"]
     blog = by_id(data["blog"], "slug")
@@ -84,17 +77,16 @@ def routes(data):
         own["faq"] = own["faq"] + common["faq_more"]   # every hub: vaccinations and the lifelong guarantee
         hub = copy_markup(own)
 
-        compare = []
-        for other in breeds:
-            if other is b:
-                continue
-            url = _pair_url(b["slug"], other["slug"], order)
-            pair = url.strip("/").split("/")[-1]
-            first, second = (b, other) if order.index(b["slug"]) < order.index(other["slug"]) else (other, b)
-            # «Мальтипу или француз», «Француз или той-пудель»: the long bulldog name would wrap the tile title
-            short = lambda x: "Француз" if x["slug"] == "francuzskij-buldog" else x["name"]
-            compare.append(dict(url=url, title=nobr(f"{short(first)} или {_lower(short(second))}"),
-                                line=nobr(hubs["compare"][pair]), breed=other))
+        # «Сравнение пород» (client 15.10): the breed's own page «Чем хорош щенок …» instead of three pair pages,
+        # plus its price and varieties pages
+        more = hubs["more"]
+        compare = [
+            dict(url=f"/sravnenie/{b['slug']}/", title=nobr(f"Чем хорош {_lower(b['name'])}"), line=nobr(more["why"]), breed=b),
+            dict(url=b["urls"]["price"], title=nobr(f"Цена щенка {b['name_gen']}"), line=nobr(more["price"]),
+                 icon="wallet", color="coral"),
+            dict(url=b["urls"]["varieties"], title=nobr(more["varieties_title"]), line=nobr(more["varieties"]),
+                 icon="ruler", color="mint"),
+        ]
 
         reading = [dict(url=blog[a["slug"]]["url"], title=nobr(a["title"]), line=nobr(a["line"]), icon="book",
                         color=("sun" if i == 0 else "sky")) for i, a in enumerate(hub["articles"])]

@@ -1,4 +1,4 @@
-{#- Shared pieces of the «choice» pages (quiz, comparisons, starter kit). Import:  {% import "choice/_parts.html.j2" as part %}
+{#- Shared pieces of the «choice» pages (quiz, breed pages «Чем хорош щенок …», starter kit). Import:  {% import "choice/_parts.html.j2" as part %}
     Text params are Markup or plain text from routes/choice.py; every one goes through |typo. -#}
 {% import "macros/ui.html.j2" as ui %}
 
@@ -23,13 +23,13 @@
     <symbol id="i-ch-print" viewBox="0 0 24 24"><path d="M7 9V3.5h10V9M7 17.5H5a1.5 1.5 0 0 1-1.5-1.5v-5.5A1.5 1.5 0 0 1 5 9h14a1.5 1.5 0 0 1 1.5 1.5V16a1.5 1.5 0 0 1-1.5 1.5h-2"/><rect x="7" y="14" width="10" height="6.5" rx="1"/></symbol>
 {%- endmacro %}
 
-{#- Pill links to comparison pages: items = [{url, a, b, label}] (routes/choice.py: _pair_links) -#}
-{% macro pair_pills(items, label, id) -%}
+{#- Pill links (round faces + label): items = [{url, faces: [breed, …], label}] (routes/choice.py: _why_links) -#}
+{% macro pills(items, label, id) -%}
 <div class="cho-pairs">
   <p class="cho-pairs__label" id="{{ id }}">{{ label|typo }}</p>
   <ul class="cho-pairs__list" aria-labelledby="{{ id }}">
     {% for p in items %}
-    <li><a class="cho-pair" href="{{ p.url }}"><span class="cho-pair__faces" aria-hidden="true">{{ ui.face(p.a) }}{{ ui.face(p.b) }}</span><span class="cho-pair__label">{{ p.label|typo }}</span></a></li>
+    <li><a class="cho-pair" href="{{ p.url }}"><span class="cho-pair__faces" aria-hidden="true">{% for f in p.faces %}{{ ui.face(f) }}{% endfor %}</span><span class="cho-pair__label">{{ p.label|typo }}</span></a></li>
     {% endfor %}
   </ul>
 </div>

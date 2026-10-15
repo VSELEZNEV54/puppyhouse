@@ -28,18 +28,18 @@
           <p class="hero__sub">Проверенный заводчик в&nbsp;Москве. Щенки мальтипу, французского бульдога, <span class="nw">той-пуделя</span> и&nbsp;<span class="nw">бордер-колли</span>&nbsp;— с&nbsp;гарантией и&nbsp;заботой о&nbsp;каждом малыше</p>
           <div class="hero__actions" data-hero-ctas>
             <a class="btn btn--ink btn--lg" href="/shchenki/">Выбрать щенка {{ ui.icon('arrow') }}</a>
-            <button class="btn btn--white btn--lg" type="button" data-open-modal data-modal-title="Получить консультацию" data-modal-sub="Расскажем о&nbsp;породах и&nbsp;щенках в&nbsp;наличии, ответим на&nbsp;вопросы и&nbsp;пришлём цены" data-modal-note="Консультация (главная)" data-modal-submit="Получить консультацию" data-modal-done="Спасибо! Куратор свяжется с&nbsp;вами в&nbsp;течение 15&nbsp;минут">Получить консультацию</button>
+            <button class="btn btn--white btn--lg" type="button" data-open-modal data-modal-title="Получить консультацию" data-modal-sub="Расскажем о&nbsp;породах и&nbsp;щенках в&nbsp;наличии, ответим на&nbsp;вопросы и&nbsp;пришлём цены" data-modal-note="Консультация (главная)" data-modal-submit="Получить консультацию" data-modal-done="Спасибо! Куратор свяжется с&nbsp;вами в&nbsp;течение рабочего дня">Получить консультацию</button>
           </div>
-          {#- три главных преимущества из «Почему выбирают нас» — аккуратными плашками внизу первого экрана -#}
-          <ul class="hm-chips" aria-label="Коротко о щенках">
-            {% for a in site.advantages if a.icon in ('syringe', 'doc', 'car') %}
-            <li class="hm-chip"><span class="hm-chip__ico" style="--c:var(--{{ a.color }})" aria-hidden="true">{{ ui.icon(a.icon, sm=true) }}</span>{{ a.title|typo }}</li>
-            {% endfor %}
-          </ul>
         </div>
         <div class="hero__photo">
           <img src="/assets/img/hero-four-breeds.jpg" alt="Щенки мальтипу, французского бульдога, той-пуделя и&nbsp;бордер-колли сидят в&nbsp;ряд" width="1264" height="848" fetchpriority="high" decoding="async">
         </div>
+        {#- четыре главных преимущества — одной строкой во всю ширину плитки, в самом низу первого экрана (правка 15.10) -#}
+        <ul class="hm-chips" aria-label="Коротко о щенках">
+          {% for icon, color, label in [('syringe', 'mint', 'Привиты по возрасту'), ('doc', 'sky', 'Ветпаспорт и договор'), ('chat', 'lilac', 'Пожизненная консультация'), ('car', 'sun', 'Доставка по всей России')] %}
+          <li class="hm-chip"><span class="hm-chip__ico" style="--c:var(--{{ color }})" aria-hidden="true">{{ ui.icon(icon, sm=true) }}</span>{{ label|typo }}</li>
+          {% endfor %}
+        </ul>
       </div>
     </section>
 

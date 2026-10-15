@@ -1,0 +1,97 @@
+{#- /sravnenie/<breed>/ — «Чем хорош щенок …» (×4, one template; «Сравнение пород» in the menu). Context from routes/choice.py:
+    b (breeds.json item), pg (copy, Markup: advantages, fit / unfit, the other three breeds as cards, FAQ, SEO text),
+    com (choice-breeds.json → common), links (hub, price, varieties, two articles, quiz), faces (the breed's colours).
+    The layout adds «Щенки в наличии» of this breed (pups_breed = b) and the lead form (lead_breed = b.slug). -#}
+{% extends "layouts/page.html.j2" %}
+{% import "choice/_parts.html.j2" as part %}
+
+{% block page_css %}
+  <link rel="stylesheet" href="/assets/css/choice.css">
+{% endblock %}
+
+{% block sprite_extra %}{{ part.icons() }}{% endblock %}
+
+{% block hero %}
+    {% call ui.page_hero(pg.h1, lead=pg.lead, breed=b, eyebrow=com.eyebrow) %}
+      {{ forms.price_button(cls='btn btn--ink btn--lg', breed=b.name) }}
+      <a class="btn btn--white btn--lg" href="#pups">Щенки в&nbsp;наличии</a>
+    {% endcall %}
+{% endblock %}
+
+{% block body %}
+    {{ ui.advantages(pg.adv, title=pg.adv_title, lead=pg.adv_lead, cols=3, tight=true) }}
+
+    <section class="section container" id="komu" aria-labelledby="komu-title">
+      {{ ui.section_head(pg.fit_title, id='komu-title', lead=com.fit_lead) }}
+      <div class="cho-fit">
+        <div class="cho-fit__card cho-fit__card--yes tone--{{ pg.tint }}">
+          <h3 class="cho-fit__title" id="komu-da">{{ com.fit_yes|typo }}</h3>
+          <ul class="cho-fit__list" aria-labelledby="komu-da">
+            {% for t in pg.fit %}<li><span class="cho-fit__mark" aria-hidden="true">{{ ui.icon('check', sm=true) }}</span><span>{{ t|typo }}</span></li>{% endfor %}
+          </ul>
+          <p class="cho-fit__more">{{ ui.text_link('#pups', com.fit_yes_link) }}</p>
+        </div>
+        <div class="cho-fit__card cho-fit__card--no">
+          <h3 class="cho-fit__title" id="komu-net">{{ com.fit_no|typo }}</h3>
+          <ul class="cho-fit__list" aria-labelledby="komu-net">
+            {% for t in pg.unfit %}<li><span class="cho-fit__mark" aria-hidden="true">{{ ui.icon('close', sm=true) }}</span><span>{{ t|typo }}</span></li>{% endfor %}
+          </ul>
+          <p class="cho-fit__more">{{ ui.text_link('/podbor-porody/', com.fit_no_link) }}</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section container" id="drugie-porody" aria-labelledby="drugie-porody-title">
+      {{ ui.section_head(pg.others_title, id='drugie-porody-title', lead=com.others_lead, link={'url': '/podbor-porody/#sravnenie', 'label': com.others_link}) }}
+      <ul class="cho-others" data-reveal="items">
+        {% for c in pg.others %}
+        <li class="cho-other" id="{{ c.id }}">
+          <span class="cho-other__faces" aria-hidden="true">{{ ui.face(c.b) }}{{ ui.face(c.o) }}</span>
+          <h3 class="cho-other__title">{{ c.title|typo }}</h3>
+          <p class="cho-other__lead">{{ c.lead|typo }}</p>
+          <ul class="cho-other__picks">
+            {% for k in c.picks %}<li>{{ ui.face(k.b) }}<p><span class="cho-other__name">{{ k.name|typo }}</span>&nbsp;{{ k.text|typo }}</p></li>{% endfor %}
+          </ul>
+          <p class="cho-other__more">{{ ui.text_link(c.more.url, c.more.label) }}</p>
+        </li>
+        {% endfor %}
+      </ul>
+    </section>
+
+    <section class="section container" id="cena" aria-labelledby="cena-title">
+      <div class="cta-band tone--{{ pg.tint }}">
+        <div class="cta-band__txt">
+          <h2 class="cta-band__title" id="cena-title">{{ com.band_title|typo }}</h2>
+          <p class="cta-band__line">{{ pg.band_line|typo }}</p>
+        </div>
+        {% if faces %}
+        <span class="cta-band__faces cho-band__faces" aria-hidden="true">{% for f in faces %}<span class="face"{% if photo_tone(f.src) %} style="--tone:{{ photo_tone(f.src).top }}"{% endif %}><img src="{{ f.src }}" alt="" width="{{ imgsize(f.src)[0] }}" height="{{ imgsize(f.src)[1] }}" loading="lazy" decoding="async"></span>{% endfor %}</span>
+        {% endif %}
+        <div class="cta-band__actions">
+          {{ forms.price_button(cls='btn btn--ink btn--lg', breed=b.name) }}
+        </div>
+      </div>
+    </section>
+
+    {{ blocks.faq_section(pg.faq, title=com.faq_title) }}
+
+    <section class="section container cho-links" id="eshche" aria-labelledby="eshche-title">
+      {{ ui.section_head(com.links_title, id='eshche-title') }}
+      {{ ui.link_tiles(links) }}
+    </section>
+
+    {% call blocks.seo_block(pg.seo.title, pg.seo.lead, id='podrobnee') %}
+        {% for s in pg.seo.blocks %}
+        <h3>{{ s.h|typo }}</h3>
+        <p>{{ s.p|typo }}</p>
+        {% endfor %}
+    {% endcall %}
+{% endblock %}
+
+{% block pups %}
+    {{ cards.pups_section(title=pg.pups_title, breed=b) }}
+{% endblock %}
+
+{% block lead %}
+    {{ forms.lead_form(title=pg.lead_title, line=com.lead_line, tone=b.tone, breed=b.slug) }}
+{% endblock %}

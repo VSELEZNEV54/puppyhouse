@@ -157,50 +157,52 @@ html:not(.js) .cho-quiz { display: none; }
 .cho-pair:hover { background: var(--ink); color: #fff; }
 
 /* =========================================================
-   СРАВНЕНИЕ ДВУХ ПОРОД (/sravnenie/<a>-ili-<b>/)
+   «ЧЕМ ХОРОШ ЩЕНОК …» (/sravnenie/<breed>/)
    ========================================================= */
-.cho-vs { display: grid; grid-template-columns: minmax(0, 1.08fr) minmax(0, 1fr); gap: var(--gap); }
-.cho-vs .phero__copy { max-width: none; }
-.cho-vs .phero__title { max-width: 12ch; }
-.cho-vs__pair { position: relative; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--gap); }
-/* плитка заполняет ячейку (не тянется по aspect-ratio шире колонки), высота — не меньше 3 : 4 */
-.cho-vs__pair .stile { aspect-ratio: auto; width: 100%; height: 100%; min-height: clamp(360px, 30vw, 470px); }
-.cho-vs__or {
-  position: absolute; z-index: 3; left: 50%; top: 50%;
-  width: 66px; height: 66px; margin: -33px 0 0 -33px; border-radius: 50%;
-  display: grid; place-items: center;
-  border: 6px solid var(--page); background: var(--tile);
-  font-size: 17px; font-weight: 500; letter-spacing: -0.01em;
+/* «Кому подойдёт»: тинт породы с галочками и белая карточка с крестиками (как «Почему не бывает дёшево» на /<breed>/cena/) */
+.cho-fit { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--gap); }
+.cho-fit__card {
+  display: flex; flex-direction: column; gap: clamp(20px, 2vw, 28px);
+  padding: clamp(24px, 3vw, 44px); border-radius: var(--r-tile); background: var(--tile);
 }
-
-.cho-pick { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--gap); }
-.cho-pick__card {
-  display: flex; flex-direction: column; gap: clamp(20px, 2.2vw, 30px);
-  padding: clamp(24px, 3vw, 44px); border-radius: var(--r-tile);
-  background: linear-gradient(180deg, var(--tone) 0 55%, var(--tone-floor) 100%);
-}
-.cho-pick__head { display: flex; align-items: center; gap: 16px; }
-.cho-pick__head .face { width: 60px; height: 60px; border: 3px solid #fff; }
-.cho-pick__title { font-size: clamp(22px, 1.9vw, 30px); font-weight: 500; letter-spacing: -0.03em; line-height: 1.1; }
-.cho-pick__list { display: grid; gap: 14px; }
-.cho-pick__list li { display: grid; grid-template-columns: 30px minmax(0, 1fr); column-gap: 12px; align-items: start; font-size: 17px; line-height: 1.4; }
-.cho-pick__list li > span:last-child { padding-top: 3px; }
-.cho-pick__tick {
+.cho-fit__card--yes { background: linear-gradient(180deg, var(--tone) 0 55%, var(--tone-floor) 100%); }
+.cho-fit__title { font-size: clamp(22px, 1.9vw, 30px); font-weight: 500; letter-spacing: -0.03em; line-height: 1.1; }
+.cho-fit__list { display: grid; gap: 16px; }
+.cho-fit__list li { display: grid; grid-template-columns: 30px minmax(0, 1fr); column-gap: 14px; align-items: start; font-size: 17px; line-height: 1.4; }
+.cho-fit__list li > span:last-child { padding-top: 3px; }
+.cho-fit__mark {
   width: 30px; height: 30px; border-radius: 50%;
-  display: grid; place-items: center; background: #fff; color: var(--ok);
+  display: grid; place-items: center; background: var(--coral-50); color: var(--ink);
 }
-.cho-pick__tick .i { stroke-width: 2.4; }
-.cho-pick__more { margin-top: auto; }
+.cho-fit__card--yes .cho-fit__mark { background: #fff; color: var(--ok); }
+.cho-fit__mark .i { stroke-width: 2.2; }
+.cho-fit__more { margin-top: auto; padding-top: 4px; }
 
-.cho-verdict {
-  display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center;
-  gap: 16px clamp(18px, 2.4vw, 32px);
-  margin-top: var(--gap); padding: clamp(22px, 2.6vw, 36px) clamp(22px, 3vw, 44px);
-  border-radius: var(--r-tile); background: var(--tile);
+/* «<порода> и другие породы»: три белые карточки — заголовок пары, общая строка, кому какая порода, ссылка */
+/* строки карточек выровнены между собой (subgrid): заголовки в одну или две строки не сдвигают «кому какая» */
+.cho-others { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--gap); }
+.cho-other {
+  display: grid; grid-row: span 5; grid-template-rows: subgrid; row-gap: 14px; align-content: start; min-width: 0;
+  padding: clamp(22px, 2.4vw, 34px); border-radius: var(--r-tile); background: var(--tile);
+  scroll-margin-top: 110px;
 }
-.cho-verdict > .ico { width: 52px; height: 52px; }
-.cho-verdict__label { font-size: 14px; font-weight: 500; color: var(--muted); }
-.cho-verdict__text { margin-top: 4px; font-size: clamp(18px, 1.45vw, 22px); line-height: 1.4; letter-spacing: -0.012em; max-width: 64ch; }
+.cho-other__title { align-self: end; }
+.cho-other__faces { display: flex; margin-bottom: 4px; }
+.cho-other__faces .face { width: 56px; height: 56px; border: 3px solid var(--tile); }
+.cho-other__faces .face + .face { margin-left: -14px; }
+.cho-other__title { font-size: clamp(21px, 1.6vw, 26px); font-weight: 500; letter-spacing: -0.028em; line-height: 1.12; }
+.cho-other__lead { font-size: 15px; line-height: 1.45; color: var(--muted); }
+.cho-other__picks { display: grid; align-content: start; gap: 12px; margin-top: 4px; padding-top: 18px; border-top: 1px solid var(--line); }
+.cho-other__picks li { display: grid; grid-template-columns: 36px minmax(0, 1fr); column-gap: 12px; align-items: start; }
+.cho-other__picks .face { width: 36px; height: 36px; }
+.cho-other__picks p { padding-top: 6px; font-size: 15.5px; line-height: 1.4; }
+.cho-other__name { font-weight: 500; }
+.cho-other__more { align-self: end; padding-top: 8px; }
+
+.cho-band__faces .face img { transform-origin: 50% 30%; }
+
+/* «Читайте также»: шесть ссылок — по три в ряд */
+.cho-links .ltiles { --n: 3; }
 
 /* =========================================================
    СТАРТОВЫЙ НАБОР (/magazin/)
@@ -265,6 +267,7 @@ html:not(.js) .cho-quiz { display: none; }
    АДАПТИВ
    ========================================================= */
 @media (max-width: 1199px) {
+  .cho-links .ltiles { --n: 2; }
   .cho-q__opts--4 { --n: 2; }
   .cho-ans { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .cho-list__cols { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 22px; }
@@ -273,9 +276,14 @@ html:not(.js) .cho-quiz { display: none; }
 }
 
 @media (max-width: 1000px) {
-  .cho-vs { grid-template-columns: minmax(0, 1fr); }
-  .cho-vs .phero__title { max-width: 16ch; }
-  .cho-vs__pair .stile { aspect-ratio: 4 / 5; height: auto; min-height: 0; }
+  .cho-others { grid-template-columns: minmax(0, 1fr); }
+  .cho-other { grid-row: auto; grid-template-rows: none; grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); grid-template-areas: "faces picks" "title picks" "lead picks" "more picks"; column-gap: 32px; }
+  .cho-other__title { align-self: start; }
+  .cho-other__faces { grid-area: faces; }
+  .cho-other__title { grid-area: title; }
+  .cho-other__lead { grid-area: lead; }
+  .cho-other__picks { grid-area: picks; align-self: center; margin: 0; padding: 0 0 0 32px; border-top: 0; border-left: 1px solid var(--line); }
+  .cho-other__more { grid-area: more; margin-top: 4px; }
   .cho-kit { grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); }
   .cho-res__copy { max-width: 62%; }
 }
@@ -288,7 +296,7 @@ html:not(.js) .cho-quiz { display: none; }
   .cho-opt__mark { top: 50%; margin-top: -15px; }
   .cho-q__opts--4 .cho-opt { flex-direction: column; align-items: flex-start; padding: 16px; }
   .cho-q__opts--4 .cho-opt__mark { top: 14px; margin-top: 0; right: 14px; }
-  .cho-pick { grid-template-columns: minmax(0, 1fr); }
+  .cho-fit { grid-template-columns: minmax(0, 1fr); }
 }
 
 @media (max-width: 760px) {
@@ -325,21 +333,16 @@ html:not(.js) .cho-quiz { display: none; }
   .cho-pairs__list > li { max-width: 100%; }
   .cho-pair { height: auto; min-height: 48px; padding-block: 6px; white-space: normal; line-height: 1.25; }
 
-  .cho-vs__pair .stile { aspect-ratio: 3 / 4; padding: 14px; }
-  .cho-vs__pair .stile__title { font-size: 18px; }
-  .cho-vs__pair .stile__line { display: none; }
-  /* «Перейти к породе» во всю ширину узкой плитки, без стрелки — не обрезается краем плитки на 360 */
-  .cho-vs__pair .tcta { left: 10px; right: 10px; bottom: 10px; justify-content: center; height: 36px; padding: 0 8px; font-size: 13px; gap: 6px; }
-  .cho-vs__pair .tcta .i { display: none; }
-  .cho-vs__or { width: 52px; height: 52px; margin: -26px 0 0 -26px; border-width: 5px; font-size: 15px; }
+  .cho-links .ltiles { --n: 1; }
+  .cho-fit__card { padding: 22px 20px; gap: 18px; }
+  .cho-fit__list { gap: 14px; }
+  .cho-fit__list li { font-size: 16px; }
 
-  .cho-pick__card { padding: 22px 20px; }
-  .cho-pick__head .face { width: 52px; height: 52px; }
-  .cho-pick__list li { font-size: 16px; }
-  .cho-verdict { grid-template-columns: auto minmax(0, 1fr); align-items: start; padding: 22px 20px; }
-  .cho-verdict > .ico { width: 44px; height: 44px; }
-  .cho-verdict__actions { grid-column: 1 / -1; }
-  .cho-verdict__actions .btn { width: 100%; }
+  .cho-other { display: flex; flex-direction: column; padding: 22px 20px; gap: 12px; }
+  .cho-other__faces .face { width: 48px; height: 48px; }
+  .cho-other__title { font-size: 21px; }
+  .cho-other__picks { margin-top: 2px; padding: 16px 0 0; border-left: 0; border-top: 1px solid var(--line); }
+  .cho-other__picks p { font-size: 15px; }
 
   .cho-kit { grid-template-columns: minmax(0, 1fr); }
   .cho-kit__copy { min-height: 0; }

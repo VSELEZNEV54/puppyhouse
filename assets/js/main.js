@@ -431,8 +431,8 @@
         const c = contactOf(pForm);
         doneTitle.textContent = 'Спасибо, ' + name;
         doneText.textContent = doneOverride || (c === 'call'
-          ? 'Куратор позвонит вам в течение 15 минут. Ночью — утром, после 9:00.'
-          : 'Куратор пришлёт цену и видео в ' + CONTACT_LABEL[c] + ' в течение 15 минут. Ночью — утром, после 9:00.');
+          ? 'Куратор позвонит вам в течение рабочего дня по московскому времени.'
+          : 'Куратор пришлёт цену и видео в ' + CONTACT_LABEL[c] + ' в течение рабочего дня по московскому времени.');
         viewForm.hidden = true;
         viewDone.hidden = false;
         modal.setAttribute('aria-labelledby', 'pm-done-title');
@@ -454,7 +454,7 @@
       if (!validate(lForm)) return;
       fakeSend(lForm, () => {
         const c = contactOf(lForm);
-        doneText.textContent = c === 'call' ? 'Спасибо! Позвоним в течение 15 минут' : 'Спасибо! Напишем в течение 15 минут';
+        doneText.textContent = c === 'call' ? 'Спасибо! Позвоним в течение рабочего дня' : 'Спасибо! Напишем в течение рабочего дня';
         lForm.hidden = true;
         done.hidden = false;
         done.focus();

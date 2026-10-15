@@ -1,5 +1,5 @@
 {
-  "_note": "Group «choice»: /podbor-porody/ (quiz), /magazin/ (starter kit) and shared comparison rows. Comparisons ×6 are in choice-pairs.json. Values in [square brackets] are placeholders. No prices anywhere.",
+  "_note": "Group «choice»: /podbor-porody/ (quiz), /magazin/ (starter kit) and shared comparison rows. Breed pages «Чем хорош щенок …» (/sravnenie/<breed>/) are in choice-breeds.json. Values in [square brackets] are placeholders. No prices anywhere.",
 
   "breed_order": ["maltipu", "francuzskij-buldog", "toj-pudel", "border-kolli"],
 
@@ -171,7 +171,7 @@
 
     "table_title": "Сравнение пород",
     "table_lead": "Размер, шерсть и характер — по главному",
-    "pairs_label": "Сравнить две породы",
+    "pairs_label": "Чем хороша каждая порода",
 
     "seo": {
       "title": "Как выбрать породу собаки",

@@ -1,5 +1,6 @@
 {#- /podbor-porody/ — breed quiz (assets/js/choice.js), quick answers to the semantic queries, the 4-breed table,
-    links to the six comparisons, collapsed SEO text. Context from routes/choice.py: qz (copy + breeds + results), pair_links.
+    links to the four breed pages «Чем хорош щенок …», collapsed SEO text. Context from routes/choice.py: qz (copy + breeds
+    + results), why_links.
     The layout adds «Щенки в наличии» (all breeds) and the lead form. -#}
 {% extends "layouts/page.html.j2" %}
 {% import "choice/_parts.html.j2" as part %}
@@ -92,9 +93,9 @@
                 </div>
                 <p class="cho-alt__links">
                   {{ ui.text_link(s.urls.hub, 'Всё о породе') }}
+                  {#- the card «<второй> или <победитель>» on the second breed's page «Чем хорош щенок …» -#}
                   {% for w in qz.breeds if w.slug != s.slug %}
-                  {%- set pair = pair_links|selectattr('a.slug', 'in', [w.slug, s.slug])|selectattr('b.slug', 'in', [w.slug, s.slug])|first %}
-                  <a class="text-link" href="{{ pair.url }}" data-win="{{ w.slug }}" hidden>Сравнить <span class="nw">две породы {{ ui.icon('arrow', sm=true) }}</span></a>
+                  <a class="text-link" href="/sravnenie/{{ s.slug }}/#ili-{{ w.slug }}" data-win="{{ w.slug }}" hidden>Сравнить <span class="nw">две породы {{ ui.icon('arrow', sm=true) }}</span></a>
                   {% endfor %}
                 </p>
               </div>
@@ -131,7 +132,7 @@
     <section class="section container" id="sravnenie" aria-labelledby="sravnenie-title">
       {{ ui.section_head(qz.table_title, id='sravnenie-title', lead=qz.table_lead) }}
       {{ ui.cmp_table(qz.cols, qz.rows, caption='Сравнение четырёх пород: мальтипу, французский бульдог, той-пудель, бордер-колли') }}
-      {{ part.pair_pills(pair_links, qz.pairs_label, 'pary-label') }}
+      {{ part.pills(why_links, qz.pairs_label, 'pary-label') }}
     </section>
 
     {% call blocks.seo_block(qz.seo.title, qz.seo.lead, id='kak-vybrat') %}
