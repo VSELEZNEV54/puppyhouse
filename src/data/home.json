@@ -7,74 +7,85 @@
   },
   "media": [
     {
-      "src": "/assets/img/color-maltipu-parti.jpg",
+      "src": "/assets/img/cl-kolli-140.jpg",
       "kind": "photo",
-      "alt": "Щенок мальтипу партиколор — белый с чёрными пятнами",
-      "caption": "Мальтипу партиколор"
+      "alt": "Шоколадный щенок бордер-колли с голубыми глазами на снегу",
+      "caption": "Бордер-колли в снегу"
     },
     {
-      "src": "/assets/img/video-call.jpg",
-      "kind": "video",
-      "alt": "Щенок мальтипу на экране смартфона во время видеозвонка",
-      "caption": "Видеозвонок",
-      "pos": "48% 50%",
-      "video": null
-    },
-    {
-      "src": "/assets/img/color-buldog-pied.jpg",
+      "src": "/assets/img/cl-maltipu-396.jpg",
       "kind": "photo",
-      "alt": "Пегий щенок французского бульдога на голубом фоне",
-      "caption": "Пегий французский бульдог"
+      "alt": "Абрикосовый щенок мальтипу на розовой лежанке",
+      "caption": "Абрикосовый мальтипу",
+      "pos": "50% 42%"
     },
     {
-      "src": "/assets/img/pup-maltipu-chocolate.jpg",
-      "kind": "video",
-      "alt": "Шоколадный щенок мальтипу на вязаном пледе",
-      "caption": "Утро мальтипу",
-      "pos": "42% 60%",
-      "video": null
-    },
-    {
-      "src": "/assets/img/color-pudel-chocolate.jpg",
+      "src": "/assets/img/cl-buldog-53.jpg",
       "kind": "photo",
-      "alt": "Шоколадный щенок той-пуделя на жёлтом фоне",
-      "caption": "Шоколадный той-пудель"
-    },
-    {
-      "src": "/assets/img/gift-maltipu.jpg",
-      "kind": "video",
-      "alt": "Щенок мальтипу в подарочной коробке среди новогодних огней",
-      "caption": "Щенок в подарок",
-      "pos": "55% 60%",
-      "video": null
-    },
-    {
-      "src": "/assets/img/color-kolli-red.jpg",
-      "kind": "photo",
-      "alt": "Красно-белый щенок бордер-колли на мятном фоне",
-      "caption": "Красно-белый бордер-колли"
-    },
-    {
-      "src": "/assets/img/vet-check.jpg",
-      "kind": "video",
-      "alt": "Ветеринар осматривает щенка той-пуделя",
-      "caption": "Осмотр врача",
-      "pos": "50% 50%",
-      "video": null
-    },
-    {
-      "src": "/assets/img/color-buldog-blue.jpg",
-      "kind": "photo",
-      "alt": "Голубой щенок французского бульдога на голубом фоне",
+      "alt": "Голубой щенок французского бульдога на сером фоне",
       "caption": "Голубой французский бульдог"
     },
     {
-      "src": "/assets/img/delivery-carrier.jpg",
+      "src": "/assets/img/cl-pudel-278.jpg",
+      "kind": "photo",
+      "alt": "Рыжий щенок той-пуделя в жемчужном ошейнике",
+      "caption": "Той-пудель в жемчугах"
+    },
+    {
+      "src": "/assets/img/cl-maltipu-410.jpg",
+      "kind": "photo",
+      "alt": "Кремовый щенок мальтипу на сером диване",
+      "caption": "Кремовый мальтипу"
+    },
+    {
+      "src": "/assets/img/vid-maltipu-439.jpg",
       "kind": "video",
-      "alt": "Французский бульдог в переноске на сиденье машины",
-      "caption": "В дороге домой",
-      "pos": "64% 50%",
-      "video": null
+      "alt": "Щенок мальтипу на руках на прогулке",
+      "caption": "Мальтипу на прогулке",
+      "video": "/assets/video/vid-maltipu-439.mp4"
+    },
+    {
+      "src": "/assets/img/cl-kolli-143.jpg",
+      "kind": "photo",
+      "alt": "Щенок бордер-колли голубой мрамор на руках",
+      "caption": "Бордер-колли голубой мрамор"
+    },
+    {
+      "src": "/assets/img/cl-buldog-47.jpg",
+      "kind": "photo",
+      "alt": "Палевый щенок французского бульдога с игрушкой",
+      "caption": "Палевый французский бульдог"
+    },
+    {
+      "src": "/assets/img/cl-pudel-301.jpg",
+      "kind": "photo",
+      "alt": "Рыжий щенок той-пуделя на бревне в осеннем лесу",
+      "caption": "Той-пудель на прогулке"
+    },
+    {
+      "src": "/assets/img/cl-buldog-8.jpg",
+      "kind": "photo",
+      "alt": "Белый щенок французского бульдога на подушке",
+      "caption": "Белый французский бульдог",
+      "pos": "60% 50%"
+    },
+    {
+      "src": "/assets/img/cl-maltipu-481.jpg",
+      "kind": "photo",
+      "alt": "Рубиновый щенок мальтипу с розовым бантом",
+      "caption": "Рубиновый мальтипу"
+    },
+    {
+      "src": "/assets/img/cl-kolli-200.jpg",
+      "kind": "photo",
+      "alt": "Чёрно-белый щенок бордер-колли бежит по дорожке",
+      "caption": "Чёрно-белый бордер-колли"
+    },
+    {
+      "src": "/assets/img/cl-pudel-336.jpg",
+      "kind": "photo",
+      "alt": "Тёмно-рыжий щенок той-пуделя на фоне цветов",
+      "caption": "Тёмно-рыжий той-пудель"
     }
   ],
   "reviews": [
@@ -168,5 +179,32 @@
       "q": "Как выбрать щенка из помёта?",
       "a": "Попросите показать весь помёт и маму по видео. Здоровый щенок любопытен, охотно идёт на контакт, у него чистые глаза и уши. Куратор расскажет о характере каждого малыша и подскажет, кто подойдёт вашей семье."
     }
-  ]
+  ],
+  "review_posters": {
+    "anna-bonya": {
+      "src": "/assets/img/rv-maltipu-431.jpg",
+      "alt": "Девушка держит на руках кремового щенка мальтипу"
+    },
+    "igor-tajson": {
+      "src": "/assets/img/rv-buldog-17.jpg",
+      "alt": "Девушка прижимает к себе голубого щенка французского бульдога"
+    },
+    "marina-chapa": {
+      "src": "/assets/img/rv-pudel-338.jpg",
+      "alt": "Рыжий щенок той-пуделя на плече у хозяйки",
+      "pos": "62% 50%"
+    },
+    "dmitrij-olga-rej": {
+      "src": "/assets/img/rv-kolli-157.jpg",
+      "alt": "Улыбающаяся девушка со щенком бордер-колли на руках"
+    },
+    "ekaterina-masyanya": {
+      "src": "/assets/img/rv-maltipu-381.jpg",
+      "alt": "Рыжий щенок мальтипу на ладони"
+    },
+    "sergej-luna": {
+      "src": "/assets/img/rv-buldog-75.jpg",
+      "alt": "Палевый щенок французского бульдога на руках у девушки"
+    }
+  }
 }

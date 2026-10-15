@@ -41,7 +41,8 @@ def routes(data):
                         "Прививки, ветпаспорт, договор, гарантия, доставка по России.",
             stats=stats,
             media_items=home["media"],
-            reviews_home=[reviews[i] for i in home["reviews"]],
+            # обложки отзывов на главной — живые фото клиента (правка 15.10); на /otzyvy/ и других страницах — прежние
+            reviews_home=[dict(reviews[i], poster=home.get("review_posters", {}).get(i, reviews[i]["poster"])) for i in home["reviews"]],
             faq_items=home["faq"],
             teasers=teasers,
         ),
