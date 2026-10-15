@@ -325,20 +325,6 @@
   "n": 3
  },
  {
-  "name": "cl-buldog-22",
-  "key": "https://disk.yandex.ru/d/0wJvVWaVm3bomQ",
-  "path": "/5e45cbdd-432a-4952-8e73-6365a02b1340.JPG",
-  "kind": "photo",
-  "n": 22
- },
- {
-  "name": "cl-buldog-42",
-  "key": "https://disk.yandex.ru/d/0wJvVWaVm3bomQ",
-  "path": "/IMG_3734.PNG",
-  "kind": "photo",
-  "n": 42
- },
- {
   "name": "cl-buldog-79",
   "key": "https://disk.yandex.ru/d/0wJvVWaVm3bomQ",
   "path": "/f745f50b-917e-40f9-aa9b-78759842b554.JPG",
@@ -400,13 +386,6 @@
   "path": "/Бордер колли/IMG_20260922_001839.jpg",
   "kind": "photo",
   "n": 125
- },
- {
-  "name": "cl-kolli-136",
-  "key": "https://disk.yandex.ru/d/0uxkLI96w78fjQ",
-  "path": "/Бордер колли/IMG_20260922_001904.jpg",
-  "kind": "photo",
-  "n": 136
  },
  {
   "name": "cl-kolli-100",
@@ -610,5 +589,26 @@
   "path": "/Бордер колли/IMG_20260922_002207.jpg",
   "kind": "photo",
   "n": 196
+ },
+ {
+  "name": "cl-buldog-68",
+  "key": "https://disk.yandex.ru/d/0wJvVWaVm3bomQ",
+  "path": "/cfe16ea0-7426-42f6-811c-46b8ef4b20b6.JPG",
+  "kind": "photo",
+  "n": 68
+ },
+ {
+  "name": "cl-buldog-83",
+  "key": "https://disk.yandex.ru/d/0wJvVWaVm3bomQ",
+  "path": "/fe748b47-1ce6-4833-bbef-b8bcf6acb1b5.JPG",
+  "kind": "photo",
+  "n": 83
+ },
+ {
+  "name": "cl-kolli-124",
+  "key": "https://disk.yandex.ru/d/0uxkLI96w78fjQ",
+  "path": "/Бордер колли/IMG_20260922_001837.jpg",
+  "kind": "photo",
+  "n": 124
  }
 ]
