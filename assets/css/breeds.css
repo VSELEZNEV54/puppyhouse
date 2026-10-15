@@ -96,14 +96,66 @@
 .brd-links .ltile__title { font-size: clamp(18px, 1.3vw, 21px); }
 
 /* =========================================================
+   Страница породы v2 (body.page-breed, правки 15.10): «Помочь с выбором» у каталога, окрасы-карусель,
+   «Как мы отдаём щенка». Коралловые кнопки, крупная карусель фото и SEO-текст — общие правила в main.css
+   ========================================================= */
+.brd-help { flex: none; }
+
+/* окрасы: лента карточек «с начала» (data-align="start" в main.js) — первая карточка у левого поля, без увеличения
+   активной; на 1440 видно четыре карточки и край пятой, дальше — свайп и стрелки под лентой */
+.brd-cols { --mc-w: clamp(256px, 22.4vw, 330px); }
+.brd-cols .media-carousel__track { padding-inline: var(--pad); }
+.brd-cols .media-carousel__viewport { scroll-padding-inline: var(--pad); }
+.brd-cols .media-carousel__item { display: flex; scroll-snap-align: start; transform: none; opacity: 1; }
+.brd-col { display: flex; flex-direction: column; width: 100%; border-radius: var(--r-tile); background: var(--tile); overflow: hidden; }
+/* студийный кадр окраса целиком, на своём замеренном фоне (tone_style): квадрат во всю ширину карточки */
+.brd-col__media { aspect-ratio: 1 / 1; background: var(--tone-hi, var(--peach)); }
+.brd-col__media img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.brd-col__body { flex: 1; display: flex; flex-direction: column; align-items: flex-start; gap: 8px; padding: 20px 22px 22px; }
+.brd-col__name { font-size: clamp(22px, 1.8vw, 28px); font-weight: 500; letter-spacing: -0.03em; line-height: 1.08; }
+.brd-col__text { font-size: 15px; line-height: 1.45; color: var(--muted); }
+/* «Подобрать абрикосового мальтипу» — длинная подпись: кнопка во всю ширину, перенос в две строки вместо обрезки */
+.brd-col__btn { width: 100%; height: auto; min-height: 48px; margin-top: auto; padding: 12px 14px; font-size: 14px; white-space: normal; line-height: 1.2; text-align: center; }
+.brd-col__text { margin-bottom: 14px; }
+
+/* «Как мы отдаём щенка»: широкая плитка «приданого» (фото + список того, что едет со щенком),
+   под ней четыре плитки-преимущества с фото: документы, гарантия, доставка, цена */
+.brd-kit {
+  display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: var(--gap);
+  padding: 8px; border-radius: var(--r-tile); background: var(--tile);
+}
+.brd-kit__media { position: relative; min-height: 340px; margin: 0; border-radius: var(--r-img); overflow: hidden; background: #E7E1D8; }
+.brd-kit__media img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.brd-kit__body { display: flex; flex-direction: column; justify-content: center; padding: clamp(16px, 2.4vw, 40px); }
+.brd-kit__title { font-size: clamp(26px, 2.4vw, 40px); font-weight: 500; letter-spacing: -0.035em; line-height: 1.04; }
+.brd-kit__line { margin-top: 10px; font-size: 16px; line-height: 1.45; color: var(--muted); }
+.brd-kit__list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px 20px; margin-top: clamp(20px, 2.2vw, 32px); }
+.brd-kit__item { display: flex; align-items: center; gap: 12px; min-width: 0; font-size: 15.5px; font-weight: 500; line-height: 1.25; }
+.brd-kit__item .ico { flex: none; }
+
+.brd-gives { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--gap); margin-top: var(--gap); }
+.brd-give { display: flex; flex-direction: column; min-width: 0; padding: 8px; border-radius: var(--r-tile); background: var(--tile); }
+.brd-give__media { aspect-ratio: 3 / 2; border-radius: var(--r-img); overflow: hidden; background: #E7E1D8; }
+.brd-give__media img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.brd-give__body { flex: 1; display: grid; grid-template-columns: minmax(0, 1fr) auto; grid-template-rows: auto auto 1fr; align-items: start; gap: 8px 14px; padding: 18px clamp(12px, 1.2vw, 18px) clamp(12px, 1.2vw, 18px); }
+.brd-give__body .ico { grid-column: 2; grid-row: 1 / span 2; }
+.brd-give__title { grid-column: 1; grid-row: 1; font-size: var(--fs-h3); font-weight: 500; letter-spacing: -0.025em; line-height: 1.15; }
+.brd-give__line { grid-column: 1; grid-row: 2; font-size: 15px; line-height: 1.4; color: var(--muted); }
+.brd-give__cta { grid-column: 1 / -1; grid-row: 3; align-self: end; padding-top: 14px; }
+
+/* =========================================================
    АДАПТИВ
    ========================================================= */
 @media (max-width: 1199px) {
   .brd-links .ltiles { --n: 2; }
+  .brd-gives { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .brd-give__media { aspect-ratio: 16 / 9; }
   .brd-pre { grid-template-columns: repeat(3, minmax(0, 1fr)); grid-template-areas: "parents price price" "parents docs docs"; }
 }
 
 @media (max-width: 1000px) {
+  .brd-kit { grid-template-columns: minmax(0, 1fr); }
+  .brd-kit__media { min-height: 0; aspect-ratio: 16 / 9; }
   .brd-about { grid-template-columns: minmax(0, 1fr); }
   .brd-about__media { min-height: 0; aspect-ratio: 16 / 9; }
 
@@ -127,6 +179,16 @@
 }
 
 @media (max-width: 760px) {
+  /* «Помочь с выбором» — под заголовком каталога, во всю ширину */
+  #shchenki .sec-head { flex-wrap: wrap; }
+  .brd-help { width: 100%; }
+  /* окрасы: карточка ≈ три четверти экрана — видно край следующей, листается свайпом */
+  .brd-cols { --mc-w: min(76vw, 320px); }
+  .brd-kit__media { aspect-ratio: 3 / 2; }
+  .brd-kit__body { padding: 12px 12px 16px; }
+  .brd-kit__list { grid-template-columns: minmax(0, 1fr); gap: 10px; }
+  .brd-gives { grid-template-columns: minmax(0, 1fr); }
+  .brd-give__media { aspect-ratio: 16 / 9; }
   .brd-about__media { aspect-ratio: 3 / 2; }
   .brd-trait { min-height: 0; padding: 18px; }
   .brd-trait__title { margin-top: 18px; font-size: 19px; }

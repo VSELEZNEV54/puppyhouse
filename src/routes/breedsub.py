@@ -118,6 +118,7 @@ def colour_items(b, items, alts=None):
         out.append(dict(
             slug=c["slug"], label=c["name"], name=nobr(c["name"]), text=nobr(c["text"]),
             badge=c["badge"], std=c.get("std"), swatch=c.get("swatch"), photo_note=c.get("photo_note"),
+            pick=c.get("pick"),  # «кремового мальтипу» — the CTA of the colour card on the breed page
             photo=dict(src=src, alt=alts.get(src, f"{c['name']} щенок {b['name_gen']}")) if src else None,
         ))
     return out

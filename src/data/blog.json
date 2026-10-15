@@ -33,6 +33,40 @@
     "body": null
   },
   {
+    "slug": "maltipu-kormlenie",
+    "url": "/blog/maltipu-kormlenie/",
+    "title": "Чем кормить мальтипу: корм, режим и порции",
+    "breed": "maltipu",
+    "teaser": "Готовый корм или натуралка, сколько раз в день кормить и что нельзя давать.",
+    "cover": "/assets/img/color-maltipu-apricot.jpg",
+    "read_min": "[6]",
+    "keywords": [
+      "чем кормить мальтипу",
+      "мальтипу корм",
+      "чем кормить щенка мальтипу",
+      "сколько раз кормить мальтипу",
+      "мальтипу питание"
+    ],
+    "body": null
+  },
+  {
+    "slug": "maltipu-vospitanie",
+    "url": "/blog/maltipu-vospitanie/",
+    "title": "Воспитание мальтипу: пелёнка, команды и одиночество",
+    "breed": "maltipu",
+    "teaser": "Как приучить щенка к пелёнке, первым командам и спокойному одиночеству.",
+    "cover": "/assets/img/color-maltipu-white.jpg",
+    "read_min": "[6]",
+    "keywords": [
+      "воспитание мальтипу",
+      "дрессировка мальтипу",
+      "как приучить мальтипу к пелёнке",
+      "щенок мальтипу первые дни",
+      "мальтипу одна дома"
+    ],
+    "body": null
+  },
+  {
     "slug": "francuzskij-buldog-harakter",
     "url": "/blog/francuzskij-buldog-harakter/",
     "title": "Французский бульдог: характер, плюсы и минусы",

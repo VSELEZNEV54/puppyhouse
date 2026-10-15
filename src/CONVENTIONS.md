@@ -34,8 +34,20 @@ pixel-parity baseline no longer applies. Reference inner page: `/shchenki/`.
   the reply time («Ответим за 15 минут», «Цену пришлём за 15 минут»).
 - **First screen**: `ui.page_hero(..., full=true)` = the whole screen (breed pages); homepage hero: `.hero--full`.
   Studio photos in page heroes are larger on desktop (≥ 1200 px the tile is taller; the photo is never cropped).
-- **No new images.** Placeholders come from `assets/img/` (`src/data/media.json` lists sets per page/breed); a video is a
+- **Images.** Placeholders come from `assets/img/` (`src/data/media.json` lists sets per page/breed); a video is a
   poster + play button until the client sends files (`"video": null` → the lightbox says «Видео появится здесь»).
+  Client 15.10 (maltipu page): missing studio colours may be generated in the same style (Figma `generate_image`, peach
+  backdrop, puppy centred) — list them in `tools/images.json` (the fetch workflow downloads them), measure the backdrop into
+  `tools/photo-tones.json`. Client's live photos: pick them from the contact sheets in `tools/yadisk/` into
+  `tools/yadisk-pick.json` (the Yandex Disk workflow downloads them).
+- **Breed page v2** (client 15.10, maltipu first): `"layout": "v2"` in `breeds-hub.json` → `breeds/breed.html.j2`, body
+  `.page-breed` (coral main buttons, homepage-size photo carousel and SEO text — the `.page-home` rules in `main.css` cover both).
+  Order: hero («Щенки в наличии» + «Получить консультацию») · every puppy of the breed + «Помочь с выбором» · photo / video
+  carousel + lead band (round faces of the breed's colours) · colour cards to scroll (`.brd-cols`, a `[data-carousel]` with
+  `data-align="start"`, each card «Подобрать кремового мальтипу» — `pick` in `breedsub.json`) · «Какой он» · «Как мы отдаём
+  щенка» (what travels with the puppy + photo tiles: documents, guarantee, delivery, price) · FAQ · «Всё о <породе>» (articles +
+  the breed's colours and price pages) · SEO text · lead form with contact tiles (`forms.contact_tiles()`), as on the homepage.
+  The other three breeds keep `breeds/hub.html.j2` until their data gets `"layout": "v2"`.
 
 ## Build and look
 
@@ -184,7 +196,7 @@ in the order of `breeds-hub.json` → `media` (+ extra placeholders), so a video
 | `ui.link_tiles` | `items[{url,title,line,icon,color \| breed \| image, cta?}], style='white'\|'color'` | related links (don't mix image + icon tiles in one row); each ends with a «Подробнее» pill (`t.cta` to change) |
 | `ui.tile_cta` | `label='Подробнее', variant=''\|'soft'\|'ink', url=none` | the CTA pill of a tile/card («Перейти к породе», «Смотреть щенка», «Все окрасы», «Читать»). Inside a link tile → `<span>`; `url` → `<a class="tcta">`. White on colour tiles, `soft` on white, `ink` on photos |
 | `ui.advantages` | `items=site.advantages, title, id='preimushchestva', lead, link, cols=3, tight=false` (`tight` → `section--tight`, first block under a hero) | kennel advantages: pastel icon circle + 2–3 word title + one line. `title` → whole section with H2; `cols=6` → six narrow tiles in a row. Phones: one per row |
-| `ui.lead_band` | `title, line, label='Оставить заявку', tone='lilac', tag='h3', title_id, faces=true, note, modal_title, submit='Записаться на видеозвонок', done` | CTA band right under a carousel: «Оставить заявку» (modal with its own title + hidden note) + «Написать в Telegram». Inside a section with an H2 keep `tag='h3'` |
+| `ui.lead_band` | `title, line, label='Оставить заявку', tone='lilac', tag='h3', title_id, faces=true, note, modal_title, submit='Записаться на видеозвонок', done` | CTA band right under a carousel: «Оставить заявку» (modal with its own title + hidden note) + «Написать в Telegram». Inside a section with an H2 keep `tag='h3'`. `faces=[{src, tone}]` → those studio photos as round faces (breed page: its colours) |
 | `ui.cta_band` | `title, line, button='modal'\|{url,label}, label, tone, faces, title_id` | mid-page CTA (wrap in a section, `title_id` → its `aria-labelledby`) |
 | `ui.keyfacts`, `ui.callout(kind,title)` + call, `ui.toc([[id,label]])` | | articles (`.article`, `.prose`) |
 | `ui.cmp_table` | `cols` (names or breed dicts), `rows[[label, v1, v2…]]`, `caption` | comparison table in a white tile; column names never break at a hyphen. 3+ columns: phones ≤ 760 get one tile per column (`.cmp-cards`) instead of the table |
@@ -202,6 +214,7 @@ in the order of `breeds-hub.json` → `media` (+ extra placeholders), so a video
 | `blocks.blog_teasers` | `slugs` (or `posts[{url,title,line,cover,topic}]`), `title='Гид по породам', id='blog', lead, link, limit=3` | article cards: photo, title, one line, «Читать»; phones — compact list |
 | `forms.lead_form` | `title='Подберём щенка за 1 час', line, tone, breed, id='zayavka', contacts=true, cls=''` | one per page (the layout adds it); phones: phone number on its own line, three messengers (`.lead__msgrs`, never split) under it. `contacts=false` — no phone/messengers in the tile (a «ответим за 15 минут» note instead); `{% call %}` content goes after the tile in the same section (homepage: contact tiles `.hm-cts`) |
 | `forms.price_button(label, cls, breed)`, `forms.msgr(kind)` | `kind = telegram \| whatsapp \| max` | generic «Узнать цену» / messenger round button |
+| `forms.contact_tiles()` | | phone, messengers, e-mail, address — four white tiles under `forms.lead_form(contacts=false, cls='hm-lead')` (homepage, breed pages v2) |
 | `forms.contact_field(prefix)` | `'lf' \| 'pm' \| yours` | «Куда написать» chips Telegram / WhatsApp / MAX / Звонок |
 | `blocks.faq_section` / `faq_list` | `items` (faq.json or `{q,a}`), `title, id, link, short, ld=true` | accordion; `ld=true` also emits FAQPage JSON-LD for its questions (one FAQ section per page — pass `ld=false` where the page outputs its own FAQPage: /faq/, blog articles) |
 | `blocks.reviews_section` | `reviews, title, id, title_id, link, short` | text reviews (one per row on phones); for video reviews use `media.video_reviews` |
@@ -218,7 +231,7 @@ in the order of `breeds-hub.json` → `media` (+ extra placeholders), so a video
   Header: logo caption ≥ 1600; phone text ≥ 1440 («Блог» gives way to it at 1440–1519); «Блог» ≥ 1340, «Контакты» ≥ 1280, round Telegram ≥ 1200, «Отзывы» ≥ 1150; burger < 1100.
 - `main.js` (all pages) gives you, by markup: header panels `[data-mega]` / `[data-dd]` (hover with intent, click pins, ↓ ↑, Esc),
   `[data-burger]` + `#mmenu` accordions (`.mmenu__acc` → `aria-controls`), `[data-carousel]` (arrows, swipe, keys, active card,
-  far images preloaded), `[data-lightbox]` → `#lightbox` (`data-kind`, `data-src` = video file, `data-caption`),
+  far images preloaded; `data-align="start"` — cards snap to the left edge, no centred card: colour cards), `[data-lightbox]` → `#lightbox` (`data-kind`, `data-src` = video file, `data-caption`),
   `[data-open-modal]` (inside `[data-pup]` card → prefilled; `data-modal-title` / `-sub` / `-breed` / `-note` on the button set the title, subtitle, breed and hidden note), `.faq__btn` accordions, `[data-seo-toggle]`, `.fav`, `[data-phone]` mask, `#lead-form`, toast for root-absolute links, `[data-hero-ctas]` (mobile bar appears after it), `[data-reveal]` / `[data-reveal="items"]` (fade-in on scroll), Own logic → `assets/js/<group>.js`, vanilla, wrapped in an IIFE, no libraries.
 
 ## Photos and tones

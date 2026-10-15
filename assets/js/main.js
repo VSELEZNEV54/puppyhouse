@@ -554,7 +554,7 @@
 
   /* ---------- карусели фото и видео [data-carousel] (macros/media.html.j2) ----------
      Нативная прокрутка с прилипанием (свайп на телефоне), стрелки, ← → на ленте или карточке,
-     активная карточка — ближайшая к центру (у .media-carousel--reviews — к левому краю).
+     активная карточка — ближайшая к центру (у .media-carousel--reviews и data-align="start" — к левому краю).
      Фото дальних карточек грузим, когда карусель подъехала к экрану: lazy-загрузка браузера
      не видит карточки далеко справа, и при свайпе они появлялись бы пустыми. */
   const carouselIO = 'IntersectionObserver' in window ? new IntersectionObserver((entries) => {
@@ -572,7 +572,7 @@
     const next = $('[data-carousel-next]', root);
     if (!vp || !items.length) return;
     if (carouselIO) carouselIO.observe(root);
-    const fromStart = root.classList.contains('media-carousel--reviews');
+    const fromStart = root.classList.contains('media-carousel--reviews') || root.dataset.align === 'start';
     let active = -1;
     // точка, к которой прилипает карточка: центр ленты или её левый край (с учётом scroll-padding)
     const anchor = () => {
