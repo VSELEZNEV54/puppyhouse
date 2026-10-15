@@ -2,7 +2,7 @@
     One template for every colour; copy in breedsub.json → <breed> → varieties → the colours block (title, text, short,
     rarity / age / nose, about, care). Context (routes/breeds.py): b, c (this colour, breedsub.colour_items), others (the
     other colours), pups (puppies of this colour, simple cards), faq, hub (the breed page copy).
-    Order: hero (photo of the colour, three facts, «Подобрать …» + «Получить консультацию») → «Особенности окраса» (text,
+    Order: hero (the colour's puppy close up, okras-…-big.jpg, three facts, «Подобрать …» + «Получить консультацию») → «Особенности окраса» (text,
     care, «Подобрать …») → puppies of this colour or a waiting-list band → the other colours → FAQ → lead form with contact tiles. -#}
 {% extends "layouts/page.html.j2" %}
 {% import "breeds/_parts.html.j2" as part %}
@@ -14,8 +14,10 @@
 {% endblock %}
 
 {% block hero %}
-    {%- set size = imgsize(c.photo.src) %}
-    {% call ui.page_hero(c.title, lead=c.text, tone=b.tone, photo={'src': c.photo.src, 'w': size[0], 'h': size[1], 'alt': c.photo.alt}, eyebrow='Окрасы ' ~ b.name_gen, facts=c.facts) %}
+    {#- the same puppy close up (okras-…-big.jpg): a big square photo on the right, the whole height of the tile -#}
+    {%- set src = c.photo.big or c.photo.src %}
+    {%- set size = imgsize(src) %}
+    {% call ui.page_hero(c.title, lead=c.text, tone=b.tone, photo={'src': src, 'w': size[0], 'h': size[1], 'alt': c.photo.alt}, eyebrow='Окрасы ' ~ b.name_gen, facts=c.facts, cls='phero--colour') %}
       <button class="btn btn--ink btn--lg" type="button" data-open-modal data-modal-breed="{{ b.name }}" data-modal-title="Подберём {{ c.pick }}" data-modal-sub="Пришлём щенков этого окраса с фото, видео и ценой. Нет сейчас — напишем, когда появятся" data-modal-note="Окрас: {{ c.label|lower }}" data-modal-submit="Подобрать щенка">Подобрать {{ c.pick|typo }}</button>
       <button class="btn btn--white btn--lg" type="button" data-open-modal data-modal-breed="{{ b.name }}" data-modal-title="{{ hub.consult.label }}" data-modal-sub="{{ hub.consult.sub }}" data-modal-note="Консультация: {{ c.title|lower }}" data-modal-submit="{{ hub.consult.label }}" data-modal-done="{{ hub.consult.done }}">{{ hub.consult.label }}</button>
     {% endcall %}
@@ -62,7 +64,7 @@
         </li>
       </ul>
       {% else %}
-      {{ ui.lead_band(title=c.title ~ ' — по записи', line='Сейчас таких щенков нет. Запишем в лист ожидания и напишем, когда появится малыш этого окраса', label='Записаться', tag='h2', title_id='shchenki-title', faces=[{'src': c.photo.src, 'tone': b.tone}], note='Лист ожидания: ' ~ c.label|lower, modal_title='Подберём ' ~ c.pick, submit='Записаться', done='Вы в листе ожидания. Куратор напишет, когда появится щенок этого окраса.') }}
+      {{ ui.lead_band(title=c.title ~ ' — по записи', line='Сейчас таких щенков нет. Запишем в лист ожидания и напишем, когда появится малыш этого окраса', label='Записаться', tag='h2', title_id='shchenki-title', faces=[{'src': c.photo.big or c.photo.src, 'tone': b.tone}], note='Лист ожидания: ' ~ c.label|lower, modal_title='Подберём ' ~ c.pick, submit='Записаться', done='Вы в листе ожидания. Куратор напишет, когда появится щенок этого окраса.') }}
       {% endif %}
     </section>
 

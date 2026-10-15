@@ -4,6 +4,7 @@ Copy lives in breedsub.json (common.* + per-breed keys); breed urls and photo al
 puppies (the «Щенки в наличии» strip) from puppies.json via the layout (pups_breed). No prices anywhere."""
 
 import copy as _copy
+import pathlib
 import re
 
 from markupsafe import Markup, escape
@@ -20,6 +21,15 @@ NBSP = " "
 # optional keys of a varieties block / a comparison tile (the templates run with StrictUndefined)
 BLOCK = dict(lead=None, note=None)
 KIND = dict(face=None, tag=None, icon=None, color="sun", badge=None, off=False)
+
+ROOT = pathlib.Path(__file__).resolve().parents[2]
+
+
+def _big(src):
+    """okras-<breed>-<colour>-big.jpg next to the colour photo (tools/okras_tiles.py): the same puppy close up for the
+    first screen of the colour page; None when there is no such shot."""
+    big = src.replace(".jpg", "-big.jpg")
+    return big if (ROOT / big.lstrip("/")).is_file() else None
 
 
 def nobr(text):
@@ -124,7 +134,7 @@ def colour_items(b, items, alts=None):
             facts=[dict(label=lb, value=c[k]) for k, lb in (("rarity", "Как часто"), ("age", "С возрастом"), ("nose", "Нос и глаза"))
                    if c.get(k)],
             about=[nobr(x) for x in c.get("about", [])], care=nobr(c["care"]) if c.get("care") else None,
-            photo=dict(src=src, alt=alts.get(src, f"{c['name']} щенок {b['name_gen']}")) if src else None,
+            photo=dict(src=src, alt=alts.get(src, f"{c['name']} щенок {b['name_gen']}"), big=_big(src)) if src else None,
         ))
     return out
 

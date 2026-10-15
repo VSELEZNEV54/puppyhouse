@@ -26,6 +26,29 @@
   .phero--full .phero__copy { max-width: max(360px, calc(100% + clamp(28px, 3.4vw, 52px) - .51 * var(--ph) - 24px)); }
 }
 
+/* страница окраса (ui.page_hero cls="phero--colour", правка 15.10 «фото побольше»): плитка выше, справа — тот же щенок
+   крупно (okras-…-big.jpg) во всю высоту плитки, шириной --ph, без сдвига за край; плитка выше --ph (длинный текст
+   на планшете) — кадр режется по бокам (cover), пол кадра остаётся на линии пола плитки. Текст — до левого края щенка */
+@media (min-width: 761px) {
+  .phero--colour .phero__tile { --ph: clamp(460px, 40vw, 600px); min-height: var(--ph); align-items: center; }
+  .phero--colour .phero__photo { width: var(--ph); aspect-ratio: auto; transform: none; }
+  .phero--colour .phero__photo img {
+    -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 24%), linear-gradient(180deg, transparent 0, #000 10%);
+    mask-image: linear-gradient(90deg, transparent 0, #000 24%), linear-gradient(180deg, transparent 0, #000 10%);
+  }
+  .phero--colour .phero__copy { max-width: min(680px, calc(100% + clamp(28px, 3.4vw, 52px) - .8 * var(--ph))); }
+}
+@media (min-width: 761px) and (max-width: 1000px) {
+  .phero--colour .phero__tile { --ph: 380px; }
+}
+@media (max-width: 760px) {
+  .phero--colour .phero__photo { aspect-ratio: 1; }
+  .phero--colour .phero__photo img {
+    -webkit-mask-image: linear-gradient(180deg, #000 93%, transparent 100%);
+    mask-image: linear-gradient(180deg, #000 93%, transparent 100%);
+  }
+}
+
 /* карусель «Фото и видео»: подпись карточки — обычной строкой (метка «Видео» в начале строки, длинная подпись
    переносится под неё, а не уходит отдельным блоком на вторую строку, как во flex-подписи из main.css) */
 #foto-video .mcard__cap { display: block; }
@@ -130,14 +153,14 @@
 .ct-card--simple .pup__name { padding-right: 0; }
 @media (max-width: 560px) { .ct-card--simple .ct-card__price { border-color: var(--line-2); } }
 
-/* «Всё о мальтипу»: все статьи в один ряд (правки 15.10). Широкий экран — шесть карточек сжимаются по ширине;
-   уже 1300 px — ряд листается вбок (на телефоне — список, как везде) */
-@media (min-width: 1300px) { .page-breed #stati .bteasers { grid-template-columns: repeat(6, minmax(0, 1fr)); } }
-@media (min-width: 761px) {
-  .page-breed #stati .bteaser__title { font-size: clamp(17px, 1.3vw, 20px); }
-  .page-breed #stati .bteaser__line { font-size: 14px; }
-  .page-breed #stati .bteaser__topic { max-width: calc(100% - 16px); }
-}
+/* «Всё о мальтипу» (правки 15.10): четыре широкие карточки статей в ряд по ширине страницы, остальные — за краем,
+   стрелки под лентой и свайп (part.post_carousel); планшет — три в ряд. Ширина карточки — от ширины ленты (cqw) */
+.brd-posts { container-type: inline-size; --mc-w: calc((100cqw - 3 * var(--gap)) / 4); }
+.brd-posts .media-carousel__track { padding-inline: var(--pad); }
+.brd-posts .media-carousel__viewport { scroll-padding-inline: var(--pad); }
+.brd-posts .media-carousel__item { display: flex; scroll-snap-align: start; transform: none; opacity: 1; }
+.brd-posts .bteaser { width: 100%; }
+.brd-posts .bteaser__topic { max-width: calc(100% - 16px); }
 
 /* страница окраса: текст об окрасе слева, справа — факты и уход */
 .brd-colinfo { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: var(--gap); }
@@ -181,16 +204,8 @@
 /* =========================================================
    АДАПТИВ
    ========================================================= */
-@media (max-width: 1299px) and (min-width: 761px) {
-  .page-breed #stati .bteasers {
-    grid-template-columns: none; grid-auto-flow: column; grid-auto-columns: minmax(232px, 1fr);
-    overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; overscroll-behavior-x: contain;
-    margin-inline: calc(-1 * var(--pad)); padding: 6px var(--pad) 10px; scroll-padding-inline: var(--pad);
-  }
-  .page-breed #stati .bteasers::-webkit-scrollbar { display: none; }
-  .page-breed #stati .bteasers > li { scroll-snap-align: start; }
-}
 @media (max-width: 1199px) {
+  .brd-posts { --mc-w: calc((100cqw - 2 * var(--gap)) / 3); }
   .brd-links .ltiles { --n: 2; }
   .brd-gives { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .brd-give__media { aspect-ratio: 16 / 9; }
@@ -229,6 +244,11 @@
   .brd-help { width: 100%; }
   /* окрасы: карточка ≈ три четверти экрана — видно край следующей, листается свайпом */
   .brd-cols { --mc-w: min(76vw, 320px); }
+  /* статьи: на телефоне не листаются вбок (правка 13.10) — компактный список, как в blocks.blog_teasers */
+  .brd-posts .media-carousel__viewport { overflow: visible; margin: 0; padding: 0; scroll-snap-type: none; }
+  .brd-posts .media-carousel__track { display: grid; grid-template-columns: minmax(0, 1fr); width: auto; padding: 0; }
+  .brd-posts .media-carousel__item { width: auto; }
+  .brd-posts .media-carousel__nav { display: none; }
   .brd-kit__media { aspect-ratio: 3 / 2; }
   .brd-kit__body { padding: 12px 12px 16px; }
   .brd-kit__list { grid-template-columns: minmax(0, 1fr); gap: 10px; }

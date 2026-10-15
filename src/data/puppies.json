@@ -362,5 +362,157 @@
     ],
     "parents": { "mother": { "name": "[кличка мамы]", "breed": "той-пудель" }, "father": { "name": "[кличка папы]", "breed": "той-пудель" } },
     "video": null
+  },
+  {
+    "slug": "maltipu-f1-belyj-2026-08",
+    "name": "Снежок",
+    "breed": "maltipu",
+    "generation": "F1",
+    "variety": null,
+    "sex": "male",
+    "colour": "белый",
+    "birth_date": "2026-08-10",
+    "age_weeks": 9,
+    "status": "available",
+    "badges": ["Родители с РКФ", "Прививки по возрасту", "Ветпаспорт"],
+    "weight_forecast": "около [3–4] кг",
+    "photos": [
+      { "src": "/assets/img/pup-maltipu-441.jpg", "w": 1200, "h": 1600, "kind": "life", "class": null, "alt": "Белый щенок мальтипу Снежок на руках во дворе", "pos": "50% 45%" }
+    ],
+    "parents": { "mother": { "name": "[кличка мамы]", "breed": "[мальтийская болонка]" }, "father": { "name": "[кличка папы]", "breed": "[той-пудель]" } },
+    "video": null
+  },
+  {
+    "slug": "maltipu-f2-abrikos-2026-07",
+    "name": "Нуга",
+    "breed": "maltipu",
+    "generation": "F2",
+    "variety": null,
+    "sex": "female",
+    "colour": "абрикосовый",
+    "birth_date": "2026-07-28",
+    "age_weeks": 10,
+    "status": "available",
+    "badges": ["Родители с РКФ", "Прививки по возрасту", "Ветпаспорт"],
+    "weight_forecast": "около [3–4] кг",
+    "photos": [
+      { "src": "/assets/img/pup-maltipu-452.jpg", "w": 1200, "h": 1600, "kind": "life", "class": null, "alt": "Абрикосовый щенок мальтипу Нуга в корзине с игрушками", "pos": "45% 40%" }
+    ],
+    "parents": { "mother": { "name": "[кличка мамы]", "breed": "[мальтипу F1]" }, "father": { "name": "[кличка папы]", "breed": "[мальтипу F1]" } },
+    "video": null
+  },
+  {
+    "slug": "maltipu-f1b-mini-ryzhij-2026-08",
+    "name": "Корица",
+    "breed": "maltipu",
+    "generation": "F1b мини",
+    "variety": null,
+    "sex": "female",
+    "colour": "рыжий",
+    "birth_date": "2026-08-14",
+    "age_weeks": 8,
+    "status": "available",
+    "badges": ["Родители с РКФ", "Прививки по возрасту", "Ветпаспорт"],
+    "weight_forecast": "около [2,5–3,5] кг",
+    "photos": [
+      { "src": "/assets/img/pup-maltipu-472.jpg", "w": 1038, "h": 1280, "kind": "life", "class": null, "alt": "Рыжий щенок мальтипу Корица на ладони", "pos": "50% 30%" }
+    ],
+    "parents": { "mother": { "name": "[кличка мамы]", "breed": "[мальтипу F1]" }, "father": { "name": "[кличка папы]", "breed": "[той-пудель]" } },
+    "video": null
+  },
+  {
+    "slug": "maltipu-f2-ryzhij-2026-07",
+    "name": "Тоффи",
+    "breed": "maltipu",
+    "generation": "F2",
+    "variety": null,
+    "sex": "male",
+    "colour": "рыжий",
+    "birth_date": "2026-07-24",
+    "age_weeks": 11,
+    "status": "available",
+    "badges": ["Родители с РКФ", "Прививки по возрасту", "Ветпаспорт"],
+    "weight_forecast": "около [4–5] кг",
+    "photos": [
+      { "src": "/assets/img/pup-maltipu-474.jpg", "w": 704, "h": 823, "kind": "life", "class": null, "alt": "Рыжий кудрявый щенок мальтипу Тоффи на руках", "pos": "50% 45%" }
+    ],
+    "parents": { "mother": { "name": "[кличка мамы]", "breed": "[мальтипу F1]" }, "father": { "name": "[кличка папы]", "breed": "[мальтипу F1]" } },
+    "video": null
+  },
+  {
+    "slug": "maltipu-f1-mini-krem-2026-08",
+    "name": "Ваниль",
+    "breed": "maltipu",
+    "generation": "F1 мини",
+    "variety": null,
+    "sex": "female",
+    "colour": "кремовый",
+    "birth_date": "2026-08-01",
+    "age_weeks": 10,
+    "status": "available",
+    "badges": ["Родители с РКФ", "Прививки по возрасту", "Ветпаспорт"],
+    "weight_forecast": "около [2,5–3,5] кг",
+    "photos": [
+      { "src": "/assets/img/cl-maltipu-393.jpg", "w": 1200, "h": 1600, "kind": "life", "class": null, "alt": "Кремовый щенок мальтипу Ваниль на руках", "pos": "45% 30%" }
+    ],
+    "parents": { "mother": { "name": "[кличка мамы]", "breed": "[мальтийская болонка]" }, "father": { "name": "[кличка папы]", "breed": "[той-пудель]" } },
+    "video": null
+  },
+  {
+    "slug": "maltipu-f1b-abrikos-2026-07",
+    "name": "Ричи",
+    "breed": "maltipu",
+    "generation": "F1b",
+    "variety": null,
+    "sex": "male",
+    "colour": "абрикосовый",
+    "birth_date": "2026-07-19",
+    "age_weeks": 12,
+    "status": "available",
+    "badges": ["Родители с РКФ", "Прививки по возрасту", "Ветпаспорт"],
+    "weight_forecast": "около [3–4] кг",
+    "photos": [
+      { "src": "/assets/img/cl-maltipu-435.jpg", "w": 960, "h": 1280, "kind": "life", "class": null, "alt": "Абрикосовый щенок мальтипу Ричи выглядывает из-за спинки дивана", "pos": "50% 40%" }
+    ],
+    "parents": { "mother": { "name": "[кличка мамы]", "breed": "[мальтипу F1]" }, "father": { "name": "[кличка папы]", "breed": "[той-пудель]" } },
+    "video": null
+  },
+  {
+    "slug": "maltipu-f1b-shokolad-2026-08",
+    "name": "Брауни",
+    "breed": "maltipu",
+    "generation": "F1b",
+    "variety": null,
+    "sex": "female",
+    "colour": "шоколадный",
+    "birth_date": "2026-08-20",
+    "age_weeks": 7,
+    "status": "soon",
+    "badges": ["Родители с РКФ", "Прививки по возрасту", "Ветпаспорт"],
+    "weight_forecast": "около [3–4] кг",
+    "photos": [
+      { "src": "/assets/img/pup-maltipu-478.jpg", "w": 1200, "h": 1600, "kind": "life", "class": null, "alt": "Шоколадный щенок мальтипу Брауни сидит на тапочке", "pos": "42% 55%" }
+    ],
+    "parents": { "mother": { "name": "[кличка мамы]", "breed": "[мальтипу F1]" }, "father": { "name": "[кличка папы]", "breed": "[той-пудель]" } },
+    "video": null
+  },
+  {
+    "slug": "maltipu-f2-krem-2026-08",
+    "name": "Бублик",
+    "breed": "maltipu",
+    "generation": "F2",
+    "variety": null,
+    "sex": "male",
+    "colour": "кремовый",
+    "birth_date": "2026-08-05",
+    "age_weeks": 9,
+    "status": "reserved",
+    "badges": ["Родители с РКФ", "Прививки по возрасту", "Ветпаспорт"],
+    "weight_forecast": "около [4–5] кг",
+    "photos": [
+      { "src": "/assets/img/pup-maltipu-464.jpg", "w": 1200, "h": 1600, "kind": "life", "class": null, "alt": "Кремовый щенок мальтипу Бублик на руках на улице", "pos": "40% 35%" }
+    ],
+    "parents": { "mother": { "name": "[кличка мамы]", "breed": "[мальтипу F1]" }, "father": { "name": "[кличка папы]", "breed": "[мальтипу F1]" } },
+    "video": null
   }
 ]
