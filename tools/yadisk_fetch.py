@@ -34,7 +34,7 @@ def listing(key, path="/"):
                 items += listing(key, it["path"])
             else:
                 items.append({"key": key, "path": it["path"], "name": it["name"], "size": it.get("size"),
-                              "media": it.get("media_type"), "mime": it.get("mime_type")})
+                              "media": it.get("media_type"), "mime": it.get("mime_type"), "preview": it.get("preview")})
         offset += len(batch)
         if offset >= emb.get("total", 0) or not batch:
             return items
@@ -50,6 +50,8 @@ def fetch(key, path):
 
 
 def cmd_list():
+    """Список файлов и листы-превью. Миниатюры — готовые превью Яндекс Диска (оригиналы не качаем: их сотни мегабайт)."""
+    from concurrent.futures import ThreadPoolExecutor
     srcs = json.loads((ROOT / "tools" / "yadisk.json").read_text(encoding="utf-8"))
     OUT.mkdir(parents=True, exist_ok=True)
     manifest = []
@@ -57,41 +59,35 @@ def cmd_list():
         try:
             files = listing(s["key"], s.get("path", "/"))
         except Exception as e:
-            print("LIST FAILED", s, e)
+            print("LIST FAILED", s["label"], e, flush=True)
             continue
         for f in files:
             f["folder"] = s["label"]
         manifest += files
-        print(s["label"], len(files), "files")
-    # numbered thumbnails per folder
-    tmp = pathlib.Path("/tmp/yd")
-    tmp.mkdir(exist_ok=True)
+        print(s["label"], len(files), "files", flush=True)
+    manifest = [f for f in manifest if f.get("media") in ("image", "video")]
     for n, f in enumerate(manifest, 1):
         f["n"] = n
+    (OUT / "manifest.json").write_text(json.dumps(manifest, ensure_ascii=False, indent=1), encoding="utf-8")
+    tmp = pathlib.Path("/tmp/yd")
+    tmp.mkdir(exist_ok=True)
+
+    def thumb(f):
         try:
-            if f["media"] == "image":
-                im = Image.open(io.BytesIO(fetch(f["key"], f["path"])))
-                im = ImageOps.exif_transpose(im).convert("RGB")
-                f["w"], f["h"] = im.size
-            elif f["media"] == "video":
-                vp = tmp / f"v{n}"
-                vp.write_bytes(fetch(f["key"], f["path"]))
-                probe = subprocess.run(["ffprobe", "-v", "error", "-select_streams", "v:0", "-show_entries", "stream=width,height:format=duration", "-of", "json", str(vp)], capture_output=True, text=True)
-                meta = json.loads(probe.stdout or "{}")
-                st = (meta.get("streams") or [{}])[0]
-                f["w"], f["h"] = st.get("width"), st.get("height")
-                f["duration"] = float((meta.get("format") or {}).get("duration") or 0)
-                fr = tmp / f"v{n}.jpg"
-                subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-ss", str(min(2, f["duration"] / 3)), "-i", str(vp), "-frames:v", "1", str(fr)])
-                im = Image.open(fr).convert("RGB")
-                vp.unlink()
-            else:
-                continue
+            if not f.get("preview"):
+                return False
+            im = Image.open(io.BytesIO(get(f["preview"], raw=True))).convert("RGB")
             im.thumbnail((360, 360))
-            im.save(tmp / f"t{n}.jpg", quality=80)
-            f["thumb"] = True
+            im.save(tmp / f"t{f['n']}.jpg", quality=80)
+            return True
         except Exception as e:
-            print("THUMB FAILED", f["name"], e)
+            print("THUMB FAILED", f["n"], f["name"], e, flush=True)
+            return False
+
+    with ThreadPoolExecutor(12) as ex:
+        for f, ok in zip(manifest, ex.map(thumb, manifest)):
+            f["thumb"] = ok
+    print("thumbs:", sum(1 for f in manifest if f.get("thumb")), "of", len(manifest), flush=True)
     for label in dict.fromkeys(f["folder"] for f in manifest):
         group = [f for f in manifest if f["folder"] == label and f.get("thumb")]
         for page in range(0, len(group), 30):
@@ -102,7 +98,7 @@ def cmd_list():
                 t = Image.open(tmp / f"t{f['n']}.jpg")
                 x, y = (i % 6) * 370 + 5, (i // 6) * 400 + 5
                 sheet.paste(t, (x, y))
-                tag = f"#{f['n']}" + (" VIDEO %ds" % f.get("duration", 0) if f["media"] == "video" else "")
+                tag = f"#{f['n']}" + (" VIDEO" if f["media"] == "video" else "") + " " + f["path"].rsplit("/", 2)[-2][:24]
                 d.rectangle([x, y + 362, x + 360, y + 392], fill="black")
                 d.text((x + 6, y + 368), tag, fill="white")
             safe = "".join(ch if ch.isalnum() else "-" for ch in label)

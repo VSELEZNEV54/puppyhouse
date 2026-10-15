@@ -15,7 +15,7 @@ permissions:
 jobs:
   fetch:
     runs-on: ubuntu-latest
-    timeout-minutes: 60
+    timeout-minutes: 90
     steps:
       - uses: actions/checkout@v4
         with:
@@ -26,9 +26,9 @@ jobs:
       - run: pip install pillow
       - run: sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg
       - name: List folders and build contact sheets (when tools/yadisk/manifest.json is missing)
-        run: test -f tools/yadisk/manifest.json || python tools/yadisk_fetch.py list
+        run: test -f tools/yadisk/manifest.json || python -u tools/yadisk_fetch.py list
       - name: Download picked photos and videos (when tools/yadisk-pick.json exists)
-        run: test -f tools/yadisk-pick.json && python tools/yadisk_fetch.py pick || true
+        run: test -f tools/yadisk-pick.json && python -u tools/yadisk_fetch.py pick || true
       - name: Commit
         run: |
           git config user.name "github-actions[bot]"
