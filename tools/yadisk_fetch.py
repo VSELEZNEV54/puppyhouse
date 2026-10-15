@@ -73,18 +73,22 @@ def cmd_list():
     tmp.mkdir(exist_ok=True)
 
     def thumb(f):
-        try:
-            if not f.get("preview"):
-                return False
-            im = Image.open(io.BytesIO(get(f["preview"], raw=True))).convert("RGB")
-            im.thumbnail((360, 360))
-            im.save(tmp / f"t{f['n']}.jpg", quality=80)
-            return True
-        except Exception as e:
-            print("THUMB FAILED", f["n"], f["name"], e, flush=True)
+        import time
+        if not f.get("preview"):
             return False
+        for attempt in range(5):  # превью-сервер Диска часто рвёт соединение: пауза и ещё раз
+            try:
+                im = Image.open(io.BytesIO(get(f["preview"], raw=True))).convert("RGB")
+                im.thumbnail((360, 360))
+                im.save(tmp / f"t{f['n']}.jpg", quality=80)
+                return True
+            except Exception as e:
+                err = e
+                time.sleep(2 + attempt * 3)
+        print("THUMB FAILED", f["n"], f["name"], err, flush=True)
+        return False
 
-    with ThreadPoolExecutor(12) as ex:
+    with ThreadPoolExecutor(5) as ex:
         for f, ok in zip(manifest, ex.map(thumb, manifest)):
             f["thumb"] = ok
     print("thumbs:", sum(1 for f in manifest if f.get("thumb")), "of", len(manifest), flush=True)
