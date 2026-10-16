@@ -5,14 +5,14 @@ import csv
 import datetime as dt
 import io
 
-from sqlalchemy import func, select
+from sqlalchemy import func, select, update
 from sqlalchemy.orm import Session
 
 from ..config import get_settings
 from ..enums import (CHANNEL_LABELS, ERASURE_REASON_LABELS, EVENT_LABELS, LEAD_KIND_LABELS, LEAD_STATUS_META,
                      LOST_REASON_LABELS, ORIGIN_LABELS, REVIEW_STATUS_LABELS, LeadStatus, ReviewStatus)
 from ..errors import ApiError
-from ..models import AdminUser, Breed, Lead, Review, Visit
+from ..models import AdminUser, Breed, Consent, Lead, Review, Visit
 from .. import schemas_admin as sa
 from . import phone as phones
 from .admin_leads import LeadFilter, apply_filter, day_start, tz
@@ -42,7 +42,15 @@ def patch_review(db: Session, review_id: int, p: sa.ReviewPatch, user: AdminUser
             r.status = v.value
             r.moderated_by, r.moderated_at = user.id, now
             if v == ReviewStatus.withdrawn:
+                # the author withdrew consent: stop publication and keep nothing that identifies them
                 r.withdrawn_at = now
+                r.name = r.text = r.phone = r.city = r.ip = r.user_agent = None
+                r.display_name, r.contact_id, r.visitor_id = "—", None, None
+                db.execute(update(Consent).where(Consent.review_id == r.id, Consent.withdrawn_at.is_(None))
+                           .values(withdrawn_at=now, ip=None, user_agent=None))
+                break
+        elif r.status == ReviewStatus.withdrawn.value:
+            raise ApiError(409, "withdrawn", "Отзыв снят по просьбе автора, его нельзя редактировать")
         elif v is not None or f in ("city", "moderator_note"):
             setattr(r, f, v)
     audit(db, user, "review_edit", target=f"review:{r.id}", actor_label=label, fields=sorted(p.model_fields_set))
@@ -155,7 +163,8 @@ def export_csv(db: Session, f: LeadFilter, user: AdminUser, ip: str | None, labe
             l.assignee.name if l.assignee else "",
             l.next_contact_at.astimezone(zone).strftime("%d.%m.%Y %H:%M") if l.next_contact_at else "",
             LOST_REASON_LABELS.get(l.lost_reason, l.lost_reason or ""), l.sale_amount, l.parent_id, l.note)])
-    audit(db, user, "export", ip=ip, actor_label=label, rows=len(leads), filters={k: str(v) for k, v in vars(f).items() if v})
+    filters = {k: ("***" if k == "q" else str(v)) for k, v in vars(f).items() if v}  # a search may be a phone
+    audit(db, user, "export", ip=ip, actor_label=label, rows=len(leads), filters=filters)
     db.commit()
     return ("\ufeff" + buf.getvalue()).encode("utf-8"), len(leads)
 

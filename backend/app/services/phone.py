@@ -32,3 +32,11 @@ def display(e164: str | None) -> str:
         return e164 or ""
     d = e164[2:]
     return f"+7 ({d[:3]}) {d[3:6]}-{d[6:8]}-{d[8:]}"
+
+
+def mask(e164: str | None) -> str:
+    """'+74951234567' → '+7 (495) ***-**-67' — for records that must not keep the full number."""
+    if not e164 or len(e164) != 12:
+        return "—"
+    d = e164[2:]
+    return f"+7 ({d[:3]}) ***-**-{d[8:]}"

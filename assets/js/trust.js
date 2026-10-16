@@ -81,12 +81,19 @@
   const TEXT_MAX = 4000; // как в API (ReviewIn.text) и maxlength у #rm-text
   const ERR = {
     name: 'Напишите, как вас подписать',
+    phone: 'Проверьте номер: после +7 нужно 10 цифр',
     text: 'Расскажите хотя бы пару предложений',
     text_long: 'Отзыв слишком длинный: до 4000 знаков. Сократите его, пожалуйста',
     consent: 'Без согласия на обработку данных мы не сможем отправить отзыв',
     consent_publish: 'Без согласия мы не сможем опубликовать отзыв'
   };
-  const FIELDS = ['name', 'text', 'rating', 'consent', 'consent_publish']; // поля, о которых может сказать API (422)
+  const FIELDS = ['name', 'phone', 'text', 'rating', 'consent', 'consent_publish']; // поля, о которых может сказать API (422)
+  const tenDigits = (v) => { // как phoneDigits() в main.js: 10 цифр после +7 / 8
+    let s = String(v || '').trim();
+    let dg = s.startsWith('+7') ? s.slice(2).replace(/\D/g, '') : s.replace(/\D/g, '');
+    if (!s.startsWith('+7') && dg.length === 11 && (dg[0] === '7' || dg[0] === '8')) dg = dg.slice(1);
+    return dg;
+  };
   let returnTo = null;
   let openedAt = 0; // elapsed_ms — от открытия окна
   let openSeq = 0; // ответ API от прошлого открытия не меняет экран нового
@@ -106,6 +113,7 @@
     const len = textLen();
     const checks = [
       ['name', !f.name.value.trim()],
+      ['phone', tenDigits(f.phone.value).length !== 10],
       ['text', len < 10 || len > TEXT_MAX, len > TEXT_MAX ? ERR.text_long : ERR.text],
       ['consent', !f.consent.checked],
       ['consent_publish', !f.consent_publish.checked]
@@ -178,6 +186,7 @@
   form.addEventListener('input', (e) => {
     const n = e.target.name;
     if (n === 'name' && e.target.value.trim()) setError('name', '');
+    if (n === 'phone' && tenDigits(e.target.value).length === 10) setError('phone', '');
     if (n === 'text' && textLen() >= 10 && textLen() <= TEXT_MAX) setError('text', '');
   });
   form.addEventListener('change', (e) => {
@@ -204,12 +213,13 @@
     const ctx = api.context();
     return {
       name: f.name.value.trim(),
+      phone: f.phone.value.trim(),
       city: f.city.value.trim() || null,
       breed: f.breed.value || null,
       rating: rating ? Number(rating.value) : null,
       text: f.text.value.trim(),
       consent: f.consent.checked,
-      consent_version: api.consent.processing,
+      consent_version: api.consent.review || api.consent.processing,
       consent_publish: f.consent_publish.checked,
       consent_publish_version: api.consent.distribution,
       page: api.page(),

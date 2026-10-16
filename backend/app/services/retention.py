@@ -10,7 +10,7 @@ from __future__ import annotations
 
 import datetime as dt
 
-from sqlalchemy import and_, delete, exists, or_, select, update
+from sqlalchemy import and_, delete, exists, func, or_, select, update
 from sqlalchemy.orm import Session
 
 from ..config import get_settings
@@ -28,8 +28,10 @@ def run(db: Session) -> dict:
 
     # 1. people past retention (no open request, not seen for 3 years)
     cutoff = now - dt.timedelta(days=s.keep_contacts_days)
-    open_lead = exists().where(Lead.contact_id == Contact.id, Lead.status.in_([x.value for x in OPEN_STATUSES]))
-    stale = db.scalars(select(Contact.id).where(Contact.last_seen_at < cutoff, ~open_lead).limit(500)).all()
+    # «не дольше трёх лет с последнего обращения» is absolute: a request left open and untouched does not keep a
+    # person forever — only a request that moved (last_activity_at) after the cutoff does
+    moved = exists().where(Lead.contact_id == Contact.id, Lead.last_activity_at >= cutoff)
+    stale = db.scalars(select(Contact.id).where(Contact.last_seen_at < cutoff, ~moved).limit(500)).all()
     erased = 0
     for cid in stale:  # each one is re-checked under lock: a person who came back meanwhile is kept
         if admin_people.erase(db, cid, "retention", f"контакт №{cid} (срок хранения истёк)", None, "Система",
@@ -44,9 +46,14 @@ def run(db: Session) -> dict:
     db.execute(update(Lead).where(Lead.parent_id.in_(spam_ids)).values(parent_id=None))
     out["spam_deleted"] = db.execute(delete(Lead).where(Lead.status == LeadStatus.spam.value,
                                                         Lead.created_at < spam_cut)).rowcount
-    out["spam_reviews_deleted"] = db.execute(delete(Review).where(Review.spam_reason.is_not(None),
-                                                                  Review.status == "rejected",
-                                                                  Review.created_at < spam_cut)).rowcount
+    # reviews: rejected ones (not published) and withdrawn ones (already anonymised) are deleted after 30 days
+    gone = db.execute(delete(Review).where(
+        or_(and_(Review.status == "rejected", func.coalesce(Review.moderated_at, Review.created_at) < spam_cut),
+            and_(Review.status == "withdrawn", Review.withdrawn_at < now - dt.timedelta(days=30))))).rowcount
+    out["reviews_deleted"] = gone
+    if gone:
+        db.add(ErasureLog(actor_label="Система", subject=f"отзывы: {gone} (отклонённые и снятые)", reason="retention",
+                          counts={"reviews_deleted": gone}, categories=["имя", "номер телефона", "отзыв"]))
 
     # 3. IP / user agent
     ip_cut = now - dt.timedelta(days=s.keep_ip_days)

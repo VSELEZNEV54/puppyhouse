@@ -3,16 +3,18 @@ from __future__ import annotations
 
 import datetime as dt
 
-from sqlalchemy import delete, func, or_, select, update
+from sqlalchemy import and_, delete, func, or_, select, update
 from sqlalchemy.dialects.postgresql import insert
 from sqlalchemy.orm import Session
 
 from ..enums import OPEN_STATUSES, HistoryAction, LeadStatus
 from ..errors import ApiError
-from ..models import (AdminUser, Consent, Contact, ContactAlias, ErasureLog, Lead, LeadHistory, Outbox, SiteEvent,
-                      Visit, Visitor)
+from ..models import (AdminUser, Consent, Contact, ContactAlias, ErasureLog, Lead, LeadHistory, Outbox, Review,
+                      SiteEvent, Visit, Visitor)
 from .. import schemas_admin as sa
 from . import phone as phones
+from . import phone as phones_mod
+from . import security
 from .admin_leads import _like, contact_links, to_row
 from .auth import audit
 from .leads import lock_phone
@@ -98,8 +100,12 @@ def patch(db: Session, contact_id: int, p: sa.ContactPatch, user: AdminUser, lab
 def events(db: Session, contact_id: int, before_id: int | None, limit: int) -> list[SiteEvent]:
     """Site activity of the person's browsers (cursor pagination: pass the last id as before_id)."""
     get(db, contact_id)
-    vids = select(Lead.visitor_id).where(Lead.contact_id == contact_id, Lead.visitor_id.is_not(None))
-    q = select(SiteEvent).where(SiteEvent.visitor_id.in_(vids))
+    # only what the person did up to their latest request from that browser: the consent covers pages viewed
+    # before a request, not the anonymous visits after it
+    last = (select(Lead.visitor_id.label("vid"), func.max(Lead.created_at).label("upto"))
+            .where(Lead.contact_id == contact_id, Lead.visitor_id.is_not(None))
+            .group_by(Lead.visitor_id).subquery())
+    q = select(SiteEvent).join(last, and_(SiteEvent.visitor_id == last.c.vid, SiteEvent.occurred_at <= last.c.upto))
     if before_id:
         q = q.where(SiteEvent.id < before_id)
     return db.scalars(q.order_by(SiteEvent.id.desc()).limit(limit)).all()
@@ -138,24 +144,26 @@ def merge(db: Session, contact_id: int, into_id: int, user: AdminUser, label: st
 
 
 def erase(db: Session, contact_id: int, reason: str, subject: str, user: AdminUser | None, label: str,
-          stale_before: dt.datetime | None = None) -> dict | None:
+          stale_before: dt.datetime | None = None) -> dict | None:  # {"counts", "manual_steps"}
     """Destroy the person's data (withdrawal of consent, a request, end of retention):
     - requests stay in the statistics without personal data (name, phone, note, IP, pages, comments are cleared);
     - the contact, its aliases and consents, the linked browsers with their visits and events, pending
       notifications are deleted;
     - open requests are closed as «Отказ» (nobody can work them any more);
     - an erasure record (акт об уничтожении ПД) is written and kept for 3 years.
-    stale_before (retention): erase only if the person is still inactive since then and has no open request —
-    re-checked under the same locks a new request takes; returns None when skipped."""
+    - the person's reviews (linked or with the same phone) and their consents are deleted;
+    - an erasure record (акт) with a keyed hash of every destroyed number is written (reapply-erasures).
+    stale_before (retention): erase only if the person has not been seen and no request of theirs has moved since
+    then — re-checked under the same locks a new request takes; returns None when skipped."""
     c = get(db, contact_id)
     lock_phone(db, c.phone)
     c = db.scalars(select(Contact).where(Contact.id == contact_id).with_for_update()).first()
     if c is None:
         raise ApiError(404, "not_found", "Контакт не найден")
     if stale_before is not None:
-        has_open = db.scalar(select(func.count()).select_from(Lead).where(
-            Lead.contact_id == c.id, Lead.status.in_([x.value for x in OPEN_STATUSES]))) or 0
-        if c.last_seen_at >= stale_before or has_open:
+        recent = db.scalar(select(func.count()).select_from(Lead).where(
+            Lead.contact_id == c.id, Lead.last_activity_at >= stale_before)) or 0
+        if c.last_seen_at >= stale_before or recent:
             db.rollback()
             return None
     now = dt.datetime.now(UTC)
@@ -184,17 +192,67 @@ def erase(db: Session, contact_id: int, reason: str, subject: str, user: AdminUs
         referrer_host=None, page_title=None, visitor_id=None, session_id=None, utm=None, idempotency_key=None,
         request_sha256=None, anonymised_at=now, version=Lead.version + 1))
     counts["consents_deleted"] = db.execute(delete(Consent).where(Consent.contact_id == c.id)).rowcount
+    phones = [c.phone] + list(db.scalars(select(ContactAlias.phone).where(ContactAlias.contact_id == c.id)))
+    counts["reviews_deleted"] = db.execute(delete(Review).where(
+        or_(Review.contact_id == c.id, Review.phone.in_(phones)))).rowcount  # their consents go by CASCADE
     counts["aliases_deleted"] = db.execute(delete(ContactAlias).where(ContactAlias.contact_id == c.id)).rowcount
     if visitor_ids:
         counts["events_deleted"] = db.execute(delete(SiteEvent).where(SiteEvent.visitor_id.in_(visitor_ids))).rowcount
         counts["visits_deleted"] = db.execute(delete(Visit).where(Visit.visitor_id.in_(visitor_ids))).rowcount
         counts["browsers_deleted"] = db.execute(delete(Visitor).where(Visitor.id.in_(visitor_ids))).rowcount
+    if reason == "retention" and subject.startswith("контакт №"):
+        subject = f"{c.name}, {phones_mod.mask(c.phone)} (контакт №{c.id}; срок хранения истёк)"
     db.delete(c)
     counts["contacts_deleted"] = 1
     db.add(ErasureLog(actor_id=user.id if user else None, actor_label=label[:100], subject=subject[:200],
-                      reason=reason, counts=counts,
-                      categories=["имя", "номер телефона", "способ связи", "сведения из заявок", "IP-адрес",
-                                  "сведения о браузере", "история посещения сайта", "согласия", "комментарии"]))
+                      reason=reason, counts=counts, categories=categories(counts),
+                      phone_hashes=[security.phone_hash(p) for p in phones]))
     audit(db, user, "erase", target=f"contact:{contact_id}", actor_label=label, reason=reason, **counts)
+    db.commit()
+    return {"counts": counts, "manual_steps": manual_steps(lead_ids)}
+
+
+def categories(counts: dict) -> list[str]:
+    """What was actually destroyed (the act lists only categories that existed)."""
+    out = ["имя", "номер телефона"]
+    if counts.get("leads_anonymised"):
+        out += ["способ связи", "сведения из заявок", "IP-адрес и сведения о браузере"]
+    if counts.get("consents_deleted"):
+        out.append("записи о согласиях")
+    if counts.get("events_deleted") or counts.get("browsers_deleted"):
+        out.append("история посещения сайта")
+    if counts.get("comments_cleared"):
+        out.append("комментарии менеджеров")
+    if counts.get("reviews_deleted"):
+        out.append("отзывы")
+    return out
+
+
+def manual_steps(lead_ids: list[int]) -> list[str]:
+    """What the database cannot destroy by itself (copies outside it)."""
+    from ..config import get_settings
+    s = get_settings()
+    steps = []
+    if lead_ids and s.smtp_host and s.notify_emails:
+        nums = ", ".join(f"№{i}" for i in sorted(lead_ids)[:20])
+        steps.append(f"Удалите из рабочей почты ({', '.join(s.notify_emails)}) письма о заявках {nums}.")
+    if lead_ids and s.telegram_include_pd:
+        steps.append("Удалите сообщения об этих заявках из чатов Telegram.")
+    steps.append("Если позже восстановите базу из резервной копии — выполните python -m app reapply-erasures.")
+    return steps
+
+
+def erase_review(db: Session, review_id: int, subject: str, reason: str, user: AdminUser | None, label: str) -> dict:
+    """Destroy one review (the author asked, the publication consent was withdrawn, or retention)."""
+    r = db.get(Review, review_id)
+    if r is None:
+        raise ApiError(404, "not_found", "Отзыв не найден")
+    phone = r.phone
+    db.delete(r)  # consents of the review go by CASCADE
+    counts = {"reviews_deleted": 1}
+    db.add(ErasureLog(actor_id=user.id if user else None, actor_label=label[:100], subject=subject[:200],
+                      reason=reason, counts=counts, categories=["имя", "номер телефона", "отзыв", "IP-адрес"],
+                      phone_hashes=[security.phone_hash(phone)] if phone else []))
+    audit(db, user, "erase_review", target=f"review:{review_id}", actor_label=label, reason=reason)
     db.commit()
     return counts

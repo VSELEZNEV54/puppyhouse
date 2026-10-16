@@ -429,9 +429,10 @@ def test_erase_destroys_the_persons_data_and_keeps_the_requests_anonymous(client
     assert r.json()["erased"] is True
     assert counts == {"leads_anonymised": 4, "comments_cleared": comments, "notifications_deleted": outbox,
                       "open_requests_closed": counts["open_requests_closed"],
-                      "consents_deleted": 4, "aliases_deleted": 1, "events_deleted": 3, "visits_deleted": 1,
-                      "browsers_deleted": 2, "contacts_deleted": 1}
+                      "consents_deleted": 4, "reviews_deleted": 0, "aliases_deleted": 1, "events_deleted": 3,
+                      "visits_deleted": 1, "browsers_deleted": 2, "contacts_deleted": 1}
     assert counts["open_requests_closed"] >= 1
+    assert any("reapply-erasures" in step for step in r.json()["manual_steps"])
 
     # the requests stay (statistics), without anything that identifies the person
     rows = sql(db, "SELECT * FROM leads WHERE id = ANY(:ids) ORDER BY id", ids=mine)
@@ -626,7 +627,9 @@ def test_retention_deletes_old_activity_but_keeps_browsers_linked_to_requests(cl
     assert str(one(db, "SELECT visitor_id FROM leads WHERE id = :i", i=lid)["visitor_id"]) == str(linked)
 
 
-def test_retention_erases_people_not_seen_for_three_years_unless_a_request_is_open(client, make_lead, db):
+def test_retention_erases_people_not_seen_for_three_years_unless_a_request_moved(client, make_lead, db):
+    """«Не дольше трёх лет с последнего обращения» is absolute: an open request nobody touched does not keep a
+    person forever; one a manager worked on recently does."""
     from app.services import retention
     gone = new_lead(make_lead, db, 36, name="Давний")
     still_open = new_lead(make_lead, db, 37)
@@ -635,6 +638,8 @@ def test_retention_erases_people_not_seen_for_three_years_unless_a_request_is_op
         a=gone, b=recent)
     sql(db, "UPDATE contacts SET last_seen_at = now() - interval '1100 days' WHERE phone IN (:a, :b)",
         a=e164(36), b=e164(37))
+    sql(db, "UPDATE leads SET last_activity_at = now() - interval '1100 days' WHERE id = :a", a=gone)
+    # contact 37: open request, but a manager worked on it yesterday → kept
 
     out = retention.run(db)
     assert out["contacts_erased"] == 1

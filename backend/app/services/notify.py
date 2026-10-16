@@ -28,6 +28,7 @@ from sqlalchemy.orm import Session
 from ..config import Settings, get_settings
 from ..enums import CHANNEL_LABELS, LEAD_KIND_LABELS, Channel, LeadKind
 from ..models import Lead, Outbox, Review
+from . import consent
 from . import phone as phones
 from .security import sign
 
@@ -105,7 +106,7 @@ def telegram_text(lead: Lead | None, review: Review | None, event: str, s: Setti
     lines = [head, f"{breed} · {kind} · {_local(lead.created_at, s):%H:%M}"]
     if lead.puppy_name:
         lines.append(f"Щенок: {lead.puppy_name}")
-    if s.telegram_include_pd:
+    if s.telegram_include_pd and consent.allows_cross_border(lead.consent_version):
         lines.append(f"{lead.name}, {phones.display(lead.phone)}, "
                      f"{CHANNEL_LABELS.get(Channel(lead.channel), lead.channel)}")
     link = _admin_link(s, num)

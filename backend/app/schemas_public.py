@@ -135,6 +135,7 @@ class LeadAccepted(BaseModel):
 
 class ReviewIn(TrackIn):
     name: Annotated[str, StringConstraints(strip_whitespace=True, min_length=1)]
+    phone: str                         # the author's contact (Приказ РКН № 18), never published
     text: Annotated[str, StringConstraints(strip_whitespace=True, min_length=10, max_length=4000)]
     rating: int = Field(ge=1, le=5)
     consent: bool
@@ -154,6 +155,14 @@ class ReviewIn(TrackIn):
         if v is not True:
             raise ValueError("consent required")
         return v
+
+    @field_validator("phone")
+    @classmethod
+    def _review_phone(cls, v: str) -> str:
+        e164 = phones.normalize(v)
+        if not e164:
+            raise ValueError("bad phone")
+        return e164
 
     @field_validator("text")
     @classmethod

@@ -83,6 +83,12 @@
               <p class="field__err" id="rm-name-err" hidden></p>
             </div>
             <div class="field">
+              <label class="field__label" for="rm-phone">Телефон</label>
+              <input class="input" id="rm-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="+7 (___) ___-__-__" required aria-describedby="rm-phone-hint rm-phone-err" data-phone>
+              <p class="check__note" id="rm-phone-hint">Не публикуем. Позвоним, только если нужно уточнить отзыв</p>
+              <p class="field__err" id="rm-phone-err" hidden></p>
+            </div>
+            <div class="field">
               <label class="field__label" for="rm-city">Город</label>
               <input class="input" id="rm-city" name="city" type="text" autocomplete="address-level2" placeholder="Например, Казань" maxlength="100">
             </div>
@@ -110,7 +116,7 @@
               <p class="field__err" id="rm-text-err" hidden></p>
             </div>
             {{ forms.honeypot('rm')|indent(12) }}
-            {{ forms.consent_check('rm')|indent(12) }}
+            {{ forms.consent_check('rm', kind='review')|indent(12) }}
             {{ forms.consent_check('rm', kind='distribution', name='consent_publish', privacy=false)|indent(12) }}
           </div>
           <button class="btn btn--ink btn--lg btn--block form__submit" type="submit" data-rv-submit data-label="Отправить отзыв">Отправить отзыв</button>

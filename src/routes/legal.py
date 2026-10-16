@@ -11,12 +11,14 @@ from _lib import crumbs
 
 BRAND = " | домщенков.рф"
 TITLE_MAX, DESC_MAX = 60, 160
-LAW = {"processing": "№ 152-ФЗ, ст. 9", "distribution": "№ 152-ФЗ, ст. 10.1"}
+LAW = {"processing": "№ 152-ФЗ, ст. 9", "review": "№ 152-ФЗ, ст. 9", "distribution": "№ 152-ФЗ, ст. 10.1"}
 MONTHS_GEN = ["января", "февраля", "марта", "апреля", "мая", "июня", "июля", "августа",
               "сентября", "октября", "ноября", "декабря"]
 DESCRIPTION = {
     "processing": "Согласие на обработку персональных данных для заявок на сайте домщенков.рф: цели, какие данные, "
                   "сроки и как отозвать согласие.",
+    "review": "Согласие на обработку персональных данных для отзыва на сайте домщенков.рф: цели, какие данные, сроки "
+              "и как отозвать согласие.",
     "distribution": "Согласие на публикацию отзыва на сайте домщенков.рф: что публикуется, где и как снять отзыв с сайта.",
 }
 
@@ -39,7 +41,7 @@ def routes(data):
     out = []
     for kind, ver in current.items():
         doc = versions[ver]
-        title = doc["title"] + BRAND
+        title = doc.get("short_title", doc["title"]) + BRAND  # <title> ≤ 60 characters
         description = DESCRIPTION.get(kind, doc["title"])
         if len(title) > TITLE_MAX or len(description) > DESC_MAX:
             raise ValueError(f"{doc['url']}: title or description too long")

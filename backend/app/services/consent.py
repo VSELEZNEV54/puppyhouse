@@ -18,7 +18,8 @@ class ConsentError(RuntimeError):
 
 
 def digest(doc: dict) -> str:
-    canon = json.dumps({"title": doc["title"], "checkbox": doc["checkbox"], "body": doc["body"]},
+    canon = json.dumps({"title": doc["title"], "checkbox": doc["checkbox"], "body": doc["body"],
+                        **({"cross_border": True} if doc.get("cross_border") else {})},
                        ensure_ascii=False, sort_keys=True, separators=(",", ":"))
     return hashlib.sha256(canon.encode()).hexdigest()
 
@@ -40,7 +41,22 @@ def load(path: Path | None = None) -> dict:
 
 
 def current(kind: str) -> str:
-    return load()["current"][kind]
+    cur = load()["current"]
+    if kind == "review" and kind not in cur:  # older consent.json without a review document
+        kind = "processing"
+    return cur[kind]
+
+
+def pick(sent: str | None, kind: str) -> str:
+    """The version the page showed if it is a known document of this kind, else the current one."""
+    doc = load()["versions"].get(sent or "")
+    return sent if doc and doc["kind"] == kind else current(kind)
+
+
+def allows_cross_border(version: str | None) -> bool:
+    """True only for a consent text that names the transfer abroad (consent.json: "cross_border": true)."""
+    doc = load()["versions"].get(version or "")
+    return bool(doc and doc.get("cross_border"))
 
 
 def sync(db: Session) -> dict:

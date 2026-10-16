@@ -288,14 +288,23 @@ def test_telegram_text_has_no_personal_data_by_default_and_no_markup(client, db,
         assert pd not in raw, pd
 
 
-def test_telegram_text_carries_name_and_phone_only_with_include_pd(client, db, tg):
+def test_telegram_text_carries_name_and_phone_only_with_include_pd(client, db, tg, monkeypatch):
+    from app.services import consent
     tg.telegram_include_pd = True
+    # the setting alone is not enough: the consent the person gave must name the transfer abroad
     post_lead(client, contact="whatsapp")
+    fake = FakeHttp()
+    notify.deliver_due(db, client=fake.client())
+    assert NAME not in fake.json()["text"]
+    db.execute(text("DELETE FROM outbox"))
+    db.commit()
+    monkeypatch.setattr(consent, "allows_cross_border", lambda version: True)
+    post_lead(client, contact="whatsapp", phone="+7 (999) 765-43-21", breed="toj-pudel")
     fake = FakeHttp()
     notify.deliver_due(db, client=fake.client())
     payload = fake.json()
     assert "parse_mode" not in payload
-    assert f"{NAME}, {PHONE_FORM}, WhatsApp" in payload["text"]
+    assert f"{NAME}, +7 (999) 765-43-21, WhatsApp" in payload["text"]
 
 
 def test_telegram_403_fails_at_once_and_is_never_retried(client, db, tg):
@@ -579,9 +588,10 @@ def test_a_broken_notification_setting_never_costs_the_request(client, db, email
 
 def test_review_telegram_text_has_no_personal_data(client, db, tg):
     r = client.post("/api/v1/reviews", json={
-        "name": NAME + " Королёва", "city": "Новосибирск", "breed": "maltipu", "rating": 4,
+        "name": NAME + " Королёва", "phone": "+7 (916) 555-12-34", "city": "Новосибирск", "breed": "maltipu",
+        "rating": 4,
         "text": "Взяли у вас мальтипу, звоните мне +7 999 123-45-67, щенок весёлый.",
-        "consent": True, "consent_version": "processing-2026-10-16",
+        "consent": True, "consent_version": "review-2026-10-16",
         "consent_publish": True, "consent_publish_version": "distribution-2026-10-16",
         "page": {"path": "/otzyvy/", "title": "Отзывы"}, "idempotency_key": str(uuid.uuid4()),
         "hp_note": "", "elapsed_ms": 40_000})
@@ -594,7 +604,7 @@ def test_review_telegram_text_has_no_personal_data(client, db, tg):
     assert "parse_mode" not in payload
     assert payload["text"].startswith(f"Новый отзыв №{rows[0].review_id} · ★★★★")
     raw = fake.requests[0].content.decode()
-    for pd in (NAME, "Королёва", "Новосибирск", "999", "звоните"):
+    for pd in (NAME, "Королёва", "Новосибирск", "999", "916", "звоните"):
         assert pd not in raw, pd
 
 

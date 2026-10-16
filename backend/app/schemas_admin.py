@@ -275,12 +275,14 @@ class ReviewRow(BaseModel):
     model_config = ConfigDict(from_attributes=True)
     id: int
     created_at: dt.datetime
-    name: str
+    name: str | None                   # None once withdrawn
     display_name: str
+    phone: str | None                  # the author's contact, never published
+    contact_id: int | None             # the buyer, if the number is known
     city: str | None
     breed: BreedRef | None
     rating: int
-    text: str
+    text: str | None
     status: str
     moderated_at: dt.datetime | None
     moderator_note: str | None

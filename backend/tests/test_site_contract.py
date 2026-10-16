@@ -65,6 +65,7 @@ def test_every_page_has_the_api_meta(site):
         assert "github.io" not in m.get("data-origins", ""), f"{page}: the preview must stay in prototype mode"
         assert m.get("data-consent") == cur["processing"], page
         assert m.get("data-consent-publish") == cur["distribution"], page
+        assert m.get("data-consent-review") == cur["review"], page
 
 
 def test_every_modal_trigger_has_a_valid_kind(site):
@@ -122,6 +123,14 @@ def test_forms_have_honeypot_and_consent(site):
         assert "consent" in names, f"{page}: no consent checkbox"
         links = [a.get("href", "") for t, a in c.tags if t == "a"]
         assert any("soglasie" in h for h in links), f"{page}: no link to the consent document"
+
+
+def test_review_form_collects_the_authors_phone_and_links_the_review_consent(site):
+    c = site["otzyvy/index.html"]
+    form_inputs = {a.get("name") for t, a in c.tags if t in ("input", "textarea")}
+    assert {"name", "phone", "text", "consent", "consent_publish", "hp_note"} <= form_inputs
+    links = {a.get("href", "") for t, a in c.tags if t == "a"}
+    assert any("soglasie-na-otzyv" in h for h in links) and any("soglasie-na-publikaciyu" in h for h in links)
 
 
 def test_consent_pages_are_built():

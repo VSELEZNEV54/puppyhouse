@@ -68,6 +68,7 @@
   const LIVE = !!API;
   const CONSENT = {
     processing: (apiMeta && apiMeta.dataset.consent) || '',
+    review: (apiMeta && apiMeta.dataset.consentReview) || '',
     distribution: (apiMeta && apiMeta.dataset.consentPublish) || ''
   };
 

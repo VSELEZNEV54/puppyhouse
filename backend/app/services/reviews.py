@@ -15,7 +15,7 @@ from sqlalchemy.orm import Session
 from ..config import get_settings
 from ..enums import ReviewStatus, SpamReason
 from ..errors import ApiError
-from ..models import Review
+from ..models import Contact, ContactAlias, Review
 from . import consent, notify, sanitize
 from .leads import RequestCtx, resolve_catalog
 from .security import same_client
@@ -39,7 +39,7 @@ def create(db: Session, data, ctx: RequestCtx) -> tuple[Review, bool]:
     s = get_settings()
     now = dt.datetime.now(UTC)
     key = data.idempotency_key or uuid.uuid4()
-    rhash = hashlib.sha256(json.dumps([data.name, data.text, data.rating, data.breed], ensure_ascii=False)
+    rhash = hashlib.sha256(json.dumps([data.name, data.phone, data.text, data.rating, data.breed], ensure_ascii=False)
                            .encode()).hexdigest()
     existing = db.scalar(select(Review).where(Review.idempotency_key == key))
     if existing is not None:
@@ -59,8 +59,12 @@ def create(db: Session, data, ctx: RequestCtx) -> tuple[Review, bool]:
 
     name = sanitize.clean(data.name, 100) or "—"
     page_path = sanitize.path(data.page.path, s.site_base_paths)
+    # link to the person if we know the number (a buyer); a review never creates a contact by itself
+    contact_id = db.scalar(select(ContactAlias.contact_id).where(ContactAlias.phone == data.phone)) or \
+        db.scalar(select(Contact.id).where(Contact.phone == data.phone))
     row = db.execute(insert(Review).values(
-        name=name, display_name=display_name(name), city=sanitize.clean(data.city, 100),
+        name=name, display_name=display_name(name), phone=data.phone, contact_id=contact_id,
+        city=sanitize.clean(data.city, 100),
         breed_id=breed.id if breed else None, rating=data.rating,
         text=sanitize.clean(data.text, 4000, multiline=True) or "", status=ReviewStatus.pending.value,
         page_path=page_path, visitor_id=data.visitor_id if s.link_site_activity else None,
@@ -74,10 +78,9 @@ def create(db: Session, data, ctx: RequestCtx) -> tuple[Review, bool]:
             raise ApiError(409, "idempotency_conflict", "Повторите отправку")
         return existing, False
     rid = row[0]
-    docs = consent.load()["versions"]
-    for kind, sent in (("processing", data.consent_version), ("distribution", data.consent_publish_version)):
-        ver = sent if sent in docs and docs[sent]["kind"] == kind else consent.current(kind)
-        consent.record(db, version=ver, review_id=rid, page_path=page_path, ip=ctx.ip, user_agent=ctx.user_agent)
+    for kind, sent in (("review", data.consent_version), ("distribution", data.consent_publish_version)):
+        consent.record(db, version=consent.pick(sent, kind), review_id=rid, page_path=page_path, ip=ctx.ip,
+                       user_agent=ctx.user_agent)
     db.flush()
     review = db.get(Review, rid)
     if spam_reason is None:

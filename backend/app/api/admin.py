@@ -229,8 +229,9 @@ def merge(contact_id: int, body: sa.MergeIn, actor: CurrentActor, db: Db):
 def erase(contact_id: int, body: sa.EraseIn, actor: AdminActor, db: Db):
     """Destroy a person's data (152-ФЗ: consent withdrawn, a request, retention). Admin role only. Requests stay
     in the statistics without personal data; an erasure record is kept for 3 years."""
-    return {"erased": True, "counts": admin_people.erase(db, contact_id, body.reason.value, body.subject,
-                                                         actor.user, actor.label)}
+    res = admin_people.erase(db, contact_id, body.reason.value, body.subject, actor.user, actor.label)
+    # manual_steps: copies outside the database (notification e-mails, backups) the operator must handle
+    return {"erased": True, "counts": res["counts"], "manual_steps": res["manual_steps"]}
 
 
 # ---------------------------------------------------------------- reviews
@@ -244,6 +245,13 @@ def list_reviews(actor: CurrentActor, db: Db, status: Annotated[list[str] | None
 def patch_review(review_id: int, body: sa.ReviewPatch, actor: CurrentActor, db: Db):
     """Approve / reject / withdraw (the author asked to remove it: within 3 working days), fix the text."""
     return admin_misc.patch_review(db, review_id, body, actor.user, actor.label)
+
+
+@router.post("/reviews/{review_id}/erase", tags=["admin: reviews"])
+def erase_review(review_id: int, body: sa.EraseIn, actor: AdminActor, db: Db):
+    """Destroy a review completely (with its consents) and write an erasure record. Admin role only."""
+    return {"erased": True, "counts": admin_people.erase_review(db, review_id, body.subject, body.reason.value,
+                                                                actor.user, actor.label)}
 
 
 # ---------------------------------------------------------------- stats & export

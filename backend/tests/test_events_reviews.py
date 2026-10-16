@@ -65,9 +65,9 @@ def count(db, table: str) -> int:
 def review_payload(**over) -> dict:
     """What trust.js reviewPayload() sends."""
     p = {
-        "name": "Анна Королёва", "city": "Москва", "breed": "maltipu", "rating": 5,
+        "name": "Анна Королёва", "phone": "+7 (916) 555-12-34", "city": "Москва", "breed": "maltipu", "rating": 5,
         "text": "Взяли у вас мальтипу, щенок здоровый и весёлый. Спасибо за помощь!",
-        "consent": True, "consent_version": "processing-2026-10-16",
+        "consent": True, "consent_version": "review-2026-10-16",
         "consent_publish": True, "consent_publish_version": "distribution-2026-10-16",
         "page": {"path": "/otzyvy/?utm_source=vk", "title": "Отзывы"},
         "visitor_id": str(uuid.uuid4()), "session_id": str(uuid.uuid4()),
@@ -391,7 +391,7 @@ def test_review_is_stored_pending_with_display_name_and_two_consents(client, db)
     cons = db.execute(text("SELECT c.version, v.kind, c.review_id, c.contact_id, c.page_path, host(c.ip) AS ip "
                            "FROM consents c JOIN consent_versions v ON v.version = c.version ORDER BY v.kind")).all()
     assert [(c.kind, c.version) for c in cons] == [("distribution", "distribution-2026-10-16"),
-                                                    ("processing", "processing-2026-10-16")]
+                                                    ("review", "review-2026-10-16")]
     assert all(c.review_id == rv["id"] and c.contact_id is None and c.page_path == "/otzyvy/"
                and c.ip == "203.0.113.10" for c in cons)
 
@@ -491,7 +491,7 @@ def test_review_unknown_or_wrong_kind_consent_version_falls_back_to_current(clie
     got = db.execute(text("SELECT v.kind, c.version FROM consents c JOIN consent_versions v USING (version) "
                           "ORDER BY v.kind")).all()
     assert [tuple(x) for x in got] == [("distribution", "distribution-2026-10-16"),
-                                       ("processing", "processing-2026-10-16")]
+                                       ("review", "review-2026-10-16")]
 
 
 def test_review_requires_json_and_our_origin(client, db):

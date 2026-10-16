@@ -12,6 +12,7 @@
     purge                   retention clean-up (see app/services/retention.py)
     forget-contact --phone +7… --reason withdrawal|request|retention|not_me --subject "ФИО"
     export-reviews [--out path]   approved reviews as JSON for the site
+    reapply-erasures        after restoring a backup: destroy again everyone erased since (erasure_log hashes)
     openapi [--out path]    write the OpenAPI schema (for generating the admin panel client)
 """
 from __future__ import annotations
@@ -206,10 +207,47 @@ def cmd_forget_contact(args) -> int:
     if not e164:
         raise SystemExit("неверный номер")
     with session_scope() as db:
-        c = db.scalar(select(Contact).where(Contact.phone == e164))
-        if c is None:
-            raise SystemExit("контакт не найден")
-        print(admin_people.erase(db, c.id, args.reason, args.subject, None, "CLI"))
+        cid = find_contact(db, e164)
+        if cid is None:
+            raise SystemExit("нет контакта с этим номером ни в contacts, ни в contact_aliases, ни в заявках")
+        res = admin_people.erase(db, cid, args.reason, args.subject, None, "CLI")
+        print(json.dumps(res["counts"], ensure_ascii=False))
+        for step in res["manual_steps"]:
+            print("Сделайте вручную:", step)
+    return 0
+
+
+def find_contact(db, e164: str) -> int | None:
+    """By the contact's number, an old number merged into it, or a request sent from it."""
+    from .models import Contact, ContactAlias, Lead
+    return (db.scalar(select(Contact.id).where(Contact.phone == e164))
+            or db.scalar(select(ContactAlias.contact_id).where(ContactAlias.phone == e164))
+            or db.scalar(select(Lead.contact_id).where(Lead.phone == e164, Lead.contact_id.is_not(None)).limit(1)))
+
+
+def cmd_reapply_erasures(args) -> int:
+    """After restoring a backup: destroy again everyone erased since (matched by keyed phone hashes)."""
+    from .models import Contact, ContactAlias, ErasureLog, Review
+    from .services import admin_people, security
+    with session_scope() as db:
+        hashes = {h for (hs,) in db.execute(select(ErasureLog.phone_hashes)) for h in (hs or [])}
+        phones = set(db.scalars(select(Contact.phone))) | set(db.scalars(select(ContactAlias.phone)))
+        hit = [p for p in phones if security.phone_hash(p) in hashes]
+        rev = [r.id for r in db.scalars(select(Review).where(Review.phone.is_not(None)))
+               if security.phone_hash(r.phone) in hashes]
+    done = 0
+    for p in hit:
+        with session_scope() as db:
+            cid = find_contact(db, p)
+            if cid:
+                admin_people.erase(db, cid, "request", "повторное уничтожение после восстановления копии", None, "CLI")
+                done += 1
+    for rid in rev:
+        with session_scope() as db:
+            if db.get(Review, rid):
+                admin_people.erase_review(db, rid, "повторное уничтожение после восстановления копии", "request",
+                                          None, "CLI")
+    print(f"контактов уничтожено повторно: {done}, отзывов: {len(rev)}")
     return 0
 
 
@@ -259,6 +297,7 @@ def main(argv=None) -> int:
     p.add_argument("--reason", choices=["withdrawal", "request", "retention", "not_me"], required=True)
     p.add_argument("--subject", required=True); p.set_defaults(fn=cmd_forget_contact)
     p = sub.add_parser("export-reviews"); p.add_argument("--out"); p.set_defaults(fn=cmd_export_reviews)
+    sub.add_parser("reapply-erasures").set_defaults(fn=cmd_reapply_erasures)
     p = sub.add_parser("openapi"); p.add_argument("--out", default=str(BACKEND_DIR / "openapi.json"))
     p.set_defaults(fn=cmd_openapi)
     args = ap.parse_args(argv)

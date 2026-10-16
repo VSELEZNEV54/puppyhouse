@@ -86,3 +86,10 @@ def same_client(column, ip: str | None):
     if key and "/" in key:
         return column.op("<<=")(cast(key, CIDR))
     return column == key
+
+
+def phone_hash(phone: str) -> str:
+    """Keyed hash of a destroyed number (erasure tombstone). Without the secret it cannot be reversed by trying
+    all 10^10 numbers; with it, `reapply-erasures` finds the person again after a backup restore."""
+    from ..config import get_settings
+    return hmac.new(get_settings().erasure_secret.encode(), phone.encode(), hashlib.sha256).hexdigest()

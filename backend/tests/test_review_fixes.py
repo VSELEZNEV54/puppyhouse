@@ -64,6 +64,16 @@ def test_a_repeat_request_taken_on_its_own_is_detached_from_its_parent(client, d
     assert c in ids
 
 
+def test_retention_erases_an_untouched_open_request_after_three_years(client, db):
+    lid = _id(db, _lead(client, phone="+7 900 111-00-08"))  # status new, never worked
+    db.execute(text("UPDATE contacts SET last_seen_at = now() - interval '4 years'"))
+    db.execute(text("UPDATE leads SET last_activity_at = now() - interval '4 years'"))
+    db.commit()
+    assert retention.run(db)["contacts_erased"] == 1
+    db.expire_all()
+    assert db.get(Lead, lid).anonymised_at is not None and db.get(Lead, lid).status == "lost"
+
+
 def test_retention_keeps_a_person_who_came_back_during_the_purge(client, db, settings):
     lid = _id(db, _lead(client, phone="+7 900 111-00-06"))
     cid = db.scalar(select(Lead.contact_id).where(Lead.id == lid))
@@ -78,6 +88,7 @@ def test_retention_still_erases_a_really_stale_contact(client, db, settings):
     lid = _id(db, _lead(client, phone="+7 900 111-00-07"))
     db.execute(text("UPDATE leads SET status = 'lost', lost_reason = 'other'"))
     db.execute(text("UPDATE contacts SET last_seen_at = now() - interval '4 years'"))
+    db.execute(text("UPDATE leads SET last_activity_at = now() - interval '4 years'"))
     db.commit()
     assert retention.run(db)["contacts_erased"] == 1
     db.expire_all()

@@ -61,14 +61,14 @@ class ConsentVersion(Base):
     src/data/consent.json by `python -m app sync-catalog`; a published version is never edited, only superseded."""
     __tablename__ = "consent_versions"
     version: Mapped[str] = mapped_column(String(40), primary_key=True)  # «processing-2026-10-16»
-    kind: Mapped[str] = mapped_column(String(16))                       # processing | distribution | marketing
+    kind: Mapped[str] = mapped_column(String(16))   # processing (requests) | review | distribution | marketing
     title: Mapped[str] = mapped_column(String(200))
     url: Mapped[str] = mapped_column(String(300))
     checkbox_text: Mapped[str] = mapped_column(Text)
     body: Mapped[str] = mapped_column(Text)
     text_sha256: Mapped[str] = mapped_column(String(64))
     effective_from: Mapped[dt.datetime] = _now()
-    __table_args__ = (CheckConstraint("kind IN ('processing', 'distribution', 'marketing')", name="kind"),)
+    __table_args__ = (CheckConstraint("kind IN ('processing', 'review', 'distribution', 'marketing')", name="kind"),)
 
 
 class Consent(Base):
@@ -389,12 +389,14 @@ class Review(Base):
     id: Mapped[int] = mapped_column(BigInteger, Identity(), primary_key=True)
     created_at: Mapped[dt.datetime] = _now()
     updated_at: Mapped[dt.datetime] = _now()
-    name: Mapped[str] = mapped_column(String(100))                      # as typed, never published
+    name: Mapped[str | None] = mapped_column(String(100))               # as typed, never published
     display_name: Mapped[str] = mapped_column(String(60))               # «Анна К.» — what the site shows
+    phone: Mapped[str | None] = mapped_column(String(16))               # the author's contact, never published
+    contact_id: Mapped[int | None] = mapped_column(ForeignKey("contacts.id", ondelete="SET NULL"), index=True)
     city: Mapped[str | None] = mapped_column(String(100))
     breed_id: Mapped[int | None] = mapped_column(ForeignKey("breeds.id", ondelete="RESTRICT"))
     rating: Mapped[int] = mapped_column(SmallInteger)
-    text: Mapped[str] = mapped_column(Text)
+    text: Mapped[str | None] = mapped_column(Text)                      # NULL once withdrawn (anonymised)
     status: Mapped[str] = mapped_column(String(16), server_default=ReviewStatus.pending.value)
     moderated_by: Mapped[int | None] = mapped_column(ForeignKey("admin_users.id", ondelete="SET NULL"))
     moderated_at: Mapped[dt.datetime | None] = mapped_column(TZ)
@@ -413,6 +415,8 @@ class Review(Base):
         CheckConstraint(check("status", ReviewStatus), name="status"),
         CheckConstraint(check("spam_reason", SpamReason, nullable=True), name="spam_reason"),
         CheckConstraint("char_length(text) <= 4000", name="text_len"),
+        CheckConstraint("phone IS NULL OR " + PHONE_CHECK, name="phone_e164"),
+        CheckConstraint("status = 'withdrawn' OR (name IS NOT NULL AND text IS NOT NULL)", name="content_or_withdrawn"),
         Index("ix_reviews_status_created", "status", sql("created_at DESC")),
         Index("ix_reviews_ip_created", "ip", "created_at"),
     )
@@ -474,6 +478,9 @@ class ErasureLog(Base):
     reason: Mapped[str] = mapped_column(String(20))                    # withdrawal | request | retention | not_me
     categories: Mapped[list] = mapped_column(JSONB)                    # what was destroyed
     counts: Mapped[dict] = mapped_column(JSONB)                        # rows per table
+    # keyed hashes (HMAC) of the destroyed phone numbers: after restoring an older backup,
+    # `python -m app reapply-erasures` destroys these people again (no phone is kept in clear)
+    phone_hashes: Mapped[list] = mapped_column(JSONB, server_default=sql("'[]'::jsonb"))
     method: Mapped[str] = mapped_column(String(100), server_default="удаление и обезличивание записей в СУБД")
     __table_args__ = (CheckConstraint("reason IN ('withdrawal', 'request', 'retention', 'not_me')", name="reason"),)
 

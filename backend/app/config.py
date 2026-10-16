@@ -62,6 +62,10 @@ class Settings(BaseSettings):
     keep_contacts_days: int = 1095    # 3 years after the last request with no open lead → erased
     keep_audit_days: int = 365
 
+    # secret for the keyed hashes of destroyed phone numbers (erasure_log.phone_hashes). Set once, keep forever
+    # (and keep it outside the database backups): reapply-erasures needs the same value.
+    erasure_secret: str = "dev-only-erasure-secret"
+
     # admin API
     token_ttl_hours: int = 12         # absolute lifetime of a login session
     token_idle_hours: int = 2         # a session unused for this long expires
@@ -119,6 +123,8 @@ class Settings(BaseSettings):
                 problems.append("DSH_DATABASE_URL uses the default password")
             if self.webhook_url and len(self.webhook_secret) < 24:
                 problems.append("DSH_WEBHOOK_SECRET must be set (24+ characters) when DSH_WEBHOOK_URL is set")
+            if self.erasure_secret.startswith("dev-only") or len(self.erasure_secret) < 24:
+                problems.append("DSH_ERASURE_SECRET must be set (24+ random characters)")
             if not self.trusted_proxies:
                 problems.append("DSH_TRUSTED_PROXIES is empty")
             if any("github.io" in o for o in self.cors_origins + self.allowed_origins):
