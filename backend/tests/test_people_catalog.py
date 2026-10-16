@@ -279,6 +279,27 @@ def test_a_form_never_renames_a_contact(client, manager_h, make_lead, db):
                                                                                  "name": "Кто-то другой"}
 
 
+def test_contact_activity_shows_only_the_persons_browsers_and_obeys_the_switch(client, manager_h, make_lead, db,
+                                                                               settings):
+    mine, other = uuid.uuid4(), uuid.uuid4()
+    beacon(client, mine, n=3)
+    beacon(client, other, n=2)
+    new_lead(make_lead, db, 26, visitor_id=str(mine))
+    new_lead(make_lead, db, 27, visitor_id=str(other))
+    c = contact_id(db, 26)
+    r = client.get(f"{A}/contacts/{c}/events", headers=manager_h)
+    assert r.status_code == 200, r.text
+    ev = r.json()
+    assert [e["path"] for e in ev] == ["/maltipu/2/", "/maltipu/1/", "/maltipu/0/"]     # newest first
+    page2 = client.get(f"{A}/contacts/{c}/events", params={"before_id": ev[0]["id"], "limit": 1},
+                       headers=manager_h).json()
+    assert [e["id"] for e in page2] == [ev[1]["id"]]
+    assert client.get(f"{A}/contacts/999999/events", headers=manager_h).status_code == 404
+    # the consent no longer names this purpose → the panel shows nothing
+    settings.link_site_activity = False
+    assert client.get(f"{A}/contacts/{c}/events", headers=manager_h).json() == []
+
+
 # ================================================================ merge
 def test_merge_moves_requests_and_consents_and_keeps_the_old_phone_as_an_alias(client, manager_h, manager_user,
                                                                                make_lead, db):
@@ -622,6 +643,46 @@ def test_retention_erases_people_not_seen_for_three_years_unless_a_request_is_op
     assert log[0]["counts"]["leads_anonymised"] == 1 and log[0]["counts"]["consents_deleted"] == 1
     assert retention.run(db)["contacts_erased"] == 0
     assert count(db, "erasure_log") == 1
+
+
+def test_retention_housekeeping_keeps_pending_notifications_and_recent_records(client, make_lead, db):
+    from app.services import retention
+    lid = new_lead(make_lead, db, 39)
+    for status, days, target in (("sent", 31, "a"), ("failed", 31, "b"), ("pending", 31, "c"), ("sent", 5, "d")):
+        sql(db, "INSERT INTO outbox (channel, target, event, lead_id, status, created_at) "
+                "VALUES ('webhook', :t, 'lead.updated', :l, :s, now() - make_interval(days => :d))",
+            t=target, l=lid, s=status, d=days)
+    for days in (1100, 1000):
+        sql(db, "INSERT INTO erasure_log (at, actor_label, subject, reason, categories, counts) "
+                "VALUES (now() - make_interval(days => :d), 'Система', :s, 'retention', '[]', '{}')",
+            d=days, s=f"контакт {days}")
+    for days in (400, 10):
+        sql(db, "INSERT INTO audit_log (at, actor_label, action) VALUES (now() - make_interval(days => :d), 'x', "
+                ":a)", d=days, a=f"login{days}")
+    out = retention.run(db)
+    assert (out["outbox_deleted"], out["erasure_records_deleted"], out["audit_deleted"]) == (2, 1, 1)
+    assert sorted(r["target"] for r in sql(db, "SELECT target FROM outbox")) == ["c", "d"]  # undelivered stays
+    assert [r["subject"] for r in sql(db, "SELECT subject FROM erasure_log")] == ["контакт 1000"]
+    assert [r["action"] for r in sql(db, "SELECT action FROM audit_log")] == ["login10"]
+
+
+@pytest.mark.xfail(strict=True, reason="BUG: retention clears user_agent only where ip IS NOT NULL — a request saved "
+                                       "without a usable IP keeps its user agent forever")
+def test_retention_clears_the_user_agent_even_when_the_ip_is_unknown(db):
+    """nginx (a trusted proxy) passed an X-Real-IP the app cannot parse: the request is saved without an IP."""
+    from fastapi.testclient import TestClient
+    from app.main import app
+    from app.services import retention
+    from conftest import ORIGIN
+    with TestClient(app, client=("127.0.0.1", 50000), headers={"Origin": ORIGIN, "X-Real-IP": "unknown",
+                                                               "User-Agent": "Mozilla/5.0 (iPhone)"}) as c:
+        r = c.post("/api/v1/leads", json=lead_payload(phone=phone(48)))
+    assert r.status_code == 201, r.text
+    row = one(db, "SELECT id, ip, user_agent FROM leads WHERE public_id = :p", p=r.json()["id"])
+    assert (row["ip"], row["user_agent"]) == (None, "Mozilla/5.0 (iPhone)")
+    sql(db, "UPDATE leads SET created_at = now() - interval '31 days' WHERE id = :i", i=row["id"])
+    retention.run(db)
+    assert one(db, "SELECT user_agent FROM leads WHERE id = :i", i=row["id"])["user_agent"] is None
 
 
 # ================================================================ catalog sync and the per-breed bases
