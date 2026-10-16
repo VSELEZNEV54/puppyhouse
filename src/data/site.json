@@ -7,6 +7,20 @@
   "mirror": "домщенков.рф",
   "as_of": "2026-10-12",
   "theme_color": "#F3F2EF",
+  "seo": {
+    "_note": "SEO (tools/seo.py, docs/seo.md). base_url — боевой адрес в punycode без слэша. Пустые verification и yandex_metrika не выводятся: впишите коды из Яндекс Вебмастера, Google Search Console и номер счётчика Метрики.",
+    "base_url": "https://xn--b1adduihee9g.xn--p1ai",
+    "site_name": "Дом щенков — домщенков.рф",
+    "org_name": "Дом щенков",
+    "og_image": "/assets/img/og/og-default.jpg",
+    "noindex": [
+      "/politika-konfidencialnosti/"
+    ],
+    "opening_hours": "Mo-Su 09:00-21:00",
+    "yandex_verification": "",
+    "google_verification": "",
+    "yandex_metrika": ""
+  },
   "phone": {
     "display": "+7 (495) 123-45-67",
     "tel": "tel:+74951234567",

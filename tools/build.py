@@ -5,6 +5,8 @@
     python3 tools/build.py --clean    also delete pages from earlier builds that no route produces now
     python3 tools/build.py --kit      also write the developer UI kit to /_kit/ (git-ignored)
 
+Also writes 404.html, sitemap.xml, robots.txt and site.webmanifest at the repo root (tools/seo.py, docs/seo.md).
+
 Sources: src/data/*.json (data), src/routes/*.py (URLs), src/templates/ (Jinja2).
 See src/CONVENTIONS.md. Python 3 stdlib + Jinja2 only.
 """
@@ -29,6 +31,9 @@ from pathlib import Path
 
 import jinja2
 from markupsafe import Markup, escape
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import seo  # noqa: E402  (tools/seo.py: canonical, Open Graph, JSON-LD, sitemap, robots.txt)
 
 sys.dont_write_bytecode = True  # no __pycache__ next to route modules
 
@@ -417,6 +422,10 @@ def lint(html: str, url: str, rep: Report) -> None:
         rep.warn(f"{where} empty meta description")
     elif len(desc) > DESC_MAX:
         rep.warn(f"{where} meta description is {len(desc)} chars (≤ {DESC_MAX})")
+    elif len(desc) < 70:
+        rep.warn(f"{where} meta description is only {len(desc)} chars (aim for 110–160)")
+    if 'name="robots" content="index' in html and 'rel="canonical"' not in html:
+        rep.warn(f"{where} indexable page without rel=canonical")
     text = _TEXT_RE.sub(" ", html)
     if _PRICE_RE.search(text):
         rep.warn(f"{where} looks like a price: «{_PRICE_RE.search(text).group(0)}» (no prices on the site)")
@@ -508,6 +517,8 @@ def main(argv=None) -> int:
                                              "breadcrumbs": [("Главная", "/"), ("UI-кит", None)]}}))
 
     # 1. validate + render
+    seo_conf = seo.cfg(data.get("site", {}))
+    robots: dict[str, str] = {}
     rendered: dict[str, tuple[str, str]] = {}
     failed_urls: set[str] = set()
     per_module = collections.Counter()
@@ -527,6 +538,8 @@ def main(argv=None) -> int:
             ctx = dict(r.get("context") or {})
             ctx["page"] = {"url": url, "depth": url.strip("/").count("/") + (url != "/"), "module": module}
             html = env.get_template(tpl).render(**ctx)
+            html = seo.finalize(html, url, ctx, data.get("site", {}), seo_conf, imgsize)
+            robots[url] = seo.robots_for(url, ctx, seo_conf)
             rendered[url] = (module, html)
             per_module[module] += 1
         except Exception as e:  # noqa: BLE001
@@ -543,9 +556,14 @@ def main(argv=None) -> int:
             if u not in rendered and (m in failed_modules or u in failed_urls) and out_path_for(u).is_file()}
     kept_files = {out_path_for(u).relative_to(ROOT).as_posix() for u in kept}
 
-    # 3. rewrite links (only now we know which routes exist), lint, write
+    # 3. rewrite links (only now we know which routes exist), lint, write.
+    #    Root files that pages link to are written first, so the rewriter finds them.
+    write_if_changed(ROOT / "site.webmanifest", seo.webmanifest(data.get("site", {}), seo_conf))
+    write_if_changed(ROOT / "robots.txt", seo.robots_txt(seo_conf))
     rw = Rewriter(set(rendered) | set(kept))
     written, changed = [], 0
+    old_lastmod = old.get("lastmod") if isinstance(old.get("lastmod"), dict) else {}
+    lastmod: dict[str, list[str]] = {}
     for url in sorted(rendered):
         module, html = rendered[url]
         html = rw.page(html, url)
@@ -555,6 +573,29 @@ def main(argv=None) -> int:
             changed += 1
         if url != KIT_URL:  # the dev kit is git-ignored and never listed in the manifest
             written.append(out.relative_to(ROOT).as_posix())
+            fp = seo.page_fingerprint(html)
+            prev = old_lastmod.get(url)
+            lastmod[url] = [fp, prev[1]] if isinstance(prev, list) and len(prev) == 2 and prev[0] == fp else [fp, seo.today()]
+    for url in kept:  # pages kept from the previous build keep their date
+        if isinstance(old_lastmod.get(url), list):
+            lastmod[url] = old_lastmod[url]
+
+    # 3b. 404 page and sitemap.xml (root files, not listed in the manifest)
+    try:
+        ctx404 = {"title": "Страница не найдена | домщенков.рф",
+                  "description": "Такой страницы на сайте нет. Щенки в наличии, породы и контакты питомника — по ссылкам ниже.",
+                  "breadcrumbs": [("Главная", "/"), ("Страница не найдена", None)], "robots": "noindex, follow",
+                  "page": {"url": "/404.html", "depth": 0, "module": "(404)"}}
+        html = env.get_template("pages/404.html.j2").render(**ctx404)
+        html = seo.finalize(html, "/404.html", ctx404, data.get("site", {}), seo_conf, imgsize)
+        html = rw.page(html, "/")  # links relative to the site root; the page sets <base> itself (served at any depth)
+        lint(html, "/404.html", rep)
+        write_if_changed(ROOT / "404.html", html)
+    except Exception as e:  # noqa: BLE001
+        rep.error(f"404.html: {type(e).__name__}: {e}")
+    entries = [(u, lastmod[u][1]) for u in sorted(set(rendered) | set(kept))
+               if u != KIT_URL and u in lastmod and seo.indexable(robots.get(u, ""))]
+    write_if_changed(ROOT / "sitemap.xml", seo.sitemap_xml(entries, seo_conf))
 
     lint_css(rep)
 
@@ -586,6 +627,7 @@ def main(argv=None) -> int:
         "note": "Written by tools/build.py. Lists generated pages; --clean deletes only files listed here.",
         "files": sorted(new_files | set(stale) | kept_files),
         "routes": dict(sorted({**kept, **{url: rendered[url][0] for url in rendered if url != KIT_URL}}.items())),
+        "lastmod": dict(sorted(lastmod.items())),  # [content hash, date it last changed] → sitemap.xml <lastmod>
     }
     text = json.dumps(manifest, ensure_ascii=False, indent=2) + "\n"
     if not MANIFEST.is_file() or MANIFEST.read_text(encoding="utf-8") != text:
@@ -600,6 +642,7 @@ def main(argv=None) -> int:
     mods = ", ".join(f"{m} ({n})" for m, n in sorted(per_module.items()))
     print(f"  routes: {mods or '—'}")
     print(f"  pages written: {len(rendered)} ({changed} changed, {len(rendered) - changed} unchanged)")
+    print(f"  sitemap.xml: {len(entries)} pages · robots.txt · 404.html · site.webmanifest")
     if kept:
         print(f"  NOT rebuilt (module or page failed): {len(kept)} page(s) kept from the previous build, links to them stay relative")
         for url, mod in kept.items():

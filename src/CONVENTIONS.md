@@ -10,6 +10,12 @@ pixel-parity baseline no longer applies. Reference inner page: `/shchenki/`.
 
 - **Brand: «домщенков.рф»** — lowercase, no hyphen, from `site.brand`. Never «Puppy House» (the build warns on it).
   `<title>` suffix: ` | домщенков.рф`; titles stay ≤ 60 characters.
+- **SEO is automatic** (`tools/seo.py`, `docs/seo.md`): every page gets canonical, robots, Open Graph, icons and
+  BreadcrumbList from its `title`, `description`, `breadcrumbs` and first photo in `<main>`; sitemap.xml, robots.txt,
+  404.html, site.webmanifest are written by the build. Write one H1 with the page's main query (≤ 2 lines),
+  a title with the query + «в Москве» where it fits, a 110–160-character description. Optional context:
+  `robots="noindex, follow"`, `og_image="/assets/img/…"`, `og_title`, `og_type`. Add JSON-LD only for what the page
+  really shows (FAQ via `faq_section(ld=true)`); no Product/Offer while prices are not published.
 - **Header** (shared, `partials/header.html.j2`): logo · «Меню» (site map panel `#mega`, data `site.menu`) · «Породы ▾» ·
   `site.nav` links · phone · Telegram / WhatsApp / MAX · «Написать в Telegram» (`.btn--tg`, Telegram blue darkened to
   ≥ 4,5:1 with white text — tokens `--tg-a` / `--tg-b`). Round messenger buttons without a text label use
@@ -112,7 +118,8 @@ def routes(data):            # data = deep copy of all src/data/*.json, enriched
         context=dict(
             title="…",                          # <title>, ≤ 60 chars
             description="…",                    # meta description, ≤ 160 chars
-            breadcrumbs=crumbs(("Доставка", None)),   # Главная is added; last item = current page
+            breadcrumbs=crumbs(("Доставка", None)),   # Главная is added; last item = current page (→ BreadcrumbList)
+            # SEO extras (optional): robots="noindex, follow", og_image="/assets/img/…" (else the first photo in <main>)
             # anything else your template needs; optional: pups_breed=<breed dict>, pups_strip=False, lead_breed="maltipu"
         ),
     )]
