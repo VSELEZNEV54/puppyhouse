@@ -1,0 +1,263 @@
+"""Command line: python -m app <command>   (run from backend/, or `docker compose run --rm migrate …`)
+
+    migrate                 drop leads_* views → alembic upgrade head → consent texts → catalog → views
+    sync-catalog [--force]  breeds and puppies from src/data → DB, rebuild the per-breed views
+    create-admin --login anna --name "Анна" [--role admin|manager]   (password asked, or DSH_ADMIN_PASSWORD)
+    reset-password --login anna
+    deactivate-admin --login anna
+    create-api-key --name "Админ-панель" [--role admin|manager]     (prints the key once)
+    revoke-api-keys --login <service login>
+    worker                  send notifications every 10 s, purge once a night
+    send-pending            send due notifications once
+    purge                   retention clean-up (see app/services/retention.py)
+    forget-contact --phone +7… --reason withdrawal|request|retention|not_me --subject "ФИО"
+    export-reviews [--out path]   approved reviews as JSON for the site
+    openapi [--out path]    write the OpenAPI schema (for generating the admin panel client)
+"""
+from __future__ import annotations
+
+import argparse
+import datetime as dt
+import getpass
+import json
+import logging
+import os
+import signal
+import sys
+import time
+import zoneinfo
+from pathlib import Path
+
+from sqlalchemy import select, text
+
+from .config import BACKEND_DIR, get_settings
+from .db import get_engine, session_scope
+from .enums import Role
+
+log = logging.getLogger("dsh.cli")
+LOCK_ID = 7_310_552_014  # pg_advisory_lock key for migrations
+
+
+def _alembic_cfg(connection=None):
+    from alembic.config import Config
+    cfg = Config(str(BACKEND_DIR / "alembic.ini"))
+    cfg.set_main_option("script_location", str(BACKEND_DIR / "migrations"))
+    if connection is not None:
+        cfg.attributes["connection"] = connection
+    return cfg
+
+
+def cmd_migrate(args) -> int:
+    from alembic import command
+    from .services import catalog, consent, views
+    with get_engine().connect() as conn:
+        conn.execute(text("SELECT pg_advisory_lock(:k)"), {"k": LOCK_ID})  # one migrator at a time
+        conn.commit()
+        try:
+            if conn.execute(text("SELECT to_regclass('leads')")).scalar():
+                views.drop_all(conn)  # a migration may change a column the views use
+            conn.commit()
+            command.upgrade(_alembic_cfg(conn), "head")
+            conn.commit()
+        finally:
+            conn.rollback()
+            conn.execute(text("SELECT pg_advisory_unlock(:k)"), {"k": LOCK_ID})
+            conn.commit()
+    with session_scope() as db:
+        print("consent:", consent.sync(db))
+        if args.no_catalog:
+            print("views:", views.rebuild(db))
+        else:
+            print("catalog:", catalog.sync(db, force=args.force))
+    return 0
+
+
+def cmd_sync_catalog(args) -> int:
+    from .services import catalog, consent
+    catalog.load.cache_clear()
+    with session_scope() as db:
+        print("consent:", consent.sync(db))
+        print("catalog:", catalog.sync(db, force=args.force))
+    return 0
+
+
+def _password(prompt="Пароль: ") -> str:
+    pw = os.environ.get("DSH_ADMIN_PASSWORD")
+    if pw:
+        return pw
+    a = getpass.getpass(prompt)
+    b = getpass.getpass("Ещё раз: ")
+    if a != b:
+        raise SystemExit("пароли не совпадают")
+    return a
+
+
+def cmd_create_admin(args) -> int:
+    from .services import auth
+    with session_scope() as db:
+        u = auth.create_user(db, args.login, args.name, Role(args.role), _password())
+        print(f"создан {u.login} ({u.role}), id={u.id}")
+    return 0
+
+
+def _user(db, login):
+    from sqlalchemy import func
+    from .models import AdminUser
+    u = db.scalar(select(AdminUser).where(func.lower(AdminUser.login) == login.lower()))
+    if u is None:
+        raise SystemExit(f"нет пользователя {login}")
+    return u
+
+
+def cmd_reset_password(args) -> int:
+    from .services import auth
+    with session_scope() as db:
+        auth.set_password(db, _user(db, args.login), _password("Новый пароль: "))
+        print("пароль изменён, все сессии закрыты")
+    return 0
+
+
+def cmd_deactivate_admin(args) -> int:
+    from .services import auth
+    with session_scope() as db:
+        u = _user(db, args.login)
+        u.is_active = False
+        n = auth.revoke_all(db, u.id)
+        auth.audit(db, None, "user_deactivated", target=f"user:{u.id}", actor_label="CLI")
+        print(f"{u.login} отключён, отозвано токенов: {n}")
+    return 0
+
+
+def cmd_create_api_key(args) -> int:
+    from .services import auth
+    with session_scope() as db:
+        login = "svc-" + "".join(ch for ch in args.name.lower() if ch.isalnum())[:30] + f"-{int(time.time())}"
+        u = auth.create_user(db, login, args.name, Role(args.role), None, service=True)
+        key = auth.create_api_key(db, u, args.name)
+        print("API-ключ (показывается один раз, сохраните в секретах админ-панели):")
+        print(key)
+        print(f"сервисный пользователь: {u.login}")
+    return 0
+
+
+def cmd_revoke_api_keys(args) -> int:
+    from .services import auth
+    with session_scope() as db:
+        u = _user(db, args.login)
+        print("отозвано:", auth.revoke_all(db, u.id, ("api_key",)))
+    return 0
+
+
+def cmd_send_pending(args) -> int:
+    from .services import notify
+    with session_scope() as db:
+        print(notify.deliver_due(db, limit=200))
+    return 0
+
+
+def cmd_purge(args) -> int:
+    from .services import retention
+    with session_scope() as db:
+        print(json.dumps(retention.run(db), ensure_ascii=False))
+    return 0
+
+
+def cmd_worker(args) -> int:
+    """Long-running: notifications every `interval` seconds, retention purge once a night (after purge_hour)."""
+    from .services import notify, retention
+    s = get_settings()
+    stop = {"now": False}
+    signal.signal(signal.SIGTERM, lambda *_: stop.update(now=True))
+    signal.signal(signal.SIGINT, lambda *_: stop.update(now=True))
+    zone = zoneinfo.ZoneInfo(s.timezone)
+    last_purge: dt.date | None = None
+    log.info("worker started")
+    while not stop["now"]:
+        try:
+            with session_scope() as db:
+                st = notify.deliver_due(db, limit=50)
+                if any(st.values()):
+                    log.info("outbox: %s", st)
+            local = dt.datetime.now(zone)
+            if local.hour >= args.purge_hour and last_purge != local.date():
+                with session_scope() as db:
+                    log.info("purge: %s", retention.run(db))
+                last_purge = local.date()
+        except Exception:  # noqa: BLE001 — keep the worker alive; the error is logged
+            log.exception("worker iteration failed")
+        for _ in range(args.interval):
+            if stop["now"]:
+                break
+            time.sleep(1)
+    log.info("worker stopped")
+    return 0
+
+
+def cmd_forget_contact(args) -> int:
+    from .models import Contact
+    from .services import admin_people, phone as phones
+    e164 = phones.normalize(args.phone)
+    if not e164:
+        raise SystemExit("неверный номер")
+    with session_scope() as db:
+        c = db.scalar(select(Contact).where(Contact.phone == e164))
+        if c is None:
+            raise SystemExit("контакт не найден")
+        print(admin_people.erase(db, c.id, args.reason, args.subject, None, "CLI"))
+    return 0
+
+
+def cmd_export_reviews(args) -> int:
+    from .services import admin_misc
+    with session_scope() as db:
+        data = admin_misc.approved_reviews(db)
+    out = json.dumps({"_note": "Approved reviews exported by python -m app export-reviews", "reviews": data},
+                     ensure_ascii=False, indent=2) + "\n"
+    if args.out:
+        Path(args.out).write_text(out, encoding="utf-8")
+        print(f"{len(data)} отзывов → {args.out}")
+    else:
+        sys.stdout.write(out)
+    return 0
+
+
+def cmd_openapi(args) -> int:
+    from fastapi.openapi.utils import get_openapi
+    from .main import app
+    spec = get_openapi(title=app.title, version=app.version, description=app.description, routes=app.routes)
+    Path(args.out).write_text(json.dumps(spec, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
+    print(f"→ {args.out}")
+    return 0
+
+
+def main(argv=None) -> int:
+    logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s: %(message)s")
+    ap = argparse.ArgumentParser(prog="python -m app", description=__doc__,
+                                 formatter_class=argparse.RawDescriptionHelpFormatter)
+    sub = ap.add_subparsers(dest="cmd", required=True)
+    p = sub.add_parser("migrate"); p.add_argument("--force", action="store_true"); p.add_argument("--no-catalog", action="store_true")
+    p.set_defaults(fn=cmd_migrate)
+    p = sub.add_parser("sync-catalog"); p.add_argument("--force", action="store_true"); p.set_defaults(fn=cmd_sync_catalog)
+    p = sub.add_parser("create-admin"); p.add_argument("--login", required=True); p.add_argument("--name", required=True)
+    p.add_argument("--role", choices=[r.value for r in Role], default="manager"); p.set_defaults(fn=cmd_create_admin)
+    p = sub.add_parser("reset-password"); p.add_argument("--login", required=True); p.set_defaults(fn=cmd_reset_password)
+    p = sub.add_parser("deactivate-admin"); p.add_argument("--login", required=True); p.set_defaults(fn=cmd_deactivate_admin)
+    p = sub.add_parser("create-api-key"); p.add_argument("--name", required=True)
+    p.add_argument("--role", choices=[r.value for r in Role], default="admin"); p.set_defaults(fn=cmd_create_api_key)
+    p = sub.add_parser("revoke-api-keys"); p.add_argument("--login", required=True); p.set_defaults(fn=cmd_revoke_api_keys)
+    p = sub.add_parser("worker"); p.add_argument("--interval", type=int, default=10)
+    p.add_argument("--purge-hour", type=int, default=3); p.set_defaults(fn=cmd_worker)
+    sub.add_parser("send-pending").set_defaults(fn=cmd_send_pending)
+    sub.add_parser("purge").set_defaults(fn=cmd_purge)
+    p = sub.add_parser("forget-contact"); p.add_argument("--phone", required=True)
+    p.add_argument("--reason", choices=["withdrawal", "request", "retention", "not_me"], required=True)
+    p.add_argument("--subject", required=True); p.set_defaults(fn=cmd_forget_contact)
+    p = sub.add_parser("export-reviews"); p.add_argument("--out"); p.set_defaults(fn=cmd_export_reviews)
+    p = sub.add_parser("openapi"); p.add_argument("--out", default=str(BACKEND_DIR / "openapi.json"))
+    p.set_defaults(fn=cmd_openapi)
+    args = ap.parse_args(argv)
+    return args.fn(args)
+
+
+if __name__ == "__main__":
+    sys.exit(main())

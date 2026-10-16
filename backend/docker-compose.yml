@@ -1,0 +1,77 @@
+# домщенков.рф backend. Run from backend/:  docker compose --env-file /etc/domshchenkov/api.env up -d --build
+# Services: postgres · migrate (one-shot, every deploy) · api · worker (notifications + nightly purge).
+# Nothing is published to the outside: nginx on the host proxies /api/ to 127.0.0.1:8000.
+name: domshchenkov
+
+x-app: &app
+  build:
+    context: ..
+    dockerfile: backend/Dockerfile
+  image: domshchenkov-api:latest
+  env_file:
+    - ${DSH_ENV_FILE:-/etc/domshchenkov/api.env}
+  environment:
+    DSH_ENV: ${DSH_ENV:-prod}
+    DSH_DATABASE_URL: postgresql+psycopg://dsh_app:${DSH_APP_DB_PASSWORD:?set DSH_APP_DB_PASSWORD}@postgres:5432/domshchenkov
+    DSH_TRUSTED_PROXIES: 172.28.0.1/32,127.0.0.1/32
+  restart: unless-stopped
+  networks: [internal]
+
+services:
+  postgres:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: domshchenkov
+      POSTGRES_USER: dsh_owner
+      POSTGRES_PASSWORD: ${DSH_OWNER_DB_PASSWORD:?set DSH_OWNER_DB_PASSWORD}
+      DSH_APP_DB_PASSWORD: ${DSH_APP_DB_PASSWORD}
+      DSH_READONLY_DB_PASSWORD: ${DSH_READONLY_DB_PASSWORD:-}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./deploy/initdb:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U dsh_owner -d domshchenkov"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    restart: unless-stopped
+    networks: [internal]
+
+  migrate:
+    <<: *app
+    # schema changes run as the owner role; the app itself runs as dsh_app (data only, no DDL)
+    environment:
+      DSH_ENV: ${DSH_ENV:-prod}
+      DSH_DATABASE_URL: postgresql+psycopg://dsh_owner:${DSH_OWNER_DB_PASSWORD}@postgres:5432/domshchenkov
+      DSH_TRUSTED_PROXIES: 127.0.0.1/32
+    command: ["python", "-m", "app", "migrate"]
+    restart: "no"
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  api:
+    <<: *app
+    ports:
+      - "127.0.0.1:8000:8000"   # only nginx on this host can reach it
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+
+  worker:
+    <<: *app
+    command: ["python", "-m", "app", "worker"]
+    healthcheck:
+      disable: true
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+
+networks:
+  internal:
+    ipam:
+      config:
+        - subnet: 172.28.0.0/16   # pinned: DSH_TRUSTED_PROXIES trusts only the gateway (host nginx)
+
+volumes:
+  pgdata:

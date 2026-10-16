@@ -3,3 +3,12 @@ node_modules/
 *.log
 _kit/
 __pycache__/
+# secrets: never commit (the site is published from the repo root by GitHub Pages)
+.env
+.env.*
+!.env.example
+backend/.env
+backend/.env.*
+!backend/.env.example
+.venv/
+.pytest_cache/

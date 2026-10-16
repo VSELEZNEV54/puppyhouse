@@ -41,7 +41,7 @@ MANIFEST = ROOT / ".build-manifest.json"
 PHOTO_TONES = ROOT / "tools" / "photo-tones.json"  # measured backdrop colours of studio photos
 
 # Top-level folders a route may never write into.
-PROTECTED = {"assets", "src", "tools", "docs", "content", ".github", ".git", "node_modules"}
+PROTECTED = {"assets", "src", "tools", "docs", "content", "backend", ".github", ".git", "node_modules"}
 URL_RE = re.compile(r"^/(?:[a-z0-9]+(?:-[a-z0-9]+)*/)*$")
 KIT_URL = "/_kit/"
 
