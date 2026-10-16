@@ -205,7 +205,7 @@
     faces=[{"src", "tone"}] → round faces of these studio photos instead (a breed page: its colours), faces=false → none.
     tag: 'h3' inside a section that already has its H2 (default), 'h2' + title_id when it is the section itself.
     kind: LeadKind sent to the API (video_call by default; waitlist for «по записи»); colour: colour slug; breed: slug to preselect. -#}
-{% macro lead_band(title='Хотите увидеть щенков вживую по видео?', line='Покажем щенков по видеосвязи и пришлём цену — в удобное вам время', label='Оставить заявку', tone='lilac', tag='h3', title_id=none, faces=true, note='Видеозвонок', modal_title='Покажем щенков по видео', submit='Записаться на видеозвонок', done='Спасибо! Куратор напишет, чтобы договориться о видеозвонке.', kind='video_call', colour=none, breed=none) -%}
+{% macro lead_band(title='Хотите увидеть щенков вживую по видео?', line='Покажем щенков по видеосвязи и пришлём цену — в удобное вам время', label='Оставить заявку', tone='lilac', tag='h3', title_id=none, faces=true, note='Видеозвонок', modal_title='Покажем щенков по видео', submit='Записаться на видеозвонок', done='Куратор напишет, чтобы договориться о видеозвонке.', kind='video_call', colour=none, breed=none) -%}
 <div class="lband tone--{{ tone }}">
   <div class="lband__txt">
     <{{ tag }} class="lband__title"{% if title_id %} id="{{ title_id }}"{% endif %}>{{ title|typo }}</{{ tag }}>

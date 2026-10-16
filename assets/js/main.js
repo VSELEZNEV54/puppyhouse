@@ -178,11 +178,14 @@
   }
 
   /* Очередь неотправленного в localStorage 'dsh:outbox': запись появляется ДО первой попытки, уходит после 2xx / 409 /
-     422; остальное ждёт следующей страницы или события 'online' (старше 7 дней — выбрасываем). Ключ идемпотентности
-     повторяется только для того же самого содержимого: та же заявка из очереди уходит ровно тем же телом. */
+     422 и после ответа, что такое тело сервер не примет никогда (400, 413, 415); остальное ждёт следующей страницы
+     или события 'online' (старше 7 дней — выбрасываем). Ключ идемпотентности повторяется только для того же самого
+     содержимого: та же заявка из очереди уходит ровно тем же телом. */
   const OUTBOX = 'dsh:outbox';
   const OUTBOX_TTL = 7 * 24 * 60 * 60 * 1000;
   const settled = (st) => (st >= 200 && st < 300) || st === 409 || st === 422;
+  // битый JSON, слишком большое тело, не тот Content-Type: повтор того же тела не поможет — в очереди не держим
+  const permanent = (st) => st === 400 || st === 413 || st === 415;
   const inflight = new Set();
   function outboxRead() {
     const list = readJSON(local, OUTBOX);
@@ -235,7 +238,7 @@
       if (state) state.key = key;
       res = await sendEntry(entry);
     }
-    if (settled(res.status)) {
+    if (settled(res.status) || permanent(res.status)) {
       outboxDrop(entry.key);
       if (state) state.key = '';
     }
@@ -251,8 +254,9 @@
       for (const e of list) {
         if (inflight.has(e.key)) continue;
         const res = await sendEntry(e);
-        if (settled(res.status)) outboxDrop(e.key);
-        else break; // сервер всё ещё недоступен — дождёмся 'online' или следующей страницы
+        if (settled(res.status) || permanent(res.status)) outboxDrop(e.key);
+        else if (retryable(res.status)) break; // сервер всё ещё недоступен — дождёмся 'online' или следующей страницы
+        // иначе (403, 404…) запись ждёт следующего раза, но не держит за собой остальную очередь
       }
     } finally {
       flushing = false;
@@ -312,9 +316,17 @@
     flushOutbox();
   }
 
+  /* Блок «Не получилось отправить…» (forms.send_fail): saved — запрос ждёт в очереди браузера и уйдёт позже;
+     иначе (permanent) он не сохранён — обещание «отправим, когда появится связь» прячем, остаются контакты. */
+  function failMode(box, saved) {
+    if (!box) return;
+    $$('[data-fail-saved]', box).forEach((el) => { el.hidden = !saved; });
+    $$('[data-fail-lost]', box).forEach((el) => { el.hidden = saved; });
+  }
+
   window.DSH = {
     live: LIVE, api: API, consent: CONSENT,
-    uuid, context, page: pageInfo, sendJSON, submit, settled, flushOutbox, track, flushEvents, quizDone,
+    uuid, context, page: pageInfo, sendJSON, submit, settled, permanent, failMode, flushOutbox, track, flushEvents, quizDone,
     session: { get: (k) => readJSON(session, k), del: (k) => session.del(k) }
   };
 
@@ -661,7 +673,8 @@
       elapsed_ms: started ? Math.max(0, Date.now() - started) : 0
     };
   }
-  // отправка в API с кнопкой «Отправляем…»; isCurrent() = false — форму уже открыли заново, экран не трогаем
+  // отправка в API с кнопкой «Отправляем…»; isCurrent() = false — форму уже открыли заново, экран не трогаем.
+  // fail(saved): saved = false — сервер такую заявку не примет никогда (permanent), в очереди её нет
   async function liveLead(form, payload, state, { done, fail, isCurrent = () => true }) {
     const btn = $('[data-submit]', form);
     btn.disabled = true;
@@ -674,7 +687,7 @@
     btn.textContent = btn.dataset.label;
     if (res.ok) done();
     else if (res.status === 422) serverErrors(form, res.data, LEAD_FIELDS);
-    else fail();
+    else fail(!permanent(res.status));
   }
 
   /* ---------- модалка «Узнать цену» ---------- */
@@ -687,6 +700,7 @@
     const viewDone = $('[data-view="done"]', modal);
     const viewError = $('[data-view="error"]', modal);
     const errorTitle = $('#pm-error-title');
+    const ERROR_TITLE = errorTitle ? errorTitle.textContent : ''; // «Заявка пока не ушла» — ждёт в очереди
     const title = $('#pm-title');
     const sub = $('#pm-sub');
     const thumb = $('[data-pm-thumb]', modal);
@@ -827,9 +841,12 @@
       modal.setAttribute('aria-describedby', 'pm-done-text');
       doneTitle.focus();
     };
-    // API недоступен после всех попыток: заявка ждёт в очереди браузера, форма остаётся заполненной
-    const showError = () => {
+    // API недоступен после всех попыток: заявка ждёт в очереди браузера, форма остаётся заполненной.
+    // saved = false — сервер её не примет (permanent): не сохранена, обещания «отправим позже» нет
+    const showError = (saved = true) => {
       if (!viewError) return;
+      errorTitle.textContent = saved ? ERROR_TITLE : 'Заявка не ушла';
+      failMode($('#pm-error-text', modal), saved);
       viewForm.hidden = true;
       viewError.hidden = false;
       modal.setAttribute('aria-labelledby', 'pm-error-title');
@@ -895,7 +912,7 @@
       if (fail) fail.hidden = true;
       const title = $('#lead-title');
       const payload = leadPayload(lForm, { kind: 'lead', form_title: title ? title.textContent.trim() : '' }, startedAt);
-      liveLead(lForm, payload, lState, { done: showDone, fail: () => { if (fail) fail.hidden = false; } });
+      liveLead(lForm, payload, lState, { done: showDone, fail: (saved) => { failMode(fail, saved); if (fail) fail.hidden = false; } });
     });
   }
 

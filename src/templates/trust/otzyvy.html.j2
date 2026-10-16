@@ -79,12 +79,12 @@
           <div class="form__grid">
             <div class="field">
               <label class="field__label" for="rm-name">Имя</label>
-              <input class="input" id="rm-name" name="name" type="text" autocomplete="given-name" placeholder="Как вас подписать" required aria-describedby="rm-name-err">
+              <input class="input" id="rm-name" name="name" type="text" autocomplete="given-name" placeholder="Как вас подписать" maxlength="100" required aria-describedby="rm-name-err">
               <p class="field__err" id="rm-name-err" hidden></p>
             </div>
             <div class="field">
               <label class="field__label" for="rm-city">Город</label>
-              <input class="input" id="rm-city" name="city" type="text" autocomplete="address-level2" placeholder="Например, Казань">
+              <input class="input" id="rm-city" name="city" type="text" autocomplete="address-level2" placeholder="Например, Казань" maxlength="100">
             </div>
             <div class="field field--full">
               <label class="field__label" for="rm-breed">Порода щенка</label>
@@ -106,7 +106,7 @@
             </fieldset>
             <div class="field field--full">
               <label class="field__label" for="rm-text">Отзыв</label>
-              <textarea class="input tr-textarea" id="rm-text" name="text" rows="4" placeholder="Как щенок освоился дома, что понравилось, что можно улучшить" required aria-describedby="rm-text-err"></textarea>
+              <textarea class="input tr-textarea" id="rm-text" name="text" rows="4" placeholder="Как щенок освоился дома, что понравилось, что можно улучшить" maxlength="4000" required aria-describedby="rm-text-err"></textarea>
               <p class="field__err" id="rm-text-err" hidden></p>
             </div>
             {{ forms.honeypot('rm')|indent(12) }}

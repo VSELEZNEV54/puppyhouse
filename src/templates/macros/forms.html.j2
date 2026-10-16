@@ -56,9 +56,11 @@
 {%- endmacro %}
 
 {#- «Не получилось отправить»: shown by main.js / trust.js when the API stays unreachable after the retries (the request
-    waits in this browser and goes out later). Phone, Telegram and MAX as the way out. what: «заявку» | «отзыв». -#}
+    waits in this browser and goes out later). Phone, Telegram and MAX as the way out. what: «заявку» | «отзыв».
+    [data-fail-lost] replaces [data-fail-saved] (DSH.failMode) when the server will never take that request (400 / 413 / 415):
+    it is not kept, so we don't promise to send it later. -#}
 {% macro send_fail(what='заявку', saved='её') -%}
-<p class="form-fail__text">Не получилось отправить {{ what }}. Мы сохранили {{ saved }} и&nbsp;отправим, когда появится связь. Или напишите нам:</p>
+<p class="form-fail__text">Не получилось отправить {{ what }}. <span data-fail-saved>Мы сохранили {{ saved }} и&nbsp;отправим, когда появится связь. Или напишите нам:</span><span data-fail-lost hidden>Позвоните или напишите нам:</span></p>
 <p class="form-fail__links">
   <a class="form-fail__link" href="{{ site.phone.tel }}">{{ ui.icon('phone', sm=true) }}{{ site.phone.display }}</a>
   <a class="form-fail__link" href="{{ site.messengers.telegram.url }}" target="_blank" rel="noopener">{{ ui.icon('tg', sm=true) }}{{ site.messengers.telegram.label }}</a>

@@ -78,9 +78,11 @@
   const doneDefault = doneText ? doneText.textContent : '';
   const submit = $('[data-rv-submit]', form);
   const failBox = $('[data-rv-fail]', form);
+  const TEXT_MAX = 4000; // как в API (ReviewIn.text) и maxlength у #rm-text
   const ERR = {
     name: 'Напишите, как вас подписать',
     text: 'Расскажите хотя бы пару предложений',
+    text_long: 'Отзыв слишком длинный: до 4000 знаков. Сократите его, пожалуйста',
     consent: 'Без согласия на обработку данных мы не сможем отправить отзыв',
     consent_publish: 'Без согласия мы не сможем опубликовать отзыв'
   };
@@ -98,17 +100,19 @@
     const targets = !input ? [] : (typeof input.setAttribute === 'function' ? [input] : Array.from(input));
     targets.forEach((t) => { if (msg) t.setAttribute('aria-invalid', 'true'); else t.removeAttribute('aria-invalid'); });
   };
+  const textLen = () => form.elements.text.value.trim().length;
   const validate = () => {
     const f = form.elements;
+    const len = textLen();
     const checks = [
       ['name', !f.name.value.trim()],
-      ['text', f.text.value.trim().length < 10],
+      ['text', len < 10 || len > TEXT_MAX, len > TEXT_MAX ? ERR.text_long : ERR.text],
       ['consent', !f.consent.checked],
       ['consent_publish', !f.consent_publish.checked]
     ];
     let first = null;
-    checks.forEach(([k, bad]) => {
-      setError(k, bad ? ERR[k] : '');
+    checks.forEach(([k, bad, msg]) => {
+      setError(k, bad ? (msg || ERR[k]) : '');
       if (bad && !first) first = f[k];
     });
     if (first) first.focus();
@@ -174,7 +178,7 @@
   form.addEventListener('input', (e) => {
     const n = e.target.name;
     if (n === 'name' && e.target.value.trim()) setError('name', '');
-    if (n === 'text' && e.target.value.trim().length >= 10) setError('text', '');
+    if (n === 'text' && textLen() >= 10 && textLen() <= TEXT_MAX) setError('text', '');
   });
   form.addEventListener('change', (e) => {
     const n = e.target.name;
@@ -246,8 +250,17 @@
           if (target) target.focus();
           return;
         }
-        // сервер недоступен после всех попыток (или ответил непонятно): отзыв ждёт в очереди, форма заполнена
-        if (failBox) failBox.hidden = false;
+        if (res.status === 413) { // тело больше лимита API: такой отзыв не примут никогда, в очереди его нет
+          setError('text', ERR.text_long);
+          form.elements.text.focus();
+          return;
+        }
+        // сервер недоступен после всех попыток (или ответил непонятно): отзыв ждёт в очереди, форма заполнена;
+        // 400 / 415 — не сохранён (api.permanent), остаются только контакты
+        if (failBox) {
+          if (typeof api.failMode === 'function') api.failMode(failBox, !(api.permanent && api.permanent(res.status)));
+          failBox.hidden = false;
+        }
       });
   });
 })();
