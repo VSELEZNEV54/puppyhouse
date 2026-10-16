@@ -95,17 +95,23 @@ def test_retention_still_erases_a_really_stale_contact(client, db, settings):
     assert db.get(Lead, lid).anonymised_at is not None
 
 
-def test_a_failed_catalog_step_never_leaves_the_database_without_views(db, monkeypatch):
+def test_a_refused_catalog_sync_keeps_the_api_up_and_shows_in_health(db, client, monkeypatch):
+    """Over half of the puppies gone at once: migrate keeps the old catalog, the deploy continues (the API must
+    start), the views stay, and /health reports the problem until sync-catalog --force."""
     from app import __main__ as cli
     from app.services import catalog
 
     def boom(*a, **k):
-        raise catalog.CatalogError("simulated: puppies.json truncated")
+        raise catalog.CatalogError("simulated: 31 of 60 active puppies would be deactivated")
     monkeypatch.setattr(catalog, "sync", boom)
-    with pytest.raises(catalog.CatalogError):
-        cli.main(["migrate"])
+    assert cli.main(["migrate"]) == 0
+    assert cli.main(["migrate", "--strict"]) == 1
     names = {r[0] for r in db.execute(text("SELECT viewname FROM pg_views WHERE viewname LIKE 'leads\\_%'"))}
     assert {"leads_all", "leads_general", "leads_maltipu"} <= names
+    assert client.get("/api/v1/health").status_code == 503
+    monkeypatch.undo()
+    assert cli.main(["sync-catalog"]) == 0
+    assert client.get("/api/v1/health").status_code == 200
 
 
 def test_readonly_role_gets_the_views_only(db):

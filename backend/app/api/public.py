@@ -16,7 +16,7 @@ from sqlalchemy import func, select, text
 from ..config import get_settings
 from ..db import session_scope
 from ..errors import ApiError
-from ..models import ConsentVersion, Outbox
+from ..models import AuditLog, ConsentVersion, Outbox
 from ..schemas_public import EventsAccepted, EventsIn, LeadAccepted, LeadIn, ReviewAccepted, ReviewIn
 from ..services import consent, leads, notify, reviews, sanitize, tracking
 from .deps import Db, _origin_ok, ip_of, public_json
@@ -131,6 +131,11 @@ def health_problems(db) -> list[str]:
     oldest = db.scalar(select(func.min(Outbox.created_at)).where(Outbox.status == "pending"))
     if oldest and now - oldest > dt.timedelta(minutes=10):
         problems.append("notifications are stuck for more than 10 minutes (is the worker running?)")
+    last_cat = db.execute(select(AuditLog.action, AuditLog.details).where(
+        AuditLog.action.in_(["catalog_synced", "catalog_sync_failed"])).order_by(AuditLog.id.desc()).limit(1)).first()
+    if last_cat and last_cat[0] == "catalog_sync_failed":
+        problems.append("the puppy catalog is not synced: " + str((last_cat[1] or {}).get("detail", ""))[:200]
+                        + " — fix puppies.json or run python -m app sync-catalog --force")
     failed = db.scalar(select(func.count()).select_from(Outbox)
                        .where(Outbox.status == "failed", Outbox.created_at > now - dt.timedelta(days=1)))
     if failed:

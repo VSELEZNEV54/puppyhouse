@@ -15,7 +15,7 @@ x-app: &app
   env_file:
     - ${DSH_APP_ENV_FILE:-/etc/domshchenkov/api.env}
   environment:
-    DSH_ENV: ${DSH_ENV:-prod}
+    # DSH_ENV and every other setting come from api.env; only the database URL is built here
     DSH_DATABASE_URL: postgresql+psycopg://dsh_app:${DSH_APP_DB_PASSWORD:?set DSH_APP_DB_PASSWORD}@postgres:5432/domshchenkov
     DSH_TRUSTED_PROXIES: 172.28.0.1/32,127.0.0.1/32
   restart: unless-stopped
@@ -34,7 +34,8 @@ services:
       - pgdata:/var/lib/postgresql/data
       - ./deploy/initdb:/docker-entrypoint-initdb.d:ro
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U dsh_owner -d domshchenkov"]
+      # over TCP: the temporary init-time server (unix socket only) must not count as ready
+      test: ["CMD-SHELL", "pg_isready -h 127.0.0.1 -U dsh_owner -d domshchenkov"]
       interval: 5s
       timeout: 5s
       retries: 20
@@ -45,7 +46,6 @@ services:
     <<: *app
     # schema changes run as the owner role; the app itself runs as dsh_app (data only, no DDL)
     environment:
-      DSH_ENV: ${DSH_ENV:-prod}
       DSH_DATABASE_URL: postgresql+psycopg://dsh_owner:${DSH_OWNER_DB_PASSWORD}@postgres:5432/domshchenkov
       DSH_TRUSTED_PROXIES: 127.0.0.1/32
     command: ["python", "-m", "app", "migrate"]

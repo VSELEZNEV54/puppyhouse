@@ -48,9 +48,29 @@ def _alembic_cfg(connection=None):
     return cfg
 
 
+def _wait_for_db(seconds: int = 60) -> None:
+    """The database may still be starting (first boot of the container): retry the connection for a while."""
+    deadline = time.monotonic() + seconds
+    while True:
+        try:
+            with get_engine().connect() as conn:
+                conn.execute(text("SELECT 1"))
+            return
+        except Exception:  # noqa: BLE001
+            if time.monotonic() > deadline:
+                raise
+            time.sleep(2)
+
+
+def _catalog_outcome(db, ok: bool, detail: str) -> None:
+    from .services.auth import audit
+    audit(db, None, "catalog_synced" if ok else "catalog_sync_failed", actor_label="CLI", detail=detail[:500])
+
+
 def cmd_migrate(args) -> int:
     from alembic import command
     from .services import catalog, consent, views
+    _wait_for_db()
     with get_engine().connect() as conn:
         conn.execute(text("SELECT pg_advisory_lock(:k)"), {"k": LOCK_ID})  # one migrator at a time
         conn.commit()
@@ -70,9 +90,21 @@ def cmd_migrate(args) -> int:
             if args.no_catalog:
                 print("views:", views.rebuild(db))
             else:
-                print("catalog:", catalog.sync(db, force=args.force))
+                stats = catalog.sync(db, force=args.force)
+                _catalog_outcome(db, True, f"{stats['puppies']} puppies")
+                print("catalog:", stats)
+    except catalog.CatalogError as e:
+        # The schema is migrated; only the catalog refused (e.g. more than half of the puppies gone at once).
+        # Keep the old catalog and let the API start: /api/v1/health reports it until
+        # `python -m app sync-catalog --force` (or a fixed puppies.json) succeeds.
+        log.error("CATALOG NOT SYNCED: %s", e)
+        with session_scope() as db:
+            views.rebuild(db)
+            _catalog_outcome(db, False, str(e))
+        print(f"CATALOG NOT SYNCED: {e}", file=sys.stderr)
+        return 0 if not args.strict else 1
     except Exception:
-        # the catalog step failed (its transaction rolled back): never leave the database without the views
+        # any other failure: never leave the database without the views, and fail the deploy
         with session_scope() as db:
             views.rebuild(db)
         raise
@@ -84,7 +116,15 @@ def cmd_sync_catalog(args) -> int:
     catalog.load.cache_clear()
     with session_scope() as db:
         print("consent:", consent.sync(db))
-        print("catalog:", catalog.sync(db, force=args.force))
+        try:
+            stats = catalog.sync(db, force=args.force)
+        except catalog.CatalogError as e:
+            db.rollback()
+            _catalog_outcome(db, False, str(e))
+            db.commit()
+            raise SystemExit(f"CATALOG NOT SYNCED: {e}")
+        _catalog_outcome(db, True, f"{stats['puppies']} puppies")
+        print("catalog:", stats)
     return 0
 
 
@@ -280,6 +320,7 @@ def main(argv=None) -> int:
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
     sub = ap.add_subparsers(dest="cmd", required=True)
     p = sub.add_parser("migrate"); p.add_argument("--force", action="store_true"); p.add_argument("--no-catalog", action="store_true")
+    p.add_argument("--strict", action="store_true", help="exit 1 when the catalog refuses to sync")
     p.set_defaults(fn=cmd_migrate)
     p = sub.add_parser("sync-catalog"); p.add_argument("--force", action="store_true"); p.set_defaults(fn=cmd_sync_catalog)
     p = sub.add_parser("create-admin"); p.add_argument("--login", required=True); p.add_argument("--name", required=True)
