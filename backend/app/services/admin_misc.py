@@ -157,7 +157,7 @@ def export_csv(db: Session, f: LeadFilter, user: AdminUser, ip: str | None) -> t
             LOST_REASON_LABELS.get(l.lost_reason, l.lost_reason or ""), l.sale_amount, l.parent_id, l.note)])
     audit(db, user, "export", ip=ip, rows=len(leads), filters={k: str(v) for k, v in vars(f).items() if v})
     db.commit()
-    return ("﻿" + buf.getvalue()).encode("utf-8"), len(leads)
+    return ("\ufeff" + buf.getvalue()).encode("utf-8"), len(leads)
 
 
 # ---------------------------------------------------------------- meta

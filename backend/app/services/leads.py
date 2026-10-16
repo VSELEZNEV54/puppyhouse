@@ -28,6 +28,7 @@ from ..enums import OPEN_STATUSES, Channel, HistoryAction, LeadKind, LeadStatus,
 from ..errors import ApiError
 from ..models import Breed, Contact, ContactAlias, Lead, LeadHistory, Puppy
 from . import attribution, catalog, consent, notify, sanitize, tracking
+from .security import same_client
 
 log = logging.getLogger("dsh.leads")
 UTC = dt.timezone.utc
@@ -153,12 +154,14 @@ def create_from_site(db: Session, data, ctx: RequestCtx) -> Created:
         flags.append("too_fast")
     if ctx.origin_missing:
         flags.append("no_origin")
-    if ctx.ip and _count(db, Lead.ip == ctx.ip, Lead.created_at > now - dt.timedelta(minutes=10)) >= s.leads_per_ip_10min:
+    if ctx.ip and _count(db, same_client(Lead.ip, ctx.ip),
+                         Lead.created_at > now - dt.timedelta(minutes=10)) >= s.leads_per_ip_10min:
         flags.append("rate_ip")
 
     consent_ver = consent.current("processing")
     if data.consent_version and data.consent_version != consent_ver:
-        if data.consent_version in consent.load()["versions"]:
+        doc = consent.load()["versions"].get(data.consent_version)
+        if doc and doc["kind"] == "processing":
             consent_ver = data.consent_version  # an older page the person actually saw
         else:
             flags.append("consent_version_fallback")

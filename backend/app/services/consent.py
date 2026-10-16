@@ -63,7 +63,8 @@ def sync(db: Session) -> dict:
 
 def record(db: Session, *, version: str, contact_id: int | None = None, lead_id: int | None = None,
            review_id: int | None = None, page_path: str | None, ip: str | None, user_agent: str | None) -> Consent:
-    c = Consent(version=version, contact_id=contact_id, lead_id=lead_id, review_id=review_id, page_path=page_path,
-                ip=ip, user_agent=user_agent)
+    from . import sanitize  # the proof row must never be the reason a request is lost
+    c = Consent(version=version, contact_id=contact_id, lead_id=lead_id, review_id=review_id,
+                page_path=sanitize.clean(page_path, 300), ip=ip, user_agent=sanitize.clean(user_agent, 400))
     db.add(c)
     return c

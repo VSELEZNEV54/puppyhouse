@@ -10,6 +10,7 @@ import re
 import uuid
 
 from sqlalchemy import func
+from sqlalchemy.exc import DBAPIError
 from sqlalchemy.dialects.postgresql import insert
 from sqlalchemy.orm import Session
 
@@ -47,7 +48,12 @@ def clean_data(etype: EventType, data: dict | None) -> dict:
             continue
         v = data[k]
         if k == "answers" and isinstance(v, dict):  # quiz: {question key: option key}
-            out[k] = {str(a)[:20]: str(b)[:20] for a, b in list(v.items())[:12] if isinstance(b, (str, int))}
+            ans = {}
+            for a, b in list(v.items())[:12]:
+                ka, kb = sanitize.clean(str(a), 20), sanitize.clean(str(b), 20) if isinstance(b, (str, int)) else None
+                if ka and kb:
+                    ans[ka] = kb
+            out[k] = ans
         else:
             sv = _small(v)
             if sv is not None:
@@ -150,5 +156,17 @@ def ingest(db: Session, *, visitor_id: uuid.UUID, session_id: uuid.UUID | None, 
             for r in rows:
                 r["session_id"] = None
     if rows:
-        db.execute(insert(SiteEvent), rows)
+        try:
+            with db.begin_nested():
+                db.execute(insert(SiteEvent), rows)
+        except DBAPIError:  # one bad row must not lose the batch: insert one by one, skip the bad ones
+            ok = 0
+            for r in rows:
+                try:
+                    with db.begin_nested():
+                        db.execute(insert(SiteEvent), [r])
+                    ok += 1
+                except DBAPIError:
+                    dropped += 1
+            return ok, dropped
     return len(rows), dropped

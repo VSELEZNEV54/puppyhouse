@@ -4,8 +4,10 @@ from __future__ import annotations
 import re
 from urllib.parse import urlsplit
 
-_CTRL = re.compile(r"[\x00-\x08\x0b\x0c\x0e-\x1f\x7f​-‏‪-‮⁦-⁩]")
-_SPACES = re.compile(r"[ \t ]+")
+_CTRL = re.compile(r"[\x00-\x08\x0b\x0c\x0e-\x1f\x7f\u200b-\u200f\u202a-\u202e\u2066-\u2069]")
+_SPACES = re.compile(r"[ \t\u00a0]+")
+_HOST = re.compile(r"[a-z0-9\u0400-\u04ff.-]{1,253}")  # latin, punycode, cyrillic (домщенков.рф)
+_BOT = re.compile(r"bot\b|bot/|spider|crawl|slurp|headless|lighthouse|preview|python-requests|curl/|wget/")
 
 
 def clean(value: str | None, limit: int, multiline: bool = False) -> str | None:
@@ -48,17 +50,19 @@ def host(url: str | None) -> str | None:
     if not url:
         return None
     try:
-        h = urlsplit(str(url)).hostname
+        h = urlsplit(_CTRL.sub("", str(url))).hostname
     except ValueError:
         return None
-    return h[:200] if h else None
+    if not h or not _HOST.fullmatch(h):
+        return None
+    return h[:200]
 
 
 def device(user_agent: str | None) -> str | None:
     ua = (user_agent or "").lower()
     if not ua:
         return None
-    if any(b in ua for b in ("bot", "spider", "crawl", "headless", "lighthouse", "preview")):
+    if _BOT.search(ua.replace("cubot", "")):  # «bot» as a word end (YandexBot, Googlebot); Cubot is a phone brand
         return "bot"
     if "ipad" in ua or "tablet" in ua:
         return "tablet"

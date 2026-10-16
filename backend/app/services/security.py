@@ -56,7 +56,12 @@ def client_ip(request: Request, is_trusted) -> str | None:
         if real:
             peer = real
     try:
-        return str(ipaddress.ip_address(peer)) if peer else None
+        if not peer:
+            return None
+        addr = ipaddress.ip_address(peer)
+        if addr.version == 6 and addr.ipv4_mapped:  # ::ffff:1.2.3.4 on a dual-stack listener
+            addr = addr.ipv4_mapped
+        return str(addr)
     except ValueError:
         return None
 
@@ -66,6 +71,18 @@ def rate_key(ip: str | None) -> str | None:
     if not ip:
         return None
     addr = ipaddress.ip_address(ip)
+    if addr.version == 6 and addr.ipv4_mapped:
+        return str(addr.ipv4_mapped)
     if addr.version == 6:
-        return str(ipaddress.ip_network(f"{ip}/64", strict=False))
-    return ip
+        return str(ipaddress.ip_network(f"{addr}/64", strict=False))
+    return str(addr)
+
+
+def same_client(column, ip: str | None):
+    """SQL condition «this row came from the same client»: the exact IPv4, or the same IPv6 /64."""
+    from sqlalchemy import cast
+    from sqlalchemy.dialects.postgresql import CIDR
+    key = rate_key(ip)
+    if key and "/" in key:
+        return column.op("<<=")(cast(key, CIDR))
+    return column == key

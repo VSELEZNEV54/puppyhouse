@@ -31,7 +31,7 @@ async def _json_body(request: Request, limit: int) -> object:
     if len(body) > limit:
         raise ApiError(413, "too_large", "Слишком большой запрос")
     try:
-        return json.loads(body or b"null")
+        return json.loads(body or b"null", parse_constant=lambda _c: None)  # Infinity / NaN → null
     except ValueError:
         raise ApiError(400, "bad_json", "Тело запроса — не JSON")
 

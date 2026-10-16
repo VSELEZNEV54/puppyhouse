@@ -12,6 +12,7 @@ from pydantic import BaseModel, BeforeValidator, ConfigDict, Field, StringConstr
 
 from .enums import Channel
 from .services import phone as phones
+from .services.sanitize import clean
 
 
 def _opt_str(v: Any) -> str | None:
@@ -31,8 +32,13 @@ def _opt_uuid(v: Any) -> uuid.UUID | None:
 
 def _opt_dict(v: Any) -> dict | None:
     if isinstance(v, dict):
-        return {str(k)[:20]: str(val)[:150] for k, val in list(v.items())[:10]
-                if isinstance(val, (str, int, float)) and str(val).strip()}
+        out = {}
+        for k, val in list(v.items())[:10]:
+            if isinstance(val, (str, int, float)) and not isinstance(val, bool):
+                ck, cv = clean(str(k), 20), clean(str(val), 150)
+                if ck and cv:
+                    out[ck] = cv
+        return out or None
     return None
 
 
@@ -45,7 +51,7 @@ def _opt_int(v: Any) -> int | None:
     try:
         n = int(v)
         return n if 0 <= n <= 86_400_000 else None
-    except (ValueError, TypeError):
+    except (ValueError, TypeError, OverflowError):
         return None
 
 
@@ -113,6 +119,14 @@ class LeadIn(TrackIn):
             raise ValueError("consent required")
         return v
 
+    @field_validator("name")
+    @classmethod
+    def _name(cls, v: str) -> str:
+        cleaned = clean(v, 100)
+        if not cleaned:  # only invisible / control characters
+            raise ValueError("empty")
+        return cleaned
+
 
 class LeadAccepted(BaseModel):
     id: uuid.UUID = Field(description="Public id of the request (the admin number is not shown to visitors)")
@@ -141,6 +155,22 @@ class ReviewIn(TrackIn):
             raise ValueError("consent required")
         return v
 
+    @field_validator("text")
+    @classmethod
+    def _text(cls, v: str) -> str:
+        cleaned = clean(v, 4000, multiline=True) or ""
+        if len(cleaned) < 10:  # invisible characters do not count
+            raise ValueError("too short")
+        return cleaned
+
+    @field_validator("name")
+    @classmethod
+    def _name(cls, v: str) -> str:
+        cleaned = clean(v, 100)
+        if not cleaned:
+            raise ValueError("empty")
+        return cleaned
+
 
 class ReviewAccepted(BaseModel):
     status: str = "pending"
@@ -158,7 +188,7 @@ class EventIn(BaseModel):
     def _ts(cls, v):
         try:
             return int(v)
-        except (TypeError, ValueError):
+        except (TypeError, ValueError, OverflowError):
             return None
 
     @field_validator("data", mode="before")

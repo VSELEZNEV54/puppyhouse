@@ -6,13 +6,32 @@ from __future__ import annotations
 
 from urllib.parse import parse_qs, urlsplit
 
+from .sanitize import clean as _clean
+
 UTM_KEYS = ("source", "medium", "campaign", "content", "term")
 
-_SEARCH = {"yandex": "yandex", "ya.ru": "yandex", "google": "google", "bing": "bing", "go.mail.ru": "mail.ru",
-           "duckduckgo": "duckduckgo", "rambler": "rambler"}
-_SOCIAL = {"vk.com": "vk", "vk.ru": "vk", "ok.ru": "ok", "t.me": "telegram", "telegram": "telegram",
-           "instagram": "instagram", "facebook": "facebook", "youtube": "youtube", "youtu.be": "youtube",
-           "dzen.ru": "dzen", "pinterest": "pinterest", "tiktok": "tiktok", "avito": "avito", "whatsapp": "whatsapp"}
+# Search engines by brand label (yandex.ru, yandex.com.tr, google.de …) or by exact domain.
+_SEARCH_BRANDS = {"yandex": "yandex", "google": "google", "bing": "bing", "duckduckgo": "duckduckgo",
+                  "rambler": "rambler"}
+_SEARCH_DOMAINS = {"ya.ru": "yandex", "go.mail.ru": "mail.ru", "search.yahoo.com": "yahoo"}
+_SOCIAL_DOMAINS = {"vk.com": "vk", "vk.ru": "vk", "m.vk.com": "vk", "ok.ru": "ok", "t.me": "telegram",
+                   "web.telegram.org": "telegram", "instagram.com": "instagram", "l.instagram.com": "instagram",
+                   "facebook.com": "facebook", "youtube.com": "youtube", "youtu.be": "youtube", "dzen.ru": "dzen",
+                   "pinterest.com": "pinterest", "pinterest.ru": "pinterest", "tiktok.com": "tiktok",
+                   "avito.ru": "avito", "wa.me": "whatsapp", "whatsapp.com": "whatsapp", "max.ru": "max"}
+
+
+def _on(host: str, domain: str) -> bool:
+    return host == domain or host.endswith("." + domain)
+
+
+def _brand(host: str) -> str | None:
+    """yandex.ru, www.google.com, yandex.com.tr → the brand; petbook.ru → None (no substring matching)."""
+    labels = host.split(".")
+    for b, name in _SEARCH_BRANDS.items():
+        if b in labels[:-1]:
+            return name
+    return None
 
 
 def clean_utm(utm: dict | None) -> dict | None:
@@ -21,13 +40,13 @@ def clean_utm(utm: dict | None) -> dict | None:
         return None
     out = {}
     for k in UTM_KEYS:
-        v = utm.get(k) or utm.get("utm_" + k)
-        if isinstance(v, str) and v.strip():
-            out[k] = v.strip()[:150]
+        v = _clean(utm.get(k) or utm.get("utm_" + k), 150) if isinstance(utm.get(k) or utm.get("utm_" + k), str) else None
+        if v:
+            out[k] = v
     for k in ("yclid", "gclid"):
-        v = utm.get(k)
-        if isinstance(v, str) and v.strip():
-            out[k] = v.strip()[:150]
+        v = _clean(utm.get(k), 150) if isinstance(utm.get(k), str) else None
+        if v:
+            out[k] = v
     return out or None
 
 
@@ -50,12 +69,12 @@ def classify(utm: dict | None, referrer: str | None, own_hosts: tuple[str, ...] 
     host = host_of(referrer)
     if not host or any(host == h or host.endswith("." + h) for h in own_hosts):
         return "(direct)", "(none)"
-    for needle, name in _SEARCH.items():
-        if needle in host:
-            # ad clicks without click ids still carry a marker in the referrer query
-            q = parse_qs(urlsplit(referrer or "").query)
-            return name, "cpc" if "yabs" in host or "adurl" in q else "organic"
-    for needle, name in _SOCIAL.items():
-        if needle in host:
-            return name, "social"
+    search = _brand(host) or next((n for d, n in _SEARCH_DOMAINS.items() if _on(host, d)), None)
+    if search:
+        # ad clicks without click ids still carry a marker in the referrer
+        q = parse_qs(urlsplit(referrer or "").query)
+        return search, "cpc" if host.startswith("yabs.") or "adurl" in q else "organic"
+    social = next((n for d, n in _SOCIAL_DOMAINS.items() if _on(host, d)), None)
+    if social:
+        return social, "social"
     return host[:60], "referral"

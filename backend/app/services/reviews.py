@@ -17,6 +17,7 @@ from ..errors import ApiError
 from ..models import Review
 from . import consent, notify, sanitize
 from .leads import RequestCtx, resolve_catalog
+from .security import same_client
 
 UTC = dt.timezone.utc
 
@@ -49,7 +50,7 @@ def create(db: Session, data, ctx: RequestCtx) -> tuple[Review, bool]:
     spam_reason = None
     if ctx.ip:
         n = db.scalar(select(func.count()).select_from(Review)
-                      .where(Review.ip == ctx.ip, Review.created_at > now - dt.timedelta(days=1))) or 0
+                      .where(same_client(Review.ip, ctx.ip), Review.created_at > now - dt.timedelta(days=1))) or 0
         if n >= s.reviews_per_ip_day:
             spam_reason = SpamReason.rate_limited.value
     if spam_reason is None and data.elapsed_ms is not None and data.elapsed_ms < s.min_fill_ms:

@@ -33,7 +33,7 @@ class CatalogError(RuntimeError):
 
 def norm(s: str | None) -> str:
     """Case-, ё- and space-insensitive key (the select sends «Пока не&nbsp;решил(а)» with a non-breaking space)."""
-    return _WS.sub(" ", (s or "").replace(" ", " ").replace("⁠", "")).strip().lower().replace("ё", "е")
+    return _WS.sub(" ", (s or "").replace("\u00a0", " ").replace("\u2060", "")).strip().lower().replace("ё", "е")
 
 
 @dataclass
