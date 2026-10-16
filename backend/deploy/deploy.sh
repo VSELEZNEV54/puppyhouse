@@ -72,13 +72,18 @@ STATE="$APP_ROOT/state"
 mkdir -p "$STATE"
 PREV_VERSION="$(cat "$STATE/version" 2>/dev/null || true)"
 PREV_ROOT="$(cat "$STATE/root" 2>/dev/null || true)"
+# the release `dsh rollback` goes back to — kept even when the same release is deployed again
+OLDER_VERSION="$(cat "$STATE/prev_version" 2>/dev/null || true)"
+OLDER_ROOT="$(cat "$STATE/prev_root" 2>/dev/null || true)"
 
-api_code() { curl -s --noproxy "*" -o /tmp/dsh-health.json -w '%{http_code}' http://127.0.0.1:8000/api/v1/health || true; }
+api_code() { curl -s -m 5 --noproxy "*" -o /tmp/dsh-health.json -w '%{http_code}' http://127.0.0.1:8000/api/v1/health || true; }
 rollback() {
   if [ -n "$PREV_VERSION" ] && [ -f "$PREV_ROOT/backend/docker-compose.yml" ]; then
     echo "Откат: запускаю прошлый релиз $PREV_VERSION" >&2
+    # --no-deps: the OLD migrate must not run — the new release may have upgraded the schema already, and the old
+    # alembic stops on an unknown revision, which would leave the API not started at all
     DSH_VERSION="$PREV_VERSION" DSH_INITDB_DIR="$APP_ROOT/initdb" docker compose -f "$PREV_ROOT/backend/docker-compose.yml" --env-file "$ETC/db.env" \
-      up -d --remove-orphans api worker >&2 || { echo "откат не удался — смотрите: dsh logs" >&2; return; }
+      up -d --no-deps api worker >&2 || { echo "откат не удался — смотрите: dsh logs" >&2; return; }
     for _ in $(seq 1 30); do
       case "$(api_code)" in 200|503) echo "Прошлый релиз $PREV_VERSION снова работает, сайт не менялся" >&2; return ;; esac
       sleep 2
@@ -99,8 +104,14 @@ say "Образ API"
 say "База и API (миграции идут первыми)"
 if ! "${COMPOSE[@]}" up -d --remove-orphans; then
   "${COMPOSE[@]}" logs --tail 40 migrate api >&2 || true
+  hint=""
+  if [ "$("${COMPOSE[@]}" logs migrate 2>&1 | grep -c "Can't locate revision" || true)" -gt 0 ]; then
+    hint="
+База новее этого кода: прошлый неудачный релиз успел применить миграцию. Выложите исправленную версию, в которой
+эта миграция есть (или откатите её командой alembic downgrade из того релиза)."
+  fi
   rollback
-  die "контейнеры не запустились (выше — последние строки логов)"
+  die "контейнеры не запустились (выше — последние строки логов)$hint"
 fi
 
 say "Проверяю, что API отвечает"
@@ -129,32 +140,8 @@ case "$code" in
 esac
 docker tag "domshchenkov-api:$VERSION" domshchenkov-api:latest   # `dsh` and backup.sh use the current image
 
-# ---- site files
-say "Сайт → $DOCROOT"
-mkdir -p "$DOCROOT"
-rsync -a --delete --delay-updates --chmod=D755,F644 "$HERE/site/" "$DOCROOT/"
-
-# ---- nginx: this release's config; the old one comes back if the new one does not pass `nginx -t`
-say "nginx"
-install -D -m 644 "$HERE/backend/deploy/nginx-snippets/dsh-proxy.conf" /etc/nginx/snippets/dsh-proxy.conf
-NEW_CONF="$(mktemp)"
-cp "$HERE/backend/deploy/nginx.conf" "$NEW_CONF"
-[ -f /proc/net/if_inet6 ] || sed -i '/listen \[::\]/d' "$NEW_CONF"   # a server without IPv6
-BACKUP_CONF=""
-if [ -f "$NGINX_SITE" ]; then BACKUP_CONF="$(mktemp)"; cp "$NGINX_SITE" "$BACKUP_CONF"; fi
-install -m 644 "$NEW_CONF" "$NGINX_SITE"
-rm -f "$NEW_CONF"
-ln -sfn "$NGINX_SITE" /etc/nginx/sites-enabled/domshchenkov
-rm -f /etc/nginx/sites-enabled/domshchenkov-bootstrap /etc/nginx/sites-enabled/default
-if ! nginx -t 2>/tmp/dsh-nginx.txt; then
-  cat /tmp/dsh-nginx.txt >&2
-  if [ -n "$BACKUP_CONF" ]; then install -m 644 "$BACKUP_CONF" "$NGINX_SITE"; fi
-  die "новая конфигурация nginx с ошибкой — оставлена прежняя"
-fi
-systemctl reload nginx
-rm -f "$BACKUP_CONF"
-
-# ---- this release is the current one
+# ---- the API of this release runs: record it now, so `dsh` and the next deploy's rollback point to the right release
+# even if a later step (site files, nginx) fails
 ln -sfn "$HERE" "$APP_ROOT/current"
 if [ -n "$PREV_VERSION" ] && [ "$PREV_VERSION" != "$VERSION" ]; then   # for `dsh rollback`
   echo "$PREV_VERSION" > "$STATE/prev_version"
@@ -164,12 +151,55 @@ echo "$VERSION" > "$STATE/version"
 echo "$HERE" > "$STATE/root"
 install -m 755 "$HERE/backend/deploy/dsh" /usr/local/bin/dsh
 
+# ---- site files
+say "Сайт → $DOCROOT"
+mkdir -p "$DOCROOT"
+rsync -a --delete --delay-updates --chmod=D755,F644 "$HERE/site/" "$DOCROOT/"
+
+# ---- nginx: this release's config. If it fails `nginx -t`, everything goes back exactly as it was (the snippet, the
+# site file, the links — on the first deploy: the bootstrap server), so a later reload (certbot's renewal hook) or a
+# reboot still works
+say "nginx"
+SNIPPET=/etc/nginx/snippets/dsh-proxy.conf
+BK="$(mktemp -d)"
+[ -f "$SNIPPET" ] && cp -p "$SNIPPET" "$BK/snippet"
+[ -f "$NGINX_SITE" ] && cp -p "$NGINX_SITE" "$BK/site"
+[ -e /etc/nginx/sites-enabled/domshchenkov ] && touch "$BK/site-enabled"
+[ -e /etc/nginx/sites-enabled/domshchenkov-bootstrap ] && touch "$BK/bootstrap-enabled"
+[ -e /etc/nginx/sites-enabled/default ] && cp -P /etc/nginx/sites-enabled/default "$BK/default-link"
+nginx_restore() {
+  if [ -f "$BK/snippet" ]; then cp -p "$BK/snippet" "$SNIPPET"; else rm -f "$SNIPPET"; fi
+  if [ -f "$BK/site" ]; then cp -p "$BK/site" "$NGINX_SITE"; else rm -f "$NGINX_SITE"; fi
+  [ -f "$BK/site-enabled" ] || rm -f /etc/nginx/sites-enabled/domshchenkov
+  [ -f "$BK/bootstrap-enabled" ] && ln -sfn /etc/nginx/sites-available/domshchenkov-bootstrap /etc/nginx/sites-enabled/domshchenkov-bootstrap
+  [ -e "$BK/default-link" ] && cp -P "$BK/default-link" /etc/nginx/sites-enabled/default
+  return 0
+}
+install -D -m 644 "$HERE/backend/deploy/nginx-snippets/dsh-proxy.conf" "$SNIPPET"
+NEW_CONF="$(mktemp)"
+cp "$HERE/backend/deploy/nginx.conf" "$NEW_CONF"
+[ -f /proc/net/if_inet6 ] || sed -i '/listen \[::\]/d' "$NEW_CONF"   # a server without IPv6
+install -m 644 "$NEW_CONF" "$NGINX_SITE"
+rm -f "$NEW_CONF"
+ln -sfn "$NGINX_SITE" /etc/nginx/sites-enabled/domshchenkov
+rm -f /etc/nginx/sites-enabled/domshchenkov-bootstrap /etc/nginx/sites-enabled/default
+if ! nginx -t 2>/tmp/dsh-nginx.txt; then
+  cat /tmp/dsh-nginx.txt >&2
+  nginx_restore
+  if nginx -t 2>/dev/null; then
+    die "новая конфигурация nginx с ошибкой — всё возвращено как было (API этого релиза уже работает)"
+  fi
+  die "новая конфигурация nginx с ошибкой, и прежняя тоже не проходит nginx -t — проверьте: nginx -t"
+fi
+systemctl reload nginx
+rm -rf "$BK"
+
 say "Проверка снаружи (через nginx)"
 fail=0
 check() {  # url, expected code, [text that must be in the page]
   local body code
   body="$(mktemp)"
-  code="$(curl -s --noproxy "*" -o "$body" -w '%{http_code}' --resolve "$DOMAIN:443:127.0.0.1" "https://$DOMAIN$1" || true)"
+  code="$(curl -s -m 10 --noproxy "*" -o "$body" -w '%{http_code}' --resolve "$DOMAIN:443:127.0.0.1" "https://$DOMAIN$1" || true)"
   if [ "$code" = "$2" ] && { [ -z "${3:-}" ] || grep -q "$3" "$body"; }; then
     echo "  ok   $1 → $code"
   else
@@ -184,16 +214,16 @@ check /robots.txt 200 'Sitemap'
 check /sitemap.xml 200 '<urlset'
 check /net-takoj-stranicy/ 404 'Такой страницы нет'
 check /backend/docker-compose.yml 404
-code="$(curl -s --noproxy "*" -o /dev/null -w '%{http_code}' --resolve "$DOMAIN:443:127.0.0.1" "https://$DOMAIN/api/v1/health" || true)"
+code="$(curl -s -m 10 --noproxy "*" -o /dev/null -w '%{http_code}' --resolve "$DOMAIN:443:127.0.0.1" "https://$DOMAIN/api/v1/health" || true)"
 if [ "$code" = 200 ] || [ "$code" = 503 ]; then echo "  ok   /api/v1/health → $code"; else echo "  FAIL /api/v1/health → $code"; fail=1; fi
 
 # ---- old releases and images
 say "Уборка"
 mapfile -t old < <(ls -1dt "$APP_ROOT"/releases/domshchenkov-* 2>/dev/null | tail -n +"$((KEEP_RELEASES + 1))")
 for d in "${old[@]}"; do
-  [ "$d" = "$HERE" ] || [ "$d" = "$PREV_ROOT" ] || { rm -rf "$d"; echo "  удалён $d"; }
+  [ "$d" = "$HERE" ] || [ "$d" = "$PREV_ROOT" ] || [ "$d" = "$OLDER_ROOT" ] || { rm -rf "$d"; echo "  удалён $d"; }
 done
-keep=" $VERSION $PREV_VERSION latest "
+keep=" $VERSION $PREV_VERSION $OLDER_VERSION latest "
 for t in $(docker image ls domshchenkov-api --format '{{.Tag}}'); do
   case "$keep" in *" $t "*) ;; *) docker image rm "domshchenkov-api:$t" >/dev/null 2>&1 || true ;; esac
 done

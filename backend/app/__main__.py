@@ -71,19 +71,30 @@ def cmd_migrate(args) -> int:
     from alembic import command
     from .services import catalog, consent, views
     _wait_for_db()
-    with get_engine().connect() as conn:
-        conn.execute(text("SELECT pg_advisory_lock(:k)"), {"k": LOCK_ID})  # one migrator at a time
-        conn.commit()
+    try:
+        with get_engine().connect() as conn:
+            conn.execute(text("SELECT pg_advisory_lock(:k)"), {"k": LOCK_ID})  # one migrator at a time
+            conn.commit()
+            try:
+                if conn.execute(text("SELECT to_regclass('leads')")).scalar():
+                    views.drop_all(conn)  # a migration may change a column the views use
+                conn.commit()
+                command.upgrade(_alembic_cfg(conn), "head")
+                conn.commit()
+            finally:
+                conn.rollback()
+                conn.execute(text("SELECT pg_advisory_unlock(:k)"), {"k": LOCK_ID})
+                conn.commit()
+    except Exception:
+        # The upgrade failed (PostgreSQL rolled the migration back) or the database is AHEAD of this code (an older
+        # release started against a newer schema). The views were dropped above: put them back so the running API
+        # keeps its breed bases, then fail the deploy. Best effort — this code's views may need columns not there.
         try:
-            if conn.execute(text("SELECT to_regclass('leads')")).scalar():
-                views.drop_all(conn)  # a migration may change a column the views use
-            conn.commit()
-            command.upgrade(_alembic_cfg(conn), "head")
-            conn.commit()
-        finally:
-            conn.rollback()
-            conn.execute(text("SELECT pg_advisory_unlock(:k)"), {"k": LOCK_ID})
-            conn.commit()
+            with session_scope() as db:
+                views.rebuild(db)
+        except Exception as e2:  # noqa: BLE001
+            log.error("views not rebuilt after a failed upgrade: %s", e2)
+        raise
     try:
         with session_scope() as db:
             print("consent:", consent.sync(db))

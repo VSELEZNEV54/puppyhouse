@@ -38,8 +38,8 @@ export DEBIAN_FRONTEND=noninteractive
 
 say "Пакеты"
 apt-get update -q
-apt-get install -y -q ca-certificates curl git rsync nginx certbot ufw fail2ban unattended-upgrades cron \
-  age python3 python3-jinja2 >/dev/null
+apt-get install -y -q ca-certificates curl git rsync nginx certbot ufw fail2ban python3-systemd \
+  unattended-upgrades cron age python3 python3-jinja2 >/dev/null
 echo "  ok"
 
 say "Docker"
@@ -66,10 +66,18 @@ docker compose version
 
 say "Память"
 mem_mb=$(awk '/MemTotal/ {print int($2/1024)}' /proc/meminfo)
-if [ "$mem_mb" -lt 2000 ] && [ -z "$(swapon --noheadings)" ]; then
-  fallocate -l 2G /swapfile && chmod 600 /swapfile && mkswap /swapfile >/dev/null && swapon /swapfile
-  grep -q '^/swapfile' /etc/fstab || echo '/swapfile none swap sw 0 0' >> /etc/fstab
-  echo "  ОЗУ $mem_mb МБ — добавлен swap 2 ГБ (сборка образа и PostgreSQL не упрутся в память)"
+if [ "$mem_mb" -lt 2000 ] && [ -z "$(swapon --noheadings 2>/dev/null || true)" ]; then
+  created=0
+  if [ ! -f /swapfile ]; then
+    fallocate -l 2G /swapfile 2>/dev/null && chmod 600 /swapfile && mkswap /swapfile >/dev/null 2>&1 && created=1
+  fi
+  if [ -f /swapfile ] && swapon /swapfile 2>/dev/null; then
+    grep -q '^/swapfile' /etc/fstab || echo '/swapfile none swap sw 0 0' >> /etc/fstab
+    echo "  ОЗУ $mem_mb МБ — добавлен swap 2 ГБ (сборка образа и PostgreSQL не упрутся в память)"
+  else
+    if [ "$created" = 1 ]; then rm -f /swapfile; fi
+    echo "  ВНИМАНИЕ: ОЗУ $mem_mb МБ, а swap включить нельзя (так бывает на OpenVZ/LXC) — продолжаю без него"
+  fi
 else
   echo "  ОЗУ $mem_mb МБ — ok"
 fi
@@ -80,17 +88,35 @@ cat > /etc/apt/apt.conf.d/20auto-upgrades <<'EOF'
 APT::Periodic::Update-Package-Lists "1";
 APT::Periodic::Unattended-Upgrade "1";
 EOF
-systemctl enable --now fail2ban >/dev/null 2>&1 || true
-echo "  часовой пояс Europe/Moscow, автообновления безопасности, fail2ban для ssh"
+# sshd jail from the journal: Debian 12 has no /var/log/auth.log (no rsyslog), fail2ban would not start there
+mkdir -p /etc/fail2ban/jail.d
+printf '[sshd]\nenabled = true\nbackend = systemd\n' > /etc/fail2ban/jail.d/domshchenkov.local
+systemctl enable fail2ban >/dev/null 2>&1 || true
+systemctl restart fail2ban >/dev/null 2>&1 || true
+if systemctl is-active --quiet fail2ban; then f2b="fail2ban защищает ssh"; else f2b="fail2ban НЕ запустился (systemctl status fail2ban)"; fi
+echo "  часовой пояс Europe/Moscow, автообновления безопасности; $f2b"
 
 say "Файрвол"
-ssh_ports="$( (sshd -T 2>/dev/null || true) | awk '$1=="port"{print $2}' | sort -u)"
-[ -n "$ssh_ports" ] || ssh_ports=22
-for p in $ssh_ports; do ufw allow "$p/tcp" >/dev/null; done
-ufw allow 80/tcp >/dev/null
-ufw allow 443/tcp >/dev/null
-ufw --force enable >/dev/null
-echo "  открыты: ssh ($ssh_ports), 80, 443. API и база снаружи недоступны"
+# Every port SSH may listen on, from all sources — a wrong guess here locks you out of the server:
+#   sshd -T (Port and ListenAddress host:port; needs /run/sshd), the sshd / systemd sockets actually listening
+#   (Ubuntu 24.04 starts ssh through ssh.socket), and the port of this very session.
+mkdir -p /run/sshd
+ssh_ports="$( {
+  (sshd -T 2>/dev/null || true) | awk '$1=="port"{print $2} $1=="listenaddress"{n=split($2,a,":"); print a[n]}'
+  (ss -Hltnp 2>/dev/null || true) | awk '/"sshd"/ {n=split($4,a,":"); print a[n]}'
+  (systemctl show -p Listen ssh.socket 2>/dev/null || true) | grep -oE ':[0-9]+ \(Stream' | tr -dc '0-9\n'
+  if [ -n "${SSH_CONNECTION:-}" ]; then echo "${SSH_CONNECTION##* }"; fi
+} | grep -E '^[0-9]+$' | sort -un | tr '\n' ' ' || true)"
+if [ -z "${ssh_ports// /}" ]; then
+  echo "  ВНИМАНИЕ: не удалось определить порт SSH — файрвол НЕ включаю, чтобы не потерять доступ к серверу."
+  echo "  Включите вручную: ufw allow <порт ssh>/tcp && ufw allow 80/tcp && ufw allow 443/tcp && ufw enable"
+else
+  for p in $ssh_ports; do ufw allow "$p/tcp" >/dev/null; done
+  ufw allow 80/tcp >/dev/null
+  ufw allow 443/tcp >/dev/null
+  ufw --force enable >/dev/null
+  echo "  открыты: ssh (${ssh_ports% }), 80, 443. API и база снаружи недоступны"
+fi
 
 say "Папки"
 install -d -m 755 "$APP_ROOT" "$APP_ROOT/releases" /var/www/domshchenkov "$ACME_ROOT"

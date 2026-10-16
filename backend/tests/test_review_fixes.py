@@ -164,3 +164,19 @@ def test_email_without_personal_data_when_switched_off(client, db, settings):
     msg = notify.email_message(db.get(Lead, lid), None, item.event, settings)
     body = msg.get_content()
     assert "Варвара" not in body and "111-00-10" not in body and "Мальтипу" in body
+
+
+def test_a_failed_schema_upgrade_puts_the_breed_views_back(db, monkeypatch):
+    """migrate drops the leads_* views before the upgrade; if the upgrade fails (or an older release meets a newer
+    schema: «Can't locate revision») the views must come back, or the admin panel's breed bases and the BI role
+    lose them while the old API keeps running."""
+    from alembic import command
+    from app import __main__ as cli
+
+    def boom(*a, **k):
+        raise RuntimeError("simulated: Can't locate revision identified by 'b0099'")
+    monkeypatch.setattr(command, "upgrade", boom)
+    with pytest.raises(RuntimeError):
+        cli.main(["migrate"])
+    names = {r[0] for r in db.execute(text("SELECT viewname FROM pg_views WHERE viewname LIKE 'leads\\_%'"))}
+    assert {"leads_all", "leads_general", "leads_maltipu", "leads_buldog"} <= names
