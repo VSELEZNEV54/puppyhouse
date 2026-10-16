@@ -182,8 +182,6 @@ def test_per_ip_limit_applies_to_an_ipv6_peer(admin_user, db, settings, sleeps):
     assert {r["ip"] for r in _audit(db, "login_failed")} == {"2001:db8:1:2::1"}
 
 
-@pytest.mark.xfail(strict=True, reason="BUG: login per-IP limit buckets the full IPv6 address, not its /64 "
-                                       "(security.rate_key is not used), so rotating addresses evades it")
 def test_per_ip_limit_groups_ipv6_by_64(admin_user, settings, sleeps):
     from app.main import app
     settings.login_per_login_15min = 100
@@ -334,8 +332,6 @@ def test_api_key_x_actor_goes_to_lead_history(client, db, make_lead):
     pytest.param("Мария".encode("utf-8"), id="utf8-bytes"),
     pytest.param(b"%D0%9C%D0%B0%D1%80%D0%B8%D1%8F", id="percent-encoded"),
 ])
-@pytest.mark.xfail(strict=True, reason="BUG: X-Actor is read as latin-1 and never decoded, so a Cyrillic manager "
-                                       "name reaches lead_history as mojibake / %-escapes")
 def test_api_key_x_actor_with_cyrillic_name(client, db, make_lead, raw):
     _, key = _service_key(db)
     lead = _lead(db, make_lead())
@@ -440,8 +436,6 @@ def test_audit_view_contact_and_export(client, db, admin_user, admin_h, make_lea
     assert "maltipu" in json.dumps(exports[0]["details"]["filters"])
 
 
-@pytest.mark.xfail(strict=True, reason="BUG: view_contact/export audit rows made through an API key record only the "
-                                       "service account, the X-Actor person is lost (merge/export/view use user.name)")
 def test_audit_through_api_key_names_the_person(client, db, make_lead):
     user, key = _service_key(db)
     cid = _lead(db, make_lead()).contact_id

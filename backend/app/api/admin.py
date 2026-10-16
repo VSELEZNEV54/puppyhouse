@@ -1,7 +1,8 @@
 """Admin API for the internal admin panel: /api/v1/admin/…
 
 Auth: `Authorization: Bearer <token>` — a login session (POST /auth/login) or a service API key
-(`python -m app create-api-key`). With an API key, `X-Actor: <name>` tells whose action it is.
+(`python -m app create-api-key`). With an API key, `X-Actor: <name>` tells whose action it is (percent-encoded
+UTF-8: encodeURIComponent('Мария')); it goes to the request history and the audit log.
 Lists: ?page=1&per_page=50 (≤ 200) → {items, total, page, per_page}; multi-value filters as status=new,in_progress;
 dates (created_from / created_to) are local dates in DSH_TIMEZONE (Europe/Moscow).
 Edits of a request need its `version` (body or If-Match) — 409 if someone changed it in between."""
@@ -200,13 +201,13 @@ def contacts(actor: CurrentActor, db: Db, q: Annotated[str | None, Query(max_len
 
 @router.get("/contacts/{contact_id}", response_model=sa.ContactDetail, tags=["admin: contacts"])
 def contact(contact_id: int, actor: CurrentActor, db: Db):
-    return admin_people.detail(db, contact_id, actor.user, actor.ip)
+    return admin_people.detail(db, contact_id, actor.user, actor.ip, actor.label)
 
 
 @router.patch("/contacts/{contact_id}", response_model=sa.ContactDetail, tags=["admin: contacts"])
 def patch_contact(contact_id: int, body: sa.ContactPatch, actor: CurrentActor, db: Db):
-    admin_people.patch(db, contact_id, body, actor.user)
-    return admin_people.detail(db, contact_id, actor.user, actor.ip)
+    admin_people.patch(db, contact_id, body, actor.user, actor.label)
+    return admin_people.detail(db, contact_id, actor.user, actor.ip, actor.label)
 
 
 @router.get("/contacts/{contact_id}/events", response_model=list[sa.EventRow], tags=["admin: contacts"])
@@ -221,7 +222,7 @@ def contact_events(contact_id: int, actor: CurrentActor, db: Db, before_id: int 
 def merge(contact_id: int, body: sa.MergeIn, actor: CurrentActor, db: Db):
     """Two records of one person (two phones): everything moves into `into_id`, the old phone becomes an alias."""
     c = admin_people.merge(db, contact_id, body.into_id, actor.user, actor.label)
-    return admin_people.detail(db, c.id, actor.user, actor.ip)
+    return admin_people.detail(db, c.id, actor.user, actor.ip, actor.label)
 
 
 @router.post("/contacts/{contact_id}/erase", tags=["admin: contacts"])
@@ -242,7 +243,7 @@ def list_reviews(actor: CurrentActor, db: Db, status: Annotated[list[str] | None
 @router.patch("/reviews/{review_id}", response_model=sa.ReviewRow, tags=["admin: reviews"])
 def patch_review(review_id: int, body: sa.ReviewPatch, actor: CurrentActor, db: Db):
     """Approve / reject / withdraw (the author asked to remove it: within 3 working days), fix the text."""
-    return admin_misc.patch_review(db, review_id, body, actor.user)
+    return admin_misc.patch_review(db, review_id, body, actor.user, actor.label)
 
 
 # ---------------------------------------------------------------- stats & export
@@ -257,7 +258,7 @@ def stats(actor: CurrentActor, db: Db, date_from: Annotated[dt.date | None, Quer
 @router.get("/export/leads.csv", tags=["admin: stats"], response_class=Response)
 def export(actor: AdminActor, db: Db, f: Filter):
     """CSV for Excel (UTF-8 BOM, «;»). Admin only; every export is written to the audit log."""
-    body, _ = admin_misc.export_csv(db, f, actor.user, actor.ip)
+    body, _ = admin_misc.export_csv(db, f, actor.user, actor.ip, actor.label)
     name = f"zayavki-{dt.date.today().isoformat()}.csv"
     return Response(body, media_type="text/csv; charset=utf-8",
                     headers={"Content-Disposition": f'attachment; filename="{name}"', "Cache-Control": "no-store"})

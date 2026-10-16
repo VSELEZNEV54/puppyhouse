@@ -3,7 +3,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from typing import Annotated
-from urllib.parse import urlsplit
+from urllib.parse import unquote, urlsplit
 
 from fastapi import Depends, Header, Request
 from sqlalchemy.orm import Session
@@ -15,6 +15,7 @@ from ..errors import ApiError
 from ..models import AdminToken, AdminUser
 from ..services import auth
 from ..services.leads import RequestCtx
+from ..services.sanitize import clean
 from ..services.security import client_ip
 
 Db = Annotated[Session, Depends(get_db)]
@@ -51,6 +52,20 @@ def public_json(request: Request) -> RequestCtx:
     return public_ctx(request, json_only=True)
 
 
+def decode_actor(raw: str | None) -> str | None:
+    """X-Actor carries the panel user's name as percent-encoded UTF-8 («%D0%9C%D0%B0%D1%80%D0%B8%D1%8F» = Мария),
+    because HTTP clients refuse raw non-ASCII header values. Raw UTF-8 bytes (decoded by the server as latin-1) are
+    accepted too."""
+    if not raw:
+        return None
+    s = unquote(raw.strip())
+    try:
+        s = s.encode("latin-1").decode("utf-8")
+    except (UnicodeEncodeError, UnicodeDecodeError):
+        pass
+    return clean(s, 60)
+
+
 @dataclass
 class Actor:
     user: AdminUser
@@ -69,8 +84,9 @@ def current_actor(request: Request, db: Db, authorization: Annotated[str | None,
     label = user.name
     if token.kind == "api_key":
         label = f"{token.label or user.name}"
-        if x_actor:
-            label = f"{x_actor.strip()[:60]} ({label})"
+        name = decode_actor(x_actor)
+        if name:
+            label = f"{name} ({label})"
     return Actor(user=user, token=token, label=label, ip=ip_of(request))
 
 

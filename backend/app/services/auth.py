@@ -16,7 +16,7 @@ from ..config import get_settings
 from ..enums import Role
 from ..errors import ApiError
 from ..models import AdminToken, AdminUser, AuditLog, RateLimit
-from .security import DUMMY_HASH, hash_password, new_token, token_digest, verify_password
+from .security import DUMMY_HASH, hash_password, new_token, rate_key, token_digest, verify_password
 
 UTC = dt.timezone.utc
 
@@ -46,7 +46,8 @@ def audit(db: Session, actor: AdminUser | None, action: str, target: str | None 
 def login(db: Session, login_name: str, password: str, ip: str | None) -> tuple[str, AdminUser, dt.datetime]:
     s = get_settings()
     key = login_name.strip().lower()[:100]
-    fl, fi = _failures(db, "login:" + key), _failures(db, "login-ip:" + (ip or "-"))
+    ipkey = rate_key(ip) or "-"  # IPv6 grouped by /64
+    fl, fi = _failures(db, "login:" + key), _failures(db, "login-ip:" + ipkey)
     if fl >= s.login_per_login_15min or fi >= s.login_per_ip_15min:
         audit(db, None, "login_blocked", target=key, ip=ip, actor_label=key)
         db.commit()
@@ -56,7 +57,7 @@ def login(db: Session, login_name: str, password: str, ip: str | None) -> tuple[
     ok = verify_password(password, user.password_hash if user and user.password_hash else DUMMY_HASH)
     if not (ok and user and user.is_active and not user.is_service):
         _bump(db, "login:" + key)
-        _bump(db, "login-ip:" + (ip or "-"))
+        _bump(db, "login-ip:" + ipkey)
         audit(db, user, "login_failed", target=key, ip=ip, actor_label=key)
         db.commit()
         raise ApiError(401, "bad_credentials", "Неверный логин или пароль")

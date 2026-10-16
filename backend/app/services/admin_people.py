@@ -62,14 +62,14 @@ def list_contacts(db: Session, q: str | None, blocked: bool | None, page: int, p
                                   page=page, per_page=per_page)
 
 
-def detail(db: Session, contact_id: int, user: AdminUser, ip: str | None) -> sa.ContactDetail:
+def detail(db: Session, contact_id: int, user: AdminUser, ip: str | None, label: str | None = None) -> sa.ContactDetail:
     c = get(db, contact_id)
     leads = db.scalars(select(Lead).where(Lead.contact_id == c.id).order_by(Lead.created_at.desc())).unique().all()
     t, o = _counts(db, [c.id])
     aliases = db.scalars(select(ContactAlias.phone).where(ContactAlias.contact_id == c.id)).all()
     consents = db.execute(select(Consent.version, Consent.given_at, Consent.lead_id, Consent.withdrawn_at)
                           .where(Consent.contact_id == c.id).order_by(Consent.given_at)).all()
-    audit(db, user, "view_contact", target=f"contact:{c.id}", ip=ip)
+    audit(db, user, "view_contact", target=f"contact:{c.id}", ip=ip, actor_label=label)
     db.commit()
     base = _row(c, t.get(c.id, 0), o.get(c.id, 0)).model_dump()
     return sa.ContactDetail(**base, leads=[to_row(l) for l in leads], aliases=list(aliases),
@@ -78,7 +78,7 @@ def detail(db: Session, contact_id: int, user: AdminUser, ip: str | None) -> sa.
                             links=contact_links(c.phone, c.preferred_channel, c.telegram_username))
 
 
-def patch(db: Session, contact_id: int, p: sa.ContactPatch, user: AdminUser) -> Contact:
+def patch(db: Session, contact_id: int, p: sa.ContactPatch, user: AdminUser, label: str | None = None) -> Contact:
     c = get(db, contact_id)
     for f in p.model_fields_set:
         v = getattr(p, f)
@@ -87,7 +87,7 @@ def patch(db: Session, contact_id: int, p: sa.ContactPatch, user: AdminUser) -> 
         if f == "telegram_username" and v:
             v = v.lstrip("@")
         setattr(c, f, v)
-    audit(db, user, "contact_edit", target=f"contact:{c.id}", fields=sorted(p.model_fields_set))
+    audit(db, user, "contact_edit", target=f"contact:{c.id}", actor_label=label, fields=sorted(p.model_fields_set))
     db.commit()
     db.refresh(c)
     return c
@@ -125,7 +125,7 @@ def merge(db: Session, contact_id: int, into_id: int, user: AdminUser, label: st
     db.delete(src)
     db.flush()
     db.add(ContactAlias(phone=old_phone, contact_id=dst.id))
-    audit(db, user, "merge", target=f"contact:{dst.id}", merged=src.id, leads=len(moved))
+    audit(db, user, "merge", target=f"contact:{dst.id}", actor_label=label, merged=src.id, leads=len(moved))
     db.commit()
     db.refresh(dst)
     return dst

@@ -31,7 +31,7 @@ def list_reviews(db: Session, status: list[str], page: int, per_page: int) -> sa
                                  per_page=per_page)
 
 
-def patch_review(db: Session, review_id: int, p: sa.ReviewPatch, user: AdminUser) -> Review:
+def patch_review(db: Session, review_id: int, p: sa.ReviewPatch, user: AdminUser, label: str | None = None) -> Review:
     r = db.get(Review, review_id)
     if r is None:
         raise ApiError(404, "not_found", "Отзыв не найден")
@@ -45,7 +45,7 @@ def patch_review(db: Session, review_id: int, p: sa.ReviewPatch, user: AdminUser
                 r.withdrawn_at = now
         elif v is not None or f in ("city", "moderator_note"):
             setattr(r, f, v)
-    audit(db, user, "review_edit", target=f"review:{r.id}", fields=sorted(p.model_fields_set))
+    audit(db, user, "review_edit", target=f"review:{r.id}", actor_label=label, fields=sorted(p.model_fields_set))
     db.commit()
     db.refresh(r)
     return r
@@ -136,7 +136,7 @@ def _cell(v) -> str:
     return "'" + s if s.startswith(_FORMULA) else s  # CSV formula injection guard (Excel)
 
 
-def export_csv(db: Session, f: LeadFilter, user: AdminUser, ip: str | None) -> tuple[bytes, int]:
+def export_csv(db: Session, f: LeadFilter, user: AdminUser, ip: str | None, label: str | None = None) -> tuple[bytes, int]:
     """UTF-8 with BOM, «;» separator, Moscow time, Russian headers — opens correctly in Russian Excel."""
     zone = tz()
     leads = db.scalars(apply_filter(select(Lead), f, user).order_by(Lead.created_at.desc()).limit(50_000)).unique().all()
@@ -155,7 +155,7 @@ def export_csv(db: Session, f: LeadFilter, user: AdminUser, ip: str | None) -> t
             l.assignee.name if l.assignee else "",
             l.next_contact_at.astimezone(zone).strftime("%d.%m.%Y %H:%M") if l.next_contact_at else "",
             LOST_REASON_LABELS.get(l.lost_reason, l.lost_reason or ""), l.sale_amount, l.parent_id, l.note)])
-    audit(db, user, "export", ip=ip, rows=len(leads), filters={k: str(v) for k, v in vars(f).items() if v})
+    audit(db, user, "export", ip=ip, actor_label=label, rows=len(leads), filters={k: str(v) for k, v in vars(f).items() if v})
     db.commit()
     return ("\ufeff" + buf.getvalue()).encode("utf-8"), len(leads)
 
