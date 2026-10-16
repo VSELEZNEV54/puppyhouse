@@ -10,6 +10,16 @@
   <title>{% block title %}{{ title }}{% endblock %}</title>
   <meta name="description" content="{% block description %}{{ description }}{% endblock %}">
   <meta name="theme-color" content="{{ site.theme_color }}">
+{% block canonical %}
+  {#- the production address of this page: the GitHub Pages preview and links with utm tags point search engines here #}
+  <link rel="canonical" href="https://{{ site.domain_ascii }}{{ page.url }}">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="{{ site.brand }}">
+  <meta property="og:locale" content="ru_RU">
+  <meta property="og:url" content="https://{{ site.domain_ascii }}{{ page.url }}">
+  <meta property="og:title" content="{{ self.title() }}">
+  <meta property="og:description" content="{{ self.description() }}">
+{% endblock %}
   {# API for the forms and the tracker (main.js): live mode only on an origin from data-origins (or a localStorage
       'dsh:api' dev override), otherwise the forms keep the prototype send. content is never rewritten by build.py. #}
   <meta name="dsh-api" content="{{ site.api.url }}" data-origins="{{ site.api.origins|join(' ') }}" data-consent="{{ data.consent.current.processing }}" data-consent-publish="{{ data.consent.current.distribution }}" data-consent-review="{{ data.consent.current.review }}">

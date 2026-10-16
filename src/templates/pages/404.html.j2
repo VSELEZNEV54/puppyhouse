@@ -1,0 +1,17 @@
+{#- «Страница не найдена» — nginx shows it for any missing URL (error_page 404 /404.html). Rendered by
+    tools/site_extras.py with ROOT-ABSOLUTE links (the page is served at any address, so relative links would break).
+    Not a route: it is not in the sitemap and has no canonical. A sold puppy's page disappears after a build with
+    --clean — the visitor lands here and sees the puppies that are available now. -#}
+{% extends "layouts/page.html.j2" %}
+
+{% block canonical %}{% endblock %}
+{% block head_extra %}
+  <meta name="robots" content="noindex">
+{% endblock %}
+
+{% block hero %}
+    {% call ui.page_hero('Такой страницы нет', lead='Возможно, щенок уже уехал домой или ссылка устарела. Посмотрите, кто ищет семью сейчас, или напишите нам — подберём похожего.', faces=true, eyebrow='Ошибка 404') %}
+      <a class="btn btn--ink btn--lg" href="/shchenki/">Каталог щенков</a>
+      <a class="btn btn--white btn--lg" href="/">На главную</a>
+    {% endcall %}
+{% endblock %}

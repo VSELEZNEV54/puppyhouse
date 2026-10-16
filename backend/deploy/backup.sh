@@ -7,6 +7,7 @@
 # Optional: an S3-compatible bucket of a Russian provider (Yandex Object Storage, Selectel, VK Cloud) via rclone.
 # A new copy is checked (non-empty, readable by pg_restore) BEFORE old ones are rotated; any failure exits non-zero.
 set -euo pipefail
+umask 077   # the dumps are encrypted, but nobody else needs to read them either
 : "${AGE_RECIPIENT:?set AGE_RECIPIENT (age public key)}"
 DIR="${BACKUP_DIR:-/var/backups/domshchenkov}"
 KEEP_DAYS="${KEEP_DAYS:-20}"

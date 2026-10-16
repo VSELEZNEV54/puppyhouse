@@ -73,34 +73,38 @@ python -m pytest -q                       # тесты создают свою �
 
 ## Продакшен
 
+Пошаговая инструкция для владельца — [`DEPLOY.md`](../DEPLOY.md) в корне репозитория. Коротко:
+
+```bash
+git clone -b <ветка> https://github.com/VSELEZNEV54/puppyhouse.git /opt/domshchenkov/src
+/opt/domshchenkov/src/backend/deploy/server-setup.sh --email you@example.ru   # один раз
+/opt/domshchenkov/src/backend/deploy/deploy.sh                               # каждая выкладка (или: dsh update)
+dsh app create-admin --login anna --name "Анна" --role admin
+```
+
 Сервер должен быть в России: это требование 152-ФЗ к хранению персональных данных граждан РФ. Подойдут Yandex Cloud,
 Selectel, Timeweb, VK Cloud и т. п.
 
-```bash
-sudo mkdir -p /etc/domshchenkov
-sudo cp backend/db.env.example  /etc/domshchenkov/db.env    # пароли БД — читает только docker compose
-sudo cp backend/.env.example    /etc/domshchenkov/api.env   # настройки приложения; заполнить оба, chmod 600
-cd backend
-docker compose --env-file /etc/domshchenkov/db.env up -d --build      # postgres, migrate, api, worker
-docker compose --env-file /etc/domshchenkov/db.env run --rm migrate python -m app create-admin --login anna --name "Анна" --role admin
-docker compose --env-file /etc/domshchenkov/db.env run --rm migrate python -m app create-api-key --name "Админ-панель"
-sudo certbot certonly --standalone -d xn--b1adduihee9g.xn--p1ai -d www.xn--b1adduihee9g.xn--p1ai   # сертификат — до nginx
-sudo cp deploy/nginx-snippets/dsh-proxy.conf /etc/nginx/snippets/ && sudo cp deploy/nginx.conf /etc/nginx/sites-available/domshchenkov
-sudo ln -s /etc/nginx/sites-available/domshchenkov /etc/nginx/sites-enabled/ && sudo nginx -t && sudo systemctl reload nginx
-deploy/deploy-site.sh /opt/domshchenkov /var/www/domshchenkov            # только собранный сайт, без исходников
-```
+| Скрипт | Что делает |
+|---|---|
+| `deploy/server-setup.sh` | один раз: Docker (+ зеркала Docker Hub, ротация логов), nginx, certbot (webroot), ufw, fail2ban, swap, секреты в `/etc/domshchenkov/{db,api,backup}.env`, ключ age для бэкапов, cron. Повторный запуск ничего не перезаписывает |
+| `deploy/deploy.sh` | из git-копии собирает релиз (`tools/release.sh`) и выкладывает: образ API с тегом версии, миграции, проверка `/health` (сломанный API → автоматический откат), сайт в `/var/www/domshchenkov`, nginx (`nginx -t`, иначе прежний конфиг), проверки через nginx. Отказывается при `[заглушках]` в согласиях и политике (`--allow-placeholders` — тестовый запуск) |
+| `deploy/dsh` | `/usr/local/bin/dsh`: `status`, `logs`, `app …` (CLI бэкенда), `restart`, `backup`, `update`, `rollback` |
+| `tools/release.sh` | релиз-папка и архив: собранный сайт (`site/` с 404.html, robots.txt, sitemap.xml) + `backend/` + `src/data` |
+| `tools/check_launch.py` | что ещё заглушка: обязательное по 152-ФЗ, контакты, контент |
 
 - `migrate` запускается при каждом деплое. Он применяет миграции, загружает новые версии текстов согласия и синхронизирует
-  каталог щенков из `src/data`. После обновления `puppies.json` пересоберите образ и перезапустите стек.
+  каталог щенков из `src/data`. После обновления `puppies.json` выложите новый релиз (`dsh update`).
   Если из `puppies.json` разом пропало больше половины щенков (так бывает при обрезанном файле, но и при смене помёта),
   каталог не трогается, API всё равно запускается, а `/api/v1/health` показывает проблему. Если всё верно, выполните:
-  `docker compose --env-file /etc/domshchenkov/db.env run --rm migrate python -m app sync-catalog --force`.
-- nginx: сначала получите сертификат (`certbot certonly --standalone -d …`), потом включайте `deploy/nginx.conf`.
+  `dsh app sync-catalog --force`.
+- nginx: `server-setup.sh` получает сертификат через временный HTTP-сервер (`certbot --webroot`), `deploy.sh`
+  включает `deploy/nginx.conf`. Продление идёт через `/.well-known/acme-challenge/` на порту 80.
 - API слушает только `127.0.0.1:8000`, база наружу не открыта. Схему меняет роль `dsh_owner`, приложение работает
   под `dsh_app` (только данные, без DDL). Пароль владельца лежит в `db.env` и в контейнер API не попадает.
-  Синхронизация каталога пересоздаёт представления, поэтому её запускают от владельца:
-  `docker compose --env-file /etc/domshchenkov/db.env run --rm migrate python -m app sync-catalog`.
-- Бэкапы: `deploy/backup.sh` по cron. Дамп проверяется (`pg_restore -l`), шифруется age, хранится в РФ 20 дней.
+  Синхронизация каталога пересоздаёт представления, поэтому её запускают от владельца: `dsh app sync-catalog`
+  (`dsh app` работает через сервис `migrate`).
+- Бэкапы: `deploy/backup.sh` по cron (`/etc/cron.d/domshchenkov`, 02:30 МСК; вручную — `dsh backup`). Дамп проверяется (`pg_restore -l`), шифруется age, хранится в РФ 20 дней.
   Старые копии удаляются только после успешной новой. Ошибка даёт ненулевой код, по нему cron может прислать оповещение.
 - Мониторинг: внешний пинг `GET /api/v1/health`. Он отвечает 503, если уведомления застряли дольше 10 минут или упали
   за сутки. Подробности — в `GET /api/v1/admin/health`.

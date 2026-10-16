@@ -11,7 +11,10 @@ x-app: &app
   build:
     context: ..
     dockerfile: backend/Dockerfile
-  image: domshchenkov-api:latest
+    args:
+      PYTHON_IMAGE: ${DSH_PYTHON_IMAGE:-python:3.13-slim}
+  # one tag per release (deploy.sh sets DSH_VERSION): the previous release's image stays for a rollback
+  image: domshchenkov-api:${DSH_VERSION:-latest}
   env_file:
     - ${DSH_APP_ENV_FILE:-/etc/domshchenkov/api.env}
   environment:
@@ -27,7 +30,7 @@ x-app: &app
 
 services:
   postgres:
-    image: postgres:16
+    image: ${DSH_POSTGRES_IMAGE:-postgres:16}
     environment:
       POSTGRES_DB: domshchenkov
       POSTGRES_USER: dsh_owner
@@ -36,7 +39,9 @@ services:
       DSH_READONLY_DB_PASSWORD: ${DSH_READONLY_DB_PASSWORD:-}
     volumes:
       - pgdata:/var/lib/postgresql/data
-      - ./deploy/initdb:/docker-entrypoint-initdb.d:ro
+      # deploy.sh copies initdb/ to a fixed folder: a path that changes with every release would recreate
+      # (restart) the database container on each deploy
+      - ${DSH_INITDB_DIR:-./deploy/initdb}:/docker-entrypoint-initdb.d:ro
     healthcheck:
       # over TCP: the temporary init-time server (unix socket only) must not count as ready
       test: ["CMD-SHELL", "pg_isready -h 127.0.0.1 -U dsh_owner -d domshchenkov"]

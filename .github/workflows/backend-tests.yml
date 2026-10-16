@@ -7,6 +7,7 @@ on:
       - src/data/*.json
       - src/templates/**
       - assets/js/**
+      - tools/**
       - .github/workflows/backend-tests.yml
   pull_request:
     paths:
@@ -14,6 +15,7 @@ on:
       - src/data/*.json
       - src/templates/**
       - assets/js/**
+      - tools/**
       - .github/workflows/backend-tests.yml
   workflow_dispatch:
 
@@ -71,3 +73,15 @@ jobs:
       - run: pip install "jinja2==3.1.*"
       - run: python tools/build.py
       - run: git diff --exit-code
+      - name: Server files (404, robots.txt, sitemap.xml) — the 404 page must use root-absolute links
+        run: |
+          python tools/site_extras.py /tmp/extras
+          grep -q 'Такой страницы нет' /tmp/extras/404.html
+          if grep -q 'href="\.\./' /tmp/extras/404.html; then echo "404.html has relative links"; exit 1; fi
+          grep -q '^Disallow: /admin/' /tmp/extras/robots.txt
+      - name: What is still a placeholder (report only)
+        run: python tools/check_launch.py
+      - name: A release packs (site + API + server scripts)
+        run: |
+          bash tools/release.sh --out /tmp/dist --no-tar
+          for f in backend/deploy/*.sh backend/deploy/dsh tools/release.sh; do bash -n "$f"; done

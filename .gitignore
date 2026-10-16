@@ -12,3 +12,6 @@ backend/.env.*
 !backend/.env.example
 .venv/
 .pytest_cache/
+
+# release packages (tools/release.sh)
+dist/
