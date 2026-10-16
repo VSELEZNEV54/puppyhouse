@@ -240,8 +240,6 @@ def test_contact_patch_rejects_unknown_fields_and_bad_values(client, manager_h, 
                    "notes": None}
 
 
-@pytest.mark.xfail(strict=True, reason="BUG: PATCH /admin/contacts/{id} with null for a NOT NULL field (name, "
-                                       "is_blocked) passes validation and crashes with IntegrityError (500)")
 @pytest.mark.parametrize("field", ["name", "is_blocked"])
 def test_contact_patch_null_for_a_required_field_is_a_validation_error(client, manager_h, make_lead, db, field):
     new_lead(make_lead, db, 9, name="Ольга")
@@ -666,8 +664,6 @@ def test_retention_housekeeping_keeps_pending_notifications_and_recent_records(c
     assert [r["action"] for r in sql(db, "SELECT action FROM audit_log")] == ["login10"]
 
 
-@pytest.mark.xfail(strict=True, reason="BUG: retention clears user_agent only where ip IS NOT NULL — a request saved "
-                                       "without a usable IP keeps its user agent forever")
 def test_retention_clears_the_user_agent_even_when_the_ip_is_unknown(db):
     """nginx (a trusted proxy) passed an X-Real-IP the app cannot parse: the request is saved without an IP."""
     from fastapi.testclient import TestClient
@@ -824,8 +820,6 @@ def test_a_new_breed_gets_its_own_base(db):
     assert view_ids(db, "leads_shpic") == []
 
 
-@pytest.mark.xfail(strict=True, reason="BUG: catalog.sync crashes (FK fk_leads_puppy_breed) when puppies.json moves a "
-                                       "puppy that has requests to another breed; the whole sync/migrate fails")
 def test_a_puppy_moved_to_another_breed_on_the_site_does_not_break_the_sync(client, make_lead, db):
     from app.services import catalog
     lid = new_lead(make_lead, db, 47, kind="puppy", puppy=PUP)

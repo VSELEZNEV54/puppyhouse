@@ -332,8 +332,9 @@ class Lead(Base):
 
     __table_args__ = (
         # a puppy always belongs to the lead's breed, so the lead sits in the right per-breed base
+        # ON UPDATE CASCADE: when puppies.json moves a puppy to another breed, its requests move with it
         ForeignKeyConstraint(["puppy_id", "breed_id"], ["puppies.id", "puppies.breed_id"], ondelete="RESTRICT",
-                             name="fk_leads_puppy_breed"),
+                             onupdate="CASCADE", name="fk_leads_puppy_breed"),
         CheckConstraint("puppy_id IS NULL OR breed_id IS NOT NULL", name="puppy_needs_breed"),
         CheckConstraint(check("kind", LeadKind), name="kind"),
         CheckConstraint(check("status", LeadStatus), name="status"),

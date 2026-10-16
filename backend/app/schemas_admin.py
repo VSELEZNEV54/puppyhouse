@@ -6,7 +6,7 @@ import decimal
 import uuid
 from typing import Annotated, Generic, TypeVar
 
-from pydantic import BaseModel, ConfigDict, Field, StringConstraints, field_validator
+from pydantic import BaseModel, ConfigDict, Field, StringConstraints, field_validator, model_validator
 
 from .enums import Channel, ErasureReason, LeadKind, LeadStatus, LostReason, Origin, ReviewStatus
 from .services import phone as phones
@@ -239,6 +239,13 @@ class ContactPatch(BaseModel):
     telegram_username: Annotated[str, StringConstraints(strip_whitespace=True, pattern=r"^@?[A-Za-z0-9_]{4,32}$")] | None = None
     notes: Annotated[str, StringConstraints(max_length=4000)] | None = None
     is_blocked: bool | None = None
+
+    @model_validator(mode="after")
+    def _required_not_null(self):
+        for f in ("name", "is_blocked"):  # may be omitted, but never cleared
+            if f in self.model_fields_set and getattr(self, f) is None:
+                raise ValueError(f"{f} cannot be null")
+        return self
 
 
 class MergeIn(BaseModel):

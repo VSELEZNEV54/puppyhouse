@@ -10,7 +10,7 @@ from __future__ import annotations
 
 import datetime as dt
 
-from sqlalchemy import and_, delete, exists, select, update
+from sqlalchemy import and_, delete, exists, or_, select, update
 from sqlalchemy.orm import Session
 
 from ..config import get_settings
@@ -47,10 +47,12 @@ def run(db: Session) -> dict:
 
     # 3. IP / user agent
     ip_cut = now - dt.timedelta(days=s.keep_ip_days)
-    out["lead_ips_cleared"] = db.execute(update(Lead).where(Lead.created_at < ip_cut, Lead.ip.is_not(None))
-                                         .values(ip=None, user_agent=None)).rowcount
-    out["review_ips_cleared"] = db.execute(update(Review).where(Review.created_at < ip_cut, Review.ip.is_not(None))
-                                           .values(ip=None, user_agent=None)).rowcount
+    out["lead_ips_cleared"] = db.execute(update(Lead).where(
+        Lead.created_at < ip_cut, or_(Lead.ip.is_not(None), Lead.user_agent.is_not(None)))
+        .values(ip=None, user_agent=None)).rowcount
+    out["review_ips_cleared"] = db.execute(update(Review).where(
+        Review.created_at < ip_cut, or_(Review.ip.is_not(None), Review.user_agent.is_not(None)))
+        .values(ip=None, user_agent=None)).rowcount
 
     # 4. anonymous activity
     ev_cut = now - dt.timedelta(days=s.keep_events_days)
