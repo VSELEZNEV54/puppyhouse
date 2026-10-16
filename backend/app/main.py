@@ -6,14 +6,19 @@ import time
 
 from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse, Response
+from fastapi.staticfiles import StaticFiles
 from starlette.middleware.base import BaseHTTPMiddleware
 
 from . import errors
 from .api import admin, public
-from .config import get_settings
+from .config import BACKEND_DIR, get_settings
 
 log = logging.getLogger("dsh.http")
 API = "/api/v1"
+ADMIN_UI = "/admin"  # the panel (backend/admin_ui): static files on the same origin, data from API + "/admin"
+# Only own files: no inline scripts or styles, no third-party hosts; the favicon is a data: URI.
+ADMIN_CSP = ("default-src 'none'; script-src 'self'; style-src 'self'; font-src 'self'; img-src 'self' data:; "
+             "connect-src 'self'; base-uri 'none'; form-action 'self'; frame-ancestors 'none'")
 
 
 class Guard(BaseHTTPMiddleware):
@@ -50,7 +55,11 @@ class Guard(BaseHTTPMiddleware):
         resp.headers.setdefault("X-Content-Type-Options", "nosniff")
         resp.headers.setdefault("Referrer-Policy", "no-referrer")
         resp.headers.setdefault("Cache-Control", "no-store")
-        if not path.startswith(API + "/docs"):
+        if path == ADMIN_UI or path.startswith(ADMIN_UI + "/"):
+            resp.headers["Content-Security-Policy"] = ADMIN_CSP
+            resp.headers["X-Robots-Tag"] = "noindex, nofollow"
+            resp.headers["X-Frame-Options"] = "DENY"
+        elif not path.startswith(API + "/docs"):
             resp.headers.setdefault("Content-Security-Policy", "default-src 'none'; frame-ancestors 'none'")
         log.info("%s %s %s %.0fms", request.method, path, resp.status_code, (time.perf_counter() - t0) * 1000)
         return resp
@@ -75,6 +84,7 @@ def create_app() -> FastAPI:
     app.add_middleware(Guard)
     app.include_router(public.router, prefix=API)
     app.include_router(admin.router, prefix=API)
+    app.mount(ADMIN_UI, StaticFiles(directory=BACKEND_DIR / "admin_ui", html=True), name="admin-ui")
     _document_public_bodies(app)
     return app
 
