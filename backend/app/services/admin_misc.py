@@ -119,8 +119,8 @@ def stats(db: Session, date_from: dt.date | None, date_to: dt.date | None, breed
                    db.execute(select(L.source, func.count()).select_from(base).group_by(L.source)
                               .order_by(func.count().desc()).limit(20)).all()],
         by_day=[{"date": d.isoformat(), "count": n} for d, n in by_day],
-        response={"median_minutes": round(resp[0], 1) if resp[0] is not None else None,
-                  "p90_minutes": round(resp[1], 1) if resp[1] is not None else None,
+        response={"median_minutes": round(float(resp[0]), 1) if resp[0] is not None else None,
+                  "p90_minutes": round(float(resp[1]), 1) if resp[1] is not None else None,
                   "without_response": resp[2]},
         visits={"sessions": sessions, "visitors": visitors,
                 "conversion": round(totals["leads"] / sessions, 4) if sessions else None},

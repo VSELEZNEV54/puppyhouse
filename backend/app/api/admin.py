@@ -164,7 +164,7 @@ def breeds(actor: CurrentActor, db: Db):
         select(key, func.count(),
                func.count().filter(Lead.status.in_(open_v)),
                func.count().filter(Lead.status == LeadStatus.new.value),
-               func.count().filter(Lead.status.in_(open_v), Lead.next_contact_at < now))
+               func.count().filter(admin_leads.overdue_condition(now)))
         .select_from(Lead).outerjoin(Breed, Breed.id == Lead.breed_id).where(Lead.parent_id.is_(None))
         .group_by(key)).all()
     by = {k: {"total": t, "open": o, "new": n, "overdue": od} for k, t, o, n, od in rows}

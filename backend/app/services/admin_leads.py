@@ -6,7 +6,7 @@ import datetime as dt
 import zoneinfo
 from dataclasses import dataclass, field
 
-from sqlalchemy import Select, and_, func, or_, select, update
+from sqlalchemy import Select, and_, case, func, or_, select, update
 from sqlalchemy.orm import Session, aliased
 
 from ..config import get_settings
@@ -57,6 +57,17 @@ class LeadFilter:
     contact_id: int | None = None
 
 
+REPLY_SLA = dt.timedelta(minutes=15)  # the site promises a reply within 15 minutes
+
+
+def overdue_condition(now: dt.datetime):
+    """Open request whose call-back time has passed, or a new one nobody answered within the promised 15 minutes."""
+    return and_(Lead.status.in_([x.value for x in OPEN_STATUSES]),
+                or_(Lead.next_contact_at < now,
+                    and_(Lead.status == LeadStatus.new.value, Lead.created_at < now - REPLY_SLA)),
+                Lead.parent_id.is_(None))
+
+
 def apply_filter(q: Select, f: LeadFilter, me: AdminUser | None) -> Select:
     conds = []
     if f.breed:
@@ -87,11 +98,7 @@ def apply_filter(q: Select, f: LeadFilter, me: AdminUser | None) -> Select:
         conds.append(Lead.assignee_id == int(f.assignee))
     now = dt.datetime.now(UTC)
     if f.overdue:
-        sla = now - dt.timedelta(minutes=15)  # the site promises a reply within 15 minutes
-        conds.append(and_(Lead.status.in_([x.value for x in OPEN_STATUSES]),
-                          or_(Lead.next_contact_at < now,
-                              and_(Lead.status == LeadStatus.new.value, Lead.created_at < sla)),
-                          Lead.parent_id.is_(None)))
+        conds.append(overdue_condition(now))
     if f.due_today:
         today = dt.datetime.now(tz()).date()
         conds.append(and_(Lead.next_contact_at >= day_start(today),
@@ -296,12 +303,14 @@ def patch(db: Session, lead_id: int, p: sa.LeadPatch, version: int | None, user:
         lead.puppy_id = new_pup.id if new_pup else None
         if new_pup is not None:
             lead.puppy_slug, lead.puppy_name = new_pup.slug, new_pup.name
-        elif "puppy" in fields:
+        else:  # no puppy any more (cleared, or another breed): out of the old puppy's waiting list too
             lead.puppy_slug = lead.puppy_name = None
 
     if "colour" in fields:
         if p.colour and not COLOUR_SLUG.match(p.colour):
             raise ApiError(422, "validation", "Окрас — латинский код из каталога", {"colour": "Например, kremovyj"})
+        if (p.colour or None) != lead.colour:
+            _hist(db, lead.id, HistoryAction.edit, user, label, lead.colour or "—", p.colour or "—", comment="окрас")
         lead.colour = p.colour or None
 
     if "status" in fields and p.status and p.status.value != lead.status:
@@ -314,15 +323,21 @@ def patch(db: Session, lead_id: int, p: sa.LeadPatch, version: int | None, user:
         _hist(db, lead.id, HistoryAction.status, user, label, lead.status, st.value)
         lead.status, lead.status_changed_at = st.value, now
         lead.closed_at = now if st in CLOSED_STATUSES else None
-        if st == LeadStatus.spam:
-            lead.spam_reason = lead.spam_reason or "manual"
-        elif st != LeadStatus.lost:
+        lead.spam_reason = (lead.spam_reason or "manual") if st == LeadStatus.spam else None
+        if st != LeadStatus.lost:
             lead.lost_reason = None
     if "lost_reason" in fields:
-        lead.lost_reason = p.lost_reason.value if p.lost_reason else None
-        if lead.lost_reason and lead.status != LeadStatus.lost.value:
+        new_reason = p.lost_reason.value if p.lost_reason else None
+        if new_reason and lead.status != LeadStatus.lost.value:
             raise ApiError(422, "validation", "Причина отказа — только для статуса «Отказ»", {"lost_reason": "—"})
-    if "sale_amount" in fields:
+        if new_reason != lead.lost_reason:
+            _hist(db, lead.id, HistoryAction.edit, user, label, lead.lost_reason or "—", new_reason or "—",
+                  comment="причина отказа")
+        lead.lost_reason = new_reason
+    if "sale_amount" in fields and p.sale_amount != lead.sale_amount:
+        _hist(db, lead.id, HistoryAction.edit, user, label,
+              "—" if lead.sale_amount is None else str(lead.sale_amount),
+              "—" if p.sale_amount is None else str(p.sale_amount), comment="сумма продажи")
         lead.sale_amount = p.sale_amount
     if "assignee_id" in fields and p.assignee_id != lead.assignee_id:
         new_user = None
@@ -353,11 +368,13 @@ def patch(db: Session, lead_id: int, p: sa.LeadPatch, version: int | None, user:
 def take(db: Session, lead_id: int, user: AdminUser, label: str) -> Lead:
     """Assign to me only if nobody has it (atomic) — two managers pressing «Взять» at once get one winner."""
     now = dt.datetime.now(UTC)
+    is_new = Lead.status == LeadStatus.new.value
+    old_status = db.scalar(select(Lead.status).where(Lead.id == lead_id))
     row = db.execute(update(Lead).where(Lead.id == lead_id, Lead.assignee_id.is_(None), Lead.anonymised_at.is_(None))
                      .values(assignee_id=user.id, version=Lead.version + 1, last_activity_at=now,
                              first_response_at=func.coalesce(Lead.first_response_at, now),
-                             status=func.coalesce(
-                                 func.nullif(Lead.status, LeadStatus.new.value), LeadStatus.in_progress.value))
+                             status=case((is_new, LeadStatus.in_progress.value), else_=Lead.status),
+                             status_changed_at=case((is_new, now), else_=Lead.status_changed_at))
                      .returning(Lead.id, Lead.status)).first()
     if row is None:
         db.rollback()
@@ -365,6 +382,8 @@ def take(db: Session, lead_id: int, user: AdminUser, label: str) -> Lead:
         raise ApiError(409, "already_taken", "Заявку уже взял другой менеджер",
                        extra={"assignee": lead.assignee.name if lead.assignee else None})
     _hist(db, lead_id, HistoryAction.assignee, user, label, "—", user.name)
+    if old_status == LeadStatus.new.value and row[1] != old_status:
+        _hist(db, lead_id, HistoryAction.status, user, label, old_status, row[1])
     db.flush()
     lead = get_lead(db, lead_id)
     notify.enqueue_lead(db, lead, "lead.updated", channels=("webhook",))

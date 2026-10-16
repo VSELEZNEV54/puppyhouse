@@ -26,7 +26,7 @@ from sqlalchemy.orm import Session
 from ..config import get_settings
 from ..enums import OPEN_STATUSES, Channel, HistoryAction, LeadKind, LeadStatus, Origin, SpamReason
 from ..errors import ApiError
-from ..models import Breed, Contact, ContactAlias, Lead, LeadHistory, Puppy
+from ..models import AdminUser, Breed, Contact, ContactAlias, Lead, LeadHistory, Puppy
 from . import attribution, catalog, consent, notify, sanitize, tracking
 from .security import same_client
 
@@ -248,6 +248,10 @@ def create_from_site(db: Session, data, ctx: RequestCtx) -> Created:
 def create_manual(db: Session, data, actor_id: int, actor_label: str) -> Lead:
     """A request a manager took by phone / in a messenger. No consent row: answering a request the person made
     needs no consent (ст. 6 ч. 1 п. 5 152-ФЗ)."""
+    if data.assignee_id is not None:
+        who = db.get(AdminUser, data.assignee_id)
+        if who is None or not who.is_active or who.is_service:
+            raise ApiError(422, "validation", "Нет такого менеджера", {"assignee_id": "Неизвестный менеджер"})
     breed, pup = resolve_catalog(db, data.breed, data.puppy)
     contact_id, created = upsert_contact(db, data.phone, data.name, data.channel)
     now = dt.datetime.now(UTC)
