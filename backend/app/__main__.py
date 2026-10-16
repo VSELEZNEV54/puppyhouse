@@ -63,12 +63,18 @@ def cmd_migrate(args) -> int:
             conn.rollback()
             conn.execute(text("SELECT pg_advisory_unlock(:k)"), {"k": LOCK_ID})
             conn.commit()
-    with session_scope() as db:
-        print("consent:", consent.sync(db))
-        if args.no_catalog:
-            print("views:", views.rebuild(db))
-        else:
-            print("catalog:", catalog.sync(db, force=args.force))
+    try:
+        with session_scope() as db:
+            print("consent:", consent.sync(db))
+            if args.no_catalog:
+                print("views:", views.rebuild(db))
+            else:
+                print("catalog:", catalog.sync(db, force=args.force))
+    except Exception:
+        # the catalog step failed (its transaction rolled back): never leave the database without the views
+        with session_scope() as db:
+            views.rebuild(db)
+        raise
     return 0
 
 

@@ -2,7 +2,8 @@
 # Runs once, when the postgres volume is created. Roles:
 #   dsh_owner     — owns the schema, used only by `migrate` (DDL)
 #   dsh_app       — the API and the worker: read/write data, no DDL
-#   dsh_readonly  — optional, for the admin panel / BI reading the per-breed views directly
+#   dsh_readonly  — optional, for the admin panel / BI: SELECT on the leads_* views ONLY (granted by
+#                   `python -m app migrate` / `sync-catalog` when the views are rebuilt) — never on admin_users etc.
 set -eu
 psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" --dbname "$POSTGRES_DB" <<SQL
 CREATE ROLE dsh_app LOGIN PASSWORD '${DSH_APP_DB_PASSWORD}';
@@ -19,6 +20,5 @@ psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" --dbname "$POSTGRES_DB" <<SQ
 CREATE ROLE dsh_readonly LOGIN PASSWORD '${DSH_READONLY_DB_PASSWORD}';
 GRANT CONNECT ON DATABASE ${POSTGRES_DB} TO dsh_readonly;
 GRANT USAGE ON SCHEMA public TO dsh_readonly;
-ALTER DEFAULT PRIVILEGES FOR ROLE ${POSTGRES_USER} IN SCHEMA public GRANT SELECT ON TABLES TO dsh_readonly;
 SQL
 fi

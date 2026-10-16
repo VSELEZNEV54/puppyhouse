@@ -147,17 +147,34 @@ def test_repeated_failures_per_login_are_refused_with_429(client, db, admin_user
     settings.login_per_ip_15min = 100
     for variant in ("anna", "ANNA", "Anna"):   # case variants share one bucket
         assert _login(client, variant, "неверный-пароль-123").status_code == 401
-    assert sleeps == [0.0, 0.5, 1.0]           # growing delay (per-login + per-IP failures × 0.25 s)
+    # growing delay: (this client's failures for the login + the client's failures) × 0.25 s
+    # + the login's failures from everywhere × 0.05 s
+    assert sleeps == [0.0, 0.55, 1.1]
 
-    blocked = _login(client, "anna", ADMIN_PW)  # even the right password is refused for a while
+    blocked = _login(client, "anna", ADMIN_PW)  # from this client even the right password is refused for a while
     assert blocked.status_code == 429
     assert blocked.json()["error"]["code"] == "rate_limited"
-    assert len(sleeps) == 3                    # refused before any password check
 
     # other accounts are not locked out by attacks on anna
     assert _login(client, "oleg", MANAGER_PW).status_code == 200
     blocked_rows = _audit(db, "login_blocked")
     assert [(r["target"], r["ip"]) for r in blocked_rows] == [("anna", PEER_IP)]
+
+
+def test_failures_from_another_client_do_not_lock_the_manager_out(db, admin_user, settings, sleeps):
+    """An attacker who knows the login must not be able to keep the real manager out by failing on purpose."""
+    from app.main import app
+    from fastapi.testclient import TestClient
+    settings.login_per_login_15min = 3
+    settings.login_per_ip_15min = 100
+    with TestClient(app, client=("198.51.100.66", 1)) as attacker:
+        for _ in range(5):
+            assert attacker.post("/api/v1/admin/auth/login",
+                                 json={"login": "anna", "password": "неверный-пароль-123"}).status_code in (401, 429)
+        assert attacker.post("/api/v1/admin/auth/login",
+                             json={"login": "anna", "password": ADMIN_PW}).status_code == 429
+    with TestClient(app, client=("203.0.113.200", 1)) as anna:
+        assert anna.post("/api/v1/admin/auth/login", json={"login": "anna", "password": ADMIN_PW}).status_code == 200
 
 
 def test_per_ip_limit_spans_logins_and_ignores_spoofed_x_real_ip(client, admin_user, settings, sleeps):

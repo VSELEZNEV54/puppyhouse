@@ -4,9 +4,10 @@ from __future__ import annotations
 import datetime as dt
 
 from sqlalchemy import delete, func, or_, select, update
+from sqlalchemy.dialects.postgresql import insert
 from sqlalchemy.orm import Session
 
-from ..enums import OPEN_STATUSES, HistoryAction
+from ..enums import OPEN_STATUSES, HistoryAction, LeadStatus
 from ..errors import ApiError
 from ..models import (AdminUser, Consent, Contact, ContactAlias, ErasureLog, Lead, LeadHistory, Outbox, SiteEvent,
                       Visit, Visitor)
@@ -14,6 +15,7 @@ from .. import schemas_admin as sa
 from . import phone as phones
 from .admin_leads import _like, contact_links, to_row
 from .auth import audit
+from .leads import lock_phone
 
 UTC = dt.timezone.utc
 
@@ -108,7 +110,8 @@ def merge(db: Session, contact_id: int, into_id: int, user: AdminUser, label: st
     if contact_id == into_id:
         raise ApiError(422, "validation", "Нельзя склеить контакт сам с собой", {"into_id": "Другой контакт"})
     src, dst = get(db, contact_id), get(db, into_id)
-    db.execute(select(Contact.id).where(Contact.id.in_([src.id, dst.id])).with_for_update())
+    lock_phone(db, src.phone)  # a request from the merged number waits and then finds the alias
+    db.execute(select(Contact.id).where(Contact.id.in_([src.id, dst.id])).order_by(Contact.id).with_for_update())
     moved = db.execute(update(Lead).where(Lead.contact_id == src.id).values(contact_id=dst.id)
                        .returning(Lead.id)).scalars().all()
     db.execute(update(Consent).where(Consent.contact_id == src.id).values(contact_id=dst.id))
@@ -122,22 +125,39 @@ def merge(db: Session, contact_id: int, into_id: int, user: AdminUser, label: st
     if src.notes:
         dst.notes = ((dst.notes + "\n\n") if dst.notes else "") + f"[из контакта {src.id}] {src.notes}"
     dst.telegram_username = dst.telegram_username or src.telegram_username
+    dst.preferred_channel = dst.preferred_channel or src.preferred_channel
+    dst.is_blocked = dst.is_blocked or src.is_blocked  # a blocked number stays blocked behind the alias
     db.delete(src)
     db.flush()
-    db.add(ContactAlias(phone=old_phone, contact_id=dst.id))
+    db.execute(insert(ContactAlias).values(phone=old_phone, contact_id=dst.id)
+               .on_conflict_do_update(index_elements=[ContactAlias.phone], set_={"contact_id": dst.id}))
     audit(db, user, "merge", target=f"contact:{dst.id}", actor_label=label, merged=src.id, leads=len(moved))
     db.commit()
     db.refresh(dst)
     return dst
 
 
-def erase(db: Session, contact_id: int, reason: str, subject: str, user: AdminUser | None, label: str) -> dict:
+def erase(db: Session, contact_id: int, reason: str, subject: str, user: AdminUser | None, label: str,
+          stale_before: dt.datetime | None = None) -> dict | None:
     """Destroy the person's data (withdrawal of consent, a request, end of retention):
     - requests stay in the statistics without personal data (name, phone, note, IP, pages, comments are cleared);
     - the contact, its aliases and consents, the linked browsers with their visits and events, pending
       notifications are deleted;
-    - an erasure record (акт об уничтожении ПД) is written and kept for 3 years."""
+    - open requests are closed as «Отказ» (nobody can work them any more);
+    - an erasure record (акт об уничтожении ПД) is written and kept for 3 years.
+    stale_before (retention): erase only if the person is still inactive since then and has no open request —
+    re-checked under the same locks a new request takes; returns None when skipped."""
     c = get(db, contact_id)
+    lock_phone(db, c.phone)
+    c = db.scalars(select(Contact).where(Contact.id == contact_id).with_for_update()).first()
+    if c is None:
+        raise ApiError(404, "not_found", "Контакт не найден")
+    if stale_before is not None:
+        has_open = db.scalar(select(func.count()).select_from(Lead).where(
+            Lead.contact_id == c.id, Lead.status.in_([x.value for x in OPEN_STATUSES]))) or 0
+        if c.last_seen_at >= stale_before or has_open:
+            db.rollback()
+            return None
     now = dt.datetime.now(UTC)
     lead_ids = db.scalars(select(Lead.id).where(Lead.contact_id == c.id)).all()
     visitor_ids = [v for v in db.scalars(select(Lead.visitor_id).where(Lead.contact_id == c.id,
@@ -149,6 +169,16 @@ def erase(db: Session, contact_id: int, reason: str, subject: str, user: AdminUs
     db.execute(update(LeadHistory).where(LeadHistory.lead_id.in_(lead_ids), LeadHistory.action.in_(["merged"]))
                .values(old_value=None, new_value=None))
     counts["notifications_deleted"] = db.execute(delete(Outbox).where(Outbox.lead_id.in_(lead_ids))).rowcount
+    open_rows = db.execute(select(Lead.id, Lead.status).where(
+        Lead.id.in_(lead_ids), Lead.status.in_([x.value for x in OPEN_STATUSES]))).all()
+    open_ids = [lid for lid, _ in open_rows]
+    for lid, old in open_rows:  # no comment text: the reason is in erasure_log
+        db.add(LeadHistory(lead_id=lid, action=HistoryAction.status.value, actor_id=user.id if user else None,
+                           actor_label=label[:100], old_value=old, new_value=LeadStatus.lost.value))
+    db.execute(update(Lead).where(Lead.id.in_(open_ids)).values(
+        status=LeadStatus.lost.value, lost_reason="other", closed_at=now, status_changed_at=now,
+        next_contact_at=None))
+    counts["open_requests_closed"] = len(open_ids)
     db.execute(update(Lead).where(Lead.id.in_(lead_ids)).values(
         contact_id=None, name=None, phone=None, note=None, form_title=None, details={}, ip=None, user_agent=None,
         referrer_host=None, page_title=None, visitor_id=None, session_id=None, utm=None, idempotency_key=None,

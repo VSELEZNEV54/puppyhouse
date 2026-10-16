@@ -428,8 +428,10 @@ def test_erase_destroys_the_persons_data_and_keeps_the_requests_anonymous(client
     counts = r.json()["counts"]
     assert r.json()["erased"] is True
     assert counts == {"leads_anonymised": 4, "comments_cleared": comments, "notifications_deleted": outbox,
+                      "open_requests_closed": counts["open_requests_closed"],
                       "consents_deleted": 4, "aliases_deleted": 1, "events_deleted": 3, "visits_deleted": 1,
                       "browsers_deleted": 2, "contacts_deleted": 1}
+    assert counts["open_requests_closed"] >= 1
 
     # the requests stay (statistics), without anything that identifies the person
     rows = sql(db, "SELECT * FROM leads WHERE id = ANY(:ids) ORDER BY id", ids=mine)
@@ -495,7 +497,13 @@ def test_erased_requests_still_count_in_the_breed_bases_and_stats(client, admin_
     assert (by_key["maltipu"], by_key["pudel"], by_key["kolli"], by_key["buldog"]) == (1, 1, 1, 1)
     assert before[1]["leads"] == 4
     assert erase(client, admin_h, s["p"]).status_code == 200
-    assert snapshot() == before
+    after = snapshot()
+    # every request is still counted per breed, kind and in the totals; the open ones were closed as «Отказ»
+    assert {b["key"]: b["total"] for b in after[0]} == {b["key"]: b["total"] for b in before[0]}
+    statuses = [r["status"] for r in sql(db, "SELECT status FROM leads WHERE id = ANY(:ids)", ids=s["leads"])]
+    assert "new" not in statuses and "in_progress" not in statuses
+    assert after[1]["leads"] == before[1]["leads"] and after[2] == before[2] and after[3] == before[3]
+    assert sum(x["count"] for x in after[5]) == sum(x["count"] for x in before[5])
     maltipu = client.get(f"{A}/leads", params={"breed": "maltipu"}, headers=admin_h).json()
     assert [x["id"] for x in maltipu["items"]] == [s["leads"][0]] and maltipu["items"][0]["name"] is None
 
@@ -515,8 +523,10 @@ def test_an_anonymised_request_cannot_be_edited_commented_or_taken(client, admin
     assert client.post(f"{A}/leads/{lid}/comments", json={"text": "Новый номер: +7 999 000-00-00"},
                        headers=admin_h).status_code == 409
     assert client.post(f"{A}/leads/{lid}/take", headers=admin_h).status_code == 409
-    row = one(db, "SELECT status, assignee_id, version FROM leads WHERE id = :i", i=lid)
-    assert (row["status"], row["assignee_id"], row["version"]) == ("new", None, d["version"])
+    row = one(db, "SELECT status, lost_reason, closed_at, assignee_id, version FROM leads WHERE id = :i", i=lid)
+    # closed by the erasure (nobody can work it any more) and not touched afterwards
+    assert (row["status"], row["lost_reason"], row["assignee_id"], row["version"]) == ("lost", "other", None, d["version"])
+    assert row["closed_at"] is not None
     assert count(db, "lead_history", "lead_id = :i", i=lid) == hist
 
 

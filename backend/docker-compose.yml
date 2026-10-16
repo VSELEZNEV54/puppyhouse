@@ -1,6 +1,10 @@
-# домщенков.рф backend. Run from backend/:  docker compose --env-file /etc/domshchenkov/api.env up -d --build
-# Services: postgres · migrate (one-shot, every deploy) · api · worker (notifications + nightly purge).
-# Nothing is published to the outside: nginx on the host proxies /api/ to 127.0.0.1:8000.
+# домщенков.рф backend. Run from backend/:
+#   docker compose --env-file /etc/domshchenkov/db.env up -d --build
+# Two secret files, both outside the repo (chmod 600):
+#   /etc/domshchenkov/db.env  — DB passwords; read ONLY by compose for ${…} below (never loaded into api / worker)
+#   /etc/domshchenkov/api.env — application settings (notifications, CORS, retention); loaded into api / worker
+# Services: postgres · migrate (one-shot, every deploy, schema owner) · api · worker (notifications + nightly purge),
+# api and worker connect as dsh_app (data only). Nothing is published outside: host nginx → 127.0.0.1:8000.
 name: domshchenkov
 
 x-app: &app
@@ -9,7 +13,7 @@ x-app: &app
     dockerfile: backend/Dockerfile
   image: domshchenkov-api:latest
   env_file:
-    - ${DSH_ENV_FILE:-/etc/domshchenkov/api.env}
+    - ${DSH_APP_ENV_FILE:-/etc/domshchenkov/api.env}
   environment:
     DSH_ENV: ${DSH_ENV:-prod}
     DSH_DATABASE_URL: postgresql+psycopg://dsh_app:${DSH_APP_DB_PASSWORD:?set DSH_APP_DB_PASSWORD}@postgres:5432/domshchenkov

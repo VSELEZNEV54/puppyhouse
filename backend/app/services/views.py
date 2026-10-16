@@ -84,4 +84,8 @@ def rebuild(conn: Connection | Session) -> list[str]:
         _exec(conn, f"CREATE VIEW {name} AS SELECT {COLUMNS}\n"
                     f"WHERE l.breed_id = (SELECT id FROM breeds WHERE key = '{key}')")
         names.append(name)
+    # the optional read-only role (BI, the panel's own database tools) sees these views and nothing else
+    conn.execute(text(
+        "DO $$ BEGIN IF EXISTS (SELECT 1 FROM pg_roles WHERE rolname = 'dsh_readonly') THEN "
+        + " ".join(f"GRANT SELECT ON {n} TO dsh_readonly;" for n in names) + " END IF; END $$"))
     return names

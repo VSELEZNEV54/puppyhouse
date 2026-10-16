@@ -65,9 +65,16 @@ def request_hash(payload: dict) -> str:
     return hashlib.sha256(canon.encode()).hexdigest()
 
 
+def lock_phone(db: Session, phone: str | None) -> None:
+    """Transaction-level lock on one phone number (requests, merges and erasures of the same person serialise)."""
+    if phone:
+        db.execute(text("SELECT pg_advisory_xact_lock(hashtext(:k))"), {"k": "phone:" + phone})
+
+
 def upsert_contact(db: Session, phone: str, name: str, channel: str | None) -> tuple[int, bool]:
     """(contact id, created?) — atomic; an alias phone of a merged contact resolves to the surviving contact.
     A form never renames an existing contact (anyone who knows a number could otherwise rename that person)."""
+    lock_phone(db, phone)  # a merge or an erasure of this number cannot interleave with this request
     alias = db.scalar(select(ContactAlias.contact_id).where(ContactAlias.phone == phone))
     if alias:
         db.execute(update(Contact).where(Contact.id == alias)
@@ -108,7 +115,8 @@ def find_open_parent(db: Session, contact_id: int, breed_id: int | None, before:
                             Lead.created_at >= before - dt.timedelta(days=s.repeat_window_days))
          .order_by(Lead.created_at.desc()).limit(1))
     q = q.where(Lead.breed_id.is_(None) if breed_id is None else Lead.breed_id == breed_id)
-    return db.scalars(q).first()
+    # FOR UPDATE: a parent a manager is closing right now is re-checked after their commit and skipped
+    return db.scalars(q.with_for_update(of=Lead)).first()
 
 
 def _count(db: Session, *where) -> int:

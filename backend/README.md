@@ -77,11 +77,13 @@ python -m pytest -q                       # тесты создают свою �
 Selectel, Timeweb, VK Cloud и т. п.
 
 ```bash
-sudo mkdir -p /etc/domshchenkov && sudo cp backend/.env.example /etc/domshchenkov/api.env   # заполнить, chmod 600
+sudo mkdir -p /etc/domshchenkov
+sudo cp backend/db.env.example  /etc/domshchenkov/db.env    # пароли БД — читает только docker compose
+sudo cp backend/.env.example    /etc/domshchenkov/api.env   # настройки приложения; заполнить оба, chmod 600
 cd backend
-docker compose --env-file /etc/domshchenkov/api.env up -d --build      # postgres, migrate, api, worker
-docker compose --env-file /etc/domshchenkov/api.env run --rm migrate python -m app create-admin --login anna --name "Анна" --role admin
-docker compose --env-file /etc/domshchenkov/api.env run --rm migrate python -m app create-api-key --name "Админ-панель"
+docker compose --env-file /etc/domshchenkov/db.env up -d --build      # postgres, migrate, api, worker
+docker compose --env-file /etc/domshchenkov/db.env run --rm migrate python -m app create-admin --login anna --name "Анна" --role admin
+docker compose --env-file /etc/domshchenkov/db.env run --rm migrate python -m app create-api-key --name "Админ-панель"
 sudo cp deploy/nginx-snippets/dsh-proxy.conf /etc/nginx/snippets/ && sudo cp deploy/nginx.conf /etc/nginx/sites-available/domshchenkov
 deploy/deploy-site.sh /opt/domshchenkov /var/www/domshchenkov            # только собранный сайт, без исходников
 ```
@@ -89,7 +91,9 @@ deploy/deploy-site.sh /opt/domshchenkov /var/www/domshchenkov            # то�
 - `migrate` запускается при каждом деплое. Он применяет миграции, загружает новые версии текстов согласия и синхронизирует
   каталог щенков из `src/data`. После обновления `puppies.json` пересоберите образ и перезапустите стек.
 - API слушает только `127.0.0.1:8000`, база наружу не открыта. Схему меняет роль `dsh_owner`, приложение работает
-  под `dsh_app` (только данные, без DDL).
+  под `dsh_app` (только данные, без DDL). Пароль владельца лежит в `db.env` и в контейнер API не попадает.
+  Синхронизация каталога пересоздаёт представления, поэтому её запускают от владельца:
+  `docker compose --env-file /etc/domshchenkov/db.env run --rm migrate python -m app sync-catalog`.
 - Бэкапы: `deploy/backup.sh` по cron. Дамп шифруется age, хранится в РФ, удаляется через 30 дней.
 - Мониторинг: внешний пинг `GET /api/v1/health`. Он отвечает 503, если уведомления застряли дольше 10 минут или упали
   за сутки. Подробности — в `GET /api/v1/admin/health`.
@@ -129,8 +133,8 @@ Telegram — иностранный сервис. Имя и телефон в н
 
 Ошибки всегда в одном формате: `{"error": {"code", "message", "fields": {"phone": "…"}}}`.
 
-Для BI или прямого чтения базы есть роль `dsh_readonly` (пароль `DSH_READONLY_DB_PASSWORD`). Она читает представления
-`leads_*`.
+Для BI или прямого чтения базы есть роль `dsh_readonly` (пароль `DSH_READONLY_DB_PASSWORD` в `db.env`). Она видит
+только представления `leads_*`, остальные таблицы ей недоступны (пароли менеджеров, журналы, согласия).
 
 ## Команды
 

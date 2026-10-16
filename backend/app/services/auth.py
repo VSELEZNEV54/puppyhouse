@@ -8,7 +8,7 @@ from __future__ import annotations
 import datetime as dt
 import time
 
-from sqlalchemy import delete, func, select, update
+from sqlalchemy import delete, func, select, text, update
 from sqlalchemy.dialects.postgresql import insert
 from sqlalchemy.orm import Session
 
@@ -47,17 +47,24 @@ def login(db: Session, login_name: str, password: str, ip: str | None) -> tuple[
     s = get_settings()
     key = login_name.strip().lower()[:100]
     ipkey = rate_key(ip) or "-"  # IPv6 grouped by /64
-    fl, fi = _failures(db, "login:" + key), _failures(db, "login-ip:" + ipkey)
-    if fl >= s.login_per_login_15min or fi >= s.login_per_ip_15min:
+    pair, by_ip, by_login = f"login:{key}@{ipkey}", "login-ip:" + ipkey, "login:" + key
+    # Refusal is per (login, client) and per client: failures from elsewhere never lock the real manager out.
+    # Failures of this login from everywhere only slow every attempt down a little (distributed guessing).
+    time.sleep(min(0.25 * (_failures(db, pair) + _failures(db, by_ip)) + 0.05 * min(_failures(db, by_login), 40),
+                   3.0))
+    # serialise this client's attempts: check, verify and count are atomic (parallel guesses cannot all pass)
+    db.execute(text("SELECT pg_advisory_xact_lock(hashtext(:k))"), {"k": by_ip})
+    db.execute(text("SELECT pg_advisory_xact_lock(hashtext(:k))"), {"k": pair})
+    if _failures(db, pair) >= s.login_per_login_15min or _failures(db, by_ip) >= s.login_per_ip_15min:
         audit(db, None, "login_blocked", target=key, ip=ip, actor_label=key)
         db.commit()
         raise ApiError(429, "rate_limited", "Слишком много попыток входа. Попробуйте через 15 минут")
-    time.sleep(min(0.25 * (fl + fi), 3.0))  # growing delay
     user = db.scalar(select(AdminUser).where(func.lower(AdminUser.login) == key))
     ok = verify_password(password, user.password_hash if user and user.password_hash else DUMMY_HASH)
     if not (ok and user and user.is_active and not user.is_service):
-        _bump(db, "login:" + key)
-        _bump(db, "login-ip:" + ipkey)
+        _bump(db, pair)
+        _bump(db, by_ip)
+        _bump(db, by_login)
         audit(db, user, "login_failed", target=key, ip=ip, actor_label=key)
         db.commit()
         raise ApiError(401, "bad_credentials", "Неверный логин или пароль")

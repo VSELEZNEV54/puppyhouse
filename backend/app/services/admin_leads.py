@@ -321,6 +321,11 @@ def patch(db: Session, lead_id: int, p: sa.LeadPatch, version: int | None, user:
             raise ApiError(422, "validation", "Дублем становится только повторный запрос",
                            {"status": "Склейте контакты или закройте как «Отказ»"})
         _hist(db, lead.id, HistoryAction.status, user, label, lead.status, st.value)
+        if lead.parent_id is not None and st != LeadStatus.duplicate:
+            # a repeat request taken on its own becomes a top-level request (or it would vanish from every list)
+            _hist(db, lead.id, HistoryAction.edit, user, label, f"№{lead.parent_id}", "—",
+                  comment="отделена от основной заявки")
+            lead.parent_id = None
         lead.status, lead.status_changed_at = st.value, now
         lead.closed_at = now if st in CLOSED_STATUSES else None
         lead.spam_reason = (lead.spam_reason or "manual") if st == LeadStatus.spam else None
@@ -393,13 +398,19 @@ def take(db: Session, lead_id: int, user: AdminUser, label: str) -> Lead:
 
 
 def comment(db: Session, lead_id: int, text: str, user: AdminUser, label: str) -> Lead:
-    lead = get_lead(db, lead_id)
-    if lead.anonymised_at is not None:
+    get_lead(db, lead_id)
+    now = dt.datetime.now(UTC)
+    # one atomic UPDATE: the version only goes forward, and an erased request cannot get a comment
+    row = db.execute(update(Lead).where(Lead.id == lead_id, Lead.anonymised_at.is_(None))
+                     .values(version=Lead.version + 1, last_activity_at=now,
+                             first_response_at=func.coalesce(Lead.first_response_at, now))
+                     .returning(Lead.id)).first()
+    if row is None:
+        db.rollback()
         raise ApiError(409, "anonymised", "Данные этой заявки удалены")
-    _hist(db, lead.id, HistoryAction.comment, user, label, comment=text)
-    _touch(lead, dt.datetime.now(UTC))
-    lead.version += 1
+    _hist(db, lead_id, HistoryAction.comment, user, label, comment=text)
     db.commit()
+    lead = get_lead(db, lead_id)
     db.refresh(lead)
     return lead
 

@@ -30,9 +30,12 @@ def run(db: Session) -> dict:
     cutoff = now - dt.timedelta(days=s.keep_contacts_days)
     open_lead = exists().where(Lead.contact_id == Contact.id, Lead.status.in_([x.value for x in OPEN_STATUSES]))
     stale = db.scalars(select(Contact.id).where(Contact.last_seen_at < cutoff, ~open_lead).limit(500)).all()
-    for cid in stale:
-        admin_people.erase(db, cid, "retention", f"контакт №{cid} (срок хранения истёк)", None, "Система")
-    out["contacts_erased"] = len(stale)
+    erased = 0
+    for cid in stale:  # each one is re-checked under lock: a person who came back meanwhile is kept
+        if admin_people.erase(db, cid, "retention", f"контакт №{cid} (срок хранения истёк)", None, "Система",
+                              stale_before=cutoff) is not None:
+            erased += 1
+    out["contacts_erased"] = erased
 
     # 2. spam
     spam_cut = now - dt.timedelta(days=s.keep_spam_days)
