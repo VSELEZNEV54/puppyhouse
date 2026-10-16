@@ -65,6 +65,9 @@ class Settings(BaseSettings):
     # secret for the keyed hashes of destroyed phone numbers (erasure_log.phone_hashes). Set once, keep forever
     # (and keep it outside the database backups): reapply-erasures needs the same value.
     erasure_secret: str = "dev-only-erasure-secret"
+    # append-only file with the same hashes, OUTSIDE the database (and its backups): a restored older copy has an
+    # older erasure_log, so reapply-erasures reads this file too. Empty = database only.
+    tombstone_file: str = ""
 
     # admin API
     token_ttl_hours: int = 12         # absolute lifetime of a login session
@@ -89,6 +92,8 @@ class Settings(BaseSettings):
     smtp_password: str = ""
     smtp_from: str = ""
     notify_emails: CSV = Field(default_factory=list)
+    # false: e-mails carry only the request number, breed, kind and the admin link (like Telegram)
+    email_include_pd: bool = True
     webhook_url: str = ""             # e.g. the admin panel; gets ids only, pulls the details with an API key
     webhook_secret: str = ""
     notify_max_attempts: int = 8

@@ -5,7 +5,8 @@ FROM python:3.13-slim
 ENV PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1 PIP_NO_CACHE_DIR=1 PIP_DISABLE_PIP_VERSION_CHECK=1 \
     TZ=Europe/Moscow
 
-RUN useradd --system --uid 10001 --home /app app
+RUN useradd --system --uid 10001 --home /app app \
+ && mkdir -p /var/lib/domshchenkov && chown app /var/lib/domshchenkov   # erasure tombstones (a named volume)
 WORKDIR /app/backend
 
 COPY backend/requirements.txt ./requirements.txt

@@ -18,6 +18,10 @@ x-app: &app
     # DSH_ENV and every other setting come from api.env; only the database URL is built here
     DSH_DATABASE_URL: postgresql+psycopg://dsh_app:${DSH_APP_DB_PASSWORD:?set DSH_APP_DB_PASSWORD}@postgres:5432/domshchenkov
     DSH_TRUSTED_PROXIES: 172.28.0.1/32,127.0.0.1/32
+    # hashes of erased numbers, kept OUTSIDE the database and its backups (reapply-erasures after a restore)
+    DSH_TOMBSTONE_FILE: /var/lib/domshchenkov/erasures.txt
+  volumes:
+    - tombstones:/var/lib/domshchenkov
   restart: unless-stopped
   networks: [internal]
 
@@ -48,6 +52,7 @@ services:
     environment:
       DSH_DATABASE_URL: postgresql+psycopg://dsh_owner:${DSH_OWNER_DB_PASSWORD}@postgres:5432/domshchenkov
       DSH_TRUSTED_PROXIES: 127.0.0.1/32
+      DSH_TOMBSTONE_FILE: /var/lib/domshchenkov/erasures.txt
     command: ["python", "-m", "app", "migrate"]
     restart: "no"
     depends_on:
@@ -79,3 +84,4 @@ networks:
 
 volumes:
   pgdata:
+  tombstones:   # not in the database dumps on purpose

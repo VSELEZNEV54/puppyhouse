@@ -116,7 +116,8 @@ def merge(db: Session, contact_id: int, into_id: int, user: AdminUser, label: st
     if contact_id == into_id:
         raise ApiError(422, "validation", "Нельзя склеить контакт сам с собой", {"into_id": "Другой контакт"})
     src, dst = get(db, contact_id), get(db, into_id)
-    lock_phone(db, src.phone)  # a request from the merged number waits and then finds the alias
+    for p in [src.phone, *db.scalars(select(ContactAlias.phone).where(ContactAlias.contact_id == src.id))]:
+        lock_phone(db, p)  # a request from the merged number (or its old numbers) waits, then finds the alias
     db.execute(select(Contact.id).where(Contact.id.in_([src.id, dst.id])).order_by(Contact.id).with_for_update())
     moved = db.execute(update(Lead).where(Lead.contact_id == src.id).values(contact_id=dst.id)
                        .returning(Lead.id)).scalars().all()
@@ -156,10 +157,14 @@ def erase(db: Session, contact_id: int, reason: str, subject: str, user: AdminUs
     stale_before (retention): erase only if the person has not been seen and no request of theirs has moved since
     then — re-checked under the same locks a new request takes; returns None when skipped."""
     c = get(db, contact_id)
-    lock_phone(db, c.phone)
+    for p in [c.phone, *db.scalars(select(ContactAlias.phone).where(ContactAlias.contact_id == c.id))]:
+        lock_phone(db, p)  # requests from the number or an old number of this person wait for the erasure
     c = db.scalars(select(Contact).where(Contact.id == contact_id).with_for_update()).first()
     if c is None:
         raise ApiError(404, "not_found", "Контакт не найден")
+    # lock the person's requests before clearing anything: a comment or edit in flight waits and then finds the
+    # request anonymised (409) instead of writing text after the history was cleared
+    db.execute(select(Lead.id).where(Lead.contact_id == c.id).with_for_update())
     if stale_before is not None:
         recent = db.scalar(select(func.count()).select_from(Lead).where(
             Lead.contact_id == c.id, Lead.last_activity_at >= stale_before)) or 0
@@ -209,7 +214,33 @@ def erase(db: Session, contact_id: int, reason: str, subject: str, user: AdminUs
                       phone_hashes=[security.phone_hash(p) for p in phones]))
     audit(db, user, "erase", target=f"contact:{contact_id}", actor_label=label, reason=reason, **counts)
     db.commit()
+    write_tombstones([security.phone_hash(p) for p in phones])
     return {"counts": counts, "manual_steps": manual_steps(lead_ids)}
+
+
+def write_tombstones(hashes: list[str]) -> None:
+    """Append the hashes to the tombstone file (outside the database). Never fails the erasure itself."""
+    from ..config import get_settings
+    path = get_settings().tombstone_file
+    if not path or not hashes:
+        return
+    try:
+        with open(path, "a", encoding="utf-8") as f:
+            for h in hashes:
+                f.write(f"{dt.datetime.now(UTC).isoformat()} {h}\n")
+    except OSError:
+        import logging
+        logging.getLogger("dsh.erase").exception("cannot write the tombstone file %s", path)
+
+
+def read_tombstones() -> set[str]:
+    from ..config import get_settings
+    path = get_settings().tombstone_file
+    try:
+        with open(path, encoding="utf-8") as f:
+            return {line.split()[-1] for line in f if line.strip()}
+    except (OSError, TypeError):
+        return set()
 
 
 def categories(counts: dict) -> list[str]:
@@ -255,4 +286,6 @@ def erase_review(db: Session, review_id: int, subject: str, reason: str, user: A
                       phone_hashes=[security.phone_hash(phone)] if phone else []))
     audit(db, user, "erase_review", target=f"review:{review_id}", actor_label=label, reason=reason)
     db.commit()
+    if phone:
+        write_tombstones([security.phone_hash(phone)])
     return counts

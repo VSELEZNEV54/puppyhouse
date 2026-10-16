@@ -129,15 +129,11 @@ def email_message(lead: Lead | None, review: Review | None, event: str, s: Setti
         title = f"Повторный запрос по заявке №{num}" if event == "lead.repeat" else f"Заявка №{lead.id}"
         m["Subject"] = f"{title}: {breed}, {kind}"
         when = _local(lead.created_at, s)
-        body = [
-            f"{title} · {when:%d.%m.%Y %H:%M}",
-            "",
-            f"Имя: {lead.name}",
-            f"Телефон: {phones.display(lead.phone)}",
-            f"Куда написать: {CHANNEL_LABELS.get(Channel(lead.channel), lead.channel)}",
-            f"Порода: {breed}",
-            f"Что нужно: {kind}",
-        ]
+        body = [f"{title} · {when:%d.%m.%Y %H:%M}", ""]
+        if s.email_include_pd:
+            body += [f"Имя: {lead.name}", f"Телефон: {phones.display(lead.phone)}",
+                     f"Куда написать: {CHANNEL_LABELS.get(Channel(lead.channel), lead.channel)}"]
+        body += [f"Порода: {breed}", f"Что нужно: {kind}"]
         if lead.puppy_name:
             body.append(f"Щенок: {lead.puppy_name}")
         if lead.colour:

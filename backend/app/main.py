@@ -75,7 +75,37 @@ def create_app() -> FastAPI:
     app.add_middleware(Guard)
     app.include_router(public.router, prefix=API)
     app.include_router(admin.router, prefix=API)
+    _document_public_bodies(app)
     return app
+
+
+def _document_public_bodies(app: FastAPI) -> None:
+    """The public endpoints read their body by hand (Content-Type and Origin are checked first), so FastAPI cannot
+    see the models: add them to the OpenAPI schema explicitly."""
+    from fastapi.openapi.utils import get_openapi
+
+    from .schemas_public import EventsIn, LeadIn, ReviewIn
+    bodies = {f"{API}/leads": (LeadIn, "application/json"), f"{API}/reviews": (ReviewIn, "application/json"),
+              f"{API}/events": (EventsIn, "text/plain")}
+
+    def openapi():
+        if app.openapi_schema:
+            return app.openapi_schema
+        spec = get_openapi(title=app.title, version=app.version, description=app.description, routes=app.routes)
+        comps = spec.setdefault("components", {}).setdefault("schemas", {})
+        for path, (model, ctype) in bodies.items():
+            schema = model.model_json_schema(ref_template="#/components/schemas/{model}")
+            comps.update(schema.pop("$defs", {}))
+            comps[model.__name__] = schema
+            ref = {"$ref": f"#/components/schemas/{model.__name__}"}
+            content = {ctype: {"schema": ref}}
+            if ctype == "text/plain":  # sendBeacon sends JSON as text/plain; application/json works too
+                content["application/json"] = {"schema": ref}
+            spec["paths"][path]["post"]["requestBody"] = {"required": True, "content": content}
+        app.openapi_schema = spec
+        return spec
+
+    app.openapi = openapi
 
 
 app = create_app()

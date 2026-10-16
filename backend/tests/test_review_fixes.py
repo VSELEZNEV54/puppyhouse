@@ -125,3 +125,42 @@ def test_readonly_role_gets_the_views_only(db):
     can = lambda t: db.scalar(text("SELECT has_table_privilege('dsh_readonly', :t, 'SELECT')"), {"t": t})  # noqa: E731
     assert can("leads_maltipu") and can("leads_all")
     assert not can("admin_users") and not can("admin_tokens") and not can("contacts")
+
+
+def test_a_login_typed_as_login_at_ip_cannot_lock_the_real_manager_out(db, admin_user, settings, monkeypatch):
+    from app.services import auth
+    from app.errors import ApiError
+    monkeypatch.setattr(auth.time, "sleep", lambda s: None)
+    settings.login_per_login_15min, settings.login_per_ip_15min = 3, 100
+    for _ in range(5):  # the attacker uses Anna's (login, IP) bucket name as the login
+        with pytest.raises(ApiError):
+            auth.login(db, "anna@203.0.113.200", "x" * 12, "198.51.100.66")
+    token, user, _ = auth.login(db, "anna", "очень-длинный-пароль-1", "203.0.113.200")
+    assert user.login == "anna" and token
+
+
+def test_erasure_tombstones_survive_outside_the_database(client, db, admin_h, settings, tmp_path):
+    from app.__main__ import main
+    settings.tombstone_file = str(tmp_path / "erasures.txt")
+    lid = _id(db, _lead(client, phone="+7 900 111-00-09"))
+    cid = db.scalar(select(Lead.contact_id).where(Lead.id == lid))
+    assert client.post(f"{A}/contacts/{cid}/erase", json={"reason": "request", "subject": "П."},
+                       headers=admin_h).status_code == 200
+    assert (tmp_path / "erasures.txt").read_text().strip()
+    # a restored older backup: the person is back and the database has no erasure record of them
+    db.execute(text("DELETE FROM erasure_log"))
+    db.commit()
+    _lead(client, phone="+7 900 111-00-09")
+    assert main(["reapply-erasures"]) == 0
+    assert db.scalar(text("SELECT count(*) FROM contacts WHERE phone = '+79001110009'")) == 0
+
+
+def test_email_without_personal_data_when_switched_off(client, db, settings):
+    from app.models import Outbox
+    from app.services import notify
+    settings.smtp_host, settings.notify_emails, settings.email_include_pd = "smtp.example.ru", ["m@example.ru"], False
+    lid = _id(db, _lead(client, phone="+7 900 111-00-10", name="Варвара"))
+    item = db.scalar(select(Outbox).where(Outbox.lead_id == lid))
+    msg = notify.email_message(db.get(Lead, lid), None, item.event, settings)
+    body = msg.get_content()
+    assert "Варвара" not in body and "111-00-10" not in body and "Мальтипу" in body

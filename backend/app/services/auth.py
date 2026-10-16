@@ -47,7 +47,8 @@ def login(db: Session, login_name: str, password: str, ip: str | None) -> tuple[
     s = get_settings()
     key = login_name.strip().lower()[:100]
     ipkey = rate_key(ip) or "-"  # IPv6 grouped by /64
-    pair, by_ip, by_login = f"login:{key}@{ipkey}", "login-ip:" + ipkey, "login:" + key
+    # three distinct prefixes: a login typed as «anna@203.0.113.5» can never land in Anna's own (login, IP) bucket
+    pair, by_ip, by_login = f"login-pair:{key}@{ipkey}", "login-ip:" + ipkey, "login-any:" + key
     # Refusal is per (login, client) and per client: failures from elsewhere never lock the real manager out.
     # Failures of this login from everywhere only slow every attempt down a little (distributed guessing).
     time.sleep(min(0.25 * (_failures(db, pair) + _failures(db, by_ip)) + 0.05 * min(_failures(db, by_login), 40),

@@ -271,6 +271,7 @@ def cmd_reapply_erasures(args) -> int:
     from .services import admin_people, security
     with session_scope() as db:
         hashes = {h for (hs,) in db.execute(select(ErasureLog.phone_hashes)) for h in (hs or [])}
+        hashes |= admin_people.read_tombstones()  # erasures newer than the restored copy live only here
         phones = set(db.scalars(select(Contact.phone))) | set(db.scalars(select(ContactAlias.phone)))
         hit = [p for p in phones if security.phone_hash(p) in hashes]
         rev = [r.id for r in db.scalars(select(Review).where(Review.phone.is_not(None)))
@@ -306,9 +307,8 @@ def cmd_export_reviews(args) -> int:
 
 
 def cmd_openapi(args) -> int:
-    from fastapi.openapi.utils import get_openapi
     from .main import app
-    spec = get_openapi(title=app.title, version=app.version, description=app.description, routes=app.routes)
+    spec = app.openapi()
     Path(args.out).write_text(json.dumps(spec, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
     print(f"→ {args.out}")
     return 0

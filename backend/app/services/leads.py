@@ -77,10 +77,12 @@ def upsert_contact(db: Session, phone: str, name: str, channel: str | None) -> t
     lock_phone(db, phone)  # a merge or an erasure of this number cannot interleave with this request
     alias = db.scalar(select(ContactAlias.contact_id).where(ContactAlias.phone == phone))
     if alias:
-        db.execute(update(Contact).where(Contact.id == alias)
-                   .values(last_seen_at=func.now(), preferred_channel=func.coalesce(channel, Contact.preferred_channel)))
-        db.execute(select(Contact.id).where(Contact.id == alias).with_for_update())
-        return alias, False
+        n = db.execute(update(Contact).where(Contact.id == alias)
+                       .values(last_seen_at=func.now(),
+                               preferred_channel=func.coalesce(channel, Contact.preferred_channel))).rowcount
+        if n:
+            return alias, False
+        # the alias pointed at a contact deleted a moment ago (erased): its alias row went with it — start afresh
     stmt = insert(Contact).values(phone=phone, name=name, preferred_channel=channel)
     stmt = stmt.on_conflict_do_update(index_elements=[Contact.phone], set_={
         "last_seen_at": func.now(),

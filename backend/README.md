@@ -84,7 +84,9 @@ cd backend
 docker compose --env-file /etc/domshchenkov/db.env up -d --build      # postgres, migrate, api, worker
 docker compose --env-file /etc/domshchenkov/db.env run --rm migrate python -m app create-admin --login anna --name "Анна" --role admin
 docker compose --env-file /etc/domshchenkov/db.env run --rm migrate python -m app create-api-key --name "Админ-панель"
+sudo certbot certonly --standalone -d xn--b1adduihee9g.xn--p1ai -d www.xn--b1adduihee9g.xn--p1ai   # сертификат — до nginx
 sudo cp deploy/nginx-snippets/dsh-proxy.conf /etc/nginx/snippets/ && sudo cp deploy/nginx.conf /etc/nginx/sites-available/domshchenkov
+sudo ln -s /etc/nginx/sites-available/domshchenkov /etc/nginx/sites-enabled/ && sudo nginx -t && sudo systemctl reload nginx
 deploy/deploy-site.sh /opt/domshchenkov /var/www/domshchenkov            # только собранный сайт, без исходников
 ```
 
@@ -118,6 +120,8 @@ Telegram — иностранный сервис. Имя и телефон в н
 3. Включить `DSH_TELEGRAM_INCLUDE_PD=true`. Имя и телефон придут только по заявкам, принятым под такой версией согласия.
 
 Почта содержит полные данные. При удалении человека API возвращает `manual_steps`: какие письма удалить из ящика.
+Ночная очистка до почты не дотягивается. Настройте в ящике правило: удалять уведомления старше 3 лет, лучше раньше.
+Либо выключите ПД в письмах: `DSH_EMAIL_INCLUDE_PD=false`, тогда менеджер смотрит контакты в админке.
 
 ## API для админ-панели
 
@@ -168,7 +172,8 @@ python -m app openapi
   срок не продлевает); IP заявок — 30 дней; анонимные события — 180 дней; спам и неопубликованные отзывы — 30 дней;
   бэкапы — 20 дней;
 - удаление человека по запросу с актом уничтожения: заявки обезличиваются (открытые закрываются), отзывы и
-  посещения удаляются. Хеши номеров позволяют повторить удаление после восстановления бэкапа (`DSH_ERASURE_SECRET`);
+  посещения удаляются. Хеши номеров (`DSH_ERASURE_SECRET`) пишутся и в базу, и в файл вне базы (том `tombstones`).
+  После восстановления бэкапа `reapply-erasures` по этому файлу повторно удаляет всех, кого стёрли позже копии;
 - журнал выгрузок и просмотров без телефонов в поисковых запросах;
 - шрифты раздаются со своего домена: IP посетителя не уходит в Google;
 - никаких персональных данных за рубеж по умолчанию (Telegram без ПД, CI только на тестовых данных).

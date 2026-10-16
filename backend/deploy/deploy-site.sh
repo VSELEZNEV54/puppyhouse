@@ -7,7 +7,7 @@ set -euo pipefail
 SRC="${1:?checkout path}"
 DST="${2:-/var/www/domshchenkov}"
 cd "$SRC"
-python3 tools/build.py
+python3 tools/build.py --clean   # --clean drops pages no route produces any more (a sold puppy) from the manifest
 STAGE="$(mktemp -d)"
 trap 'rm -rf "$STAGE"' EXIT
 python3 - "$STAGE" <<'PY'
