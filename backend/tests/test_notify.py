@@ -131,7 +131,7 @@ def email(settings, monkeypatch):
     settings.smtp_user = "kennel@yandex.ru"
     settings.smtp_password = SMTP_PASSWORD
     settings.smtp_from = "kennel@yandex.ru"
-    settings.notify_emails = ["owner@yandex.ru", "manager@yandex.ru"]
+    settings.notify_emails = ["owner@yandex.ru"]
     FakeSMTP.sent, FakeSMTP.logins, FakeSMTP.connects = [], [], []
     FakeSMTP.login_error = FakeSMTP.connect_error = None
     monkeypatch.setattr(smtplib, "SMTP_SSL", FakeSMTP)
@@ -378,8 +378,6 @@ def test_bot_token_never_reaches_the_outbox_or_the_log(client, db, tg, caplog, a
     assert TOKEN not in caplog.text and TOKEN.split(":")[1] not in caplog.text
 
 
-@pytest.mark.xfail(strict=True, reason="BUG: _send_telegram cuts the error body to 200 chars BEFORE _scrub, so a "
-                                         "token cut at the boundary is not replaced and a prefix of it is stored/logged")
 @pytest.mark.parametrize("cut", [5, 20])
 def test_a_token_cut_by_the_error_length_limit_is_not_stored_either(client, db, tg, caplog, cut):
     """An error page (a proxy, a CDN) that echoes the request URL: the 200-char limit can fall inside the token."""
@@ -503,7 +501,7 @@ def test_manual_request_by_a_manager_pings_only_the_webhook(client, db, tg, webh
 def test_email_has_full_details_and_a_russian_subject(client, db, email):
     lead_id, _ = post_lead(client, breed="maltipu", kind="price", contact="telegram")
     rows = outbox(db)
-    assert [(o.channel, o.target) for o in rows] == [("email", "owner@yandex.ru,manager@yandex.ru")]
+    assert [(o.channel, o.target) for o in rows] == [("email", "owner@yandex.ru")]
     fake = FakeHttp()
     assert notify.deliver_due(db, client=fake.client()) == {"sent": 1, "failed": 0, "retry": 0}
     assert fake.requests == []
@@ -512,7 +510,7 @@ def test_email_has_full_details_and_a_russian_subject(client, db, email):
     assert len(FakeSMTP.sent) == 1
     msg = FakeSMTP.sent[0]
     assert msg["Subject"] == f"Заявка №{lead_id}: Мальтипу, Узнать цену"
-    assert [a.addr_spec for a in msg["To"].addresses] == ["owner@yandex.ru", "manager@yandex.ru"]
+    assert [a.addr_spec for a in msg["To"].addresses] == ["owner@yandex.ru"]
     content = msg.get_content()
     assert f"Имя: {NAME}" in content
     assert f"Телефон: {PHONE_FORM}" in content
@@ -563,9 +561,17 @@ def test_starttls_runs_before_the_password_is_sent(client, db, email, settings, 
     assert calls == ["starttls", "login", "send"]
 
 
-@pytest.mark.xfail(strict=True, reason="BUG: outbox.target is varchar(300); notify_emails joined longer than 300 chars makes the outbox INSERT fail inside the request transaction, so every site request is lost (500)")
 def test_a_long_list_of_notification_addresses_does_not_break_request_intake(client, db, email, settings):
     settings.notify_emails = [f"manager{i:02d}@pitomnik-domshchenkov.ru" for i in range(12)]  # > 300 characters
+    r = client.post("/api/v1/leads", json=lead_payload(name=NAME))
+    assert r.status_code == 201, r.text
+    assert db.scalar(text("SELECT count(*) FROM leads")) == 1
+    # one notification per address: a bad address cannot block the others
+    assert sorted(o.target for o in outbox(db)) == sorted(settings.notify_emails)
+
+
+def test_a_broken_notification_setting_never_costs_the_request(client, db, email, settings):
+    settings.notify_emails = ["x" * 400 + "@example.ru"]  # longer than the outbox column
     r = client.post("/api/v1/leads", json=lead_payload(name=NAME))
     assert r.status_code == 201, r.text
     assert db.scalar(text("SELECT count(*) FROM leads")) == 1

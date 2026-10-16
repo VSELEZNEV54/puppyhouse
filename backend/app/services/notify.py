@@ -14,6 +14,7 @@ from __future__ import annotations
 import datetime as dt
 import json
 import logging
+import re
 import smtplib
 import ssl
 import zoneinfo
@@ -51,8 +52,8 @@ def _targets(s: Settings, breed_key: str | None) -> list[tuple[str, str]]:
         chat = s.telegram_breed_chats.get(breed_key or "", "") or s.telegram_chat_id
         if chat:
             out.append(("telegram", chat))
-    if s.smtp_host and s.notify_emails:
-        out.append(("email", ",".join(s.notify_emails)))
+    if s.smtp_host:
+        out.extend(("email", addr[:300]) for addr in s.notify_emails)  # one row per address
     if s.webhook_url:
         out.append(("webhook", s.webhook_url))
     return out
@@ -182,7 +183,7 @@ def _send_telegram(item: Outbox, text: str, s: Settings, client: httpx.Client) -
         info = r.json()
     except ValueError:
         info = {}
-    desc = str(info.get("description", r.text))[:200]
+    desc = _scrub(str(info.get("description", r.text)), s)[:200]  # mask before cutting: no token fragment left
     if r.status_code == 429:
         raise RetryAfter(int((info.get("parameters") or {}).get("retry_after", 30)))
     if r.status_code in (400, 401, 403, 404):
@@ -234,11 +235,14 @@ def _send(item: Outbox, db: Session, s: Settings, client: httpx.Client) -> None:
         _send_webhook(item, webhook_body(item, lead, review), s, client)
 
 
+_BOT_TOKEN = re.compile(r"\d{5,}:[A-Za-z0-9_-]{10,}")
+
+
 def _scrub(err: str, s: Settings) -> str:
     for secret in (s.telegram_bot_token, s.smtp_password, s.webhook_secret):
         if secret:
             err = err.replace(secret, "***")
-    return err[:500]
+    return _BOT_TOKEN.sub("***", err)[:500]
 
 
 def deliver_due(db: Session, limit: int = 20, client: httpx.Client | None = None) -> dict:

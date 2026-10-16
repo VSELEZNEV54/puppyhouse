@@ -236,10 +236,14 @@ def create_from_site(db: Session, data, ctx: RequestCtx) -> Created:
     db.flush()
     lead = db.get(Lead, lead_id)
     notified = []
-    if status == LeadStatus.new and "rate_phone" not in flags:
-        notified = notify.enqueue_lead(db, lead, "lead.created")
-    elif status == LeadStatus.duplicate and "rate_phone" not in flags:
-        notified = notify.enqueue_lead(db, lead, "lead.repeat")
+    event = {LeadStatus.new: "lead.created", LeadStatus.duplicate: "lead.repeat"}.get(status)
+    if event and "rate_phone" not in flags:
+        try:  # a broken notification setting must never cost the request itself
+            with db.begin_nested():
+                notified = notify.enqueue_lead(db, lead, event)
+        except Exception:  # noqa: BLE001
+            log.exception("could not queue notifications for lead %s", lead_id)
+            notified = []
     db.commit()
     return Created(lead, True, notified)
 

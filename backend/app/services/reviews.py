@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import datetime as dt
 import hashlib
+import logging
 import json
 import uuid
 
@@ -80,6 +81,10 @@ def create(db: Session, data, ctx: RequestCtx) -> tuple[Review, bool]:
     db.flush()
     review = db.get(Review, rid)
     if spam_reason is None:
-        notify.enqueue_review(db, review)
+        try:
+            with db.begin_nested():
+                notify.enqueue_review(db, review)
+        except Exception:  # noqa: BLE001 — never lose the review over a notification setting
+            logging.getLogger("dsh.reviews").exception("could not queue notifications for review %s", rid)
     db.commit()
     return review, True
