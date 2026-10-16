@@ -203,8 +203,9 @@
 {#- Lead band: sits right under a media carousel (or anywhere) — short question, one line, «Оставить заявку»
     (opens the price modal with its own title / note) + «Написать в Telegram». Faces of the four breeds on the right;
     faces=[{"src", "tone"}] → round faces of these studio photos instead (a breed page: its colours), faces=false → none.
-    tag: 'h3' inside a section that already has its H2 (default), 'h2' + title_id when it is the section itself. -#}
-{% macro lead_band(title='Хотите увидеть щенков вживую по видео?', line='Покажем щенков по видеосвязи и пришлём цену — в удобное вам время', label='Оставить заявку', tone='lilac', tag='h3', title_id=none, faces=true, note='Видеозвонок', modal_title='Покажем щенков по видео', submit='Записаться на видеозвонок', done='Спасибо! Куратор напишет, чтобы договориться о видеозвонке.') -%}
+    tag: 'h3' inside a section that already has its H2 (default), 'h2' + title_id when it is the section itself.
+    kind: LeadKind sent to the API (video_call by default; waitlist for «по записи»); colour: colour slug; breed: slug to preselect. -#}
+{% macro lead_band(title='Хотите увидеть щенков вживую по видео?', line='Покажем щенков по видеосвязи и пришлём цену — в удобное вам время', label='Оставить заявку', tone='lilac', tag='h3', title_id=none, faces=true, note='Видеозвонок', modal_title='Покажем щенков по видео', submit='Записаться на видеозвонок', done='Спасибо! Куратор напишет, чтобы договориться о видеозвонке.', kind='video_call', colour=none, breed=none) -%}
 <div class="lband tone--{{ tone }}">
   <div class="lband__txt">
     <{{ tag }} class="lband__title"{% if title_id %} id="{{ title_id }}"{% endif %}>{{ title|typo }}</{{ tag }}>
@@ -213,7 +214,7 @@
   {% if faces is sameas true %}<span class="lband__faces" aria-hidden="true">{% for b in breeds %}{{ face(b) }}{% endfor %}</span>
   {% elif faces %}<span class="lband__faces" aria-hidden="true">{% for f in faces %}<span class="face tone--{{ f.tone }}"><img src="{{ f.src }}" alt="" width="{{ imgsize(f.src)[0] }}" height="{{ imgsize(f.src)[1] }}" loading="lazy" decoding="async"></span>{% endfor %}</span>{% endif %}
   <div class="lband__actions">
-    <button class="btn btn--ink btn--lg" type="button" data-open-modal data-modal-title="{{ modal_title }}" data-modal-sub="{{ line }}" data-modal-note="{{ note }}"{% if submit %} data-modal-submit="{{ submit }}"{% endif %}{% if done %} data-modal-done="{{ done }}"{% endif %}>{{ label|typo }}</button>
+    <button class="btn btn--ink btn--lg" type="button" data-open-modal data-modal-kind="{{ kind }}"{% if colour %} data-modal-colour="{{ colour }}"{% endif %}{% if breed %} data-modal-breed="{{ breed }}"{% endif %} data-modal-title="{{ modal_title }}" data-modal-sub="{{ line }}" data-modal-note="{{ note }}"{% if submit %} data-modal-submit="{{ submit }}"{% endif %}{% if done %} data-modal-done="{{ done }}"{% endif %}>{{ label|typo }}</button>
     <a class="btn btn--tg btn--lg" href="{{ site.messengers.telegram.url }}" target="_blank" rel="noopener">{{ icon('tg') }}{{ site.tg_cta.label }}</a>
   </div>
 </div>
@@ -268,8 +269,9 @@
 {#- CTA band: pastel tile with a short title, one line and a button. button: 'modal' (opens «Узнать цену»)
     or {"url": "/shchenki/", "label": "Смотреть щенков"}. faces=true shows the four breed faces.
     title_id: id of the H2, for the wrapping section's aria-labelledby:
-      <section class="section container" id="x" aria-labelledby="x-title">{{ ui.cta_band('…', title_id='x-title') }}</section> -#}
-{% macro cta_band(title, line=none, button='modal', label='Узнать цену', tone='lilac', faces=true, id=none, title_id=none) -%}
+      <section class="section container" id="x" aria-labelledby="x-title">{{ ui.cta_band('…', title_id='x-title') }}</section>
+    kind: LeadKind of the modal request sent to the API (price by default). -#}
+{% macro cta_band(title, line=none, button='modal', label='Узнать цену', tone='lilac', faces=true, id=none, title_id=none, kind='price') -%}
 <div class="cta-band tone--{{ tone }}"{% if id %} id="{{ id }}"{% endif %}>
   <div class="cta-band__txt">
     <h2 class="cta-band__title"{% if title_id %} id="{{ title_id }}"{% endif %}>{{ title|typo }}</h2>
@@ -277,7 +279,7 @@
   </div>
   {% if faces %}<span class="cta-band__faces" aria-hidden="true">{% for b in breeds %}{{ face(b) }}{% endfor %}</span>{% endif %}
   <div class="cta-band__actions">
-    {% if button == 'modal' %}<button class="btn btn--ink btn--lg" type="button" data-open-modal>{{ label|typo }}</button>
+    {% if button == 'modal' %}<button class="btn btn--ink btn--lg" type="button" data-open-modal data-modal-kind="{{ kind }}">{{ label|typo }}</button>
     {% else %}<a class="btn btn--ink btn--lg" href="{{ button.url }}">{{ button.label|typo }} {{ icon('arrow') }}</a>{% endif %}
     {% if caller is defined %}{{ caller() }}{% endif %}
   </div>
@@ -392,14 +394,14 @@
 </ul>
 {%- endmacro %}
 
-{#- Empty state tile. caller() → extra buttons. -#}
-{% macro empty_state(title, text=none, button='modal', label='Оставить заявку', attrs='') -%}
+{#- Empty state tile. caller() → extra buttons. kind: LeadKind of the modal request (waitlist: «напишем, когда появится помёт»). -#}
+{% macro empty_state(title, text=none, button='modal', label='Оставить заявку', attrs='', kind='waitlist') -%}
 <div class="empty" {{ attrs|safe }}>
   <span class="empty__faces" aria-hidden="true">{% for b in breeds %}{{ face(b) }}{% endfor %}</span>
   <p class="empty__title">{{ title|typo }}</p>
   {% if text %}<p class="empty__text">{{ text|typo }}</p>{% endif %}
   <div class="empty__actions">
-    {% if button == 'modal' %}<button class="btn btn--ink" type="button" data-open-modal>{{ label }}</button>
+    {% if button == 'modal' %}<button class="btn btn--ink" type="button" data-open-modal data-modal-kind="{{ kind }}">{{ label }}</button>
     {% elif button %}<a class="btn btn--ink" href="{{ button.url }}">{{ button.label|typo }}</a>{% endif %}
     {% if caller is defined %}{{ caller() }}{% endif %}
   </div>

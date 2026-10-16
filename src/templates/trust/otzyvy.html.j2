@@ -1,4 +1,5 @@
-{#- /otzyvy/ — all reviews with a breed filter and the «Оставить отзыв» modal (assets/js/trust.js).
+{#- /otzyvy/ — all reviews with a breed filter and the «Оставить отзыв» modal (assets/js/trust.js: POST {api}/reviews in
+    live mode — two separate consents: processing + publication, data/consent.json).
     Context (routes/trust.py): pg (data/trust.json → otzyvy), reviews (reviews.json), review_breeds (breeds with reviews). -#}
 {% extends "layouts/page.html.j2" %}
 {% import "trust/_parts.html.j2" as tr %}
@@ -90,7 +91,7 @@
               <select class="input select" id="rm-breed" name="breed">
                 <option value="" selected>Выберите породу</option>
                 {% for b in breeds %}
-                <option>{{ b.name }}</option>
+                <option value="{{ b.slug }}">{{ b.name }}</option>
                 {% endfor %}
               </select>
             </div>
@@ -101,21 +102,21 @@
                 <input type="radio" name="rating" id="rm-r{{ n }}" value="{{ n }}"{% if n == 5 %} checked{% endif %}><label for="rm-r{{ n }}"><span class="sr-only">{{ n }} из&nbsp;5</span>{{ ui.icon('star') }}</label>
                 {% endfor %}
               </div>
+              <p class="field__err" id="rm-rating-err" hidden></p>
             </fieldset>
             <div class="field field--full">
               <label class="field__label" for="rm-text">Отзыв</label>
               <textarea class="input tr-textarea" id="rm-text" name="text" rows="4" placeholder="Как щенок освоился дома, что понравилось, что можно улучшить" required aria-describedby="rm-text-err"></textarea>
               <p class="field__err" id="rm-text-err" hidden></p>
             </div>
-            <div class="field field--full">
-              <div class="check">
-                <input type="checkbox" id="rm-consent" name="consent" aria-describedby="rm-consent-err">
-                <label for="rm-consent">Соглашаюсь на&nbsp;публикацию отзыва и&nbsp;обработку персональных данных, принимаю <a href="{{ site.footer.legal.privacy.url }}" target="_blank" rel="noopener">политику конфиденциальности</a></label>
-              </div>
-              <p class="field__err" id="rm-consent-err" hidden></p>
-            </div>
+            {{ forms.honeypot('rm')|indent(12) }}
+            {{ forms.consent_check('rm')|indent(12) }}
+            {{ forms.consent_check('rm', kind='distribution', name='consent_publish', privacy=false)|indent(12) }}
           </div>
           <button class="btn btn--ink btn--lg btn--block form__submit" type="submit" data-rv-submit data-label="Отправить отзыв">Отправить отзыв</button>
+          <div class="form-fail" data-rv-fail role="alert" hidden>
+            {{ forms.send_fail('отзыв', 'его')|indent(12) }}
+          </div>
         </form>
       </div>
       <div class="modal__view modal__done" data-rv-view="done" hidden>

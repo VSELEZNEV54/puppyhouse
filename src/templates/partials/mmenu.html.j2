@@ -33,7 +33,7 @@
         {% for k in ('telegram', 'whatsapp', 'max') %}{% set m = site.messengers[k] %}
         <a class="msgr msgr--{{ m.icon }}" href="{{ m.url }}" target="_blank" rel="noopener" aria-label="{{ m.aria }}" title="{{ m.label }}">{{ ui.icon(m.icon) }}</a>
         {% endfor %}
-        <button class="btn btn--white mmenu__price" type="button" data-open-modal>Узнать цену</button>
+        <button class="btn btn--white mmenu__price" type="button" data-open-modal data-modal-kind="price">Узнать цену</button>
       </div>
       <a class="btn btn--tg btn--lg btn--block" href="{{ site.messengers.telegram.url }}" target="_blank" rel="noopener">{{ ui.icon('tg') }}{{ site.tg_cta.label }}</a>
     </div>

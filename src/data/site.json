@@ -4,6 +4,13 @@
   "tagline": "питомник щенков · Москва",
   "domain": "домщенков.рф",
   "domain_ascii": "xn--b1adduihee9g.xn--p1ai",
+  "api": {
+    "url": "/api/v1",
+    "origins": [
+      "https://xn--b1adduihee9g.xn--p1ai",
+      "https://www.xn--b1adduihee9g.xn--p1ai"
+    ]
+  },
   "mirror": "домщенков.рф",
   "as_of": "2026-10-12",
   "theme_color": "#F3F2EF",
@@ -416,7 +423,17 @@
       "privacy": {
         "label": "Политика конфиденциальности",
         "url": "/politika-konfidencialnosti/"
-      }
+      },
+      "consents": [
+        {
+          "label": "Согласие на обработку данных",
+          "url": "/soglasie/"
+        },
+        {
+          "label": "Согласие на публикацию отзыва",
+          "url": "/soglasie-na-publikaciyu/"
+        }
+      ]
     }
   },
   "stats": [

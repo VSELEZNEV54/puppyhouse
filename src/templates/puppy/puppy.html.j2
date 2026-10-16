@@ -18,7 +18,7 @@
 {%- set n = gallery|length -%}
 {%- set tg = site.messengers.telegram -%}
     <section class="pp container" id="shchenok" aria-labelledby="page-title">
-      <div class="pp__grid {{ p.tone_class }}"{% if t %} style="--tone:{{ t.top }};--tone-floor:{{ t.floor }}"{% endif %} data-pup data-name="{{ p.name }}" data-desc="{{ p.desc }}" data-img="{{ p.photo.src.rsplit('/', 1)[-1] }}" data-pp data-pp-status="{{ p.status }}" data-pp-breed="{{ b.name }}">
+      <div class="pp__grid {{ p.tone_class }}"{% if t %} style="--tone:{{ t.top }};--tone-floor:{{ t.floor }}"{% endif %} data-pup data-slug="{{ p.slug }}" data-breed="{{ p.breed }}" data-name="{{ p.name }}" data-desc="{{ p.desc }}" data-img="{{ p.photo.src.rsplit('/', 1)[-1] }}" data-pp data-pp-status="{{ p.status }}" data-pp-breed="{{ b.name }}">
         <div class="pp-gal">
           <div class="media-carousel pp-car" data-carousel data-start="0" data-pp-car role="region" aria-roledescription="карусель" aria-label="Фото и видео: {{ p.name }}">
             <div class="pp-car__stage">
@@ -64,14 +64,14 @@
 
           <div class="pp-cta" data-hero-ctas>
             {% if p.status == 'available' %}
-            <button class="btn btn--ink btn--lg pp-cta__main" type="button" data-open-modal data-pp-main aria-label="Узнать цену: {{ p.name }}">Узнать цену</button>
-            <button class="btn btn--white btn--lg" type="button" data-open-modal data-pp-modal="video" data-modal-title="Видеозвонок: {{ p.name }}" data-modal-sub="Покажем щенка вживую и ответим на вопросы" data-modal-note="Видеозвонок — {{ p.name }}">{{ ui.icon('video') }}Видеозвонок со&nbsp;щенком</button>
+            <button class="btn btn--ink btn--lg pp-cta__main" type="button" data-open-modal data-modal-kind="puppy" data-pp-main aria-label="Узнать цену: {{ p.name }}">Узнать цену</button>
+            <button class="btn btn--white btn--lg" type="button" data-open-modal data-modal-kind="video_call" data-pp-modal="video" data-modal-title="Видеозвонок: {{ p.name }}" data-modal-sub="Покажем щенка вживую и ответим на вопросы" data-modal-note="Видеозвонок — {{ p.name }}">{{ ui.icon('video') }}Видеозвонок со&nbsp;щенком</button>
             {% elif p.status == 'soon' %}
-            <button class="btn btn--ink btn--lg pp-cta__main" type="button" data-open-modal data-pp-modal="wait" data-modal-title="Лист ожидания: {{ p.name }}" data-modal-sub="Напишем первыми, когда откроем бронь, и пришлём цену" data-modal-note="Лист ожидания — {{ p.name }}">Записаться в&nbsp;лист ожидания</button>
-            <button class="btn btn--white btn--lg" type="button" data-open-modal data-pp-modal="video" data-modal-title="Видеозвонок: {{ p.name }}" data-modal-sub="Покажем щенка вживую и ответим на вопросы" data-modal-note="Видеозвонок — {{ p.name }}">{{ ui.icon('video') }}Видеозвонок со&nbsp;щенком</button>
+            <button class="btn btn--ink btn--lg pp-cta__main" type="button" data-open-modal data-modal-kind="waitlist" data-pp-modal="wait" data-modal-title="Лист ожидания: {{ p.name }}" data-modal-sub="Напишем первыми, когда откроем бронь, и пришлём цену" data-modal-note="Лист ожидания — {{ p.name }}">Записаться в&nbsp;лист ожидания</button>
+            <button class="btn btn--white btn--lg" type="button" data-open-modal data-modal-kind="video_call" data-pp-modal="video" data-modal-title="Видеозвонок: {{ p.name }}" data-modal-sub="Покажем щенка вживую и ответим на вопросы" data-modal-note="Видеозвонок — {{ p.name }}">{{ ui.icon('video') }}Видеозвонок со&nbsp;щенком</button>
             {% else %}
             <a class="btn btn--ink btn--lg pp-cta__main" href="#pohozhie">Похожие щенки {{ ui.icon('arrow', cls='pp-i-down') }}</a>
-            <button class="btn btn--white btn--lg" type="button" data-open-modal data-pp-modal="litter" data-modal-title="Следующий помёт" data-modal-sub="Напишем, когда появятся новые щенки {{ b.name_plural_gen }}" data-modal-note="Следующий помёт — {{ b.name }}">Узнать о&nbsp;следующем помёте</button>
+            <button class="btn btn--white btn--lg" type="button" data-open-modal data-modal-kind="litter" data-pp-modal="litter" data-modal-title="Следующий помёт" data-modal-sub="Напишем, когда появятся новые щенки {{ b.name_plural_gen }}" data-modal-note="Следующий помёт — {{ b.name }}">Узнать о&nbsp;следующем помёте</button>
             {% endif %}
           </div>
           <div class="pp-sub">

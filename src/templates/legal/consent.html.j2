@@ -1,0 +1,40 @@
+{#- /soglasie/, /soglasie-na-publikaciyu/ — consent documents (152-ФЗ). Context (routes/legal.py): doc (the current
+    version from data/consent.json: title, body, version, url), date (ISO date of the version), facts (aside «Коротко»),
+    others (the other consent documents). A legal page like /politika-konfidencialnosti/: no puppy strip and no lead form. -#}
+{% extends "layouts/page.html.j2" %}
+
+{% block page_css %}
+  <link rel="stylesheet" href="/assets/css/legal.css">
+{% endblock %}
+
+{% block hero %}
+    {{ ui.page_hero(doc.title, lead=('Редакция от ' ~ date|ru_date) if date else none, tone='sand', cls='lgl-hero') }}
+{% endblock %}
+
+{% block body %}
+    <section class="section section--tight container" id="tekst" aria-labelledby="tekst-title">
+      <h2 class="sr-only" id="tekst-title">Текст согласия</h2>
+      <div class="article lgl-doc">
+        <div class="article__body prose">
+          {% for para in doc.body %}
+          <p>{{ para|typo }}</p>
+          {% endfor %}
+          <p class="lgl-doc__ver">Версия {{ doc.version }}{% if date %} · редакция от&nbsp;{{ date|ru_date }}{% endif %}</p>
+        </div>
+        <aside class="article__aside">
+          {{ ui.keyfacts(facts, title='Коротко') }}
+          <nav class="lgl-links" aria-label="Другие документы">
+            <p class="lgl-links__title">Другие документы</p>
+            <ul>
+              {% for o in others %}
+              <li>{{ ui.text_link(o.url, o.title) }}</li>
+              {% endfor %}
+              <li>{{ ui.text_link(site.footer.legal.privacy.url, site.footer.legal.privacy.label) }}</li>
+            </ul>
+          </nav>
+        </aside>
+      </div>
+    </section>
+{% endblock %}
+
+{% block lead %}{% endblock %}

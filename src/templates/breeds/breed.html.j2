@@ -19,7 +19,7 @@
 {% block hero %}
     {% call ui.page_hero(hub.h1, lead=hub.lead, breed=b, eyebrow=hub.eyebrow, chips=common.chips, full=true, note=hub.note) %}
       <a class="btn btn--ink btn--lg" href="#shchenki">{{ hub.cta_stock }} {{ ui.icon('arrow') }}</a>
-      <button class="btn btn--white btn--lg" type="button" data-open-modal data-modal-breed="{{ b.name }}" data-modal-title="{{ hub.consult.label }}" data-modal-sub="{{ hub.consult.sub }}" data-modal-note="{{ hub.consult.note }}" data-modal-submit="{{ hub.consult.label }}" data-modal-done="{{ hub.consult.done }}">{{ hub.consult.label }}</button>
+      <button class="btn btn--white btn--lg" type="button" data-open-modal data-modal-kind="consult" data-modal-breed="{{ b.name }}" data-modal-title="{{ hub.consult.label }}" data-modal-sub="{{ hub.consult.sub }}" data-modal-note="{{ hub.consult.note }}" data-modal-submit="{{ hub.consult.label }}" data-modal-done="{{ hub.consult.done }}">{{ hub.consult.label }}</button>
     {% endcall %}
 {% endblock %}
 
@@ -27,7 +27,7 @@
     <!-- ================= ЩЕНКИ В НАЛИЧИИ — весь каталог породы ================= -->
     <section class="section container" id="shchenki" aria-labelledby="shchenki-title">
       {% call ui.section_head(hub.pups_title, id='shchenki-title', lead=hub.pups_lead) %}
-        <button class="btn btn--ink brd-help" type="button" data-open-modal data-modal-breed="{{ b.name }}" data-modal-title="{{ hub.pups_help.title }}" data-modal-sub="{{ hub.pups_help.sub }}" data-modal-note="{{ hub.pups_help.note }}">{{ hub.pups_help.label }}</button>
+        <button class="btn btn--ink brd-help" type="button" data-open-modal data-modal-kind="help" data-modal-breed="{{ b.name }}" data-modal-title="{{ hub.pups_help.title }}" data-modal-sub="{{ hub.pups_help.sub }}" data-modal-note="{{ hub.pups_help.note }}">{{ hub.pups_help.label }}</button>
       {% endcall %}
       {% if pups %}
       {%- set n = pups|length %}
@@ -48,7 +48,7 @@
 
     <!-- ================= ФОТО И ВИДЕО — как на главной, с полосой заявки ================= -->
     {% call media.media_carousel(reel, title=hub.media_title, id='foto-video', lead=hub.media_lead, label=hub.media_label) %}
-      {{ ui.lead_band(title=hub.band.title, line=hub.band.line, faces=band_faces, note='Видеозвонок: ' ~ b.name|lower) }}
+      {{ ui.lead_band(title=hub.band.title, line=hub.band.line, faces=band_faces, note='Видеозвонок: ' ~ b.name|lower, breed=b.slug) }}
     {% endcall %}
 
     <!-- ================= ОКРАСЫ — карточки листаются: «Подобрать …» и «Подробнее» (страница окраса) ================= -->

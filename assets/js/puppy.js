@@ -16,7 +16,7 @@
 
   const $ = (sel, ctx = d) => ctx.querySelector(sel);
   const $$ = (sel, ctx = d) => Array.from(ctx.querySelectorAll(sel));
-  const breed = page.dataset.ppBreed;
+  const breed = page.dataset.breed; // slug породы: значения в списке пород — slug (forms.breed_options)
   const status = page.dataset.ppStatus;
   const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -93,7 +93,7 @@
     mode = m || null;
     setLabel(m ? m.label : (trigger.dataset.modalSubmit || DEFAULT_LABEL));
     // общая заявка (без щенка, кнопки шапки и меню) — порода этой страницы уже выбрана
-    if (breedField && !breedField.hidden && breedSelect && !trigger.dataset.modalBreed) breedSelect.value = breed;
+    if (breedField && !breedField.hidden && breedSelect && breed && !trigger.dataset.modalBreed) breedSelect.value = breed;
   });
 
   // текст успеха: main.js пишет свой, для режимов заменяем его

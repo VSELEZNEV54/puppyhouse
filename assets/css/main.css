@@ -1088,6 +1088,27 @@ legend.field__label { margin-bottom: 8px; }
 }
 .form-done__ico .i { width: 28px; height: 28px; stroke-width: 2.2; }
 
+/* согласие (152-ФЗ): ссылка на политику — отдельной строкой под галочкой, не часть подписи */
+.check__note { margin: -2px 0 0 36px; font-size: 13px; line-height: 1.4; color: var(--muted); }
+.check__note a { color: var(--muted); text-underline-offset: 2px; }
+.check__note a:hover { color: var(--ink); }
+
+/* ловушка для ботов (hp_note): поле есть в форме, но за краем экрана — не display:none, вне порядка Tab */
+.hp { position: absolute !important; left: -10000px; top: 0; width: 1px; height: 1px; overflow: hidden; }
+
+/* «Не получилось отправить» (рабочий режим API): под формой заявки и в модалке; форма остаётся заполненной */
+.form-fail { margin-top: 14px; padding: 16px 18px; border-radius: var(--r-img); background: var(--sun-50); }
+.form-fail__text { font-size: 14.5px; line-height: 1.45; }
+.form-fail__links { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+.form-fail__link {
+  display: inline-flex; align-items: center; gap: 7px; height: 42px; padding: 0 16px;
+  border-radius: var(--r-pill); border: 1px solid var(--line-2); background: #fff;
+  font-size: 14.5px; font-weight: 500; white-space: nowrap; transition: border-color .2s;
+}
+.form-fail__link:hover { border-color: var(--ink); }
+.form-fail__ico { background: var(--sun); }
+.modal__fail .form-fail { margin: 14px 0 24px; align-self: stretch; }
+
 /* =========================================================
    ПОДВАЛ — компактный
    ========================================================= */

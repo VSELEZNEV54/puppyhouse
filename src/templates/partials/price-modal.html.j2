@@ -1,5 +1,7 @@
 {#- Shared «Узнать цену» modal. Any [data-open-modal] opens it; inside a [data-pup] card it is prefilled with that puppy.
-    data-modal-title / -sub / -breed / -note on the button set the title, subtitle, breed (no puppy) and the hidden note (main.js). -#}
+    data-modal-title / -sub / -breed / -note on the button set the title, subtitle, breed (no puppy) and the hidden note (main.js);
+    data-modal-kind (LeadKind) and data-modal-colour (colour slug) go to the API with the request. main.js sets every hidden
+    input on each open (form.reset() does not clear hidden inputs). Views: form · done · error (live mode, API unreachable). -#}
 {% import "macros/ui.html.j2" as ui %}
 {% import "macros/forms.html.j2" as forms %}
   <!-- Модалка «Узнать цену» -->
@@ -15,7 +17,12 @@
           </div>
         </div>
         <form class="form" id="price-form" novalidate>
+          <input type="hidden" name="kind" value="price">
           <input type="hidden" name="puppy" value="">
+          <input type="hidden" name="puppy_name" value="">
+          <input type="hidden" name="colour" value="">
+          <input type="hidden" name="note" value="">
+          <input type="hidden" name="form_title" value="">
           <div class="form__grid">
             <div class="field">
               <label class="field__label" for="pm-name">Имя</label>
@@ -34,13 +41,8 @@
               </select>
             </div>
             {{ forms.contact_field('pm')|indent(12) }}
-            <div class="field">
-              <div class="check">
-                <input type="checkbox" id="pm-consent" name="consent" aria-describedby="pm-consent-err">
-                <label for="pm-consent">Соглашаюсь на&nbsp;обработку персональных данных и&nbsp;принимаю <a href="{{ site.footer.legal.privacy.url }}" target="_blank" rel="noopener">политику конфиденциальности</a></label>
-              </div>
-              <p class="field__err" id="pm-consent-err" hidden></p>
-            </div>
+            {{ forms.honeypot('pm')|indent(12) }}
+            {{ forms.consent_check('pm')|indent(12) }}
           </div>
           <button class="btn btn--ink btn--lg btn--block form__submit" type="submit" data-submit data-label="Узнать цену">Узнать цену</button>
           <p class="form__hint">Свяжемся с&nbsp;вами в&nbsp;течение рабочего дня по&nbsp;московскому времени</p>
@@ -51,6 +53,14 @@
         <h2 class="modal__title" id="pm-done-title" tabindex="-1">Спасибо</h2>
         <p class="modal__sub" id="pm-done-text"></p>
         <button class="btn btn--ink btn--lg btn--block" type="button" data-close-modal>Хорошо</button>
+      </div>
+      <div class="modal__view modal__done modal__fail" data-view="error" hidden>
+        <span class="form-done__ico form-fail__ico" aria-hidden="true">{{ ui.icon('info') }}</span>
+        <h2 class="modal__title" id="pm-error-title" tabindex="-1">Заявка пока не&nbsp;ушла</h2>
+        <div class="form-fail" id="pm-error-text">
+          {{ forms.send_fail()|indent(10) }}
+        </div>
+        <button class="btn btn--ink btn--lg btn--block" type="button" data-pm-back>Вернуться к&nbsp;заявке</button>
       </div>
     </div>
   </dialog>

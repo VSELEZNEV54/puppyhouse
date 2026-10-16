@@ -36,7 +36,7 @@
       </div>
       <div class="footer__legal">
         <span>{{ site.footer.legal.requisites|typo }}</span>
-        <span>{{ site.footer.legal.offer|typo }} · <a href="{{ site.footer.legal.privacy.url }}">{{ site.footer.legal.privacy.label }}</a></span>
+        <span>{{ site.footer.legal.offer|typo }} · <a href="{{ site.footer.legal.privacy.url }}">{{ site.footer.legal.privacy.label }}</a>{% for l in site.footer.legal.consents %} · <a href="{{ l.url }}">{{ l.label|typo }}</a>{% endfor %}</span>
       </div>
     </div>
   </footer>
