@@ -32,20 +32,55 @@ die() { printf '\nОШИБКА: %s\n' "$*" >&2; exit 1; }
 SRC="$(cd "$(dirname "$(readlink -f "$0")")/../.." && pwd)"
 [ -f "$SRC/backend/.env.example" ] || die "запускайте из репозитория или релиза: backend/deploy/server-setup.sh"
 [ "$CERT" = 0 ] || [ -n "$EMAIL" ] || die "укажите почту для сертификата: --email you@example.ru (или --no-cert)"
+# Let's Encrypt registers the address: a real one, in Latin letters (not the «ваша@почта.ru» sample from the guide)
+if [ "$CERT" = 1 ] && ! LC_ALL=C grep -Eq '^[A-Za-z0-9._%+-]+@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)*\.[A-Za-z]{2,}$' <<<"$EMAIL"; then
+  die "почта «$EMAIL» не подходит для сертификата: нужна ваша настоящая почта латиницей, например name@yandex.ru"
+fi
 . /etc/os-release
 case "$ID" in ubuntu|debian) ;; *) echo "ВНИМАНИЕ: проверено на Ubuntu и Debian, у вас $PRETTY_NAME" ;; esac
 export DEBIAN_FRONTEND=noninteractive
 
 say "Пакеты"
-apt-get update -q
-apt-get install -y -q ca-certificates curl git rsync nginx certbot ufw fail2ban python3-systemd \
-  unattended-upgrades cron age python3 python3-jinja2 >/dev/null
+# A provider's mirror (Timeweb: mirror.timeweb.ru) can serve the package lists and still refuse the downloads.
+# Then: retry, then IPv4 only, then the official archive of the distribution — for this run only, the system's apt
+# sources stay as they are (security updates keep using them).
+APT_OPTS=(-o Acquire::Retries=3 -o Acquire::http::Timeout=30)
+apt_get() { apt-get "${APT_OPTS[@]}" "$@"; }
+PKGS=(ca-certificates curl git rsync nginx certbot ufw fail2ban python3-systemd unattended-upgrades cron age
+      python3 python3-jinja2)
+apt_all() { apt_get update -q && apt_get install -y -q "${PKGS[@]}" >/dev/null; }
+official_sources() {  # a sources dir with only the official archive of this release
+  local d; d="$(mktemp -d)"
+  case "$ID" in
+    ubuntu) printf '%s\n' "Types: deb" "URIs: http://archive.ubuntu.com/ubuntu" \
+              "Suites: $VERSION_CODENAME $VERSION_CODENAME-updates $VERSION_CODENAME-security" \
+              "Components: main restricted universe multiverse" \
+              "Signed-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg" > "$d/official.sources" ;;
+    debian) printf '%s\n' "Types: deb" "URIs: http://deb.debian.org/debian" \
+              "Suites: $VERSION_CODENAME $VERSION_CODENAME-updates" "Components: main" \
+              "Signed-By: /usr/share/keyrings/debian-archive-keyring.gpg" "" \
+              "Types: deb" "URIs: http://security.debian.org/debian-security" "Suites: $VERSION_CODENAME-security" \
+              "Components: main" "Signed-By: /usr/share/keyrings/debian-archive-keyring.gpg" > "$d/official.sources" ;;
+    *) rm -rf "$d"; return 1 ;;
+  esac
+  echo "$d"
+}
+if ! apt_all; then
+  echo "  зеркало пакетов не отдало файлы — повторяю только по IPv4"
+  APT_OPTS+=(-o Acquire::ForceIPv4=true)
+  if ! apt_all; then
+    src_dir="$(official_sources)" || die "не удалось скачать пакеты (см. ошибки apt выше)"
+    echo "  зеркало провайдера недоступно — беру пакеты с официального зеркала (${ID}) для этой установки"
+    APT_OPTS+=(-o "Dir::Etc::SourceList=/dev/null" -o "Dir::Etc::SourceParts=$src_dir")
+    apt_all || die "не удалось скачать пакеты ни с зеркала провайдера, ни с официального (см. ошибки apt выше)"
+  fi
+fi
 echo "  ok"
 
 say "Docker"
 if ! docker compose version >/dev/null 2>&1; then
-  apt-get install -y -q docker.io docker-compose-v2 >/dev/null 2>&1 \
-    || apt-get install -y -q docker.io docker-compose-plugin >/dev/null 2>&1 \
+  apt_get install -y -q docker.io docker-compose-v2 >/dev/null 2>&1 \
+    || apt_get install -y -q docker.io docker-compose-plugin >/dev/null 2>&1 \
     || { echo "  пакетов compose v2 нет в репозиториях системы — ставлю с download.docker.com"; curl -fsSL https://get.docker.com | sh; }
 fi
 docker compose version >/dev/null 2>&1 || die "docker compose v2 не установился"
