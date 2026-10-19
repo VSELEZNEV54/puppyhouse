@@ -68,7 +68,12 @@
     it is not kept, so we don't promise to send it later. -#}
 {% macro send_fail(what='заявку', saved='её') -%}
 {% if not site.contacts_public %}
-<p class="form-fail__text">Не получилось отправить {{ what }}. <span data-fail-saved>Мы сохранили {{ saved }} и&nbsp;отправим сами, когда появится связь, — страницу можно закрыть.</span><span data-fail-lost hidden>Проверьте поля и&nbsp;попробуйте ещё раз чуть позже.</span></p>
+<p class="form-fail__text">Не получилось отправить {{ what }}. <span data-fail-saved>Мы сохранили {{ saved }} и&nbsp;отправим сами, когда появится связь, — страницу можно закрыть.</span><span data-fail-lost hidden>Проверьте поля и&nbsp;попробуйте ещё раз чуть позже.</span>{% if site.email_public %} Или напишите нам на&nbsp;почту:{% endif %}</p>
+{% if site.email_public %}
+<p class="form-fail__links">
+  <a class="form-fail__link" href="{{ site.email_href }}">{{ ui.icon('mail', sm=true) }}{{ site.email }}</a>
+</p>
+{% endif %}
 {% else %}
 <p class="form-fail__text">Не получилось отправить {{ what }}. <span data-fail-saved>Мы сохранили {{ saved }} и&nbsp;отправим, когда появится связь. Или напишите нам:</span><span data-fail-lost hidden>Позвоните или напишите нам:</span></p>
 <p class="form-fail__links">
@@ -111,7 +116,12 @@
         <span class="lead__msgrs">{{ msgr('telegram') }}{{ msgr('whatsapp') }}{{ msgr('max') }}</span>
       </div>
       {% else %}
-      <p class="lead__note">{{ ui.icon('clock', sm=true) }}{{ site.phone.response|typo }}</p>
+      <div class="lead__notes">
+        <p class="lead__note">{{ ui.icon('clock', sm=true) }}{{ site.phone.response|typo }}</p>
+        {% if site.email_public %}
+        <p class="lead__note">{{ ui.icon('mail', sm=true) }}<a href="{{ site.email_href }}">{{ site.email }}</a></p>
+        {% endif %}
+      </div>
       {% endif %}
     </div>
 
@@ -178,7 +188,7 @@
     <li class="hm-ct">
       {{ ui.ico('mail', 'sun') }}
       <p class="hm-ct__label">Почта</p>
-      <a class="hm-ct__value hm-ct__value--mail" href="mailto:{{ site.email }}">{{ site.email }}</a>
+      <a class="hm-ct__value hm-ct__value--mail" href="{{ site.email_href }}">{{ site.email }}</a>
       <p class="hm-ct__line">Для документов и&nbsp;вопросов по&nbsp;договору</p>
     </li>
     <li class="hm-ct">

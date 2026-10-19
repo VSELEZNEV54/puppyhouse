@@ -39,6 +39,9 @@
       </div>
       <a class="btn btn--tg btn--lg btn--block" href="{{ site.messengers.telegram.url }}" target="_blank" rel="noopener">{{ ui.icon('tg') }}{{ site.tg_cta.label }}</a>
       {% else %}
+      {% if site.email_public %}
+      <a class="mmenu__phone mmenu__mail" href="{{ site.email_href }}">{{ site.email }}<small>Почта питомника · {{ site.phone.response|typo }}</small></a>
+      {% endif %}
       {{ forms.request_button(cls='btn btn--ink btn--lg btn--block', place='мобильное меню') }}
       <button class="btn btn--white btn--lg btn--block" type="button" data-open-modal data-modal-kind="price">Узнать цену</button>
       {% endif %}

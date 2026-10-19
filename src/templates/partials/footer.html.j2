@@ -15,7 +15,7 @@
           <ul class="footer__info">
             <li><svg class="i i--sm" aria-hidden="true"><use href="#i-clock"/></svg>{{ site.phone.hours|typo }}</li>
             <li><svg class="i i--sm" aria-hidden="true"><use href="#i-pin"/></svg>{{ site.address.short|typo }}</li>
-            <li><svg class="i i--sm" aria-hidden="true"><use href="#i-mail"/></svg><a href="mailto:{{ site.email }}">{{ site.email }}</a></li>
+            <li><svg class="i i--sm" aria-hidden="true"><use href="#i-mail"/></svg><a href="{{ site.email_href }}">{{ site.email }}</a></li>
           </ul>
           <div class="footer__msgs">
             {% for k in ('telegram', 'whatsapp', 'max') %}{% set m = site.messengers[k] %}
@@ -25,6 +25,9 @@
           {% else %}
           <ul class="footer__info">
             <li><svg class="i i--sm" aria-hidden="true"><use href="#i-pin"/></svg>{{ site.address.short|typo }}</li>
+            {% if site.email_public %}
+            <li><svg class="i i--sm" aria-hidden="true"><use href="#i-mail"/></svg><a href="{{ site.email_href }}">{{ site.email }}</a></li>
+            {% endif %}
           </ul>
           <div class="footer__msgs">{{ forms.request_button(cls='btn btn--ink', place='подвал') }}</div>
           {% endif %}

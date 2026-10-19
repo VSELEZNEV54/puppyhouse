@@ -34,7 +34,7 @@
             {% if site.contacts_public %}
             <a class="mega__phone" href="{{ site.phone.tel }}">{{ site.phone.display }}<small>{{ site.phone.hours|typo }}</small></a>
             {% else %}
-            <p class="mega__phone">Оставьте заявку<small>{{ site.phone.response|typo }}</small></p>
+            <p class="mega__phone">Оставьте заявку<small>{{ site.phone.response|typo }}{% if site.email_public %} · почта <a class="mega__mail" href="{{ site.email_href }}">{{ site.email }}</a>{% endif %}</small></p>
             {% endif %}
             <div class="mega__actions">
               <button class="btn btn--white" type="button" data-open-modal data-modal-kind="price">Узнать цену</button>

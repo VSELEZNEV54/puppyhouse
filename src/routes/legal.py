@@ -24,8 +24,9 @@ DESCRIPTION = {
 
 
 def version_date(version):
-    """«processing-2026-10-16» → «2026-10-16» (the date a version was published), or None."""
-    m = re.search(r"(\d{4}-\d{2}-\d{2})$", version)
+    """«processing-2026-10-16» → «2026-10-16» (the date a version was published), or None. A second edition of the
+    same day: «processing-2026-10-20-2» → «2026-10-20»."""
+    m = re.search(r"(\d{4}-\d{2}-\d{2})(?:-\d+)?$", version)
     return m.group(1) if m else None
 
 
@@ -49,7 +50,8 @@ def routes(data):
         facts = ([{"label": "Редакция", "value": ru_date(date)}] if date else []) + [
             {"label": "Закон", "value": LAW.get(kind, "№ 152-ФЗ")},
             {"label": "Как дать", "value": "Отметка в форме"},
-        ]
+        ] + ([{"label": "Как отозвать", "value": "Письмо на " + data["site"]["email"]}]
+             if data["site"].get("email_public") else [])
         out.append(dict(
             url=doc["url"],
             template="legal/consent.html.j2",

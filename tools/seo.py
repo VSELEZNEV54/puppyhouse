@@ -91,13 +91,15 @@ def organization(site: dict, conf: dict, imgsize) -> dict:
     street = site.get("address", {}).get("street")
     if not is_placeholder(street):
         org["address"]["streetAddress"] = street
-    if not site.get("contacts_public", True):  # first stage: no phone, e-mail or messengers anywhere (site.json)
+    contacts = site.get("contacts_public", True)
+    if (contacts or site.get("email_public")) and not is_placeholder(site.get("email")):
+        # the ASCII form (xn--…) of the address, as in the mailto: links: machine-read data
+        org["email"] = (site.get("email_href") or "").removeprefix("mailto:") or site["email"]
+    if not contacts:  # first stage: no phone or messengers anywhere (site.json); the e-mail only with email_public
         return org
     tel = (site.get("phone") or {}).get("tel", "")
     if tel.startswith("tel:"):
         org["telephone"] = tel[4:]
-    if not is_placeholder(site.get("email")):
-        org["email"] = site["email"]
     if conf.get("opening_hours"):
         org["openingHours"] = conf["opening_hours"]
     same = [m.get("url") for m in (site.get("messengers") or {}).values() if isinstance(m, dict)]
