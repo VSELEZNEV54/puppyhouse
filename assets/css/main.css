@@ -1840,18 +1840,15 @@ legend.field__label { margin-bottom: 8px; }
 }
 
 /* =========================================================
-   ТЕЛЕФОН ≤ 560 px: карточка вертикальная, как на компьютере (клиент 19.10), — две в ряд:
-   фото сверху, кличка, пол и окрас, кнопки друг под другом. 19 щенков — около 4000 px
+   ТЕЛЕФОН ≤ 560 px: карточка вертикальная, как на компьютере, — одна в ряд (клиент 19.10):
+   фото сверху (кадр чуть шире, чтобы карточка не была выше экрана), кличка, данные, две кнопки рядом
    ========================================================= */
 @media (max-width: 560px) {
-  .pups { gap: 10px; }
-  .ct-card { --inset: 6px; }
-  .ct-card__body { min-width: 0; padding: 10px 10px 12px; }
-  .ct-card .pup__name { font-size: 19px; }
-  .ct-card .pup__meta { margin-top: 4px; font-size: 12.5px; }
-  .ct-card__fav { top: calc(var(--inset) + 6px); right: calc(var(--inset) + 6px); width: 36px; height: 36px; }
-  .ct-card__actions { flex-direction: column; gap: 6px; padding-top: 10px; }
-  .ct-card__actions .btn { flex: none; width: 100%; height: 40px; padding: 0 8px; font-size: 14px; }
+  .pups { grid-template-columns: minmax(0, 1fr); gap: 12px; }
+  .pups .pup__media { aspect-ratio: 1 / .86; }
+  .ct-card__body { min-width: 0; padding: 14px 16px 16px; }
+  .ct-card .pup__name { font-size: 24px; }
+  .ct-card__actions .btn { height: 44px; }
 
   /* «Ждёте другого щенка?» — мордочки в ряд внахлёст, плитка по содержимому */
   .pups .soon-tile { min-height: 0; gap: 14px; padding: 22px 18px; }

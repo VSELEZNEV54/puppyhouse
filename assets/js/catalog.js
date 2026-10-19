@@ -86,8 +86,8 @@
 
     const active = KEYS.filter((k) => state[k] !== 'all').length;
     resets.forEach((r) => { if (r.closest('[data-cf]')) r.hidden = active === 0; });
-    // на мобиле пол и статус спрятаны в панель — бейдж показывает, сколько там выбрано
-    const inPanel = ['sex', 'status'].filter((k) => state[k] !== 'all').length;
+    // пол спрятан в панель — бейдж показывает, выбран ли он (фильтра по статусу нет с 19.10)
+    const inPanel = ['sex'].filter((k) => state[k] !== 'all').length;
     if (badge) { badge.hidden = inPanel === 0; badge.textContent = String(inPanel); }
     writeUrl(state);
   };

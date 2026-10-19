@@ -647,6 +647,13 @@ a.stile:hover .stile__photo img { transform: scale(1.04); }
 
 }
 
+@media (max-width: 560px) {
+  /* каталог на телефоне: без фильтров (клиент 19.10), карточки по одной в ряд — как и все ленты щенков (main.css) */
+  #katalog .filters { display: none; }
+  .pups--grid { grid-template-columns: minmax(0, 1fr); }
+  .pups__more--fill { grid-column: auto; }
+}
+
 @media (max-width: 420px) {
   .specs { --cols: 1; }
   .filters__meta { margin-left: 0; }
