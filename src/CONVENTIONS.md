@@ -242,6 +242,8 @@ in the order of `breeds-hub.json` → `media` (+ extra placeholders), so a video
 | `forms.price_button(label, cls, breed)`, `forms.msgr(kind)` | `kind = telegram \| whatsapp \| max` | generic «Узнать цену» / messenger round button |
 | `forms.contact_tiles()` | | phone, messengers, e-mail, address — four white tiles under `forms.lead_form(contacts=false, cls='hm-lead')` (homepage, breed pages v2) |
 | `forms.contact_field(prefix)` | `'lf' \| 'pm' \| yours` | «Куда написать» chips Telegram / WhatsApp / MAX / Звонок |
+| `forms.consent_check(prefix, kind='processing', name='consent', privacy=true)` | `kind = processing \| distribution` | 152-ФЗ consent checkbox from `data/consent.json` (current version): «Даю согласие на …» linking `/soglasie/` (or `/soglasie-na-publikaciyu/`), privacy link on the next line. Every form that sends personal data needs it |
+| `forms.honeypot(prefix)`, `forms.send_fail(what, saved)` | | hidden `hp_note` field (off-screen, out of the Tab order); «Не получилось отправить…» + phone / Telegram / MAX (shown by JS when the API is unreachable) |
 | `blocks.faq_section` / `faq_list` | `items` (faq.json or `{q,a}`), `title, id, link, short, ld=true` | accordion; `ld=true` also emits FAQPage JSON-LD for its questions (one FAQ section per page — pass `ld=false` where the page outputs its own FAQPage: /faq/, blog articles) |
 | `blocks.reviews_section` | `reviews, title, id, title_id, link, short` | text reviews (one per row on phones); for video reviews use `media.video_reviews` |
 | `blocks.seo_block` | `title, lead, id, key` + `call` → hidden `<h3>/<p>` | collapsed SEO text |
@@ -258,7 +260,17 @@ in the order of `breeds-hub.json` → `media` (+ extra placeholders), so a video
 - `main.js` (all pages) gives you, by markup: header panels `[data-mega]` / `[data-dd]` (hover with intent, click pins, ↓ ↑, Esc),
   `[data-burger]` + `#mmenu` accordions (`.mmenu__acc` → `aria-controls`), `[data-carousel]` (arrows, swipe, keys, active card,
   far images preloaded; `data-align="start"` — cards snap to the left edge, no centred card: colour cards), `[data-lightbox]` → `#lightbox` (`data-kind`, `data-src` = video file, `data-caption`),
-  `[data-open-modal]` (inside `[data-pup]` card → prefilled; `data-modal-title` / `-sub` / `-breed` / `-note` on the button set the title, subtitle, breed and hidden note), `.faq__btn` accordions, `[data-seo-toggle]`, `.fav`, `[data-phone]` mask, `#lead-form`, toast for root-absolute links, `[data-hero-ctas]` (mobile bar appears after it), `[data-reveal]` / `[data-reveal="items"]` (fade-in on scroll), Own logic → `assets/js/<group>.js`, vanilla, wrapped in an IIFE, no libraries.
+  `[data-open-modal]` (inside `[data-pup]` card → prefilled; `data-modal-title` / `-sub` / `-breed` / `-note` on the button set the title, subtitle, breed and hidden note;
+  every trigger also carries `data-modal-kind` = the request type for the API: price · puppy · consult · help · colour · waitlist · video_call · litter · shop; colour buttons add `data-modal-colour="<colour slug>"`), `.faq__btn` accordions, `[data-seo-toggle]`, `.fav`, `[data-phone]` mask, `#lead-form`, toast for root-absolute links, `[data-hero-ctas]` (mobile bar appears after it), `[data-reveal]` / `[data-reveal="items"]` (fade-in on scroll), Own logic → `assets/js/<group>.js`, vanilla, wrapped in an IIFE, no libraries.
+
+## Forms → API (backend/)
+
+`base.html.j2` renders `<meta name="dsh-api" content="/api/v1" data-origins="…" data-consent="…">` from `site.api` and
+`consent.json`. `main.js` is in live mode only on a production origin (or with `localStorage['dsh:api']` = an absolute API
+URL for local testing): the price modal and `#lead-form` POST `/leads`, `/otzyvy/` POSTs `/reviews` (trust.js), anonymous
+events (page_view, form_open, contact_click, quiz_complete) go to `/events`. GitHub Pages stays in prototype mode (fake
+send, no tracking). Helpers for page scripts: `window.DSH` (`live`, `submit(path, payload, state)`, `context()`, `track()`).
+Breed `<select>` values are slugs (`forms.breed_options`). Never put the API URL into `href` / `src` / `action`.
 
 ## Photos and tones
 

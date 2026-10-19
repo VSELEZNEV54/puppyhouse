@@ -1,0 +1,82 @@
+#!/usr/bin/env bash
+# dsh — everyday commands for the домщенков.рф server (installed to /usr/local/bin/dsh by deploy.sh). Run as root.
+#   dsh status                         containers, API health, the current release
+#   dsh logs [api|worker|migrate|postgres] [-f]
+#   dsh app <command> [args]           backend CLI, e.g.: dsh app create-admin --login olga --name "Ольга" --role manager
+#                                      (dsh app --help lists them all: create-api-key, sync-catalog, purge, …)
+#   dsh restart                        restart the API and the worker with the settings from /etc/domshchenkov/api.env
+#   dsh backup                         an encrypted database backup now (same as the nightly one)
+#   dsh update                         git pull in /opt/domshchenkov/src and deploy (pass deploy.sh options after it)
+#   dsh rollback                       start the previous release again (API + site; the database stays as it is)
+set -euo pipefail
+APP_ROOT="${DSH_APP_ROOT:-/opt/domshchenkov}"
+ETC="${DSH_ETC:-/etc/domshchenkov}"
+STATE="$APP_ROOT/state"
+CUR="$(cat "$STATE/root" 2>/dev/null || readlink -f "$APP_ROOT/current" 2>/dev/null || true)"
+[ -n "$CUR" ] && [ -f "$CUR/backend/docker-compose.yml" ] || { echo "dsh: нет выложенного релиза ($APP_ROOT/current)" >&2; exit 1; }
+export DSH_VERSION="$(cat "$STATE/version" 2>/dev/null || echo latest)"
+export DSH_INITDB_DIR="$APP_ROOT/initdb"
+compose() { docker compose -f "$CUR/backend/docker-compose.yml" --env-file "$ETC/db.env" "$@"; }
+wait_api() {  # up to 90 s; 503 counts as running (it reports a problem, e.g. stuck notifications)
+  local code=000
+  for _ in $(seq 1 45); do
+    code="$(curl -s -m 5 --noproxy "*" -o /dev/null -w '%{http_code}' http://127.0.0.1:8000/api/v1/health || true)"
+    if [ "$code" = 200 ] || [ "$code" = 503 ]; then return 0; fi
+    sleep 2
+  done
+  echo "API не ответил (код $code): dsh logs api" >&2
+  return 1
+}
+
+cmd="${1:-status}"; shift || true
+case "$cmd" in
+  status)
+    echo "релиз: $DSH_VERSION ($CUR)"
+    compose ps
+    printf "health: "; curl -s -m 5 --noproxy "*" -w ' (HTTP %{http_code})\n' http://127.0.0.1:8000/api/v1/health || echo "API не отвечает"
+    ;;
+  logs)
+    svc="${1:-api}"; shift || true
+    compose logs --tail 200 "$@" "$svc"
+    ;;
+  app)
+    # the password of create-admin can come from DSH_ADMIN_PASSWORD (otherwise it is asked for)
+    env_args=(); [ -n "${DSH_ADMIN_PASSWORD:-}" ] && env_args=(-e DSH_ADMIN_PASSWORD)
+    compose run --rm "${env_args[@]}" migrate python -m app "$@"
+    ;;
+  restart)
+    # recreate, not `compose restart`: a restarted container keeps the environment it was created with, so edits
+    # of api.env (Telegram, mail) would not apply
+    compose up -d --no-deps --force-recreate api worker
+    wait_api && echo "API и воркер перезапущены с настройками из $ETC/api.env"
+    ;;
+  backup)
+    set -a; . "$ETC/backup.env"; set +a
+    "$CUR/backend/deploy/backup.sh"
+    ;;
+  update)
+    src="$APP_ROOT/src"
+    [ -d "$src/.git" ] || { echo "dsh: нет git-копии в $src (выкладка из архива: распакуйте новый релиз и запустите его deploy.sh)" >&2; exit 1; }
+    git -C "$src" pull --ff-only
+    exec "$src/backend/deploy/deploy.sh" "$@"
+    ;;
+  rollback)
+    pv="$(cat "$STATE/prev_version" 2>/dev/null || true)"; pr="$(cat "$STATE/prev_root" 2>/dev/null || true)"
+    [ -n "$pv" ] && [ -f "$pr/backend/docker-compose.yml" ] || { echo "dsh: прошлого релиза нет" >&2; exit 1; }
+    echo "Откат на $pv (база не откатывается: миграции только добавляют)"
+    docker image inspect "domshchenkov-api:$pv" >/dev/null
+    DSH_VERSION="$pv" DSH_INITDB_DIR="$APP_ROOT/initdb" docker compose -f "$pr/backend/docker-compose.yml" --env-file "$ETC/db.env" up -d --no-deps api worker
+    rsync -a --delete --delay-updates --chmod=D755,F644 "$pr/site/" /var/www/domshchenkov/
+    docker tag "domshchenkov-api:$pv" domshchenkov-api:latest
+    cp "$STATE/version" "$STATE/prev_version"; cp "$STATE/root" "$STATE/prev_root"
+    echo "$pv" > "$STATE/version"; echo "$pr" > "$STATE/root"; ln -sfn "$pr" "$APP_ROOT/current"
+    wait_api
+    echo "Готово: работает $pv. Вернуться обратно: dsh rollback"
+    ;;
+  -h|--help|help)
+    sed -n '2,11p' "$0"
+    ;;
+  *)
+    echo "dsh: неизвестная команда $cmd (dsh help)" >&2; exit 2
+    ;;
+esac

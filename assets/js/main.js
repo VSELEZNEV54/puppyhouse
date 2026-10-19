@@ -25,6 +25,312 @@
   const $$ = (sel, ctx = d) => Array.from(ctx.querySelectorAll(sel));
   const scrollBehavior = reduceMotion ? 'auto' : 'smooth';
 
+  /* ---------- API: заявки, отзывы, анонимные события ----------
+     Рабочий режим (LIVE) — только если <meta name="dsh-api"> (base.html.j2) задаёт адрес и сайт открыт с домена из
+     data-origins, или в localStorage 'dsh:api' лежит абсолютный адрес API (разработка: http://127.0.0.1:8000/api/v1).
+     Иначе — прототип (GitHub Pages): формы «отправляются» как раньше, без сервера, события не собираются, хранилище
+     не трогаем. Общие функции — в window.DSH (trust.js, choice.js — отдельные IIFE). */
+  const storage = (name) => {
+    const s = () => { try { return window[name]; } catch (_) { return null; } };
+    return {
+      get(k) { try { const st = s(); return st ? st.getItem(k) : null; } catch (_) { return null; } },
+      set(k, v) { try { const st = s(); if (st) st.setItem(k, v); } catch (_) { /* приватный режим, квота */ } },
+      del(k) { try { const st = s(); if (st) st.removeItem(k); } catch (_) { /* приватный режим */ } }
+    };
+  };
+  const local = storage('localStorage');
+  const session = storage('sessionStorage');
+  const readJSON = (st, k) => { try { const v = st.get(k); return v ? JSON.parse(v) : null; } catch (_) { return null; } };
+  const writeJSON = (st, k, v) => { try { st.set(k, JSON.stringify(v)); } catch (_) { /* ничего */ } };
+
+  function uuid() {
+    const c = window.crypto;
+    if (c && typeof c.randomUUID === 'function') { try { return c.randomUUID(); } catch (_) { /* не https */ } }
+    const b = new Uint8Array(16);
+    if (c && typeof c.getRandomValues === 'function') c.getRandomValues(b);
+    else for (let i = 0; i < 16; i++) b[i] = Math.floor(Math.random() * 256);
+    b[6] = (b[6] & 0x0f) | 0x40; // v4
+    b[8] = (b[8] & 0x3f) | 0x80;
+    const h = Array.from(b, (x) => x.toString(16).padStart(2, '0')).join('');
+    return h.slice(0, 8) + '-' + h.slice(8, 12) + '-' + h.slice(12, 16) + '-' + h.slice(16, 20) + '-' + h.slice(20);
+  }
+
+  const apiMeta = $('meta[name="dsh-api"]');
+  const API = (() => {
+    const dev = local.get('dsh:api');
+    if (dev && /^https?:\/\/\S+$/i.test(dev)) return dev.replace(/\/+$/, '');
+    if (!apiMeta) return '';
+    const url = (apiMeta.getAttribute('content') || '').trim();
+    const origins = (apiMeta.dataset.origins || '').split(/\s+/).filter(Boolean);
+    if (!url || !origins.includes(location.origin)) return '';
+    try { return new URL(url, location.origin).href.replace(/\/+$/, ''); } catch (_) { return ''; }
+  })();
+  const LIVE = !!API;
+  const CONSENT = {
+    processing: (apiMeta && apiMeta.dataset.consent) || '',
+    review: (apiMeta && apiMeta.dataset.consentReview) || '',
+    distribution: (apiMeta && apiMeta.dataset.consentPublish) || ''
+  };
+
+  /* идентификаторы браузера: посетитель (localStorage, навсегда), визит (sessionStorage, новый после 30 минут
+     тишины: тогда же запоминаем страницу входа, внешний referrer и метки), первое касание (localStorage, один раз) */
+  const SESSION_TTL = 30 * 60 * 1000;
+  const UTM_KEYS = { utm_source: 'source', utm_medium: 'medium', utm_campaign: 'campaign', utm_content: 'content', utm_term: 'term', yclid: 'yclid', gclid: 'gclid' };
+  function readUtm() {
+    const out = {};
+    try {
+      const q = new URLSearchParams(location.search);
+      Object.keys(UTM_KEYS).forEach((k) => { const v = q.get(k); if (v) out[UTM_KEYS[k]] = v.slice(0, 300); });
+    } catch (_) { /* старый браузер */ }
+    return out;
+  }
+  function externalReferrer() {
+    const r = d.referrer || '';
+    try { return r && new URL(r).origin !== location.origin ? r : ''; } catch (_) { return ''; }
+  }
+  let vid = '';
+  function visitorId() {
+    if (!vid) vid = local.get('dsh:vid') || '';
+    if (!vid) { vid = uuid(); local.set('dsh:vid', vid); }
+    return vid;
+  }
+  let mem = { id: '', ts: 0, info: null }; // если sessionStorage недоступен — визит живёт в памяти страницы
+  function currentSession() {
+    const now = Date.now();
+    let id = session.get('dsh:sid') || mem.id;
+    const ts = Number(session.get('dsh:sid-ts')) || mem.ts;
+    let info = readJSON(session, 'dsh:sess') || mem.info;
+    if (!id || !info || now - ts > SESSION_TTL) {
+      id = uuid();
+      info = { landing: location.pathname, referrer: externalReferrer(), utm: readUtm() };
+      session.set('dsh:sid', id);
+      writeJSON(session, 'dsh:sess', info);
+    }
+    session.set('dsh:sid-ts', String(now));
+    mem = { id, ts: now, info };
+    return mem;
+  }
+  function firstTouch(s) {
+    let f = readJSON(local, 'dsh:first');
+    if (!f || typeof f !== 'object') {
+      f = { landing: s.info.landing, referrer: s.info.referrer, utm: s.info.utm };
+      writeJSON(local, 'dsh:first', f);
+    }
+    return f;
+  }
+  function ymUid() {
+    const m = /(?:^|;\s*)_ym_uid=(\d+)/.exec(d.cookie || '');
+    return m ? m[1] : null;
+  }
+  const pageInfo = () => ({ path: location.pathname, title: d.title });
+  // поля «кто и откуда» для заявки и пачки событий
+  function context() {
+    const s = currentSession();
+    const f = firstTouch(s);
+    return {
+      visitor_id: visitorId(),
+      session_id: s.id,
+      landing: s.info.landing || location.pathname,
+      referrer: s.info.referrer || null,
+      utm: s.info.utm || {},
+      first_landing: f.landing || s.info.landing || location.pathname,
+      first_referrer: f.referrer || null,
+      first_utm: f.utm || {},
+      ym_uid: ymUid()
+    };
+  }
+
+  /* POST JSON: keepalive, 12 с на попытку, повтор через 1 и 4 с при сетевой ошибке, 5xx, 408, 429 — с тем же
+     телом (и тем же idempotency_key). Ответ: {ok, status, data}; status 0 — сеть или таймаут. */
+  const RETRY_DELAYS = [1000, 4000];
+  const retryable = (st) => st === 0 || st >= 500 || st === 408 || st === 429;
+  const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+  async function postOnce(url, body) {
+    const ctrl = typeof AbortController === 'function' ? new AbortController() : null;
+    const timer = ctrl ? setTimeout(() => ctrl.abort(), 12000) : 0;
+    try {
+      const res = await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body,
+        keepalive: true,
+        credentials: 'same-origin',
+        cache: 'no-store',
+        signal: ctrl ? ctrl.signal : undefined
+      });
+      let data = null;
+      try { data = await res.json(); } catch (_) { data = null; }
+      return { ok: res.ok, status: res.status, data };
+    } catch (_) {
+      return { ok: false, status: 0, data: null };
+    } finally {
+      clearTimeout(timer);
+    }
+  }
+  async function sendJSON(path, payload) {
+    if (!LIVE) return { ok: false, status: 0, data: null };
+    const body = JSON.stringify(payload);
+    let res = await postOnce(API + path, body);
+    for (let i = 0; i < RETRY_DELAYS.length && retryable(res.status); i++) {
+      await sleep(RETRY_DELAYS[i]);
+      res = await postOnce(API + path, body);
+    }
+    return res;
+  }
+
+  /* Очередь неотправленного в localStorage 'dsh:outbox': запись появляется ДО первой попытки, уходит после 2xx / 409 /
+     422 и после ответа, что такое тело сервер не примет никогда (400, 413, 415); остальное ждёт следующей страницы
+     или события 'online' (старше 7 дней — выбрасываем). Ключ идемпотентности повторяется только для того же самого
+     содержимого: та же заявка из очереди уходит ровно тем же телом. */
+  const OUTBOX = 'dsh:outbox';
+  const OUTBOX_TTL = 7 * 24 * 60 * 60 * 1000;
+  const settled = (st) => (st >= 200 && st < 300) || st === 409 || st === 422;
+  // битый JSON, слишком большое тело, не тот Content-Type: повтор того же тела не поможет — в очереди не держим
+  const permanent = (st) => st === 400 || st === 413 || st === 415;
+  const inflight = new Set();
+  function outboxRead() {
+    const list = readJSON(local, OUTBOX);
+    const now = Date.now();
+    return Array.isArray(list)
+      ? list.filter((e) => e && e.key && e.path && e.payload && typeof e.ts === 'number' && now - e.ts < OUTBOX_TTL)
+      : [];
+  }
+  function outboxWrite(list) { if (list.length) writeJSON(local, OUTBOX, list); else local.del(OUTBOX); }
+  function outboxPut(entry) { outboxWrite(outboxRead().filter((e) => e.key !== entry.key).concat([entry])); }
+  function outboxDrop(key) { outboxWrite(outboxRead().filter((e) => e.key !== key)); }
+  // отпечаток содержимого (без ключа и времени заполнения): та же заявка → та же запись очереди
+  function fingerprint(path, payload) {
+    const p = Object.assign({}, payload);
+    delete p.idempotency_key;
+    delete p.elapsed_ms;
+    const str = path + JSON.stringify(p);
+    let h1 = 0xdeadbeef;
+    let h2 = 0x41c6ce57;
+    for (let i = 0; i < str.length; i++) {
+      const ch = str.charCodeAt(i);
+      h1 = Math.imul(h1 ^ ch, 2654435761);
+      h2 = Math.imul(h2 ^ ch, 1597334677);
+    }
+    h1 = Math.imul(h1 ^ (h1 >>> 16), 2246822507) ^ Math.imul(h2 ^ (h2 >>> 13), 3266489909);
+    h2 = Math.imul(h2 ^ (h2 >>> 16), 2246822507) ^ Math.imul(h1 ^ (h1 >>> 13), 3266489909);
+    return (4294967296 * (2097151 & h2) + (h1 >>> 0)).toString(36);
+  }
+  async function sendEntry(entry) {
+    inflight.add(entry.key);
+    try { return await sendJSON(entry.path, entry.payload); } finally { inflight.delete(entry.key); }
+  }
+  // Отправка формы: state — объект формы ({key}); исправленная после ошибки заявка заменяет прежнюю в очереди.
+  async function submit(path, data, state) {
+    const fp = fingerprint(path, data);
+    let entry = outboxRead().find((e) => e.path === path && e.fp === fp);
+    if (!entry) {
+      const key = uuid();
+      entry = { key, path, fp, ts: Date.now(), payload: Object.assign({}, data, { idempotency_key: key }) };
+      if (state && state.key && state.key !== key) outboxDrop(state.key);
+      outboxPut(entry);
+    }
+    if (state) state.key = entry.key;
+    let res = await sendEntry(entry);
+    if (res.status === 409) { // ключ занят другим содержимым — новый ключ, ещё одна попытка
+      outboxDrop(entry.key);
+      const key = uuid();
+      entry = { key, path, fp, ts: Date.now(), payload: Object.assign({}, entry.payload, { idempotency_key: key }) };
+      outboxPut(entry);
+      if (state) state.key = key;
+      res = await sendEntry(entry);
+    }
+    if (settled(res.status) || permanent(res.status)) {
+      outboxDrop(entry.key);
+      if (state) state.key = '';
+    }
+    return res;
+  }
+  let flushing = false;
+  async function flushOutbox() {
+    if (!LIVE || flushing) return;
+    flushing = true;
+    try {
+      const list = outboxRead();
+      outboxWrite(list); // заодно убираем просроченные
+      for (const e of list) {
+        if (inflight.has(e.key)) continue;
+        const res = await sendEntry(e);
+        if (settled(res.status) || permanent(res.status)) outboxDrop(e.key);
+        else if (retryable(res.status)) break; // сервер всё ещё недоступен — дождёмся 'online' или следующей страницы
+        // иначе (403, 404…) запись ждёт следующего раза, но не держит за собой остальную очередь
+      }
+    } finally {
+      flushing = false;
+    }
+  }
+
+  /* Анонимные события (только LIVE): page_view, form_open, contact_click, quiz_complete. Пачки до 20 штук уходят
+     через sendBeacon (text/plain — без preflight), когда вкладка скрывается или закрывается; page_view — сразу. */
+  const queue = [];
+  function flushEvents() {
+    if (!LIVE || !queue.length) return;
+    const ctx = context();
+    while (queue.length) {
+      const json = JSON.stringify(Object.assign({}, ctx, { events: queue.splice(0, 20) }));
+      let sent = false;
+      try {
+        sent = typeof navigator.sendBeacon === 'function' && navigator.sendBeacon(API + '/events', new Blob([json], { type: 'text/plain' }));
+      } catch (_) { sent = false; }
+      if (!sent) {
+        try {
+          fetch(API + '/events', { method: 'POST', headers: { 'Content-Type': 'text/plain' }, body: json, keepalive: true, credentials: 'same-origin' }).catch(() => {});
+        } catch (_) { /* ничего */ }
+      }
+    }
+  }
+  function track(type, data) {
+    if (!LIVE) return;
+    queue.push({ type, path: location.pathname, ts: Date.now(), data: data || {} });
+    if (queue.length >= 20) flushEvents();
+  }
+  // тест «Подбор породы» (choice.js): событие + результат для следующей заявки из этой вкладки
+  function quizDone(winner, second, answers) {
+    if (!LIVE || !winner) return;
+    writeJSON(session, 'dsh:quiz', { winner, second: second || null });
+    track('quiz_complete', { winner, second: second || null, answers: answers || {} });
+  }
+
+  const CHANNELS = [
+    ['a[href^="tel:"]', 'phone'], ['a[href*="t.me/"]', 'telegram'], ['a[href*="wa.me/"]', 'whatsapp'],
+    ['a[href*="max.ru"]', 'max'], ['a[href^="mailto:"]', 'email']
+  ];
+  const PLACES = [['#mega', 'mega'], ['#mmenu', 'mmenu'], ['.mbar', 'mbar'], ['.modal', 'modal'], ['.lead', 'lead'], ['.hdr', 'header'], ['.footer', 'footer']];
+  if (LIVE) {
+    d.addEventListener('click', (e) => {
+      const a = e.target && e.target.closest ? e.target.closest('a[href]') : null;
+      if (!a) return;
+      const ch = CHANNELS.find(([sel]) => a.matches(sel));
+      if (!ch) return;
+      const place = PLACES.find(([sel]) => a.closest(sel));
+      track('contact_click', { channel: ch[1], place: place ? place[1] : 'page' });
+    }, true);
+    d.addEventListener('visibilitychange', () => { if (d.visibilityState === 'hidden') flushEvents(); });
+    window.addEventListener('pagehide', flushEvents);
+    window.addEventListener('online', flushOutbox);
+    track('page_view', { title: d.title });
+    flushEvents();
+    flushOutbox();
+  }
+
+  /* Блок «Не получилось отправить…» (forms.send_fail): saved — запрос ждёт в очереди браузера и уйдёт позже;
+     иначе (permanent) он не сохранён — обещание «отправим, когда появится связь» прячем, остаются контакты. */
+  function failMode(box, saved) {
+    if (!box) return;
+    $$('[data-fail-saved]', box).forEach((el) => { el.hidden = !saved; });
+    $$('[data-fail-lost]', box).forEach((el) => { el.hidden = saved; });
+  }
+
+  window.DSH = {
+    live: LIVE, api: API, consent: CONSENT,
+    uuid, context, page: pageInfo, sendJSON, submit, settled, permanent, failMode, flushOutbox, track, flushEvents, quizDone,
+    session: { get: (k) => readJSON(session, k), del: (k) => session.del(k) }
+  };
+
   /* ---------- блокировка прокрутки ---------- */
   const locks = new Set();
   function lockScroll(key, on) {
@@ -260,11 +566,30 @@
   function setError(form, field, msg) {
     const errEl = $('#' + form.dataset.prefix + '-' + field + '-err');
     if (errEl) { errEl.textContent = msg || ''; errEl.hidden = !msg; }
-    const targets = field === 'contact' ? $$('input[name="contact"]', form) : [form.elements[field]];
+    // группа радиокнопок (contact, rating) — RadioNodeList: отмечаем каждую
+    const el = form.elements[field];
+    const targets = !el ? [] : (typeof el.setAttribute === 'function' ? [el] : Array.from(el));
     targets.forEach((t) => {
-      if (!t) return;
       if (msg) t.setAttribute('aria-invalid', 'true'); else t.removeAttribute('aria-invalid');
     });
+  }
+  // 422 от API: тексты сервера под полями (fields: {name, phone, contact, consent}); без них — тост с message
+  function serverErrors(form, data, fields, set = setError) {
+    const err = (data && data.error) || {};
+    const map = err.fields || {};
+    let first = null;
+    fields.forEach((k) => {
+      if (!map[k]) return;
+      set(form, k, String(map[k]));
+      if (!first) first = k;
+    });
+    if (first) {
+      const el = form.elements[first];
+      const target = el && typeof el.focus === 'function' ? el : (el && el[0]);
+      if (target) target.focus();
+    } else {
+      showToast(err.message || 'Проверьте, пожалуйста, поля формы');
+    }
   }
   function validate(form) {
     const f = form.elements;
@@ -312,6 +637,60 @@
     return c ? c.value : 'telegram';
   };
 
+  /* Заявка в API (LIVE): тело по контракту POST /leads. extra — поля модалки (kind, puppy, colour, note, form_title);
+     started — когда форму открыли (модалка) или начали заполнять (форма внизу) → elapsed_ms. */
+  const LEAD_FIELDS = ['name', 'phone', 'contact', 'consent'];
+  function leadPayload(form, extra, started) {
+    const f = form.elements;
+    const text = (n) => (f[n] && typeof f[n].value === 'string' ? f[n].value.trim() : '');
+    const opt = (v) => (v ? String(v) : null);
+    const quiz = readJSON(session, 'dsh:quiz');
+    const ctx = context();
+    return {
+      kind: extra.kind || 'lead',
+      name: text('name'),
+      phone: text('phone'),
+      contact: contactOf(form),
+      consent: !!(f.consent && f.consent.checked),
+      consent_version: CONSENT.processing,
+      breed: f.breed ? f.breed.value : '',
+      puppy: opt(extra.puppy),
+      puppy_name: opt(extra.puppy_name),
+      colour: opt(extra.colour),
+      note: opt(extra.note),
+      form_title: opt(extra.form_title),
+      quiz: quiz && quiz.winner ? { winner: quiz.winner, second: quiz.second || null } : null,
+      page: pageInfo(),
+      visitor_id: ctx.visitor_id,
+      session_id: ctx.session_id,
+      landing: ctx.landing,
+      referrer: ctx.referrer,
+      utm: ctx.utm,
+      first_landing: ctx.first_landing,
+      first_referrer: ctx.first_referrer,
+      first_utm: ctx.first_utm,
+      ym_uid: ctx.ym_uid,
+      hp_note: f.hp_note ? f.hp_note.value : '',
+      elapsed_ms: started ? Math.max(0, Date.now() - started) : 0
+    };
+  }
+  // отправка в API с кнопкой «Отправляем…»; isCurrent() = false — форму уже открыли заново, экран не трогаем.
+  // fail(saved): saved = false — сервер такую заявку не примет никогда (permanent), в очереди её нет
+  async function liveLead(form, payload, state, { done, fail, isCurrent = () => true }) {
+    const btn = $('[data-submit]', form);
+    btn.disabled = true;
+    btn.textContent = 'Отправляем…';
+    let res;
+    try { res = await submit('/leads', payload, state); } catch (_) { res = { ok: false, status: 0, data: null }; }
+    if (res.ok) session.del('dsh:quiz'); // результат теста уходит только со следующей заявкой
+    if (!isCurrent()) return;
+    btn.disabled = false;
+    btn.textContent = btn.dataset.label;
+    if (res.ok) done();
+    else if (res.status === 422) serverErrors(form, res.data, LEAD_FIELDS);
+    else fail(!permanent(res.status));
+  }
+
   /* ---------- модалка «Узнать цену» ---------- */
   const modal = $('#price-modal');
   const pForm = $('#price-form');
@@ -320,6 +699,9 @@
     bindLiveClear(pForm);
     const viewForm = $('[data-view="form"]', modal);
     const viewDone = $('[data-view="done"]', modal);
+    const viewError = $('[data-view="error"]', modal);
+    const errorTitle = $('#pm-error-title');
+    const ERROR_TITLE = errorTitle ? errorTitle.textContent : ''; // «Заявка пока не ушла» — ждёт в очереди
     const title = $('#pm-title');
     const sub = $('#pm-sub');
     const thumb = $('[data-pm-thumb]', modal);
@@ -329,6 +711,10 @@
     const doneTitle = $('#pm-done-title');
     const doneText = $('#pm-done-text');
     let returnTo = null;
+    let openedAt = 0; // elapsed_ms заявки — от открытия окна
+    let openSeq = 0; // номер открытия: ответ API от прошлого открытия не меняет экран нового
+    const pState = { key: '' };
+    const hidden = (name, value) => { if (pForm.elements[name]) pForm.elements[name].value = value || ''; };
 
     // порода в списке: по значению или по названию («Мальтипу»), без учёта регистра
     const selectBreed = (name) => {
@@ -340,7 +726,9 @@
 
     // ds — data-атрибуты кнопки: data-modal-title / -sub (заголовок и подпись окна),
     // data-modal-breed (порода в списке, если окно без щенка), data-modal-note (скрытая пометка заявки),
-    // data-modal-submit (текст кнопки отправки), data-modal-done (текст после отправки)
+    // data-modal-kind (тип заявки для API; без него — puppy у карточки щенка, иначе price), data-modal-colour (окрас),
+    // data-modal-submit (текст кнопки отправки), data-modal-done (текст после отправки).
+    // Скрытые поля (kind, puppy, puppy_name, colour, note, form_title) задаём при КАЖДОМ открытии: form.reset() их не чистит.
     const pSubmit = $('[data-submit]', pForm);
     const SUBMIT_LABEL = pSubmit.dataset.label;
     let doneOverride = '';
@@ -349,8 +737,12 @@
       pSubmit.dataset.label = ds.modalSubmit || SUBMIT_LABEL;
       doneOverride = ds.modalDone || '';
       clearForm(pForm);
+      openedAt = Date.now();
+      openSeq++;
+      pState.key = '';
       viewForm.hidden = false;
       viewDone.hidden = true;
+      if (viewError) viewError.hidden = true;
       modal.setAttribute('aria-labelledby', 'pm-title');
       modal.setAttribute('aria-describedby', 'pm-sub');
       if (pup) {
@@ -362,18 +754,30 @@
         thumb.classList.toggle('is-studio', pup.img.startsWith('studio-'));
         thumb.hidden = false;
         breedField.hidden = true;
-        pForm.elements.puppy.value = pup.name;
+        if (pup.breed) selectBreed(pup.breed); // порода щенка уходит в заявку, хотя список скрыт
       } else {
         title.textContent = 'Узнать цену щенка';
         sub.textContent = 'Пришлём щенков в наличии с ценами и видео';
         thumb.hidden = true;
         breedField.hidden = false;
-        pForm.elements.puppy.value = '';
       }
       if (ds.modalTitle) title.textContent = ds.modalTitle;
       if (ds.modalSub) sub.textContent = ds.modalSub;
-      if (ds.modalNote) pForm.elements.puppy.value = ds.modalNote;
       if (ds.modalBreed && !breedField.hidden) selectBreed(ds.modalBreed);
+      const kind = ds.modalKind || (pup ? 'puppy' : 'price');
+      hidden('kind', kind);
+      hidden('puppy', pup ? pup.slug : '');
+      hidden('puppy_name', pup ? pup.name : '');
+      hidden('colour', ds.modalColour);
+      hidden('note', ds.modalNote);
+      hidden('form_title', title.textContent);
+      // после всех обработчиков клика (puppy.js выбирает породу своей страницы) — порода уже в списке
+      setTimeout(() => track('form_open', {
+        kind,
+        breed: (breedSelect && breedSelect.value) || null,
+        puppy: (pup && pup.slug) || null,
+        colour: ds.modalColour || null
+      }), 0);
       if (typeof modal.showModal === 'function') modal.showModal(); else modal.setAttribute('open', '');
       lockScroll('modal', true);
       setTimeout(() => pForm.elements.name.focus(), 30);
@@ -391,6 +795,8 @@
       if (mega && megaWrap.contains(trigger)) { mega.set(false); opener = mega.btn; }
       const pup = card ? {
         name: card.dataset.name,
+        slug: card.dataset.slug || '',
+        breed: card.dataset.breed || '',
         desc: card.dataset.desc,
         img: card.dataset.img,
         tone: getComputedStyle(card).getPropertyValue('--tone').trim()
@@ -410,7 +816,7 @@
     // ловушка фокуса: Tab по кругу внутри окна (браузер иначе уводит фокус в свою панель)
     modal.addEventListener('keydown', (e) => {
       if (e.key !== 'Tab') return;
-      const items = $$('a[href], button:not([disabled]), input:not([type="hidden"]), select, textarea, [tabindex]:not([tabindex="-1"])', modal)
+      const items = $$('a[href], button:not([disabled]), input:not([type="hidden"]):not([tabindex="-1"]), select, textarea, [tabindex]:not([tabindex="-1"])', modal)
         .filter((el) => el.offsetParent !== null && !(el.type === 'radio' && !el.checked && $$('input[name="' + el.name + '"]:checked', modal).length));
       if (!items.length) return;
       const first = items[0];
@@ -423,22 +829,55 @@
     modal.addEventListener('pointerdown', (e) => { downOnBackdrop = e.target === modal; });
     modal.addEventListener('click', (e) => { if (e.target === modal && downOnBackdrop) closeModal(); });
 
+    const showDone = () => {
+      const name = pForm.elements.name.value.trim();
+      const c = contactOf(pForm);
+      doneTitle.textContent = 'Спасибо, ' + name;
+      doneText.textContent = doneOverride || (c === 'call'
+        ? 'Куратор позвонит вам в течение рабочего дня по московскому времени.'
+        : 'Куратор пришлёт цену и видео в ' + CONTACT_LABEL[c] + ' в течение рабочего дня по московскому времени.');
+      viewForm.hidden = true;
+      viewDone.hidden = false;
+      modal.setAttribute('aria-labelledby', 'pm-done-title');
+      modal.setAttribute('aria-describedby', 'pm-done-text');
+      doneTitle.focus();
+    };
+    // API недоступен после всех попыток: заявка ждёт в очереди браузера, форма остаётся заполненной.
+    // saved = false — сервер её не примет (permanent): не сохранена, обещания «отправим позже» нет
+    const showError = (saved = true) => {
+      if (!viewError) return;
+      errorTitle.textContent = saved ? ERROR_TITLE : 'Заявка не ушла';
+      failMode($('#pm-error-text', modal), saved);
+      viewForm.hidden = true;
+      viewError.hidden = false;
+      modal.setAttribute('aria-labelledby', 'pm-error-title');
+      modal.setAttribute('aria-describedby', 'pm-error-text');
+      errorTitle.focus();
+    };
+    const backBtn = $('[data-pm-back]', modal);
+    if (backBtn) backBtn.addEventListener('click', () => {
+      viewError.hidden = true;
+      viewForm.hidden = false;
+      modal.setAttribute('aria-labelledby', 'pm-title');
+      modal.setAttribute('aria-describedby', 'pm-sub');
+      pSubmit.focus();
+    });
+
     pForm.addEventListener('submit', (e) => {
       e.preventDefault();
       if (!validate(pForm)) return;
-      fakeSend(pForm, () => {
-        const name = pForm.elements.name.value.trim();
-        const c = contactOf(pForm);
-        doneTitle.textContent = 'Спасибо, ' + name;
-        doneText.textContent = doneOverride || (c === 'call'
-          ? 'Куратор позвонит вам в течение рабочего дня по московскому времени.'
-          : 'Куратор пришлёт цену и видео в ' + CONTACT_LABEL[c] + ' в течение рабочего дня по московскому времени.');
-        viewForm.hidden = true;
-        viewDone.hidden = false;
-        modal.setAttribute('aria-labelledby', 'pm-done-title');
-        modal.setAttribute('aria-describedby', 'pm-done-text');
-        doneTitle.focus();
-      });
+      if (!LIVE) { fakeSend(pForm, showDone); return; }
+      const f = pForm.elements;
+      const payload = leadPayload(pForm, {
+        kind: f.kind.value,
+        puppy: f.puppy.value,
+        puppy_name: f.puppy_name.value,
+        colour: f.colour.value,
+        note: f.note.value,
+        form_title: f.form_title.value
+      }, openedAt);
+      const seq = openSeq;
+      liveLead(pForm, payload, pState, { done: showDone, fail: showError, isCurrent: () => seq === openSeq && modal.open });
     });
   }
 
@@ -449,16 +888,32 @@
     bindLiveClear(lForm);
     const done = $('[data-done]');
     const doneText = $('[data-done-text]');
+    const fail = $('[data-fail]');
+    const lState = { key: '' };
+    let startedAt = 0; // elapsed_ms — от первого касания формы
+    const start = () => {
+      if (startedAt) return;
+      startedAt = Date.now();
+      track('form_open', { kind: 'lead', breed: (lForm.elements.breed && lForm.elements.breed.value) || null, puppy: null, colour: null });
+    };
+    lForm.addEventListener('focusin', start);
+    lForm.addEventListener('input', start);
+    const showDone = () => {
+      const c = contactOf(lForm);
+      doneText.textContent = c === 'call' ? 'Спасибо! Позвоним в течение рабочего дня' : 'Спасибо! Напишем в течение рабочего дня';
+      if (fail) fail.hidden = true;
+      lForm.hidden = true;
+      done.hidden = false;
+      done.focus();
+    };
     lForm.addEventListener('submit', (e) => {
       e.preventDefault();
       if (!validate(lForm)) return;
-      fakeSend(lForm, () => {
-        const c = contactOf(lForm);
-        doneText.textContent = c === 'call' ? 'Спасибо! Позвоним в течение рабочего дня' : 'Спасибо! Напишем в течение рабочего дня';
-        lForm.hidden = true;
-        done.hidden = false;
-        done.focus();
-      });
+      if (!LIVE) { fakeSend(lForm, showDone); return; }
+      if (fail) fail.hidden = true;
+      const title = $('#lead-title');
+      const payload = leadPayload(lForm, { kind: 'lead', form_title: title ? title.textContent.trim() : '' }, startedAt);
+      liveLead(lForm, payload, lState, { done: showDone, fail: (saved) => { failMode(fail, saved); if (fail) fail.hidden = false; } });
     });
   }
 

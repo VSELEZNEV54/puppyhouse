@@ -21,13 +21,14 @@
   <link rel="icon" href="../assets/icons/favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="../assets/icons/apple-touch-icon.png">
   <link rel="manifest" href="../site.webmanifest">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500&amp;display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../assets/css/main.css?v=0f7c0737">
+  <meta name="dsh-api" content="/api/v1" data-origins="https://xn--b1adduihee9g.xn--p1ai https://www.xn--b1adduihee9g.xn--p1ai" data-consent="processing-2026-10-19" data-consent-publish="distribution-2026-10-19" data-consent-review="review-2026-10-19">
+  <!-- Geist is served from our own domain (assets/fonts, SIL OFL 1.1): no visitor IP goes to Google before consent -->
+  <link rel="preload" href="../assets/fonts/geist-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="../assets/fonts/geist-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="../assets/css/main.css?v=aa91f86f">
   <link rel="stylesheet" href="../assets/css/pages.css?v=0506347c">
   <link rel="stylesheet" href="../assets/css/delivery.css?v=e386282c">
-  <script src="../assets/js/main.js?v=6556ab15" defer></script>
+  <script src="../assets/js/main.js?v=fe1f7726" defer></script>
 </head>
 <body>
   <!-- Иконки: инлайн-спрайт 24×24. Линейные — stroke currentColor, заливочные — fill. -->
@@ -171,7 +172,7 @@
           <div class="mega__foot">
             <a class="mega__phone" href="tel:+74951234567">+7 (495) 123-45-67<small>Ежедневно с 9:00 до 21:00</small></a>
             <div class="mega__actions">
-              <button class="btn btn--white" type="button" data-open-modal>Узнать цену</button>
+              <button class="btn btn--white" type="button" data-open-modal data-modal-kind="price">Узнать цену</button>
               <a class="btn btn--tg" href="https://t.me/puppyhouse_msk" target="_blank" rel="noopener"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-tg"/></svg>Написать в Telegram</a>
             </div>
           </div>
@@ -238,7 +239,7 @@
         <div class="article__body prose">
           <h2 id="obshchie-polozheniya">1. Общие положения</h2>
 <p>Эта политика объясняет, как ИП Селезнев Владимир Игоревич (ИНН 220703337790, ОГРНИП 324547600187418) — далее «Оператор» — обрабатывает персональные данные посетителей сайта домщенков.рф.</p>
-<p>Политика составлена по Федеральному закону от 27.07.2006 № <span class="nw">152-ФЗ</span> «О персональных данных». Отправляя заявку на сайте, вы соглашаетесь с этой политикой. Если вы не согласны, пожалуйста, не отправляйте формы.</p>
+<p>Политика составлена по Федеральному закону от 27.07.2006 № <span class="nw">152-ФЗ</span> «О персональных данных». Согласие на обработку данных вы даёте отдельно — отметкой в форме перед отправкой заявки. Текст согласия: <a href="../soglasie/">согласие на обработку персональных данных</a>.</p>
           <h2 id="kakie-dannye">2. Какие данные мы получаем</h2>
 <ul><li>имя, которое вы указали в форме;</li><li>номер телефона;</li><li>удобный способ связи: Telegram, WhatsApp или звонок;</li><li>породу, которая вас интересует, и текст сообщения;</li><li>технические данные: cookie, <span class="nw">IP-адрес</span>, тип браузера и устройства, просмотренные страницы.</li></ul>
 <p>На сайте мы не просим паспортные данные. Данные для договора <span class="nw">купли-продажи</span> собираем отдельно, при его подписании.</p>
@@ -247,20 +248,20 @@
           <h2 id="osnovaniya">4. Правовые основания</h2>
 <p>Мы обрабатываем данные с вашего согласия, которое вы даёте при отправке формы, а также для заключения и исполнения договора, стороной которого вы являетесь (статья 6 Закона № <span class="nw">152-ФЗ</span>).</p>
           <h2 id="hranenie">5. Как мы обрабатываем и храним данные</h2>
-<p>Мы собираем, записываем, систематизируем, храним, уточняем, используем и удаляем данные — вручную и с помощью программ. Базы данных находятся на территории России [сервис хранения уточнить].</p>
-<p>Храним данные, пока это нужно для целей выше или пока вы не отзовёте согласие, но не дольше [3 лет] с последнего обращения. Затем удаляем или обезличиваем.</p>
+<p>Мы собираем, записываем, систематизируем, храним, уточняем, используем и удаляем данные — вручную и с помощью программ. Базы данных находятся на территории России — на сервере <span class="nw">в дата-центре</span> Timeweb Cloud <span class="nw">в Санкт-Петербурге</span>.</p>
+<p>Храним данные, пока это нужно для целей выше или пока вы не отзовёте согласие, но не дольше 3 лет с последнего обращения. Затем удаляем или обезличиваем.</p>
           <h2 id="peredacha">6. Кому мы передаём данные</h2>
 <p>Мы не продаём данные и не передаём их третьим лицам, кроме случаев, когда это нужно для вашей же заявки или требует закон:</p>
 <ul><li>перевозчику или сопровождающему — чтобы доставить щенка;</li><li><span class="nw">банку-партнёру</span> — если вы сами решили оформить рассрочку;</li><li>государственным органам — по законному запросу.</li></ul>
 <p>Если вы выбрали Telegram или WhatsApp, переписка идёт через эти сервисы по их правилам.</p>
           <h2 id="cookie">7. Cookie и статистика</h2>
-<p>Сайт использует cookie и сервисы <span class="nw">веб-аналитики</span> [Яндекс Метрика — уточнить], чтобы понимать, какие страницы полезны. Эти данные обезличены. Cookie можно отключить в настройках браузера — сайт продолжит работать.</p>
+<p>Сайт не ставит cookie и не подключает сторонние счётчики. Чтобы понимать, какие страницы полезны, сайт записывает на нашем сервере просмотры страниц и источник перехода под случайным номером браузера — он хранится в памяти браузера (localStorage). Пока вы не отправили заявку, эти записи не связаны с вашими данными и хранятся до 180 дней; после заявки мы видим, какие страницы вы смотрели перед ней, — это указано в согласии. Номер удаляется вместе с данными сайта в настройках браузера.</p>
           <h2 id="zashchita">8. Как мы защищаем данные</h2>
-<p>Доступ к данным есть только у сотрудников, которым он нужен для работы с вашей заявкой. Мы используем защищённое соединение, пароли и ограничение доступа [меры уточнить].</p>
+<p>Доступ к данным есть только у сотрудников, которым он нужен для работы с вашей заявкой. Сайт работает только по защищённому соединению. База данных недоступна из интернета; сотрудники входят в систему заявок по личным логинам и паролям, каждое действие с заявкой записывается в журнал. Резервные копии шифруются и хранятся не дольше 20 дней, <span class="nw">IP-адреса</span> удаляются через 30 дней.</p>
           <h2 id="prava">9. Ваши права</h2>
 <ul><li>узнать, какие ваши данные мы храним и как используем;</li><li>уточнить, исправить или удалить данные;</li><li>отозвать согласие на обработку;</li><li>обжаловать наши действия в Роскомнадзоре или в суде.</li></ul>
           <h2 id="kontakty-operatora">10. Как связаться и отозвать согласие</h2>
-<p>Напишите на <a href="mailto:[почта]@домщенков.рф">[почта]@домщенков.рф</a> или по адресу: [почтовый адрес]. Ответим в срок, который установлен законом, — обычно в течение 10 рабочих дней. После отзыва согласия прекратим обработку и удалим данные, если закон не требует хранить их дольше.</p>
+<p>Напишите на <a href="mailto:[почта]@домщенков.рф">[почта]@домщенков.рф</a>. Ответим в срок, который установлен законом, — обычно в течение 10 рабочих дней. После отзыва согласия прекратим обработку и удалим данные, если закон не требует хранить их дольше.</p>
           <h2 id="izmeneniya">11. Изменения политики</h2>
 <p>Мы можем обновлять политику. Актуальная версия всегда на этой странице, дата редакции — в начале.</p>
         </div>
@@ -340,7 +341,7 @@
       </div>
       <div class="footer__legal">
         <span>© 2017–2026 домщенков.рф · ИП Селезнев Владимир Игоревич · ИНН 220703337790 · ОГРНИП 324547600187418</span>
-        <span>Сайт не является публичной офертой · <a href="./">Политика конфиденциальности</a></span>
+        <span>Сайт не является публичной офертой · <a href="./">Политика конфиденциальности</a> · <a href="../soglasie/">Согласие на обработку данных</a> · <a href="../soglasie-na-publikaciyu/">Согласие на публикацию отзыва</a></span>
       </div>
     </div>
   </footer>
@@ -348,7 +349,7 @@
   <!-- Липкая панель на мобиле -->
   <nav class="mbar" aria-label="Быстрая связь" data-mbar>
     <a class="mbar__btn" href="tel:+74951234567"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-phone"/></svg>Позвонить</a>
-    <a class="mbar__btn" href="https://t.me/puppyhouse_msk" target="_blank" rel="noopener"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-tg"/></svg>Telegram</a>    <button class="mbar__btn mbar__btn--ink" type="button" data-open-modal>Узнать цену</button>
+    <a class="mbar__btn" href="https://t.me/puppyhouse_msk" target="_blank" rel="noopener"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-tg"/></svg>Telegram</a>    <button class="mbar__btn mbar__btn--ink" type="button" data-open-modal data-modal-kind="price">Узнать цену</button>
   </nav>
 
   <!-- Мобильное меню -->
@@ -455,7 +456,7 @@
         <a class="msgr msgr--tg" href="https://t.me/puppyhouse_msk" target="_blank" rel="noopener" aria-label="Написать в Telegram" title="Telegram"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-tg"/></svg></a>
         <a class="msgr msgr--wa" href="https://wa.me/74951234567" target="_blank" rel="noopener" aria-label="Написать в WhatsApp" title="WhatsApp"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-wa"/></svg></a>
         <a class="msgr msgr--max" href="https://max.ru/domshchenkov" target="_blank" rel="noopener" aria-label="Написать в MAX" title="MAX"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-max"/></svg></a>
-        <button class="btn btn--white mmenu__price" type="button" data-open-modal>Узнать цену</button>
+        <button class="btn btn--white mmenu__price" type="button" data-open-modal data-modal-kind="price">Узнать цену</button>
       </div>
       <a class="btn btn--tg btn--lg btn--block" href="https://t.me/puppyhouse_msk" target="_blank" rel="noopener"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-tg"/></svg>Написать в Telegram</a>
     </div>
@@ -475,7 +476,12 @@
           </div>
         </div>
         <form class="form" id="price-form" novalidate>
+          <input type="hidden" name="kind" value="price">
           <input type="hidden" name="puppy" value="">
+          <input type="hidden" name="puppy_name" value="">
+          <input type="hidden" name="colour" value="">
+          <input type="hidden" name="note" value="">
+          <input type="hidden" name="form_title" value="">
           <div class="form__grid">
             <div class="field">
               <label class="field__label" for="pm-name">Имя</label>
@@ -491,11 +497,11 @@
               <label class="field__label" for="pm-breed">Какая порода интересует</label>
               <select class="input select" id="pm-breed" name="breed">
                 <option value="" selected>Выберите породу</option>
-                <option>Мальтипу</option>
-                <option>Французский бульдог</option>
-                <option>Той-пудель</option>
-                <option>Бордер-колли</option>
-                <option>Пока не&nbsp;решил(а)</option>
+                <option value="maltipu">Мальтипу</option>
+                <option value="francuzskij-buldog">Французский бульдог</option>
+                <option value="toj-pudel">Той-пудель</option>
+                <option value="border-kolli">Бордер-колли</option>
+                <option value="undecided">Пока не&nbsp;решил(а)</option>
               </select>
             </div>
             <fieldset class="field seg" role="radiogroup" aria-describedby="pm-contact-err">
@@ -508,11 +514,16 @@
               </div>
               <p class="field__err" id="pm-contact-err" hidden></p>
             </fieldset>
+            <div class="hp" aria-hidden="true">
+              <label for="pm-hp">Оставьте это поле пустым</label>
+              <input type="text" id="pm-hp" name="hp_note" value="" tabindex="-1" autocomplete="off">
+            </div>
             <div class="field">
               <div class="check">
                 <input type="checkbox" id="pm-consent" name="consent" aria-describedby="pm-consent-err">
-                <label for="pm-consent">Соглашаюсь на&nbsp;обработку персональных данных и&nbsp;принимаю <a href="./" target="_blank" rel="noopener">политику конфиденциальности</a></label>
+                <label for="pm-consent">Даю <a href="../soglasie/" target="_blank" rel="noopener">согласие на обработку персональных данных</a></label>
               </div>
+              <p class="check__note"><a href="./" target="_blank" rel="noopener">Политика конфиденциальности</a></p>
               <p class="field__err" id="pm-consent-err" hidden></p>
             </div>
           </div>
@@ -525,6 +536,19 @@
         <h2 class="modal__title" id="pm-done-title" tabindex="-1">Спасибо</h2>
         <p class="modal__sub" id="pm-done-text"></p>
         <button class="btn btn--ink btn--lg btn--block" type="button" data-close-modal>Хорошо</button>
+      </div>
+      <div class="modal__view modal__done modal__fail" data-view="error" hidden>
+        <span class="form-done__ico form-fail__ico" aria-hidden="true"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-info"/></svg></span>
+        <h2 class="modal__title" id="pm-error-title" tabindex="-1">Заявка пока не&nbsp;ушла</h2>
+        <div class="form-fail" id="pm-error-text">
+          <p class="form-fail__text">Не получилось отправить заявку. <span data-fail-saved>Мы сохранили её и&nbsp;отправим, когда появится связь. Или напишите нам:</span><span data-fail-lost hidden>Позвоните или напишите нам:</span></p>
+          <p class="form-fail__links">
+            <a class="form-fail__link" href="tel:+74951234567"><svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-phone"/></svg>+7 (495) 123-45-67</a>
+            <a class="form-fail__link" href="https://t.me/puppyhouse_msk" target="_blank" rel="noopener"><svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-tg"/></svg>Telegram</a>
+            <a class="form-fail__link" href="https://max.ru/domshchenkov" target="_blank" rel="noopener"><svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-max"/></svg>MAX</a>
+          </p>
+        </div>
+        <button class="btn btn--ink btn--lg btn--block" type="button" data-pm-back>Вернуться к&nbsp;заявке</button>
       </div>
     </div>
   </dialog>

@@ -8,7 +8,7 @@
 
 {% block hero %}
     {% call dlv.framed_hero(g.h1, g.photo, lead=g.lead, tone='coral', eyebrow=g.eyebrow, chips=g.chips, pos='52% 62%', portrait=true) %}
-      {{ forms.price_button('Подобрать щенка', cls='btn btn--ink btn--lg') }}
+      <button class="btn btn--ink btn--lg" type="button" data-open-modal data-modal-kind="help" data-modal-title="{{ g.modal.title }}" data-modal-sub="{{ g.modal.sub }}" data-modal-note="{{ g.modal.note }}" data-modal-submit="{{ g.modal.label }}">{{ g.modal.label|typo }}</button>
       <a class="btn btn--white btn--lg" href="#kak-podarit">Как подарить</a>
     {% endcall %}
 {% endblock %}

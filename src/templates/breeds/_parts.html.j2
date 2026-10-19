@@ -21,7 +21,7 @@
             <h3 class="brd-col__name"><a href="{{ url }}">{{ c.title|typo }}</a></h3>
             <p class="brd-col__text">{{ (c.short or c.text)|typo }}</p>
             <div class="brd-col__actions">
-              <button class="btn btn--ink brd-col__btn" type="button" data-open-modal data-modal-breed="{{ b.name }}" data-modal-title="Подберём {{ c.pick }}" data-modal-sub="Пришлём щенков этого окраса с фото, видео и ценой. Нет сейчас — напишем, когда появятся" data-modal-note="Окрас: {{ c.label|lower }}" data-modal-submit="Подобрать щенка">Подобрать {{ c.pick|typo }}</button>
+              <button class="btn btn--ink brd-col__btn" type="button" data-open-modal data-modal-kind="colour" data-modal-colour="{{ c.slug }}" data-modal-breed="{{ b.name }}" data-modal-title="Подберём {{ c.pick }}" data-modal-sub="Пришлём щенков этого окраса с фото, видео и ценой. Нет сейчас — напишем, когда появятся" data-modal-note="Окрас: {{ c.label|lower }}" data-modal-submit="Подобрать щенка">Подобрать {{ c.pick|typo }}</button>
               <a class="btn btn--white brd-col__btn" href="{{ url }}" aria-label="Подробнее: {{ c.title }}">Подробнее</a>
             </div>
           </div>
@@ -39,7 +39,7 @@
 
 {#- «Получить консультацию» about colours: the button in the head of a colours section. -#}
 {% macro colour_consult(b) -%}
-<button class="btn btn--white brd-help" type="button" data-open-modal data-modal-breed="{{ b.name }}" data-modal-title="Поможем выбрать окрас" data-modal-sub="Расскажем, как меняется окрас с возрастом, и пришлём щенков нужного цвета с видео" data-modal-note="Консультация: окрас, {{ b.name|lower }}" data-modal-submit="Получить консультацию">Получить консультацию</button>
+<button class="btn btn--white brd-help" type="button" data-open-modal data-modal-kind="consult" data-modal-breed="{{ b.name }}" data-modal-title="Поможем выбрать окрас" data-modal-sub="Расскажем, как меняется окрас с возрастом, и пришлём щенков нужного цвета с видео" data-modal-note="Консультация: окрас, {{ b.name|lower }}" data-modal-submit="Получить консультацию">Получить консультацию</button>
 {%- endmacro %}
 
 {#- Articles about the breed (client 15.10): four wide article cards in a row, the rest beyond the edge — arrows and

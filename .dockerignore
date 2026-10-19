@@ -1,0 +1,9 @@
+# The API image needs only backend/ and the site catalog (src/data). Build context = repo root:
+#   docker build -f backend/Dockerfile .
+*
+!backend/
+!src/data/
+backend/.env
+backend/.env.*
+backend/tests/
+**/__pycache__/

@@ -15,7 +15,7 @@
 {% block sprite_extra %}{{ part.icons() }}{% endblock %}
 
 {%- macro kit_button(label, cls='btn btn--ink btn--lg') -%}
-<button class="{{ cls }}" type="button" data-open-modal data-modal-title="{{ sh.modal_title }}" data-modal-sub="{{ sh.modal_sub }}" data-modal-note="Стартовый набор">{{ label }}</button>
+<button class="{{ cls }}" type="button" data-open-modal data-modal-kind="shop" data-modal-title="{{ sh.modal_title }}" data-modal-sub="{{ sh.modal_sub }}" data-modal-note="Стартовый набор">{{ label }}</button>
 {%- endmacro %}
 
 {% block hero %}

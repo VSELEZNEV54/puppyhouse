@@ -254,7 +254,8 @@ def sitemap_xml(entries: list[tuple[str, str]], conf: dict) -> str:
 
 def robots_txt(conf: dict) -> str:
     base = conf["base_url"]
-    hidden = sorted({u for u in conf["noindex"] if u.startswith("/_")} | {"/_kit/"})
+    # /admin/ — the request panel, /api/ — the forms' API (both on the server only, backend/)
+    hidden = sorted({u for u in conf["noindex"] if u.startswith("/_")} | {"/_kit/", "/admin/", "/api/"})
     dis = "".join(f"Disallow: {u}\n" for u in hidden)
     utm = "utm_source&utm_medium&utm_campaign&utm_content&utm_term&yclid&ysclid&gclid&fbclid&from&openstat"
     return (

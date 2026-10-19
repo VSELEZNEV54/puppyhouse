@@ -6,6 +6,9 @@
     "index.html",
     "maltipu/index.html",
     "politika-konfidencialnosti/index.html",
+    "soglasie-na-otzyv/index.html",
+    "soglasie-na-publikaciyu/index.html",
+    "soglasie/index.html",
     "toj-pudel/index.html"
   ],
   "routes": {
@@ -14,31 +17,46 @@
     "/francuzskij-buldog/": "breeds",
     "/maltipu/": "breeds",
     "/politika-konfidencialnosti/": "delivery",
+    "/soglasie-na-otzyv/": "legal",
+    "/soglasie-na-publikaciyu/": "legal",
+    "/soglasie/": "legal",
     "/toj-pudel/": "breeds"
   },
   "lastmod": {
     "/": [
-      "47b5e33d44ad",
+      "79b5614c534d",
       "2026-10-19"
     ],
     "/border-kolli/": [
-      "f013e3975401",
+      "91289cae2755",
       "2026-10-19"
     ],
     "/francuzskij-buldog/": [
-      "35959b6cc582",
+      "e6b3da8e805c",
       "2026-10-19"
     ],
     "/maltipu/": [
-      "1a2eaa60e5e3",
+      "18c4371e6917",
       "2026-10-19"
     ],
     "/politika-konfidencialnosti/": [
-      "dae487e7ae50",
+      "8aea811987bc",
+      "2026-10-19"
+    ],
+    "/soglasie-na-otzyv/": [
+      "567f9399a234",
+      "2026-10-19"
+    ],
+    "/soglasie-na-publikaciyu/": [
+      "c5a2c43e3096",
+      "2026-10-19"
+    ],
+    "/soglasie/": [
+      "71f8d44aa30c",
       "2026-10-19"
     ],
     "/toj-pudel/": [
-      "6ad656743217",
+      "9aa43966f0f6",
       "2026-10-19"
     ]
   }

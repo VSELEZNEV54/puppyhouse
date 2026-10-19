@@ -45,7 +45,7 @@
     <span class="cta-band__faces bsub-cta__faces" aria-hidden="true">{% for f in faces %}<span class="face"{% if tone_style(f.src) %} style="--tone:{{ photo_tone(f.src).top }}"{% endif %}><img src="{{ f.src }}" alt="" width="{{ imgsize(f.src)[0] }}" height="{{ imgsize(f.src)[1] }}" loading="lazy" decoding="async"></span>{% endfor %}</span>
     {% endif %}
     <div class="cta-band__actions">
-      <button class="btn btn--ink btn--lg" type="button" data-open-modal{% if breed %} data-modal-breed="{{ breed }}"{% endif %}>Узнать цену</button>
+      <button class="btn btn--ink btn--lg" type="button" data-open-modal data-modal-kind="price"{% if breed %} data-modal-breed="{{ breed }}"{% endif %}>Узнать цену</button>
     </div>
   </div>
 </section>
@@ -99,7 +99,7 @@
       <span class="bsub-col__badge bsub-col__badge--{{ c.std or 'none' }}">{{ c.badge|typo }}</span>
       <h3 class="bsub-col__name">{{ c.name|typo }}</h3>
       <p class="bsub-col__text">{{ c.text|typo }}</p>
-      <button class="btn btn--white bsub-col__btn" type="button" data-open-modal data-modal-breed="{{ b.name }}" data-modal-title="{{ b.name }}: {{ c.label|lower }}" data-modal-sub="Пришлём щенков этого окраса с фото, видео и ценой" data-modal-note="Окрас: {{ c.label|lower }}">Спросить о&nbsp;щенках</button>
+      <button class="btn btn--white bsub-col__btn" type="button" data-open-modal data-modal-kind="colour" data-modal-colour="{{ c.slug }}" data-modal-breed="{{ b.name }}" data-modal-title="{{ b.name }}: {{ c.label|lower }}" data-modal-sub="Пришлём щенков этого окраса с фото, видео и ценой" data-modal-note="Окрас: {{ c.label|lower }}">Спросить о&nbsp;щенках</button>
     </div>
   </li>
   {% endfor %}
@@ -108,7 +108,7 @@
     {{ ui.ico('palette', 'lilac') }}
     <h3 class="bsub-col__name">{{ ask.title|typo }}</h3>
     <p class="bsub-col__text">{{ ask.line|typo }}</p>
-    <button class="btn btn--ink" type="button" data-open-modal data-modal-breed="{{ b.name }}" data-modal-title="{{ ask.title }}" data-modal-sub="Пришлём щенков нужного окраса с фото, видео и ценой" data-modal-note="Подбор по окрасу">Оставить заявку</button>
+    <button class="btn btn--ink" type="button" data-open-modal data-modal-kind="colour" data-modal-breed="{{ b.name }}" data-modal-title="{{ ask.title }}" data-modal-sub="Пришлём щенков нужного окраса с фото, видео и ценой" data-modal-note="Подбор по окрасу">Оставить заявку</button>
   </li>
   {% endif %}
 </ul>

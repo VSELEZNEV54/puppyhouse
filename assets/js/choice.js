@@ -1,7 +1,8 @@
 /* домщенков.рф — подбор породы, сравнения, стартовый набор (группа choice). Ванильный JS, без библиотек.
    1. Тест /podbor-porody/: шаги-радиогруппы, прогресс, «Назад», результат без перезагрузки (#rezultat-<порода>).
    2. Чек-лист /magazin/: отметки запоминаются в этом браузере, кнопка «Распечатать».
-   Кнопки «Узнать цену» с data-modal-title / -sub / -breed / -note настраивает общая модалка в main.js. */
+   Кнопки «Узнать цену» с data-modal-title / -sub / -breed / -note настраивает общая модалка в main.js.
+   Завершённый тест → window.DSH.quizDone (main.js): событие quiz_complete и результат к следующей заявке. */
 (() => {
   'use strict';
 
@@ -127,6 +128,13 @@
       const ranked = order.map((slug, k) => ({ slug, k, score: totals[k] }))
         .sort((x, y) => y.score - x.score || x.k - y.k);
       showResult(ranked[0].slug, ranked[1].slug, picked);
+      // событие quiz_complete и результат для следующей заявки (main.js, только рабочий режим API) — здесь, а не в
+      // showResult: та показывает и результат по ссылке #rezultat-<порода>, без прохождения теста
+      if (window.DSH) {
+        const answers = {};
+        Object.keys(picked).forEach((key) => { if (picked[key]) answers[key] = picked[key].value; });
+        window.DSH.quizDone(ranked[0].slug, ranked[1] ? ranked[1].slug : null, answers);
+      }
     };
 
     const restart = () => {

@@ -1,0 +1,92 @@
+# домщенков.рф backend. Run from backend/:
+#   docker compose --env-file /etc/domshchenkov/db.env up -d --build
+# Two secret files, both outside the repo (chmod 600):
+#   /etc/domshchenkov/db.env  — DB passwords; read ONLY by compose for ${…} below (never loaded into api / worker)
+#   /etc/domshchenkov/api.env — application settings (notifications, CORS, retention); loaded into api / worker
+# Services: postgres · migrate (one-shot, every deploy, schema owner) · api · worker (notifications + nightly purge),
+# api and worker connect as dsh_app (data only). Nothing is published outside: host nginx → 127.0.0.1:8000.
+name: domshchenkov
+
+x-app: &app
+  build:
+    context: ..
+    dockerfile: backend/Dockerfile
+    args:
+      PYTHON_IMAGE: ${DSH_PYTHON_IMAGE:-python:3.13-slim}
+  # one tag per release (deploy.sh sets DSH_VERSION): the previous release's image stays for a rollback
+  image: domshchenkov-api:${DSH_VERSION:-latest}
+  env_file:
+    - ${DSH_APP_ENV_FILE:-/etc/domshchenkov/api.env}
+  environment:
+    # DSH_ENV and every other setting come from api.env; only the database URL is built here
+    DSH_DATABASE_URL: postgresql+psycopg://dsh_app:${DSH_APP_DB_PASSWORD:?set DSH_APP_DB_PASSWORD}@postgres:5432/domshchenkov
+    DSH_TRUSTED_PROXIES: 172.28.0.1/32,127.0.0.1/32
+    # hashes of erased numbers, kept OUTSIDE the database and its backups (reapply-erasures after a restore)
+    DSH_TOMBSTONE_FILE: /var/lib/domshchenkov/erasures.txt
+  volumes:
+    - tombstones:/var/lib/domshchenkov
+  restart: unless-stopped
+  networks: [internal]
+
+services:
+  postgres:
+    image: ${DSH_POSTGRES_IMAGE:-postgres:16}
+    environment:
+      POSTGRES_DB: domshchenkov
+      POSTGRES_USER: dsh_owner
+      POSTGRES_PASSWORD: ${DSH_OWNER_DB_PASSWORD:?set DSH_OWNER_DB_PASSWORD}
+      DSH_APP_DB_PASSWORD: ${DSH_APP_DB_PASSWORD}
+      DSH_READONLY_DB_PASSWORD: ${DSH_READONLY_DB_PASSWORD:-}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      # deploy.sh copies initdb/ to a fixed folder: a path that changes with every release would recreate
+      # (restart) the database container on each deploy
+      - ${DSH_INITDB_DIR:-./deploy/initdb}:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      # over TCP: the temporary init-time server (unix socket only) must not count as ready
+      test: ["CMD-SHELL", "pg_isready -h 127.0.0.1 -U dsh_owner -d domshchenkov"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    restart: unless-stopped
+    networks: [internal]
+
+  migrate:
+    <<: *app
+    # schema changes run as the owner role; the app itself runs as dsh_app (data only, no DDL)
+    environment:
+      DSH_DATABASE_URL: postgresql+psycopg://dsh_owner:${DSH_OWNER_DB_PASSWORD}@postgres:5432/domshchenkov
+      DSH_TRUSTED_PROXIES: 127.0.0.1/32
+      DSH_TOMBSTONE_FILE: /var/lib/domshchenkov/erasures.txt
+    command: ["python", "-m", "app", "migrate"]
+    restart: "no"
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  api:
+    <<: *app
+    ports:
+      - "127.0.0.1:8000:8000"   # only nginx on this host can reach it
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+
+  worker:
+    <<: *app
+    command: ["python", "-m", "app", "worker"]
+    healthcheck:
+      disable: true
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+
+networks:
+  internal:
+    ipam:
+      config:
+        - subnet: 172.28.0.0/16   # pinned: DSH_TRUSTED_PROXIES trusts only the gateway (host nginx)
+
+volumes:
+  pgdata:
+  tombstones:   # not in the database dumps on purpose

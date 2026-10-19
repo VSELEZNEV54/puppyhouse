@@ -1,0 +1,16 @@
+/* домщенков.рф — группа legal: страницы согласий /soglasie/ и /soglasie-na-publikaciyu/ (152-ФЗ).
+   Вид — как у /politika-konfidencialnosti/: короткая плитка-заголовок, текст в белой плитке, справа «Коротко». */
+
+/* короткая плитка; длинное «персональных данных» не вылезает на телефоне */
+.lgl-hero .phero__tile { min-height: 0; }
+.lgl-hero .phero__title { max-width: none; }
+
+.lgl-doc__ver { margin-top: 1.6em; padding-top: 16px; border-top: 1px solid var(--line); font-size: 14px; line-height: 1.5; color: var(--muted); }
+
+.lgl-links { padding: 22px 24px; border-radius: var(--r-tile); background: var(--tile); }
+.lgl-links__title { font-size: 14px; font-weight: 500; color: var(--muted); }
+.lgl-links ul { display: grid; gap: 12px; margin-top: 12px; font-size: 15px; line-height: 1.4; }
+
+@media (max-width: 760px) {
+  .lgl-hero .phero__title { font-size: clamp(27px, 7.4vw, 44px); }
+}

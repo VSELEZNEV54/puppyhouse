@@ -13,7 +13,7 @@
 
 {% block hero %}
     {% call ui.page_hero(hub.h1, lead=hub.lead, breed=b, eyebrow=hub.eyebrow, chips=common.chips, full=true, note=hub.note) %}
-      <button class="btn btn--white btn--lg" type="button" data-open-modal data-modal-breed="{{ b.name }}" data-modal-title="{{ common.modal_title }}" data-modal-sub="{{ common.modal_sub }}" data-modal-note="{{ common.modal_note }}: {{ b.name|lower }}" data-modal-submit="{{ common.cta_main }}">{{ common.cta_main }}</button>
+      <button class="btn btn--white btn--lg" type="button" data-open-modal data-modal-kind="help" data-modal-breed="{{ b.name }}" data-modal-title="{{ common.modal_title }}" data-modal-sub="{{ common.modal_sub }}" data-modal-note="{{ common.modal_note }}: {{ b.name|lower }}" data-modal-submit="{{ common.cta_main }}">{{ common.cta_main }}</button>
       <a class="btn btn--outline btn--lg" href="#shchenki">{{ common.cta_second }}</a>
     {% endcall %}
 {% endblock %}

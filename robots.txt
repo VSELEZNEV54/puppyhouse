@@ -1,11 +1,15 @@
 # домщенков.рф — правила для поисковых роботов (собирается tools/build.py)
 User-agent: *
 Disallow: /_kit/
+Disallow: /admin/
+Disallow: /api/
 Allow: /
 
 # Яндекс: фильтры каталога и блога и метки рекламы не создают новых страниц
 User-agent: Yandex
 Disallow: /_kit/
+Disallow: /admin/
+Disallow: /api/
 Allow: /
 Clean-param: breed&sex&status
 Clean-param: tema /blog/

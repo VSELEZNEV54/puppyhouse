@@ -15,7 +15,7 @@
 {% macro puppy_card(p, tag='h3', eager=false, simple=false) -%}
 {%- set t = photo_tone(p.photo.src) if p.photo.kind == 'studio' and p.photo.get('backdrop') != 'token' else none -%}
 {%- set studio = p.photo.kind == 'studio' -%}
-<article class="pup ct-card {{ p.tone_class }}{{ ' ct-card--studio' if studio else ' ct-card--life' }}{{ ' ct-card--simple' if simple }}"{% if t %} style="--tone:{{ t.top }};--tone-floor:{{ t.floor }}"{% endif %} data-pup data-name="{{ p.name }}" data-desc="{{ (p.breed_name ~ ' · ' ~ p.sex_label ~ ' · ' ~ p.colour) if simple else p.desc }}" data-img="{{ p.photo.src.rsplit('/', 1)[-1] }}">
+<article class="pup ct-card {{ p.tone_class }}{{ ' ct-card--studio' if studio else ' ct-card--life' }}{{ ' ct-card--simple' if simple }}"{% if t %} style="--tone:{{ t.top }};--tone-floor:{{ t.floor }}"{% endif %} data-pup data-slug="{{ p.slug }}" data-breed="{{ p.breed }}" data-name="{{ p.name }}" data-desc="{{ (p.breed_name ~ ' · ' ~ p.sex_label ~ ' · ' ~ p.colour) if simple else p.desc }}" data-img="{{ p.photo.src.rsplit('/', 1)[-1] }}">
   {% if simple %}<div class="pup__media ct-card__media{{ ' pup__media--studio' if studio }}">{% else %}<a class="pup__media ct-card__media{{ ' pup__media--studio' if studio }}" href="{{ p.url }}" tabindex="-1" aria-hidden="true">{% endif %}
     <img{% if p.photo['class'] %} class="{{ p.photo['class'] }}"{% endif %} src="{{ p.photo.src }}" alt="{{ p.photo.alt|typo }}" width="{{ p.photo.w }}" height="{{ p.photo.h }}"{% if p.photo.get('pos') %} style="object-position:{{ p.photo.pos }}"{% endif %}{% if not eager %} loading="lazy"{% endif %} decoding="async">
     {% if p.status != 'available' %}
@@ -28,14 +28,14 @@
     <{{ tag }} class="pup__name">{% if p.status == 'available' %}<span class="dot dot--ok" aria-hidden="true"></span>{% endif %}{{ p.name }}</{{ tag }}>
     <p class="pup__meta">{{ p.sex_label|capitalize }} · {{ p.colour }}{% if p.status == 'available' %}<span class="sr-only"> · в&nbsp;наличии</span>{% else %}<span class="sr-only"> · {{ p.status_label|lower }}</span>{% endif %}</p>
     <div class="ct-card__actions">
-      <button class="btn btn--white ct-card__price" type="button" data-open-modal aria-label="Узнать цену: {{ p.name }}">Узнать цену</button>
+      <button class="btn btn--white ct-card__price" type="button" data-open-modal data-modal-kind="puppy" aria-label="Узнать цену: {{ p.name }}">Узнать цену</button>
     </div>
     {% else %}
     <{{ tag }} class="pup__name">{% if p.status == 'available' %}<span class="dot dot--ok" aria-hidden="true"></span>{% endif %}<a href="{{ p.url }}">{{ p.name }}</a></{{ tag }}>
     <p class="pup__meta">{% for m in p.meta.split(' · ') %}<span>{{ m }}{% if not loop.last %}&nbsp;·{% endif %}</span>{{ ' ' if not loop.last }}{% endfor %}{% if p.status == 'available' %}<span class="sr-only"> · в&nbsp;наличии</span>{% else %}<span class="sr-only"> · {{ p.status_label|lower }}</span>{% endif %}</p>
     <div class="ct-card__actions">
       <a class="btn btn--white ct-card__more" href="{{ p.url }}" aria-label="Смотреть щенка: {{ p.name }}">Смотреть щенка</a>
-      <button class="btn btn--ink" type="button" data-open-modal aria-label="Узнать цену: {{ p.name }}">Узнать цену</button>
+      <button class="btn btn--ink" type="button" data-open-modal data-modal-kind="puppy" aria-label="Узнать цену: {{ p.name }}">Узнать цену</button>
     </div>
     {% endif %}
   </div>
@@ -77,7 +77,7 @@
 <div class="soon-tile">
   <span class="soon-tile__faces" aria-hidden="true">{% for b in breeds %}{{ ui.face(b) }}{% endfor %}</span>
   <span class="soon-tile__txt"><span class="soon-tile__title">{{ title|typo }}</span><span class="soon-tile__line">{{ line|typo }}</span></span>
-  <button class="btn btn--ink" type="button" data-open-modal data-modal-title="{{ title }}" data-modal-sub="{{ line }}" data-modal-note="Лист ожидания" data-modal-submit="Записаться" data-modal-done="Вы в листе ожидания. Куратор свяжется с вами, когда появится новый помёт."{% if breed %} data-modal-breed="{{ breed.name }}"{% endif %}>{{ label }}</button>
+  <button class="btn btn--ink" type="button" data-open-modal data-modal-kind="waitlist" data-modal-title="{{ title }}" data-modal-sub="{{ line }}" data-modal-note="Лист ожидания" data-modal-submit="Записаться" data-modal-done="Вы в листе ожидания. Куратор свяжется с вами, когда появится новый помёт."{% if breed %} data-modal-breed="{{ breed.name }}"{% endif %}>{{ label }}</button>
 </div>
 {%- endmacro %}
 

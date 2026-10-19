@@ -4,3 +4,16 @@ node_modules/
 _kit/
 __pycache__/
 _all/
+
+# secrets: never commit (the site is published from the repo root by GitHub Pages)
+.env
+.env.*
+!.env.example
+backend/.env
+backend/.env.*
+!backend/.env.example
+.venv/
+.pytest_cache/
+
+# release packages (tools/release.sh)
+dist/
