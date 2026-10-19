@@ -645,10 +645,6 @@ a.stile:hover .stile__photo img { transform: scale(1.04); }
     -webkit-mask-composite: source-in; mask-composite: intersect;
   }
 
-  .pups--grid { grid-template-columns: minmax(0, 1fr); }
-  .pups__more--fill { grid-column: auto; }
-  /* одна колонка: кадр чуть шире, чтобы карточка не была выше экрана */
-  .pups--grid .pup__media { aspect-ratio: 1 / .86; }
 }
 
 @media (max-width: 420px) {

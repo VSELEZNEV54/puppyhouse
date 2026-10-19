@@ -1776,12 +1776,6 @@ legend.field__label { margin-bottom: 8px; }
 }
 @keyframes sheet-in { from { transform: translateY(100%); } }
 
-/* карточки щенков на узком телефоне — по одной в ряд, кадр чуть шире, чтобы карточка не была выше экрана */
-@media (max-width: 560px) {
-  .pups { grid-template-columns: minmax(0, 1fr); }
-  .pups .pup__media { aspect-ratio: 1 / .86; }
-}
-
 /* телефон: подвал — одна колонка, каждая ссылка своей строкой высотой 46 px с разделителем, удобно нажимать (правка 15.10) */
 @media (max-width: 560px) {
   .footer__nav { grid-template-columns: minmax(0, 1fr); gap: 28px; }
@@ -1846,26 +1840,18 @@ legend.field__label { margin-bottom: 8px; }
 }
 
 /* =========================================================
-   ТЕЛЕФОН ≤ 560 px: карточка — компактной строкой (как щенки породы на хабах):
-   фото слева в белой плитке, кличка, возраст и две кнопки справа. 19 щенков — около 4000 px, а не 9000
+   ТЕЛЕФОН ≤ 560 px: карточка вертикальная, как на компьютере (клиент 19.10), — две в ряд:
+   фото сверху, кличка, пол и окрас, кнопки друг под другом. 19 щенков — около 4000 px
    ========================================================= */
 @media (max-width: 560px) {
-  .ct-card { flex-direction: row; align-items: stretch; }
-  .ct-card .pup__media {
-    flex: none; width: 42%; aspect-ratio: auto; min-height: 176px; margin: 8px 0 8px 8px;
-    clip-path: none; border-radius: var(--r-img); overflow: hidden;
-  }
-  .ct-card .pup__media img { inset: 0; width: 100%; height: 100%; border-radius: 0; }
-  .ct-card .pup__media--studio { background: var(--tone); }
-  .ct-card .pup__media--studio img { object-position: 50% 100%; -webkit-mask-image: none; mask-image: none; }
-  .ct-card .pup__img--charli, .ct-card .pup__img--tessa { transform: none; }
-  .ct-card .status { top: auto; bottom: 8px; left: 8px; height: 26px; padding: 0 10px 0 9px; gap: 6px; font-size: 12px; }
-  .ct-card__body { min-width: 0; padding: 14px 14px 14px 16px; }
-  .ct-card .pup__name { padding-right: 40px; font-size: 22px; }
-  .ct-card .pup__meta { font-size: 13px; }
-  .ct-card__fav { top: 10px; right: 10px; width: 40px; height: 40px; background: var(--page); }
-  .ct-card__actions { flex-direction: column; gap: 6px; padding-top: 12px; }
-  .ct-card__actions .btn { flex: none; width: 100%; height: 42px; }
+  .pups { gap: 10px; }
+  .ct-card { --inset: 6px; }
+  .ct-card__body { min-width: 0; padding: 10px 10px 12px; }
+  .ct-card .pup__name { font-size: 19px; }
+  .ct-card .pup__meta { margin-top: 4px; font-size: 12.5px; }
+  .ct-card__fav { top: calc(var(--inset) + 6px); right: calc(var(--inset) + 6px); width: 36px; height: 36px; }
+  .ct-card__actions { flex-direction: column; gap: 6px; padding-top: 10px; }
+  .ct-card__actions .btn { flex: none; width: 100%; height: 40px; padding: 0 8px; font-size: 14px; }
 
   /* «Ждёте другого щенка?» — мордочки в ряд внахлёст, плитка по содержимому */
   .pups .soon-tile { min-height: 0; gap: 14px; padding: 22px 18px; }

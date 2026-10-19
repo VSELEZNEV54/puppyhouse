@@ -6,6 +6,7 @@
     "/francuzskij-buldog/",
     "/toj-pudel/",
     "/border-kolli/",
+    "/shchenki/*",
     "/politika-konfidencialnosti/",
     "/soglasie/",
     "/soglasie-na-otzyv/",
@@ -13,10 +14,6 @@
   ],
   "link_fallbacks": {
     "_note": "Пока страница не выложена, ссылка на неё ведёт к блоку на выложенной: «#id» — на этой же странице, «/#id» — на главной; берётся первый подходящий. Когда страницу выложат, строку можно удалить — ссылка сама станет обычной.",
-    "/shchenki/": [
-      "#shchenki",
-      "/#porody"
-    ],
     "/kontakty/": [
       "#zayavka",
       "/#zayavka"
