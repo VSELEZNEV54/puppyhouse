@@ -548,5 +548,117 @@
     "w": 1536,
     "h": 1024,
     "about": "Красно-белый щенок бордер-колли в автолежанке на заднем сиденье"
+  },
+  {
+    "name": "fit-maltipu-kvartira",
+    "url": "https://www.figma.com/api/mcp/asset/46d6bdcf-fbe5-4ffd-ab8c-037cf5497461.png",
+    "w": 928,
+    "h": 1152,
+    "about": "Абрикосовый мальтипу на ковре в светлой городской квартире"
+  },
+  {
+    "name": "fit-maltipu-sherst",
+    "url": "https://www.figma.com/api/mcp/asset/2efff9b5-b5d1-4a5a-927f-907eecaa1ff5.png",
+    "w": 928,
+    "h": 1152,
+    "about": "Девушка в тёмном свитере обнимает кремового мальтипу — на свитере нет шерсти"
+  },
+  {
+    "name": "fit-maltipu-deti",
+    "url": "https://www.figma.com/api/mcp/asset/db50ac86-2899-4b4f-ae43-d9f2eeb4671c.png",
+    "w": 928,
+    "h": 1152,
+    "about": "Девочка играет с абрикосовым мальтипу на полу в гостиной"
+  },
+  {
+    "name": "fit-maltipu-pervaya",
+    "url": "https://www.figma.com/api/mcp/asset/8221a6e6-ffd9-4d9f-8472-baa20c35f303.png",
+    "w": 928,
+    "h": 1152,
+    "about": "Молодая пара учит рыжего мальтипу команде «сидеть»"
+  },
+  {
+    "name": "fit-buldog-kvartira",
+    "url": "https://www.figma.com/api/mcp/asset/0dd21f82-333b-474c-b2df-b70407310e60.png",
+    "w": 928,
+    "h": 1152,
+    "about": "Палевый французский бульдог на сером диване в небольшой квартире"
+  },
+  {
+    "name": "fit-buldog-spokojnyj",
+    "url": "https://www.figma.com/api/mcp/asset/ae9b62d5-ef24-4b4c-861d-45acf569ddb2.png",
+    "w": 928,
+    "h": 1152,
+    "about": "Голубой французский бульдог спит на лежанке у рабочего стола хозяйки"
+  },
+  {
+    "name": "fit-buldog-progulki",
+    "url": "https://www.figma.com/api/mcp/asset/f1f3b7cd-cc1a-4fe1-bd65-5fdeb359fb63.png",
+    "w": 928,
+    "h": 1152,
+    "about": "Кремовый французский бульдог на поводке на осенней улице"
+  },
+  {
+    "name": "fit-buldog-deti",
+    "url": "https://www.figma.com/api/mcp/asset/a9c81ca5-0107-4c78-af27-2ac72be2f725.png",
+    "w": 928,
+    "h": 1152,
+    "about": "Мальчик играет с палевым щенком французского бульдога"
+  },
+  {
+    "name": "fit-pudel-kvartira",
+    "url": "https://www.figma.com/api/mcp/asset/20b1a0d3-cbb9-43ce-808c-db9c4ce7c767.png",
+    "w": 928,
+    "h": 1152,
+    "about": "Рыжий той-пудель в бархатном кресле в квартире"
+  },
+  {
+    "name": "fit-pudel-sherst",
+    "url": "https://www.figma.com/api/mcp/asset/f361744d-2f60-4d19-af2c-eb1cd7543ac1.png",
+    "w": 928,
+    "h": 1152,
+    "about": "Грумер расчёсывает абрикосового той-пуделя на столе"
+  },
+  {
+    "name": "fit-pudel-uchitsya",
+    "url": "https://www.figma.com/api/mcp/asset/4977b560-99c3-47f0-8ca9-e33b22d84cf8.png",
+    "w": 928,
+    "h": 1152,
+    "about": "Рыжий той-пудель стоит на задних лапах за лакомство"
+  },
+  {
+    "name": "fit-pudel-kompanon",
+    "url": "https://www.figma.com/api/mcp/asset/dbcbca94-2614-41f5-b751-da66328b397a.png",
+    "w": 928,
+    "h": 1152,
+    "about": "Шоколадный той-пудель в сумке-переноске у хозяйки в кафе"
+  },
+  {
+    "name": "fit-kolli-semya",
+    "url": "https://www.figma.com/api/mcp/asset/d1ee3334-1701-4ef2-9f37-51bce0bc263d.png",
+    "w": 928,
+    "h": 1152,
+    "about": "Семья с детьми гуляет по осеннему лесу с бордер-колли"
+  },
+  {
+    "name": "fit-kolli-sport",
+    "url": "https://www.figma.com/api/mcp/asset/9b77095b-5e31-40bc-85d7-2583ca90fdcc.png",
+    "w": 928,
+    "h": 1152,
+    "about": "Бордер-колли в прыжке ловит фрисби на лугу"
+  },
+  {
+    "name": "fit-kolli-dom",
+    "url": "https://www.figma.com/api/mcp/asset/c215f540-3323-4625-bc74-0597b8c47023.png",
+    "w": 928,
+    "h": 1152,
+    "about": "Голубая мраморная бордер-колли бежит по лужайке у загородного дома"
+  },
+  {
+    "name": "fit-kolli-uchitsya",
+    "url": "https://www.figma.com/api/mcp/asset/cb82ddcd-ef57-4ca9-8eed-042afde6c8bd.png",
+    "w": 928,
+    "h": 1152,
+    "about": "Щенок бордер-колли на дрессировке смотрит на хозяина"
   }
 ]
