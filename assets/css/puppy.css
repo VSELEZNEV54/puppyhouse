@@ -108,20 +108,18 @@
 .pp-tbl__table a:hover { text-decoration-color: var(--ink); }
 .pp-small { margin-top: 12px; font-size: 13.5px; line-height: 1.45; color: var(--muted); }
 
-/* ---------- «Про <породу>»: SEO-текст + интересные факты (клиент 19.10) ---------- */
-.pp-breed { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr); gap: var(--gap); align-items: start; }
+/* ---------- «Про <породу>»: SEO-текст в две колонки, факты — плитками с иконками (как «Что входит»), затем
+   «Читайте о породе» (клиент 19.10) ---------- */
 .pp-breed__text {
-  display: grid; align-content: start; gap: 14px;
+  display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px clamp(24px, 3vw, 48px);
   padding: var(--tile-pad); border-radius: var(--r-tile); background: var(--tile);
   font-size: 17px; line-height: 1.55;
 }
-.pp-breed__text p { max-width: 62ch; }
 .pp-breed__text p:first-child { font-size: clamp(19px, 1.5vw, 22px); line-height: 1.4; letter-spacing: -0.01em; }
 .pp-breed__text p + p { color: var(--ink-soft); }
-.pp-facts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--gap); }
-.pp-fact { display: flex; flex-direction: column; gap: 8px; min-width: 0; padding: clamp(18px, 1.8vw, 26px); border-radius: var(--r-tile); background: var(--tile); }
-.pp-fact__title { font-size: clamp(18px, 1.4vw, 21px); font-weight: 500; letter-spacing: -0.02em; line-height: 1.2; text-wrap: balance; }
-.pp-fact__text { font-size: 15px; line-height: 1.5; color: var(--ink-soft); }
+.pp-facts { margin-top: var(--gap); }
+.pp-facts .adv { align-content: start; }
+.pp-more__title { margin: clamp(28px, 3vw, 44px) 0 18px; font-size: var(--fs-h3); font-weight: 500; letter-spacing: -0.025em; line-height: 1.15; }
 
 /* ---------- «Кому подойдёт»: 4 фото-карточки на плитке цвета породы ---------- */
 .pp-fits { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--gap); }
@@ -146,7 +144,7 @@
 .pp-term__list { display: grid; gap: 10px; font-size: 16px; line-height: 1.45; }
 .pp-term__list li { display: flex; align-items: flex-start; gap: 10px; }
 .pp-term__list .i { flex: none; margin-top: 3px; stroke-width: 2.2; }
-.pp-term .tcta { margin-top: auto; }
+.pp-term__btn { margin-top: auto; }
 
 /* =========================================================
    АДАПТИВ
@@ -158,7 +156,7 @@
 }
 
 @media (max-width: 1000px) {
-  .pp-breed { grid-template-columns: minmax(0, 1fr); }
+  .pp-breed__text { grid-template-columns: minmax(0, 1fr); }
   .pp-fits { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 
@@ -193,8 +191,6 @@
 
   .pp-breed__text { font-size: 16px; padding: 20px; }
   .pp-breed__text p:first-child { font-size: 18px; }
-  .pp-facts { grid-template-columns: minmax(0, 1fr); gap: 10px; }
-  .pp-fact { padding: 18px 20px; }
   .pp-fits { gap: 10px; }
   .pp-fit__title { margin: 12px 6px 0; font-size: 18px; }
   .pp-fit__line { margin: 4px 6px 8px; font-size: 13.5px; }

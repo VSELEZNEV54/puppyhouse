@@ -59,7 +59,9 @@
 
 {#- Section head: H2 (+ optional one-line lead) on the left, optional link on the right, caller() for extra buttons.
     ui.section_head('Щенки в наличии', id='pups-title', link={'url': '/shchenki/', 'label': 'Весь каталог'}) -#}
-{% macro section_head(title, id=none, link=none, lead=none) -%}
+{#- button=true: the link is a button (btn--ink — coral on the home, breed and puppy pages), like «Узнать цену»
+    in «Как купить щенка» (client 19.10, puppy pages); otherwise a text link with an arrow. -#}
+{% macro section_head(title, id=none, link=none, lead=none, button=false) -%}
 <div class="sec-head">
   {% if lead %}
   <div class="sec-head__txt">
@@ -69,8 +71,9 @@
   {% else %}
   <h2 class="h2"{% if id %} id="{{ id }}"{% endif %}>{{ title|typo }}</h2>
   {% endif %}
-  {{ text_link(link.url, link.label) if link else '' }}
-  {{ caller() if caller is defined else '' }}
+  {% if link and button %}<a class="btn btn--ink" href="{{ link.url }}">{{ link.label|typo }}</a>
+  {% else %}{{ text_link(link.url, link.label) if link else '' }}
+  {% endif %}{{ caller() if caller is defined else '' }}
 </div>
 {%- endmacro %}
 
@@ -177,7 +180,7 @@
     items: [{"icon", "color", "title", "line"}] — default site.advantages (привиты, ветпаспорт и договор, пожизненная
     гарантия, пожизненная консультация, видео до покупки, доставка). 3 per row on desktop (cols=2..6), one per row on phones.
     title → a whole section with H2 (id, lead, link); without title — just the list. -#}
-{% macro advantages(items=none, title=none, id='preimushchestva', lead=none, link=none, cols=3, tight=false) -%}
+{% macro advantages(items=none, title=none, id='preimushchestva', lead=none, link=none, cols=3, tight=false, button=false) -%}
 {%- set items = items or site.advantages -%}
 {%- set body -%}
 <ul class="advs advs--{{ cols }}">
@@ -192,7 +195,7 @@
 {%- endset -%}
 {% if title %}
 <section class="section{{ ' section--tight' if tight }} container" id="{{ id }}" aria-labelledby="{{ id }}-title">
-  {{ section_head(title, id=id ~ '-title', link=link, lead=lead) }}
+  {{ section_head(title, id=id ~ '-title', link=link, lead=lead, button=button) }}
   {{ body }}
 </section>
 {% else %}

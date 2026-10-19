@@ -3,6 +3,9 @@
     docs_note, colour_note, gallery (the puppy's own photos and video only), includes, intro + facts («Про <породу>»),
     fits («Кому подойдёт», photo cards), more («Читайте о породе» tiles), booking, delivery, similar, similar_total,
     faq_items, lead_line. No status badges and no parents block (client 19.10).
+    Order: hero → «Как купить щенка» → «Похожие щенки» → «Кому подойдёт» → «Что входит» → «Бронь и доставка» →
+    «Про <породу>» with the facts and «Читайте о породе» → «Частые вопросы» → lead form. Links in block heads and
+    tiles are coral buttons, like «Узнать цену» in «Как купить щенка».
     Gallery: a [data-carousel] (main.js: arrows, swipe, ← →, lightbox) with thumbnails and a counter (assets/js/puppy.js);
     one photo — no arrows, counter or thumbnails.
     Hero CTAs: coral «Узнать цену» (body.page-puppy) + «Связаться в Telegram», the same for every status. -#}
@@ -95,18 +98,13 @@
 {% block body %}
     {{ blocks.how_to_buy() }}
 
-    <section class="section container" id="pro-porodu" aria-labelledby="pro-porodu-title">
-      {{ ui.section_head('Про ' ~ b.name_gen, id='pro-porodu-title') }}
-      <div class="pp-breed">
-        <div class="pp-breed__text">
-          {% for t in intro %}<p>{{ t|typo }}</p>{% endfor %}
-        </div>
-        <ul class="pp-facts" aria-label="Интересные факты">
-          {% for f in facts %}
-          <li class="pp-fact"><h3 class="pp-fact__title">{{ f.title|typo }}</h3><p class="pp-fact__text">{{ f.text|typo }}</p></li>
-          {% endfor %}
-        </ul>
-      </div>
+    <section class="section container" id="pohozhie" aria-labelledby="pohozhie-title">
+      {{ ui.section_head('Похожие щенки', id='pohozhie-title', link={'url': '/shchenki/?breed=' ~ b.slug, 'label': 'Весь каталог — ' ~ similar_total}, button=true) }}
+      {% if similar %}
+      {{ ct.strip(similar, breed=b) }}
+      {% else %}
+      {{ ui.empty_state('Других щенков этой породы сейчас нет', 'Оставьте заявку — напишем, когда появится новый помёт.') }}
+      {% endif %}
     </section>
 
     <section class="section container" id="komu-podojdet" aria-labelledby="komu-podojdet-title">
@@ -123,12 +121,7 @@
       </ul>
     </section>
 
-    <section class="section container" id="o-porode" aria-labelledby="o-porode-title">
-      {{ ui.section_head('Читайте о породе', id='o-porode-title') }}
-      {{ ui.link_tiles(more) }}
-    </section>
-
-    {{ ui.advantages(includes, title='Что входит в покупку', id='chto-vhodit', link={'url': '/dokumenty-i-garantii/', 'label': 'Документы и гарантии'}, cols=4) }}
+    {{ ui.advantages(includes, title='Что входит в покупку', id='chto-vhodit', link={'url': '/dokumenty-i-garantii/', 'label': 'Документы и гарантии'}, cols=4, button=true) }}
 
     <section class="section container" id="bron" aria-labelledby="bron-title">
       {{ ui.section_head('Бронь и доставка', id='bron-title') }}
@@ -140,22 +133,32 @@
           <ul class="pp-term__list">
             {% for it in blk['items'] %}<li>{{ ui.icon('check', sm=true) }}<span>{{ it|typo }}</span></li>{% endfor %}
           </ul>
-          {{ ui.tile_cta(blk.link.label, variant='', url=blk.link.url) }}
+          <a class="btn btn--ink pp-term__btn" href="{{ blk.link.url }}">{{ blk.link.label|typo }}</a>
         </div>
         {% endfor %}
       </div>
     </section>
 
-    <section class="section container" id="pohozhie" aria-labelledby="pohozhie-title">
-      {{ ui.section_head('Похожие щенки', id='pohozhie-title', link={'url': '/shchenki/?breed=' ~ b.slug, 'label': 'Весь каталог — ' ~ similar_total}) }}
-      {% if similar %}
-      {{ ct.strip(similar, breed=b) }}
-      {% else %}
-      {{ ui.empty_state('Других щенков этой породы сейчас нет', 'Оставьте заявку — напишем, когда появится новый помёт.') }}
-      {% endif %}
+    {#- «Про <породу>» и «Читайте о породе» — одним блоком перед вопросами (клиент 19.10) -#}
+    <section class="section container" id="pro-porodu" aria-labelledby="pro-porodu-title">
+      {{ ui.section_head('Про ' ~ b.name_gen, id='pro-porodu-title') }}
+      <div class="pp-breed__text">
+        {% for t in intro %}<p>{{ t|typo }}</p>{% endfor %}
+      </div>
+      <ul class="advs advs--3 pp-facts" aria-label="Интересные факты">
+        {% for f in facts %}
+        <li class="adv">
+          {{ ui.ico(f.icon, f.color) }}
+          <h3 class="adv__title">{{ f.title|typo }}</h3>
+          <p class="adv__line">{{ f.text|typo }}</p>
+        </li>
+        {% endfor %}
+      </ul>
+      <h3 class="pp-more__title" id="o-porode">Читайте о породе</h3>
+      {{ ui.link_tiles(more) }}
     </section>
 
-    {{ blocks.faq_section(faq_items, title='Вопросы о покупке') }}
+    {{ blocks.faq_section(faq_items, title='Частые вопросы', link=none) }}
 {% endblock %}
 
 {# «Похожие щенки» above replace the default strip #}
