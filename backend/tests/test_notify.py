@@ -677,3 +677,9 @@ def test_admin_health_lists_the_problems(client, db, manager_h):
     assert any("stuck" in p for p in problems)
     assert any(p.startswith("2 notification(s) failed") for p in problems)
     assert client.get("/api/v1/admin/health").status_code == 401
+
+
+def test_health_names_the_deployed_release(client, settings):
+    settings.release = "20261020-090000-abcdef12"
+    r = client.get("/api/v1/health")
+    assert r.status_code == 200 and r.json() == {"ok": True, "release": "20261020-090000-abcdef12"}

@@ -1,4 +1,5 @@
 {% import "macros/ui.html.j2" as ui %}
+{% import "macros/forms.html.j2" as forms %}
 {% set is_home = page.url == '/' %}
   <!-- ================= ПОДВАЛ ================= -->
   <footer class="footer container">
@@ -9,6 +10,7 @@
             <span class="logo__mark" aria-hidden="true">{{ ui.icon('paw') }}</span>
             <span class="logo__text"><span class="logo__name">{{ site.brand }}</span><span class="logo__sub">{{ site.tagline }}</span></span>
           </a>
+          {% if site.contacts_public %}
           <a class="footer__phone" href="{{ site.phone.tel }}">{{ site.phone.display }}</a>
           <ul class="footer__info">
             <li><svg class="i i--sm" aria-hidden="true"><use href="#i-clock"/></svg>{{ site.phone.hours|typo }}</li>
@@ -20,6 +22,12 @@
             <a class="msgr msgr--{{ m.icon }}" href="{{ m.url }}" target="_blank" rel="noopener" aria-label="{{ m.aria }}" title="{{ m.label }}">{{ ui.icon(m.icon) }}</a>
             {% endfor %}
           </div>
+          {% else %}
+          <ul class="footer__info">
+            <li><svg class="i i--sm" aria-hidden="true"><use href="#i-pin"/></svg>{{ site.address.short|typo }}</li>
+          </ul>
+          <div class="footer__msgs">{{ forms.request_button(cls='btn btn--ink', place='подвал') }}</div>
+          {% endif %}
         </div>
         <nav class="footer__nav" aria-label="Разделы сайта">
           {% for col in site.footer.columns %}

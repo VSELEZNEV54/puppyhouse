@@ -98,6 +98,9 @@ class Settings(BaseSettings):
     webhook_secret: str = ""
     notify_max_attempts: int = 8
     admin_base_url: str = ""          # link in notifications: https://admin.example/leads/{id}
+    # the deployed release (deploy.sh → docker-compose.yml): /api/v1/health shows it, so whoever pushed can see that
+    # the server runs their version without a login
+    release: str = ""
 
     # catalog
     site_data_dir: Path = REPO_DIR / "src" / "data"

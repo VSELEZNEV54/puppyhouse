@@ -20,6 +20,13 @@
 <option value="undecided">Пока не&nbsp;решил(а)</option>
 {%- endmacro %}
 
+{#- «Оставить заявку» — the way to reach the kennel while its phone, e-mail and messengers are not on the site
+    (site.contacts_public = false, first stage). Opens the shared request modal; place goes to the request as its note
+    (the admin panel shows where the person clicked). -#}
+{% macro request_button(cls='btn btn--ink', place='', label='Оставить заявку', short=none) -%}
+<button class="{{ cls }}" type="button" data-open-modal data-modal-kind="consult" data-modal-title="Оставьте заявку" data-modal-sub="Подберём щенка и пришлём фото, видео и цену туда, где вам удобно" data-modal-note="Заявка{{ ': ' ~ place if place }}" data-modal-submit="Отправить заявку">{% if short %}<span class="req-long">{{ label }}</span><span class="req-short">{{ short }}</span>{% else %}{{ label }}{% endif %}</button>
+{%- endmacro %}
+
 {#- Button that opens the price modal without a puppy (generic request). breed: breed name or slug to preselect.
     kind: the request type sent to the API (LeadKind: price | consult | help | colour | waitlist | video_call | …). -#}
 {% macro price_button(label='Узнать цену', cls='btn btn--ink', breed=none, kind='price') -%}
@@ -60,12 +67,16 @@
     [data-fail-lost] replaces [data-fail-saved] (DSH.failMode) when the server will never take that request (400 / 413 / 415):
     it is not kept, so we don't promise to send it later. -#}
 {% macro send_fail(what='заявку', saved='её') -%}
+{% if not site.contacts_public %}
+<p class="form-fail__text">Не получилось отправить {{ what }}. <span data-fail-saved>Мы сохранили {{ saved }} и&nbsp;отправим сами, когда появится связь, — страницу можно закрыть.</span><span data-fail-lost hidden>Проверьте поля и&nbsp;попробуйте ещё раз чуть позже.</span></p>
+{% else %}
 <p class="form-fail__text">Не получилось отправить {{ what }}. <span data-fail-saved>Мы сохранили {{ saved }} и&nbsp;отправим, когда появится связь. Или напишите нам:</span><span data-fail-lost hidden>Позвоните или напишите нам:</span></p>
 <p class="form-fail__links">
   <a class="form-fail__link" href="{{ site.phone.tel }}">{{ ui.icon('phone', sm=true) }}{{ site.phone.display }}</a>
   <a class="form-fail__link" href="{{ site.messengers.telegram.url }}" target="_blank" rel="noopener">{{ ui.icon('tg', sm=true) }}{{ site.messengers.telegram.label }}</a>
   <a class="form-fail__link" href="{{ site.messengers.max.url }}" target="_blank" rel="noopener">{{ ui.icon('max', sm=true) }}{{ site.messengers.max.label }}</a>
 </p>
+{% endif %}
 {%- endmacro %}
 
 {#- «Куда написать»: Telegram / WhatsApp / MAX / Звонок (radio chips). prefix: 'lf' (lead form) | 'pm' (price modal).
@@ -94,7 +105,7 @@
     <div class="lead__intro">
       <h2 class="h2" id="lead-title">{{ title|typo }}</h2>
       <p class="lead__line">{{ line|typo }}</p>
-      {% if contacts %}
+      {% if contacts and site.contacts_public %}
       <div class="lead__contacts">
         <a class="lead__phone" href="{{ site.phone.tel }}">{{ site.phone.display }}</a>
         <span class="lead__msgrs">{{ msgr('telegram') }}{{ msgr('whatsapp') }}{{ msgr('max') }}</span>
@@ -145,6 +156,7 @@
 {#- Contact tiles under the lead form (homepage 15.10, breed pages): phone, messengers, e-mail and address — four
     white tiles in a row (two on tablets, one per row on phones). Use inside {% call lead_form(contacts=false, cls='hm-lead') %}. -#}
 {% macro contact_tiles() -%}
+{% if site.contacts_public %}
   <ul class="hm-cts" aria-label="Контакты питомника">
     <li class="hm-ct">
       {{ ui.ico('phone', 'coral') }}
@@ -176,4 +188,5 @@
       <p class="hm-ct__line">{{ site.address.visit|typo }}</p>
     </li>
   </ul>
+{% endif %}
 {%- endmacro %}

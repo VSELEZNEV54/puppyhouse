@@ -73,9 +73,13 @@ def collect() -> dict:
     groups = {"blocking": [], "contacts": [], "content": []}
     claimed = collections.defaultdict(set)
     pages = published()
+    site = json.loads((DATA / "site.json").read_text(encoding="utf-8"))
+    hidden = not site.get("contacts_public", True)   # first stage: the kennel's contacts are not shown anywhere
     for fn, key, group, what, url in RULES:
         if not is_published(url, pages):
             group, what = "content", what + f" (страница {url} ещё не выложена)"
+        elif group == "contacts" and hidden:
+            group, what = "content", what + " (на сайте не выводятся: site.json → contacts_public = false)"
         data = json.loads((DATA / fn).read_text(encoding="utf-8"))
         found: list[str] = []
         value = data.get(key)
@@ -88,9 +92,8 @@ def collect() -> dict:
             groups[group].append({"file": f"src/data/{fn}", "key": key, "what": what, "count": len(found),
                                   "examples": sorted(set(found))[:6]})
         claimed[fn].add(key)
-    site = json.loads((DATA / "site.json").read_text(encoding="utf-8"))
     phones = [site["phone"]["display"], site["phone"]["tel"], site["messengers"]["whatsapp"]["url"]]
-    if any(FAKE_PHONE.search(p) for p in phones):
+    if any(FAKE_PHONE.search(p) for p in phones) and not hidden:
         groups["contacts"].insert(0, {"file": "src/data/site.json", "key": "phone", "count": 1,
                                       "what": "Телефон и WhatsApp — сейчас образец +7 (495) 123-45-67",
                                       "examples": [site["phone"]["display"]]})

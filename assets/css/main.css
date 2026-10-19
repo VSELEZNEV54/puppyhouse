@@ -448,6 +448,9 @@ main:focus, section[tabindex="-1"]:focus, [data-anchor-focus]:focus { outline: n
 .hdr .msgr .i { width: 19px; height: 19px; }
 .hdr__cta { margin-left: 4px; height: 44px; padding: 0 20px 0 16px; }
 .msgr--call, .hdr__burger { display: none; }
+/* первый этап без контактов (site.json → contacts_public: false): в шапке одна кнопка заявки, видна на любой ширине */
+.hdr__req { margin-left: 4px; height: 44px; padding: 0 20px; white-space: nowrap; }
+.req-short { display: none; }
 
 /* узкий десктоп: сначала прячем подпись логотипа, потом номер (он в «Меню» и в подвале), потом ссылки с конца —
    все разделы остаются в «Меню». Номер — элемент заявки: на 1440–1599 он виден, место ему уступает «Блог» */
@@ -487,6 +490,7 @@ main:focus, section[tabindex="-1"]:focus, [data-anchor-focus]:focus { outline: n
   .hdr__cta { display: none; }
 }
 @media (max-width: 560px) {
+  .hdr__req { height: 40px; padding: 0 16px; font-size: 14px; }
   .hdr__bar { height: 60px; padding-left: 10px; }
   .hdr .msgr--tg, .hdr .msgr--wa, .hdr .msgr--max { display: none; }
   .hdr .msgr--call { display: inline-grid; }
@@ -496,9 +500,15 @@ main:focus, section[tabindex="-1"]:focus, [data-anchor-focus]:focus { outline: n
 }
 
 /* 320 px: подпись логотипа уходит, иначе меню выезжает за край */
+@media (max-width: 419px) {
+  .hdr__req .req-long { display: none; }
+  .hdr__req .req-short { display: inline; }
+  .hdr__req { padding: 0 14px; }
+}
 @media (max-width: 349px) {
   .logo__sub { display: none; }
   .mbar { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1.3fr); }
+  .mbar.mbar--2 { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
   .mbar__btn { padding-inline: 6px; font-size: 13px; }
   .mbar__btn .i { display: none; }
 }
@@ -1177,6 +1187,7 @@ legend.field__label { margin-bottom: 8px; }
 }
 .mbar__btn .i { width: 18px; height: 18px; }
 .mbar__btn--ink { background: var(--ink); color: #fff; }
+.mbar--2 { grid-template-columns: 1fr 1fr; }   /* без контактов: «Оставить заявку» + «Узнать цену» */
 
 .modal {
   width: min(540px, calc(100vw - 32px)); max-width: none;

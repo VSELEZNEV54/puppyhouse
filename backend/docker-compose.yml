@@ -23,6 +23,7 @@ x-app: &app
     DSH_TRUSTED_PROXIES: 172.28.0.1/32,127.0.0.1/32
     # hashes of erased numbers, kept OUTSIDE the database and its backups (reapply-erasures after a restore)
     DSH_TOMBSTONE_FILE: /var/lib/domshchenkov/erasures.txt
+    DSH_RELEASE: ${DSH_VERSION:-}   # shown by /api/v1/health
   volumes:
     - tombstones:/var/lib/domshchenkov
   restart: unless-stopped

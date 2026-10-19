@@ -8,6 +8,9 @@
 #   dsh backup                         an encrypted database backup now (same as the nightly one)
 #   dsh update                         git pull in /opt/domshchenkov/src and deploy (pass deploy.sh options after it)
 #   dsh rollback                       start the previous release again (API + site; the database stays as it is)
+#   dsh autoupdate on|off|status       every 5 minutes: a new commit on the branch of /opt/domshchenkov/src is deployed
+#                                      by itself (a commit that failed to deploy is not retried until the next one);
+#                                      log: /var/log/domshchenkov-deploy.log, the running release: /api/v1/health
 set -euo pipefail
 APP_ROOT="${DSH_APP_ROOT:-/opt/domshchenkov}"
 ETC="${DSH_ETC:-/etc/domshchenkov}"
@@ -60,6 +63,49 @@ case "$cmd" in
     git -C "$src" pull --ff-only
     exec "$src/backend/deploy/deploy.sh" "$@"
     ;;
+  autoupdate)
+    src="$APP_ROOT/src"
+    cron=/etc/cron.d/domshchenkov-autoupdate
+    log=/var/log/domshchenkov-deploy.log
+    sub="${1:-status}"
+    case "$sub" in
+      on)
+        [ -d "$src/.git" ] || { echo "dsh: автообновление работает от git-копии в $src" >&2; exit 1; }
+        printf '%s\n' "# домщенков.рф: deploy new commits of $(git -C "$src" rev-parse --abbrev-ref HEAD) (dsh autoupdate off — stop)" \
+          "SHELL=/bin/bash" "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin" \
+          "*/5 * * * * root /usr/local/bin/dsh autoupdate run >> $log 2>&1" > "$cron"
+        printf '%s\n' "$log {" "  weekly" "  rotate 8" "  compress" "  missingok" "  notifempty" "}" > /etc/logrotate.d/domshchenkov-deploy
+        echo "Автообновление включено: каждые 5 минут новый коммит ветки $(git -C "$src" rev-parse --abbrev-ref HEAD) выкладывается сам."
+        echo "Журнал: $log. Выключить: dsh autoupdate off"
+        ;;
+      off)
+        rm -f "$cron"; echo "Автообновление выключено (обновлять вручную: dsh update)"
+        ;;
+      status)
+        if [ -f "$cron" ]; then echo "автообновление: включено"; else echo "автообновление: выключено"; fi
+        cat "$STATE/autoupdate" 2>/dev/null || true
+        [ -f "$log" ] && tail -n 5 "$log" || true
+        ;;
+      run)  # cron
+        exec 9>/run/domshchenkov-autoupdate.lock
+        flock -n 9 || exit 0                       # the previous run is still deploying
+        git -C "$src" fetch -q origin
+        remote="$(git -C "$src" rev-parse '@{u}')"
+        [ "$remote" = "$(git -C "$src" rev-parse HEAD)" ] && exit 0
+        [ "$remote" = "$(cat "$STATE/autoupdate-failed" 2>/dev/null || true)" ] && exit 0   # failed before: wait for a fix
+        echo "=== $(date -Is) новый коммит ${remote:0:8}: $(git -C "$src" log -1 --format=%s "$remote")"
+        git -C "$src" reset -q --hard "$remote"    # a deploy-only checkout: nobody edits files there
+        if "$src/backend/deploy/deploy.sh"; then
+          rm -f "$STATE/autoupdate-failed"
+          echo "$(date -Is) выложен ${remote:0:8}" | tee "$STATE/autoupdate"
+        else
+          echo "$remote" > "$STATE/autoupdate-failed"
+          echo "$(date -Is) НЕ выложен ${remote:0:8} — работает прошлый релиз; подробности выше в $log" | tee "$STATE/autoupdate"
+        fi
+        ;;
+      *) echo "dsh autoupdate on|off|status" >&2; exit 2 ;;
+    esac
+    ;;
   rollback)
     pv="$(cat "$STATE/prev_version" 2>/dev/null || true)"; pr="$(cat "$STATE/prev_root" 2>/dev/null || true)"
     [ -n "$pv" ] && [ -f "$pr/backend/docker-compose.yml" ] || { echo "dsh: прошлого релиза нет" >&2; exit 1; }
@@ -74,7 +120,7 @@ case "$cmd" in
     echo "Готово: работает $pv. Вернуться обратно: dsh rollback"
     ;;
   -h|--help|help)
-    sed -n '2,11p' "$0"
+    sed -n '2,14p' "$0"
     ;;
   *)
     echo "dsh: неизвестная команда $cmd (dsh help)" >&2; exit 2

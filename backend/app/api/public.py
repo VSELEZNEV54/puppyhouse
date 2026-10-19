@@ -151,7 +151,8 @@ def health(db: Db):
     except Exception:  # noqa: BLE001
         log.exception("health check failed")
         problems = ["database"]
+    release = {"release": get_settings().release} if get_settings().release else {}
     if problems:
         log.warning("health: %s", "; ".join(problems))
-        return JSONResponse({"ok": False}, status_code=503)
-    return {"ok": True}
+        return JSONResponse({"ok": False, **release}, status_code=503)
+    return {"ok": True, **release}

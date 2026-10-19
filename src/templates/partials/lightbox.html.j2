@@ -12,8 +12,12 @@
           <div class="lightbox__soon" data-lb-soon hidden>
             <span class="lightbox__play" aria-hidden="true">{{ ui.icon('play') }}</span>
             <p class="lightbox__soon-title">Видео появится здесь</p>
+            {% if site.contacts_public %}
             <p class="lightbox__soon-line">А пока пришлём свежие видео щенков в&nbsp;Telegram</p>
             <a class="btn btn--tg" href="{{ site.messengers.telegram.url }}" target="_blank" rel="noopener">{{ ui.icon('tg') }}{{ site.tg_cta.label }}</a>
+            {% else %}
+            <p class="lightbox__soon-line">А пока пришлём свежие видео щенков — оставьте заявку на&nbsp;странице</p>
+            {% endif %}
           </div>
         </div>
         <figcaption class="lightbox__caption" id="lb-caption" data-lb-caption>Фото</figcaption>

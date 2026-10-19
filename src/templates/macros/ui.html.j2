@@ -215,7 +215,9 @@
   {% elif faces %}<span class="lband__faces" aria-hidden="true">{% for f in faces %}<span class="face tone--{{ f.tone }}"><img src="{{ f.src }}" alt="" width="{{ imgsize(f.src)[0] }}" height="{{ imgsize(f.src)[1] }}" loading="lazy" decoding="async"></span>{% endfor %}</span>{% endif %}
   <div class="lband__actions">
     <button class="btn btn--ink btn--lg" type="button" data-open-modal data-modal-kind="{{ kind }}"{% if colour %} data-modal-colour="{{ colour }}"{% endif %}{% if breed %} data-modal-breed="{{ breed }}"{% endif %} data-modal-title="{{ modal_title }}" data-modal-sub="{{ line }}" data-modal-note="{{ note }}"{% if submit %} data-modal-submit="{{ submit }}"{% endif %}{% if done %} data-modal-done="{{ done }}"{% endif %}>{{ label|typo }}</button>
+    {% if site.contacts_public %}
     <a class="btn btn--tg btn--lg" href="{{ site.messengers.telegram.url }}" target="_blank" rel="noopener">{{ icon('tg') }}{{ site.tg_cta.label }}</a>
+    {% endif %}
   </div>
 </div>
 {%- endmacro %}

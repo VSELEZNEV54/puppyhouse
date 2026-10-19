@@ -2,6 +2,7 @@
     The top bar (logo + close) never scrolls away: only .mmenu__scroll scrolls (client 15.10).
     main.js: [data-burger], #mmenu, .mmenu__acc (aria-controls → its list), [data-menu-close], [data-menu-link]. -#}
 {% import "macros/ui.html.j2" as ui %}
+{% import "macros/forms.html.j2" as forms %}
 {% import "partials/menu.html.j2" as menu %}
 {% set is_home = page.url == '/' %}
   <!-- Мобильное меню -->
@@ -28,6 +29,7 @@
       </ul>
     </nav>
     <div class="mmenu__bottom">
+      {% if site.contacts_public %}
       <a class="mmenu__phone" href="{{ site.phone.tel }}">{{ site.phone.display }}<small>{{ site.phone.hours|typo }}</small></a>
       <div class="mmenu__msgs">
         {% for k in ('telegram', 'whatsapp', 'max') %}{% set m = site.messengers[k] %}
@@ -36,6 +38,10 @@
         <button class="btn btn--white mmenu__price" type="button" data-open-modal data-modal-kind="price">Узнать цену</button>
       </div>
       <a class="btn btn--tg btn--lg btn--block" href="{{ site.messengers.telegram.url }}" target="_blank" rel="noopener">{{ ui.icon('tg') }}{{ site.tg_cta.label }}</a>
+      {% else %}
+      {{ forms.request_button(cls='btn btn--ink btn--lg btn--block', place='мобильное меню') }}
+      <button class="btn btn--white btn--lg btn--block" type="button" data-open-modal data-modal-kind="price">Узнать цену</button>
+      {% endif %}
     </div>
     </div>
   </div>

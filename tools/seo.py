@@ -91,6 +91,8 @@ def organization(site: dict, conf: dict, imgsize) -> dict:
     street = site.get("address", {}).get("street")
     if not is_placeholder(street):
         org["address"]["streetAddress"] = street
+    if not site.get("contacts_public", True):  # first stage: no phone, e-mail or messengers anywhere (site.json)
+        return org
     tel = (site.get("phone") or {}).get("tel", "")
     if tel.startswith("tel:"):
         org["telephone"] = tel[4:]
@@ -99,7 +101,7 @@ def organization(site: dict, conf: dict, imgsize) -> dict:
     if conf.get("opening_hours"):
         org["openingHours"] = conf["opening_hours"]
     same = [m.get("url") for m in (site.get("messengers") or {}).values() if isinstance(m, dict)]
-    same = [u for u in same if u and u.startswith("http")]
+    same = [u for u in same if u and u.startswith("http") and not is_placeholder(u)]
     if same:
         org["sameAs"] = same
     return org
