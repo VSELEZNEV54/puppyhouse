@@ -9,6 +9,7 @@
     revoke-api-keys --login <service login>
     worker                  send notifications every 10 s, purge once a night
     send-pending            send due notifications once
+    notify-test             a test message to every Telegram chat and mailbox of api.env (no request needed)
     purge                   retention clean-up (see app/services/retention.py)
     forget-contact --phone +7… --reason withdrawal|request|retention|not_me --subject "ФИО"
     export-reviews [--out path]   approved reviews as JSON for the site
@@ -213,6 +214,27 @@ def cmd_send_pending(args) -> int:
     return 0
 
 
+def cmd_notify_test(args) -> int:
+    """Checks api.env as it is now (a fresh container reads it); the running API and worker take it after dsh restart."""
+    from .services import notify
+    res = notify.send_test()
+    if not res:
+        print("Уведомления не настроены: заполните DSH_TELEGRAM_BOT_TOKEN и DSH_TELEGRAM_CHAT_ID и/или DSH_SMTP_* и "
+              "DSH_NOTIFY_EMAILS в /etc/domshchenkov/api.env")
+        return 2
+    for r in res:
+        where = "Telegram" if r["channel"] == "telegram" else "почта"
+        if r["ok"]:
+            print(f"  ok    {where} → {r['target']}")
+        else:
+            print(f"  FAIL  {where} → {r['target']}: {r['hint']}" + (f"\n        ({r['error']})" if r["error"] else ""))
+    if all(r["ok"] for r in res):
+        print("Всё дошло. Чтобы сайт начал присылать заявки с этими настройками: dsh restart")
+        return 0
+    print("Исправьте /etc/domshchenkov/api.env и запустите проверку ещё раз: dsh app notify-test")
+    return 1
+
+
 def cmd_purge(args) -> int:
     from .services import retention
     with session_scope() as db:
@@ -344,6 +366,7 @@ def main(argv=None) -> int:
     p = sub.add_parser("worker"); p.add_argument("--interval", type=int, default=10)
     p.add_argument("--purge-hour", type=int, default=3); p.set_defaults(fn=cmd_worker)
     sub.add_parser("send-pending").set_defaults(fn=cmd_send_pending)
+    sub.add_parser("notify-test").set_defaults(fn=cmd_notify_test)
     sub.add_parser("purge").set_defaults(fn=cmd_purge)
     p = sub.add_parser("forget-contact"); p.add_argument("--phone", required=True)
     p.add_argument("--reason", choices=["withdrawal", "request", "retention", "not_me"], required=True)

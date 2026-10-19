@@ -683,3 +683,62 @@ def test_health_names_the_deployed_release(client, settings):
     settings.release = "20261020-090000-abcdef12"
     r = client.get("/api/v1/health")
     assert r.status_code == 200 and r.json() == {"ok": True, "release": "20261020-090000-abcdef12"}
+
+
+# ---------------------------------------------------------------- python -m app notify-test
+def test_notify_test_sends_one_message_per_chat_and_mailbox_without_personal_data(tg, email):
+    tg.telegram_breed_chats = {"maltipu": MALTIPU_CHAT, "pudel": DEFAULT_CHAT}   # a repeated chat is checked once
+    fake = FakeHttp()
+    res = notify.send_test(tg, client=fake.client())
+    assert [(r["channel"], r["target"], r["ok"]) for r in res] == [
+        ("telegram", DEFAULT_CHAT, True), ("telegram", MALTIPU_CHAT, True), ("email", "owner@yandex.ru", True)]
+    assert [fake.json(i)["chat_id"] for i in range(2)] == [DEFAULT_CHAT, MALTIPU_CHAT]
+    assert "Проверка" in fake.json(0)["text"] and NAME not in fake.json(0)["text"]
+    assert FakeSMTP.logins == [("kennel@yandex.ru", SMTP_PASSWORD)]
+    (msg,) = FakeSMTP.sent
+    assert msg["To"] == "owner@yandex.ru" and "Проверка" in msg["Subject"]
+
+
+def test_notify_test_explains_what_to_fix_and_never_shows_the_token(tg, email):
+    fake = FakeHttp(httpx.Response(400, json={"ok": False, "description": f"Bad Request: chat not found {TOKEN}"}))
+    FakeSMTP.login_error = smtplib.SMTPAuthenticationError(535, b"auth failed")
+    res = notify.send_test(tg, client=fake.client())
+    t, e = res
+    assert not t["ok"] and "/start" in t["hint"] and TOKEN not in t["error"]
+    assert not e["ok"] and "DSH_SMTP_PASSWORD" in e["hint"] and SMTP_PASSWORD not in e["error"]
+
+
+@pytest.mark.parametrize("answer, words", [
+    (httpx.Response(401, json={"ok": False, "description": "Unauthorized"}), "DSH_TELEGRAM_BOT_TOKEN"),
+    (httpx.Response(403, json={"ok": False, "description": "Forbidden: bot was blocked by the user"}), "заблокирован"),
+    (httpx.ConnectError("no route"), "api.telegram.org"),
+])
+def test_notify_test_telegram_hints(tg, answer, words):
+    (r,) = notify.send_test(tg, client=FakeHttp(answer).client())
+    assert not r["ok"] and words in r["hint"]
+
+
+def test_notify_test_points_to_the_closed_port_of_the_provider(email, settings):
+    FakeSMTP.connect_error = TimeoutError("timed out")
+    (r,) = notify.send_test(settings, client=FakeHttp().client())
+    assert not r["ok"] and "465" in r["hint"] and "Timeweb" in r["hint"]
+
+
+def test_notify_test_reports_a_half_filled_channel_and_nothing_when_none(settings):
+    settings.telegram_bot_token, settings.telegram_chat_id, settings.telegram_breed_chats = TOKEN, "", {}
+    settings.smtp_host, settings.notify_emails = "", []
+    (r,) = notify.send_test(settings, client=FakeHttp().client())
+    assert not r["ok"] and "DSH_TELEGRAM_CHAT_ID" in r["hint"]
+    settings.telegram_bot_token = ""
+    assert notify.send_test(settings, client=FakeHttp().client()) == []
+
+
+def test_notify_test_command_exit_codes(monkeypatch, capsys):
+    from app.__main__ import main
+    monkeypatch.setattr(notify, "send_test", lambda: [])
+    assert main(["notify-test"]) == 2
+    monkeypatch.setattr(notify, "send_test", lambda: [{"channel": "telegram", "target": "1", "ok": True, "error": "", "hint": ""}])
+    assert main(["notify-test"]) == 0 and "dsh restart" in capsys.readouterr().out
+    monkeypatch.setattr(notify, "send_test", lambda: [{"channel": "email", "target": "a@b.ru", "ok": False,
+                                                        "error": "x", "hint": "почта не приняла"}])
+    assert main(["notify-test"]) == 1 and "FAIL  почта → a@b.ru: почта не приняла" in capsys.readouterr().out

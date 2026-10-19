@@ -4,6 +4,7 @@
 #   dsh logs [api|worker|migrate|postgres] [-f]
 #   dsh app <command> [args]           backend CLI, e.g.: dsh app create-admin --login olga --name "Ольга" --role manager
 #                                      (dsh app --help lists them all: create-api-key, sync-catalog, purge, …)
+#   dsh app notify-test                a test message to the Telegram chats and mailboxes of api.env
 #   dsh restart                        restart the API and the worker with the settings from /etc/domshchenkov/api.env
 #   dsh backup                         an encrypted database backup now (same as the nightly one)
 #   dsh update                         git pull in /opt/domshchenkov/src and deploy (pass deploy.sh options after it)
@@ -120,7 +121,7 @@ case "$cmd" in
     echo "Готово: работает $pv. Вернуться обратно: dsh rollback"
     ;;
   -h|--help|help)
-    sed -n '2,14p' "$0"
+    sed -n '2,15p' "$0"
     ;;
   *)
     echo "dsh: неизвестная команда $cmd (dsh help)" >&2; exit 2

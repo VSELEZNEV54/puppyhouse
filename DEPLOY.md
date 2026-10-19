@@ -157,18 +157,40 @@ domshchenkov-<версия>/deploy.sh
 | `dsh app reset-password --login olga` | новый пароль сотруднику |
 | `dsh app --help` | все команды бэкенда: API-ключ для CRM, синхронизация каталога, удаление данных… |
 | `dsh restart` | перезапуск API и воркера (после правки `/etc/domshchenkov/api.env`) |
+| `dsh app notify-test` | пробное сообщение в Telegram и на почту из `api.env` |
 | `dsh backup` | бэкап сейчас |
 | `dsh update` / `dsh rollback` | обновить / откатить |
 | `dsh autoupdate on` / `off` / `status` | автовыкладка новых коммитов раз в 5 минут |
 
 ## Уведомления о заявках
 
-Настраиваются в `/etc/domshchenkov/api.env`, после правки выполните `dsh restart`.
-- Почта с полными данными заявки: `DSH_SMTP_*` и `DSH_NOTIFY_EMAILS`. Нужен российский почтовый сервис, например
-  Яндекс 360: `smtp.yandex.ru:465`. **Timeweb Cloud по умолчанию закрывает порты 25, 465 и 587** — откройте 465 в
-  панели сервера (замок у списка «Закрытые порты»), иначе письма не уйдут. Заявки при этом всё равно сохраняются в базе
-  и видны в админке.
-- Telegram без имени и телефона: `DSH_TELEGRAM_BOT_TOKEN`, `DSH_TELEGRAM_CHAT_ID`.
+Настраиваются в `/etc/domshchenkov/api.env` (`nano /etc/domshchenkov/api.env`, сохранить — Ctrl+O, Enter, выйти —
+Ctrl+X). Проверка без заявки на сайте: `dsh app notify-test` — пробное сообщение в каждый чат и на каждую почту, при
+ошибке пишет, что поправить. Потом `dsh restart`, чтобы сайт взял новые настройки.
+
+- **Telegram** — номер заявки, порода и ссылка в админку, без имени и телефона.
+  1. В Telegram: @BotFather → `/newbot` → имя и адрес бота (на `bot`) → токен.
+  2. Напишите боту `/start` или добавьте его в группу, где будут заявки, и напишите там `/start`.
+  3. ID чата на сервере: `curl -s "https://api.telegram.org/bot<ТОКЕН>/getUpdates"` → `"chat":{"id":…}` (у группы
+     ID с минусом).
+  ```
+  DSH_TELEGRAM_BOT_TOKEN=<токен>
+  DSH_TELEGRAM_CHAT_ID=<id чата>
+  ```
+- **Почта** — заявка целиком (имя, телефон, порода, страница). Ящик `main@домщенков.рф` на Beget:
+  ```
+  DSH_SMTP_HOST=smtp.beget.com
+  DSH_SMTP_PORT=465
+  DSH_SMTP_SSL=true
+  DSH_SMTP_USER=main@xn--b1adduihee9g.xn--p1ai
+  DSH_SMTP_PASSWORD='<пароль ящика>'
+  DSH_SMTP_FROM=main@xn--b1adduihee9g.xn--p1ai
+  DSH_NOTIFY_EMAILS=main@xn--b1adduihee9g.xn--p1ai
+  ```
+  Адреса — латиницей (домен .рф как `xn--b1adduihee9g.xn--p1ai`). Пароль — в одинарных кавычках: так символы `$`,
+  `#` и пробелы в нём не ломаются; кавычку `'` внутри пароля пишите как `\'`. **Timeweb Cloud по умолчанию закрывает
+  порты 25, 465 и 587** — откройте 465 в панели сервера (замок у списка «Закрытые порты»), иначе письма не уйдут.
+  Заявки при этом всё равно сохраняются в базе и видны в админке.
 - Вебхук для CRM: `DSH_WEBHOOK_URL`, `DSH_WEBHOOK_SECRET`.
 
 Подробно — в `backend/README.md`.

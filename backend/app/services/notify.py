@@ -16,10 +16,12 @@ import json
 import logging
 import re
 import smtplib
+import socket
 import ssl
 import zoneinfo
 from email.message import EmailMessage
 from email.utils import formataddr, make_msgid
+from types import SimpleNamespace
 
 import httpx
 from sqlalchemy import select
@@ -240,6 +242,94 @@ def _scrub(err: str, s: Settings) -> str:
         if secret:
             err = err.replace(secret, "***")
     return _BOT_TOKEN.sub("***", err)[:500]
+
+
+# ---------------------------------------------------------------- check of the settings (python -m app notify-test)
+TEST_TELEGRAM_TEXT = ("Проверка уведомлений домщенков.рф: бот подключён. Так будут приходить новые заявки — номер, "
+                      "порода и ссылка в админку, без имени и телефона.")
+
+
+def _test_email_message(s: Settings) -> EmailMessage:
+    m = EmailMessage()
+    m["Subject"] = "Проверка уведомлений домщенков.рф"
+    m["From"] = formataddr(("домщенков.рф", s.smtp_from or s.smtp_user))
+    m["Message-ID"] = make_msgid(domain=(s.smtp_from or s.smtp_user or "localhost").split("@")[-1])
+    m.set_content("Почта для заявок настроена: так будут приходить новые заявки с сайта домщенков.рф — с именем, "
+                  "телефоном и ссылкой в админку.")
+    return m
+
+
+def _hint(channel: str, err: Exception, s: Settings) -> str:
+    """What to fix, in the words of api.env, for the person who runs the check."""
+    cause = err.__cause__ or err
+    msg = str(err).lower()
+    if channel == "telegram":
+        if "telegram 401" in msg:
+            return "токен не подходит: проверьте DSH_TELEGRAM_BOT_TOKEN (его выдаёт @BotFather)"
+        if "telegram 400" in msg or "telegram 404" in msg:
+            return "бот не видит этот чат: напишите боту /start или добавьте его в группу, проверьте DSH_TELEGRAM_CHAT_ID"
+        if "telegram 403" in msg:
+            return "бот заблокирован в этом чате или удалён из группы: разблокируйте или добавьте его снова"
+        return "нет ответа от api.telegram.org: проверьте интернет на сервере и попробуйте ещё раз"
+    if isinstance(cause, smtplib.SMTPAuthenticationError):
+        return "почта не приняла логин или пароль: DSH_SMTP_USER — адрес ящика латиницей, DSH_SMTP_PASSWORD — пароль ящика"
+    if isinstance(cause, (smtplib.SMTPSenderRefused, smtplib.SMTPRecipientsRefused)):
+        return "почта не приняла адрес: DSH_SMTP_FROM должен совпадать с ящиком, проверьте и DSH_NOTIFY_EMAILS"
+    if isinstance(cause, UnicodeEncodeError):
+        return "логин и адреса пишутся латиницей: домен .рф — как xn--b1adduihee9g.xn--p1ai"
+    if isinstance(cause, socket.gaierror):
+        return f"сервер почты {s.smtp_host} не найден: проверьте DSH_SMTP_HOST"
+    if isinstance(cause, ssl.SSLError):
+        return "не удалось зашифровать соединение: для порта 465 нужно DSH_SMTP_SSL=true, для 587 и 2525 — false"
+    if isinstance(cause, OSError) and not isinstance(cause, smtplib.SMTPException):
+        return (f"нет соединения с {s.smtp_host}:{s.smtp_port}. На Timeweb Cloud порты 25, 465 и 587 закрыты по "
+                f"умолчанию — откройте порт {s.smtp_port} в панели сервера («Закрытые порты»)")
+    return "почтовый сервер отказал — подробности в скобках"
+
+
+def send_test(s: Settings | None = None, client: httpx.Client | None = None) -> list[dict]:
+    """One test message to every Telegram chat and mailbox of the settings, through the same senders as real
+    notifications. No personal data, nothing in the database. → [{channel, target, ok, error, hint}]; [] when no
+    channel is configured."""
+    s = s or get_settings()
+    results: list[dict] = []
+
+    def fail(channel: str, target: str, hint: str) -> None:
+        results.append({"channel": channel, "target": target, "ok": False, "error": "", "hint": hint})
+
+    def attempt(channel: str, target: str, send) -> None:
+        try:
+            send()
+            results.append({"channel": channel, "target": target, "ok": True, "error": "", "hint": ""})
+        except Exception as e:  # noqa: BLE001 — every failure is shown to the person running the check
+            results.append({"channel": channel, "target": target, "ok": False,
+                            "error": _scrub(f"{type(e).__name__}: {e}", s), "hint": _hint(channel, e, s)})
+
+    own = client is None
+    client = client or httpx.Client(timeout=10)
+    try:
+        chats = list(dict.fromkeys(c for c in (s.telegram_chat_id, *s.telegram_breed_chats.values()) if c))
+        if s.telegram_bot_token or chats:
+            if not s.telegram_bot_token:
+                fail("telegram", "—", "нет DSH_TELEGRAM_BOT_TOKEN (токен от @BotFather)")
+            elif not chats:
+                fail("telegram", "—", "нет DSH_TELEGRAM_CHAT_ID (куда присылать заявки)")
+            else:
+                for chat in chats:
+                    attempt("telegram", chat, lambda chat=chat: _send_telegram(
+                        SimpleNamespace(target=chat), TEST_TELEGRAM_TEXT, s, client))
+        if s.smtp_host or s.notify_emails:
+            if not s.smtp_host:
+                fail("email", "—", "нет DSH_SMTP_HOST (сервер исходящей почты)")
+            elif not s.notify_emails:
+                fail("email", "—", "нет DSH_NOTIFY_EMAILS (куда присылать заявки)")
+            else:
+                for to in s.notify_emails:
+                    attempt("email", to, lambda to=to: _send_email(SimpleNamespace(target=to), _test_email_message(s), s))
+    finally:
+        if own:
+            client.close()
+    return results
 
 
 def deliver_due(db: Session, limit: int = 20, client: httpx.Client | None = None) -> dict:
