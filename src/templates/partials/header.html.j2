@@ -2,6 +2,8 @@
     logo · «Меню» (site map panel: hover / click / keyboard) · «Каталог щенков» (first nav link, accent colour; client 15.10) ·
     «Породы ▾» · links from site.nav · phone · Telegram, WhatsApp, MAX ·
     «Написать в Telegram» (site.tg_cta, Telegram gradient) · burger (< 1100 px → #mmenu).
+    Without public contacts (site.contacts_public: false) the right side holds only the burger: «Оставить заявку» is in
+    «Меню» (.mega__foot) and in #mmenu, not in the header (client 19.10).
     site.nav items have "prio": the higher the number, the earlier the link hides on a narrower desktop (it stays in «Меню»).
     On the homepage the logo scrolls to #top, elsewhere it goes home. main.js: [data-hdr], [data-dd], [data-mega], [data-burger]. -#}
 {% import "macros/ui.html.j2" as ui %}
@@ -77,8 +79,6 @@
         <a class="msgr msgr--{{ m.icon }}" href="{{ m.url }}" target="_blank" rel="noopener" aria-label="{{ m.aria }}" title="{{ m.label }}">{{ ui.icon(m.icon) }}</a>
         {% endfor %}
         <a class="btn btn--tg hdr__cta" href="{{ site.messengers.telegram.url }}" target="_blank" rel="noopener">{{ ui.icon('tg') }}<span>{{ site.tg_cta.label }}</span></a>
-        {% else %}
-        {{ forms.request_button(cls='btn btn--ink hdr__req', place='шапка', short='Заявка') }}
         {% endif %}
         <button class="msgr msgr--ink hdr__burger" type="button" aria-label="Открыть меню" aria-expanded="false" aria-controls="mmenu" data-burger>{{ ui.icon('menu') }}</button>
       </div>

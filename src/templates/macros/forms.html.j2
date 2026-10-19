@@ -23,8 +23,8 @@
 {#- «Оставить заявку» — the way to reach the kennel while its phone, e-mail and messengers are not on the site
     (site.contacts_public = false, first stage). Opens the shared request modal; place goes to the request as its note
     (the admin panel shows where the person clicked). -#}
-{% macro request_button(cls='btn btn--ink', place='', label='Оставить заявку', short=none) -%}
-<button class="{{ cls }}" type="button" data-open-modal data-modal-kind="consult" data-modal-title="Оставьте заявку" data-modal-sub="Подберём щенка и пришлём фото, видео и цену туда, где вам удобно" data-modal-note="Заявка{{ ': ' ~ place if place }}" data-modal-submit="Отправить заявку">{% if short %}<span class="req-long">{{ label }}</span><span class="req-short">{{ short }}</span>{% else %}{{ label }}{% endif %}</button>
+{% macro request_button(cls='btn btn--ink', place='', label='Оставить заявку') -%}
+<button class="{{ cls }}" type="button" data-open-modal data-modal-kind="consult" data-modal-title="Оставьте заявку" data-modal-sub="Подберём щенка и пришлём фото, видео и цену туда, где вам удобно" data-modal-note="Заявка{{ ': ' ~ place if place }}" data-modal-submit="Отправить заявку">{{ label }}</button>
 {%- endmacro %}
 
 {#- Button that opens the price modal without a puppy (generic request). breed: breed name or slug to preselect.

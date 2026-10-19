@@ -448,9 +448,6 @@ main:focus, section[tabindex="-1"]:focus, [data-anchor-focus]:focus { outline: n
 .hdr .msgr .i { width: 19px; height: 19px; }
 .hdr__cta { margin-left: 4px; height: 44px; padding: 0 20px 0 16px; }
 .msgr--call, .hdr__burger { display: none; }
-/* первый этап без контактов (site.json → contacts_public: false): в шапке одна кнопка заявки, видна на любой ширине */
-.hdr__req { margin-left: 4px; height: 44px; padding: 0 20px; white-space: nowrap; }
-.req-short { display: none; }
 
 /* узкий десктоп: сначала прячем подпись логотипа, потом номер (он в «Меню» и в подвале), потом ссылки с конца —
    все разделы остаются в «Меню». Номер — элемент заявки: на 1440–1599 он виден, место ему уступает «Блог» */
@@ -490,7 +487,6 @@ main:focus, section[tabindex="-1"]:focus, [data-anchor-focus]:focus { outline: n
   .hdr__cta { display: none; }
 }
 @media (max-width: 560px) {
-  .hdr__req { height: 40px; padding: 0 16px; font-size: 14px; }
   .hdr__bar { height: 60px; padding-left: 10px; }
   .hdr .msgr--tg, .hdr .msgr--wa, .hdr .msgr--max { display: none; }
   .hdr .msgr--call { display: inline-grid; }
@@ -499,27 +495,7 @@ main:focus, section[tabindex="-1"]:focus, [data-anchor-focus]:focus { outline: n
   .logo__sub { font-size: 11.5px; }
 }
 
-/* телефон: логотип, кнопка заявки и бургер должны поместиться в пилюлю шапки, иначе бургер выезжает за край
-   и страница скроллится вбок. По очереди: короткая подпись кнопки → без подписи логотипа → всё компактнее */
-@media (max-width: 469px) {
-  .hdr__req .req-long { display: none; }
-  .hdr__req .req-short { display: inline; }
-  .hdr__req { padding: 0 14px; }
-}
-@media (max-width: 409px) {
-  .hdr .logo__sub { display: none; }
-  .hdr__right { padding-left: 4px; }
-  .hdr__req { margin-left: 0; padding: 0 12px; }
-}
-@media (max-width: 359px) {
-  .hdr__bar { padding: 0 8px; }
-  .hdr .logo { gap: 8px; }
-  .hdr .logo__mark { width: 34px; height: 34px; }
-  .hdr .logo__mark .i { width: 21px; height: 21px; }
-  .hdr .logo__name { font-size: 15px; }
-  .hdr__right { gap: 4px; padding-left: 0; }
-  .hdr .hdr__burger { width: 40px; height: 40px; }
-}
+/* 320 px: подпись логотипа уходит, иначе меню выезжает за край */
 @media (max-width: 349px) {
   .logo__sub { display: none; }
   .mbar { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1.3fr); }
