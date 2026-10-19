@@ -186,6 +186,11 @@ install -D -m 644 "$HERE/backend/deploy/nginx-snippets/dsh-proxy.conf" "$SNIPPET
 NEW_CONF="$(mktemp)"
 cp "$HERE/backend/deploy/nginx.conf" "$NEW_CONF"
 [ -f /proc/net/if_inet6 ] || sed -i '/listen \[::\]/d' "$NEW_CONF"   # a server without IPv6
+# nginx ≥ 1.25.1 (Ubuntu 26.04: 1.28) warns about «listen … http2»: write «http2 on;» there, keep the old form for 1.24
+ngx_ver="$(nginx -v 2>&1 | sed -n 's|.*nginx/\([0-9][0-9.]*\).*|\1|p')"
+if [ -n "$ngx_ver" ] && [ "$(printf '%s\n%s\n' 1.25.1 "$ngx_ver" | sort -V | head -n 1)" = 1.25.1 ]; then
+  sed -i -e 's/^\( *\)listen 443 ssl http2;.*/\1listen 443 ssl;\n\1http2 on;/' -e 's/listen \[::\]:443 ssl http2;/listen [::]:443 ssl;/' "$NEW_CONF"
+fi
 install -m 644 "$NEW_CONF" "$NGINX_SITE"
 rm -f "$NEW_CONF"
 ln -sfn "$NGINX_SITE" /etc/nginx/sites-enabled/domshchenkov
