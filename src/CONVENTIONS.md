@@ -64,17 +64,27 @@ pixel-parity baseline no longer applies. Reference inner page: `/shchenki/`.
 ## Build and look
 
 ```
-python3 tools/build.py            # all routes; prints pages, unbuilt link targets, warnings, errors (exit 1 on errors)
-python3 tools/build.py --verbose  # + which pages link to each unbuilt URL
+python3 tools/build.py            # PUBLISHED pages only (src/data/publish.json); deletes the other generated pages
+python3 tools/build.py --all      # every route — to look at unpublished pages locally. Never commit after it:
+                                  #   run the normal build first (unpublished pages are in .gitignore anyway)
+python3 tools/build.py --verbose  # + which pages link to each unbuilt / not-yet-published URL
 python3 tools/build.py --clean    # + delete pages from earlier builds that no route produces (manifest only; skipped if errors)
 python3 tools/build.py --kit      # + /_kit/ — every macro with sample data (git-ignored, never deployed)
 ```
+
+**Staged release (client 19.10).** The repo = what GitHub Pages and the server show. Out now: the homepage, the four
+breed pages and the privacy policy (the forms link to it). Everything else stays in `src/` and is built with `--all`;
+links to it on published pages show the toast «Раздел скоро откроется…» and carry `rel="nofollow"`; sitemap.xml lists
+only published pages. To release a page: add its URL to `src/data/publish.json → pages` (`/maltipu/*` = the whole
+section), build, commit. The full site as of 19.10 is the branch `backup/full-site-2026-10-19`.
 Static server: `http://127.0.0.1:8765/` serves the repo (`cd /home/user/puppyhouse && python3 -m http.server 8765 --bind 127.0.0.1 &`).
 Open `/_kit/` before writing new CSS: most things you need already exist.
 
 Two builds in a row must give no diff. Commit the generated `index.html` files together with the sources and `.build-manifest.json`.
 Several agents may build at the same time: every page and the manifest are written atomically, and a full build always
-renders every group, so the files on disk reflect whichever build ran last — rebuild right before you commit.
+renders every published group, so the files on disk reflect whichever build ran last — rebuild (without `--all`) right
+before you commit. Merging a branch that still carries unpublished pages: resolve by deleting them (`git rm`) and
+running the normal build.
 
 ## Typography rule from the client (12.10) — enforced by the build
 
