@@ -166,6 +166,10 @@
 .brd-posts .media-carousel__item { display: flex; scroll-snap-align: start; transform: none; opacity: 1; }
 .brd-posts .bteaser { width: 100%; }
 .brd-posts .bteaser__topic { max-width: calc(100% - 16px); }
+/* узкая карточка (планшет): длинная тема «Французский бульдог · характер» не влезает в плашку — обрезаем многоточием */
+@media (min-width: 761px) {
+  .brd-posts .bteaser__topic { display: block; line-height: 30px; overflow: hidden; text-overflow: ellipsis; }
+}
 
 /* страница окраса: текст об окрасе слева, справа — факты и уход */
 .brd-colinfo { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: var(--gap); }

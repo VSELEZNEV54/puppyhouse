@@ -65,18 +65,21 @@ pixel-parity baseline no longer applies. Reference inner page: `/shchenki/`.
 
 ```
 python3 tools/build.py            # PUBLISHED pages only (src/data/publish.json); deletes the other generated pages
-python3 tools/build.py --all      # every route — to look at unpublished pages locally. Never commit after it:
-                                  #   run the normal build first (unpublished pages are in .gitignore anyway)
+python3 tools/build.py --all      # every route → _all/ (git-ignored, never deployed) to look at unpublished pages:
+                                  #   python3 -m http.server 8767 --directory _all; the published tree is not touched
 python3 tools/build.py --verbose  # + which pages link to each unbuilt / not-yet-published URL
 python3 tools/build.py --clean    # + delete pages from earlier builds that no route produces (manifest only; skipped if errors)
 python3 tools/build.py --kit      # + /_kit/ — every macro with sample data (git-ignored, never deployed)
 ```
 
 **Staged release (client 19.10).** The repo = what GitHub Pages and the server show. Out now: the homepage, the four
-breed pages and the privacy policy (the forms link to it). Everything else stays in `src/` and is built with `--all`;
-links to it on published pages show the toast «Раздел скоро откроется…» and carry `rel="nofollow"`; sitemap.xml lists
-only published pages. To release a page: add its URL to `src/data/publish.json → pages` (`/maltipu/*` = the whole
-section), build, commit. The full site as of 19.10 is the branch `backup/full-site-2026-10-19`.
+breed pages and the privacy policy (the forms link to it). Everything else stays in `src/` and is built with `--all`.
+Links to an unpublished page go to a block on the published page (`publish.json → link_fallbacks`: «Каталог щенков» →
+`#shchenki` on a breed page or the homepage `#porody`, «Контакты» → `#zayavka`, «Отзывы», «О питомнике», «Все вопросы»);
+the rest show the toast «Раздел скоро откроется. Пока напишите нам — пришлём фото и видео щенков» and carry `rel="nofollow"`. sitemap.xml lists only
+published pages. To release a page: add its URL to `src/data/publish.json → pages` (`/maltipu/*` = the whole section),
+build, commit. A malformed publish.json stops the build before anything is written (a typo must not publish the whole
+site). The full site as of 19.10 is the branch `backup/full-site-2026-10-19`.
 Static server: `http://127.0.0.1:8765/` serves the repo (`cd /home/user/puppyhouse && python3 -m http.server 8765 --bind 127.0.0.1 &`).
 Open `/_kit/` before writing new CSS: most things you need already exist.
 
@@ -169,7 +172,7 @@ The layout renders: breadcrumbs → hero → body → «Щенки в налич
 
 - Write every URL **root-absolute, as in production**: `/maltipu/`, `/shchenki/?breed=maltipu`, `/assets/img/x.jpg`, `/assets/css/x.css`.
   The build rewrites them per page: built routes and `/assets/` → relative (`../maltipu/`), CSS/JS get `?v=<hash>`.
-- A link to a page that is **not built in this build** stays root-absolute → `main.js` shows the toast «Раздел появится на следующем этапе».
+- A link to a page that is **not built in this build** stays root-absolute → `main.js` shows the toast «Раздел скоро откроется. Пока напишите нам — пришлём фото и видео щенков» (see «Staged release»).
   So link to final URLs from the brief even before they exist. Never write relative paths by hand.
 - Rewritten attributes: `href src srcset poster action data-src data-href` and `url(...)` in inline styles. Not inside `<script>`.
 

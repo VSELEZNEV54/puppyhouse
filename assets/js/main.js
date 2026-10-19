@@ -43,7 +43,7 @@
     toast.textContent = text;
     toast.classList.add('is-on');
     clearTimeout(toastTimer);
-    toastTimer = setTimeout(() => toast.classList.remove('is-on'), 2600);
+    toastTimer = setTimeout(() => toast.classList.remove('is-on'), Math.min(6000, Math.max(2600, text.length * 60))); // время на чтение
   }
 
   // Несвёрстанные страницы (href от корня, сборщик оставил его как есть) → тост; якоря → плавная прокрутка
