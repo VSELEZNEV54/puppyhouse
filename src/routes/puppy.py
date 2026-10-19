@@ -1,6 +1,7 @@
-"""Puppy pages /shchenki/<slug>/ — one conversion page per puppy in puppies.json (typical strong-kennel layout, client 13.10):
-gallery carousel + info tile with the characteristics table → character → parents → what's included → booking and
-delivery → similar puppies → FAQ → lead form.
+"""Puppy pages /shchenki/<slug>/ — one conversion page per puppy in puppies.json (layout of 13.10, client notes 19.10):
+gallery of the puppy's own photos + info tile with the characteristics table → «Как купить щенка» → «Про <породу>»
+(SEO text and facts) → «Кому подойдёт» (photo cards) → «Читайте о породе» (hub, price, colours) → what's included →
+booking and delivery → similar puppies → FAQ → lead form. No status badges, no parents block (client 19.10).
 Owns: src/routes/puppy.py, src/templates/puppy/, src/data/puppy.json, assets/css/puppy.css, assets/js/puppy.js.
 The puppy card of «Похожие щенки» is the shared card cards.puppy_card (via src/templates/catalog/_card.html.j2, main.css)."""
 
@@ -13,9 +14,7 @@ MONTHS_GEN = ["января", "февраля", "марта", "апреля", "�
               "сентября", "октября", "ноября", "декабря"]
 TITLE_MAX, DESC_MAX = 60, 160
 BRAND = " | домщенков.рф"
-TAKE_HOME_WEEKS = 10  # content/home.md, FAQ «Во сколько щенка можно забрать домой?» — не раньше 10 недель
 GALLERY_MAX = 9
-IMG = "/assets/img/"
 
 # крупный план лайфстайл-фото в кадре галереи (как object-position у карточек в main.css)
 LIFE_POS = {
@@ -24,54 +23,6 @@ LIFE_POS = {
     "pup__img--charli": "48% 60%",
     "pup__img--tessa": "50% 50%",
 }
-
-# Заглушки фото родителей, пока питомник не пришлёт настоящие: по породе родителя — основное фото и запасное
-# (второй родитель той же породы получает запасное, одно фото дважды не показываем).
-PARENT_PHOTOS = (
-    ("болонк", [("parents-maltipu.jpg", "Мама со щенками на лежанке", "40% 50%")]),
-    ("мальтипу", [("parent-maltipu.jpg", "Взрослый абрикосовый мальтипу на персиковом фоне", "50% 40%"),
-                  ("hero-maltipu-sofa.jpg", "Абрикосовый мальтипу на светлом диване", "50% 45%")]),
-    ("пудел", [("parent-pudel.jpg", "Взрослый рыжий той-пудель на жёлтом фоне", "50% 40%"),
-               ("grad-woman-pudel.jpg", "Той-пудель на руках у хозяйки в кресле у окна", "64% 60%")]),
-    ("бульдог", [("parent-buldog.jpg", "Взрослый палевый французский бульдог на голубом фоне", "50% 40%"),
-                 ("breed-francuzskij-buldog.jpg", "Голубой французский бульдог на скамье у окна", "52% 40%")]),
-    ("колли", [("parent-kolli.jpg", "Взрослый чёрно-белый бордер-колли на мятном фоне", "50% 40%"),
-               ("grad-man-kolli.jpg", "Бордер-колли играет с хозяином в осеннем парке", "64% 50%")]),
-)
-# короткие факты о родителях — образцы в скобках, заменить реальными
-PARENT_FACTS = {
-    "мальтийская болонка": ("[4 года]", "[3 кг]"),
-    "мальтипу": ("[3 года]", "[4 кг]"),
-    "той-пудель": ("[3 года]", "[3 кг]"),
-    "французский бульдог": (("[4 года]", "[10 кг]"), ("[3 года]", "[12 кг]")),
-    "бордер-колли": (("[4 года]", "[17 кг]"), ("[3 года]", "[20 кг]")),
-}
-# Лайфстайл-заглушки галереи по породе: (файл, alt, подпись, object-position). Первая — постер видео.
-# Фото, которые уже стоят у других щенков в каталоге, сюда не берём — одного щенка не показываем под двумя кличками.
-LIFE = {
-    "maltipu": [
-        ("hero-maltipu-sofa.jpg", "Абрикосовый щенок мальтипу на светлом диване", "Дома на диване", "50% 45%"),
-        ("family-maltipu.jpg", "Девушка обнимает щенка мальтипу на диване", "Знакомство с семьёй", "56% 50%"),
-    ],
-    "francuzskij-buldog": [
-        ("grad-family-buldog.jpg", "Семья с дочкой и щенком французского бульдога на диване", "Знакомство с семьёй", "50% 50%"),
-        ("breed-francuzskij-buldog.jpg", "Голубой французский бульдог на скамье у окна", "У окна", "52% 40%"),
-        ("delivery-carrier.jpg", "Щенок французского бульдога в переноске на сиденье машины", "Едет домой", "55% 50%"),
-    ],
-    "toj-pudel": [
-        ("grad-woman-pudel.jpg", "Той-пудель на руках у хозяйки в кресле у окна", "На руках у хозяйки", "64% 60%"),
-        ("vet-check.jpg", "Ветеринар осматривает щенка той-пуделя", "Осмотр ветеринара", "40% 50%"),
-    ],
-    "border-kolli": [
-        ("grad-man-kolli.jpg", "Мужчина играет с бордер-колли в осеннем парке", "Игра в парке", "64% 50%"),
-    ],
-}
-EXTRA = [  # общие кадры в конце галереи
-    ("video-call.jpg", "video", "Щенок на экране смартфона во время видеозвонка", "Видеозвонок со щенком", "40% 50%"),
-    ("starter-kit.jpg", "photo", "Стартовый набор для щенка: лежанка, переноска, миски и игрушки", "Стартовый набор", "50% 50%"),
-    ("documents.jpg", "photo", "Лапа щенка рядом с папкой документов и ветпаспортом", "Ветпаспорт и договор", "50% 50%"),
-]
-
 
 def cap(s):
     """Capitalise the first letter, also inside a leading «[»: «[кличка мамы]» → «[Кличка мамы]»."""
@@ -102,31 +53,6 @@ def fit(candidates, limit):
         if len(c) <= limit:
             return c
     return candidates[-1]
-
-
-def parent_facts(breed_text, role):
-    t = breed_text.strip("[]").lower()
-    for key, facts in PARENT_FACTS.items():
-        if key in t:
-            if isinstance(facts[0], tuple):
-                facts = facts[0] if role == "mother" else facts[1]
-            out = list(facts)
-            if "мальтипу" not in t:
-                out.append("Родословная РКФ")  # чистопородные родители: у щенков метрика РКФ / копии родословных
-            return out
-    return ["[возраст]", "[вес]"]
-
-
-def parent_photo(breed_text, used):
-    """Placeholder photo {src, alt, pos} for a parent of this breed, not one already used on the page."""
-    t = breed_text.strip("[]").lower()
-    for key, options in PARENT_PHOTOS:
-        if key in t:
-            for name, alt, pos in options:
-                if IMG + name not in used:
-                    return {"src": IMG + name, "alt": alt, "pos": pos}
-            return None
-    return None
 
 
 def doc_list(docs, n):
@@ -188,17 +114,9 @@ def colour_url(p, b, data):
     return f"{base}#{block.get('id', 'okrasy')}"
 
 
-def take_home(p, as_of):
-    born = dt.date.fromisoformat(p["birth_date"])
-    home = born + dt.timedelta(weeks=TAKE_HOME_WEEKS)
-    if p["status"] == "available" and home <= as_of:
-        return "можно забрать сейчас"
-    return f"не раньше {ru_date(home, year=False)}"
-
-
-def table(p, b, docs, data, as_of):
+def table(p, b, docs, data):
     """Characteristics table rows {label, value, url?}. Short (клиент 19.10): пол и поколение — в H1, прививки и чип —
-    в «Что входит в покупку»."""
+    в «Что входит в покупку», без переезда домой."""
     born = dt.date.fromisoformat(p["birth_date"])
     rows = [
         {"label": "Порода", "value": b["name"], "url": b["urls"]["hub"]},
@@ -207,51 +125,27 @@ def table(p, b, docs, data, as_of):
         {"label": "Вес взрослой собаки", "value": p["weight_forecast"]},
         {"label": "Документы", "value": doc_list([d for d in docs if d != "Чип"], 3)},
     ]
-    if p["status"] != "reserved":
-        rows.append({"label": "Переезд домой", "value": take_home(p, as_of)})
     return rows
 
 
-def gallery(p, b, parents):
-    """Photos and videos of the puppy: own photos and video first, then placeholders (lifestyle shots of the breed,
-    parents, video call, starter kit, documents) — up to GALLERY_MAX. Items: {src, alt, kind, caption, video, pos, tone}."""
+def gallery(p):
+    """The puppy's own photos and video only (client 19.10: no generated shots in the gallery), up to GALLERY_MAX.
+    Items: {src, alt, kind, caption, video, pos}."""
     name = p["name"]
-    items, used = [], set()
-
-    def add(src, kind, alt, caption, pos, video=None):
-        if (src in used and not video) or len(items) >= GALLERY_MAX:
-            return
-        used.add(src)
-        items.append({"src": src, "kind": kind, "alt": alt, "caption": caption, "video": video, "pos": pos})
-
-    for ph in p["photos"]:
+    items = []
+    for ph in p["photos"][:GALLERY_MAX]:
         pos = ph.get("pos") or LIFE_POS.get(ph.get("class") or "", "50% 60%" if ph["kind"] == "studio" else "50% 55%")
-        add(ph["src"], "photo", ph["alt"], name, pos)
-    for par in parents:  # parents' photos stay for their own slides further down
-        if par["photo"]:
-            used.add(par["photo"]["src"])
-    life = [x for x in LIFE.get(b["slug"], []) if IMG + x[0] not in used]
-    v = p.get("video")  # puppies.json: "video": "/assets/video/x.mp4" or {"src", "poster"} — the real video goes first
+        items.append({"src": ph["src"], "kind": "photo", "alt": ph["alt"], "caption": name, "video": None, "pos": pos})
+    v = p.get("video")  # puppies.json: "video": "/assets/video/x.mp4" or {"src", "poster"} — second, after the main photo
     if v:
         v = v if isinstance(v, dict) else {"src": v}
-        add(v.get("poster") or p["photo"]["src"], "video", f"Видео: {name}", f"Видео: {name}", "50% 50%", v.get("src"))
-    elif life:
-        f, alt, caption, pos = life.pop(0)
-        add(IMG + f, "video", alt, "Видео щенка", pos)
-    for f, alt, caption, pos in life:
-        add(IMG + f, "photo", alt, caption, pos)
-    for par in parents:
-        if par["photo"]:
-            used.discard(par["photo"]["src"])
-            add(par["photo"]["src"], "photo", par["photo"]["alt"], f"{par['role_label']} · {par['name']}", par["photo"]["pos"])
-    for f, kind, alt, caption, pos in EXTRA:
-        add(IMG + f, kind, alt, caption, pos)
-    return items
+        items.insert(1, {"src": v.get("poster") or p["photo"]["src"], "kind": "video", "alt": f"Видео: {name}",
+                         "caption": f"Видео: {name}", "video": v.get("src"), "pos": "50% 50%"})
+    return items[:GALLERY_MAX]
 
 
 def routes(data):
     bmap = data["breed_map"]
-    as_of = dt.date.fromisoformat(data["site"]["as_of"])
     texts = data["puppy"]
     faq = by_id(data["faq"])
     out = []
@@ -262,43 +156,17 @@ def routes(data):
         sex_m = p["sex"] == "male"
         name = p["name"]
 
-        parents, used = [], set()
-        for role in ("mother", "father"):
-            par = p["parents"][role]
-            photo = parent_photo(par["breed"], used)
-            if photo:
-                used.add(photo["src"])
-            parents.append({
-                "role": role,
-                "role_label": "Мама" if role == "mother" else "Папа",
-                "name": cap(par["name"]),
-                "breed": cap(par["breed"]),
-                "photo": photo,
-                "facts": parent_facts(par["breed"], role),
-            })
-
         docs = documents(p, b)
         h1 = h1_of(p, b)
         ca = colour_adj(p["colour"])
 
         bg = b["name_gen"]
-        if p["status"] == "reserved":
-            title = fit([f"{ca} щенок {bg}{gen_sp} {name} в Москве{BRAND}", f"{ca} щенок {bg}{gen_sp} {name}{BRAND}",
-                         f"Щенок {bg}{gen_sp} {name} в Москве{BRAND}", f"Щенок {bg}{gen_sp} {name}{BRAND}",
-                         f"Щенок {bg} {name}{BRAND}"], TITLE_MAX)
-            tail = f"Сейчас {'забронирован' if sex_m else 'забронирована'} — покажем похожих щенков и расскажем о новом помёте."
-        elif p["status"] == "soon":
-            title = fit([f"{ca} щенок {bg}{gen_sp} {name} — купить в Москве{BRAND}",
-                         f"{ca} щенок {bg}{gen_sp} {name} в Москве{BRAND}", f"{ca} щенок {bg}{gen_sp} {name}{BRAND}",
-                         f"Щенок {bg}{gen_sp} {name} — купить в Москве{BRAND}", f"Щенок {bg}{gen_sp} {name} в Москве{BRAND}",
-                         f"Щенок {bg} {name} в Москве{BRAND}", f"Щенок {bg} {name}{BRAND}"], TITLE_MAX)
-            tail = "Скоро в продаже: запишитесь в лист ожидания — пришлём видео и цену первыми."
-        else:
-            title = fit([f"{ca} щенок {bg}{gen_sp} {name} — купить в Москве{BRAND}",
-                         f"{ca} щенок {bg}{gen_sp} {name} в Москве{BRAND}", f"{ca} щенок {bg}{gen_sp} {name}{BRAND}",
-                         f"Щенок {bg}{gen_sp} {name} — купить в Москве{BRAND}", f"Щенок {bg}{gen_sp} {name} в Москве{BRAND}",
-                         f"Щенок {bg} {name} в Москве{BRAND}", f"Щенок {bg} {name}{BRAND}"], TITLE_MAX)
-            tail = "Покажем по видео, доставим по России. Узнайте цену."
+        # one wording for every status: the site shows no «забронирован» / «скоро» (client 19.10)
+        title = fit([f"{ca} щенок {bg}{gen_sp} {name} — купить в Москве{BRAND}",
+                     f"{ca} щенок {bg}{gen_sp} {name} в Москве{BRAND}", f"{ca} щенок {bg}{gen_sp} {name}{BRAND}",
+                     f"Щенок {bg}{gen_sp} {name} — купить в Москве{BRAND}", f"Щенок {bg}{gen_sp} {name} в Москве{BRAND}",
+                     f"Щенок {bg} {name} в Москве{BRAND}", f"Щенок {bg} {name}{BRAND}"], TITLE_MAX)
+        tail = "Покажем по видео, доставим по России. Узнайте цену."
         head = f"{name} — щенок {bg}{gen_sp}, {p['sex_label']}, окрас {p['colour']}, {weeks(p['age_weeks'])}."
         short_head = f"{name} — щенок {bg}{gen_sp}, {p['sex_label']}, {weeks(p['age_weeks'])}."
         d3, d2 = doc_list(docs, 3) + ".", doc_list(docs, 2) + "."
@@ -322,11 +190,14 @@ def routes(data):
         ]
 
         bt = texts["breeds"][b["slug"]]
-        about = [texts["puppies"].get(p["slug"], f"[{name}: характер щенка — заполнит питомник.]"), bt["about"], texts["home"]]
-        breed_links = [
-            {"url": b["urls"]["hub"], "label": f"{b['name']}: о породе"},
-            {"url": b["urls"]["price"], "label": f"Цена щенка {bg}"},
-            {"url": b["urls"]["varieties"], "label": f"Окрасы {bg}"},
+        # «Читайте о породе»: разделы, куда можно перейти (клиент 19.10 — вместо трёх ссылок в «Кому подойдёт»)
+        more = [
+            {"url": b["urls"]["hub"], "title": f"{b['name']}: о породе", "line": "Характер, размер, уход и здоровье",
+             "icon": "paw", "color": "coral"},
+            {"url": b["urls"]["price"], "title": f"Цена щенка {bg}", "line": "От чего зависит цена и что входит в покупку",
+             "icon": "wallet", "color": "sun"},
+            {"url": b["urls"]["varieties"], "title": f"Окрасы {bg}", "line": "Все окрасы с фото и чем они отличаются",
+             "icon": "sparkle", "color": "lilac"},
         ]
 
         similar_pool = sorted([x for x in b["puppies"] if x["slug"] != p["slug"]], key=lambda x: x["status_order"])
@@ -346,16 +217,16 @@ def routes(data):
                 p=p,
                 b=b,
                 h1=h1,
-                rows=table(p, b, docs, data, as_of),
+                rows=table(p, b, docs, data),
                 docs=docs,
                 docs_note="Мальтипу — гибрид, РКФ его не регистрирует." if not b["rkf"] else None,
                 colour_note=colour_note(p, b),
-                parents=parents,
-                gallery=gallery(p, b, parents),
+                gallery=gallery(p),
                 includes=includes,
-                about=about,
+                intro=bt["intro"],
+                facts=bt["facts"],
                 fits=bt["fits"],
-                breed_links=breed_links,
+                more=more,
                 booking=texts["booking"],
                 delivery=texts["delivery"],
                 similar=similar,

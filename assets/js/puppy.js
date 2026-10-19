@@ -17,7 +17,6 @@
   const $ = (sel, ctx = d) => ctx.querySelector(sel);
   const $$ = (sel, ctx = d) => Array.from(ctx.querySelectorAll(sel));
   const breed = page.dataset.breed; // slug породы: значения в списке пород — slug (forms.breed_options)
-  const status = page.dataset.ppStatus;
   const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   /* ---------- 1. галерея ---------- */
@@ -109,7 +108,7 @@
 
   /* ---------- 3. нижняя панель на мобиле ---------- */
   const mainBtn = $('[data-pp-main]', page);
-  if (status === 'available' && mainBtn) {
+  if (mainBtn) { // «Узнать цену» есть у каждого щенка: статусы на сайте не показываем (19.10)
     let back = null;
     let y = 0;
     // перехват до обработчика main.js: открываем модалку этого щенка

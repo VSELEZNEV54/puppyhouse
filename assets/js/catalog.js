@@ -1,6 +1,7 @@
 /* домщенков.рф — каталог /shchenki/: фильтры по породе, полу и статусу.
-   Состояние в адресе: ?breed=maltipu&sex=female&status=available (значение «all» не пишется).
-   Разметка: [data-catalog] → кнопки [data-cf-key][data-cf-value], карточки [data-cf-list] > li[data-breed][data-sex][data-status]. */
+   Состояние в адресе: ?breed=maltipu&sex=female (значение «all» не пишется). Фильтра по статусу нет: статусы
+   щенков на сайте не показываем (19.10).
+   Разметка: [data-catalog] → кнопки [data-cf-key][data-cf-value], карточки [data-cf-list] > li[data-breed][data-sex]. */
 (() => {
   'use strict';
 
@@ -10,7 +11,7 @@
   const $ = (sel, ctx = root) => ctx.querySelector(sel);
   const $$ = (sel, ctx = root) => Array.from(ctx.querySelectorAll(sel));
 
-  const KEYS = ['breed', 'sex', 'status'];
+  const KEYS = ['breed', 'sex'];
   const filters = $('[data-cf]');
   const list = $('[data-cf-list]');
   const items = $$('[data-cf-list] > li[data-breed]');

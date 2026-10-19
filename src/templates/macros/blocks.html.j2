@@ -2,6 +2,20 @@
     Import:  {% import "macros/blocks.html.j2" as blocks %} -#}
 {% import "macros/ui.html.j2" as ui %}
 {% import "macros/cards.html.j2" as cards %}
+{% import "macros/forms.html.j2" as forms %}
+
+{#- «Как купить щенка»: four steps and «Узнать цену» — the homepage block, also the second block of puppy pages. -#}
+{% macro how_to_buy(id='kak-kupit', title='Как купить щенка') -%}
+<section class="section container" id="{{ id }}" aria-labelledby="{{ id }}-title">
+      {% call ui.section_head(title, id=id ~ '-title') %}{{ forms.price_button() }}{% endcall %}
+      {{ ui.steps([
+        {'title': 'Заявка', 'text': 'Оставьте номер — пришлём цену'},
+        {'title': 'Видеозвонок', 'text': 'Знакомитесь со щенком онлайн'},
+        {'title': 'Бронь', 'text': 'Договор и предоплата — щенок ваш'},
+        {'title': 'Встреча', 'text': 'Забираете сами или привезём'},
+      ]) }}
+    </section>
+{%- endmacro %}
 
 {#- FAQ accordion list. items: faq.json items (or any {"q", "a"} dicts; "a" may be Markup with links).
     short=true uses item.short (homepage wording) when present. prefix makes ids unique if a page has two lists. -#}

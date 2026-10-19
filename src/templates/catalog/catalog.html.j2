@@ -36,15 +36,6 @@
                 <button type="button" data-cf-key="sex" data-cf-value="female" aria-pressed="false">Девочка</button>
               </div>
             </div>
-            <div class="fgroup" role="group" aria-labelledby="cf-status">
-              <span class="fgroup__label" id="cf-status">Статус</span>
-              <div class="fseg">
-                <button type="button" data-cf-key="status" data-cf-value="all" aria-pressed="true">Все</button>
-                <button type="button" data-cf-key="status" data-cf-value="available" aria-pressed="false"><span class="dot dot--ok" aria-hidden="true"></span>В&nbsp;наличии</button>
-                <button type="button" data-cf-key="status" data-cf-value="soon" aria-pressed="false"><span class="dot dot--soon" aria-hidden="true"></span>Скоро</button>
-                <button type="button" data-cf-key="status" data-cf-value="reserved" aria-pressed="false"><span class="dot dot--res" aria-hidden="true"></span>Бронь</button>
-              </div>
-            </div>
           </div>
           <div class="filters__meta">
             <p class="filters__count" data-cf-count>{{ items|length }}&nbsp;{{ items|length|plural('щенок', 'щенка', 'щенков') }}</p>
@@ -56,7 +47,7 @@
 
       <ul class="pups pups--grid ct-grid" data-cf-list>
         {% for p in items %}
-        <li class="pups__item" data-breed="{{ p.breed }}" data-sex="{{ p.sex }}" data-status="{{ p.status }}">
+        <li class="pups__item" data-breed="{{ p.breed }}" data-sex="{{ p.sex }}">
           {{ ct.card(p, eager=loop.index <= 4) }}
         </li>
         {% endfor %}
