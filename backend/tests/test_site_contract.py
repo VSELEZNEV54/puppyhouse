@@ -2,7 +2,9 @@
 something the backend understands. Runs over the committed */index.html (build the site first: tools/build.py)."""
 from __future__ import annotations
 
+import html
 import json
+import re
 from html.parser import HTMLParser
 from pathlib import Path
 
@@ -142,3 +144,21 @@ def test_consent_pages_are_built():
         assert page.is_file(), doc["url"]
         html = page.read_text(encoding="utf-8")
         assert doc["version"] in html or doc["title"] in html
+
+
+_PLACEHOLDER = re.compile(r"\[[^\[\]\n\"<>]{2,90}\]")   # «[6 или 12]» — the shape tools/check_launch.py counts
+_LD_JSON = re.compile(r"(<script[^>]*application/ld\+json[^>]*>)(.*?)(</script>)", re.S | re.I)
+_CODE = re.compile(r"<(script|style)\b[^>]*>.*?</\1>", re.S | re.I)
+_TEXT_ATTRS = re.compile(r'\s(?:alt|title|aria-label|placeholder|content)="([^"]*)"')
+
+
+def test_published_pages_show_no_placeholders():
+    """A [заглушка] in the text of a published page, its alt/meta texts or its JSON-LD (the FAQ snippet in search):
+    fill it in src/data or reword it before the page goes out."""
+    for p in PAGES:
+        src = p.read_text(encoding="utf-8")
+        ld = " ".join(json.dumps(json.loads(m.group(2)), ensure_ascii=False) for m in _LD_JSON.finditer(src))
+        page = _CODE.sub(" ", src)
+        text = " ".join([re.sub(r"<[^>]+>", " ", page), *_TEXT_ATTRS.findall(page), ld])
+        found = sorted(set(_PLACEHOLDER.findall(html.unescape(text))))
+        assert not found, f"{p.relative_to(REPO).as_posix()}: {found}"

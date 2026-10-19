@@ -61,6 +61,15 @@ if missing:
     sys.exit(f"release: the build did not write {missing} (tools/build.py → tools/seo.py)")
 for f in extras:
     shutil.copy2(f, stage / f)
+# 404.html in the repo writes <base> from a script ("/" here, "/puppyhouse/" on the GitHub Pages preview). The
+# browser's preload scanner does not run it and first fetches every asset of a missing /a/b/ as /a/b/assets/… —
+# a second round of 404s. The server's copy gets a plain <base href="/">.
+import re
+p = stage / "404.html"
+s, n = re.subn(r"<script>document\.write\('<base href=.*?</script>", '<base href="/">', p.read_text(encoding="utf-8"), count=1)
+if n != 1:
+    sys.exit("release: 404.html has no <base> script to replace (src/templates/pages/404.html.j2)")
+p.write_text(s, encoding="utf-8")
 print(f"   {len(files)} pages + assets/ + {', '.join(extras)}")
 PY
 

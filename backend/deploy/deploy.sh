@@ -224,10 +224,13 @@ check /maltipu/ 200 'lead-form'
 check /politika-konfidencialnosti/ 200 'ОГРНИП'
 check /soglasie/ 200 'ОГРНИП'
 check /maltipu/index.html 301
+check /index.html 301
 check /admin/ 200 'admin.js'
 check /robots.txt 200 'Disallow: /admin/'
 check /sitemap.xml 200 '<urlset'
 check /net-takoj-stranicy/ 404 'Страница не найдена'
+check /net/takoj/stranicy/ 404 '<base href="/">'   # static base: no second round of 404s for the page's assets
+check /assets/img/ 404 'Страница не найдена'
 check /backend/docker-compose.yml 404
 code="$(curl -s -m 10 --noproxy "*" -o /dev/null -w '%{http_code}' --resolve "$DOMAIN:443:127.0.0.1" "https://$DOMAIN/api/v1/health" || true)"
 if [ "$code" = 200 ] || [ "$code" = 503 ]; then echo "  ok   /api/v1/health → $code"; else echo "  FAIL /api/v1/health → $code"; fail=1; fi

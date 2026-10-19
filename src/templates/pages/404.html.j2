@@ -1,6 +1,7 @@
 {#- 404.html — «Страница не найдена». Built by tools/build.py (not a route): the server shows it for any missing
     address at any depth, so links are written relative to the site root and the page sets <base> itself —
-    "/" on the production domain, "/puppyhouse/" on the GitHub Pages preview. robots: noindex. -#}
+    "/" on the production domain, "/puppyhouse/" on the GitHub Pages preview. The server's copy gets a plain
+    <base href="/"> instead of the script (tools/release.sh): the preload scanner sees it. robots: noindex. -#}
 {% extends "layouts/page.html.j2" %}
 
 {% block base_href %}

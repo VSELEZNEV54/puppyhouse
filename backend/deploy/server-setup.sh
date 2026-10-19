@@ -32,8 +32,9 @@ die() { printf '\nОШИБКА: %s\n' "$*" >&2; exit 1; }
 SRC="$(cd "$(dirname "$(readlink -f "$0")")/../.." && pwd)"
 [ -f "$SRC/backend/.env.example" ] || die "запускайте из репозитория или релиза: backend/deploy/server-setup.sh"
 [ "$CERT" = 0 ] || [ -n "$EMAIL" ] || die "укажите почту для сертификата: --email you@example.ru (или --no-cert)"
-# Let's Encrypt registers the address: a real one, in Latin letters (not the «ваша@почта.ru» sample from the guide)
-if [ "$CERT" = 1 ] && ! LC_ALL=C grep -Eq '^[A-Za-z0-9._%+-]+@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)*\.[A-Za-z]{2,}$' <<<"$EMAIL"; then
+# Let's Encrypt registers the address: a real one, in Latin letters (not the «ваша@почта.ru» sample from the guide);
+# a .рф domain in its Latin form passes: info@xn--b1adduihee9g.xn--p1ai
+if [ "$CERT" = 1 ] && ! LC_ALL=C grep -Eq '^[A-Za-z0-9._%+-]+@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)*\.([A-Za-z]{2,}|xn--[A-Za-z0-9-]{2,})$' <<<"$EMAIL"; then
   die "почта «$EMAIL» не подходит для сертификата: нужна ваша настоящая почта латиницей, например name@yandex.ru"
 fi
 . /etc/os-release
@@ -48,7 +49,17 @@ APT_OPTS=(-o Acquire::Retries=3 -o Acquire::http::Timeout=30)
 apt_get() { apt-get "${APT_OPTS[@]}" "$@"; }
 PKGS=(ca-certificates curl git rsync nginx certbot ufw fail2ban python3-systemd unattended-upgrades cron age
       python3 python3-jinja2)
-apt_all() { apt_get update -q && apt_get install -y -q "${PKGS[@]}" >/dev/null; }
+# Docker from the system's repositories (docker.io + docker-compose-v2: Ubuntu 22.04+) goes in the same download, so
+# it gets the same fallback, also on a re-run where everything else is installed. Where there is no
+# docker-compose-v2 (Debian 12), the Docker step below takes it from download.docker.com.
+apt_all() {
+  apt_get update -q || return 1
+  local extra=()
+  if ! docker compose version >/dev/null 2>&1 && apt-cache "${APT_OPTS[@]}" show docker-compose-v2 >/dev/null 2>&1; then
+    extra=(docker.io docker-compose-v2)
+  fi
+  apt_get install -y -q "${PKGS[@]}" "${extra[@]}" >/dev/null
+}
 official_sources() {  # a sources dir with only the official archive of this release
   local d; d="$(mktemp -d)"
   case "$ID" in
