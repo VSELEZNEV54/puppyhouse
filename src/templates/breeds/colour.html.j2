@@ -53,7 +53,7 @@
     <!-- ================= ЩЕНКИ ЭТОГО ОКРАСА или лист ожидания ================= -->
     <section class="section container" id="shchenki" aria-labelledby="shchenki-title">
       {% if pups %}
-      {{ ui.section_head(c.title ~ ' в наличии', id='shchenki-title', lead='Цену и свежее видео пришлём за 15 минут') }}
+      {{ ui.section_head(c.title ~ ' в наличии', id='shchenki-title', lead='Цену и свежее видео пришлём в течение рабочего дня') }}
       {%- set n = pups|length %}
       <ul class="pups" data-reveal="items">
         {% for p in pups %}

@@ -6,7 +6,7 @@ from enum import StrEnum
 
 
 class LeadKind(StrEnum):
-    lead = "lead"              # final form at the bottom of a page («Подберём щенка за 1 час»)
+    lead = "lead"              # final form at the bottom of a page («Подберём щенка в течение рабочего дня»)
     price = "price"            # «Узнать цену» without a puppy
     puppy = "puppy"            # «Узнать цену» on a puppy card or puppy page
     consult = "consult"        # «Получить консультацию»

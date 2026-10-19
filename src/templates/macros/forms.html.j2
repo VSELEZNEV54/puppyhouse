@@ -104,7 +104,7 @@
     title ≤ 5 words, line ≤ 90 chars. tone: studio/tint tone of the tile. breed: slug to preselect in the select.
     contacts=false: no phone / messengers in the tile (the page shows them itself, e.g. via caller); cls: extra class
     on the tile; caller() → content after the tile inside the same section (homepage: contact tiles). -#}
-{% macro lead_form(title='Подберём щенка за 1 час', line='Пришлём щенков в наличии, цены и свежие видео', tone='peach', breed=none, id='zayavka', contacts=true, cls='') -%}
+{% macro lead_form(title='Подберём щенка в течение рабочего дня', line='Пришлём щенков в наличии, цены и свежие видео', tone='peach', breed=none, id='zayavka', contacts=true, cls='') -%}
 <section class="section container" id="{{ id }}" aria-labelledby="lead-title">
   <div class="lead tone--{{ tone }}{{ ' ' ~ cls if cls }}">
     <div class="lead__intro">

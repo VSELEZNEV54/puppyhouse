@@ -15,7 +15,7 @@
 {% endblock %}
 
 {% block hero %}
-    {% call ui.page_hero('Щенки мальтипу в Москве', lead='Кудрявый компаньон размером с кошку. Почти не линяет', breed=mal, eyebrow='ui.page_hero(breed=…, full=true, note=…)', full=true, note='Подберём щенка за 1 час: пришлём видео, родителей и цену') %}
+    {% call ui.page_hero('Щенки мальтипу в Москве', lead='Кудрявый компаньон размером с кошку. Почти не линяет', breed=mal, eyebrow='ui.page_hero(breed=…, full=true, note=…)', full=true, note='Подберём щенка в течение рабочего дня: пришлём видео, родителей и цену') %}
       {{ forms.price_button(label='Подобрать щенка', cls='btn btn--white btn--lg', breed=mal.name) }}
       <a class="btn btn--outline btn--lg" href="#media">Смотреть фото и видео</a>
     {% endcall %}
