@@ -1,7 +1,7 @@
 {
   "_note": "Consent documents (152-ФЗ, ст. 9 and 10.1 as amended on 01.09.2025: consent is a separate document, not part of the privacy policy). ONE source for the site (the pages /soglasie/, /soglasie-na-otzyv/ and /soglasie-na-publikaciyu/, the form checkboxes) and for the backend (python -m app sync-catalog loads every version into consent_versions; a published version is never edited — add a new version and switch `current`). Values in [square brackets] are placeholders: fill them in before collecting real requests. Before launch (no real consent collected yet) the texts were edited in place; after launch never edit a version. cross_border: true only in a version whose text names the transfer abroad (Telegram notifications with personal data, DSH_TELEGRAM_INCLUDE_PD). 19.10.2026: the operator's requisites (ИП Селезнев В. И.) — new versions *-2026-10-19; the *-2026-10-16 versions stay as they were (they may already be stored with test requests). 20.10.2026: first stage without the kennel's e-mail or phone on the site — consent is withdrawn by replying to the kennel's message or call about the request (versions *-2026-10-20).",
   "current": {
-    "processing": "processing-2026-10-20-3",
+    "processing": "processing-2026-10-20-2",
     "review": "review-2026-10-20-2",
     "distribution": "distribution-2026-10-20-2"
   },

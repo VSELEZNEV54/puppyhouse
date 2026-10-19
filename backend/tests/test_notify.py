@@ -292,25 +292,25 @@ def test_telegram_text_has_no_personal_data_by_default(client, db, tg):
 def test_telegram_text_carries_name_and_phone_only_with_include_pd(client, db, tg):
     from app.services import consent
     cur = consent.current("processing")
-    assert consent.allows_cross_border(cur)            # the current consent names the transfer to Telegram
-    older = "processing-2026-10-20-2"
-    assert not consent.allows_cross_border(older)
+    assert not consent.allows_cross_border(cur)        # the site's consent: nothing goes abroad
+    abroad = "processing-2026-10-20-3"                 # an edition that names the transfer to Telegram
+    assert consent.allows_cross_border(abroad)
     # the switch is off: no personal data, whatever the consent
-    post_lead(client, contact="whatsapp", consent_version=cur)
+    post_lead(client, contact="whatsapp", consent_version=abroad)
     fake = FakeHttp()
     notify.deliver_due(db, client=fake.client())
     assert NAME not in fake.json()["text"]
     db.execute(text("DELETE FROM outbox"))
     db.commit()
     tg.telegram_include_pd = True
-    # the switch alone is not enough: a person who agreed to the older text (no transfer abroad) stays out
-    post_lead(client, contact="whatsapp", consent_version=older, phone="+7 (999) 111-22-33", breed="francuzskij-buldog")
+    # the switch alone is not enough: the consent the person gave must name the transfer abroad
+    post_lead(client, contact="whatsapp", consent_version=cur, phone="+7 (999) 111-22-33", breed="francuzskij-buldog")
     fake = FakeHttp()
     notify.deliver_due(db, client=fake.client())
     assert NAME not in fake.json()["text"] and "111-22-33" not in fake.json()["text"]
     db.execute(text("DELETE FROM outbox"))
     db.commit()
-    post_lead(client, contact="whatsapp", consent_version=cur, phone="+7 (999) 765-43-21", breed="toj-pudel")
+    post_lead(client, contact="whatsapp", consent_version=abroad, phone="+7 (999) 765-43-21", breed="toj-pudel")
     fake = FakeHttp()
     notify.deliver_due(db, client=fake.client())
     msg = fake.json()["text"]
