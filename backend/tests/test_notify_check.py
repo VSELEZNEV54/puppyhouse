@@ -131,6 +131,19 @@ def test_wrong_token_is_reported_without_leaking_it(channels, monkeypatch, capsy
     assert "не принят" in out and "Unauthorized" in out
 
 
+def test_no_connection_is_not_reported_as_a_wrong_token(channels, monkeypatch, capsys):
+    """A server that cannot reach Telegram must not send the owner off to recreate a good token."""
+    channels.telegram_bot_token, channels.telegram_chat_id = TOKEN, DEFAULT_CHAT
+
+    def refuse(request):
+        raise httpx.ConnectError("connection refused", request=request)
+
+    monkeypatch.setattr(notify, "http_client", lambda: httpx.Client(transport=httpx.MockTransport(refuse)))
+    code, out = run(capsys)
+    assert code == 1
+    assert "нет связи с Telegram" in out and "токен не проверен" in out and "не принят" not in out
+
+
 def test_chat_the_bot_is_not_in_fails(channels, monkeypatch, capsys):
     channels.telegram_bot_token, channels.telegram_chat_id = TOKEN, "-1009999999999"
     use_bot(monkeypatch, FakeBot(known=(DEFAULT_CHAT,)))

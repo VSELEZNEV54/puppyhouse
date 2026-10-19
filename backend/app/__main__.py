@@ -333,7 +333,12 @@ def cmd_notify_check(args) -> int:
         else:
             configured += 1
             me = notify.telegram_bot(s, client)
-            if not me["ok"]:
+            if not me["ok"] and me.get("network"):
+                bad += 1
+                print(f"  ✗ нет связи с Telegram ({s.telegram_api_base}), токен не проверен: {me['error']}")
+                print("    сервер не достаёт до Telegram: проверьте сеть; если адрес закрыт — DSH_TELEGRAM_API_BASE"
+                      " (backend/.env.example)")
+            elif not me["ok"]:
                 bad += 1
                 print(f"  ✗ токен {notify.mask_token(s.telegram_bot_token)} не принят: {me['error']}")
             else:

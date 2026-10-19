@@ -313,7 +313,9 @@ def _tg_call(s: Settings, client: httpx.Client, method: str, **params) -> dict:
     try:
         r = client.post(_tg_url(s, method), json=params)
         info = r.json() if r.content else {}
-    except (httpx.HTTPError, ValueError) as e:
+    except httpx.HTTPError as e:  # Telegram not reached at all: the token was not checked
+        return {"ok": False, "network": True, "error": _scrub(f"{type(e).__name__}: {e}", s)}
+    except ValueError as e:
         return {"ok": False, "error": _scrub(f"{type(e).__name__}: {e}", s)}
     if r.status_code == 200 and info.get("ok"):
         return {"ok": True, "result": info.get("result")}
