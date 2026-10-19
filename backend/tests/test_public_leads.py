@@ -14,11 +14,11 @@ from concurrent.futures import ThreadPoolExecutor
 import pytest
 from sqlalchemy import text
 
-from conftest import ORIGIN, lead_payload
+from conftest import CONSENT_CURRENT, ORIGIN, lead_payload
 
 URL = "/api/v1/leads"
 PHONE = "+79991234567"
-CURRENT_CONSENT = "processing-2026-10-16"
+CURRENT_CONSENT = CONSENT_CURRENT["processing"]
 BULDOG_PUPPY = "francuzskij-buldog-palevyj-2026-07"   # «Бруно», a French bulldog in puppies.json
 BREED_VIEWS = ("leads_maltipu", "leads_buldog", "leads_pudel", "leads_kolli", "leads_general")
 FIELD_MESSAGES = {
@@ -524,7 +524,7 @@ def test_unknown_or_missing_consent_version_records_the_current_one(client, db, 
 
 
 def test_consent_of_another_kind_is_not_proof_of_processing_consent(client, db):
-    r = post(client, lead_payload(consent_version="distribution-2026-10-16"))
+    r = post(client, lead_payload(consent_version=CONSENT_CURRENT["distribution"]))
     lead = lead_of(db, r)
     kind = db.execute(text("SELECT kind FROM consent_versions WHERE version = :v"),
                       {"v": lead["consent_version"]}).scalar()
@@ -640,3 +640,19 @@ def test_parallel_retries_with_one_key_make_exactly_one_lead(db, webhook_on):
     assert len({r.json()["id"] for r in responses}) == 1
     assert count(db, "leads") == 1 and count(db, "contacts") == 1 and count(db, "consents") == 1
     assert count(db, "lead_history") == 1 and count(db, "outbox") == 1
+
+
+def test_a_page_opened_before_the_consent_update_keeps_the_version_the_person_saw(client, db):
+    """The consent text changed (a new version is current) while a visitor had the old page open: the request
+    records the version that page showed — the one the person agreed to — not the new one."""
+    import json as _json
+    from conftest import REPO_DATA_CONSENT
+    versions = [v["version"] for v in _json.loads(REPO_DATA_CONSENT.read_text(encoding="utf-8"))["versions"]
+                if v["kind"] == "processing"]
+    older = [v for v in versions if v != CURRENT_CONSENT]
+    if not older:
+        pytest.skip("only one processing consent version so far")
+    r = post(client, lead_payload(consent_version=older[0]))
+    assert r.status_code == 201, r.text
+    lead = db.execute(text("SELECT consent_version, flags FROM leads ORDER BY id DESC LIMIT 1")).one()
+    assert lead.consent_version == older[0] and "consent_version_fallback" not in (lead.flags or [])

@@ -6,7 +6,9 @@ with `python -m app migrate` (alembic + consent + catalog + views) and drops it 
 """
 from __future__ import annotations
 
+import json
 import os
+from pathlib import Path
 import uuid
 
 import pytest
@@ -25,6 +27,10 @@ os.environ.update({
     "DSH_WEBHOOK_URL": "",
     "DSH_SMTP_HOST": "",
 })
+
+# the consent versions the site shows now (src/data/consent.json → current); tests never hard-code a date
+REPO_DATA_CONSENT = Path(__file__).resolve().parents[2] / "src" / "data" / "consent.json"
+CONSENT_CURRENT = json.loads(REPO_DATA_CONSENT.read_text(encoding="utf-8"))["current"]
 
 KEEP = {"breeds", "puppies", "consent_versions", "alembic_version"}
 
@@ -95,7 +101,7 @@ def lead_payload(**over) -> dict:
     """A valid request as main.js sends it; override any field."""
     p = {
         "kind": "price", "name": "Анна", "phone": "+7 (999) 123-45-67", "contact": "telegram", "consent": True,
-        "consent_version": "processing-2026-10-16", "breed": "maltipu", "page": {"path": "/maltipu/", "title": "Мальтипу"},
+        "consent_version": CONSENT_CURRENT["processing"], "breed": "maltipu", "page": {"path": "/maltipu/", "title": "Мальтипу"},
         "visitor_id": str(uuid.uuid4()), "session_id": str(uuid.uuid4()), "idempotency_key": str(uuid.uuid4()),
         "elapsed_ms": 20_000, "hp_note": "",
     }

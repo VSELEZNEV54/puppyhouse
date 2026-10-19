@@ -13,7 +13,7 @@ import pytest
 from fastapi.testclient import TestClient
 from sqlalchemy import text
 
-from conftest import ORIGIN, lead_payload
+from conftest import CONSENT_CURRENT, ORIGIN, lead_payload
 
 UTC = dt.timezone.utc
 EVENTS = "/api/v1/events"
@@ -67,8 +67,8 @@ def review_payload(**over) -> dict:
     p = {
         "name": "Анна Королёва", "phone": "+7 (916) 555-12-34", "city": "Москва", "breed": "maltipu", "rating": 5,
         "text": "Взяли у вас мальтипу, щенок здоровый и весёлый. Спасибо за помощь!",
-        "consent": True, "consent_version": "review-2026-10-16",
-        "consent_publish": True, "consent_publish_version": "distribution-2026-10-16",
+        "consent": True, "consent_version": CONSENT_CURRENT["review"],
+        "consent_publish": True, "consent_publish_version": CONSENT_CURRENT["distribution"],
         "page": {"path": "/otzyvy/?utm_source=vk", "title": "Отзывы"},
         "visitor_id": str(uuid.uuid4()), "session_id": str(uuid.uuid4()),
         "idempotency_key": str(uuid.uuid4()), "hp_note": "", "elapsed_ms": 40_000,
@@ -390,8 +390,8 @@ def test_review_is_stored_pending_with_display_name_and_two_consents(client, db)
 
     cons = db.execute(text("SELECT c.version, v.kind, c.review_id, c.contact_id, c.page_path, host(c.ip) AS ip "
                            "FROM consents c JOIN consent_versions v ON v.version = c.version ORDER BY v.kind")).all()
-    assert [(c.kind, c.version) for c in cons] == [("distribution", "distribution-2026-10-16"),
-                                                    ("review", "review-2026-10-16")]
+    assert [(c.kind, c.version) for c in cons] == [("distribution", CONSENT_CURRENT["distribution"]),
+                                                    ("review", CONSENT_CURRENT["review"])]
     assert all(c.review_id == rv["id"] and c.contact_id is None and c.page_path == "/otzyvy/"
                and c.ip == "203.0.113.10" for c in cons)
 
@@ -485,13 +485,13 @@ def test_review_honeypot_pretends_success_and_stores_nothing(client, db):
 
 
 def test_review_unknown_or_wrong_kind_consent_version_falls_back_to_current(client, db):
-    p = review_payload(consent_version="distribution-2026-10-16",      # a distribution doc sent as processing
+    p = review_payload(consent_version=CONSENT_CURRENT["distribution"],      # a distribution doc sent as processing
                        consent_publish_version="distribution-1999-01-01")  # never published
     assert client.post(REVIEWS, json=p).status_code == 201
     got = db.execute(text("SELECT v.kind, c.version FROM consents c JOIN consent_versions v USING (version) "
                           "ORDER BY v.kind")).all()
-    assert [tuple(x) for x in got] == [("distribution", "distribution-2026-10-16"),
-                                       ("review", "review-2026-10-16")]
+    assert [tuple(x) for x in got] == [("distribution", CONSENT_CURRENT["distribution"]),
+                                       ("review", CONSENT_CURRENT["review"])]
 
 
 def test_review_requires_json_and_our_origin(client, db):

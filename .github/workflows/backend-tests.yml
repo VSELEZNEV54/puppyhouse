@@ -73,12 +73,12 @@ jobs:
       - run: pip install "jinja2==3.1.*"
       - run: python tools/build.py
       - run: git diff --exit-code
-      - name: Server files (404, robots.txt, sitemap.xml) — the 404 page must use root-absolute links
+      - name: Server files written by the build (404, robots.txt, sitemap.xml) — the panel and the API stay closed
         run: |
-          python tools/site_extras.py /tmp/extras
-          grep -q 'Такой страницы нет' /tmp/extras/404.html
-          if grep -q 'href="\.\./' /tmp/extras/404.html; then echo "404.html has relative links"; exit 1; fi
-          grep -q '^Disallow: /admin/' /tmp/extras/robots.txt
+          grep -q 'Страница не найдена' 404.html
+          grep -q '^Disallow: /admin/' robots.txt
+          grep -q '^Disallow: /api/' robots.txt
+          grep -q '<urlset' sitemap.xml
       - name: What is still a placeholder (report only)
         run: python tools/check_launch.py
       - name: A release packs (site + API + server scripts)

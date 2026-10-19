@@ -12,7 +12,7 @@
   const canHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
   // папка фото относительно самого скрипта (assets/js/main.js → assets/img/): работает на любой глубине и под подпутём
   const IMG_BASE = d.currentScript && d.currentScript.src ? new URL('../img/', d.currentScript.src).href : 'assets/img/';
-  const TOAST_TEXT = 'Раздел появится на следующем этапе';
+  const TOAST_TEXT = 'Раздел скоро откроется. Пока напишите нам — пришлём фото и видео щенков'; // ссылки на ещё не выложенные страницы (src/data/publish.json)
   const CONTACT_LABEL = { telegram: 'Telegram', whatsapp: 'WhatsApp', max: 'MAX', call: 'звонок' };
   const ERR = {
     name: 'Напишите, как к вам обращаться',

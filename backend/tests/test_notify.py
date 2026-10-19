@@ -26,7 +26,7 @@ from sqlalchemy import select, text
 from app.api import public
 from app.models import Lead, Outbox
 from app.services import notify
-from conftest import lead_payload
+from conftest import CONSENT_CURRENT, lead_payload
 
 UTC = dt.timezone.utc
 TOKEN = "7012345678:AAH-test_SECRET-token-0123456789abcd"
@@ -591,8 +591,8 @@ def test_review_telegram_text_has_no_personal_data(client, db, tg):
         "name": NAME + " Королёва", "phone": "+7 (916) 555-12-34", "city": "Новосибирск", "breed": "maltipu",
         "rating": 4,
         "text": "Взяли у вас мальтипу, звоните мне +7 999 123-45-67, щенок весёлый.",
-        "consent": True, "consent_version": "review-2026-10-16",
-        "consent_publish": True, "consent_publish_version": "distribution-2026-10-16",
+        "consent": True, "consent_version": CONSENT_CURRENT["review"],
+        "consent_publish": True, "consent_publish_version": CONSENT_CURRENT["distribution"],
         "page": {"path": "/otzyvy/", "title": "Отзывы"}, "idempotency_key": str(uuid.uuid4()),
         "hp_note": "", "elapsed_ms": 40_000})
     assert r.status_code == 201, r.text

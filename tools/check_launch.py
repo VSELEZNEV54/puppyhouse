@@ -26,17 +26,34 @@ DATA = ROOT / "src" / "data"
 BRACKET = re.compile(r"\[[^\[\]\n\"]{2,90}\]")
 FAKE_PHONE = re.compile(r"74951234567|123-45-67")
 
-# (file, top-level key or None for the whole file) → group, what it is
+# (file, top-level key or None for the whole file) → group, what it is, the page it is on (None: every page).
+# A page that is not published yet (src/data/publish.json) does not block the launch: its rule counts as content.
 RULES = [
-    ("consent.json", "versions", "blocking", "Согласия на обработку ПД: наименование оператора, ИНН, ОГРН, адрес, почта"),
-    ("delivery-service.json", "privacy", "blocking", "Политика конфиденциальности: оператор, ИНН, ОГРН, адреса, дата, меры защиты"),
-    ("site.json", "footer", "blocking", "Подвал каждой страницы: ФИО / наименование, ИНН, ОГРН(ИП)"),
-    ("delivery-service.json", "contacts", "blocking", "Страница «Контакты»: реквизиты и адрес"),
-    ("site.json", "email", "contacts", "Почта для связи"),
-    ("site.json", "address", "contacts", "Адрес питомника"),
-    ("site.json", "messengers", "contacts", "Ссылки Telegram, MAX"),
-    ("site.json", "ratings", "contacts", "Ссылки на карточки в Яндексе, Google, Авито"),
+    ("consent.json", "versions", "blocking", "Согласия на обработку ПД: оператор, почта для отзыва согласия", "/soglasie/"),
+    ("delivery-service.json", "privacy", "blocking", "Политика конфиденциальности: оператор, почта, сроки, меры защиты",
+     "/politika-konfidencialnosti/"),
+    ("site.json", "footer", "blocking", "Подвал каждой страницы: ФИО / наименование, ИНН, ОГРН(ИП)", None),
+    ("delivery-service.json", "contacts", "blocking", "Страница «Контакты»: реквизиты и адрес", "/kontakty/"),
+    ("site.json", "email", "contacts", "Почта для связи", None),
+    ("site.json", "address", "contacts", "Адрес питомника", None),
+    ("site.json", "messengers", "contacts", "Ссылки Telegram, MAX", None),
+    ("site.json", "ratings", "contacts", "Ссылки на карточки в Яндексе, Google, Авито", None),
 ]
+
+
+def published() -> set[str] | None:
+    """Pages of the current stage (src/data/publish.json); None — no staged release, everything is published."""
+    p = DATA / "publish.json"
+    if not p.is_file():
+        return None
+    pages = json.loads(p.read_text(encoding="utf-8")).get("pages") or []
+    return set(pages)
+
+
+def is_published(url: str | None, pages: set[str] | None) -> bool:
+    if url is None or pages is None:
+        return True
+    return url in pages or any(p.endswith("*") and url.startswith(p[:-1]) for p in pages)
 SKIP_KEYS = {"placeholders"}  # site.json: the list of placeholders itself
 
 
@@ -55,10 +72,16 @@ def scan(value, found: list[str]):
 def collect() -> dict:
     groups = {"blocking": [], "contacts": [], "content": []}
     claimed = collections.defaultdict(set)
-    for fn, key, group, what in RULES:
+    pages = published()
+    for fn, key, group, what, url in RULES:
+        if not is_published(url, pages):
+            group, what = "content", what + f" (страница {url} ещё не выложена)"
         data = json.loads((DATA / fn).read_text(encoding="utf-8"))
         found: list[str] = []
-        scan(data.get(key), found)
+        value = data.get(key)
+        if fn == "consent.json":  # only the versions the site shows now; older ones are history, never edited
+            value = [v for v in value if v["version"] in data["current"].values()]
+        scan(value, found)
         if fn == "site.json" and key == "messengers":
             found += [v["url_placeholder"] for v in data["messengers"].values() if v.get("url_placeholder")]
         if found:

@@ -1,17 +1,22 @@
-{#- «Страница не найдена» — nginx shows it for any missing URL (error_page 404 /404.html). Rendered by
-    tools/site_extras.py with ROOT-ABSOLUTE links (the page is served at any address, so relative links would break).
-    Not a route: it is not in the sitemap and has no canonical. A sold puppy's page disappears after a build with
-    --clean — the visitor lands here and sees the puppies that are available now. -#}
+{#- 404.html — «Страница не найдена». Built by tools/build.py (not a route): the server shows it for any missing
+    address at any depth, so links are written relative to the site root and the page sets <base> itself —
+    "/" on the production domain, "/puppyhouse/" on the GitHub Pages preview. robots: noindex. -#}
 {% extends "layouts/page.html.j2" %}
 
-{% block canonical %}{% endblock %}
-{% block head_extra %}
-  <meta name="robots" content="noindex">
+{% block base_href %}
+  <script>document.write('<base href="' + (location.pathname.indexOf('/puppyhouse/') === 0 ? '/puppyhouse/' : '/') + '">')</script>
 {% endblock %}
 
 {% block hero %}
-    {% call ui.page_hero('Такой страницы нет', lead='Возможно, щенок уже уехал домой или ссылка устарела. Посмотрите, кто ищет семью сейчас, или напишите нам — подберём похожего.', faces=true, eyebrow='Ошибка 404') %}
-      <a class="btn btn--ink btn--lg" href="/shchenki/">Каталог щенков</a>
+    {% call ui.page_hero('Страница не найдена', lead='Возможно, ссылка устарела или в адресе опечатка. Щенки в наличии, породы и контакты — по ссылкам ниже.', faces=true) %}
+      <a class="btn btn--ink btn--lg" href="/shchenki/">Щенки в наличии {{ ui.icon('arrow') }}</a>
       <a class="btn btn--white btn--lg" href="/">На главную</a>
     {% endcall %}
+{% endblock %}
+
+{% block body %}
+    <section class="section container" id="porody" aria-labelledby="porody-title">
+      {{ ui.section_head('Четыре породы питомника', id='porody-title', link={'url': '/kontakty/', 'label': 'Контакты питомника'}) }}
+      {{ cards.breed_tiles(cols=2) }}
+    </section>
 {% endblock %}

@@ -13,8 +13,8 @@ from app.services import catalog, consent
 
 REPO = Path(__file__).resolve().parents[2]
 DATA = REPO / "src" / "data"
-PAGES = sorted(p for p in REPO.glob("**/index.html")
-               if not any(part in {"backend", "node_modules", "_kit", ".git"} for part in p.relative_to(REPO).parts))
+# the published pages of this stage (tools/build.py → .build-manifest.json), not stale builds left on disk
+PAGES = sorted(REPO / f for f in json.loads((REPO / ".build-manifest.json").read_text(encoding="utf-8"))["files"])
 
 
 class Collector(HTMLParser):
@@ -126,6 +126,8 @@ def test_forms_have_honeypot_and_consent(site):
 
 
 def test_review_form_collects_the_authors_phone_and_links_the_review_consent(site):
+    if "otzyvy/index.html" not in site:  # staged release: the reviews page is not published yet (src/data/publish.json)
+        pytest.skip("/otzyvy/ is not in this stage of the site")
     c = site["otzyvy/index.html"]
     form_inputs = {a.get("name") for t, a in c.tags if t in ("input", "textarea")}
     assert {"name", "phone", "text", "consent", "consent_publish", "hp_note"} <= form_inputs

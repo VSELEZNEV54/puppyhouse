@@ -20,13 +20,13 @@ from pathlib import Path
 import pytest
 from sqlalchemy import text
 
-from conftest import lead_payload
+from conftest import CONSENT_CURRENT, lead_payload
 
 A = "/api/v1/admin"
 EVENTS = "/api/v1/events"
 PUP = "maltipu-f1-krem-2026-08"          # «Пломбир», maltipu, available
 PUP_PUDEL = "toj-pudel-abrikos-2026-07"  # «Марго», toj-pudel, available
-PROCESSING = "processing-2026-10-16"
+PROCESSING = CONSENT_CURRENT["processing"]
 
 
 # ---------------------------------------------------------------- helpers

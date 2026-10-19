@@ -4,7 +4,8 @@
 #   tools/release.sh --out DIR --no-tar   (backend/deploy/deploy.sh calls this in a git checkout on the server)
 # Version: <YYYYmmdd-HHMMSS>-<git sha>[-dirty]. Needs python3 + jinja2 (the site build); git is optional.
 # Layout of a release:
-#   site/        the docroot: pages, assets, 404.html, robots.txt, sitemap.xml (nothing else of the repo)
+#   site/        the docroot: published pages (src/data/publish.json), assets, 404.html, robots.txt, sitemap.xml,
+#                site.webmanifest, favicon.ico (nothing else of the repo)
 #   backend/     the API, its Dockerfile, docker-compose.yml, deploy/ (deploy.sh, server-setup.sh, nginx.conf, …)
 #   src/data/    the catalog and the consent texts the API reads
 #   tools/check_launch.py, .dockerignore, VERSION, LAUNCH-CHECKLIST.md, DEPLOY.md, deploy.sh → backend/deploy/deploy.sh
@@ -53,9 +54,15 @@ for rel in files:
     dst.parent.mkdir(parents=True, exist_ok=True)
     shutil.copy2(rel, dst)
 shutil.copytree("assets", stage / "assets")
-print(f"   {len(files)} pages + assets/")
+# written by tools/build.py (tools/seo.py) next to the pages: they are not in the manifest's page list
+extras = ["404.html", "robots.txt", "sitemap.xml", "site.webmanifest", "favicon.ico"]
+missing = [f for f in extras if not Path(f).is_file()]
+if missing:
+    sys.exit(f"release: the build did not write {missing} (tools/build.py → tools/seo.py)")
+for f in extras:
+    shutil.copy2(f, stage / f)
+print(f"   {len(files)} pages + assets/ + {', '.join(extras)}")
 PY
-python3 tools/site_extras.py "$TMP/site"
 
 echo "== API и скрипты сервера"
 if git rev-parse --git-dir >/dev/null 2>&1; then

@@ -4,6 +4,13 @@
     python3 tools/build.py            build every route into <url>/index.html
     python3 tools/build.py --clean    also delete pages from earlier builds that no route produces now
     python3 tools/build.py --kit      also write the developer UI kit to /_kit/ (git-ignored)
+    python3 tools/build.py --all      build EVERY route, not only the published ones (local review — do not commit)
+
+Published pages: src/data/publish.json → pages. A normal build renders only them and deletes the other generated
+pages, so the repo (GitHub Pages) and the server get just the published site; links to the rest stay root-absolute
+(toast «Раздел появится на следующем этапе», rel=nofollow). The full site of 19.10: branch backup/full-site-2026-10-19.
+
+Also writes 404.html, sitemap.xml, robots.txt and site.webmanifest at the repo root (tools/seo.py, docs/seo.md).
 
 Sources: src/data/*.json (data), src/routes/*.py (URLs), src/templates/ (Jinja2).
 See src/CONVENTIONS.md. Python 3 stdlib + Jinja2 only.
@@ -29,6 +36,9 @@ from pathlib import Path
 
 import jinja2
 from markupsafe import Markup, escape
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import seo  # noqa: E402  (tools/seo.py: canonical, Open Graph, JSON-LD, sitemap, robots.txt)
 
 sys.dont_write_bytecode = True  # no __pycache__ next to route modules
 
@@ -417,6 +427,10 @@ def lint(html: str, url: str, rep: Report) -> None:
         rep.warn(f"{where} empty meta description")
     elif len(desc) > DESC_MAX:
         rep.warn(f"{where} meta description is {len(desc)} chars (≤ {DESC_MAX})")
+    elif len(desc) < 70:
+        rep.warn(f"{where} meta description is only {len(desc)} chars (aim for 110–160)")
+    if 'name="robots" content="index' in html and 'rel="canonical"' not in html:
+        rep.warn(f"{where} indexable page without rel=canonical")
     text = _TEXT_RE.sub(" ", html)
     if _PRICE_RE.search(text):
         rep.warn(f"{where} looks like a price: «{_PRICE_RE.search(text).group(0)}» (no prices on the site)")
@@ -464,6 +478,72 @@ def safe_generated(rel: str) -> Path | None:
 
 
 # ---------------------------------------------------------------- main
+# ---------------------------------------------------------------- publishing
+def publish_matcher(data: dict, everything: bool):
+    """url → True if the page goes out (src/data/publish.json → pages; «/x/*» = the whole section)."""
+    pub = data.get("publish")
+    pages = pub.get("pages") if isinstance(pub, dict) else None
+    if everything or not isinstance(pages, list):
+        return lambda url: True
+    exact = {p for p in pages if isinstance(p, str) and not p.endswith("*")}
+    prefixes = tuple(p[:-1] for p in pages if isinstance(p, str) and p.endswith("*"))
+    return lambda url: url in exact or (bool(prefixes) and url.startswith(prefixes))
+
+
+def url_of_file(rel: str) -> str:
+    """'maltipu/belyj/index.html' → '/maltipu/belyj/'."""
+    return "/" if rel == "index.html" else "/" + rel[: -len("index.html")]
+
+
+_A_ROOT_RE = re.compile(r'<a\b[^>]*\shref="/(?!/)[^"]*"[^>]*>', re.I)
+
+
+def nofollow_unbuilt(html: str) -> str:
+    """Links that stayed root-absolute lead to pages that are not built (not published yet): the site shows a
+    toast instead of the page, robots get rel=nofollow so they do not walk into 404s."""
+    def fix(m):
+        tag = m.group(0)
+        rel = re.search(r'\srel="([^"]*)"', tag)
+        if rel:
+            return tag if "nofollow" in rel.group(1).split() else tag.replace(rel.group(0), f' rel="{rel.group(1)} nofollow"', 1)
+        return tag[:-1] + ' rel="nofollow">'
+    return _A_ROOT_RE.sub(fix, html)
+
+
+GITIGNORE = ROOT / ".gitignore"
+_GI_START = "# >>> build.py: невыложенные страницы (src/data/publish.json) — сборку --all не коммитим"
+_GI_END = "# <<< build.py"
+
+
+def gitignore_unpublished(all_urls: set, published) -> list:
+    """Paths of not-published pages for .gitignore: a whole top folder when nothing in it is published,
+    otherwise the page's own index.html."""
+    pub = {u for u in all_urls if published(u)}
+    lines = set()
+    for url in all_urls:
+        if url == "/" or published(url) or url == KIT_URL:
+            continue
+        top = "/" + url.strip("/").split("/")[0] + "/"
+        if any(u == top or u.startswith(top) for u in pub):
+            lines.add(url + "index.html")
+        else:
+            lines.add(top)
+    return sorted(lines)
+
+
+def write_gitignore_block(lines: list) -> None:
+    text = GITIGNORE.read_text(encoding="utf-8") if GITIGNORE.is_file() else ""
+    block = "\n".join([_GI_START, *lines, _GI_END]) + "\n"
+    if _GI_START in text and _GI_END in text:
+        head, rest = text.split(_GI_START, 1)
+        tail = rest.split(_GI_END, 1)[1].lstrip("\n")
+        new = head + block + tail
+    else:
+        new = text.rstrip("\n") + ("\n\n" if text.strip() else "") + block
+    if new != text:
+        GITIGNORE.write_text(new, encoding="utf-8")
+
+
 def make_env(data: dict) -> jinja2.Environment:
     env = jinja2.Environment(
         loader=jinja2.FileSystemLoader(str(TEMPLATES)),
@@ -493,6 +573,7 @@ def main(argv=None) -> int:
     ap.add_argument("--clean", action="store_true", help="delete pages listed in the manifest that this build no longer produces")
     ap.add_argument("--kit", action="store_true", help="also write the UI kit page to /_kit/ (git-ignored)")
     ap.add_argument("--verbose", action="store_true", help="list every unbuilt link target and the pages using it")
+    ap.add_argument("--all", action="store_true", help="build every route, not only src/data/publish.json (local review, do not commit)")
     args = ap.parse_args(argv)
 
     rep = Report()
@@ -507,7 +588,13 @@ def main(argv=None) -> int:
                                  "context": {"title": "UI-кит — домщенков.рф", "description": "Компоненты внутренних страниц",
                                              "breadcrumbs": [("Главная", "/"), ("UI-кит", None)]}}))
 
+    published = publish_matcher(data, args.all)
+    all_urls: set[str] = set()
+    unpublished: list[str] = []
+
     # 1. validate + render
+    seo_conf = seo.cfg(data.get("site", {}))
+    robots: dict[str, str] = {}
     rendered: dict[str, tuple[str, str]] = {}
     failed_urls: set[str] = set()
     per_module = collections.Counter()
@@ -524,9 +611,15 @@ def main(argv=None) -> int:
                 raise ValueError(f"url {url} would write into a protected folder")
             if url in rendered:
                 raise ValueError(f"url {url} is already produced by routes/{rendered[url][0]}.py")
+            all_urls.add(url)
+            if url != KIT_URL and not published(url):
+                unpublished.append(url)  # not out yet: not rendered, its old file is removed below
+                continue
             ctx = dict(r.get("context") or {})
             ctx["page"] = {"url": url, "depth": url.strip("/").count("/") + (url != "/"), "module": module}
             html = env.get_template(tpl).render(**ctx)
+            html = seo.finalize(html, url, ctx, data.get("site", {}), seo_conf, imgsize)
+            robots[url] = seo.robots_for(url, ctx, seo_conf)
             rendered[url] = (module, html)
             per_module[module] += 1
         except Exception as e:  # noqa: BLE001
@@ -540,21 +633,50 @@ def main(argv=None) -> int:
     old = read_manifest()
     old_routes = old.get("routes") if isinstance(old.get("routes"), dict) else {}
     kept = {u: m for u, m in sorted(old_routes.items())
-            if u not in rendered and (m in failed_modules or u in failed_urls) and out_path_for(u).is_file()}
+            if u not in rendered and published(u) and (m in failed_modules or u in failed_urls) and out_path_for(u).is_file()}
     kept_files = {out_path_for(u).relative_to(ROOT).as_posix() for u in kept}
 
-    # 3. rewrite links (only now we know which routes exist), lint, write
+    # 3. rewrite links (only now we know which routes exist), lint, write.
+    #    Root files that pages link to are written first, so the rewriter finds them.
+    write_if_changed(ROOT / "site.webmanifest", seo.webmanifest(data.get("site", {}), seo_conf))
+    write_if_changed(ROOT / "robots.txt", seo.robots_txt(seo_conf))
     rw = Rewriter(set(rendered) | set(kept))
     written, changed = [], 0
+    old_lastmod = old.get("lastmod") if isinstance(old.get("lastmod"), dict) else {}
+    lastmod: dict[str, list[str]] = {}
     for url in sorted(rendered):
         module, html = rendered[url]
-        html = rw.page(html, url)
+        html = nofollow_unbuilt(rw.page(html, url))
         lint(html, url, rep)
         out = out_path_for(url)
         if write_if_changed(out, html):
             changed += 1
         if url != KIT_URL:  # the dev kit is git-ignored and never listed in the manifest
             written.append(out.relative_to(ROOT).as_posix())
+            fp = seo.page_fingerprint(html)
+            prev = old_lastmod.get(url)
+            lastmod[url] = [fp, prev[1]] if isinstance(prev, list) and len(prev) == 2 and prev[0] == fp else [fp, seo.today()]
+    for url in kept:  # pages kept from the previous build keep their date
+        if isinstance(old_lastmod.get(url), list):
+            lastmod[url] = old_lastmod[url]
+
+    # 3b. 404 page and sitemap.xml (root files, not listed in the manifest)
+    try:
+        ctx404 = {"title": "Страница не найдена | домщенков.рф",
+                  "description": "Такой страницы на сайте нет. Щенки в наличии, породы и контакты питомника — по ссылкам ниже.",
+                  "breadcrumbs": [("Главная", "/"), ("Страница не найдена", None)], "robots": "noindex, follow",
+                  "page": {"url": "/404.html", "depth": 0, "module": "(404)"}}
+        html = env.get_template("pages/404.html.j2").render(**ctx404)
+        html = seo.finalize(html, "/404.html", ctx404, data.get("site", {}), seo_conf, imgsize)
+        html = nofollow_unbuilt(rw.page(html, "/"))  # links relative to the site root; the page sets <base> itself
+        lint(html, "/404.html", rep)
+        write_if_changed(ROOT / "404.html", html)
+    except Exception as e:  # noqa: BLE001
+        rep.error(f"404.html: {type(e).__name__}: {e}")
+    entries = [(u, lastmod[u][1]) for u in sorted(set(rendered) | set(kept))
+               if u != KIT_URL and u in lastmod and seo.indexable(robots.get(u, ""))]
+    if not args.all:  # sitemap lists what is published; a local --all review must not change it
+        write_if_changed(ROOT / "sitemap.xml", seo.sitemap_xml(entries, seo_conf))
 
     lint_css(rep)
 
@@ -567,26 +689,36 @@ def main(argv=None) -> int:
     kit_file = out_path_for(KIT_URL).relative_to(ROOT).as_posix()
     stale = sorted(f for f in old_files - new_files - kept_files if f != kit_file and (ROOT / f).is_file())
     removed = []
+
+    def delete_page(rel: str) -> None:
+        p = safe_generated(rel)
+        if p is None:
+            rep.warn(f"refusing to delete {rel}")
+            return
+        p.unlink()
+        removed.append(rel)
+        d = p.parent
+        while d != ROOT and d.is_dir() and not any(d.iterdir()):
+            d.rmdir()
+            d = d.parent
+
+    # pages that are not published (any more) leave the repo on every normal build, errors or not
+    for rel in [r for r in stale if not published(url_of_file(r))]:
+        delete_page(rel)
+    stale = [r for r in stale if r not in removed]
     if args.clean and rep.errors:
         rep.warn("--clean skipped: the build has errors (a broken module must not delete its pages)")
     elif args.clean:
         for rel in stale:
-            p = safe_generated(rel)
-            if p is None:
-                rep.warn(f"--clean: refusing to delete {rel}")
-                continue
-            p.unlink()
-            removed.append(rel)
-            d = p.parent
-            while d != ROOT and d.is_dir() and not any(d.iterdir()):
-                d.rmdir()
-                d = d.parent
+            delete_page(rel)
         stale = [s for s in stale if s not in removed]
     manifest = {
         "note": "Written by tools/build.py. Lists generated pages; --clean deletes only files listed here.",
         "files": sorted(new_files | set(stale) | kept_files),
         "routes": dict(sorted({**kept, **{url: rendered[url][0] for url in rendered if url != KIT_URL}}.items())),
+        "lastmod": dict(sorted(lastmod.items())),  # [content hash, date it last changed] → sitemap.xml <lastmod>
     }
+    write_gitignore_block(gitignore_unpublished(all_urls, publish_matcher(data, False)))
     text = json.dumps(manifest, ensure_ascii=False, indent=2) + "\n"
     if not MANIFEST.is_file() or MANIFEST.read_text(encoding="utf-8") != text:
         fd, tmp = tempfile.mkstemp(dir=ROOT, prefix=".tmp-manifest-")
@@ -600,22 +732,38 @@ def main(argv=None) -> int:
     mods = ", ".join(f"{m} ({n})" for m, n in sorted(per_module.items()))
     print(f"  routes: {mods or '—'}")
     print(f"  pages written: {len(rendered)} ({changed} changed, {len(rendered) - changed} unchanged)")
+    print(f"  sitemap.xml: {'not touched (--all)' if args.all else str(len(entries)) + ' pages'} · robots.txt · 404.html · site.webmanifest")
+    if args.all:
+        print("  --all: EVERY route is built (local review). Do not commit — run a normal build before committing.")
+    elif unpublished:
+        print(f"  published (src/data/publish.json): {len(rendered) - (KIT_URL in rendered)} pages; "
+              f"{len(unpublished)} more routes wait (python3 tools/build.py --all to see them)")
     if kept:
         print(f"  NOT rebuilt (module or page failed): {len(kept)} page(s) kept from the previous build, links to them stay relative")
         for url, mod in kept.items():
             print(f"    = {url}  (routes/{mod}.py)")
     if removed:
-        print(f"  removed stale pages: {len(removed)}")
-        for rel in removed:
+        print(f"  removed pages: {len(removed)}")
+        for rel in removed[:12]:
             print(f"    - {rel}")
+        if len(removed) > 12:
+            print(f"    … and {len(removed) - 12} more")
     if stale:
         print(f"  stale pages from earlier builds: {len(stale)} (run with --clean to delete)")
         for rel in stale:
             print(f"    ~ {rel}")
-    if rw.unbuilt:
-        total = sum(rw.unbuilt.values())
-        print(f"  unbuilt link targets: {len(rw.unbuilt)} URLs, {total} links (stay root-absolute → toast)")
-        for url, n in sorted(rw.unbuilt.items(), key=lambda kv: (-kv[1], kv[0])):
+    waiting = {u: n for u, n in rw.unbuilt.items() if u in all_urls}  # not published yet — expected
+    missing_pages = {u: n for u, n in rw.unbuilt.items() if u not in all_urls}  # no route at all
+    if waiting:
+        print(f"  links to not-yet-published pages: {sum(waiting.values())} links to {len(waiting)} pages "
+              f"(toast + nofollow; --verbose lists them)")
+        if args.verbose:
+            for url, n in sorted(waiting.items(), key=lambda kv: (-kv[1], kv[0])):
+                print(f"    {n:4d}  {url}   ← " + ", ".join(sorted(rw.unbuilt_pages[url])))
+    if missing_pages:
+        total = sum(missing_pages.values())
+        print(f"  unbuilt link targets: {len(missing_pages)} URLs, {total} links (no route — stay root-absolute → toast)")
+        for url, n in sorted(missing_pages.items(), key=lambda kv: (-kv[1], kv[0])):
             extra = ""
             if args.verbose:
                 extra = "   ← " + ", ".join(sorted(rw.unbuilt_pages[url]))

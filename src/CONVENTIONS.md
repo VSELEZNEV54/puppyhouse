@@ -10,6 +10,12 @@ pixel-parity baseline no longer applies. Reference inner page: `/shchenki/`.
 
 - **Brand: «домщенков.рф»** — lowercase, no hyphen, from `site.brand`. Never «Puppy House» (the build warns on it).
   `<title>` suffix: ` | домщенков.рф`; titles stay ≤ 60 characters.
+- **SEO is automatic** (`tools/seo.py`, `docs/seo.md`): every page gets canonical, robots, Open Graph, icons and
+  BreadcrumbList from its `title`, `description`, `breadcrumbs` and first photo in `<main>`; sitemap.xml, robots.txt,
+  404.html, site.webmanifest are written by the build. Write one H1 with the page's main query (≤ 2 lines),
+  a title with the query + «в Москве» where it fits, a 110–160-character description. Optional context:
+  `robots="noindex, follow"`, `og_image="/assets/img/…"`, `og_title`, `og_type`. Add JSON-LD only for what the page
+  really shows (FAQ via `faq_section(ld=true)`); no Product/Offer while prices are not published.
 - **Header** (shared, `partials/header.html.j2`): logo · «Меню» (site map panel `#mega`, data `site.menu`) · «Породы ▾» ·
   `site.nav` links · phone · Telegram / WhatsApp / MAX · «Написать в Telegram» (`.btn--tg`, Telegram blue darkened to
   ≥ 4,5:1 with white text — tokens `--tg-a` / `--tg-b`). Round messenger buttons without a text label use
@@ -58,17 +64,27 @@ pixel-parity baseline no longer applies. Reference inner page: `/shchenki/`.
 ## Build and look
 
 ```
-python3 tools/build.py            # all routes; prints pages, unbuilt link targets, warnings, errors (exit 1 on errors)
-python3 tools/build.py --verbose  # + which pages link to each unbuilt URL
+python3 tools/build.py            # PUBLISHED pages only (src/data/publish.json); deletes the other generated pages
+python3 tools/build.py --all      # every route — to look at unpublished pages locally. Never commit after it:
+                                  #   run the normal build first (unpublished pages are in .gitignore anyway)
+python3 tools/build.py --verbose  # + which pages link to each unbuilt / not-yet-published URL
 python3 tools/build.py --clean    # + delete pages from earlier builds that no route produces (manifest only; skipped if errors)
 python3 tools/build.py --kit      # + /_kit/ — every macro with sample data (git-ignored, never deployed)
 ```
+
+**Staged release (client 19.10).** The repo = what GitHub Pages and the server show. Out now: the homepage, the four
+breed pages and the privacy policy (the forms link to it). Everything else stays in `src/` and is built with `--all`;
+links to it on published pages show the toast «Раздел скоро откроется…» and carry `rel="nofollow"`; sitemap.xml lists
+only published pages. To release a page: add its URL to `src/data/publish.json → pages` (`/maltipu/*` = the whole
+section), build, commit. The full site as of 19.10 is the branch `backup/full-site-2026-10-19`.
 Static server: `http://127.0.0.1:8765/` serves the repo (`cd /home/user/puppyhouse && python3 -m http.server 8765 --bind 127.0.0.1 &`).
 Open `/_kit/` before writing new CSS: most things you need already exist.
 
 Two builds in a row must give no diff. Commit the generated `index.html` files together with the sources and `.build-manifest.json`.
 Several agents may build at the same time: every page and the manifest are written atomically, and a full build always
-renders every group, so the files on disk reflect whichever build ran last — rebuild right before you commit.
+renders every published group, so the files on disk reflect whichever build ran last — rebuild (without `--all`) right
+before you commit. Merging a branch that still carries unpublished pages: resolve by deleting them (`git rm`) and
+running the normal build.
 
 ## Typography rule from the client (12.10) — enforced by the build
 
@@ -112,7 +128,8 @@ def routes(data):            # data = deep copy of all src/data/*.json, enriched
         context=dict(
             title="…",                          # <title>, ≤ 60 chars
             description="…",                    # meta description, ≤ 160 chars
-            breadcrumbs=crumbs(("Доставка", None)),   # Главная is added; last item = current page
+            breadcrumbs=crumbs(("Доставка", None)),   # Главная is added; last item = current page (→ BreadcrumbList)
+            # SEO extras (optional): robots="noindex, follow", og_image="/assets/img/…" (else the first photo in <main>)
             # anything else your template needs; optional: pups_breed=<breed dict>, pups_strip=False, lead_breed="maltipu"
         ),
     )]
