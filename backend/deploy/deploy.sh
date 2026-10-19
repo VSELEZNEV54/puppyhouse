@@ -40,7 +40,14 @@ if [ ! -f "$HERE/VERSION" ]; then
   python3 -c 'import jinja2' 2>/dev/null || die "для сборки сайта нужен jinja2: apt install python3-jinja2"
   say "Собираю релиз из $HERE"
   mkdir -p "$APP_ROOT/releases"
-  out="$(bash "$HERE/tools/release.sh" --out "$APP_ROOT/releases" --no-tar | tee /dev/stderr | sed -n 's/^RELEASE_DIR=//p')"
+  # not `tee /dev/stderr`: when stderr is a log file (cron: >> deploy.log) tee re-opens it with truncation
+  rel_log="$(mktemp)"
+  if ! bash "$HERE/tools/release.sh" --out "$APP_ROOT/releases" --no-tar > "$rel_log" 2>&1; then
+    cat "$rel_log"; rm -f "$rel_log"; die "релиз не собрался (выше — вывод сборки)"
+  fi
+  cat "$rel_log"
+  out="$(sed -n 's/^RELEASE_DIR=//p' "$rel_log")"
+  rm -f "$rel_log"
   [ -n "$out" ] && [ -f "$out/VERSION" ] || die "релиз не собрался"
   exec bash "$out/backend/deploy/deploy.sh" "${ARGS[@]}"
 fi
