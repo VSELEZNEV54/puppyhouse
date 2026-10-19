@@ -812,3 +812,16 @@ def test_telegram_message_counts_pages_and_shows_the_device_and_metrika_id(clien
     assert "📄 Посмотрел страниц до заявки: 3" in msg
     assert "🖥 Устройство: 📱 телефон" in msg
     assert "🆔 Метрика ClientID: 1791982828848951532" in msg
+
+
+def test_notify_retry_sends_again_what_failed_and_what_waits(client, db, tg):
+    post_lead(client, kind="price")
+    post_lead(client, kind="video_call", phone="+7 (999) 222-33-44")
+    fake = FakeHttp(httpx.Response(403, json={"ok": False, "description": "Forbidden"}),
+                    httpx.Response(500, json={"ok": False, "description": "oops"}))
+    assert notify.deliver_due(db, client=fake.client()) == {"sent": 0, "failed": 1, "retry": 1}
+    assert sorted(o.status for o in outbox(db)) == ["failed", "pending"]
+    fake = FakeHttp()                                   # the cause is fixed: everything goes out at once
+    r = notify.retry_now(db, client=fake.client())
+    assert r == {"revived": 1, "sent": 2, "failed": 0, "retry": 0}
+    assert [o.status for o in outbox(db)] == ["sent", "sent"] and len(fake.requests) == 2

@@ -158,6 +158,7 @@ domshchenkov-<версия>/deploy.sh
 | `dsh app --help` | все команды бэкенда: API-ключ для CRM, синхронизация каталога, удаление данных… |
 | `dsh restart` | перезапуск API и воркера (после правки `/etc/domshchenkov/api.env`) |
 | `dsh app notify-test` | пробное сообщение в Telegram и на почту из `api.env` |
+| `dsh app notify-retry` | отправить сейчас уведомления, которые не ушли за последние сутки (после исправления настроек) |
 | `dsh backup` | бэкап сейчас |
 | `dsh update` / `dsh rollback` | обновить / откатить |
 | `dsh autoupdate on` / `off` / `status` | автовыкладка новых коммитов раз в 5 минут |

@@ -10,6 +10,7 @@
     worker                  send notifications every 10 s, purge once a night
     send-pending            send due notifications once
     notify-test             a test message to every Telegram chat and mailbox of api.env (no request needed)
+    notify-retry            send now what failed in the last 24 h or waits for a retry (after fixing api.env)
     purge                   retention clean-up (see app/services/retention.py)
     forget-contact --phone +7… --reason withdrawal|request|retention|not_me --subject "ФИО"
     export-reviews [--out path]   approved reviews as JSON for the site
@@ -235,6 +236,18 @@ def cmd_notify_test(args) -> int:
     return 1
 
 
+def cmd_notify_retry(args) -> int:
+    from .services import notify
+    with session_scope() as db:
+        r = notify.retry_now(db)
+    print(f"Отправлено: {r['sent']}, не удалось: {r['failed']}, ждут следующей попытки: {r['retry']}"
+          f" (снова в очереди из неотправленных: {r['revived']})")
+    if r["failed"] or r["retry"]:
+        print("Причина — в журнале: dsh logs worker | tail -30. Проверка настроек: dsh app notify-test")
+        return 1
+    return 0
+
+
 def cmd_purge(args) -> int:
     from .services import retention
     with session_scope() as db:
@@ -367,6 +380,7 @@ def main(argv=None) -> int:
     p.add_argument("--purge-hour", type=int, default=3); p.set_defaults(fn=cmd_worker)
     sub.add_parser("send-pending").set_defaults(fn=cmd_send_pending)
     sub.add_parser("notify-test").set_defaults(fn=cmd_notify_test)
+    sub.add_parser("notify-retry").set_defaults(fn=cmd_notify_retry)
     sub.add_parser("purge").set_defaults(fn=cmd_purge)
     p = sub.add_parser("forget-contact"); p.add_argument("--phone", required=True)
     p.add_argument("--reason", choices=["withdrawal", "request", "retention", "not_me"], required=True)

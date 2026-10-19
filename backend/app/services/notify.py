@@ -25,7 +25,7 @@ from email.utils import formataddr, make_msgid
 from types import SimpleNamespace
 
 import httpx
-from sqlalchemy import func, select
+from sqlalchemy import func, select, update
 from sqlalchemy.orm import Session
 
 from ..config import Settings, get_settings
@@ -456,3 +456,14 @@ def deliver_due(db: Session, limit: int = 20, client: httpx.Client | None = None
         if own:
             client.close()
     return stats
+
+
+def retry_now(db: Session, client: httpx.Client | None = None, since: dt.timedelta = dt.timedelta(days=1)) -> dict:
+    """After a fix (a port opened, a token corrected): the notifications that failed during the last day and the ones
+    waiting for their next attempt go out now (`python -m app notify-retry`)."""
+    now = dt.datetime.now(UTC)
+    revived = db.execute(update(Outbox).where(Outbox.status == "failed", Outbox.created_at > now - since)
+                         .values(status="pending", attempts=0, next_attempt_at=now, last_error=None)).rowcount
+    db.execute(update(Outbox).where(Outbox.status == "pending").values(next_attempt_at=now))
+    db.commit()
+    return {"revived": revived, **deliver_due(db, limit=500, client=client)}
