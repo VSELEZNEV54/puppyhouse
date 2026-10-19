@@ -88,12 +88,11 @@
 }
 .pp-info__status--res { background: var(--sun-50); }
 .pp-info__status--soon { background: var(--sky-50); }
-.pp-title { display: grid; gap: 8px; margin-top: 18px; }
-.pp-title__name { font-size: clamp(44px, 4.6vw, 76px); font-weight: 500; letter-spacing: -0.04em; line-height: .95; }
-.pp-title__sub { font-size: clamp(20px, 1.7vw, 26px); font-weight: 400; letter-spacing: -0.02em; line-height: 1.2; }
-.pp-meta { margin-top: 10px; font-size: 15px; line-height: 1.5; color: var(--muted); }
-.pp-meta span { white-space: nowrap; }
-.pp-meta span:not(:last-child)::after { content: " · "; white-space: normal; }
+/* H1 — запрос «Кремовый щенок мальтипу F1 мальчик», кличка — строкой ниже (клиент 19.10) */
+.pp-title { margin-top: 18px; font-size: clamp(32px, 2.9vw, 48px); font-weight: 500; letter-spacing: -0.03em; line-height: 1.06; text-wrap: balance; }
+.pp-nick { margin-top: 12px; font-size: 17px; line-height: 1.4; color: var(--muted); }
+.pp-nick__name { color: var(--ink); font-weight: 500; }
+.pp-note a { color: inherit; font-weight: 500; text-underline-offset: 3px; }
 .pp-note {
   display: flex; align-items: flex-start; gap: 10px;
   margin-top: 18px; padding: 12px 16px; border-radius: 18px;
@@ -106,17 +105,10 @@
 .pp-cta { width: 100%; display: flex; flex-wrap: wrap; gap: 10px; margin-top: 24px; }
 .pp-cta .btn { flex: 1 1 auto; }
 .pp-cta__main { min-width: 44%; }
-.pp-cta .btn .i.pp-i-down { transform: rotate(90deg); }
-.pp-cta .btn:hover .i.pp-i-down { transform: rotate(90deg) translateX(3px); }
+.pp-cta__tg .i { color: var(--tg-b); }
+.pp-cta__tg:hover .i { transform: none; }
 
 .pp-sub { width: 100%; display: flex; flex-wrap: wrap; align-items: center; gap: 10px 24px; margin-top: 16px; }
-.pp-tg { display: inline-flex; align-items: center; gap: 10px; min-height: 44px; font-size: 15px; font-weight: 500; text-decoration: none; }
-.pp-tg__ico {
-  flex: none; width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center;
-  background: linear-gradient(180deg, var(--tg-a) 0%, var(--tg-b) 100%); color: #fff;
-}
-.pp-tg__ico .i { width: 18px; height: 18px; margin-left: -1px; }
-.pp-tg:hover { text-decoration: underline; text-underline-offset: 3px; }
 .pp-trust { flex: 1 1 100%; display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 13.5px; line-height: 1.35; color: var(--muted); }
 .pp-trust li { display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; }
 
@@ -242,10 +234,8 @@
   .pp-slide__btn .mcard__play { width: 60px; height: 60px; margin: -30px 0 0 -30px; }
 
   .pp-info { padding: 22px 20px 20px; }
-  .pp-title { margin-top: 14px; }
-  .pp-title__name { font-size: clamp(40px, 11vw, 52px); }
-  .pp-title__sub { font-size: 20px; }
-  .pp-meta { font-size: 14.5px; }
+  .pp-title { margin-top: 14px; font-size: clamp(28px, 7.6vw, 34px); }
+  .pp-nick { margin-top: 10px; font-size: 16px; }
   .pp-cta { margin-top: 20px; }
   .pp-cta .btn { flex: 1 1 100%; }
   .pp-sub { margin-top: 12px; }

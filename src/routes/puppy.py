@@ -154,6 +154,23 @@ def colour_note(p, b):
     return None
 
 
+# окрас в заголовке — прилагательным перед «щенок»: «Голубой мраморный щенок бордер-колли девочка»
+COLOUR_ADJ = {"голубой мрамор": "голубой мраморный", "красный мрамор": "красный мраморный",
+              "чёрный с подпалом": "чёрно-подпалый", "партиколор": "партиколорный"}
+
+
+def colour_adj(colour):
+    """«рыжий (красный)» → «Рыжий», «голубой мрамор» → «Голубой мраморный»."""
+    c = colour.split(" (")[0].strip()
+    return cap(COLOUR_ADJ.get(c, c))
+
+
+def h1_of(p, b):
+    """H1 под поисковый запрос, без клички (клиент 19.10): «Кремовый щенок мальтипу F1 мальчик»."""
+    gen = p.get("generation") or ""
+    return f"{colour_adj(p['colour'])} щенок {b['name_gen']}{(' ' + gen) if gen else ''} {p['sex_label']}"
+
+
 def colour_url(p, b, data):
     """/<breed>/vidy-i-okrasy/#<colour> — the colour's own card (breedsub.json); the colours block otherwise."""
     base = b["urls"]["varieties"]
@@ -180,24 +197,15 @@ def take_home(p, as_of):
 
 
 def table(p, b, docs, data, as_of):
-    """Characteristics table rows {label, value, url?}."""
+    """Characteristics table rows {label, value, url?}. Short (клиент 19.10): пол и поколение — в H1, прививки и чип —
+    в «Что входит в покупку»."""
     born = dt.date.fromisoformat(p["birth_date"])
-    gen = (p.get("generation") or "").split()
-    rows = [{"label": "Порода", "value": b["name"], "url": b["urls"]["hub"]}]
-    if gen:
-        rows.append({"label": "Поколение", "value": " · ".join(gen)})
-    if p.get("variety"):
-        rows.append({"label": "Разновидность", "value": p["variety"]})
-    rows += [
-        {"label": "Пол", "value": p["sex_label"]},
+    rows = [
+        {"label": "Порода", "value": b["name"], "url": b["urls"]["hub"]},
         {"label": "Окрас", "value": p["colour"], "url": colour_url(p, b, data)},
-        {"label": "Дата рождения", "value": ru_date(born)},
-        {"label": "Возраст", "value": weeks(p["age_weeks"])},
-        {"label": "Вес сейчас", "value": data["puppy"]["weight_now"].get(b["slug"], "[вес]")},
+        {"label": "Возраст", "value": f"{weeks(p['age_weeks'])}, {'родился' if p['sex'] == 'male' else 'родилась'} {ru_date(born)}"},
         {"label": "Вес взрослой собаки", "value": p["weight_forecast"]},
-        {"label": "Прививки", "value": "по возрасту, в ветпаспорте"},
         {"label": "Документы", "value": doc_list([d for d in docs if d != "Чип"], 3)},
-        {"label": "Чип", "value": "есть" if "Чип" in docs else "[поставим по запросу]"},
     ]
     if p["status"] != "reserved":
         rows.append({"label": "Переезд домой", "value": take_home(p, as_of)})
@@ -270,19 +278,25 @@ def routes(data):
             })
 
         docs = documents(p, b)
-        meta = [x for x in (p["sex_label"], p["colour"], weeks(p["age_weeks"])) if x]
+        h1 = h1_of(p, b)
+        ca = colour_adj(p["colour"])
 
         bg = b["name_gen"]
         if p["status"] == "reserved":
-            title = fit([f"Щенок {bg}{gen_sp} {name} в Москве{BRAND}", f"Щенок {bg}{gen_sp} {name}{BRAND}",
+            title = fit([f"{ca} щенок {bg}{gen_sp} {name} в Москве{BRAND}", f"{ca} щенок {bg}{gen_sp} {name}{BRAND}",
+                         f"Щенок {bg}{gen_sp} {name} в Москве{BRAND}", f"Щенок {bg}{gen_sp} {name}{BRAND}",
                          f"Щенок {bg} {name}{BRAND}"], TITLE_MAX)
             tail = f"Сейчас {'забронирован' if sex_m else 'забронирована'} — покажем похожих щенков и расскажем о новом помёте."
         elif p["status"] == "soon":
-            title = fit([f"Щенок {bg}{gen_sp} {name} — купить в Москве{BRAND}", f"Щенок {bg}{gen_sp} {name} в Москве{BRAND}",
+            title = fit([f"{ca} щенок {bg}{gen_sp} {name} — купить в Москве{BRAND}",
+                         f"{ca} щенок {bg}{gen_sp} {name} в Москве{BRAND}", f"{ca} щенок {bg}{gen_sp} {name}{BRAND}",
+                         f"Щенок {bg}{gen_sp} {name} — купить в Москве{BRAND}", f"Щенок {bg}{gen_sp} {name} в Москве{BRAND}",
                          f"Щенок {bg} {name} в Москве{BRAND}", f"Щенок {bg} {name}{BRAND}"], TITLE_MAX)
             tail = "Скоро в продаже: запишитесь в лист ожидания — пришлём видео и цену первыми."
         else:
-            title = fit([f"Щенок {bg}{gen_sp} {name} — купить в Москве{BRAND}", f"Щенок {bg}{gen_sp} {name} в Москве{BRAND}",
+            title = fit([f"{ca} щенок {bg}{gen_sp} {name} — купить в Москве{BRAND}",
+                         f"{ca} щенок {bg}{gen_sp} {name} в Москве{BRAND}", f"{ca} щенок {bg}{gen_sp} {name}{BRAND}",
+                         f"Щенок {bg}{gen_sp} {name} — купить в Москве{BRAND}", f"Щенок {bg}{gen_sp} {name} в Москве{BRAND}",
                          f"Щенок {bg} {name} в Москве{BRAND}", f"Щенок {bg} {name}{BRAND}"], TITLE_MAX)
             tail = "Покажем по видео, доставим по России. Узнайте цену."
         head = f"{name} — щенок {bg}{gen_sp}, {p['sex_label']}, окрас {p['colour']}, {weeks(p['age_weeks'])}."
@@ -331,7 +345,7 @@ def routes(data):
                 breadcrumbs=crumbs(("Щенки", "/shchenki/"), (b["name"], f"/shchenki/?breed={b['slug']}"), (name, None)),
                 p=p,
                 b=b,
-                meta=meta,
+                h1=h1,
                 rows=table(p, b, docs, data, as_of),
                 docs=docs,
                 docs_note="Мальтипу — гибрид, РКФ его не регистрирует." if not b["rkf"] else None,

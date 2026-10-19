@@ -204,11 +204,11 @@ main:focus, section[tabindex="-1"]:focus, [data-anchor-focus]:focus { outline: n
 /* основная: чёрная пилюля; на ховере — коралл с тёмным текстом (контраст 6,6:1) */
 .btn--ink { background: var(--ink); color: #fff; }
 @media (hover: hover) { .btn--ink:hover { background: var(--coral); color: var(--ink); } }
-/* главная и страницы пород v2 (правки 15.10): основные кнопки — коралловые (цвет прежнего наведения), при наведении —
-   темнее; белые — как были. Карточка щенка одна на весь сайт: её «Узнать цену» остаётся чёрной */
-:is(.page-home, .page-breed) { --cta: var(--coral); --cta-hover: #F7805F; }
-:is(.page-home, .page-breed) :is(.btn--ink, .mbar__btn--ink):not(.pup .btn) { background: var(--cta); color: var(--ink); }
-@media (hover: hover) { :is(.page-home, .page-breed) :is(.btn--ink, .mbar__btn--ink):not(.pup .btn):hover { background: var(--cta-hover); color: var(--ink); } }
+/* главная, страницы пород v2 (правки 15.10) и страница щенка (19.10): основные кнопки — коралловые (цвет прежнего
+   наведения), при наведении — темнее; белые — как были. Карточка щенка одна на весь сайт: её «Узнать цену» остаётся чёрной */
+:is(.page-home, .page-breed, .page-puppy) { --cta: var(--coral); --cta-hover: #F7805F; }
+:is(.page-home, .page-breed, .page-puppy) :is(.btn--ink, .mbar__btn--ink):not(.pup .btn) { background: var(--cta); color: var(--ink); }
+@media (hover: hover) { :is(.page-home, .page-breed, .page-puppy) :is(.btn--ink, .mbar__btn--ink):not(.pup .btn):hover { background: var(--cta-hover); color: var(--ink); } }
 .btn--white { background: #fff; color: var(--ink); border-color: var(--line-2); }
 .btn--white:hover { border-color: var(--ink); }
 /* контурная: белая обводка без заливки — на цветной плитке рядом с белой кнопкой */
