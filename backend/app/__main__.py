@@ -344,7 +344,9 @@ def cmd_notify_check(args) -> int:
                     for c in seen["chats"]:
                         print(f"    {c['id']}  {c['type']}  {c['title']}")
                 elif seen["ok"]:
-                    print("  чатов пока не видно: добавьте бота в группу, напишите там любое сообщение и повторите")
+                    # a bot in a group sees only commands addressed to it (privacy mode), and getUpdates keeps 24 hours
+                    print(f"  чатов пока не видно: добавьте бота в группу (или удалите и добавьте снова), напишите там "
+                          f"/start@{me['username']} и повторите")
                 else:
                     print(f"  ! не удалось получить чаты: {seen['error']}")
                 targets = notify.telegram_targets(s)

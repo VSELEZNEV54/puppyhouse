@@ -144,7 +144,7 @@ def test_token_without_chat_lists_chats_and_asks_for_the_id(channels, monkeypatc
     use_bot(monkeypatch, FakeBot(updates=[]))
     code, out = run(capsys)
     assert code == 1
-    assert "чатов пока не видно" in out and "DSH_TELEGRAM_CHAT_ID" in out
+    assert "чатов пока не видно" in out and "/start@dsh_leads_bot" in out and "DSH_TELEGRAM_CHAT_ID" in out
 
 
 def test_mail_login_and_test_letters(channels, monkeypatch, capsys):
