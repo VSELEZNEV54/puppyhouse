@@ -171,8 +171,12 @@ def _backoff(attempts: int) -> dt.timedelta:
     return dt.timedelta(seconds=min(30 * 2 ** max(attempts - 1, 0), 6 * 3600))  # 30 s, 1 min, 2 min … 6 h
 
 
+def _tg_url(s: Settings, method: str) -> str:
+    return f"{s.telegram_api_base.rstrip('/')}/bot{s.telegram_bot_token}/{method}"
+
+
 def _send_telegram(item: Outbox, text: str, s: Settings, client: httpx.Client) -> None:
-    r = client.post(f"https://api.telegram.org/bot{s.telegram_bot_token}/sendMessage",
+    r = client.post(_tg_url(s, "sendMessage"),
                     json={"chat_id": item.target, "text": text, "disable_web_page_preview": True})
     if r.status_code == 200:
         return
@@ -278,3 +282,108 @@ def deliver_due(db: Session, limit: int = 20, client: httpx.Client | None = None
         if own:
             client.close()
     return stats
+
+
+# ---------------------------------------------------------------- setup checks (python -m app notify-check)
+TEST_TEXT = ("Проверка уведомлений домщенков.рф: бот подключён. Сюда будут приходить новые заявки с сайта — "
+             "номер, порода, что нужно и ссылка в админ-панель.")
+
+
+def http_client() -> httpx.Client:
+    return httpx.Client(timeout=10)
+
+
+def mask_token(token: str) -> str:
+    """«7012345678:AAH…» → «7012345678:***» — the bot id is public, the secret part is not."""
+    return token.split(":", 1)[0] + ":***" if ":" in token else "***"
+
+
+def telegram_targets(s: Settings) -> dict[str, str]:
+    """{label: chat id} — the default chat and the per-breed chats."""
+    out = {}
+    if s.telegram_chat_id:
+        out["общий чат"] = s.telegram_chat_id
+    for key, chat in sorted(s.telegram_breed_chats.items()):
+        if chat:
+            out[f"порода {key}"] = chat
+    return out
+
+
+def _tg_call(s: Settings, client: httpx.Client, method: str, **params) -> dict:
+    try:
+        r = client.post(_tg_url(s, method), json=params)
+        info = r.json() if r.content else {}
+    except (httpx.HTTPError, ValueError) as e:
+        return {"ok": False, "error": _scrub(f"{type(e).__name__}: {e}", s)}
+    if r.status_code == 200 and info.get("ok"):
+        return {"ok": True, "result": info.get("result")}
+    return {"ok": False, "error": _scrub(f"Telegram {r.status_code}: {info.get('description', r.text)}", s)[:200]}
+
+
+def telegram_bot(s: Settings, client: httpx.Client) -> dict:
+    """getMe: is the token valid, what is the bot's @username."""
+    r = _tg_call(s, client, "getMe")
+    if r["ok"]:
+        me = r["result"] or {}
+        return {"ok": True, "username": me.get("username", ""), "name": me.get("first_name", "")}
+    return r
+
+
+def telegram_chats_seen(s: Settings, client: httpx.Client) -> dict:
+    """getUpdates: the chats where the bot was added or got a message — to find the chat id after adding the bot
+    to a group. Telegram keeps updates for 24 hours; nothing is consumed (no offset)."""
+    r = _tg_call(s, client, "getUpdates", timeout=0,
+                 allowed_updates=["message", "channel_post", "my_chat_member", "chat_member"])
+    if not r["ok"]:
+        return r
+    chats: dict[str, dict] = {}
+    for upd in r["result"] or []:
+        for key in ("message", "channel_post", "my_chat_member", "chat_member", "edited_message"):
+            chat = (upd.get(key) or {}).get("chat")
+            if chat and "id" in chat:
+                title = chat.get("title") or " ".join(x for x in (chat.get("first_name"), chat.get("last_name")) if x) \
+                    or ("@" + chat["username"] if chat.get("username") else "")
+                chats[str(chat["id"])] = {"id": str(chat["id"]), "type": chat.get("type", ""), "title": title}
+    return {"ok": True, "chats": list(chats.values())}
+
+
+def telegram_chat(s: Settings, client: httpx.Client, chat_id: str) -> dict:
+    """getChat: the id is right and the bot is in the chat."""
+    r = _tg_call(s, client, "getChat", chat_id=chat_id)
+    if r["ok"]:
+        c = r["result"] or {}
+        return {"ok": True, "type": c.get("type", ""), "title": c.get("title") or c.get("first_name") or ""}
+    return r
+
+
+def telegram_send_test(s: Settings, client: httpx.Client, chat_id: str) -> dict:
+    r = _tg_call(s, client, "sendMessage", chat_id=chat_id, text=TEST_TEXT, disable_web_page_preview=True)
+    return {"ok": True} if r["ok"] else r
+
+
+def _smtp_connect(s: Settings):
+    if s.smtp_ssl:
+        return smtplib.SMTP_SSL(s.smtp_host, s.smtp_port, timeout=15, context=ssl.create_default_context())
+    c = smtplib.SMTP(s.smtp_host, s.smtp_port, timeout=15)
+    c.starttls(context=ssl.create_default_context())
+    return c
+
+
+def smtp_check(s: Settings, send_to: list[str] | None = None) -> dict:
+    """Connect and log in; with send_to, also send a test letter to those addresses."""
+    try:
+        with _smtp_connect(s) as c:
+            if s.smtp_user:
+                c.login(s.smtp_user, s.smtp_password)
+            for addr in send_to or []:
+                m = EmailMessage()
+                m["Subject"] = "Проверка уведомлений домщенков.рф"
+                m["From"] = formataddr(("домщенков.рф", s.smtp_from or s.smtp_user))
+                m["To"] = addr
+                m["Message-ID"] = make_msgid(domain=(s.smtp_from or s.smtp_user or "localhost").split("@")[-1])
+                m.set_content("Почта для заявок подключена. На этот адрес будут приходить новые заявки с сайта "
+                              "домщенков.рф: имя, телефон, куда написать, порода и ссылка в админ-панель.")
+                c.send_message(m)
+        return {"ok": True}
+    except Exception as e:  # noqa: BLE001 — any failure is reported, never raised
+        return {"ok": False, "error": _scrub(f"{type(e).__name__}: {e}", s)}

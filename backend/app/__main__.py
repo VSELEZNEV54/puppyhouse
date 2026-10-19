@@ -317,6 +317,84 @@ def cmd_export_reviews(args) -> int:
     return 0
 
 
+def cmd_notify_check(args) -> int:
+    """Check the notification channels before launch: the bot token, which chats the bot sees (their ids, to put into
+    DSH_TELEGRAM_CHAT_ID), that the configured chats reach the bot, SMTP login; --send also sends test messages.
+    Exit 1 if a configured channel fails or nothing is configured."""
+    from .services import notify
+    s = get_settings()
+    bad = 0
+    configured = 0
+    client = notify.http_client()
+    try:
+        print("Telegram")
+        if not s.telegram_bot_token:
+            print("  не настроен: впишите DSH_TELEGRAM_BOT_TOKEN (токен от @BotFather)")
+        else:
+            configured += 1
+            me = notify.telegram_bot(s, client)
+            if not me["ok"]:
+                bad += 1
+                print(f"  ✗ токен {notify.mask_token(s.telegram_bot_token)} не принят: {me['error']}")
+            else:
+                print(f"  ✓ бот @{me['username']} ({me['name']}), токен {notify.mask_token(s.telegram_bot_token)}")
+                seen = notify.telegram_chats_seen(s, client)
+                if seen["ok"] and seen["chats"]:
+                    print("  чаты, где бот есть или ему писали (id → DSH_TELEGRAM_CHAT_ID):")
+                    for c in seen["chats"]:
+                        print(f"    {c['id']}  {c['type']}  {c['title']}")
+                elif seen["ok"]:
+                    print("  чатов пока не видно: добавьте бота в группу, напишите там любое сообщение и повторите")
+                else:
+                    print(f"  ! не удалось получить чаты: {seen['error']}")
+                targets = notify.telegram_targets(s)
+                if not targets:
+                    bad += 1
+                    print("  ✗ не задан чат для заявок: DSH_TELEGRAM_CHAT_ID")
+                for label, chat in targets.items():
+                    c = notify.telegram_chat(s, client, chat)
+                    if c["ok"]:
+                        print(f"  ✓ {label}: {chat} — {c['title'] or c['type']}")
+                        if args.send:
+                            t = notify.telegram_send_test(s, client, chat)
+                            print(f"    {'✓ тестовое сообщение отправлено' if t['ok'] else '✗ ' + t['error']}")
+                            bad += 0 if t["ok"] else 1
+                    else:
+                        bad += 1
+                        print(f"  ✗ {label}: {chat} — {c['error']} (бот добавлен в этот чат?)")
+                print("  имя и телефон в Telegram: " + ("да (DSH_TELEGRAM_INCLUDE_PD)" if s.telegram_include_pd else
+                      "нет — номер заявки, порода и ссылка в админку (152-ФЗ, см. backend/README.md)"))
+
+        print("Почта")
+        if not s.smtp_host:
+            print("  не настроена: DSH_SMTP_HOST, DSH_SMTP_USER, DSH_SMTP_PASSWORD, DSH_NOTIFY_EMAILS")
+        else:
+            configured += 1
+            print(f"  сервер {s.smtp_host}:{s.smtp_port} ({'SSL' if s.smtp_ssl else 'STARTTLS'}), "
+                  f"ящик {s.smtp_user or '—'}, получатели: {', '.join(s.notify_emails) or '—'}")
+            if not s.notify_emails:
+                bad += 1
+                print("  ✗ нет получателей: DSH_NOTIFY_EMAILS")
+            r = notify.smtp_check(s, send_to=s.notify_emails if args.send else None)
+            if r["ok"]:
+                print("  ✓ вход выполнен" + (", тестовое письмо отправлено" if args.send and s.notify_emails else ""))
+            else:
+                bad += 1
+                print(f"  ✗ {r['error']}")
+
+        print("Вебхук")
+        print(f"  {'настроен: ' + s.webhook_url if s.webhook_url else 'не настроен (нужен только внешней CRM)'}")
+        if s.webhook_url:
+            configured += 1
+    finally:
+        client.close()
+    if not configured:
+        print("Ни один канал не настроен: заявки сохраняются в базе и видны в админ-панели, но никто о них не узнает.")
+        return 1
+    print("Итог: " + ("всё в порядке" if not bad else f"проблем: {bad}"))
+    return 1 if bad else 0
+
+
 def cmd_openapi(args) -> int:
     from .main import app
     spec = app.openapi()
@@ -350,6 +428,8 @@ def main(argv=None) -> int:
     p.add_argument("--subject", required=True); p.set_defaults(fn=cmd_forget_contact)
     p = sub.add_parser("export-reviews"); p.add_argument("--out"); p.set_defaults(fn=cmd_export_reviews)
     sub.add_parser("reapply-erasures").set_defaults(fn=cmd_reapply_erasures)
+    p = sub.add_parser("notify-check", help="проверить Telegram-бота и почту; --send — тестовые сообщения")
+    p.add_argument("--send", action="store_true"); p.set_defaults(fn=cmd_notify_check)
     p = sub.add_parser("openapi"); p.add_argument("--out", default=str(BACKEND_DIR / "openapi.json"))
     p.set_defaults(fn=cmd_openapi)
     args = ap.parse_args(argv)

@@ -143,6 +143,16 @@ domshchenkov-<версия>/deploy.sh
 - Telegram без имени и телефона: `DSH_TELEGRAM_BOT_TOKEN`, `DSH_TELEGRAM_CHAT_ID`.
 - Вебхук для CRM: `DSH_WEBHOOK_URL`, `DSH_WEBHOOK_SECRET`.
 
+Подключение по шагам:
+1. Бот: в Telegram написать @BotFather → `/newbot` → имя и адрес бота. Он пришлёт токен `123456:AA…`.
+2. Группа для заявок: создать, добавить в неё бота и менеджеров, написать в группе любое сообщение.
+3. Почта: в ящике Яндекс 360 (Mail.ru, VK WorkMail) создать пароль приложения для почты (SMTP).
+4. Вписать в `/etc/domshchenkov/api.env`: токен → `DSH_TELEGRAM_BOT_TOKEN`; ящик, пароль приложения и адреса
+   получателей → `DSH_SMTP_USER`, `DSH_SMTP_PASSWORD`, `DSH_SMTP_FROM`, `DSH_NOTIFY_EMAILS`.
+5. `dsh app notify-check` — покажет id группы. Вписать его в `DSH_TELEGRAM_CHAT_ID` (вида `-100…`).
+6. `dsh app notify-check --send` — в группу придёт тестовое сообщение, получателям — письмо. Итог «всё в порядке».
+7. `dsh restart`. Отправить заявку с сайта: она появится в админке, в группе и в почте.
+
 Подробно — в `backend/README.md`.
 
 ## Что где лежит
