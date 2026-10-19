@@ -29,9 +29,9 @@
   <link rel="preload" href="../../assets/fonts/geist-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="../../assets/fonts/geist-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="../../assets/css/main.css?v=1b08e53a">
-  <link rel="stylesheet" href="../../assets/css/pages.css?v=39b9f06b">
+  <link rel="stylesheet" href="../../assets/css/pages.css?v=221bc484">
   <script src="../../assets/js/main.js?v=a1f900ab" defer></script>
-  <script src="../../assets/js/catalog.js?v=45c4888f" defer></script>
+  <script src="../../assets/js/catalog.js?v=706d3453" defer></script>
 </head>
 <body>
   <!-- Иконки: инлайн-спрайт 24×24. Линейные — stroke currentColor, заливочные — fill. -->
@@ -239,36 +239,8 @@
 
     <section class="section section--tight container" id="katalog" aria-labelledby="katalog-title" data-catalog>
       <h2 class="sr-only" id="katalog-title">Все щенки</h2>
-      <div class="filters" data-cf>
-        <div class="chips" role="group" aria-label="Порода">
-          <button class="chip" type="button" data-cf-key="breed" data-cf-value="all" aria-pressed="true">Все породы</button>
-          <button class="chip" type="button" data-cf-key="breed" data-cf-value="maltipu" aria-pressed="false"><span class="chip__dot tone--peach" aria-hidden="true"></span>Мальтипу</button>
-          <button class="chip" type="button" data-cf-key="breed" data-cf-value="francuzskij-buldog" aria-pressed="false"><span class="chip__dot tone--powder" aria-hidden="true"></span>Французский бульдог</button>
-          <button class="chip" type="button" data-cf-key="breed" data-cf-value="toj-pudel" aria-pressed="false"><span class="chip__dot tone--butter" aria-hidden="true"></span>Той-пудель</button>
-          <button class="chip" type="button" data-cf-key="breed" data-cf-value="border-kolli" aria-pressed="false"><span class="chip__dot tone--sage" aria-hidden="true"></span>Бордер-колли</button>
-        </div>
-        <div class="filters__row">
-          <button class="filters__toggle" type="button" aria-expanded="false" aria-controls="cf-more" data-cf-toggle><svg class="i" aria-hidden="true" focusable="false"><use href="#i-filter"/></svg>Пол<span class="filters__badge" data-cf-badge hidden></span></button>
-          <div class="filters__more" id="cf-more">
-            <div class="fgroup" role="group" aria-labelledby="cf-sex">
-              <span class="fgroup__label" id="cf-sex">Пол</span>
-              <div class="fseg">
-                <button type="button" data-cf-key="sex" data-cf-value="all" aria-pressed="true">Любой</button>
-                <button type="button" data-cf-key="sex" data-cf-value="male" aria-pressed="false">Мальчик</button>
-                <button type="button" data-cf-key="sex" data-cf-value="female" aria-pressed="false">Девочка</button>
-              </div>
-            </div>
-          </div>
-          <div class="filters__meta">
-            <p class="filters__count" data-cf-count>60&nbsp;щенков</p>
-            <button class="filters__reset" type="button" data-cf-reset hidden><svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-reset"/></svg><span>Сбросить</span></button>
-          </div>
-        </div>
-        <p class="sr-only" role="status" aria-live="polite" data-cf-status></p>
-      </div>
-
       <ul class="pups pups--grid ct-grid" data-cf-list>
-        <li class="pups__item" data-breed="maltipu" data-sex="male">
+        <li class="pups__item" data-breed="maltipu">
           <article class="pup ct-card tone--peach ct-card--life" data-pup data-slug="maltipu-f1-krem-2026-08" data-breed="maltipu" data-name="Пломбир" data-desc="Мальтипу F1 · 10 недель · мальчик" data-img="pup-maltipu-408.jpg">
 <a class="pup__media ct-card__media" href="maltipu-f1-krem-2026-08/" tabindex="-1" aria-hidden="true">    <img src="../../assets/img/pup-maltipu-408.jpg" alt="Кремовый щенок мальтипу Пломбир на руках" width="1200" height="1600" style="object-position:50% 38%" decoding="async">
 </a>
@@ -282,7 +254,7 @@
   </div>
 </article>
         </li>
-        <li class="pups__item" data-breed="maltipu" data-sex="female">
+        <li class="pups__item" data-breed="maltipu">
           <article class="pup ct-card tone--peach ct-card--life" data-pup data-slug="maltipu-f1b-mini-ryzhij-2026-07" data-breed="maltipu" data-name="Ириска" data-desc="Мальтипу F1b мини · 12 недель · девочка" data-img="pup-maltipu-480.jpg">
 <a class="pup__media ct-card__media" href="maltipu-f1b-mini-ryzhij-2026-07/" tabindex="-1" aria-hidden="true">    <img src="../../assets/img/pup-maltipu-480.jpg" alt="Рыжая малышка мальтипу Ириска в кружевном воротничке" width="960" height="1280" style="object-position:50% 40%" decoding="async">
 </a>
@@ -296,7 +268,7 @@
   </div>
 </article>
         </li>
-        <li class="pups__item" data-breed="francuzskij-buldog" data-sex="male">
+        <li class="pups__item" data-breed="francuzskij-buldog">
           <article class="pup ct-card tone--powder ct-card--life" data-pup data-slug="francuzskij-buldog-palevyj-2026-07" data-breed="francuzskij-buldog" data-name="Бруно" data-desc="Французский бульдог · 13 недель · мальчик" data-img="cl-buldog-47.jpg">
 <a class="pup__media ct-card__media" href="francuzskij-buldog-palevyj-2026-07/" tabindex="-1" aria-hidden="true">    <img src="../../assets/img/cl-buldog-47.jpg" alt="Палевый щенок французского бульдога Бруно с плюшевым тапком" width="1001" height="1200" style="object-position:50% 40%" decoding="async">
 </a>
@@ -310,7 +282,7 @@
   </div>
 </article>
         </li>
-        <li class="pups__item" data-breed="toj-pudel" data-sex="female">
+        <li class="pups__item" data-breed="toj-pudel">
           <article class="pup ct-card tone--butter ct-card--life" data-pup data-slug="toj-pudel-abrikos-2026-07" data-breed="toj-pudel" data-name="Марго" data-desc="Той-пудель · 14 недель · девочка" data-img="pup-pudel-352.jpg">
 <a class="pup__media ct-card__media" href="toj-pudel-abrikos-2026-07/" tabindex="-1" aria-hidden="true">    <img src="../../assets/img/pup-pudel-352.jpg" alt="Абрикосовый щенок той-пуделя Марго сидит в саду" width="960" height="1280" style="object-position:50% 45%" decoding="async">
 </a>
@@ -324,7 +296,7 @@
   </div>
 </article>
         </li>
-        <li class="pups__item" data-breed="border-kolli" data-sex="male">
+        <li class="pups__item" data-breed="border-kolli">
           <article class="pup ct-card tone--sage ct-card--life" data-pup data-slug="border-kolli-goluboj-mramor-2026-07" data-breed="border-kolli" data-name="Скай" data-desc="Бордер-колли · 11 недель · мальчик" data-img="pup-kolli-109.jpg">
 <a class="pup__media ct-card__media" href="border-kolli-goluboj-mramor-2026-07/" tabindex="-1" aria-hidden="true">    <img src="../../assets/img/pup-kolli-109.jpg" alt="Щенок бордер-колли Скай, голубой мрамор, лежит на траве" width="1254" height="1254" style="object-position:50% 50%" loading="lazy" decoding="async">
 </a>
@@ -338,7 +310,7 @@
   </div>
 </article>
         </li>
-        <li class="pups__item" data-breed="toj-pudel" data-sex="male">
+        <li class="pups__item" data-breed="toj-pudel">
           <article class="pup ct-card tone--butter ct-card--life" data-pup data-slug="toj-pudel-chernyj-2026-07" data-breed="toj-pudel" data-name="Уголёк" data-desc="Той-пудель · 12 недель · мальчик" data-img="pup-pudel-341.jpg">
 <a class="pup__media ct-card__media" href="toj-pudel-chernyj-2026-07/" tabindex="-1" aria-hidden="true">    <img src="../../assets/img/pup-pudel-341.jpg" alt="Чёрный щенок той-пуделя Уголёк на руках в саду" width="720" height="1280" style="object-position:50% 35%" loading="lazy" decoding="async">
 </a>
@@ -352,7 +324,7 @@
   </div>
 </article>
         </li>
-        <li class="pups__item" data-breed="maltipu" data-sex="male">
+        <li class="pups__item" data-breed="maltipu">
           <article class="pup ct-card tone--peach ct-card--life" data-pup data-slug="maltipu-f1-ryzhij-2026-07" data-breed="maltipu" data-name="Персик" data-desc="Мальтипу F1 · 11 недель · мальчик" data-img="pup-maltipu-376.jpg">
 <a class="pup__media ct-card__media" href="maltipu-f1-ryzhij-2026-07/" tabindex="-1" aria-hidden="true">    <img src="../../assets/img/pup-maltipu-376.jpg" alt="Рыжий щенок мальтипу Персик на розовой лежанке" width="1120" height="1280" style="object-position:50% 38%" loading="lazy" decoding="async">
 </a>
@@ -366,7 +338,7 @@
   </div>
 </article>
         </li>
-        <li class="pups__item" data-breed="border-kolli" data-sex="male">
+        <li class="pups__item" data-breed="border-kolli">
           <article class="pup ct-card tone--sage ct-card--life" data-pup data-slug="border-kolli-trehcvetnyj-2026-07" data-breed="border-kolli" data-name="Ральф" data-desc="Бордер-колли · 12 недель · мальчик" data-img="pup-kolli-112.jpg">
 <a class="pup__media ct-card__media" href="border-kolli-trehcvetnyj-2026-07/" tabindex="-1" aria-hidden="true">    <img src="../../assets/img/pup-kolli-112.jpg" alt="Трёхцветный щенок бордер-колли Ральф сидит на траве" width="1254" height="1254" style="object-position:50% 50%" loading="lazy" decoding="async">
 </a>
@@ -380,7 +352,7 @@
   </div>
 </article>
         </li>
-        <li class="pups__item" data-breed="maltipu" data-sex="female">
+        <li class="pups__item" data-breed="maltipu">
           <article class="pup ct-card tone--peach ct-card--life" data-pup data-slug="maltipu-f1b-parti-2026-07" data-breed="maltipu" data-name="Бусинка" data-desc="Мальтипу F1b · 12 недель · девочка" data-img="pup-maltipu-391.jpg">
 <a class="pup__media ct-card__media" href="maltipu-f1b-parti-2026-07/" tabindex="-1" aria-hidden="true">    <img src="../../assets/img/pup-maltipu-391.jpg" alt="Бело-абрикосовая малышка мальтипу Бусинка на розовом пледе" width="1200" height="1600" style="object-position:50% 40%" loading="lazy" decoding="async">
 </a>
@@ -394,7 +366,7 @@
   </div>
 </article>
         </li>
-        <li class="pups__item" data-breed="maltipu" data-sex="male">
+        <li class="pups__item" data-breed="maltipu">
           <article class="pup ct-card tone--peach ct-card--life" data-pup data-slug="maltipu-f1b-mini-krem-2026-08" data-breed="maltipu" data-name="Зефир" data-desc="Мальтипу F1b мини · 9 недель · мальчик" data-img="pup-maltipu-383.jpg">
 <a class="pup__media ct-card__media" href="maltipu-f1b-mini-krem-2026-08/" tabindex="-1" aria-hidden="true">    <img src="../../assets/img/pup-maltipu-383.jpg" alt="Кремовый щенок мальтипу Зефир выглядывает из лежанки" width="1200" height="1600" style="object-position:50% 34%" loading="lazy" decoding="async">
 </a>
@@ -408,7 +380,7 @@
   </div>
 </article>
         </li>
-        <li class="pups__item" data-breed="maltipu" data-sex="male">
+        <li class="pups__item" data-breed="maltipu">
           <article class="pup ct-card tone--peach ct-card--life" data-pup data-slug="maltipu-f1-belyj-2026-08" data-breed="maltipu" data-name="Снежок" data-desc="Мальтипу F1 · 9 недель · мальчик" data-img="pup-maltipu-441.jpg">
 <a class="pup__media ct-card__media" href="maltipu-f1-belyj-2026-08/" tabindex="-1" aria-hidden="true">    <img src="../../assets/img/pup-maltipu-441.jpg" alt="Белый щенок мальтипу Снежок на руках во дворе" width="1200" height="1600" style="object-position:50% 45%" loading="lazy" decoding="async">
 </a>
@@ -422,7 +394,7 @@
   </div>
 </article>
         </li>
-        <li class="pups__item" data-breed="maltipu" data-sex="female">
+        <li class="pups__item" data-breed="maltipu">
           <article class="pup ct-card tone--peach ct-card--life" data-pup data-slug="maltipu-f2-abrikos-2026-07" data-breed="maltipu" data-name="Нуга" data-desc="Мальтипу F2 · 10 недель · девочка" data-img="pup-maltipu-452.jpg">
 <a class="pup__media ct-card__media" href="maltipu-f2-abrikos-2026-07/" tabindex="-1" aria-hidden="true">    <img src="../../assets/img/pup-maltipu-452.jpg" alt="Абрикосовый щенок мальтипу Нуга в корзине с игрушками" width="1200" height="1600" style="object-position:45% 40%" loading="lazy" decoding="async">
 </a>
@@ -436,7 +408,7 @@
   </div>
 </article>
         </li>
-        <li class="pups__item" data-breed="maltipu" data-sex="female">
+        <li class="pups__item" data-breed="maltipu">
           <article class="pup ct-card tone--peach ct-card--life" data-pup data-slug="maltipu-f1b-mini-ryzhij-2026-08" data-breed="maltipu" data-name="Корица" data-desc="Мальтипу F1b мини · 8 недель · девочка" data-img="pup-maltipu-472.jpg">
 <a class="pup__media ct-card__media" href="maltipu-f1b-mini-ryzhij-2026-08/" tabindex="-1" aria-hidden="true">    <img src="../../assets/img/pup-maltipu-472.jpg" alt="Рыжий щенок мальтипу Корица на ладони" width="1038" height="1280" style="object-position:50% 30%" loading="lazy" decoding="async">
 </a>
@@ -450,7 +422,7 @@
   </div>
 </article>
         </li>
-        <li class="pups__item" data-breed="maltipu" data-sex="male">
+        <li class="pups__item" data-breed="maltipu">
           <article class="pup ct-card tone--peach ct-card--life" data-pup data-slug="maltipu-f2-ryzhij-2026-07" data-breed="maltipu" data-name="Тоффи" data-desc="Мальтипу F2 · 11 недель · мальчик" data-img="pup-maltipu-474.jpg">
 <a class="pup__media ct-card__media" href="maltipu-f2-ryzhij-2026-07/" tabindex="-1" aria-hidden="true">    <img src="../../assets/img/pup-maltipu-474.jpg" alt="Рыжий кудрявый щенок мальтипу Тоффи на руках" width="704" height="823" style="object-position:50% 45%" loading="lazy" decoding="async">
 </a>
@@ -464,7 +436,7 @@
   </div>
 </article>
         </li>
-        <li class="pups__item" data-breed="maltipu" data-sex="female">
+        <li class="pups__item" data-breed="maltipu">
           <article class="pup ct-card tone--peach ct-card--life" data-pup data-slug="maltipu-f1-mini-krem-2026-08" data-breed="maltipu" data-name="Ваниль" data-desc="Мальтипу F1 мини · 10 недель · девочка" data-img="cl-maltipu-393.jpg">
 <a class="pup__media ct-card__media" href="maltipu-f1-mini-krem-2026-08/" tabindex="-1" aria-hidden="true">    <img src="../../assets/img/cl-maltipu-393.jpg" alt="Кремовый щенок мальтипу Ваниль на руках" width="1200" height="1600" style="object-position:45% 30%" loading="lazy" decoding="async">
 </a>
@@ -478,7 +450,7 @@
   </div>
 </article>
         </li>
-        <li class="pups__item" data-breed="maltipu" data-sex="male">
+        <li class="pups__item" data-breed="maltipu">
           <article class="pup ct-card tone--peach ct-card--life" data-pup data-slug="maltipu-f1b-abrikos-2026-07" data-breed="maltipu" data-name="Ричи" data-desc="Мальтипу F1b · 12 недель · мальчик" data-img="cl-maltipu-435.jpg">
 <a class="pup__media ct-card__media" href="maltipu-f1b-abrikos-2026-07/" tabindex="-1" aria-hidden="true">    <img src="../../assets/img/cl-maltipu-435.jpg" alt="Абрикосовый щенок мальтипу Ричи выглядывает из-за спинки дивана" width="960" height="1280" style="object-position:50% 40%" loading="lazy" decoding="async">
 </a>
@@ -492,7 +464,7 @@
   </div>
 </article>
         </li>
-        <li class="pups__item" data-breed="francuzskij-buldog" data-sex="male">
+        <li class="pups__item" data-breed="francuzskij-buldog">
           <article class="pup ct-card tone--powder ct-card--life" data-pup data-slug="francuzskij-buldog-goluboj-2026-07" data-breed="francuzskij-buldog" data-name="Граф" data-desc="Французский бульдог · 12 недель · мальчик" data-img="cl-buldog-16.jpg">
 <a class="pup__media ct-card__media" href="francuzskij-buldog-goluboj-2026-07/" tabindex="-1" aria-hidden="true">    <img src="../../assets/img/cl-buldog-16.jpg" alt="Голубой щенок французского бульдога Граф сидит на светлом фоне" width="1067" height="1600" style="object-position:50% 45%" loading="lazy" decoding="async">
 </a>
@@ -506,7 +478,7 @@
   </div>
 </article>
         </li>
-        <li class="pups__item" data-breed="francuzskij-buldog" data-sex="female">
+        <li class="pups__item" data-breed="francuzskij-buldog">
           <article class="pup ct-card tone--powder ct-card--life" data-pup data-slug="francuzskij-buldog-goluboj-2026-08" data-breed="francuzskij-buldog" data-name="Ника" data-desc="Французский бульдог · 9 недель · девочка" data-img="cl-buldog-12.jpg">
 <a class="pup__media ct-card__media" href="francuzskij-buldog-goluboj-2026-08/" tabindex="-1" aria-hidden="true">    <img src="../../assets/img/cl-buldog-12.jpg" alt="Голубой щенок французского бульдога Ника рядом с игрушечной машинкой" width="1024" height="768" style="object-position:62% 50%" loading="lazy" decoding="async">
 </a>
@@ -520,7 +492,7 @@
   </div>
 </article>
         </li>
-        <li class="pups__item" data-breed="francuzskij-buldog" data-sex="male">
+        <li class="pups__item" data-breed="francuzskij-buldog">
           <article class="pup ct-card tone--powder ct-card--life" data-pup data-slug="francuzskij-buldog-podpal-2026-07" data-breed="francuzskij-buldog" data-name="Джек" data-desc="Французский бульдог · 11 недель · мальчик" data-img="cl-buldog-48.jpg">
 <a class="pup__media ct-card__media" href="francuzskij-buldog-podpal-2026-07/" tabindex="-1" aria-hidden="true">    <img src="../../assets/img/cl-buldog-48.jpg" alt="Чёрно-подпалый щенок французского бульдога Джек" width="1600" height="1064" style="object-position:50% 50%" loading="lazy" decoding="async">
 </a>
@@ -534,7 +506,7 @@
   </div>
 </article>
         </li>
-        <li class="pups__item" data-breed="francuzskij-buldog" data-sex="female">
+        <li class="pups__item" data-breed="francuzskij-buldog">
           <article class="pup ct-card tone--powder ct-card--life" data-pup data-slug="francuzskij-buldog-palevyj-2026-08" data-breed="francuzskij-buldog" data-name="Мила" data-desc="Французский бульдог · 10 недель · девочка" data-img="cl-buldog-49.jpg">
 <a class="pup__media ct-card__media" href="francuzskij-buldog-palevyj-2026-08/" tabindex="-1" aria-hidden="true">    <img src="../../assets/img/cl-buldog-49.jpg" alt="Палевая девочка французского бульдога Мила идёт к мячику" width="1200" height="900" style="object-position:55% 50%" loading="lazy" decoding="async">
 </a>
@@ -548,7 +520,7 @@
   </div>
 </article>
         </li>
-        <li class="pups__item" data-breed="francuzskij-buldog" data-sex="male">
+        <li class="pups__item" data-breed="francuzskij-buldog">
           <article class="pup ct-card tone--powder ct-card--life" data-pup data-slug="francuzskij-buldog-goluboj-2026-07-tosha" data-breed="francuzskij-buldog" data-name="Тоша" data-desc="Французский бульдог · 10 недель · мальчик" data-img="cl-buldog-54.jpg">
 <a class="pup__media ct-card__media" href="francuzskij-buldog-goluboj-2026-07-tosha/" tabindex="-1" aria-hidden="true">    <img src="../../assets/img/cl-buldog-54.jpg" alt="Голубой щенок французского бульдога Тоша лежит на светлом фоне" width="1600" height="1068" style="object-position:48% 50%" loading="lazy" decoding="async">
 </a>
@@ -562,7 +534,7 @@
   </div>
 </article>
         </li>
-        <li class="pups__item" data-breed="francuzskij-buldog" data-sex="female">
+        <li class="pups__item" data-breed="francuzskij-buldog">
           <article class="pup ct-card tone--powder ct-card--life" data-pup data-slug="francuzskij-buldog-palevyj-2026-07-bonni" data-breed="francuzskij-buldog" data-name="Бонни" data-desc="Французский бульдог · 12 недель · девочка" data-img="cl-buldog-79.jpg">
 <a class="pup__media ct-card__media" href="francuzskij-buldog-palevyj-2026-07-bonni/" tabindex="-1" aria-hidden="true">    <img src="../../assets/img/cl-buldog-79.jpg" alt="Рыже-палевая девочка французского бульдога Бонни" width="962" height="1280" style="object-position:50% 45%" loading="lazy" decoding="async">
 </a>
@@ -576,7 +548,7 @@
   </div>
 </article>
         </li>
-        <li class="pups__item" data-breed="francuzskij-buldog" data-sex="male">
+        <li class="pups__item" data-breed="francuzskij-buldog">
           <article class="pup ct-card tone--powder ct-card--life" data-pup data-slug="francuzskij-buldog-palevyj-2026-08-barni" data-breed="francuzskij-buldog" data-name="Барни" data-desc="Французский бульдог · 8 недель · мальчик" data-img="pup-buldog-9.jpg">
 <a class="pup__media ct-card__media" href="francuzskij-buldog-palevyj-2026-08-barni/" tabindex="-1" aria-hidden="true">    <img src="../../assets/img/pup-buldog-9.jpg" alt="Палевый щенок французского бульдога Барни на руках" width="960" height="1280" style="object-position:50% 35%" loading="lazy" decoding="async">
 </a>
@@ -590,7 +562,7 @@
   </div>
 </article>
         </li>
-        <li class="pups__item" data-breed="francuzskij-buldog" data-sex="male">
+        <li class="pups__item" data-breed="francuzskij-buldog">
           <article class="pup ct-card tone--powder ct-card--life" data-pup data-slug="francuzskij-buldog-goluboj-2026-08-grej" data-breed="francuzskij-buldog" data-name="Грей" data-desc="Французский бульдог · 8 недель · мальчик" data-img="pup-buldog-19.jpg">
 <a class="pup__media ct-card__media" href="francuzskij-buldog-goluboj-2026-08-grej/" tabindex="-1" aria-hidden="true">    <img src="../../assets/img/pup-buldog-19.jpg" alt="Голубой щенок французского бульдога Грей на коленях" width="899" height="1280" style="object-position:45% 40%" loading="lazy" decoding="async">
 </a>
@@ -604,7 +576,7 @@
   </div>
 </article>
         </li>
-        <li class="pups__item" data-breed="francuzskij-buldog" data-sex="female">
+        <li class="pups__item" data-breed="francuzskij-buldog">
           <article class="pup ct-card tone--powder ct-card--life" data-pup data-slug="francuzskij-buldog-goluboj-2026-07-eva" data-breed="francuzskij-buldog" data-name="Ева" data-desc="Французский бульдог · 11 недель · девочка" data-img="ab-buldog-63.jpg">
 <a class="pup__media ct-card__media" href="francuzskij-buldog-goluboj-2026-07-eva/" tabindex="-1" aria-hidden="true">    <img src="../../assets/img/ab-buldog-63.jpg" alt="Голубая девочка французского бульдога Ева сидит на полу" width="960" height="1280" style="object-position:50% 45%" loading="lazy" decoding="async">
 </a>
@@ -618,7 +590,7 @@
   </div>
 </article>
         </li>
-        <li class="pups__item" data-breed="francuzskij-buldog" data-sex="female">
+        <li class="pups__item" data-breed="francuzskij-buldog">
           <article class="pup ct-card tone--powder ct-card--life" data-pup data-slug="francuzskij-buldog-goluboj-2026-08-sonya" data-breed="francuzskij-buldog" data-name="Соня" data-desc="Французский бульдог · 9 недель · девочка" data-img="ab-buldog-27.jpg">
 <a class="pup__media ct-card__media" href="francuzskij-buldog-goluboj-2026-08-sonya/" tabindex="-1" aria-hidden="true">    <img src="../../assets/img/ab-buldog-27.jpg" alt="Голубой щенок французского бульдога Соня спит на мягком пледе" width="1080" height="1047" style="object-position:50% 50%" loading="lazy" decoding="async">
 </a>
@@ -632,7 +604,7 @@
   </div>
 </article>
         </li>
-        <li class="pups__item" data-breed="border-kolli" data-sex="female">
+        <li class="pups__item" data-breed="border-kolli">
           <article class="pup ct-card tone--sage ct-card--life" data-pup data-slug="border-kolli-goluboj-mramor-2026-08" data-breed="border-kolli" data-name="Джесси" data-desc="Бордер-колли · 9 недель · девочка" data-img="pup-kolli-103.jpg">
 <a class="pup__media ct-card__media" href="border-kolli-goluboj-mramor-2026-08/" tabindex="-1" aria-hidden="true">    <img src="../../assets/img/pup-kolli-103.jpg" alt="Щенок бордер-колли Джесси, голубой мрамор, сидит у дерева" width="1254" height="1254" style="object-position:45% 50%" loading="lazy" decoding="async">
 </a>
@@ -646,7 +618,7 @@
   </div>
 </article>
         </li>
-        <li class="pups__item" data-breed="border-kolli" data-sex="male">
+        <li class="pups__item" data-breed="border-kolli">
           <article class="pup ct-card tone--sage ct-card--life" data-pup data-slug="border-kolli-cherno-belyj-2026-07-rokki" data-breed="border-kolli" data-name="Рокки" data-desc="Бордер-колли · 12 недель · мальчик" data-img="pup-kolli-106.jpg">
 <a class="pup__media ct-card__media" href="border-kolli-cherno-belyj-2026-07-rokki/" tabindex="-1" aria-hidden="true">    <img src="../../assets/img/pup-kolli-106.jpg" alt="Чёрно-белый щенок бордер-колли Рокки на прогулке" width="1254" height="1254" style="object-position:45% 50%" loading="lazy" decoding="async">
 </a>
@@ -660,7 +632,7 @@
   </div>
 </article>
         </li>
-        <li class="pups__item" data-breed="border-kolli" data-sex="female">
+        <li class="pups__item" data-breed="border-kolli">
           <article class="pup ct-card tone--sage ct-card--life" data-pup data-slug="border-kolli-krasnyj-mramor-2026-08" data-breed="border-kolli" data-name="Луна" data-desc="Бордер-колли · 9 недель · девочка" data-img="pup-kolli-107.jpg">
 <a class="pup__media ct-card__media" href="border-kolli-krasnyj-mramor-2026-08/" tabindex="-1" aria-hidden="true">    <img src="../../assets/img/pup-kolli-107.jpg" alt="Щенок бордер-колли Луна, красный мрамор, с голубыми глазами" width="1254" height="1254" style="object-position:50% 50%" loading="lazy" decoding="async">
 </a>
@@ -674,7 +646,7 @@
   </div>
 </article>
         </li>
-        <li class="pups__item" data-breed="border-kolli" data-sex="male">
+        <li class="pups__item" data-breed="border-kolli">
           <article class="pup ct-card tone--sage ct-card--life" data-pup data-slug="border-kolli-krasnyj-mramor-2026-07" data-breed="border-kolli" data-name="Бадди" data-desc="Бордер-колли · 11 недель · мальчик" data-img="pup-kolli-121.jpg">
 <a class="pup__media ct-card__media" href="border-kolli-krasnyj-mramor-2026-07/" tabindex="-1" aria-hidden="true">    <img src="../../assets/img/pup-kolli-121.jpg" alt="Щенок бордер-колли Бадди бежит к игрушке" width="1067" height="1600" style="object-position:50% 45%" loading="lazy" decoding="async">
 </a>
@@ -688,7 +660,7 @@
   </div>
 </article>
         </li>
-        <li class="pups__item" data-breed="border-kolli" data-sex="female">
+        <li class="pups__item" data-breed="border-kolli">
           <article class="pup ct-card tone--sage ct-card--life" data-pup data-slug="border-kolli-krasno-belyj-2026-07" data-breed="border-kolli" data-name="Айла" data-desc="Бордер-колли · 13 недель · девочка" data-img="pup-kolli-138.jpg">
 <a class="pup__media ct-card__media" href="border-kolli-krasno-belyj-2026-07/" tabindex="-1" aria-hidden="true">    <img src="../../assets/img/pup-kolli-138.jpg" alt="Красно-белый щенок бордер-колли Айла на снегу" width="470" height="646" style="object-position:50% 50%" loading="lazy" decoding="async">
 </a>
@@ -702,7 +674,7 @@
   </div>
 </article>
         </li>
-        <li class="pups__item" data-breed="border-kolli" data-sex="female">
+        <li class="pups__item" data-breed="border-kolli">
           <article class="pup ct-card tone--sage ct-card--life" data-pup data-slug="border-kolli-krasno-belyj-2026-08" data-breed="border-kolli" data-name="Ханни" data-desc="Бордер-колли · 9 недель · девочка" data-img="pup-kolli-149.jpg">
 <a class="pup__media ct-card__media" href="border-kolli-krasno-belyj-2026-08/" tabindex="-1" aria-hidden="true">    <img src="../../assets/img/pup-kolli-149.jpg" alt="Рыже-белый щенок бордер-колли Ханни отдыхает у мисок" width="1280" height="960" style="object-position:55% 50%" loading="lazy" decoding="async">
 </a>
@@ -716,7 +688,7 @@
   </div>
 </article>
         </li>
-        <li class="pups__item" data-breed="border-kolli" data-sex="male">
+        <li class="pups__item" data-breed="border-kolli">
           <article class="pup ct-card tone--sage ct-card--life" data-pup data-slug="border-kolli-krasno-belyj-2026-08-oskar" data-breed="border-kolli" data-name="Оскар" data-desc="Бордер-колли · 7 недель · мальчик" data-img="pup-kolli-152.jpg">
 <a class="pup__media ct-card__media" href="border-kolli-krasno-belyj-2026-08-oskar/" tabindex="-1" aria-hidden="true">    <img src="../../assets/img/pup-kolli-152.jpg" alt="Коричнево-белый щенок бордер-колли Оскар на лежанке" width="1200" height="1600" style="object-position:45% 55%" loading="lazy" decoding="async">
 </a>
@@ -730,7 +702,7 @@
   </div>
 </article>
         </li>
-        <li class="pups__item" data-breed="border-kolli" data-sex="male">
+        <li class="pups__item" data-breed="border-kolli">
           <article class="pup ct-card tone--sage ct-card--life" data-pup data-slug="border-kolli-cherno-belyj-2026-08" data-breed="border-kolli" data-name="Лаки" data-desc="Бордер-колли · 8 недель · мальчик" data-img="pup-kolli-185.jpg">
 <a class="pup__media ct-card__media" href="border-kolli-cherno-belyj-2026-08/" tabindex="-1" aria-hidden="true">    <img src="../../assets/img/pup-kolli-185.jpg" alt="Чёрно-белый щенок бордер-колли Лаки в саду" width="1200" height="1600" style="object-position:50% 55%" loading="lazy" decoding="async">
 </a>
@@ -744,7 +716,7 @@
   </div>
 </article>
         </li>
-        <li class="pups__item" data-breed="border-kolli" data-sex="female">
+        <li class="pups__item" data-breed="border-kolli">
           <article class="pup ct-card tone--sage ct-card--life" data-pup data-slug="border-kolli-goluboj-mramor-2026-08-kira" data-breed="border-kolli" data-name="Кира" data-desc="Бордер-колли · 8 недель · девочка" data-img="pup-kolli-186.jpg">
 <a class="pup__media ct-card__media" href="border-kolli-goluboj-mramor-2026-08-kira/" tabindex="-1" aria-hidden="true">    <img src="../../assets/img/pup-kolli-186.jpg" alt="Щенок бордер-колли Кира, голубой мрамор, с голубыми глазами" width="1500" height="1469" style="object-position:60% 50%" loading="lazy" decoding="async">
 </a>
@@ -758,7 +730,7 @@
   </div>
 </article>
         </li>
-        <li class="pups__item" data-breed="toj-pudel" data-sex="female">
+        <li class="pups__item" data-breed="toj-pudel">
           <article class="pup ct-card tone--butter ct-card--life" data-pup data-slug="toj-pudel-ryzhij-2026-07" data-breed="toj-pudel" data-name="Роза" data-desc="Той-пудель · 12 недель · девочка" data-img="pup-pudel-258.jpg">
 <a class="pup__media ct-card__media" href="toj-pudel-ryzhij-2026-07/" tabindex="-1" aria-hidden="true">    <img src="../../assets/img/pup-pudel-258.jpg" alt="Рыжий щенок той-пуделя Роза с голубым бантом" width="1105" height="1600" style="object-position:45% 50%" loading="lazy" decoding="async">
 </a>
@@ -772,7 +744,7 @@
   </div>
 </article>
         </li>
-        <li class="pups__item" data-breed="toj-pudel" data-sex="female">
+        <li class="pups__item" data-breed="toj-pudel">
           <article class="pup ct-card tone--butter ct-card--life" data-pup data-slug="toj-pudel-korichnevyj-2026-08" data-breed="toj-pudel" data-name="Майя" data-desc="Той-пудель · 10 недель · девочка" data-img="pup-pudel-276.jpg">
 <a class="pup__media ct-card__media" href="toj-pudel-korichnevyj-2026-08/" tabindex="-1" aria-hidden="true">    <img src="../../assets/img/pup-pudel-276.jpg" alt="Коричневый щенок той-пуделя Майя с кулоном-сердечком" width="1341" height="1600" style="object-position:50% 40%" loading="lazy" decoding="async">
 </a>
@@ -786,7 +758,7 @@
   </div>
 </article>
         </li>
-        <li class="pups__item" data-breed="toj-pudel" data-sex="male">
+        <li class="pups__item" data-breed="toj-pudel">
           <article class="pup ct-card tone--butter ct-card--life" data-pup data-slug="toj-pudel-ryzhij-2026-07-timosha" data-breed="toj-pudel" data-name="Тимоша" data-desc="Той-пудель · 11 недель · мальчик" data-img="cl-pudel-281.jpg">
 <a class="pup__media ct-card__media" href="toj-pudel-ryzhij-2026-07-timosha/" tabindex="-1" aria-hidden="true">    <img src="../../assets/img/cl-pudel-281.jpg" alt="Рыжий щенок той-пуделя Тимоша стоит на диване" width="1080" height="1440" style="object-position:50% 45%" loading="lazy" decoding="async">
 </a>
@@ -800,7 +772,7 @@
   </div>
 </article>
         </li>
-        <li class="pups__item" data-breed="toj-pudel" data-sex="male">
+        <li class="pups__item" data-breed="toj-pudel">
           <article class="pup ct-card tone--butter ct-card--life" data-pup data-slug="toj-pudel-ryzhij-2026-08-leo" data-breed="toj-pudel" data-name="Лео" data-desc="Той-пудель · 9 недель · мальчик" data-img="pup-pudel-287.jpg">
 <a class="pup__media ct-card__media" href="toj-pudel-ryzhij-2026-08-leo/" tabindex="-1" aria-hidden="true">    <img src="../../assets/img/pup-pudel-287.jpg" alt="Рыжий щенок той-пуделя Лео в плетёной лежанке" width="1200" height="1600" style="object-position:50% 40%" loading="lazy" decoding="async">
 </a>
@@ -814,7 +786,7 @@
   </div>
 </article>
         </li>
-        <li class="pups__item" data-breed="toj-pudel" data-sex="male">
+        <li class="pups__item" data-breed="toj-pudel">
           <article class="pup ct-card tone--butter ct-card--life" data-pup data-slug="toj-pudel-ryzhij-2026-08-ogonek" data-breed="toj-pudel" data-name="Огонёк" data-desc="Той-пудель · 8 недель · мальчик" data-img="pup-pudel-295.jpg">
 <a class="pup__media ct-card__media" href="toj-pudel-ryzhij-2026-08-ogonek/" tabindex="-1" aria-hidden="true">    <img src="../../assets/img/pup-pudel-295.jpg" alt="Рыжий щенок той-пуделя Огонёк сидит на сером диване" width="1200" height="1600" style="object-position:50% 45%" loading="lazy" decoding="async">
 </a>
@@ -828,7 +800,7 @@
   </div>
 </article>
         </li>
-        <li class="pups__item" data-breed="toj-pudel" data-sex="female">
+        <li class="pups__item" data-breed="toj-pudel">
           <article class="pup ct-card tone--butter ct-card--life" data-pup data-slug="toj-pudel-ryzhij-2026-07-plyusha" data-breed="toj-pudel" data-name="Плюша" data-desc="Той-пудель · 10 недель · девочка" data-img="pup-pudel-308.jpg">
 <a class="pup__media ct-card__media" href="toj-pudel-ryzhij-2026-07-plyusha/" tabindex="-1" aria-hidden="true">    <img src="../../assets/img/pup-pudel-308.jpg" alt="Рыжий щенок той-пуделя Плюша среди плюшевых игрушек" width="1312" height="1433" style="object-position:60% 60%" loading="lazy" decoding="async">
 </a>
@@ -842,7 +814,7 @@
   </div>
 </article>
         </li>
-        <li class="pups__item" data-breed="toj-pudel" data-sex="male">
+        <li class="pups__item" data-breed="toj-pudel">
           <article class="pup ct-card tone--butter ct-card--life" data-pup data-slug="toj-pudel-korichnevyj-2026-07" data-breed="toj-pudel" data-name="Мокко" data-desc="Той-пудель · 12 недель · мальчик" data-img="pup-pudel-334.jpg">
 <a class="pup__media ct-card__media" href="toj-pudel-korichnevyj-2026-07/" tabindex="-1" aria-hidden="true">    <img src="../../assets/img/pup-pudel-334.jpg" alt="Коричневый щенок той-пуделя Мокко стоит на полотенце" width="1200" height="1600" style="object-position:55% 45%" loading="lazy" decoding="async">
 </a>
@@ -856,7 +828,7 @@
   </div>
 </article>
         </li>
-        <li class="pups__item" data-breed="toj-pudel" data-sex="female">
+        <li class="pups__item" data-breed="toj-pudel">
           <article class="pup ct-card tone--butter ct-card--life" data-pup data-slug="toj-pudel-ryzhij-2026-08-lisa" data-breed="toj-pudel" data-name="Лиса" data-desc="Той-пудель · 7 недель · девочка" data-img="pup-pudel-357.jpg">
 <a class="pup__media ct-card__media" href="toj-pudel-ryzhij-2026-08-lisa/" tabindex="-1" aria-hidden="true">    <img src="../../assets/img/pup-pudel-357.jpg" alt="Рыжий щенок той-пуделя Лиса в плетёной корзинке" width="1600" height="1067" style="object-position:50% 55%" loading="lazy" decoding="async">
 </a>
@@ -870,7 +842,7 @@
   </div>
 </article>
         </li>
-        <li class="pups__item" data-breed="toj-pudel" data-sex="female">
+        <li class="pups__item" data-breed="toj-pudel">
           <article class="pup ct-card tone--butter ct-card--life" data-pup data-slug="toj-pudel-korichnevyj-2026-08-vishnya" data-breed="toj-pudel" data-name="Вишня" data-desc="Той-пудель · 9 недель · девочка" data-img="cl-pudel-336.jpg">
 <a class="pup__media ct-card__media" href="toj-pudel-korichnevyj-2026-08-vishnya/" tabindex="-1" aria-hidden="true">    <img src="../../assets/img/cl-pudel-336.jpg" alt="Коричневый щенок той-пуделя Вишня на руках" width="960" height="1280" style="object-position:50% 40%" loading="lazy" decoding="async">
 </a>
@@ -884,7 +856,7 @@
   </div>
 </article>
         </li>
-        <li class="pups__item" data-breed="toj-pudel" data-sex="male">
+        <li class="pups__item" data-breed="toj-pudel">
           <article class="pup ct-card tone--butter ct-card--life" data-pup data-slug="toj-pudel-ryzhij-2026-08" data-breed="toj-pudel" data-name="Чарли" data-desc="Той-пудель · 9 недель · мальчик" data-img="pup-pudel-299.jpg">
 <a class="pup__media ct-card__media" href="toj-pudel-ryzhij-2026-08/" tabindex="-1" aria-hidden="true">    <img src="../../assets/img/pup-pudel-299.jpg" alt="Рыжий щенок той-пуделя Чарли на прогулке" width="1280" height="853" style="object-position:70% 50%" loading="lazy" decoding="async">
 </a>
@@ -898,7 +870,7 @@
   </div>
 </article>
         </li>
-        <li class="pups__item" data-breed="francuzskij-buldog" data-sex="female">
+        <li class="pups__item" data-breed="francuzskij-buldog">
           <article class="pup ct-card tone--powder ct-card--life" data-pup data-slug="francuzskij-buldog-pegij-2026-08" data-breed="francuzskij-buldog" data-name="Белла" data-desc="Французский бульдог · 10 недель · девочка" data-img="pup-buldog-5.jpg">
 <a class="pup__media ct-card__media" href="francuzskij-buldog-pegij-2026-08/" tabindex="-1" aria-hidden="true">    <img src="../../assets/img/pup-buldog-5.jpg" alt="Пегий щенок французского бульдога Белла на руках" width="768" height="1024" style="object-position:50% 25%" loading="lazy" decoding="async">
 </a>
@@ -912,7 +884,7 @@
   </div>
 </article>
         </li>
-        <li class="pups__item" data-breed="maltipu" data-sex="male">
+        <li class="pups__item" data-breed="maltipu">
           <article class="pup ct-card tone--peach ct-card--life" data-pup data-slug="maltipu-f2-abrikos-2026-08" data-breed="maltipu" data-name="Тедди" data-desc="Мальтипу F2 · 7 недель · мальчик" data-img="pup-maltipu-491.jpg">
 <a class="pup__media ct-card__media" href="maltipu-f2-abrikos-2026-08/" tabindex="-1" aria-hidden="true">    <img src="../../assets/img/pup-maltipu-491.jpg" alt="Абрикосовый щенок мальтипу Тедди в праздничном воротничке" width="960" height="1280" style="object-position:50% 34%" loading="lazy" decoding="async">
 </a>
@@ -926,7 +898,7 @@
   </div>
 </article>
         </li>
-        <li class="pups__item" data-breed="maltipu" data-sex="female">
+        <li class="pups__item" data-breed="maltipu">
           <article class="pup ct-card tone--peach ct-card--life" data-pup data-slug="maltipu-f1b-shokolad-2026-08" data-breed="maltipu" data-name="Брауни" data-desc="Мальтипу F1b · 7 недель · девочка" data-img="pup-maltipu-478.jpg">
 <a class="pup__media ct-card__media" href="maltipu-f1b-shokolad-2026-08/" tabindex="-1" aria-hidden="true">    <img src="../../assets/img/pup-maltipu-478.jpg" alt="Шоколадный щенок мальтипу Брауни сидит на тапочке" width="1200" height="1600" style="object-position:42% 55%" loading="lazy" decoding="async">
 </a>
@@ -940,7 +912,7 @@
   </div>
 </article>
         </li>
-        <li class="pups__item" data-breed="francuzskij-buldog" data-sex="male">
+        <li class="pups__item" data-breed="francuzskij-buldog">
           <article class="pup ct-card tone--powder ct-card--life" data-pup data-slug="francuzskij-buldog-goluboj-2026-08-mars" data-breed="francuzskij-buldog" data-name="Марс" data-desc="Французский бульдог · 7 недель · мальчик" data-img="pup-buldog-62.jpg">
 <a class="pup__media ct-card__media" href="francuzskij-buldog-goluboj-2026-08-mars/" tabindex="-1" aria-hidden="true">    <img src="../../assets/img/pup-buldog-62.jpg" alt="Голубой щенок французского бульдога Марс на руках" width="768" height="1024" style="object-position:50% 40%" loading="lazy" decoding="async">
 </a>
@@ -954,7 +926,7 @@
   </div>
 </article>
         </li>
-        <li class="pups__item" data-breed="border-kolli" data-sex="female">
+        <li class="pups__item" data-breed="border-kolli">
           <article class="pup ct-card tone--sage ct-card--life" data-pup data-slug="border-kolli-goluboj-mramor-2026-07-dymka" data-breed="border-kolli" data-name="Дымка" data-desc="Бордер-колли · 12 недель · девочка" data-img="pup-kolli-147.jpg">
 <a class="pup__media ct-card__media" href="border-kolli-goluboj-mramor-2026-07-dymka/" tabindex="-1" aria-hidden="true">    <img src="../../assets/img/pup-kolli-147.jpg" alt="Щенок бордер-колли Дымка, голубой мрамор, смотрит в сторону" width="1066" height="1600" style="object-position:50% 40%" loading="lazy" decoding="async">
 </a>
@@ -968,7 +940,7 @@
   </div>
 </article>
         </li>
-        <li class="pups__item" data-breed="border-kolli" data-sex="female">
+        <li class="pups__item" data-breed="border-kolli">
           <article class="pup ct-card tone--sage ct-card--life" data-pup data-slug="border-kolli-krasno-belyj-2026-08-sanni" data-breed="border-kolli" data-name="Санни" data-desc="Бордер-колли · 7 недель · девочка" data-img="cl-kolli-118.jpg">
 <a class="pup__media ct-card__media" href="border-kolli-krasno-belyj-2026-08-sanni/" tabindex="-1" aria-hidden="true">    <img src="../../assets/img/cl-kolli-118.jpg" alt="Рыже-белый щенок бордер-колли Санни сидит на дорожке" width="1067" height="1600" style="object-position:50% 55%" loading="lazy" decoding="async">
 </a>
@@ -982,7 +954,7 @@
   </div>
 </article>
         </li>
-        <li class="pups__item" data-breed="toj-pudel" data-sex="female">
+        <li class="pups__item" data-breed="toj-pudel">
           <article class="pup ct-card tone--butter ct-card--life" data-pup data-slug="toj-pudel-ryzhij-2026-08-knopka" data-breed="toj-pudel" data-name="Кнопка" data-desc="Той-пудель · 6 недель · девочка" data-img="pup-pudel-365.jpg">
 <a class="pup__media ct-card__media" href="toj-pudel-ryzhij-2026-08-knopka/" tabindex="-1" aria-hidden="true">    <img src="../../assets/img/pup-pudel-365.jpg" alt="Крошечный рыжий щенок той-пуделя Кнопка на бирюзовом фоне" width="1600" height="1064" style="object-position:50% 62%" loading="lazy" decoding="async">
 </a>
@@ -996,7 +968,7 @@
   </div>
 </article>
         </li>
-        <li class="pups__item" data-breed="francuzskij-buldog" data-sex="female">
+        <li class="pups__item" data-breed="francuzskij-buldog">
           <article class="pup ct-card tone--powder ct-card--life" data-pup data-slug="francuzskij-buldog-krem-2026-07" data-breed="francuzskij-buldog" data-name="Луиза" data-desc="Французский бульдог · 11 недель · девочка" data-img="cl-buldog-8.jpg">
 <a class="pup__media ct-card__media" href="francuzskij-buldog-krem-2026-07/" tabindex="-1" aria-hidden="true">    <img src="../../assets/img/cl-buldog-8.jpg" alt="Кремовый щенок французского бульдога Луиза на подушке" width="1035" height="1041" style="object-position:50% 50%" loading="lazy" decoding="async">
 </a>
@@ -1010,7 +982,7 @@
   </div>
 </article>
         </li>
-        <li class="pups__item" data-breed="border-kolli" data-sex="female">
+        <li class="pups__item" data-breed="border-kolli">
           <article class="pup ct-card tone--sage ct-card--life" data-pup data-slug="border-kolli-cherno-belyj-2026-07" data-breed="border-kolli" data-name="Тесса" data-desc="Бордер-колли · 10 недель · девочка" data-img="pup-kolli-203.jpg">
 <a class="pup__media ct-card__media" href="border-kolli-cherno-belyj-2026-07/" tabindex="-1" aria-hidden="true">    <img src="../../assets/img/pup-kolli-203.jpg" alt="Чёрно-белый щенок бордер-колли Тесса на траве" width="657" height="876" style="object-position:50% 50%" loading="lazy" decoding="async">
 </a>
@@ -1024,7 +996,7 @@
   </div>
 </article>
         </li>
-        <li class="pups__item" data-breed="maltipu" data-sex="female">
+        <li class="pups__item" data-breed="maltipu">
           <article class="pup ct-card tone--peach ct-card--life" data-pup data-slug="maltipu-f1-mini-abrikos-2026-07" data-breed="maltipu" data-name="Карамель" data-desc="Мальтипу F1 мини · 13 недель · девочка" data-img="pup-maltipu-399.jpg">
 <a class="pup__media ct-card__media" href="maltipu-f1-mini-abrikos-2026-07/" tabindex="-1" aria-hidden="true">    <img src="../../assets/img/pup-maltipu-399.jpg" alt="Абрикосовая малышка мальтипу Карамель на розовом пледе" width="1200" height="1600" style="object-position:50% 40%" loading="lazy" decoding="async">
 </a>
@@ -1038,7 +1010,7 @@
   </div>
 </article>
         </li>
-        <li class="pups__item" data-breed="toj-pudel" data-sex="male">
+        <li class="pups__item" data-breed="toj-pudel">
           <article class="pup ct-card tone--butter ct-card--life" data-pup data-slug="toj-pudel-shokolad-2026-07" data-breed="toj-pudel" data-name="Какао" data-desc="Той-пудель · 13 недель · мальчик" data-img="pup-pudel-315.jpg">
 <a class="pup__media ct-card__media" href="toj-pudel-shokolad-2026-07/" tabindex="-1" aria-hidden="true">    <img src="../../assets/img/pup-pudel-315.jpg" alt="Коричневый щенок той-пуделя Какао рядом с орхидеей" width="768" height="1024" style="object-position:55% 55%" loading="lazy" decoding="async">
 </a>
@@ -1052,7 +1024,7 @@
   </div>
 </article>
         </li>
-        <li class="pups__item" data-breed="maltipu" data-sex="male">
+        <li class="pups__item" data-breed="maltipu">
           <article class="pup ct-card tone--peach ct-card--life" data-pup data-slug="maltipu-f2-krem-2026-08" data-breed="maltipu" data-name="Бублик" data-desc="Мальтипу F2 · 9 недель · мальчик" data-img="pup-maltipu-464.jpg">
 <a class="pup__media ct-card__media" href="maltipu-f2-krem-2026-08/" tabindex="-1" aria-hidden="true">    <img src="../../assets/img/pup-maltipu-464.jpg" alt="Кремовый щенок мальтипу Бублик на руках на улице" width="1200" height="1600" style="object-position:40% 35%" loading="lazy" decoding="async">
 </a>
@@ -1066,7 +1038,7 @@
   </div>
 </article>
         </li>
-        <li class="pups__item" data-breed="francuzskij-buldog" data-sex="male">
+        <li class="pups__item" data-breed="francuzskij-buldog">
           <article class="pup ct-card tone--powder ct-card--life" data-pup data-slug="francuzskij-buldog-palevyj-2026-08-keks" data-breed="francuzskij-buldog" data-name="Кекс" data-desc="Французский бульдог · 9 недель · мальчик" data-img="pup-buldog-13.jpg">
 <a class="pup__media ct-card__media" href="francuzskij-buldog-palevyj-2026-08-keks/" tabindex="-1" aria-hidden="true">    <img src="../../assets/img/pup-buldog-13.jpg" alt="Палевый щенок французского бульдога Кекс на руках у ели" width="768" height="1024" style="object-position:50% 25%" loading="lazy" decoding="async">
 </a>
@@ -1080,7 +1052,7 @@
   </div>
 </article>
         </li>
-        <li class="pups__item" data-breed="border-kolli" data-sex="male">
+        <li class="pups__item" data-breed="border-kolli">
           <article class="pup ct-card tone--sage ct-card--life" data-pup data-slug="border-kolli-cherno-belyj-2026-07-grom" data-breed="border-kolli" data-name="Гром" data-desc="Бордер-колли · 11 недель · мальчик" data-img="pup-kolli-92.jpg">
 <a class="pup__media ct-card__media" href="border-kolli-cherno-belyj-2026-07-grom/" tabindex="-1" aria-hidden="true">    <img src="../../assets/img/pup-kolli-92.jpg" alt="Чёрно-белый щенок бордер-колли Гром стоит на траве" width="1254" height="1254" style="object-position:50% 50%" loading="lazy" decoding="async">
 </a>
@@ -1094,7 +1066,7 @@
   </div>
 </article>
         </li>
-        <li class="pups__item" data-breed="toj-pudel" data-sex="female">
+        <li class="pups__item" data-breed="toj-pudel">
           <article class="pup ct-card tone--butter ct-card--life" data-pup data-slug="toj-pudel-ryzhij-2026-07-boni" data-breed="toj-pudel" data-name="Бони" data-desc="Той-пудель · 10 недель · девочка" data-img="ab-pudel-360.jpg">
 <a class="pup__media ct-card__media" href="toj-pudel-ryzhij-2026-07-boni/" tabindex="-1" aria-hidden="true">    <img src="../../assets/img/ab-pudel-360.jpg" alt="Рыжий щенок той-пуделя Бони на мягком пледе" width="1600" height="1064" style="object-position:60% 50%" loading="lazy" decoding="async">
 </a>
@@ -1117,14 +1089,7 @@
         </li>
       </ul>
 
-<div class="empty" data-cf-empty hidden>
-  <span class="empty__faces" aria-hidden="true"><span class="face tone--peach"><img src="../../assets/img/studio-maltipu-peach.jpg" alt="" width="1024" height="1024" loading="lazy" decoding="async"></span><span class="face tone--powder"><img src="../../assets/img/studio-buldog-blue.jpg" alt="" width="1024" height="1024" loading="lazy" decoding="async"></span><span class="face tone--butter"><img src="../../assets/img/studio-pudel-yellow.jpg" alt="" width="1024" height="1024" loading="lazy" decoding="async"></span><span class="face tone--sage"><img src="../../assets/img/studio-kolli-green.jpg" alt="" width="1024" height="1024" loading="lazy" decoding="async"></span></span>
-  <p class="empty__title">Таких щенков сейчас нет</p>
-<p class="empty__text">Оставьте заявку — напишем, когда появится новый помёт. Или посмотрите всех щенков.</p>  <div class="empty__actions">
-<button class="btn btn--ink" type="button" data-open-modal data-modal-kind="waitlist">Оставить заявку</button>
-      <button class="btn btn--white" type="button" data-cf-reset>Показать всех</button>
-  </div>
-</div>    </section>
+    </section>
 
     <section class="section container" id="preimushchestva" aria-labelledby="preimushchestva-title">
   <div class="sec-head">

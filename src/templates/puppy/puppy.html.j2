@@ -1,7 +1,7 @@
 {#- /shchenki/<slug>/ — puppy page (layout of 13.10, client notes 19.10). Context from routes/puppy.py:
     p (puppy), b (its breed), h1 (colour + breed + generation + sex, no nickname), rows (characteristics table), docs,
     docs_note, colour_note, gallery (the puppy's own photos and video only), includes, intro + facts («Про <породу>»),
-    fits («Кому подойдёт», photo cards), more («Читайте о породе» tiles), booking, delivery, similar, similar_total,
+    fits («Кому подойдёт», photo cards), more («Читайте о породе» tiles), booking, delivery, similar,
     faq_items, lead_line. No status badges and no parents block (client 19.10).
     Order: hero → «Как купить щенка» → «Похожие щенки» → «Кому подойдёт» → «Что входит» → «Бронь и доставка» →
     «Про <породу>» with the facts and «Читайте о породе» → «Частые вопросы» → lead form. Links in block heads and
@@ -99,7 +99,7 @@
     {{ blocks.how_to_buy() }}
 
     <section class="section container" id="pohozhie" aria-labelledby="pohozhie-title">
-      {{ ui.section_head('Похожие щенки', id='pohozhie-title', link={'url': '/shchenki/?breed=' ~ b.slug, 'label': 'Весь каталог — ' ~ similar_total}, button=true) }}
+      {{ ui.section_head('Похожие щенки', id='pohozhie-title', link={'url': '/shchenki/', 'label': 'Весь каталог — ' ~ puppies|length}, button=true) }}
       {% if similar %}
       {{ ct.strip(similar, breed=b) }}
       {% else %}

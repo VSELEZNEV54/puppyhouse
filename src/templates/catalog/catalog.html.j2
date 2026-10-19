@@ -1,4 +1,5 @@
-{#- /shchenki/ — catalog with filters (assets/js/catalog.js). Reference inner page: copy its structure.
+{#- /shchenki/ — catalog: every puppy in one grid, no filters (client 19.10; assets/js/catalog.js only fits the
+    «Ждёте другого щенка?» tile into the last row). Reference inner page: copy its structure.
     Cards: catalog/_card.html.j2 = the shared cards.puppy_card («Узнать цену» + «Подробнее»), styles in main.css. -#}
 {% extends "layouts/page.html.j2" %}
 {% import "catalog/_card.html.j2" as ct %}
@@ -18,36 +19,9 @@
 {% block body %}
     <section class="section section--tight container" id="katalog" aria-labelledby="katalog-title" data-catalog>
       <h2 class="sr-only" id="katalog-title">Все щенки</h2>
-      <div class="filters" data-cf>
-        <div class="chips" role="group" aria-label="Порода">
-          <button class="chip" type="button" data-cf-key="breed" data-cf-value="all" aria-pressed="true">Все породы</button>
-          {% for b in breeds %}
-          <button class="chip" type="button" data-cf-key="breed" data-cf-value="{{ b.slug }}" aria-pressed="false"><span class="chip__dot {{ b.tone_class }}" aria-hidden="true"></span>{{ b.name }}</button>
-          {% endfor %}
-        </div>
-        <div class="filters__row">
-          <button class="filters__toggle" type="button" aria-expanded="false" aria-controls="cf-more" data-cf-toggle>{{ ui.icon('filter') }}Пол<span class="filters__badge" data-cf-badge hidden></span></button>
-          <div class="filters__more" id="cf-more">
-            <div class="fgroup" role="group" aria-labelledby="cf-sex">
-              <span class="fgroup__label" id="cf-sex">Пол</span>
-              <div class="fseg">
-                <button type="button" data-cf-key="sex" data-cf-value="all" aria-pressed="true">Любой</button>
-                <button type="button" data-cf-key="sex" data-cf-value="male" aria-pressed="false">Мальчик</button>
-                <button type="button" data-cf-key="sex" data-cf-value="female" aria-pressed="false">Девочка</button>
-              </div>
-            </div>
-          </div>
-          <div class="filters__meta">
-            <p class="filters__count" data-cf-count>{{ items|length }}&nbsp;{{ items|length|plural('щенок', 'щенка', 'щенков') }}</p>
-            <button class="filters__reset" type="button" data-cf-reset hidden>{{ ui.icon('reset', sm=true) }}<span>Сбросить</span></button>
-          </div>
-        </div>
-        <p class="sr-only" role="status" aria-live="polite" data-cf-status></p>
-      </div>
-
       <ul class="pups pups--grid ct-grid" data-cf-list>
         {% for p in items %}
-        <li class="pups__item" data-breed="{{ p.breed }}" data-sex="{{ p.sex }}">
+        <li class="pups__item" data-breed="{{ p.breed }}">
           {{ ct.card(p, eager=loop.index <= 4) }}
         </li>
         {% endfor %}
@@ -56,9 +30,6 @@
         </li>
       </ul>
 
-      {% call ui.empty_state('Таких щенков сейчас нет', 'Оставьте заявку — напишем, когда появится новый помёт. Или посмотрите всех щенков.', attrs='data-cf-empty hidden') %}
-      <button class="btn btn--white" type="button" data-cf-reset>Показать всех</button>
-      {% endcall %}
     </section>
 
     {{ ui.advantages(title='Что получите со щенком', id='preimushchestva', link={'url': '/dokumenty-i-garantii/', 'label': 'Документы и гарантии'}) }}

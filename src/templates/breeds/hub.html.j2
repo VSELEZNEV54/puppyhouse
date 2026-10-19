@@ -22,7 +22,7 @@
     {{ media.media_carousel(reel, title=hub.media_title, id='foto-video', lead=common.media_lead, label=hub.media_label) }}
 
     <section class="section container" id="shchenki" aria-labelledby="shchenki-title">
-      {{ ui.section_head(hub.pups_title, id='shchenki-title', link={'url': '/shchenki/?breed=' ~ b.slug, 'label': 'Смотреть в каталоге'}) }}
+      {{ ui.section_head(hub.pups_title, id='shchenki-title', link={'url': '/shchenki/', 'label': 'Смотреть в каталоге'}) }}
       {% if pups %}
       {%- set n = pups|length %}
       <ul class="pups" data-reveal="items">

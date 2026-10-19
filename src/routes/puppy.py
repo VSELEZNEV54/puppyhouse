@@ -213,7 +213,7 @@ def routes(data):
             context=dict(
                 title=title,
                 description=description,
-                breadcrumbs=crumbs(("Щенки", "/shchenki/"), (b["name"], f"/shchenki/?breed={b['slug']}"), (name, None)),
+                breadcrumbs=crumbs(("Щенки", "/shchenki/"), (b["name"], b["urls"]["hub"]), (name, None)),
                 p=p,
                 b=b,
                 h1=h1,
@@ -230,7 +230,6 @@ def routes(data):
                 booking=texts["booking"],
                 delivery=texts["delivery"],
                 similar=similar,
-                similar_total=len(b["puppies"]),
                 faq_items=[faq[i] for i in texts["faq"]],
                 lead_breed=b["slug"],
                 lead_line=lead_line,

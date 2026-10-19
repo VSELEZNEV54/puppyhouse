@@ -47,9 +47,8 @@
 {% macro pups_section(title='Щенки в наличии', breed=none, limit=4, id='pups', exclude=none) -%}
 {%- set pool = (breed.puppies if breed else puppies)|rejectattr('slug', 'equalto', exclude)|sort(attribute='status_order')|list -%}
 {%- set list = pool[:limit] -%}
-{%- set total = (breed.puppies if breed else puppies)|length -%}
 <section class="section container" id="{{ id }}" aria-labelledby="{{ id }}-title">
-  {{ ui.section_head(title, id=id ~ '-title', link={'url': '/shchenki/' ~ ('?breed=' ~ breed.slug if breed else ''), 'label': 'Весь каталог — ' ~ total}) }}
+  {{ ui.section_head(title, id=id ~ '-title', link={'url': '/shchenki/', 'label': 'Весь каталог — ' ~ puppies|length}) }}
   {% if list %}
   <ul class="pups pups--strip" data-reveal="items">
     {% for p in list %}
