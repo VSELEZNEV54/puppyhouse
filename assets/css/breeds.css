@@ -151,12 +151,8 @@
 .brd-col__btn { width: 100%; height: auto; min-height: 46px; padding: 11px 14px; font-size: 14px; white-space: normal; line-height: 1.2; text-align: center; }
 .brd-col__text { margin-bottom: 14px; }
 
-/* карточка щенка на странице породы и окраса (cards.puppy_card simple=true): одна белая «Узнать цену» во всю ширину */
-.ct-card--simple .ct-card__actions .btn { flex: 1 1 100%; width: 100%; }
-.ct-card--simple .ct-card__price { background: #fff; border-color: transparent; }
-.ct-card--simple .ct-card__price:hover { border-color: var(--ink); }
+/* карточка щенка на странице породы и окраса (cards.puppy_card simple=true): кнопки — как у всех карточек (main.css) */
 .ct-card--simple .pup__name { padding-right: 0; }
-@media (max-width: 560px) { .ct-card--simple .ct-card__price { border-color: var(--line-2); } }
 
 /* «Всё о мальтипу» (правки 15.10): четыре широкие карточки статей в ряд по ширине страницы, остальные — за краем,
    стрелки под лентой и свайп (part.post_carousel); планшет — три в ряд. Ширина карточки — от ширины ленты (cqw) */

@@ -1819,7 +1819,7 @@ legend.field__label { margin-bottom: 8px; }
 
 /* =========================================================
    КАРТОЧКА ЩЕНКА — одна на весь сайт (cards.puppy_card): каталог, «Похожие щенки», ленты «Щенки в наличии»,
-   хабы пород, сравнения. Основа — .pup выше; две кнопки «Смотреть щенка» + «Узнать цену» (правки 13.10)
+   хабы пород, сравнения. Основа — .pup выше; две кнопки: белая «Узнать цену» и «Подробнее» с белой обводкой (19.10)
    ========================================================= */
 /* фото — тоже ссылка на страницу щенка (дубль ссылки в имени, вне порядка табуляции) */
 .ct-card__media { display: block; color: inherit; text-decoration: none; }
@@ -1833,12 +1833,13 @@ legend.field__label { margin-bottom: 8px; }
 /* «В избранное» — в углу фото, не отнимает место у кнопок */
 .ct-card__fav { position: absolute; z-index: 3; top: calc(var(--inset) + 10px); right: calc(var(--inset) + 10px); width: 44px; height: 44px; }
 
-/* «Смотреть щенка» + «Узнать цену»: в ряд, а в узкой карточке — друг под другом */
+/* «Узнать цену» (белая) + «Подробнее» (белая обводка, .btn--outline): в ряд, а в узкой карточке — друг под другом.
+   Обе стоят на цветной плитке карточки (--tone-floor), на телефоне тоже */
 .ct-card__body { container-type: inline-size; }
 .ct-card__actions { display: flex; gap: 8px; margin-top: auto; padding-top: 16px; }
 .ct-card__actions .btn { flex: 1 1 auto; height: 46px; padding: 0 14px; font-size: 14.5px; }
-.ct-card__more { background: rgba(255, 255, 255, .8); border-color: transparent; }
-.ct-card__more:hover { background: #fff; border-color: var(--ink); }
+.ct-card__price { border-color: transparent; }
+.ct-card__price:hover { border-color: var(--ink); }
 @container (max-width: 259px) {
   .ct-card__actions { flex-direction: column; }
   .ct-card__actions .btn { flex: none; width: 100%; }
@@ -1849,7 +1850,7 @@ legend.field__label { margin-bottom: 8px; }
    фото слева в белой плитке, кличка, возраст и две кнопки справа. 19 щенков — около 4000 px, а не 9000
    ========================================================= */
 @media (max-width: 560px) {
-  .ct-card { flex-direction: row; align-items: stretch; background: var(--tile); }
+  .ct-card { flex-direction: row; align-items: stretch; }
   .ct-card .pup__media {
     flex: none; width: 42%; aspect-ratio: auto; min-height: 176px; margin: 8px 0 8px 8px;
     clip-path: none; border-radius: var(--r-img); overflow: hidden;
@@ -1865,7 +1866,6 @@ legend.field__label { margin-bottom: 8px; }
   .ct-card__fav { top: 10px; right: 10px; width: 40px; height: 40px; background: var(--page); }
   .ct-card__actions { flex-direction: column; gap: 6px; padding-top: 12px; }
   .ct-card__actions .btn { flex: none; width: 100%; height: 42px; }
-  .ct-card__more { background: var(--page); }
 
   /* «Ждёте другого щенка?» — мордочки в ряд внахлёст, плитка по содержимому */
   .pups .soon-tile { min-height: 0; gap: 14px; padding: 22px 18px; }
