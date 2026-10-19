@@ -6,6 +6,8 @@
     python3 tools/build.py --kit      also write the developer UI kit to /_kit/ (git-ignored)
     python3 tools/build.py --all      build EVERY route into _all/ (git-ignored) for local review; the published
                                       tree is not touched (serve it: python3 -m http.server 8765 --directory _all)
+    python3 tools/build.py --full     build EVERY route into full/ (committed: GitHub Pages …/full/, never deployed to
+                                      the server); pages there use the shared assets/ of the published tree
 
 Published pages: src/data/publish.json → pages. A normal build renders only them and deletes the other generated
 pages, so the repo (GitHub Pages) and the server get just the published site. Links to the rest go to a block on a
@@ -30,6 +32,7 @@ import json
 import os
 import posixpath
 import re
+import shutil
 import struct
 import sys
 import tempfile
@@ -53,7 +56,7 @@ MANIFEST = ROOT / ".build-manifest.json"
 PHOTO_TONES = ROOT / "tools" / "photo-tones.json"  # measured backdrop colours of studio photos
 
 # Top-level folders a route may never write into.
-PROTECTED = {"assets", "src", "tools", "docs", "content", "backend", ".github", ".git", "node_modules"}
+PROTECTED = {"assets", "src", "tools", "docs", "content", "backend", ".github", ".git", "node_modules", "full"}
 URL_RE = re.compile(r"^/(?:[a-z0-9]+(?:-[a-z0-9]+)*/)*$")
 KIT_URL = "/_kit/"
 
@@ -286,6 +289,7 @@ def _indent(text: str) -> str:
 
 
 ALL_DIR = ROOT / "_all"  # --all output (every route), git-ignored
+FULL_DIR = ROOT / "full"  # --full output (every route) for the GitHub Pages preview; release.sh does not pack it
 
 
 def out_path_for(url: str, base: Path = ROOT) -> Path:
@@ -307,8 +311,9 @@ def content_hash(path: Path) -> str:
 
 
 class Rewriter:
-    def __init__(self, built: set[str], fallbacks: dict | None = None):
+    def __init__(self, built: set[str], fallbacks: dict | None = None, prefix: str = ""):
         self.built = built
+        self.prefix = prefix  # pages live under it (--full → /full); assets and root files stay at the site root
         self.fallbacks = fallbacks or {}  # unpublished url → ["#id" on this page, "/#id" on the homepage, …]
         self.rerouted = collections.Counter()
         self.ids: set[str] = set()
@@ -333,7 +338,7 @@ class Rewriter:
                 self.missing[path].add(page_url)
             elif f.suffix in (".css", ".js"):
                 query = "?v=" + content_hash(f)
-            return self.rel(path, page_url, False) + query + frag
+            return self.rel(path, self.prefix + page_url, False) + query + frag
         norm = path if path.endswith("/") else path + "/"
         if norm in self.built:
             return self.rel(norm, page_url, True) + query + frag
@@ -579,6 +584,7 @@ def main(argv=None) -> int:
     ap.add_argument("--kit", action="store_true", help="also write the UI kit page to /_kit/ (git-ignored)")
     ap.add_argument("--verbose", action="store_true", help="list every unbuilt link target and the pages using it")
     ap.add_argument("--all", action="store_true", help="build every route, not only src/data/publish.json (local review, do not commit)")
+    ap.add_argument("--full", action="store_true", help="build every route into full/ for the GitHub Pages preview (commit it)")
     args = ap.parse_args(argv)
 
     rep = Report()
@@ -593,9 +599,14 @@ def main(argv=None) -> int:
                                  "context": {"title": "UI-кит — домщенков.рф", "description": "Компоненты внутренних страниц",
                                              "breadcrumbs": [("Главная", "/"), ("UI-кит", None)]}}))
 
+    args.all = args.all or args.full
+    all_dir = FULL_DIR if args.full else ALL_DIR
+    if args.full:
+        shutil.rmtree(FULL_DIR, ignore_errors=True)  # generated as a whole: routes removed since go away too
     if args.all:
-        published, fallbacks, out_base = publish_matcher(None), {}, ALL_DIR
-        link_root_files(ALL_DIR)
+        published, fallbacks, out_base = publish_matcher(None), {}, all_dir
+        if not args.full:
+            link_root_files(ALL_DIR)
     else:
         cfg = publish_config(data, rep)
         if cfg is None:
@@ -669,9 +680,9 @@ def main(argv=None) -> int:
     for name, text in root_files.items():
         if not args.all or not (ROOT / name).is_file():
             write_if_changed(ROOT / name, text)
-    if args.all:
+    if args.all and not args.full:
         link_root_files(ALL_DIR)
-    rw = Rewriter(set(rendered) | set(kept), fallbacks)
+    rw = Rewriter(set(rendered) | set(kept), fallbacks, prefix="/full" if args.full else "")
     written, changed = [], 0
     old_lastmod = old.get("lastmod") if isinstance(old.get("lastmod"), dict) else {}
     lastmod: dict[str, list[str]] = {}
@@ -693,6 +704,8 @@ def main(argv=None) -> int:
 
     # 3b. 404 page and sitemap.xml (root files, not listed in the manifest)
     try:
+        if args.full:
+            raise StopIteration  # GitHub Pages serves only the root 404.html
         ctx404 = {"title": "Страница не найдена | домщенков.рф",
                   "description": "Такой страницы на сайте нет. Щенки в наличии, породы и контакты питомника — по ссылкам ниже.",
                   "breadcrumbs": [("Главная", "/"), ("Страница не найдена", None)], "robots": "noindex, follow",
@@ -702,6 +715,8 @@ def main(argv=None) -> int:
         html = nofollow_unbuilt(rw.page(html, "/"))  # links relative to the site root; the page sets <base> itself
         lint(html, "/404.html", rep)
         write_if_changed(out_base / "404.html", html)
+    except StopIteration:
+        pass
     except Exception as e:  # noqa: BLE001
         rep.error(f"404.html: {type(e).__name__}: {e}")
     entries = [(u, lastmod[u][1]) for u in sorted(set(rendered) | set(kept))
@@ -716,8 +731,8 @@ def main(argv=None) -> int:
 
     # 4. manifest + stale pages (the published tree only; --all writes just a route list into _all/)
     if args.all:
-        (ALL_DIR / ".build-manifest.json").write_text(json.dumps(
-            {"note": "tools/build.py --all: every route, for local review. Not deployed.", "routes": dict(sorted(
+        (all_dir / ".build-manifest.json").write_text(json.dumps(
+            {"note": f"tools/build.py {'--full' if args.full else '--all'}: every route, for review. Not deployed to the server.", "routes": dict(sorted(
                 {u: rendered[u][0] for u in rendered if u != KIT_URL}.items()))}, ensure_ascii=False, indent=2) + "\n",
             encoding="utf-8")
         return summary(args, rep, rw, per_module, rendered, changed, entries, unpublished, all_urls, kept, [], [])
@@ -777,7 +792,9 @@ def summary(args, rep, rw, per_module, rendered, changed, entries, unpublished, 
     mods = ", ".join(f"{m} ({n})" for m, n in sorted(per_module.items()))
     print(f"  routes: {mods or '—'}")
     print(f"  pages written: {len(rendered)} ({changed} changed, {len(rendered) - changed} unchanged)")
-    if args.all:
+    if args.full:
+        print("  --full: every route → full/ (GitHub Pages …/full/; release.sh does not pack it)")
+    elif args.all:
         print("  --all: every route → _all/ (git-ignored, not deployed): python3 -m http.server 8765 --directory _all")
     else:
         print(f"  sitemap.xml: {len(entries)} pages · robots.txt · 404.html · site.webmanifest")
