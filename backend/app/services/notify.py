@@ -12,6 +12,7 @@ deliver_due() sends what is due: right after the request (background task), and 
 from __future__ import annotations
 
 import datetime as dt
+import html
 import json
 import logging
 import re
@@ -24,13 +25,13 @@ from email.utils import formataddr, make_msgid
 from types import SimpleNamespace
 
 import httpx
-from sqlalchemy import select
+from sqlalchemy import func, select
 from sqlalchemy.orm import Session
 
 from ..config import Settings, get_settings
 from ..enums import CHANNEL_LABELS, LEAD_KIND_LABELS, Channel, LeadKind
-from ..models import Lead, Outbox, Review
-from . import consent
+from ..models import Lead, Outbox, Review, SiteEvent, Visit, Visitor
+from . import catalog, consent
 from . import phone as phones
 from .security import sign
 
@@ -94,27 +95,108 @@ def _admin_link(s: Settings, lead_id: int) -> str:
     return s.admin_base_url.format(id=lead_id) if s.admin_base_url else ""
 
 
-def telegram_text(lead: Lead | None, review: Review | None, event: str, s: Settings) -> str:
-    """Plain text. Personal data only if telegram_include_pd (needs a cross-border transfer notice)."""
+# where the visit came from, in words: source/medium from attribution.classify()
+_SOURCE_NAMES = {"yandex": "Яндекс", "google": "Google", "bing": "Bing", "duckduckgo": "DuckDuckGo", "rambler": "Рамблер",
+                 "mail.ru": "Mail.ru", "yahoo": "Yahoo", "vk": "ВКонтакте", "ok": "Одноклассники", "telegram": "Telegram",
+                 "instagram": "Instagram", "facebook": "Facebook", "youtube": "YouTube", "dzen": "Дзен",
+                 "pinterest": "Pinterest", "tiktok": "TikTok", "avito": "Авито", "whatsapp": "WhatsApp", "max": "MAX"}
+_DEVICES = {"mobile": "📱 телефон", "tablet": "📱 планшет", "desktop": "💻 компьютер"}
+
+
+def source_label(source: str | None, medium: str | None) -> str:
+    src, med = (source or "").lower(), (medium or "").lower()
+    if not src or src == "(direct)":
+        return "✍️ прямой заход"
+    name = _SOURCE_NAMES.get(src, source)
+    if med == "organic":
+        return f"🔍 поиск — {name}"
+    if med in ("cpc", "ppc", "paid", "cpm"):
+        return "💰 реклама — " + {"yandex": "Яндекс Директ", "google": "Google Ads"}.get(src, name)
+    if med == "social":
+        return f"💬 соцсеть — {name}"
+    if med == "referral":
+        return f"🔗 переход с сайта {name}"
+    return f"🏷 метка — {name} / {medium}"
+
+
+def visit_facts(db: Session, lead: Lead) -> dict:
+    """What the site saw before the request (only while site activity is linked to requests: the consent says so):
+    pages viewed, the device, the Yandex Metrika ClientID."""
+    out: dict = {}
+    if lead.visitor_id:
+        out["pages"] = db.scalar(select(func.count()).select_from(SiteEvent).where(
+            SiteEvent.visitor_id == lead.visitor_id, SiteEvent.type == "page_view",
+            SiteEvent.occurred_at <= lead.created_at)) or 0
+        v = db.get(Visitor, lead.visitor_id)
+        if v is not None and v.ym_uid:
+            out["ym_uid"] = v.ym_uid
+    if lead.session_id:
+        visit = db.get(Visit, lead.session_id)
+        if visit is not None and visit.device in _DEVICES:
+            out["device"] = _DEVICES[visit.device]
+    return out
+
+
+def telegram_text(lead: Lead | None, review: Review | None, event: str, s: Settings, facts: dict | None = None) -> str:
+    """HTML for parse_mode=HTML, every value escaped. Personal data (name, phone, messenger) only with
+    telegram_include_pd AND a consent version that names the transfer abroad (notice to Роскомнадзор first)."""
+    def e(v) -> str:
+        return html.escape(str(v), quote=False)
+
     if review is not None:
-        lines = [f"Новый отзыв №{review.id} · {'★' * review.rating}", "Ждёт модерации"]
+        lines = [f"⭐ <b>Новый отзыв №{review.id}</b> · {'★' * review.rating}"]
         if review.breed:
-            lines.insert(1, review.breed.name)
+            lines.append(f"🐾 Порода: {e(review.breed.name)}")
+        lines.append("🕒 Ждёт модерации")
         return "\n".join(lines)
+    facts = facts or {}
     num = lead.parent_id or lead.id
     kind = LEAD_KIND_LABELS.get(LeadKind(lead.kind), lead.kind)
-    head = f"Повторный запрос по заявке №{num}" if event == "lead.repeat" else f"Новая заявка №{lead.id}"
     breed = lead.breed.name if lead.breed else "порода не выбрана"
-    lines = [head, f"{breed} · {kind} · {_local(lead.created_at, s):%H:%M}"]
+    head = (f"🔁 <b>Повторный запрос по заявке №{num}</b>" if event == "lead.repeat"
+            else f"🐶 <b>Новая заявка №{lead.id}</b>")
+    lines = [head, "", f"🐾 Порода: {e(breed)}", f"📋 Запрос: {e(kind)}"]
     if lead.puppy_name:
-        lines.append(f"Щенок: {lead.puppy_name}")
+        lines.append(f"🐕 Щенок: {e(lead.puppy_name)}")
+    if lead.colour:
+        colour = catalog.load().colour_label(lead.breed.slug if lead.breed else None, lead.colour) or lead.colour
+        lines.append(f"🎨 Окрас: {e(colour)}")
+    if lead.note:
+        lines.append(f"🖱 Кнопка: {e(lead.note)}")
     if s.telegram_include_pd and consent.allows_cross_border(lead.consent_version):
-        lines.append(f"{lead.name}, {phones.display(lead.phone)}, "
-                     f"{CHANNEL_LABELS.get(Channel(lead.channel), lead.channel)}")
+        lines += ["", f"👤 Имя: {e(lead.name)}", f"📞 Телефон: {e(phones.display(lead.phone))}",
+                  f"💬 Куда написать: {e(CHANNEL_LABELS.get(Channel(lead.channel), lead.channel))}"]
+    lines += ["", f"📍 Источник: {e(source_label(lead.source, lead.medium))}"]
+    if lead.landing_path:
+        lines.append(f"   • Вошёл на: {e(lead.landing_path)}")
+    if lead.page_path and lead.page_path != lead.landing_path:
+        lines.append(f"   • Заявка со страницы: {e(lead.page_path)}")
+    utm = lead.utm or {}
+    if utm.get("campaign"):
+        lines.append(f"   • Кампания: {e(utm['campaign'])}")
+    if utm.get("term"):
+        lines.append(f"   • Ключевая фраза: {e(utm['term'])}")
+    if facts.get("pages"):
+        lines.append(f"📄 Посмотрел страниц до заявки: {facts['pages']}")
+    if facts.get("device"):
+        lines.append(f"🖥 Устройство: {e(facts['device'])}")
+    if facts.get("ym_uid"):
+        lines.append(f"🆔 Метрика ClientID: {e(facts['ym_uid'])}")
+    if lead.is_repeat:
+        lines.append("🔁 Человек уже обращался раньше")
+    if lead.flags:
+        lines.append(f"⚠️ Антиспам: {e(', '.join(lead.flags))}")
+    lines += ["", f"🕒 {_local(lead.created_at, s):%d.%m.%Y, %H:%M}"]
     link = _admin_link(s, num)
     if link:
-        lines.append(link)
+        lines.append(f'👉 <a href="{html.escape(link, quote=True)}">Открыть заявку в админке</a>')
     return "\n".join(lines)
+
+
+def _plain(text: str) -> str:
+    """The HTML message without markup: a link becomes «label: url»."""
+    text = re.sub(r'<a href="([^"]*)">([^<]*)</a>', lambda m: f"{m.group(2)}: {html.unescape(m.group(1))}", text)
+    return html.unescape(re.sub(r"</?[a-z]+>", "", text))
 
 
 def email_message(lead: Lead | None, review: Review | None, event: str, s: Settings) -> EmailMessage:
@@ -173,11 +255,16 @@ def _backoff(attempts: int) -> dt.timedelta:
     return dt.timedelta(seconds=min(30 * 2 ** max(attempts - 1, 0), 6 * 3600))  # 30 s, 1 min, 2 min … 6 h
 
 
-def _send_telegram(item: Outbox, text: str, s: Settings, client: httpx.Client) -> None:
-    r = client.post(f"https://api.telegram.org/bot{s.telegram_bot_token}/sendMessage",
-                    json={"chat_id": item.target, "text": text, "disable_web_page_preview": True})
+def _send_telegram(item: Outbox, text: str, s: Settings, client: httpx.Client, parse_mode: str | None = None) -> None:
+    body = {"chat_id": item.target, "text": text, "disable_web_page_preview": True}
+    if parse_mode:
+        body["parse_mode"] = parse_mode
+    r = client.post(f"https://api.telegram.org/bot{s.telegram_bot_token}/sendMessage", json=body)
     if r.status_code == 200:
         return
+    if r.status_code == 400 and parse_mode and "parse entities" in r.text:
+        # a markup mistake must not lose the notification: the same text without markup
+        return _send_telegram(item, _plain(text), s, client)
     try:
         info = r.json()
     except ValueError:
@@ -227,7 +314,8 @@ def _send(item: Outbox, db: Session, s: Settings, client: httpx.Client) -> None:
     if lead is not None and lead.anonymised_at is not None:
         raise Permanent("the person was erased")
     if item.channel == "telegram":
-        _send_telegram(item, telegram_text(lead, review, item.event, s), s, client)
+        facts = visit_facts(db, lead) if lead is not None else None
+        _send_telegram(item, telegram_text(lead, review, item.event, s, facts), s, client, parse_mode="HTML")
     elif item.channel == "email":
         _send_email(item, email_message(lead, review, item.event, s), s)
     else:

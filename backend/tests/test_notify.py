@@ -216,9 +216,9 @@ def test_repeat_request_enqueues_lead_repeat_and_text_points_to_the_parent(clien
     fake = FakeHttp()
     assert notify.deliver_due(db, client=fake.client()) == {"sent": 2, "failed": 0, "retry": 0}
     repeat_text = tg_text(fake, 1)
-    assert repeat_text.startswith(f"Повторный запрос по заявке №{first}")
+    assert repeat_text.startswith(f"🔁 <b>Повторный запрос по заявке №{first}</b>")
     assert "Видеозвонок со щенком" in repeat_text
-    assert f"https://admin.example/leads/{first}" in repeat_text
+    assert f'<a href="https://admin.example/leads/{first}">Открыть заявку в админке</a>' in repeat_text
     assert NAME not in repeat_text and "999" not in repeat_text
 
 
@@ -272,17 +272,18 @@ def test_breed_without_its_own_chat_goes_to_the_default_chat(client, db, tg, bre
     assert fake.json()["chat_id"] == DEFAULT_CHAT
 
 
-def test_telegram_text_has_no_personal_data_by_default_and_no_markup(client, db, tg):
+def test_telegram_text_has_no_personal_data_by_default(client, db, tg):
     lead_id, _ = post_lead(client, breed="maltipu", kind="price")
     fake = FakeHttp()
     notify.deliver_due(db, client=fake.client())
     payload = fake.json()
-    assert "parse_mode" not in payload
+    assert payload["parse_mode"] == "HTML"
     msg = payload["text"]
-    assert msg.splitlines()[0] == f"Новая заявка №{lead_id}"
-    assert "Мальтипу" in msg and "Узнать цену" in msg
+    assert msg.splitlines()[0] == f"🐶 <b>Новая заявка №{lead_id}</b>"
+    assert "🐾 Порода: Мальтипу" in msg and "📋 Запрос: Узнать цену" in msg
+    assert "📍 Источник: ✍️ прямой заход" in msg
     created = db.scalar(select(Lead.created_at).where(Lead.id == lead_id))
-    assert f"{created.astimezone(zoneinfo.ZoneInfo('Europe/Moscow')):%H:%M}" in msg
+    assert f"🕒 {created.astimezone(zoneinfo.ZoneInfo('Europe/Moscow')):%d.%m.%Y, %H:%M}" in msg
     raw = fake.requests[0].content.decode()  # the whole request, not only the text field
     for pd in (NAME, PHONE_FORM, PHONE_E164, "9991234567", "123-45-67", "Telegram"):
         assert pd not in raw, pd
@@ -302,9 +303,8 @@ def test_telegram_text_carries_name_and_phone_only_with_include_pd(client, db, t
     post_lead(client, contact="whatsapp", phone="+7 (999) 765-43-21", breed="toj-pudel")
     fake = FakeHttp()
     notify.deliver_due(db, client=fake.client())
-    payload = fake.json()
-    assert "parse_mode" not in payload
-    assert f"{NAME}, +7 (999) 765-43-21, WhatsApp" in payload["text"]
+    msg = fake.json()["text"]
+    assert f"👤 Имя: {NAME}" in msg and "📞 Телефон: +7 (999) 765-43-21" in msg and "💬 Куда написать: WhatsApp" in msg
 
 
 def test_telegram_403_fails_at_once_and_is_never_retried(client, db, tg):
@@ -601,8 +601,8 @@ def test_review_telegram_text_has_no_personal_data(client, db, tg):
     fake = FakeHttp()
     assert notify.deliver_due(db, client=fake.client())["sent"] == 1
     payload = fake.json()
-    assert "parse_mode" not in payload
-    assert payload["text"].startswith(f"Новый отзыв №{rows[0].review_id} · ★★★★")
+    assert payload["parse_mode"] == "HTML"
+    assert payload["text"].startswith(f"⭐ <b>Новый отзыв №{rows[0].review_id}</b> · ★★★★")
     raw = fake.requests[0].content.decode()
     for pd in (NAME, "Королёва", "Новосибирск", "999", "916", "звоните"):
         assert pd not in raw, pd
@@ -742,3 +742,63 @@ def test_notify_test_command_exit_codes(monkeypatch, capsys):
     monkeypatch.setattr(notify, "send_test", lambda: [{"channel": "email", "target": "a@b.ru", "ok": False,
                                                         "error": "x", "hint": "почта не приняла"}])
     assert main(["notify-test"]) == 1 and "FAIL  почта → a@b.ru: почта не приняла" in capsys.readouterr().out
+
+
+# ---------------------------------------------------------------- the look of the Telegram message
+def test_telegram_message_tells_where_the_visitor_came_from(client, db, tg):
+    tg.admin_base_url = "https://admin.example/#/leads?lead={id}"
+    lead_id, _ = post_lead(client, referrer="https://yandex.ru/search/?text=мальтипу", landing="/maltipu/",
+                           page={"path": "/toj-pudel/", "title": "Той-пудель"}, note="Заявка: меню",
+                           utm={"utm_campaign": "osen"})
+    fake = FakeHttp()
+    notify.deliver_due(db, client=fake.client())
+    msg = fake.json()["text"]
+    assert "🖱 Кнопка: Заявка: меню" in msg
+    assert "• Вошёл на: /maltipu/" in msg and "• Заявка со страницы: /toj-pudel/" in msg
+    assert "• Кампания: osen" in msg
+    assert f'<a href="https://admin.example/#/leads?lead={lead_id}">Открыть заявку в админке</a>' in msg
+
+
+def test_telegram_message_escapes_what_the_page_sent(client, db, tg):
+    post_lead(client, note='<b>x</b> & "y"')
+    fake = FakeHttp()
+    notify.deliver_due(db, client=fake.client())
+    msg = fake.json()["text"]
+    assert "🖱 Кнопка: &lt;b&gt;x&lt;/b&gt; &amp; \"y\"" in msg and "<b>x</b>" not in msg
+
+
+def test_a_markup_error_falls_back_to_plain_text_and_keeps_the_link(client, db, tg):
+    tg.admin_base_url = "https://admin.example/leads/{id}"
+    lead_id, _ = post_lead(client, note="a & b")
+    fake = FakeHttp(httpx.Response(400, json={"ok": False, "description": "Bad Request: can't parse entities: x"}))
+    assert notify.deliver_due(db, client=fake.client())["sent"] == 1
+    first, second = fake.json(0), fake.json(1)
+    assert first["parse_mode"] == "HTML" and "parse_mode" not in second
+    assert "<b>" not in second["text"] and "Кнопка: a & b" in second["text"]
+    assert f"Открыть заявку в админке: https://admin.example/leads/{lead_id}" in second["text"]
+
+
+@pytest.mark.parametrize("source, medium, words", [
+    ("yandex", "organic", "🔍 поиск — Яндекс"), ("google", "cpc", "💰 реклама — Google Ads"),
+    ("vk", "social", "💬 соцсеть — ВКонтакте"), ("petbook.ru", "referral", "🔗 переход с сайта petbook.ru"),
+    ("(direct)", "(none)", "✍️ прямой заход"), ("partner", "email", "🏷 метка — partner / email"),
+])
+def test_source_label(source, medium, words):
+    assert notify.source_label(source, medium) == words
+
+
+def test_telegram_message_counts_pages_and_shows_the_device_and_metrika_id(client, db, tg):
+    visitor, session = str(uuid.uuid4()), str(uuid.uuid4())
+    now_ms = int(dt.datetime.now(UTC).timestamp() * 1000)
+    r = client.post("/api/v1/events", json={
+        "visitor_id": visitor, "session_id": session, "landing": "/", "ym_uid": "1791982828848951532",
+        "events": [{"type": "page_view", "path": p, "ts": now_ms - 60_000 + i} for i, p in enumerate(("/", "/maltipu/", "/toj-pudel/"))]},
+        headers={"User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 17_5 like Mac OS X) Mobile/15E148"})
+    assert r.status_code == 202, r.text
+    post_lead(client, visitor_id=visitor, session_id=session)
+    fake = FakeHttp()
+    notify.deliver_due(db, client=fake.client())
+    msg = fake.json()["text"]
+    assert "📄 Посмотрел страниц до заявки: 3" in msg
+    assert "🖥 Устройство: 📱 телефон" in msg
+    assert "🆔 Метрика ClientID: 1791982828848951532" in msg
