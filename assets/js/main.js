@@ -530,9 +530,11 @@
   /* ---------- маска телефона +7 (XXX) XXX-XX-XX ---------- */
   function phoneDigits(value) {
     const s = String(value || '').trim();
+    // «+7» маски — не цифра номера, даже если перед ним что-то набрали (курсор был в начале поля)
+    const plus = s.indexOf('+7');
     let digits;
-    if (s.startsWith('+7')) {
-      digits = s.slice(2).replace(/\D/g, '');
+    if (plus >= 0) {
+      digits = (s.slice(0, plus) + s.slice(plus + 2)).replace(/\D/g, '');
     } else {
       digits = s.replace(/\D/g, '');
       if (digits[0] === '7' || digits[0] === '8') digits = digits.slice(1);
@@ -549,6 +551,17 @@
     return out;
   }
   $$('[data-phone]').forEach((input) => {
+    // курсор не встаёт внутрь «+7 »: клик или тап у левого края ставил его перед префиксом, и номер 916… сохранялся как 971…
+    const keepCaret = () => {
+      try {
+        if (input.selectionStart === input.selectionEnd && input.selectionStart < 3) {
+          const end = input.value.length;
+          input.setSelectionRange(end, end);
+        }
+      } catch (_) { /* старые браузеры */ }
+    };
+    input.addEventListener('click', keepCaret);
+    input.addEventListener('keyup', keepCaret); // Home, стрелки
     input.addEventListener('focus', () => { if (!input.value) input.value = '+7 '; });
     input.addEventListener('blur', () => { if (!phoneDigits(input.value)) input.value = ''; });
     input.addEventListener('input', () => {
