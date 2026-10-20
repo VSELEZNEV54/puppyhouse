@@ -197,7 +197,7 @@ burger's top bar with the close button never scrolls away — only `.mmenu__scro
 `tg_cta` («Написать в Telegram»), `messengers.telegram|whatsapp|max` (`url_placeholder` marks placeholder links; `icon` — `tg` / `wa` / `max`: the official mark shapes
 in one colour; in a `.msgr` circle they are dark brown on a soft peach gradient — client sample 15.10, no brand-colour logos),
 `advantages`, `stats`; `domain` «домщенков.рф» + `domain_ascii` (punycode `xn--b1adduihee9g.xn--p1ai`, for JSON-LD URLs),
-`email` (placeholder «[почта]@домщенков.рф»).
+`email` «main@домщенков.рф» (client 20.10; on the page) + `email_ascii` (the same in punycode — `mailto:` links use it).
 `media.json`: photo/video sets for carousels — `home`, `maltipu`, `francuzskij-buldog`, `toj-pudel`, `border-kolli`; item
 `{src, alt, kind: photo|video, caption, video: null|file, pos?}` (`data.media.home`, `data.media[b.slug]`).
 `reviews.json`: + `poster {src, alt, pos?}` (placeholder lifestyle photo), `video: null`, `short` (≤ 160 chars) for every review.

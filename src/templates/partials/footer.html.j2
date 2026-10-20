@@ -13,7 +13,7 @@
           <ul class="footer__info">
             <li><svg class="i i--sm" aria-hidden="true"><use href="#i-clock"/></svg>{{ site.phone.hours|typo }}</li>
             <li><svg class="i i--sm" aria-hidden="true"><use href="#i-pin"/></svg>{{ site.address.short|typo }}</li>
-            <li><svg class="i i--sm" aria-hidden="true"><use href="#i-mail"/></svg><a href="mailto:{{ site.email }}">{{ site.email }}</a></li>
+            <li><svg class="i i--sm" aria-hidden="true"><use href="#i-mail"/></svg><a href="mailto:{{ site.email_ascii }}">{{ site.email }}</a></li>
           </ul>
           {% if site.contacts_ready %}
           <div class="footer__msgs">
