@@ -224,6 +224,9 @@ main:focus, section[tabindex="-1"]:focus, [data-anchor-focus]:focus { outline: n
 .btn--tg .i { width: 19px; height: 19px; margin-left: -2px; }
 @media (hover: hover) { .btn--tg:hover { background: linear-gradient(180deg, var(--tg-b) 0%, #11639A 100%); } }
 .btn--tg:hover .i { transform: none; }
+/* коралловая: «Оставить заявку» в шапке, меню и просмотре видео, пока телефона и мессенджеров нет (site.contacts_ready, 20.10) */
+.btn--coral { background: var(--coral); color: var(--ink); border-color: transparent; }
+@media (hover: hover) { .btn--coral:hover { background: #F7805F; color: var(--ink); } }
 .btn[disabled] { opacity: .7; cursor: progress; }
 
 /* круглые кнопки: мессенджеры, звонок, бургер */
@@ -451,6 +454,7 @@ main:focus, section[tabindex="-1"]:focus, [data-anchor-focus]:focus { outline: n
 .hdr .msgr { width: 40px; height: 40px; }
 .hdr .msgr .i { width: 19px; height: 19px; }
 .hdr__cta { margin-left: 4px; height: 44px; padding: 0 20px 0 16px; }
+.hdr__cta--lead { padding: 0 20px; }
 .msgr--call, .hdr__burger { display: none; }
 
 /* узкий десктоп: сначала прячем подпись логотипа, потом номер (он в «Меню» и в подвале), потом ссылки с конца —
@@ -489,6 +493,11 @@ main:focus, section[tabindex="-1"]:focus, [data-anchor-focus]:focus { outline: n
 }
 @media (max-width: 760px) {
   .hdr__cta { display: none; }
+  /* без мессенджеров место в шапке есть: «Оставить заявку» видна до 561 px; на телефоне она в липкой панели внизу */
+  .hdr__cta--lead { display: inline-flex; }
+}
+@media (max-width: 560px) {
+  .hdr__cta--lead { display: none; }
 }
 @media (max-width: 560px) {
   .hdr__bar { height: 60px; padding-left: 10px; }
@@ -1027,6 +1036,7 @@ a.hm-ct__value:hover { text-decoration: underline; text-decoration-thickness: 1p
 .hm-msgr .msgr { width: 36px; height: 36px; }
 .hm-msgr .msgr .i { width: 18px; height: 18px; }
 .hm-msgr:hover { background: var(--ink); color: #fff; }
+.hm-cts--2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 @media (max-width: 1199px) { .hm-cts { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 1000px) {
   .hm-lead .lead__intro .h2 { max-width: 9em; }
@@ -1182,6 +1192,8 @@ legend.field__label { margin-bottom: 8px; }
 }
 .mbar__btn .i { width: 18px; height: 18px; }
 .mbar__btn--ink { background: var(--ink); color: #fff; }
+/* без телефона и мессенджеров: «Оставить заявку» и «Узнать цену» — две равные половины */
+.mbar.mbar--2 { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
 
 .modal {
   width: min(540px, calc(100vw - 32px)); max-width: none;

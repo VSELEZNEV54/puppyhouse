@@ -806,6 +806,9 @@
       if (menuIsOpen() && menu.contains(trigger)) { closeMenu(false); opener = burger; }
       // кнопка из панели «Меню» спрячется вместе с панелью — фокус вернём на «Меню»
       if (mega && megaWrap.contains(trigger)) { mega.set(false); opener = mega.btn; }
+      // «Оставить заявку» в просмотре видео: просмотр закрываем, окно заявки открываем поверх страницы
+      const lbox = trigger.closest('dialog');
+      if (lbox && lbox !== modal && lbox.open) lbox.close();
       const pup = card ? {
         name: card.dataset.name,
         slug: card.dataset.slug || '',

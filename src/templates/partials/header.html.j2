@@ -2,6 +2,8 @@
     logo · «Меню» (site map panel: hover / click / keyboard) · «Каталог щенков» (first nav link, accent colour; client 15.10) ·
     «Породы ▾» · links from site.nav · phone · Telegram, WhatsApp, MAX ·
     «Написать в Telegram» (site.tg_cta, Telegram gradient) · burger (< 1100 px → #mmenu).
+    site.contacts_ready = false (client 20.10: number and messengers not known yet): no phone and no messengers;
+    the coral «Оставить заявку» (opens the shared modal, kind lead) stands where «Написать в Telegram» was.
     site.nav items have "prio": the higher the number, the earlier the link hides on a narrower desktop (it stays in «Меню»).
     On the homepage the logo scrolls to #top, elsewhere it goes home. main.js: [data-hdr], [data-dd], [data-mega], [data-burger]. -#}
 {% import "macros/ui.html.j2" as ui %}
@@ -28,10 +30,16 @@
             {% endfor %}
           </div>
           <div class="mega__foot">
+            {% if site.contacts_ready %}
             <a class="mega__phone" href="{{ site.phone.tel }}">{{ site.phone.display }}<small>{{ site.phone.hours|typo }}</small></a>
+            {% endif %}
             <div class="mega__actions">
               <button class="btn btn--white" type="button" data-open-modal data-modal-kind="price">Узнать цену</button>
+              {% if site.contacts_ready %}
               <a class="btn btn--tg" href="{{ site.messengers.telegram.url }}" target="_blank" rel="noopener">{{ ui.icon('tg') }}{{ site.tg_cta.label }}</a>
+              {% else %}
+              {{ ui.request_button()|indent(14) }}
+              {% endif %}
             </div>
           </div>
           </div>
@@ -61,12 +69,16 @@
       </nav>
 
       <div class="hdr__right">
+        {% if site.contacts_ready %}
         <a class="hdr__phone" href="{{ site.phone.tel }}">{{ site.phone.display }}</a>
         <a class="msgr msgr--call" href="{{ site.phone.tel }}" aria-label="Позвонить: {{ site.phone.display }}">{{ ui.icon('phone') }}</a>
         {% for k in ('telegram', 'whatsapp', 'max') %}{% set m = site.messengers[k] %}
         <a class="msgr msgr--{{ m.icon }}" href="{{ m.url }}" target="_blank" rel="noopener" aria-label="{{ m.aria }}" title="{{ m.label }}">{{ ui.icon(m.icon) }}</a>
         {% endfor %}
         <a class="btn btn--tg hdr__cta" href="{{ site.messengers.telegram.url }}" target="_blank" rel="noopener">{{ ui.icon('tg') }}<span>{{ site.tg_cta.label }}</span></a>
+        {% else %}
+        {{ ui.request_button(cls='btn btn--coral hdr__cta hdr__cta--lead', note='Шапка сайта') }}
+        {% endif %}
         <button class="msgr msgr--ink hdr__burger" type="button" aria-label="Открыть меню" aria-expanded="false" aria-controls="mmenu" data-burger>{{ ui.icon('menu') }}</button>
       </div>
     </div>

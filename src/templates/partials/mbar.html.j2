@@ -1,10 +1,15 @@
 {#- Mobile sticky bar: main.js shows it once [data-hero-ctas] (homepage buttons / inner page hero) scrolls away, hides it over #zayavka.
-    On a single-breed page (context lead_breed) «Узнать цену» opens the modal with that breed selected. -#}
+    On a single-breed page (context lead_breed) «Узнать цену» opens the modal with that breed selected.
+    site.contacts_ready = false: «Оставить заявку» instead of «Позвонить» and «Telegram» (.mbar--2, two halves). -#}
 {% import "macros/ui.html.j2" as ui %}
   <!-- Липкая панель на мобиле -->
-  <nav class="mbar" aria-label="Быстрая связь" data-mbar>
+  <nav class="mbar{{ ' mbar--2' if not site.contacts_ready }}" aria-label="Быстрая связь" data-mbar>
+    {% if site.contacts_ready %}
     <a class="mbar__btn" href="{{ site.phone.tel }}">{{ ui.icon('phone') }}Позвонить</a>
     <a class="mbar__btn" href="{{ site.messengers.telegram.url }}" target="_blank" rel="noopener">{{ ui.icon('tg') }}Telegram</a>
+    {% else %}
+    {{ ui.request_button(cls='mbar__btn', note='Липкая панель') }}
+    {% endif %}
     {%- set lb = lead_breed | default(none) %}
     <button class="mbar__btn mbar__btn--ink" type="button" data-open-modal data-modal-kind="price"{% if lb and lb in breed_map %} data-modal-breed="{{ breed_map[lb].name }}"{% endif %}>Узнать цену</button>
   </nav>

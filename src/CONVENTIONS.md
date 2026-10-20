@@ -22,6 +22,12 @@ pixel-parity baseline no longer applies. Reference inner page: `/shchenki/`.
   `m.get('round_icon') or m.icon` (MAX → the «MAX» wordmark `#i-max-word`) and `title`. On narrower
   desktops links hide from the end (`prio`), they stay in «Меню»; below 1100 px a burger opens the full-screen `#mmenu` with
   the same groups as accordions. Mobile sticky bar: Позвонить · Telegram · Узнать цену.
+- **No phone and messengers yet** (client 20.10): `site.contacts_ready = false` hides the kennel's number and its Telegram /
+  WhatsApp / MAX links everywhere — header, «Меню», burger, sticky bar, footer, lead form, contact tiles, «Не получилось
+  отправить», lead band, video viewer, puppy hero, JSON-LD (`telephone`, `sameAs`). In their place: the coral «Оставить
+  заявку» (`ui.request_button()`, `.btn--coral`, modal kind `lead`) in the header (hidden ≤ 560 px — the sticky bar has it),
+  «Меню», burger, sticky bar (`.mbar--2`: Оставить заявку · Узнать цену) and video viewer. The visitor's «Куда написать»
+  chips stay. Wrap any new phone / messenger output in `{% if site.contacts_ready %}`; set `true` once they are known.
 - **Forms: one column.** Every field on its own row at every width (`forms.lead_form`, the price modal, any form you add:
   use `.form__grid` — it is a single column). Contact chips: Telegram / WhatsApp / MAX / Звонок (`forms.contact_field`).
 - **Phones (≤ 760 px): no sideways scrolling of cards.** Cards go down the page: one per row, or two small ones (colour
