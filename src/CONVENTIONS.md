@@ -29,6 +29,11 @@ pixel-parity baseline no longer applies. Reference inner page: `/shchenki/`.
   video reviews (`media.video_reviews`) stack on phones (three cards + «Все отзывы»), wide comparison tables (`ui.cmp_table`
   with 3+ columns) turn into one tile per column. `.scroller` is a no-op now — don't use it. The crawler flags any other
   sideways scroll container and any link/button cut off by an `overflow: hidden` parent (`control-clipped`).
+- **Block head actions (client 19.10, automatic — main.css).** A button in a block head (`ui.section_head(...)` with a
+  caller button or `button=true`) is always coral. On phones ≤ 760 px every head action — the button or the text link
+  («Все отзывы →», «Документы и гарантии →», «Все вопросы →» of `blocks.faq_section`) — leaves the head and stands under
+  the whole block as a full-width coral button. Nothing to do per page: keep the head as `section.section > .sec-head`
+  (or `.faq > .faq__aside`) and the rule applies. Don't add a second, hand-made bottom button.
 - **CTA wording: no arrow-only buttons.** Every clickable tile/card ends with a text pill (`ui.tile_cta`) or a text link
   (`ui.text_link`): «Перейти к породе» (breed tiles), «Подробнее» (help / link / studio tiles, puppy cards),
   «Все окрасы» / «Смотреть окрас» (colours), «Читать» (articles). `ui.round_arrow` is decorative only.

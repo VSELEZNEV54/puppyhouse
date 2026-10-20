@@ -1862,3 +1862,30 @@ legend.field__label { margin-bottom: 8px; }
   .pups .soon-tile__faces .face { width: 56px; height: 56px; border: 3px solid var(--sun-50); }
   .pups .soon-tile__faces .face + .face { margin-left: -12px; }
 }
+
+/* =========================================================
+   ПРАВИЛО (клиент 19.10). Телефон ≤ 760 px: кнопка или ссылка к разделу из заголовка блока («Все отзывы →»,
+   «Узнать цену», «Получить консультацию», «Все вопросы»…) стоит не под заголовком, а под всем блоком —
+   отдельной коралловой кнопкой во всю ширину. Срабатывает само для любого ui.section_head и blocks.faq_section:
+   заголовок «растворяется» (display: contents), кнопка уходит в конец блока (order).
+   ========================================================= */
+@media (max-width: 760px) {
+  .section:has(> .sec-head > :is(.btn, .text-link)),
+  .faq:has(> .faq__aside > .text-link) { display: grid; grid-template-columns: minmax(0, 1fr); }
+  .section:has(> .sec-head > :is(.btn, .text-link)) > .sec-head,
+  .faq:has(> .faq__aside > .text-link) > .faq__aside { display: contents; }
+  .section > .sec-head > :is(.h2, .sec-head__txt) { margin-bottom: 18px; padding-inline: 4px; }
+  .faq > .faq__aside > .h2 { padding-inline: 4px; }
+
+  .section > .sec-head > :is(.btn, .text-link),
+  .faq > .faq__aside > .text-link { order: 99; width: 100%; }
+  .section > .sec-head > .btn { --h: 52px; height: 52px; margin-top: 20px; font-size: 16px; }
+  .section > .sec-head > .text-link,
+  .faq > .faq__aside > .text-link {
+    display: block; min-height: 52px; padding: 16px 20px; border-radius: var(--r-pill);
+    background: var(--coral); color: var(--ink); font-size: 16px; line-height: 1.25; text-align: center;
+  }
+  .section > .sec-head > .text-link, .faq > .faq__aside > .text-link { margin-top: 20px; }
+  .section > .sec-head > .text-link::after, .faq > .faq__aside > .text-link::after { content: none; }
+  @media (hover: hover) { .section > .sec-head > .text-link:hover, .faq > .faq__aside > .text-link:hover { background: #F7805F; } }
+}
