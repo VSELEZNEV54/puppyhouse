@@ -37,7 +37,7 @@ def cfg(site: dict) -> dict:
     s.setdefault("og_image", "/assets/img/og/og-default.jpg")
     s.setdefault("noindex", [])
     s.setdefault("opening_hours", "")
-    for k in ("yandex_verification", "google_verification", "yandex_metrika"):
+    for k in ("yandex_verification", "google_verification", "yandex_metrika", "google_tag_manager"):
         s.setdefault(k, "")
     s["base_url"] = s["base_url"].rstrip("/")
     return s
@@ -194,27 +194,69 @@ def head_block(html: str, url: str, ctx: dict, site: dict, conf: dict, imgsize) 
     return "\n  ".join(out)
 
 
-def metrika(conf: dict) -> str:
-    """Yandex Metrika counter (webvisor and click map on), only when site.json → seo.yandex_metrika is set."""
+# Counters run only on the production host: the GitHub Pages preview and local builds stay out of the statistics.
+_PROD_JS = 'location.hostname==="{host}"'
+
+
+def _host(conf: dict) -> str:
+    return conf["base_url"].split("://", 1)[-1]
+
+
+def metrika(conf: dict) -> tuple[str, str]:
+    """Yandex Metrika counter (site.json → seo.yandex_metrika) with the settings from the Metrika panel: Webvisor,
+    click map, e-commerce from dataLayer. → (script for <head>, <noscript> for <body>); empty when not set."""
     cid = str(conf.get("yandex_metrika") or "").strip()
     if not cid.isdigit():
-        return ""
-    return (
-        '<script>(function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};'
+        return "", ""
+    src = f"https://mc.yandex.ru/metrika/tag.js?id={cid}"
+    head = (
+        f'<script>if({_PROD_JS.format(host=_host(conf))}){{(function(m,e,t,r,i,k,a){{m[i]=m[i]||function(){{(m[i].a=m[i].a||[]).push(arguments)}};'
         'm[i].l=1*new Date();for(var j=0;j<document.scripts.length;j++){if(document.scripts[j].src===r){return;}}'
         'k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})'
-        '(window,document,"script","https://mc.yandex.ru/metrika/tag.js","ym");'
-        f'ym({cid},"init",{{clickmap:true,trackLinks:true,accurateTrackBounce:true,webvisor:true}});</script>'
-        f'<noscript><div><img src="https://mc.yandex.ru/watch/{cid}" style="position:absolute;left:-9999px" alt=""></div></noscript>'
+        f'(window,document,"script","{src}","ym");'
+        f'ym({cid},"init",{{ssr:true,webvisor:true,clickmap:true,ecommerce:"dataLayer",referrer:document.referrer,'
+        'url:location.href,accurateTrackBounce:true,trackLinks:true});}</script>'
     )
+    body = (f'<noscript><div><img src="https://mc.yandex.ru/watch/{cid}" width="1" height="1" '
+            'style="position:absolute;left:-9999px" alt=""></div></noscript>')
+    return head, body
+
+
+def gtm(conf: dict) -> tuple[str, str]:
+    """Google Tag Manager container (site.json → seo.google_tag_manager, «GTM-…»): Google Analytics and other tags are
+    set up in the GTM panel. → (script for <head>, <noscript> for <body>); empty when not set."""
+    gid = str(conf.get("google_tag_manager") or "").strip()
+    if not re.fullmatch(r"GTM-[A-Z0-9]+", gid):
+        return "", ""
+    head = (
+        f'<script>if({_PROD_JS.format(host=_host(conf))}){{(function(w,d,s,l,i){{w[l]=w[l]||[];w[l].push({{"gtm.start":'
+        'new Date().getTime(),event:"gtm.js"});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),'
+        'dl=l!="dataLayer"?"&l="+l:"";j.async=true;j.src="https://www.googletagmanager.com/gtm.js?id="+i+dl;'
+        f'f.parentNode.insertBefore(j,f);}})(window,document,"script","dataLayer","{gid}");}}</script>'
+    )
+    body = (f'<noscript><iframe src="https://www.googletagmanager.com/ns.html?id={gid}" height="0" width="0" '
+            'style="display:none;visibility:hidden"></iframe></noscript>')
+    return head, body
+
+
+_CHARSET_RE = re.compile(r'<meta charset="[^"]*">')
+_BODY_RE = re.compile(r"<body\b[^>]*>")
 
 
 def finalize(html: str, url: str, ctx: dict, site: dict, conf: dict, imgsize) -> str:
     if MARKER in html:
         html = html.replace(MARKER, head_block(html, url, ctx, site, conf, imgsize), 1)
-    m = metrika(conf)
-    if m and "</body>" in html:
-        html = html.replace("</body>", m + "\n</body>", 1)
+    counters = [gtm(conf), metrika(conf)]
+    head = "".join(h for h, _ in counters if h)
+    body = "".join(b for _, b in counters if b)
+    if head:   # as early in <head> as possible (GTM asks for it), right after the charset
+        m = _CHARSET_RE.search(html)
+        if m:
+            html = html[:m.end()] + "\n  " + head + html[m.end():]
+    if body:   # right after the opening <body>
+        m = _BODY_RE.search(html)
+        if m:
+            html = html[:m.end()] + "\n" + body + html[m.end():]
     return html
 
 

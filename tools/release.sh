@@ -56,10 +56,11 @@ for rel in files:
 shutil.copytree("assets", stage / "assets")
 # written by tools/build.py (tools/seo.py) next to the pages: they are not in the manifest's page list
 extras = ["404.html", "robots.txt", "sitemap.xml", "site.webmanifest", "favicon.ico"]
+verify = sorted(p.name for p in Path(".").glob("yandex_*.html")) + sorted(p.name for p in Path(".").glob("google*.html"))
 missing = [f for f in extras if not Path(f).is_file()]
 if missing:
     sys.exit(f"release: the build did not write {missing} (tools/build.py → tools/seo.py)")
-for f in extras:
+for f in extras + verify:   # + site verification files of Yandex Webmaster / Google Search Console
     shutil.copy2(f, stage / f)
 # 404.html in the repo writes <base> from a script ("/" here, "/puppyhouse/" on the GitHub Pages preview). The
 # browser's preload scanner does not run it and first fetches every asset of a missing /a/b/ as /a/b/assets/… —
@@ -70,7 +71,7 @@ s, n = re.subn(r"<script>document\.write\('<base href=.*?</script>", '<base href
 if n != 1:
     sys.exit("release: 404.html has no <base> script to replace (src/templates/pages/404.html.j2)")
 p.write_text(s, encoding="utf-8")
-print(f"   {len(files)} pages + assets/ + {', '.join(extras)}")
+print(f"   {len(files)} pages + assets/ + {', '.join(extras + verify)}")
 PY
 
 echo "== API и скрипты сервера"

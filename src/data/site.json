@@ -15,16 +15,17 @@
   "as_of": "2026-10-12",
   "theme_color": "#F3F2EF",
   "seo": {
-    "_note": "SEO (tools/seo.py, docs/seo.md). base_url — боевой адрес в punycode без слэша. Пустые verification и yandex_metrika не выводятся: впишите коды из Яндекс Вебмастера, Google Search Console и номер счётчика Метрики.",
+    "_note": "SEO (tools/seo.py, docs/seo.md). base_url — боевой адрес в punycode без слэша. Пустые verification и yandex_metrika не выводятся: впишите коды из Яндекс Вебмастера, Google Search Console и номер счётчика Метрики. google_tag_manager — контейнер «GTM-…» (Google Analytics настраивается в нём). Счётчики работают только на боевом домене.",
     "base_url": "https://xn--b1adduihee9g.xn--p1ai",
     "site_name": "Дом щенков — домщенков.рф",
     "org_name": "Дом щенков",
     "og_image": "/assets/img/og/og-default.jpg",
     "noindex": ["/politika-konfidencialnosti/", "/soglasie/", "/soglasie-na-otzyv/", "/soglasie-na-publikaciyu/"],
     "opening_hours": "Mo-Su 08:00-22:00",
-    "yandex_verification": "",
+    "yandex_verification": "c936227002552d44",
     "google_verification": "",
-    "yandex_metrika": ""
+    "yandex_metrika": "113696111",
+    "google_tag_manager": "GTM-PB3WF4SH"
   },
   "_contacts_note": "contacts_ready=false: телефон и мессенджеры питомника (phone.display/tel, messengers) не выводятся нигде — ни ссылками, ни в JSON-LD; вместо «Написать в Telegram» в шапке — «Оставить заявку». Когда номер и мессенджеры станут известны, впишите их ниже и поставьте true.",
   "contacts_ready": false,
