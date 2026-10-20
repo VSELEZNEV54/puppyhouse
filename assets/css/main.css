@@ -623,7 +623,8 @@ main:focus, section[tabindex="-1"]:focus, [data-anchor-focus]:focus { outline: n
 /* кнопки — сразу под текстом (правка 15.10), плашки преимуществ — внизу плитки */
 .hero__actions { display: flex; flex-wrap: wrap; gap: 10px; padding-top: clamp(24px, 2.4vw, 32px); }
 .hero .hero__sub { max-width: 44ch; }
-/* четыре преимущества — одной строкой во всю ширину плитки, в самом низу (правка 15.10); на телефоне — 2 × 2 */
+/* четыре преимущества — одной строкой во всю ширину плитки, в самом низу (правка 15.10); на планшете — 2 × 2,
+   на телефоне — по одной в ряд (клиент 19.10) */
 .hm-chips {
   position: relative; z-index: 2;
   display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; margin-top: 24px;
@@ -1800,7 +1801,8 @@ legend.field__label { margin-bottom: 8px; }
   .hero .h1 { font-size: clamp(28px, 9.4vw, 40px); }
   .hero .hero__sub { font-size: clamp(14px, 3.9vw, 16px); }
   .hero .eyebrow { height: 30px; padding: 0 12px; font-size: clamp(12.5px, 3.4vw, 14px); }
-  .hm-chip { font-size: clamp(12.5px, 3.4vw, 13.5px); }
+  .hm-chips { grid-template-columns: minmax(0, 1fr); gap: 6px; }
+  .hm-chip { min-height: 46px; font-size: 14.5px; }
 }
 
 @media (max-width: 380px) {
