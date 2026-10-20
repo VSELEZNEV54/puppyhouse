@@ -238,7 +238,7 @@ def routes(data):
                     cta=dict(title=nobr(cta["title"]), line=nobr(cta["line"]),
                              button=cta.get("button") or (dict(url=breed["urls"]["hub"], label="Всё о породе")
                                                           if breed else dict(url="/shchenki/", label="Смотреть щенков")),
-                             second=cta.get("second") or (dict(url="/shchenki/?breed=" + breed["slug"],
+                             second=cta.get("second") or (dict(url=breed["urls"]["hub"] + "#shchenki",
                                                                label="Щенки в наличии") if breed else None)),
                     related=[cards[s] for s in post["related"]],
                 ),

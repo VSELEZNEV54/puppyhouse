@@ -11,7 +11,7 @@
     "age_weeks": 10,
     "status": "available",
     "badges": ["Родители с РКФ", "Прививки по возрасту", "Ветпаспорт"],
-    "weight_forecast": "около [4–5] кг",
+    "weight_forecast": "около 4–5 кг",
     "photos": [
       { "src": "/assets/img/pup-maltipu-408.jpg", "w": 1200, "h": 1600, "kind": "life", "class": null, "alt": "Кремовый щенок мальтипу Пломбир на руках", "pos": "50% 38%" },
       { "src": "/assets/img/pup-maltipu-412.jpg", "w": 1600, "h": 1200, "kind": "life", "class": null, "alt": "Пломбир сидит на сером диване", "pos": "34% 50%" },
@@ -32,7 +32,7 @@
     "age_weeks": 12,
     "status": "available",
     "badges": ["Ветпаспорт", "Договор", "Копии родословных породистых предков", "Прививки по возрасту", "Чип"],
-    "weight_forecast": "около [3–4] кг",
+    "weight_forecast": "около 3–4 кг",
     "photos": [
       { "src": "/assets/img/pup-maltipu-480.jpg", "w": 960, "h": 1280, "kind": "life", "class": null, "alt": "Рыжая малышка мальтипу Ириска в кружевном воротничке", "pos": "50% 40%" },
       { "src": "/assets/img/pup-maltipu-483.jpg", "w": 960, "h": 1280, "kind": "life", "class": null, "alt": "Ириска на светлой подушке" },
@@ -53,7 +53,7 @@
     "age_weeks": 13,
     "status": "available",
     "badges": ["Метрика РКФ", "Прививки по возрасту", "Ветпаспорт"],
-    "weight_forecast": "около [9–13] кг",
+    "weight_forecast": "около 9–13 кг",
     "photos": [
       { "src": "/assets/img/cl-buldog-47.jpg", "w": 1001, "h": 1200, "kind": "life", "class": null, "alt": "Палевый щенок французского бульдога Бруно с плюшевым тапком", "pos": "50% 40%" }
     ],
@@ -72,7 +72,7 @@
     "age_weeks": 11,
     "status": "reserved",
     "badges": ["Метрика РКФ", "Прививки по возрасту", "Ветпаспорт"],
-    "weight_forecast": "около [9–13] кг",
+    "weight_forecast": "около 9–13 кг",
     "photos": [
       { "src": "/assets/img/cl-buldog-8.jpg", "w": 1035, "h": 1041, "kind": "life", "class": null, "alt": "Кремовый щенок французского бульдога Луиза на подушке", "pos": "50% 50%" }
     ],
@@ -91,7 +91,7 @@
     "age_weeks": 14,
     "status": "available",
     "badges": ["Метрика РКФ", "Прививки по возрасту", "Чип"],
-    "weight_forecast": "около [2–3] кг",
+    "weight_forecast": "около 2–3 кг",
     "photos": [
       { "src": "/assets/img/pup-pudel-352.jpg", "w": 960, "h": 1280, "kind": "life", "class": null, "alt": "Абрикосовый щенок той-пуделя Марго сидит в саду", "pos": "50% 45%" }
     ],
@@ -110,7 +110,7 @@
     "age_weeks": 9,
     "status": "soon",
     "badges": ["Метрика РКФ", "Прививки по возрасту", "Чип"],
-    "weight_forecast": "около [2–3] кг",
+    "weight_forecast": "около 2–3 кг",
     "photos": [
       { "src": "/assets/img/pup-pudel-299.jpg", "w": 1280, "h": 853, "kind": "life", "class": null, "alt": "Рыжий щенок той-пуделя Чарли на прогулке", "pos": "70% 50%" },
       { "src": "/assets/img/cl-pudel-300.jpg", "w": 1280, "h": 853, "kind": "life", "class": null, "alt": "Чарли сидит на осенней траве", "pos": "55% 50%" },
@@ -131,7 +131,7 @@
     "age_weeks": 11,
     "status": "available",
     "badges": ["Метрика РКФ", "Прививки по возрасту", "Чип"],
-    "weight_forecast": "около [14–20] кг",
+    "weight_forecast": "около 14–20 кг",
     "photos": [
       { "src": "/assets/img/pup-kolli-109.jpg", "w": 1254, "h": 1254, "kind": "life", "class": null, "alt": "Щенок бордер-колли Скай, голубой мрамор, лежит на траве", "pos": "50% 50%" }
     ],
@@ -150,7 +150,7 @@
     "age_weeks": 10,
     "status": "reserved",
     "badges": ["Метрика РКФ", "Прививки по возрасту", "Чип"],
-    "weight_forecast": "около [14–20] кг",
+    "weight_forecast": "около 14–20 кг",
     "photos": [
       { "src": "/assets/img/pup-kolli-203.jpg", "w": 657, "h": 876, "kind": "life", "class": null, "alt": "Чёрно-белый щенок бордер-колли Тесса на траве", "pos": "50% 50%" }
     ],
@@ -169,7 +169,7 @@
     "age_weeks": 12,
     "status": "available",
     "badges": ["Метрика РКФ", "Прививки по возрасту", "Чип"],
-    "weight_forecast": "около [2–3] кг",
+    "weight_forecast": "около 2–3 кг",
     "photos": [
       { "src": "/assets/img/pup-pudel-341.jpg", "w": 720, "h": 1280, "kind": "life", "class": null, "alt": "Чёрный щенок той-пуделя Уголёк на руках в саду", "pos": "50% 35%" }
     ],
@@ -187,7 +187,7 @@
     "birth_date": "2026-07-27",
     "status": "available",
     "badges": ["Родители с РКФ", "Прививки по возрасту", "Чип"],
-    "weight_forecast": "около [4–5] кг",
+    "weight_forecast": "около 4–5 кг",
     "photos": [
       { "src": "/assets/img/pup-maltipu-376.jpg", "w": 1120, "h": 1280, "kind": "life", "class": null, "alt": "Рыжий щенок мальтипу Персик на розовой лежанке", "pos": "50% 38%" },
       { "src": "/assets/img/pup-maltipu-375.jpg", "w": 960, "h": 1280, "kind": "life", "class": null, "alt": "Персик сидит на розовой лежанке" },
@@ -208,7 +208,7 @@
     "age_weeks": 12,
     "status": "available",
     "badges": ["Метрика РКФ", "Прививки по возрасту", "Чип"],
-    "weight_forecast": "около [14–20] кг",
+    "weight_forecast": "около 14–20 кг",
     "photos": [
       { "src": "/assets/img/pup-kolli-112.jpg", "w": 1254, "h": 1254, "kind": "life", "class": null, "alt": "Трёхцветный щенок бордер-колли Ральф сидит на траве", "pos": "50% 50%" }
     ],
@@ -226,7 +226,7 @@
     "birth_date": "2026-07-15",
     "status": "available",
     "badges": ["Ветпаспорт", "Договор", "Копии родословных породистых предков", "Прививки по возрасту"],
-    "weight_forecast": "около [3–4] кг",
+    "weight_forecast": "около 3–4 кг",
     "photos": [
       { "src": "/assets/img/pup-maltipu-391.jpg", "w": 1200, "h": 1600, "kind": "life", "class": null, "alt": "Бело-абрикосовая малышка мальтипу Бусинка на розовом пледе", "pos": "50% 40%" },
       { "src": "/assets/img/pup-maltipu-390.jpg", "w": 1200, "h": 1600, "kind": "life", "class": null, "alt": "Бусинка на розовом пледе" },
@@ -246,7 +246,7 @@
     "birth_date": "2026-08-05",
     "status": "available",
     "badges": ["Ветпаспорт", "Договор", "Копии родословных породистых предков", "Прививки по возрасту", "Чип"],
-    "weight_forecast": "около [2,5–3,5] кг",
+    "weight_forecast": "около 2,5–3,5 кг",
     "photos": [
       { "src": "/assets/img/pup-maltipu-383.jpg", "w": 1200, "h": 1600, "kind": "life", "class": null, "alt": "Кремовый щенок мальтипу Зефир выглядывает из лежанки", "pos": "50% 34%" },
       { "src": "/assets/img/pup-maltipu-384.jpg", "w": 1200, "h": 1600, "kind": "life", "class": null, "alt": "Зефир сидит на розовом пледе" },
@@ -267,7 +267,7 @@
     "age_weeks": 10,
     "status": "soon",
     "badges": ["Метрика РКФ", "Прививки по возрасту", "Ветпаспорт"],
-    "weight_forecast": "около [9–13] кг",
+    "weight_forecast": "около 9–13 кг",
     "photos": [
       { "src": "/assets/img/pup-buldog-5.jpg", "w": 768, "h": 1024, "kind": "life", "class": null, "alt": "Пегий щенок французского бульдога Белла на руках", "pos": "50% 25%" }
     ],
@@ -285,7 +285,7 @@
     "birth_date": "2026-08-24",
     "status": "soon",
     "badges": ["Ветпаспорт", "Договор", "Копии родословных породистых предков", "Прививки по возрасту"],
-    "weight_forecast": "около [4–6] кг",
+    "weight_forecast": "около 4–6 кг",
     "photos": [
       { "src": "/assets/img/pup-maltipu-491.jpg", "w": 960, "h": 1280, "kind": "life", "class": null, "alt": "Абрикосовый щенок мальтипу Тедди в праздничном воротничке", "pos": "50% 34%" },
       { "src": "/assets/img/pup-maltipu-490.jpg", "w": 960, "h": 1280, "kind": "life", "class": null, "alt": "Тедди на сером диване" },
@@ -305,7 +305,7 @@
     "birth_date": "2026-07-08",
     "status": "reserved",
     "badges": ["Родители с РКФ", "Прививки по возрасту", "Чип"],
-    "weight_forecast": "около [3–4] кг",
+    "weight_forecast": "около 3–4 кг",
     "photos": [
       { "src": "/assets/img/pup-maltipu-399.jpg", "w": 1200, "h": 1600, "kind": "life", "class": null, "alt": "Абрикосовая малышка мальтипу Карамель на розовом пледе", "pos": "50% 40%" },
       { "src": "/assets/img/pup-maltipu-397.jpg", "w": 960, "h": 1280, "kind": "life", "class": null, "alt": "Карамель сидит на розовом пледе" },
@@ -326,7 +326,7 @@
     "age_weeks": 13,
     "status": "reserved",
     "badges": ["Метрика РКФ", "Прививки по возрасту", "Чип"],
-    "weight_forecast": "около [2–3] кг",
+    "weight_forecast": "около 2–3 кг",
     "photos": [
       { "src": "/assets/img/pup-pudel-315.jpg", "w": 768, "h": 1024, "kind": "life", "class": null, "alt": "Коричневый щенок той-пуделя Какао рядом с орхидеей", "pos": "55% 55%" },
       { "src": "/assets/img/pup-pudel-328.jpg", "w": 768, "h": 1024, "kind": "life", "class": null, "alt": "Какао лежит на подушке", "pos": "55% 55%" }
@@ -346,7 +346,7 @@
     "age_weeks": 9,
     "status": "available",
     "badges": ["Родители с РКФ", "Прививки по возрасту", "Ветпаспорт"],
-    "weight_forecast": "около [3–4] кг",
+    "weight_forecast": "около 3–4 кг",
     "photos": [
       { "src": "/assets/img/pup-maltipu-441.jpg", "w": 1200, "h": 1600, "kind": "life", "class": null, "alt": "Белый щенок мальтипу Снежок на руках во дворе", "pos": "50% 45%" }
     ],
@@ -365,7 +365,7 @@
     "age_weeks": 10,
     "status": "available",
     "badges": ["Родители с РКФ", "Прививки по возрасту", "Ветпаспорт"],
-    "weight_forecast": "около [3–4] кг",
+    "weight_forecast": "около 3–4 кг",
     "photos": [
       { "src": "/assets/img/pup-maltipu-452.jpg", "w": 1200, "h": 1600, "kind": "life", "class": null, "alt": "Абрикосовый щенок мальтипу Нуга в корзине с игрушками", "pos": "45% 40%" }
     ],
@@ -384,7 +384,7 @@
     "age_weeks": 8,
     "status": "available",
     "badges": ["Родители с РКФ", "Прививки по возрасту", "Ветпаспорт"],
-    "weight_forecast": "около [2,5–3,5] кг",
+    "weight_forecast": "около 2,5–3,5 кг",
     "photos": [
       { "src": "/assets/img/pup-maltipu-472.jpg", "w": 1038, "h": 1280, "kind": "life", "class": null, "alt": "Рыжий щенок мальтипу Корица на ладони", "pos": "50% 30%" }
     ],
@@ -403,7 +403,7 @@
     "age_weeks": 11,
     "status": "available",
     "badges": ["Родители с РКФ", "Прививки по возрасту", "Ветпаспорт"],
-    "weight_forecast": "около [4–5] кг",
+    "weight_forecast": "около 4–5 кг",
     "photos": [
       { "src": "/assets/img/pup-maltipu-474.jpg", "w": 704, "h": 823, "kind": "life", "class": null, "alt": "Рыжий кудрявый щенок мальтипу Тоффи на руках", "pos": "50% 45%" }
     ],
@@ -422,7 +422,7 @@
     "age_weeks": 10,
     "status": "available",
     "badges": ["Родители с РКФ", "Прививки по возрасту", "Ветпаспорт"],
-    "weight_forecast": "около [2,5–3,5] кг",
+    "weight_forecast": "около 2,5–3,5 кг",
     "photos": [
       { "src": "/assets/img/cl-maltipu-393.jpg", "w": 1200, "h": 1600, "kind": "life", "class": null, "alt": "Кремовый щенок мальтипу Ваниль на руках", "pos": "45% 30%" }
     ],
@@ -441,7 +441,7 @@
     "age_weeks": 12,
     "status": "available",
     "badges": ["Родители с РКФ", "Прививки по возрасту", "Ветпаспорт"],
-    "weight_forecast": "около [3–4] кг",
+    "weight_forecast": "около 3–4 кг",
     "photos": [
       { "src": "/assets/img/cl-maltipu-435.jpg", "w": 960, "h": 1280, "kind": "life", "class": null, "alt": "Абрикосовый щенок мальтипу Ричи выглядывает из-за спинки дивана", "pos": "50% 40%" }
     ],
@@ -460,7 +460,7 @@
     "age_weeks": 7,
     "status": "soon",
     "badges": ["Родители с РКФ", "Прививки по возрасту", "Ветпаспорт"],
-    "weight_forecast": "около [3–4] кг",
+    "weight_forecast": "около 3–4 кг",
     "photos": [
       { "src": "/assets/img/pup-maltipu-478.jpg", "w": 1200, "h": 1600, "kind": "life", "class": null, "alt": "Шоколадный щенок мальтипу Брауни сидит на тапочке", "pos": "42% 55%" }
     ],
@@ -479,7 +479,7 @@
     "age_weeks": 9,
     "status": "reserved",
     "badges": ["Родители с РКФ", "Прививки по возрасту", "Ветпаспорт"],
-    "weight_forecast": "около [4–5] кг",
+    "weight_forecast": "около 4–5 кг",
     "photos": [
       { "src": "/assets/img/pup-maltipu-464.jpg", "w": 1200, "h": 1600, "kind": "life", "class": null, "alt": "Кремовый щенок мальтипу Бублик на руках на улице", "pos": "40% 35%" }
     ],
@@ -498,7 +498,7 @@
     "age_weeks": 12,
     "status": "available",
     "badges": ["Метрика РКФ", "Прививки по возрасту", "Ветпаспорт"],
-    "weight_forecast": "около [9–13] кг",
+    "weight_forecast": "около 9–13 кг",
     "photos": [
       { "src": "/assets/img/cl-buldog-16.jpg", "w": 1067, "h": 1600, "kind": "life", "class": null, "alt": "Голубой щенок французского бульдога Граф сидит на светлом фоне", "pos": "50% 45%" },
       { "src": "/assets/img/cl-buldog-51.jpg", "w": 1069, "h": 1600, "kind": "life", "class": null, "alt": "Граф стоит и смотрит в камеру", "pos": "50% 50%" },
@@ -519,7 +519,7 @@
     "age_weeks": 9,
     "status": "available",
     "badges": ["Метрика РКФ", "Прививки по возрасту", "Ветпаспорт"],
-    "weight_forecast": "около [9–13] кг",
+    "weight_forecast": "около 9–13 кг",
     "photos": [
       { "src": "/assets/img/cl-buldog-12.jpg", "w": 1024, "h": 768, "kind": "life", "class": null, "alt": "Голубой щенок французского бульдога Ника рядом с игрушечной машинкой", "pos": "62% 50%" }
     ],
@@ -538,7 +538,7 @@
     "age_weeks": 11,
     "status": "available",
     "badges": ["Метрика РКФ", "Прививки по возрасту", "Ветпаспорт"],
-    "weight_forecast": "около [9–13] кг",
+    "weight_forecast": "около 9–13 кг",
     "photos": [
       { "src": "/assets/img/cl-buldog-48.jpg", "w": 1600, "h": 1064, "kind": "life", "class": null, "alt": "Чёрно-подпалый щенок французского бульдога Джек", "pos": "50% 50%" }
     ],
@@ -557,7 +557,7 @@
     "age_weeks": 10,
     "status": "available",
     "badges": ["Метрика РКФ", "Прививки по возрасту", "Ветпаспорт"],
-    "weight_forecast": "около [9–13] кг",
+    "weight_forecast": "около 9–13 кг",
     "photos": [
       { "src": "/assets/img/cl-buldog-49.jpg", "w": 1200, "h": 900, "kind": "life", "class": null, "alt": "Палевая девочка французского бульдога Мила идёт к мячику", "pos": "55% 50%" }
     ],
@@ -576,7 +576,7 @@
     "age_weeks": 10,
     "status": "available",
     "badges": ["Метрика РКФ", "Прививки по возрасту", "Ветпаспорт"],
-    "weight_forecast": "около [9–13] кг",
+    "weight_forecast": "около 9–13 кг",
     "photos": [
       { "src": "/assets/img/cl-buldog-54.jpg", "w": 1600, "h": 1068, "kind": "life", "class": null, "alt": "Голубой щенок французского бульдога Тоша лежит на светлом фоне", "pos": "48% 50%" }
     ],
@@ -595,7 +595,7 @@
     "age_weeks": 12,
     "status": "available",
     "badges": ["Метрика РКФ", "Прививки по возрасту", "Ветпаспорт"],
-    "weight_forecast": "около [9–13] кг",
+    "weight_forecast": "около 9–13 кг",
     "photos": [
       { "src": "/assets/img/cl-buldog-79.jpg", "w": 962, "h": 1280, "kind": "life", "class": null, "alt": "Рыже-палевая девочка французского бульдога Бонни", "pos": "50% 45%" }
     ],
@@ -614,7 +614,7 @@
     "age_weeks": 8,
     "status": "available",
     "badges": ["Метрика РКФ", "Прививки по возрасту", "Ветпаспорт"],
-    "weight_forecast": "около [9–13] кг",
+    "weight_forecast": "около 9–13 кг",
     "photos": [
       { "src": "/assets/img/pup-buldog-9.jpg", "w": 960, "h": 1280, "kind": "life", "class": null, "alt": "Палевый щенок французского бульдога Барни на руках", "pos": "50% 35%" }
     ],
@@ -633,7 +633,7 @@
     "age_weeks": 9,
     "status": "reserved",
     "badges": ["Метрика РКФ", "Прививки по возрасту", "Ветпаспорт"],
-    "weight_forecast": "около [9–13] кг",
+    "weight_forecast": "около 9–13 кг",
     "photos": [
       { "src": "/assets/img/pup-buldog-13.jpg", "w": 768, "h": 1024, "kind": "life", "class": null, "alt": "Палевый щенок французского бульдога Кекс на руках у ели", "pos": "50% 25%" }
     ],
@@ -652,7 +652,7 @@
     "age_weeks": 8,
     "status": "available",
     "badges": ["Метрика РКФ", "Прививки по возрасту", "Ветпаспорт"],
-    "weight_forecast": "около [9–13] кг",
+    "weight_forecast": "около 9–13 кг",
     "photos": [
       { "src": "/assets/img/pup-buldog-19.jpg", "w": 899, "h": 1280, "kind": "life", "class": null, "alt": "Голубой щенок французского бульдога Грей на коленях", "pos": "45% 40%" }
     ],
@@ -671,7 +671,7 @@
     "age_weeks": 7,
     "status": "soon",
     "badges": ["Метрика РКФ", "Прививки по возрасту", "Ветпаспорт"],
-    "weight_forecast": "около [9–13] кг",
+    "weight_forecast": "около 9–13 кг",
     "photos": [
       { "src": "/assets/img/pup-buldog-62.jpg", "w": 768, "h": 1024, "kind": "life", "class": null, "alt": "Голубой щенок французского бульдога Марс на руках", "pos": "50% 40%" }
     ],
@@ -690,7 +690,7 @@
     "age_weeks": 11,
     "status": "available",
     "badges": ["Метрика РКФ", "Прививки по возрасту", "Ветпаспорт"],
-    "weight_forecast": "около [9–13] кг",
+    "weight_forecast": "около 9–13 кг",
     "photos": [
       { "src": "/assets/img/ab-buldog-63.jpg", "w": 960, "h": 1280, "kind": "life", "class": null, "alt": "Голубая девочка французского бульдога Ева сидит на полу", "pos": "50% 45%" }
     ],
@@ -709,7 +709,7 @@
     "age_weeks": 9,
     "status": "available",
     "badges": ["Метрика РКФ", "Прививки по возрасту", "Ветпаспорт"],
-    "weight_forecast": "около [9–13] кг",
+    "weight_forecast": "около 9–13 кг",
     "photos": [
       { "src": "/assets/img/ab-buldog-27.jpg", "w": 1080, "h": 1047, "kind": "life", "class": null, "alt": "Голубой щенок французского бульдога Соня спит на мягком пледе", "pos": "50% 50%" }
     ],
@@ -728,7 +728,7 @@
     "age_weeks": 9,
     "status": "available",
     "badges": ["Метрика РКФ", "Прививки по возрасту", "Чип"],
-    "weight_forecast": "около [14–20] кг",
+    "weight_forecast": "около 14–20 кг",
     "photos": [
       { "src": "/assets/img/pup-kolli-103.jpg", "w": 1254, "h": 1254, "kind": "life", "class": null, "alt": "Щенок бордер-колли Джесси, голубой мрамор, сидит у дерева", "pos": "45% 50%" }
     ],
@@ -747,7 +747,7 @@
     "age_weeks": 12,
     "status": "available",
     "badges": ["Метрика РКФ", "Прививки по возрасту", "Чип"],
-    "weight_forecast": "около [14–20] кг",
+    "weight_forecast": "около 14–20 кг",
     "photos": [
       { "src": "/assets/img/pup-kolli-106.jpg", "w": 1254, "h": 1254, "kind": "life", "class": null, "alt": "Чёрно-белый щенок бордер-колли Рокки на прогулке", "pos": "45% 50%" }
     ],
@@ -766,7 +766,7 @@
     "age_weeks": 9,
     "status": "available",
     "badges": ["Метрика РКФ", "Прививки по возрасту", "Чип"],
-    "weight_forecast": "около [14–20] кг",
+    "weight_forecast": "около 14–20 кг",
     "photos": [
       { "src": "/assets/img/pup-kolli-107.jpg", "w": 1254, "h": 1254, "kind": "life", "class": null, "alt": "Щенок бордер-колли Луна, красный мрамор, с голубыми глазами", "pos": "50% 50%" }
     ],
@@ -785,7 +785,7 @@
     "age_weeks": 11,
     "status": "available",
     "badges": ["Метрика РКФ", "Прививки по возрасту", "Чип"],
-    "weight_forecast": "около [14–20] кг",
+    "weight_forecast": "около 14–20 кг",
     "photos": [
       { "src": "/assets/img/pup-kolli-121.jpg", "w": 1067, "h": 1600, "kind": "life", "class": null, "alt": "Щенок бордер-колли Бадди бежит к игрушке", "pos": "50% 45%" }
     ],
@@ -804,7 +804,7 @@
     "age_weeks": 13,
     "status": "available",
     "badges": ["Метрика РКФ", "Прививки по возрасту", "Чип"],
-    "weight_forecast": "около [14–20] кг",
+    "weight_forecast": "около 14–20 кг",
     "photos": [
       { "src": "/assets/img/pup-kolli-138.jpg", "w": 470, "h": 646, "kind": "life", "class": null, "alt": "Красно-белый щенок бордер-колли Айла на снегу", "pos": "50% 50%" }
     ],
@@ -823,7 +823,7 @@
     "age_weeks": 12,
     "status": "soon",
     "badges": ["Метрика РКФ", "Прививки по возрасту", "Чип"],
-    "weight_forecast": "около [14–20] кг",
+    "weight_forecast": "около 14–20 кг",
     "photos": [
       { "src": "/assets/img/pup-kolli-147.jpg", "w": 1066, "h": 1600, "kind": "life", "class": null, "alt": "Щенок бордер-колли Дымка, голубой мрамор, смотрит в сторону", "pos": "50% 40%" }
     ],
@@ -842,7 +842,7 @@
     "age_weeks": 9,
     "status": "available",
     "badges": ["Метрика РКФ", "Прививки по возрасту", "Чип"],
-    "weight_forecast": "около [14–20] кг",
+    "weight_forecast": "около 14–20 кг",
     "photos": [
       { "src": "/assets/img/pup-kolli-149.jpg", "w": 1280, "h": 960, "kind": "life", "class": null, "alt": "Рыже-белый щенок бордер-колли Ханни отдыхает у мисок", "pos": "55% 50%" }
     ],
@@ -861,7 +861,7 @@
     "age_weeks": 7,
     "status": "available",
     "badges": ["Метрика РКФ", "Прививки по возрасту", "Чип"],
-    "weight_forecast": "около [14–20] кг",
+    "weight_forecast": "около 14–20 кг",
     "photos": [
       { "src": "/assets/img/pup-kolli-152.jpg", "w": 1200, "h": 1600, "kind": "life", "class": null, "alt": "Коричнево-белый щенок бордер-колли Оскар на лежанке", "pos": "45% 55%" }
     ],
@@ -880,7 +880,7 @@
     "age_weeks": 8,
     "status": "available",
     "badges": ["Метрика РКФ", "Прививки по возрасту", "Чип"],
-    "weight_forecast": "около [14–20] кг",
+    "weight_forecast": "около 14–20 кг",
     "photos": [
       { "src": "/assets/img/pup-kolli-185.jpg", "w": 1200, "h": 1600, "kind": "life", "class": null, "alt": "Чёрно-белый щенок бордер-колли Лаки в саду", "pos": "50% 55%" }
     ],
@@ -899,7 +899,7 @@
     "age_weeks": 8,
     "status": "available",
     "badges": ["Метрика РКФ", "Прививки по возрасту", "Чип"],
-    "weight_forecast": "около [14–20] кг",
+    "weight_forecast": "около 14–20 кг",
     "photos": [
       { "src": "/assets/img/pup-kolli-186.jpg", "w": 1500, "h": 1469, "kind": "life", "class": null, "alt": "Щенок бордер-колли Кира, голубой мрамор, с голубыми глазами", "pos": "60% 50%" }
     ],
@@ -918,7 +918,7 @@
     "age_weeks": 11,
     "status": "reserved",
     "badges": ["Метрика РКФ", "Прививки по возрасту", "Чип"],
-    "weight_forecast": "около [14–20] кг",
+    "weight_forecast": "около 14–20 кг",
     "photos": [
       { "src": "/assets/img/pup-kolli-92.jpg", "w": 1254, "h": 1254, "kind": "life", "class": null, "alt": "Чёрно-белый щенок бордер-колли Гром стоит на траве", "pos": "50% 50%" }
     ],
@@ -937,7 +937,7 @@
     "age_weeks": 7,
     "status": "soon",
     "badges": ["Метрика РКФ", "Прививки по возрасту", "Чип"],
-    "weight_forecast": "около [14–20] кг",
+    "weight_forecast": "около 14–20 кг",
     "photos": [
       { "src": "/assets/img/cl-kolli-118.jpg", "w": 1067, "h": 1600, "kind": "life", "class": null, "alt": "Рыже-белый щенок бордер-колли Санни сидит на дорожке", "pos": "50% 55%" }
     ],
@@ -956,7 +956,7 @@
     "age_weeks": 12,
     "status": "available",
     "badges": ["Метрика РКФ", "Прививки по возрасту", "Чип"],
-    "weight_forecast": "около [2–3] кг",
+    "weight_forecast": "около 2–3 кг",
     "photos": [
       { "src": "/assets/img/pup-pudel-258.jpg", "w": 1105, "h": 1600, "kind": "life", "class": null, "alt": "Рыжий щенок той-пуделя Роза с голубым бантом", "pos": "45% 50%" }
     ],
@@ -975,7 +975,7 @@
     "age_weeks": 10,
     "status": "available",
     "badges": ["Метрика РКФ", "Прививки по возрасту", "Чип"],
-    "weight_forecast": "около [2–3] кг",
+    "weight_forecast": "около 2–3 кг",
     "photos": [
       { "src": "/assets/img/pup-pudel-276.jpg", "w": 1341, "h": 1600, "kind": "life", "class": null, "alt": "Коричневый щенок той-пуделя Майя с кулоном-сердечком", "pos": "50% 40%" },
       { "src": "/assets/img/cl-pudel-278.jpg", "w": 1314, "h": 1600, "kind": "life", "class": null, "alt": "Майя на светлой драпировке", "pos": "50% 45%" }
@@ -995,7 +995,7 @@
     "age_weeks": 11,
     "status": "available",
     "badges": ["Метрика РКФ", "Прививки по возрасту", "Чип"],
-    "weight_forecast": "около [2–3] кг",
+    "weight_forecast": "около 2–3 кг",
     "photos": [
       { "src": "/assets/img/cl-pudel-281.jpg", "w": 1080, "h": 1440, "kind": "life", "class": null, "alt": "Рыжий щенок той-пуделя Тимоша стоит на диване", "pos": "50% 45%" },
       { "src": "/assets/img/pup-pudel-284.jpg", "w": 1016, "h": 762, "kind": "life", "class": null, "alt": "Тимоша отдыхает у каменной стены", "pos": "55% 55%" }
@@ -1015,7 +1015,7 @@
     "age_weeks": 9,
     "status": "available",
     "badges": ["Метрика РКФ", "Прививки по возрасту", "Чип"],
-    "weight_forecast": "около [2–3] кг",
+    "weight_forecast": "около 2–3 кг",
     "photos": [
       { "src": "/assets/img/pup-pudel-287.jpg", "w": 1200, "h": 1600, "kind": "life", "class": null, "alt": "Рыжий щенок той-пуделя Лео в плетёной лежанке", "pos": "50% 40%" },
       { "src": "/assets/img/cl-pudel-286.jpg", "w": 1200, "h": 1600, "kind": "life", "class": null, "alt": "Лео крупным планом", "pos": "50% 40%" }
@@ -1035,7 +1035,7 @@
     "age_weeks": 8,
     "status": "available",
     "badges": ["Метрика РКФ", "Прививки по возрасту", "Чип"],
-    "weight_forecast": "около [2–3] кг",
+    "weight_forecast": "около 2–3 кг",
     "photos": [
       { "src": "/assets/img/pup-pudel-295.jpg", "w": 1200, "h": 1600, "kind": "life", "class": null, "alt": "Рыжий щенок той-пуделя Огонёк сидит на сером диване", "pos": "50% 45%" },
       { "src": "/assets/img/cl-pudel-296.jpg", "w": 1200, "h": 1600, "kind": "life", "class": null, "alt": "Огонёк смотрит в камеру", "pos": "50% 40%" }
@@ -1055,7 +1055,7 @@
     "age_weeks": 10,
     "status": "available",
     "badges": ["Метрика РКФ", "Прививки по возрасту", "Чип"],
-    "weight_forecast": "около [2–3] кг",
+    "weight_forecast": "около 2–3 кг",
     "photos": [
       { "src": "/assets/img/pup-pudel-308.jpg", "w": 1312, "h": 1433, "kind": "life", "class": null, "alt": "Рыжий щенок той-пуделя Плюша среди плюшевых игрушек", "pos": "60% 60%" }
     ],
@@ -1074,7 +1074,7 @@
     "age_weeks": 12,
     "status": "available",
     "badges": ["Метрика РКФ", "Прививки по возрасту", "Чип"],
-    "weight_forecast": "около [2–3] кг",
+    "weight_forecast": "около 2–3 кг",
     "photos": [
       { "src": "/assets/img/pup-pudel-334.jpg", "w": 1200, "h": 1600, "kind": "life", "class": null, "alt": "Коричневый щенок той-пуделя Мокко стоит на полотенце", "pos": "55% 45%" }
     ],
@@ -1093,7 +1093,7 @@
     "age_weeks": 7,
     "status": "available",
     "badges": ["Метрика РКФ", "Прививки по возрасту", "Чип"],
-    "weight_forecast": "около [2–3] кг",
+    "weight_forecast": "около 2–3 кг",
     "photos": [
       { "src": "/assets/img/pup-pudel-357.jpg", "w": 1600, "h": 1067, "kind": "life", "class": null, "alt": "Рыжий щенок той-пуделя Лиса в плетёной корзинке", "pos": "50% 55%" },
       { "src": "/assets/img/cl-pudel-363.jpg", "w": 1600, "h": 1067, "kind": "life", "class": null, "alt": "Лиса в корзинке на бирюзовом фоне", "pos": "50% 55%" }
@@ -1113,7 +1113,7 @@
     "age_weeks": 6,
     "status": "soon",
     "badges": ["Метрика РКФ", "Прививки по возрасту", "Чип"],
-    "weight_forecast": "около [2–3] кг",
+    "weight_forecast": "около 2–3 кг",
     "photos": [
       { "src": "/assets/img/pup-pudel-365.jpg", "w": 1600, "h": 1064, "kind": "life", "class": null, "alt": "Крошечный рыжий щенок той-пуделя Кнопка на бирюзовом фоне", "pos": "50% 62%" }
     ],
@@ -1132,7 +1132,7 @@
     "age_weeks": 9,
     "status": "available",
     "badges": ["Метрика РКФ", "Прививки по возрасту", "Чип"],
-    "weight_forecast": "около [2–3] кг",
+    "weight_forecast": "около 2–3 кг",
     "photos": [
       { "src": "/assets/img/cl-pudel-336.jpg", "w": 960, "h": 1280, "kind": "life", "class": null, "alt": "Коричневый щенок той-пуделя Вишня на руках", "pos": "50% 40%" }
     ],
@@ -1151,7 +1151,7 @@
     "age_weeks": 10,
     "status": "reserved",
     "badges": ["Метрика РКФ", "Прививки по возрасту", "Чип"],
-    "weight_forecast": "около [2–3] кг",
+    "weight_forecast": "около 2–3 кг",
     "photos": [
       { "src": "/assets/img/ab-pudel-360.jpg", "w": 1600, "h": 1064, "kind": "life", "class": null, "alt": "Рыжий щенок той-пуделя Бони на мягком пледе", "pos": "60% 50%" }
     ],

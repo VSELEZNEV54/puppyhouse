@@ -4,10 +4,6 @@
   "tagline": "питомник щенков · Москва",
   "domain": "домщенков.рф",
   "domain_ascii": "xn--b1adduihee9g.xn--p1ai",
-  "contacts_public": false,
-  "contacts_public_note": "false — первый этап: телефон и мессенджеры питомника нигде на сайте не выводятся (шапка, мобильная панель, меню, подвал, блоки контактов, разметка для поисковиков); вместо них кнопка «Оставить заявку». true — когда phone, email и messengers ниже заполнены настоящими.",
-  "email_public": true,
-  "email_public_note": "true — почта (email) видна и на первом этапе, без телефона и мессенджеров: подвал, «Меню», мобильное меню, форма заявки, ошибка отправки, разметка для поисковиков. email_href — та же почта для ссылки mailto: (домен латиницей: так её откроет любая почтовая программа).",
   "api": {
     "url": "/api/v1",
     "origins": [
@@ -24,27 +20,26 @@
     "site_name": "Дом щенков — домщенков.рф",
     "org_name": "Дом щенков",
     "og_image": "/assets/img/og/og-default.jpg",
-    "noindex": [
-      "/politika-konfidencialnosti/",
-      "/soglasie/"
-    ],
-    "opening_hours": "Mo-Su 09:00-21:00",
+    "noindex": ["/politika-konfidencialnosti/", "/soglasie/", "/soglasie-na-otzyv/", "/soglasie-na-publikaciyu/"],
+    "opening_hours": "Mo-Su 08:00-22:00",
     "yandex_verification": "",
     "google_verification": "",
     "yandex_metrika": ""
   },
+  "_contacts_note": "contacts_ready=false: телефон и мессенджеры питомника (phone.display/tel, messengers) не выводятся нигде — ни ссылками, ни в JSON-LD; вместо «Написать в Telegram» в шапке — «Оставить заявку». Когда номер и мессенджеры станут известны, впишите их ниже и поставьте true.",
+  "contacts_ready": false,
   "phone": {
     "display": "+7 (495) 123-45-67",
     "tel": "tel:+74951234567",
-    "hours": "Ежедневно с 9:00 до 21:00",
+    "hours": "Ежедневно с 8:00 до 22:00",
     "response": "Свяжемся с вами в течение рабочего дня по московскому времени"
   },
   "email": "main@домщенков.рф",
   "email_href": "mailto:main@xn--b1adduihee9g.xn--p1ai",
   "address": {
     "city": "Москва",
-    "street": "[адрес питомника]",
-    "short": "Москва, приезд по записи",
+    "street": "Ташкентская ул., 19",
+    "short": "Москва, Ташкентская ул., 19",
     "visit": "Приезд по предварительной записи"
   },
   "messengers": {

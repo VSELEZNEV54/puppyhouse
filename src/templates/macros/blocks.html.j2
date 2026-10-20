@@ -2,6 +2,20 @@
     Import:  {% import "macros/blocks.html.j2" as blocks %} -#}
 {% import "macros/ui.html.j2" as ui %}
 {% import "macros/cards.html.j2" as cards %}
+{% import "macros/forms.html.j2" as forms %}
+
+{#- «Как купить щенка»: four steps and «Узнать цену» — the homepage block, also the second block of puppy pages. -#}
+{% macro how_to_buy(id='kak-kupit', title='Как купить щенка') -%}
+<section class="section container" id="{{ id }}" aria-labelledby="{{ id }}-title">
+      {% call ui.section_head(title, id=id ~ '-title') %}{{ forms.price_button() }}{% endcall %}
+      {{ ui.steps([
+        {'title': 'Заявка', 'text': 'Оставьте номер — пришлём цену'},
+        {'title': 'Видеозвонок', 'text': 'Знакомитесь со щенком онлайн'},
+        {'title': 'Бронь', 'text': 'Договор и предоплата — щенок ваш'},
+        {'title': 'Встреча', 'text': 'Забираете сами или привезём'},
+      ]) }}
+    </section>
+{%- endmacro %}
 
 {#- FAQ accordion list. items: faq.json items (or any {"q", "a"} dicts; "a" may be Markup with links).
     short=true uses item.short (homepage wording) when present. prefix makes ids unique if a page has two lists. -#}
@@ -78,6 +92,16 @@
     slugs: blog slugs in order (default: the first `limit` of data.blog), or posts: ready dicts
     [{"url", "title", "line", "cover": {"src", "alt", "pos"?}, "topic"}]. 3 per row on desktop (4 posts → 4),
     a compact list on phones (thumbnail left, text right). title → section with H2; without title — just the list. -#}
+{#- «Полезные статьи» before the lead form of every inner page (client 19.10, layouts/page.html.j2 → block blog):
+    3 articles — the page's breed first (breed = slug), then the general ones, then the rest. -#}
+{% macro reading(breed=none, limit=3) -%}
+{%- set own = (data.blog|selectattr('breed', 'equalto', breed)|list) if breed else [] -%}
+{%- set general = data.blog|selectattr('breed', 'none')|list -%}
+{%- set others = data.blog|rejectattr('breed', 'none')|rejectattr('breed', 'equalto', breed)|list -%}
+{%- set slugs = ((own + general + others)|map(attribute='slug')|list)[:limit] -%}
+{{ blog_teasers(slugs=slugs, title='Полезные статьи', id='poleznoe', lead='Характер, уход и выбор щенка — коротко и по делу', limit=limit) }}
+{%- endmacro %}
+
 {% macro blog_teasers(slugs=none, posts=none, title='Гид по породам', id='blog', lead=none, link={'url': '/blog/', 'label': 'Все статьи'}, limit=3) -%}
 {%- if posts is none -%}
   {%- set all = data.blog -%}

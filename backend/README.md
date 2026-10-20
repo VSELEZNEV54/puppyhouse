@@ -117,6 +117,10 @@ Selectel, Timeweb, VK Cloud и т. п.
 | Почта | полные данные: имя, телефон, куда писать, порода, щенок, источник | `DSH_SMTP_*` (российский провайдер), `DSH_NOTIFY_EMAILS` |
 | Вебхук | `{event, id, public_id}` с подписью HMAC — для админ-панели | `DSH_WEBHOOK_URL`, `DSH_WEBHOOK_SECRET` |
 
+Проверка до запуска: `python -m app notify-check` (на сервере `dsh app notify-check`). Покажет бота, чаты, где он
+есть, с их id, доступ к заданным чатам и вход в почту. С `--send` отправит тестовое сообщение в каждый чат и письмо
+каждому получателю. Токен и пароль не печатаются. Код выхода 1 — что-то не так.
+
 Telegram — иностранный сервис. Имя и телефон в нём — трансграничная передача. Чтобы включить её:
 1. Уведомить Роскомнадзор.
 2. Опубликовать новую версию согласия, где передача за рубеж названа, с `"cross_border": true` в `src/data/consent.json`,
@@ -188,6 +192,7 @@ python -m app create-admin | reset-password | deactivate-admin | create-api-key 
 python -m app forget-contact --phone … --reason withdrawal --subject "ФИО"   # находит и по старому номеру
 python -m app reapply-erasures            # после восстановления из бэкапа: повторно уничтожить удалённых
 python -m app export-reviews --out reviews-approved.json
+python -m app notify-check [--send]       # бот, его чаты (id для DSH_TELEGRAM_CHAT_ID), вход в почту; --send — тестовые
 python -m app openapi
 ```
 

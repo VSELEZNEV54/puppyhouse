@@ -4,6 +4,8 @@
       body      — the page's own sections                               [required]
       pups      — «Щенки в наличии» strip; default: all breeds, 4 cards. Context `pups_breed` (breeds.json item)
                   narrows it to one breed; `pups_strip = false` hides it.
+      blog      — «Полезные статьи» before the lead form (blocks.reading; the `lead_breed` breed first);
+                  `blog_strip = false` or an empty block hides it.
       lead      — final lead form; default forms.lead_form(). Context `lead_breed` preselects a breed.
       page_css / page_js — your group's stylesheet / script (loaded after pages.css / main.js)
     Context:   title, description, breadcrumbs = [["Главная", "/"], ..., ["Текущая", none]] -#}
@@ -33,6 +35,12 @@
 {% block pups %}
 {% if pups_strip | default(true) %}
     {{ cards.pups_section(breed=pups_breed | default(none)) }}
+{% endif %}
+{% endblock %}
+
+{% block blog %}
+{% if blog_strip | default(true) %}
+    {{ blocks.reading(breed=(lead_breed | default(none))) }}
 {% endif %}
 {% endblock %}
 

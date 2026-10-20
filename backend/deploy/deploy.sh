@@ -221,6 +221,8 @@ check() {  # url, expected code, [text that must be in the page]
 }
 check / 200 'dsh-api'
 check /maltipu/ 200 'lead-form'
+check /shchenki/ 200 'dsh-api'
+check /maltipu/abrikosovyj/ 200 'dsh-api'
 check /politika-konfidencialnosti/ 200 'ОГРНИП'
 check /soglasie/ 200 'ОГРНИП'
 check /maltipu/index.html 301

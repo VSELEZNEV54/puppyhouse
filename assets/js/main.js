@@ -349,7 +349,7 @@
     toast.textContent = text;
     toast.classList.add('is-on');
     clearTimeout(toastTimer);
-    toastTimer = setTimeout(() => toast.classList.remove('is-on'), 2600);
+    toastTimer = setTimeout(() => toast.classList.remove('is-on'), Math.min(6000, Math.max(2600, text.length * 60))); // время на чтение
   }
 
   // Несвёрстанные страницы (href от корня, сборщик оставил его как есть) → тост; якоря → плавная прокрутка
@@ -530,9 +530,11 @@
   /* ---------- маска телефона +7 (XXX) XXX-XX-XX ---------- */
   function phoneDigits(value) {
     const s = String(value || '').trim();
+    // «+7» маски — не цифра номера, даже если перед ним что-то набрали (курсор был в начале поля)
+    const plus = s.indexOf('+7');
     let digits;
-    if (s.startsWith('+7')) {
-      digits = s.slice(2).replace(/\D/g, '');
+    if (plus >= 0) {
+      digits = (s.slice(0, plus) + s.slice(plus + 2)).replace(/\D/g, '');
     } else {
       digits = s.replace(/\D/g, '');
       if (digits[0] === '7' || digits[0] === '8') digits = digits.slice(1);
@@ -549,6 +551,17 @@
     return out;
   }
   $$('[data-phone]').forEach((input) => {
+    // курсор не встаёт внутрь «+7 »: клик или тап у левого края ставил его перед префиксом, и номер 916… сохранялся как 971…
+    const keepCaret = () => {
+      try {
+        if (input.selectionStart === input.selectionEnd && input.selectionStart < 3) {
+          const end = input.value.length;
+          input.setSelectionRange(end, end);
+        }
+      } catch (_) { /* старые браузеры */ }
+    };
+    input.addEventListener('click', keepCaret);
+    input.addEventListener('keyup', keepCaret); // Home, стрелки
     input.addEventListener('focus', () => { if (!input.value) input.value = '+7 '; });
     input.addEventListener('blur', () => { if (!phoneDigits(input.value)) input.value = ''; });
     input.addEventListener('input', () => {
@@ -793,6 +806,9 @@
       if (menuIsOpen() && menu.contains(trigger)) { closeMenu(false); opener = burger; }
       // кнопка из панели «Меню» спрячется вместе с панелью — фокус вернём на «Меню»
       if (mega && megaWrap.contains(trigger)) { mega.set(false); opener = mega.btn; }
+      // «Оставить заявку» в просмотре видео: просмотр закрываем, окно заявки открываем поверх страницы
+      const lbox = trigger.closest('dialog');
+      if (lbox && lbox !== modal && lbox.open) lbox.close();
       const pup = card ? {
         name: card.dataset.name,
         slug: card.dataset.slug || '',

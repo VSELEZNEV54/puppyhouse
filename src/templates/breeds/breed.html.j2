@@ -128,6 +128,9 @@
     {% endcall %}
 {% endblock %}
 
+{# articles: this page lists its own or is a document (client 19.10: «Полезные статьи» elsewhere) #}
+{% block blog %}{% endblock %}
+
 {% block lead %}
     {% call forms.lead_form(title=hub.lead_title, line=hub.lead_line, breed=b.slug, contacts=false, cls='hm-lead') %}
       {{ forms.contact_tiles() }}

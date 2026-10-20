@@ -204,12 +204,16 @@ main:focus, section[tabindex="-1"]:focus, [data-anchor-focus]:focus { outline: n
 /* основная: чёрная пилюля; на ховере — коралл с тёмным текстом (контраст 6,6:1) */
 .btn--ink { background: var(--ink); color: #fff; }
 @media (hover: hover) { .btn--ink:hover { background: var(--coral); color: var(--ink); } }
-/* главная и страницы пород v2 (правки 15.10): основные кнопки — коралловые (цвет прежнего наведения), при наведении —
-   темнее; белые — как были. Карточка щенка одна на весь сайт: её «Узнать цену» остаётся чёрной */
-:is(.page-home, .page-breed) { --cta: var(--coral); --cta-hover: #F7805F; }
-:is(.page-home, .page-breed) :is(.btn--ink, .mbar__btn--ink):not(.pup .btn) { background: var(--cta); color: var(--ink); }
-@media (hover: hover) { :is(.page-home, .page-breed) :is(.btn--ink, .mbar__btn--ink):not(.pup .btn):hover { background: var(--cta-hover); color: var(--ink); } }
+/* главная, страницы пород v2 (правки 15.10) и страница щенка (19.10): основные кнопки — коралловые (цвет прежнего
+   наведения), при наведении — темнее; белые — как были. Карточка щенка одна на весь сайт: её «Узнать цену» остаётся чёрной */
+:is(.page-home, .page-breed, .page-puppy) { --cta: var(--coral); --cta-hover: #F7805F; }
+:is(.page-home, .page-breed, .page-puppy) :is(.btn--ink, .mbar__btn--ink):not(.pup .btn) { background: var(--cta); color: var(--ink); }
+@media (hover: hover) { :is(.page-home, .page-breed, .page-puppy) :is(.btn--ink, .mbar__btn--ink):not(.pup .btn):hover { background: var(--cta-hover); color: var(--ink); } }
 .btn--white { background: #fff; color: var(--ink); border-color: var(--line-2); }
+/* ПРАВИЛО (клиент 19.10): кнопка в заголовке блока — всегда коралловая, на любой странице и в любом новом блоке:
+   «Получить консультацию», «Узнать цену», «Весь каталог», «Документы и гарантии»… Текстовые ссылки («Все статьи →») — как были */
+.sec-head .btn { background: var(--coral); color: var(--ink); border-color: transparent; }
+@media (hover: hover) { .sec-head .btn:hover { background: #F7805F; color: var(--ink); border-color: transparent; } }
 .btn--white:hover { border-color: var(--ink); }
 /* контурная: белая обводка без заливки — на цветной плитке рядом с белой кнопкой */
 .btn--outline { background: transparent; color: var(--ink); border: 1.5px solid #fff; }
@@ -220,6 +224,9 @@ main:focus, section[tabindex="-1"]:focus, [data-anchor-focus]:focus { outline: n
 .btn--tg .i { width: 19px; height: 19px; margin-left: -2px; }
 @media (hover: hover) { .btn--tg:hover { background: linear-gradient(180deg, var(--tg-b) 0%, #11639A 100%); } }
 .btn--tg:hover .i { transform: none; }
+/* коралловая: «Оставить заявку» в шапке, меню и просмотре видео, пока телефона и мессенджеров нет (site.contacts_ready, 20.10) */
+.btn--coral { background: var(--coral); color: var(--ink); border-color: transparent; }
+@media (hover: hover) { .btn--coral:hover { background: #F7805F; color: var(--ink); } }
 .btn[disabled] { opacity: .7; cursor: progress; }
 
 /* круглые кнопки: мессенджеры, звонок, бургер */
@@ -448,6 +455,7 @@ main:focus, section[tabindex="-1"]:focus, [data-anchor-focus]:focus { outline: n
 .hdr .msgr { width: 40px; height: 40px; }
 .hdr .msgr .i { width: 19px; height: 19px; }
 .hdr__cta { margin-left: 4px; height: 44px; padding: 0 20px 0 16px; }
+.hdr__cta--lead { padding: 0 20px; }
 .msgr--call, .hdr__burger { display: none; }
 
 /* узкий десктоп: сначала прячем подпись логотипа, потом номер (он в «Меню» и в подвале), потом ссылки с конца —
@@ -486,6 +494,11 @@ main:focus, section[tabindex="-1"]:focus, [data-anchor-focus]:focus { outline: n
 }
 @media (max-width: 760px) {
   .hdr__cta { display: none; }
+  /* без мессенджеров место в шапке есть: «Оставить заявку» видна до 561 px; на телефоне она в липкой панели внизу */
+  .hdr__cta--lead { display: inline-flex; }
+}
+@media (max-width: 560px) {
+  .hdr__cta--lead { display: none; }
 }
 @media (max-width: 560px) {
   .hdr__bar { height: 60px; padding-left: 10px; }
@@ -622,7 +635,8 @@ main:focus, section[tabindex="-1"]:focus, [data-anchor-focus]:focus { outline: n
 /* кнопки — сразу под текстом (правка 15.10), плашки преимуществ — внизу плитки */
 .hero__actions { display: flex; flex-wrap: wrap; gap: 10px; padding-top: clamp(24px, 2.4vw, 32px); }
 .hero .hero__sub { max-width: 44ch; }
-/* четыре преимущества — одной строкой во всю ширину плитки, в самом низу (правка 15.10); на телефоне — 2 × 2 */
+/* четыре преимущества — одной строкой во всю ширину плитки, в самом низу (правка 15.10); на планшете — 2 × 2,
+   на телефоне — по одной в ряд (клиент 19.10) */
 .hm-chips {
   position: relative; z-index: 2;
   display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; margin-top: 24px;
@@ -1030,6 +1044,7 @@ a.hm-ct__value:hover { text-decoration: underline; text-decoration-thickness: 1p
 .hm-msgr .msgr { width: 36px; height: 36px; }
 .hm-msgr .msgr .i { width: 18px; height: 18px; }
 .hm-msgr:hover { background: var(--ink); color: #fff; }
+.hm-cts--2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 @media (max-width: 1199px) { .hm-cts { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 1000px) {
   .hm-lead .lead__intro .h2 { max-width: 9em; }
@@ -1185,7 +1200,8 @@ legend.field__label { margin-bottom: 8px; }
 }
 .mbar__btn .i { width: 18px; height: 18px; }
 .mbar__btn--ink { background: var(--ink); color: #fff; }
-.mbar--2 { grid-template-columns: 1fr 1fr; }   /* без контактов: «Оставить заявку» + «Узнать цену» */
+/* без телефона и мессенджеров: «Оставить заявку» и «Узнать цену» — две равные половины */
+.mbar.mbar--2 { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
 
 .modal {
   width: min(540px, calc(100vw - 32px)); max-width: none;
@@ -1222,7 +1238,7 @@ legend.field__label { margin-bottom: 8px; }
   position: fixed; left: 50%; bottom: 28px; z-index: 120;
   width: max-content; max-width: calc(100vw - 32px);
   padding: 14px 22px; border-radius: var(--r-pill);
-  background: var(--ink); color: #fff; font-size: 14.5px; font-weight: 500; text-align: center;
+  background: var(--ink); color: #fff; font-size: 14.5px; font-weight: 500; text-align: center; text-wrap: balance;
   box-shadow: 0 18px 40px -16px rgba(0, 0, 0, .45);
   opacity: 0; visibility: hidden; transform: translate(-50%, 16px);
   transition: opacity .25s, transform .3s var(--ease), visibility 0s .3s;
@@ -1429,14 +1445,15 @@ legend.field__label { margin-bottom: 8px; }
 .advs--4 { --n: 4; }
 .advs--6 { --n: 6; }
 .advs > li { min-width: 0; }
+/* иконка — всегда по верхнему краю плитки, заголовок и текст — сразу под верхом, справа от неё (клиент 19.10) */
 .adv {
-  display: grid; grid-template-columns: auto minmax(0, 1fr); grid-template-rows: auto auto;
-  align-items: center; column-gap: 16px; row-gap: 4px;
+  display: grid; grid-template-columns: auto minmax(0, 1fr); grid-template-rows: auto 1fr;
+  align-items: start; column-gap: 16px; row-gap: 4px;
   padding: var(--tile-pad); border-radius: var(--r-tile); background: var(--tile);
 }
-.adv .ico { grid-row: 1 / 3; width: 56px; height: 56px; }
-.adv .ico .i { width: 24px; height: 24px; }
-.adv__title { align-self: end; font-size: var(--fs-h3); font-weight: 500; letter-spacing: -0.025em; line-height: 1.15; }
+/* круг — как у плиток-ссылок «Читайте о породе» (.ltile .ico в pages.css): 48 px, на телефоне 44 px */
+.adv .ico { grid-row: 1 / 3; align-self: start; width: 48px; height: 48px; }
+.adv__title { align-self: start; font-size: var(--fs-h3); font-weight: 500; letter-spacing: -0.025em; line-height: 1.15; }
 .adv__line { align-self: start; font-size: 15px; line-height: 1.4; color: var(--muted); }
 .advs--6 .adv, .advs--4 .adv { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto; align-items: start; row-gap: 6px; }
 .advs--6 .adv .ico, .advs--4 .adv .ico { grid-row: auto; margin-bottom: 14px; }
@@ -1571,9 +1588,8 @@ legend.field__label { margin-bottom: 8px; }
   .mcard__play { width: 56px; height: 56px; margin: -28px 0 0 -28px; }
 
   .advs, .advs--2, .advs--4, .advs--6 { --n: 1; }
-  .adv, .advs--6 .adv, .advs--4 .adv { grid-template-columns: auto minmax(0, 1fr); grid-template-rows: auto auto; align-items: center; row-gap: 2px; padding: 16px 18px; }
-  .adv .ico, .advs--6 .adv .ico, .advs--4 .adv .ico { grid-row: 1 / 3; width: 48px; height: 48px; margin: 0; }
-  .adv .ico .i { width: 21px; height: 21px; }
+  .adv, .advs--6 .adv, .advs--4 .adv { grid-template-columns: auto minmax(0, 1fr); grid-template-rows: auto 1fr; align-items: start; row-gap: 2px; padding: 16px 18px; }
+  .adv .ico, .advs--6 .adv .ico, .advs--4 .adv .ico { grid-row: 1 / 3; width: 44px; height: 44px; margin: 0; }
   .adv__title { font-size: 19px; }
   .adv__line { font-size: 14.5px; }
 
@@ -1785,12 +1801,6 @@ legend.field__label { margin-bottom: 8px; }
 }
 @keyframes sheet-in { from { transform: translateY(100%); } }
 
-/* карточки щенков на узком телефоне — по одной в ряд, кадр чуть шире, чтобы карточка не была выше экрана */
-@media (max-width: 560px) {
-  .pups { grid-template-columns: minmax(0, 1fr); }
-  .pups .pup__media { aspect-ratio: 1 / .86; }
-}
-
 /* телефон: подвал — одна колонка, каждая ссылка своей строкой высотой 46 px с разделителем, удобно нажимать (правка 15.10) */
 @media (max-width: 560px) {
   .footer__nav { grid-template-columns: minmax(0, 1fr); gap: 28px; }
@@ -1811,7 +1821,8 @@ legend.field__label { margin-bottom: 8px; }
   .hero .h1 { font-size: clamp(28px, 9.4vw, 40px); }
   .hero .hero__sub { font-size: clamp(14px, 3.9vw, 16px); }
   .hero .eyebrow { height: 30px; padding: 0 12px; font-size: clamp(12.5px, 3.4vw, 14px); }
-  .hm-chip { font-size: clamp(12.5px, 3.4vw, 13.5px); }
+  .hm-chips { grid-template-columns: minmax(0, 1fr); gap: 6px; }
+  .hm-chip { min-height: 46px; font-size: 14.5px; }
 }
 
 @media (max-width: 380px) {
@@ -1828,7 +1839,7 @@ legend.field__label { margin-bottom: 8px; }
 
 /* =========================================================
    КАРТОЧКА ЩЕНКА — одна на весь сайт (cards.puppy_card): каталог, «Похожие щенки», ленты «Щенки в наличии»,
-   хабы пород, сравнения. Основа — .pup выше; две кнопки «Смотреть щенка» + «Узнать цену» (правки 13.10)
+   хабы пород, сравнения. Основа — .pup выше; две кнопки: белая «Узнать цену» и «Подробнее» с белой обводкой (19.10)
    ========================================================= */
 /* фото — тоже ссылка на страницу щенка (дубль ссылки в имени, вне порядка табуляции) */
 .ct-card__media { display: block; color: inherit; text-decoration: none; }
@@ -1842,43 +1853,59 @@ legend.field__label { margin-bottom: 8px; }
 /* «В избранное» — в углу фото, не отнимает место у кнопок */
 .ct-card__fav { position: absolute; z-index: 3; top: calc(var(--inset) + 10px); right: calc(var(--inset) + 10px); width: 44px; height: 44px; }
 
-/* «Смотреть щенка» + «Узнать цену»: в ряд, а в узкой карточке — друг под другом */
+/* «Узнать цену» (белая) + «Подробнее» (белая обводка, .btn--outline): в ряд, а в узкой карточке — друг под другом.
+   Обе стоят на цветной плитке карточки (--tone-floor), на телефоне тоже */
 .ct-card__body { container-type: inline-size; }
 .ct-card__actions { display: flex; gap: 8px; margin-top: auto; padding-top: 16px; }
 .ct-card__actions .btn { flex: 1 1 auto; height: 46px; padding: 0 14px; font-size: 14.5px; }
-.ct-card__more { background: rgba(255, 255, 255, .8); border-color: transparent; }
-.ct-card__more:hover { background: #fff; border-color: var(--ink); }
+.ct-card__price { border-color: transparent; }
+.ct-card__price:hover { border-color: var(--ink); }
 @container (max-width: 259px) {
   .ct-card__actions { flex-direction: column; }
   .ct-card__actions .btn { flex: none; width: 100%; }
 }
 
 /* =========================================================
-   ТЕЛЕФОН ≤ 560 px: карточка — компактной строкой (как щенки породы на хабах):
-   фото слева в белой плитке, кличка, возраст и две кнопки справа. 19 щенков — около 4000 px, а не 9000
+   ТЕЛЕФОН ≤ 560 px: карточка вертикальная, как на компьютере, — одна в ряд (клиент 19.10):
+   фото сверху (кадр чуть шире, чтобы карточка не была выше экрана), кличка, данные, две кнопки рядом
    ========================================================= */
 @media (max-width: 560px) {
-  .ct-card { flex-direction: row; align-items: stretch; background: var(--tile); }
-  .ct-card .pup__media {
-    flex: none; width: 42%; aspect-ratio: auto; min-height: 176px; margin: 8px 0 8px 8px;
-    clip-path: none; border-radius: var(--r-img); overflow: hidden;
-  }
-  .ct-card .pup__media img { inset: 0; width: 100%; height: 100%; border-radius: 0; }
-  .ct-card .pup__media--studio { background: var(--tone); }
-  .ct-card .pup__media--studio img { object-position: 50% 100%; -webkit-mask-image: none; mask-image: none; }
-  .ct-card .pup__img--charli, .ct-card .pup__img--tessa { transform: none; }
-  .ct-card .status { top: auto; bottom: 8px; left: 8px; height: 26px; padding: 0 10px 0 9px; gap: 6px; font-size: 12px; }
-  .ct-card__body { min-width: 0; padding: 14px 14px 14px 16px; }
-  .ct-card .pup__name { padding-right: 40px; font-size: 22px; }
-  .ct-card .pup__meta { font-size: 13px; }
-  .ct-card__fav { top: 10px; right: 10px; width: 40px; height: 40px; background: var(--page); }
-  .ct-card__actions { flex-direction: column; gap: 6px; padding-top: 12px; }
-  .ct-card__actions .btn { flex: none; width: 100%; height: 42px; }
-  .ct-card__more { background: var(--page); }
+  .pups { grid-template-columns: minmax(0, 1fr); gap: 12px; }
+  .pups .pup__media { aspect-ratio: 1 / .86; }
+  .ct-card__body { min-width: 0; padding: 14px 16px 16px; }
+  .ct-card .pup__name { font-size: 24px; }
+  .ct-card__actions .btn { height: 44px; }
 
   /* «Ждёте другого щенка?» — мордочки в ряд внахлёст, плитка по содержимому */
   .pups .soon-tile { min-height: 0; gap: 14px; padding: 22px 18px; }
   .pups .soon-tile__faces { display: flex; }
   .pups .soon-tile__faces .face { width: 56px; height: 56px; border: 3px solid var(--sun-50); }
   .pups .soon-tile__faces .face + .face { margin-left: -12px; }
+}
+
+/* =========================================================
+   ПРАВИЛО (клиент 19.10). Телефон ≤ 760 px: кнопка или ссылка к разделу из заголовка блока («Все отзывы →»,
+   «Узнать цену», «Получить консультацию», «Все вопросы»…) стоит не под заголовком, а под всем блоком —
+   отдельной коралловой кнопкой во всю ширину. Срабатывает само для любого ui.section_head и blocks.faq_section:
+   заголовок «растворяется» (display: contents), кнопка уходит в конец блока (order).
+   ========================================================= */
+@media (max-width: 760px) {
+  .section:has(> .sec-head > :is(.btn, .text-link)),
+  .faq:has(> .faq__aside > .text-link) { display: grid; grid-template-columns: minmax(0, 1fr); }
+  .section:has(> .sec-head > :is(.btn, .text-link)) > .sec-head,
+  .faq:has(> .faq__aside > .text-link) > .faq__aside { display: contents; }
+  .section > .sec-head > :is(.h2, .sec-head__txt) { margin-bottom: 18px; padding-inline: 4px; }
+  .faq > .faq__aside > .h2 { padding-inline: 4px; }
+
+  .section > .sec-head > :is(.btn, .text-link),
+  .faq > .faq__aside > .text-link { order: 99; width: 100%; }
+  .section > .sec-head > .btn { --h: 52px; height: 52px; margin-top: 20px; font-size: 16px; }
+  .section > .sec-head > .text-link,
+  .faq > .faq__aside > .text-link {
+    display: block; min-height: 52px; padding: 16px 20px; border-radius: var(--r-pill);
+    background: var(--coral); color: var(--ink); font-size: 16px; line-height: 1.25; text-align: center;
+  }
+  .section > .sec-head > .text-link, .faq > .faq__aside > .text-link { margin-top: 20px; }
+  .section > .sec-head > .text-link::after, .faq > .faq__aside > .text-link::after { content: none; }
+  @media (hover: hover) { .section > .sec-head > .text-link:hover, .faq > .faq__aside > .text-link:hover { background: #F7805F; } }
 }

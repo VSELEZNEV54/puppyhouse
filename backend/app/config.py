@@ -82,6 +82,8 @@ class Settings(BaseSettings):
     # cross-border transfer and needs a notice to Роскомнадзор first (ст. 12 152-ФЗ).
     telegram_bot_token: str = ""
     telegram_chat_id: str = ""
+    # Bot API address; change only to route through your own relay (or a test stub)
+    telegram_api_base: str = "https://api.telegram.org"
     telegram_breed_chats: dict[str, str] = Field(default_factory=dict)  # {"maltipu": "-100…"} by breed key
     telegram_include_pd: bool = False
     # e-mail with full details, over SMTP of a Russian provider (Яндекс 360, VK WorkMail, Mail.ru): no transfer abroad

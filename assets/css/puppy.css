@@ -81,42 +81,18 @@
   padding: clamp(24px, 2.6vw, 40px);
   border-radius: var(--r-tile); background: var(--tile);
 }
-.pp-info__status {
-  display: inline-flex; align-items: center; gap: 9px;
-  height: 32px; padding: 0 14px 0 12px; border-radius: var(--r-pill);
-  background: var(--mint-50); font-size: 14px; font-weight: 500; white-space: nowrap;
-}
-.pp-info__status--res { background: var(--sun-50); }
-.pp-info__status--soon { background: var(--sky-50); }
-.pp-title { display: grid; gap: 8px; margin-top: 18px; }
-.pp-title__name { font-size: clamp(44px, 4.6vw, 76px); font-weight: 500; letter-spacing: -0.04em; line-height: .95; }
-.pp-title__sub { font-size: clamp(20px, 1.7vw, 26px); font-weight: 400; letter-spacing: -0.02em; line-height: 1.2; }
-.pp-meta { margin-top: 10px; font-size: 15px; line-height: 1.5; color: var(--muted); }
-.pp-meta span { white-space: nowrap; }
-.pp-meta span:not(:last-child)::after { content: " · "; white-space: normal; }
-.pp-note {
-  display: flex; align-items: flex-start; gap: 10px;
-  margin-top: 18px; padding: 12px 16px; border-radius: 18px;
-  font-size: 14.5px; line-height: 1.45;
-}
-.pp-note .i { flex: none; margin-top: 2px; }
-.pp-note--res { background: var(--sun-50); }
-.pp-note--soon { background: var(--sky-50); }
+/* H1 — запрос «Кремовый щенок мальтипу F1 мальчик», кличка — строкой ниже (клиент 19.10) */
+.pp-title { margin-top: 18px; font-size: clamp(32px, 2.9vw, 48px); font-weight: 500; letter-spacing: -0.03em; line-height: 1.06; text-wrap: balance; }
+.pp-nick { margin-top: 12px; font-size: 17px; line-height: 1.4; color: var(--muted); }
+.pp-nick__name { color: var(--ink); font-weight: 500; }
 
 .pp-cta { width: 100%; display: flex; flex-wrap: wrap; gap: 10px; margin-top: 24px; }
 .pp-cta .btn { flex: 1 1 auto; }
 .pp-cta__main { min-width: 44%; }
-.pp-cta .btn .i.pp-i-down { transform: rotate(90deg); }
-.pp-cta .btn:hover .i.pp-i-down { transform: rotate(90deg) translateX(3px); }
+.pp-cta__tg .i { color: var(--tg-b); }
+.pp-cta__tg:hover .i { transform: none; }
 
 .pp-sub { width: 100%; display: flex; flex-wrap: wrap; align-items: center; gap: 10px 24px; margin-top: 16px; }
-.pp-tg { display: inline-flex; align-items: center; gap: 10px; min-height: 44px; font-size: 15px; font-weight: 500; text-decoration: none; }
-.pp-tg__ico {
-  flex: none; width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center;
-  background: linear-gradient(180deg, var(--tg-a) 0%, var(--tg-b) 100%); color: #fff;
-}
-.pp-tg__ico .i { width: 18px; height: 18px; margin-left: -1px; }
-.pp-tg:hover { text-decoration: underline; text-underline-offset: 3px; }
 .pp-trust { flex: 1 1 100%; display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 13.5px; line-height: 1.35; color: var(--muted); }
 .pp-trust li { display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; }
 
@@ -132,62 +108,26 @@
 .pp-tbl__table a:hover { text-decoration-color: var(--ink); }
 .pp-small { margin-top: 12px; font-size: 13.5px; line-height: 1.45; color: var(--muted); }
 
-/* ---------- характер и описание ---------- */
-.pp-about { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); gap: var(--gap); }
-.pp-about__text {
-  display: grid; align-content: start; gap: 14px;
+/* ---------- «Про <породу>»: SEO-текст в две колонки, факты — плитками с иконками (как «Что входит»), затем
+   «Читайте о породе» (клиент 19.10) ---------- */
+.pp-breed__text {
+  display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px clamp(24px, 3vw, 48px);
   padding: var(--tile-pad); border-radius: var(--r-tile); background: var(--tile);
   font-size: 17px; line-height: 1.55;
 }
-.pp-about__text p { max-width: 62ch; }
-.pp-about__text p:first-child { font-size: clamp(19px, 1.5vw, 22px); line-height: 1.4; letter-spacing: -0.01em; }
-.pp-about__text p + p { color: var(--ink-soft); }
-.pp-about__fits {
-  display: flex; flex-direction: column; align-items: flex-start; gap: 16px;
-  padding: var(--tile-pad); border-radius: var(--r-tile);
-  background: linear-gradient(180deg, var(--tone) 0 55%, var(--tone-floor) 100%);
-}
-.pp-about__title { font-size: var(--fs-h3); font-weight: 500; letter-spacing: -0.025em; line-height: 1.15; }
-.pp-about__chips { display: flex; flex-wrap: wrap; gap: 6px; }
-.pp-about__chips li {
-  display: inline-flex; align-items: center; gap: 6px;
-  min-height: 36px; padding: 6px 14px 6px 12px; border-radius: var(--r-pill);
-  background: rgba(255, 255, 255, .7); font-size: 14.5px; font-weight: 500; line-height: 1.25;
-}
-.pp-about__chips .i { stroke-width: 2.2; }
-.pp-about__links { display: grid; gap: 6px; margin-top: auto; padding-top: 6px; }
+.pp-breed__text p:first-child { font-size: clamp(19px, 1.5vw, 22px); line-height: 1.4; letter-spacing: -0.01em; }
+.pp-breed__text p + p { color: var(--ink-soft); }
+.pp-facts { margin-top: var(--gap); }
+.pp-facts .adv { align-content: start; }
+.pp-more__title { margin: clamp(28px, 3vw, 44px) 0 18px; font-size: var(--fs-h3); font-weight: 500; letter-spacing: -0.025em; line-height: 1.15; }
 
-/* ---------- родители: белая плитка, фото в рамке слева (готово для живых фото родителей) ---------- */
-.pp-parents { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--gap); }
-.pp-parents > li { min-width: 0; }
-.pp-parent {
-  display: grid; grid-template-columns: minmax(0, .92fr) minmax(0, 1fr); align-items: stretch;
-  height: 100%; padding: var(--inset);
-  border-radius: var(--r-tile); background: var(--tile);
-}
-.pp-parent__photo { position: relative; aspect-ratio: 4 / 5; border-radius: var(--r-img); overflow: hidden; background: #E7E1D8; }
-.pp-parent__photo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-.pp-parent__photo--ask {
-  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px;
-  padding: 20px; background: var(--page); text-align: center;
-  font-size: 14px; line-height: 1.4; color: var(--muted);
-}
-.pp-parent__askico { width: 56px; height: 56px; border-radius: 50%; display: grid; place-items: center; background: #fff; color: var(--ink); }
-.pp-parent__askico .i { width: 24px; height: 24px; stroke-width: 1.6; }
-.pp-parent__txt {
-  display: flex; flex-direction: column; align-items: flex-start; min-width: 0;
-  padding: calc(var(--tile-pad) - var(--inset)) calc(var(--tile-pad) - var(--inset)) calc(var(--tile-pad) - var(--inset)) clamp(16px, 1.8vw, 26px);
-}
-.pp-parent__role { padding: 5px 12px; border-radius: var(--r-pill); background: var(--page); font-size: 13px; font-weight: 500; line-height: 1.3; }
-.pp-parent__name { margin-top: 14px; font-size: clamp(24px, 2.2vw, 34px); font-weight: 500; letter-spacing: -0.03em; line-height: 1.05; overflow-wrap: anywhere; }
-.pp-parent__breed { margin-top: 6px; font-size: 15px; line-height: 1.4; color: var(--muted); }
-.pp-parent__facts { display: flex; flex-wrap: wrap; gap: 6px; margin-top: auto; padding-top: 18px; }
-.pp-parent__facts li {
-  display: inline-flex; align-items: center; gap: 6px;
-  min-height: 32px; padding: 5px 12px; border-radius: var(--r-pill);
-  background: var(--page); font-size: 13.5px; font-weight: 500; line-height: 1.25;
-}
-.pp-parent__facts .i { color: var(--ink); stroke-width: 2.2; }
+/* ---------- «Кому подойдёт»: 4 фото-карточки на белой плитке (клиент 19.10) ---------- */
+.pp-fits { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--gap); }
+.pp-fit { display: flex; flex-direction: column; min-width: 0; padding: var(--inset); border-radius: var(--r-tile); background: var(--tile); }
+.pp-fit__photo { position: relative; aspect-ratio: 4 / 5; border-radius: var(--r-img); overflow: hidden; background: var(--tone); }
+.pp-fit__photo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.pp-fit__title { margin: 16px 10px 0; font-size: clamp(20px, 1.6vw, 24px); font-weight: 500; letter-spacing: -0.025em; line-height: 1.15; }
+.pp-fit__line { margin: 6px 10px 12px; font-size: 15px; line-height: 1.45; color: var(--ink-soft); }
 
 /* «Что входит» (ui.advantages, 4 в ряд): заголовки на одной высоте, лишняя высота плитки — снизу */
 #chto-vhodit .adv { align-content: start; }
@@ -204,23 +144,20 @@
 .pp-term__list { display: grid; gap: 10px; font-size: 16px; line-height: 1.45; }
 .pp-term__list li { display: flex; align-items: flex-start; gap: 10px; }
 .pp-term__list .i { flex: none; margin-top: 3px; stroke-width: 2.2; }
-.pp-term .tcta { margin-top: auto; }
+.pp-term__btn { margin-top: auto; }
 
 /* =========================================================
    АДАПТИВ
    ========================================================= */
 @media (max-width: 1199px) {
   .pp__grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
-  .pp-about { grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); }
   .pp-thumbs { gap: 6px; }
   .pp-thumb { border-radius: 12px; }
 }
 
 @media (max-width: 1000px) {
-  .pp-about { grid-template-columns: minmax(0, 1fr); }
-  .pp-about__links { grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); }
-  .pp-parents { grid-template-columns: minmax(0, 1fr); }
-  .pp-parent { grid-template-columns: minmax(0, 300px) minmax(0, 1fr); }
+  .pp-breed__text { grid-template-columns: minmax(0, 1fr); }
+  .pp-fits { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 
 @media (max-width: 900px) {
@@ -242,10 +179,8 @@
   .pp-slide__btn .mcard__play { width: 60px; height: 60px; margin: -30px 0 0 -30px; }
 
   .pp-info { padding: 22px 20px 20px; }
-  .pp-title { margin-top: 14px; }
-  .pp-title__name { font-size: clamp(40px, 11vw, 52px); }
-  .pp-title__sub { font-size: 20px; }
-  .pp-meta { font-size: 14.5px; }
+  .pp-title { margin-top: 14px; font-size: clamp(28px, 7.6vw, 34px); }
+  .pp-nick { margin-top: 10px; font-size: 16px; }
   .pp-cta { margin-top: 20px; }
   .pp-cta .btn { flex: 1 1 100%; }
   .pp-sub { margin-top: 12px; }
@@ -254,25 +189,25 @@
   .pp-tbl__table th, .pp-tbl__table td { padding: 10px 0; }
   .pp-tbl__table th { width: 48%; padding-right: 12px; }
 
-  .pp-about__text { font-size: 16px; padding: 20px; }
-  .pp-about__text p:first-child { font-size: 18px; }
-  .pp-about__fits { padding: 20px; }
-
-  .pp-parent { grid-template-columns: minmax(0, 42%) minmax(0, 1fr); }
-  .pp-parent__photo { aspect-ratio: 4 / 5; }
-  .pp-parent__txt { padding: 12px 10px 10px 16px; }
-  .pp-parent__name { margin-top: 10px; font-size: 22px; }
-  .pp-parent__breed { font-size: 14px; }
-  .pp-parent__facts { padding-top: 12px; gap: 5px; }
-  .pp-parent__facts li { min-height: 28px; padding: 4px 10px; font-size: 12.5px; }
-  .pp-parent__photo--ask { gap: 8px; padding: 12px; font-size: 12.5px; }
-  .pp-parent__askico { width: 44px; height: 44px; }
+  .pp-breed__text { font-size: 16px; padding: 20px; }
+  .pp-breed__text p:first-child { font-size: 18px; }
+  .pp-fits { gap: 10px; }
+  .pp-fit__title { margin: 12px 6px 0; font-size: 18px; }
+  .pp-fit__line { margin: 4px 6px 8px; font-size: 13.5px; }
 
   .pp-terms { grid-template-columns: minmax(0, 1fr); }
   .pp-term { padding: 20px; gap: 12px; }
   .pp-term .ico { width: 46px; height: 46px; }
   .pp-term__title { font-size: 24px; }
   .pp-term__list { font-size: 15px; }
+}
+
+/* «Кому подойдёт» на телефоне — одна карточка в ряд, как карточки щенков (клиент 19.10) */
+@media (max-width: 560px) {
+  .pp-fits { grid-template-columns: minmax(0, 1fr); gap: 12px; }
+  .pp-fit__photo { aspect-ratio: 1 / .86; }
+  .pp-fit__title { margin: 14px 10px 0; font-size: 22px; }
+  .pp-fit__line { margin: 6px 10px 12px; font-size: 15px; }
 }
 
 @media (max-width: 420px) {

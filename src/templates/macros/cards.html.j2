@@ -3,39 +3,38 @@
 {% import "macros/ui.html.j2" as ui %}
 
 {#- Puppy card — one card for the whole site (catalog, «Похожие щенки», every «Щенки в наличии» strip, hubs, comparisons).
-    p = puppies.json item (enriched by build.py). Two clear CTAs (client 13.10): «Смотреть щенка» → the puppy page,
-    «Узнать цену» → the shared modal prefilled with this puppy (main.js reads data-pup). The photo links to the page too
+    p = puppies.json item (enriched by build.py). Two CTAs (client 19.10): white «Узнать цену» → the shared modal
+    prefilled with this puppy (main.js reads data-pup), «Подробнее» with a white outline → the puppy page. The photo links to the page too
     (a duplicate link, out of the tab order); «В избранное» sits in the photo corner.
     Studio photo: the card takes that photo's measured backdrop (tools/photo-tones.json) unless the photo has
     "backdrop": "token". Lifestyle photo: object-fit cover, "pos" → object-position (default 50% 60%).
     Styles: main.css (.pup + .ct-card). Phones ≤ 560 px: a compact row — photo left, name and both buttons right.
     tag: heading tag of the name; eager=true: no lazy loading (cards on the first screen).
-    simple=true (breed pages v2, client 15.10): photo, name, «мальчик · кремовый» and one white «Узнать цену» — no age,
-    no «Смотреть щенка», no «В избранное», the photo and the name are not links. -#}
+    simple=true (breed pages v2, client 15.10): photo, name, «мальчик · кремовый» and the same two buttons — no age,
+    no «В избранное», the photo and the name are not links.
+    No status badge, dot or status text (client 19.10: the site shows no «забронирован» / «скоро»). -#}
 {% macro puppy_card(p, tag='h3', eager=false, simple=false) -%}
 {%- set t = photo_tone(p.photo.src) if p.photo.kind == 'studio' and p.photo.get('backdrop') != 'token' else none -%}
 {%- set studio = p.photo.kind == 'studio' -%}
 <article class="pup ct-card {{ p.tone_class }}{{ ' ct-card--studio' if studio else ' ct-card--life' }}{{ ' ct-card--simple' if simple }}"{% if t %} style="--tone:{{ t.top }};--tone-floor:{{ t.floor }}"{% endif %} data-pup data-slug="{{ p.slug }}" data-breed="{{ p.breed }}" data-name="{{ p.name }}" data-desc="{{ (p.breed_name ~ ' · ' ~ p.sex_label ~ ' · ' ~ p.colour) if simple else p.desc }}" data-img="{{ p.photo.src.rsplit('/', 1)[-1] }}">
   {% if simple %}<div class="pup__media ct-card__media{{ ' pup__media--studio' if studio }}">{% else %}<a class="pup__media ct-card__media{{ ' pup__media--studio' if studio }}" href="{{ p.url }}" tabindex="-1" aria-hidden="true">{% endif %}
     <img{% if p.photo['class'] %} class="{{ p.photo['class'] }}"{% endif %} src="{{ p.photo.src }}" alt="{{ p.photo.alt|typo }}" width="{{ p.photo.w }}" height="{{ p.photo.h }}"{% if p.photo.get('pos') %} style="object-position:{{ p.photo.pos }}"{% endif %}{% if not eager %} loading="lazy"{% endif %} decoding="async">
-    {% if p.status != 'available' %}
-    <span class="status"><span class="dot dot--{{ p.status_dot }}" aria-hidden="true"></span>{{ p.status_label|typo }}</span>
-    {% endif %}
   {% if simple %}</div>{% else %}</a>
   <button class="fav ct-card__fav" type="button" aria-pressed="false" aria-label="В избранное: {{ p.name }}">{{ ui.icon('heart') }}</button>{% endif %}
   <div class="pup__body ct-card__body">
     {% if simple %}
-    <{{ tag }} class="pup__name">{% if p.status == 'available' %}<span class="dot dot--ok" aria-hidden="true"></span>{% endif %}{{ p.name }}</{{ tag }}>
-    <p class="pup__meta">{{ p.sex_label|capitalize }} · {{ p.colour }}{% if p.status == 'available' %}<span class="sr-only"> · в&nbsp;наличии</span>{% else %}<span class="sr-only"> · {{ p.status_label|lower }}</span>{% endif %}</p>
+    <{{ tag }} class="pup__name">{{ p.name }}</{{ tag }}>
+    <p class="pup__meta">{{ p.sex_label|capitalize }} · {{ p.colour }}</p>
     <div class="ct-card__actions">
       <button class="btn btn--white ct-card__price" type="button" data-open-modal data-modal-kind="puppy" aria-label="Узнать цену: {{ p.name }}">Узнать цену</button>
+      <a class="btn btn--outline ct-card__more" href="{{ p.url }}" aria-label="Подробнее: {{ p.name }}">Подробнее</a>
     </div>
     {% else %}
-    <{{ tag }} class="pup__name">{% if p.status == 'available' %}<span class="dot dot--ok" aria-hidden="true"></span>{% endif %}<a href="{{ p.url }}">{{ p.name }}</a></{{ tag }}>
-    <p class="pup__meta">{% for m in p.meta.split(' · ') %}<span>{{ m }}{% if not loop.last %}&nbsp;·{% endif %}</span>{{ ' ' if not loop.last }}{% endfor %}{% if p.status == 'available' %}<span class="sr-only"> · в&nbsp;наличии</span>{% else %}<span class="sr-only"> · {{ p.status_label|lower }}</span>{% endif %}</p>
+    <{{ tag }} class="pup__name"><a href="{{ p.url }}">{{ p.name }}</a></{{ tag }}>
+    <p class="pup__meta">{% for m in p.meta.split(' · ') %}<span>{{ m }}{% if not loop.last %}&nbsp;·{% endif %}</span>{{ ' ' if not loop.last }}{% endfor %}</p>
     <div class="ct-card__actions">
-      <a class="btn btn--white ct-card__more" href="{{ p.url }}" aria-label="Смотреть щенка: {{ p.name }}">Смотреть щенка</a>
-      <button class="btn btn--ink" type="button" data-open-modal data-modal-kind="puppy" aria-label="Узнать цену: {{ p.name }}">Узнать цену</button>
+      <button class="btn btn--white ct-card__price" type="button" data-open-modal data-modal-kind="puppy" aria-label="Узнать цену: {{ p.name }}">Узнать цену</button>
+      <a class="btn btn--outline ct-card__more" href="{{ p.url }}" aria-label="Подробнее: {{ p.name }}">Подробнее</a>
     </div>
     {% endif %}
   </div>
@@ -48,9 +47,8 @@
 {% macro pups_section(title='Щенки в наличии', breed=none, limit=4, id='pups', exclude=none) -%}
 {%- set pool = (breed.puppies if breed else puppies)|rejectattr('slug', 'equalto', exclude)|sort(attribute='status_order')|list -%}
 {%- set list = pool[:limit] -%}
-{%- set total = (breed.puppies if breed else puppies)|length -%}
 <section class="section container" id="{{ id }}" aria-labelledby="{{ id }}-title">
-  {{ ui.section_head(title, id=id ~ '-title', link={'url': '/shchenki/' ~ ('?breed=' ~ breed.slug if breed else ''), 'label': 'Весь каталог — ' ~ total}) }}
+  {{ ui.section_head(title, id=id ~ '-title', link={'url': '/shchenki/', 'label': 'Весь каталог — ' ~ puppies|length}) }}
   {% if list %}
   <ul class="pups pups--strip" data-reveal="items">
     {% for p in list %}

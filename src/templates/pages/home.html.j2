@@ -103,15 +103,7 @@
     {{ media.video_reviews(reviews_home, title='Отзывы владельцев', id='otzyvy', photo=true) }}
 
     <!-- ================= КАК КУПИТЬ ================= -->
-    <section class="section container" id="kak-kupit" aria-labelledby="steps-title">
-      {% call ui.section_head('Как купить щенка', id='steps-title') %}{{ forms.price_button() }}{% endcall %}
-      {{ ui.steps([
-        {'title': 'Заявка', 'text': 'Оставьте номер — пришлём цену'},
-        {'title': 'Видеозвонок', 'text': 'Знакомитесь со щенком онлайн'},
-        {'title': 'Бронь', 'text': 'Договор и предоплата — щенок ваш'},
-        {'title': 'Встреча', 'text': 'Забираете сами или привезём'},
-      ]) }}
-    </section>
+    {{ blocks.how_to_buy() }}
 
     <!-- ================= ВОПРОСЫ ================= -->
     {{ blocks.faq_section(faq_items, title='Вопросы о покупке щенка') }}

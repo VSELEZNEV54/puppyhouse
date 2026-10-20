@@ -135,6 +135,8 @@ def _colour_pages(b, hub, colours):
                 f"щенки в наличии, видео и цена в течение рабочего дня.")
         if len(desc) > 160:   # без строки о редкости
             desc = f"{c['title']}: {str(c['short'] or '').lower()}. Фото и описание окраса, щенки в наличии, видео и цена в течение рабочего дня."
+        if len(desc) > 160:   # длинное название окраса: короче хвост
+            desc = f"{c['title']}: {str(c['short'] or '').lower()}. Фото окраса, щенки в наличии, цена в течение рабочего дня."
         out.append(dict(
             url=f"{b['urls']['hub']}{c['slug']}/",
             template="breeds/colour.html.j2",

@@ -1,4 +1,5 @@
-{#- Full-screen mobile menu (< 1100 px): every group of site.menu as an accordion, then contacts.
+{#- Full-screen mobile menu (< 1100 px): every group of site.menu as an accordion, then contacts
+    (site.contacts_ready = false: no phone and messengers, «Узнать цену» + «Оставить заявку»).
     The top bar (logo + close) never scrolls away: only .mmenu__scroll scrolls (client 15.10).
     main.js: [data-burger], #mmenu, .mmenu__acc (aria-controls → its list), [data-menu-close], [data-menu-link]. -#}
 {% import "macros/ui.html.j2" as ui %}
@@ -29,7 +30,7 @@
       </ul>
     </nav>
     <div class="mmenu__bottom">
-      {% if site.contacts_public %}
+      {% if site.contacts_ready %}
       <a class="mmenu__phone" href="{{ site.phone.tel }}">{{ site.phone.display }}<small>{{ site.phone.hours|typo }}</small></a>
       <div class="mmenu__msgs">
         {% for k in ('telegram', 'whatsapp', 'max') %}{% set m = site.messengers[k] %}
@@ -39,11 +40,10 @@
       </div>
       <a class="btn btn--tg btn--lg btn--block" href="{{ site.messengers.telegram.url }}" target="_blank" rel="noopener">{{ ui.icon('tg') }}{{ site.tg_cta.label }}</a>
       {% else %}
-      {% if site.email_public %}
+      {#- no phone and messengers yet (site.contacts_ready): the e-mail, «Узнать цену» + «Оставить заявку» -#}
       <a class="mmenu__phone mmenu__mail" href="{{ site.email_href }}">{{ site.email }}<small>Почта питомника · {{ site.phone.response|typo }}</small></a>
-      {% endif %}
-      {{ forms.request_button(cls='btn btn--ink btn--lg btn--block', place='мобильное меню') }}
       <button class="btn btn--white btn--lg btn--block" type="button" data-open-modal data-modal-kind="price">Узнать цену</button>
+      {{ ui.request_button(cls='btn btn--coral btn--lg btn--block', note='Мобильное меню') }}
       {% endif %}
     </div>
     </div>

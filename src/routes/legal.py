@@ -51,7 +51,7 @@ def routes(data):
             {"label": "Закон", "value": LAW.get(kind, "№ 152-ФЗ")},
             {"label": "Как дать", "value": "Отметка в форме"},
         ] + ([{"label": "Как отозвать", "value": "Письмо на " + data["site"]["email"]}]
-             if data["site"].get("email_public") else [])
+             if "[" not in data["site"].get("email", "[") else [])
         out.append(dict(
             url=doc["url"],
             template="legal/consent.html.j2",

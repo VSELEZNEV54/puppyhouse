@@ -74,12 +74,12 @@ def collect() -> dict:
     claimed = collections.defaultdict(set)
     pages = published()
     site = json.loads((DATA / "site.json").read_text(encoding="utf-8"))
-    hidden = not site.get("contacts_public", True)   # first stage: the kennel's contacts are not shown anywhere
+    hidden = not site.get("contacts_ready", True)   # first stage: the kennel's phone and messengers are not shown
     for fn, key, group, what, url in RULES:
         if not is_published(url, pages):
             group, what = "content", what + f" (страница {url} ещё не выложена)"
         elif group == "contacts" and hidden:
-            group, what = "content", what + " (на сайте не выводятся: site.json → contacts_public = false)"
+            group, what = "content", what + " (на сайте не выводятся: site.json → contacts_ready = false)"
         data = json.loads((DATA / fn).read_text(encoding="utf-8"))
         found: list[str] = []
         value = data.get(key)

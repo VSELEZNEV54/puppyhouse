@@ -71,7 +71,7 @@
                   {% for t in r.defaults %}<li data-reason-default><span class="cho-res__tick" aria-hidden="true">{{ ui.icon('check', sm=true) }}</span><span>{{ t|typo }}</span></li>{% endfor %}
                 </ul>
                 <div class="phero__actions">
-                  <a class="btn btn--ink btn--lg" href="/shchenki/?breed={{ b.slug }}">Смотреть щенков {{ ui.icon('arrow') }}</a>
+                  <a class="btn btn--ink btn--lg" href="{{ b.urls.hub }}#shchenki">Смотреть щенков {{ ui.icon('arrow') }}</a>
                   <button class="btn btn--white btn--lg" type="button" data-open-modal data-modal-kind="price" data-modal-breed="{{ b.slug }}" data-modal-sub="Пришлём щенков {{ b.name_gen }} в наличии с ценами и видео">Узнать цену</button>
                 </div>
               </div>

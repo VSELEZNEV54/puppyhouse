@@ -91,18 +91,17 @@ def organization(site: dict, conf: dict, imgsize) -> dict:
     street = site.get("address", {}).get("street")
     if not is_placeholder(street):
         org["address"]["streetAddress"] = street
-    contacts = site.get("contacts_public", True)
-    if (contacts or site.get("email_public")) and not is_placeholder(site.get("email")):
+    if not is_placeholder(site.get("email")):
         # the ASCII form (xn--…) of the address, as in the mailto: links: machine-read data
         org["email"] = (site.get("email_href") or "").removeprefix("mailto:") or site["email"]
-    if not contacts:  # first stage: no phone or messengers anywhere (site.json); the e-mail only with email_public
-        return org
-    tel = (site.get("phone") or {}).get("tel", "")
+    # contacts_ready = false: the number and messengers are not known yet — no telephone / sameAs
+    ready = site.get("contacts_ready", True)
+    tel = (site.get("phone") or {}).get("tel", "") if ready else ""
     if tel.startswith("tel:"):
         org["telephone"] = tel[4:]
     if conf.get("opening_hours"):
         org["openingHours"] = conf["opening_hours"]
-    same = [m.get("url") for m in (site.get("messengers") or {}).values() if isinstance(m, dict)]
+    same = [m.get("url") for m in (site.get("messengers") or {}).values() if isinstance(m, dict)] if ready else []
     same = [u for u in same if u and u.startswith("http") and not is_placeholder(u)]
     if same:
         org["sameAs"] = same

@@ -28,6 +28,12 @@
 <span class="ico{{ ' ico--sm' if sm }}" style="--c:var(--{{ color }})" aria-hidden="true">{{ icon(name, sm=sm) }}</span>
 {%- endmacro %}
 
+{#- «Оставить заявку»: opens the shared modal (kind lead). Stands where «Написать в Telegram» was while
+    site.contacts_ready is false (client 20.10). cls: 'btn btn--coral' (+ size); note: hidden note of the request. -#}
+{% macro request_button(cls='btn btn--coral', note='Оставить заявку') -%}
+<button class="{{ cls }}" type="button" data-open-modal data-modal-kind="lead" data-modal-title="Оставить заявку" data-modal-sub="Подберём щенка и&nbsp;пришлём фото, видео и&nbsp;цены" data-modal-note="{{ note }}" data-modal-submit="Оставить заявку">Оставить заявку</button>
+{%- endmacro %}
+
 {#- Underlined text link with an arrow glued to the last word: ui.text_link('/faq/', 'Все вопросы') -#}
 {% macro text_link(url, label) -%}
 {%- set words = label.rsplit(' ', 1) -%}
@@ -59,7 +65,9 @@
 
 {#- Section head: H2 (+ optional one-line lead) on the left, optional link on the right, caller() for extra buttons.
     ui.section_head('Щенки в наличии', id='pups-title', link={'url': '/shchenki/', 'label': 'Весь каталог'}) -#}
-{% macro section_head(title, id=none, link=none, lead=none) -%}
+{#- button=true: the link is a button (btn--ink — coral on the home, breed and puppy pages), like «Узнать цену»
+    in «Как купить щенка» (client 19.10, puppy pages); otherwise a text link with an arrow. -#}
+{% macro section_head(title, id=none, link=none, lead=none, button=false) -%}
 <div class="sec-head">
   {% if lead %}
   <div class="sec-head__txt">
@@ -69,8 +77,9 @@
   {% else %}
   <h2 class="h2"{% if id %} id="{{ id }}"{% endif %}>{{ title|typo }}</h2>
   {% endif %}
-  {{ text_link(link.url, link.label) if link else '' }}
-  {{ caller() if caller is defined else '' }}
+  {% if link and button %}<a class="btn btn--ink" href="{{ link.url }}">{{ link.label|typo }}</a>
+  {% else %}{{ text_link(link.url, link.label) if link else '' }}
+  {% endif %}{{ caller() if caller is defined else '' }}
 </div>
 {%- endmacro %}
 
@@ -177,7 +186,7 @@
     items: [{"icon", "color", "title", "line"}] — default site.advantages (привиты, ветпаспорт и договор, пожизненная
     гарантия, пожизненная консультация, видео до покупки, доставка). 3 per row on desktop (cols=2..6), one per row on phones.
     title → a whole section with H2 (id, lead, link); without title — just the list. -#}
-{% macro advantages(items=none, title=none, id='preimushchestva', lead=none, link=none, cols=3, tight=false) -%}
+{% macro advantages(items=none, title=none, id='preimushchestva', lead=none, link=none, cols=3, tight=false, button=false) -%}
 {%- set items = items or site.advantages -%}
 {%- set body -%}
 <ul class="advs advs--{{ cols }}">
@@ -192,7 +201,7 @@
 {%- endset -%}
 {% if title %}
 <section class="section{{ ' section--tight' if tight }} container" id="{{ id }}" aria-labelledby="{{ id }}-title">
-  {{ section_head(title, id=id ~ '-title', link=link, lead=lead) }}
+  {{ section_head(title, id=id ~ '-title', link=link, lead=lead, button=button) }}
   {{ body }}
 </section>
 {% else %}
@@ -201,7 +210,7 @@
 {%- endmacro %}
 
 {#- Lead band: sits right under a media carousel (or anywhere) — short question, one line, «Оставить заявку»
-    (opens the price modal with its own title / note) + «Написать в Telegram». Faces of the four breeds on the right;
+    (opens the price modal with its own title / note) + «Написать в Telegram» (only when site.contacts_ready). Faces of the four breeds on the right;
     faces=[{"src", "tone"}] → round faces of these studio photos instead (a breed page: its colours), faces=false → none.
     tag: 'h3' inside a section that already has its H2 (default), 'h2' + title_id when it is the section itself.
     kind: LeadKind sent to the API (video_call by default; waitlist for «по записи»); colour: colour slug; breed: slug to preselect. -#}
@@ -215,9 +224,7 @@
   {% elif faces %}<span class="lband__faces" aria-hidden="true">{% for f in faces %}<span class="face tone--{{ f.tone }}"><img src="{{ f.src }}" alt="" width="{{ imgsize(f.src)[0] }}" height="{{ imgsize(f.src)[1] }}" loading="lazy" decoding="async"></span>{% endfor %}</span>{% endif %}
   <div class="lband__actions">
     <button class="btn btn--ink btn--lg" type="button" data-open-modal data-modal-kind="{{ kind }}"{% if colour %} data-modal-colour="{{ colour }}"{% endif %}{% if breed %} data-modal-breed="{{ breed }}"{% endif %} data-modal-title="{{ modal_title }}" data-modal-sub="{{ line }}" data-modal-note="{{ note }}"{% if submit %} data-modal-submit="{{ submit }}"{% endif %}{% if done %} data-modal-done="{{ done }}"{% endif %}>{{ label|typo }}</button>
-    {% if site.contacts_public %}
-    <a class="btn btn--tg btn--lg" href="{{ site.messengers.telegram.url }}" target="_blank" rel="noopener">{{ icon('tg') }}{{ site.tg_cta.label }}</a>
-    {% endif %}
+    {% if site.contacts_ready %}<a class="btn btn--tg btn--lg" href="{{ site.messengers.telegram.url }}" target="_blank" rel="noopener">{{ icon('tg') }}{{ site.tg_cta.label }}</a>{% endif %}
   </div>
 </div>
 {%- endmacro %}
