@@ -210,6 +210,10 @@ main:focus, section[tabindex="-1"]:focus, [data-anchor-focus]:focus { outline: n
 :is(.page-home, .page-breed, .page-puppy) :is(.btn--ink, .mbar__btn--ink):not(.pup .btn) { background: var(--cta); color: var(--ink); }
 @media (hover: hover) { :is(.page-home, .page-breed, .page-puppy) :is(.btn--ink, .mbar__btn--ink):not(.pup .btn):hover { background: var(--cta-hover); color: var(--ink); } }
 .btn--white { background: #fff; color: var(--ink); border-color: var(--line-2); }
+/* ПРАВИЛО (клиент 19.10): кнопка в заголовке блока — всегда коралловая, на любой странице и в любом новом блоке:
+   «Получить консультацию», «Узнать цену», «Весь каталог», «Документы и гарантии»… Текстовые ссылки («Все статьи →») — как были */
+.sec-head .btn { background: var(--coral); color: var(--ink); border-color: transparent; }
+@media (hover: hover) { .sec-head .btn:hover { background: #F7805F; color: var(--ink); border-color: transparent; } }
 .btn--white:hover { border-color: var(--ink); }
 /* контурная: белая обводка без заливки — на цветной плитке рядом с белой кнопкой */
 .btn--outline { background: transparent; color: var(--ink); border: 1.5px solid #fff; }

@@ -2,7 +2,8 @@
 {% import "macros/ui.html.j2" as ui %}
 
 {#- Colour cards to scroll through (a [data-carousel] with data-align="start", main.js): studio photo → the colour page,
-    «Кремовый мальтипу», one line, «Подобрать кремового мальтипу» (modal with the colour) + «Подробнее» (the colour page).
+    «Кремовый мальтипу», one line, «Подобрать щенка» (client 19.10: short; the modal says «Подберём кремового мальтипу»
+    and carries the colour) + «Подробнее» (the colour page).
     items: breedsub.colour_items of the breed; b: the breed; label: aria-label of the carousel. -#}
 {% macro colour_carousel(items, b, label) -%}
 {%- set nc = items|length -%}
@@ -21,7 +22,7 @@
             <h3 class="brd-col__name"><a href="{{ url }}">{{ c.title|typo }}</a></h3>
             <p class="brd-col__text">{{ (c.short or c.text)|typo }}</p>
             <div class="brd-col__actions">
-              <button class="btn btn--ink brd-col__btn" type="button" data-open-modal data-modal-kind="colour" data-modal-colour="{{ c.slug }}" data-modal-breed="{{ b.name }}" data-modal-title="Подберём {{ c.pick }}" data-modal-sub="Пришлём щенков этого окраса с фото, видео и ценой. Нет сейчас — напишем, когда появятся" data-modal-note="Окрас: {{ c.label|lower }}" data-modal-submit="Подобрать щенка">Подобрать {{ c.pick|typo }}</button>
+              <button class="btn btn--ink brd-col__btn" type="button" data-open-modal data-modal-kind="colour" data-modal-colour="{{ c.slug }}" data-modal-breed="{{ b.name }}" data-modal-title="Подберём {{ c.pick }}" data-modal-sub="Пришлём щенков этого окраса с фото, видео и ценой. Нет сейчас — напишем, когда появятся" data-modal-note="Окрас: {{ c.label|lower }}" data-modal-submit="Подобрать щенка" aria-label="Подобрать щенка: {{ c.label|lower }} окрас">Подобрать щенка</button>
               <a class="btn btn--white brd-col__btn" href="{{ url }}" aria-label="Подробнее: {{ c.title }}">Подробнее</a>
             </div>
           </div>
