@@ -37,8 +37,13 @@
         </nav>
       </div>
       <div class="footer__legal">
-        <span>{{ site.footer.legal.requisites|typo }}</span>
-        <span>{{ site.footer.legal.offer|typo }} · <a href="{{ site.footer.legal.privacy.url }}">{{ site.footer.legal.privacy.label }}</a>{% for l in site.footer.legal.consents %} · <a href="{{ l.url }}">{{ l.label|typo }}</a>{% endfor %}</span>
+        <div class="footer__legal-text">
+          <span>{{ site.footer.legal.requisites|typo }}</span>
+          <span>{{ site.footer.legal.offer|typo }} · <a href="{{ site.footer.legal.privacy.url }}">{{ site.footer.legal.privacy.label }}</a>{% for l in site.footer.legal.consents %} · <a href="{{ l.url }}">{{ l.label|typo }}</a>{% endfor %}</span>
+        </div>
+        {#- studio credit (client 20.10): right of the requisites, the last line on phones -#}
+        {%- set cr = site.footer.credit %}
+        <a class="footer__credit" href="{{ cr.url }}" target="_blank" rel="noopener">{{ cr.label|typo }} <b>{{ cr.name }}</b></a>
       </div>
     </div>
   </footer>

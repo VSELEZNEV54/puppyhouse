@@ -1165,6 +1165,11 @@ legend.field__label { margin-bottom: 8px; }
   font-size: 13px; color: var(--muted);
 }
 .footer__legal a { color: var(--ink); }
+.footer__legal-text { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+/* подпись студии (20.10): справа внизу, приглушённая; название — тёмным, капителью с разрядкой */
+.footer__legal .footer__credit { align-self: flex-end; margin-left: auto; color: var(--muted); text-decoration: none; white-space: nowrap; transition: color .2s; }
+.footer__credit b { margin-left: 4px; font-weight: 600; letter-spacing: .14em; color: var(--ink); }
+.footer__legal .footer__credit:hover { color: var(--ink); }
 
 /* =========================================================
    ЛИПКАЯ ПАНЕЛЬ, МОДАЛКА, ТОСТ
@@ -1779,7 +1784,9 @@ legend.field__label { margin-bottom: 8px; }
 
   .footer__nav { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .footer__nav .fcol:last-child { grid-column: 1 / -1; }
-  .footer__legal { flex-direction: column; }
+  .footer__legal { flex-direction: column; gap: 14px; }
+  .footer__legal .footer__credit { align-self: flex-start; margin-left: 0; white-space: normal; }
+  .footer__credit b { white-space: nowrap; }
 
   /* модалка — шторка снизу */
   .modal {
