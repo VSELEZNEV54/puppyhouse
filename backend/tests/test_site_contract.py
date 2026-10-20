@@ -162,3 +162,15 @@ def test_published_pages_show_no_placeholders():
         text = " ".join([re.sub(r"<[^>]+>", " ", page), *_TEXT_ATTRS.findall(page), ld])
         found = sorted(set(_PLACEHOLDER.findall(html.unescape(text))))
         assert not found, f"{p.relative_to(REPO).as_posix()}: {found}"
+
+
+_META_TEXT = re.compile(r'<(?:meta (?:name|property)="(?:description|og:title|og:description|twitter:title|twitter:description)" '
+                        r'content="([^"]*)"|title>([^<]*)</title)')
+
+
+def test_titles_and_descriptions_carry_no_markup():
+    """Search snippets show the text as is: a <span class="nw"> from |typo would be printed literally."""
+    for p in PAGES:
+        for m in _META_TEXT.finditer(p.read_text(encoding="utf-8")):
+            val = html.unescape(m.group(1) if m.group(1) is not None else m.group(2))
+            assert "<" not in val and ">" not in val, f"{p.relative_to(REPO).as_posix()}: {val[:120]}"
