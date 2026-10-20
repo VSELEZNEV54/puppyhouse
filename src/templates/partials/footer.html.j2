@@ -43,7 +43,7 @@
         </div>
         {#- studio credit (client 20.10): right of the requisites, the last line on phones -#}
         {%- set cr = site.footer.credit %}
-        <a class="footer__credit" href="{{ cr.url }}" target="_blank" rel="noopener">{{ cr.label|typo }} <b>{{ cr.name }}</b></a>
+        <a class="footer__credit" href="{{ cr.url }}" target="_blank" rel="noopener">{{ (cr.label ~ ' — ' ~ cr.name)|typo }}</a>
       </div>
     </div>
   </footer>
