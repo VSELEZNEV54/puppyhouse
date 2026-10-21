@@ -37,11 +37,15 @@
 .tr-feat__line { margin-top: 8px; font-size: 15px; line-height: 1.45; color: var(--muted); max-width: 36ch; }
 
 /* =========================================================
-   ОТЗЫВЫ — рейтинги, «Оставить отзыв», фильтр, карточки
+   ОТЗЫВЫ — рейтинги (сразу под шапкой, цифры крупные), «Оставить отзыв», карточки с фото как на главной
    ========================================================= */
-.tr-rate { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 1fr); gap: var(--gap); margin-bottom: clamp(32px, 3.4vw, 52px); }
+.tr-rate-sec { margin-top: clamp(14px, 1.4vw, 20px); }
+.tr-rate { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 1fr); gap: var(--gap); }
 .tr-rate .ratings { grid-template-rows: none; grid-template-columns: repeat(3, minmax(0, 1fr)); }
-@media (min-width: 761px) { .tr-rate .rating { padding: 20px 26px; } } /* на телефоне — компактные отступы из main.css */
+.tr-rate .rating__num { font-size: clamp(44px, 4.4vw, 64px); }
+.tr-rate .rating__txt { gap: 6px; font-size: 15px; }
+.tr-rate .rating .stars .i { width: 17px; height: 17px; }
+@media (min-width: 761px) { .tr-rate .rating { gap: 20px; padding: 22px 28px; } } /* на телефоне — компактные отступы из main.css */
 .tr-write {
   display: flex; flex-direction: column; align-items: flex-start; gap: 4px;
   padding: 20px 24px; border-radius: var(--r-tile);
@@ -51,9 +55,17 @@
 .tr-write__line { font-size: 14px; line-height: 1.4; color: var(--ink-soft); }
 .tr-write .btn { margin-top: 12px; }
 
-.tr-filter { display: flex; align-items: center; justify-content: space-between; gap: 10px 24px; margin-bottom: 18px; }
-.tr-filter .chips { margin-bottom: 0; min-width: 0; }
-.tr-filter__count { font-size: 15px; font-weight: 500; white-space: nowrap; }
+.tr-rvws-sec { margin-top: clamp(28px, 3vw, 44px); }
+/* карточки ряда — одной высоты, подпись автора прижата к низу */
+.tr-rvws { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--gap); }
+.tr-rvws > li { min-width: 0; display: flex; }
+.tr-rvws .rvw { width: 100%; }
+.tr-rvws .rvw__body { flex: 1; }
+.tr-rvws .rvw__who { margin-top: auto; }
+.tr-rvws__foot { display: flex; justify-content: center; margin-top: clamp(24px, 3vw, 40px); }
+
+/* «Щенки в наличии» — 8 карточек; при трёх в ряд — 6, чтобы ряды были полными */
+@media (min-width: 901px) and (max-width: 1199px) { .tr-pups > .pups__item:nth-child(n + 7) { display: none; } }
 
 
 /* модалка «Оставить отзыв»: звёзды-оценка и поле отзыва */
@@ -211,6 +223,7 @@
 }
 
 @media (max-width: 1000px) {
+  .tr-rvws { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .tr-health__media { min-height: 0; aspect-ratio: 16 / 9; }
 }
 
@@ -219,9 +232,6 @@
   .tr-hero__tile { grid-template-columns: minmax(0, 1fr); gap: 0; min-height: 0; padding: var(--inset); }
   .tr-hero__media { order: -1; aspect-ratio: 16 / 9; }
   .tr-hero__copy { padding: clamp(18px, 3vw, 28px) clamp(12px, 3vw, 28px) clamp(12px, 2vw, 20px); }
-  .tr-filter { display: grid; grid-template-columns: minmax(0, 1fr); gap: 4px; }
-  .tr-filter .chips { margin-bottom: 0; }
-  .tr-filter__count { padding: 0 4px; font-size: 14px; color: var(--muted); }
 }
 
 @media (max-width: 760px) {
@@ -244,7 +254,12 @@
   .tr-feat__title { margin-top: 0; font-size: 19px; align-self: end; }
   .tr-feat__line { margin-top: 0; font-size: 14.5px; }
 
-  .tr-rate { margin-bottom: 28px; }
+  .tr-rate .rating__num { font-size: 34px; }
+  .tr-rate .rating__txt { font-size: 13px; }
+  .tr-rate .rating .stars .i { width: 13px; height: 13px; }
+  .tr-rvws { grid-template-columns: minmax(0, 1fr); gap: 12px; }
+  .tr-rvws__foot { margin-top: 14px; }
+  .tr-rvws__foot .btn { width: 100%; }
   .tr-write { display: grid; grid-template-columns: minmax(0, 1fr); gap: 2px; padding: 18px 20px 20px; }
   .tr-write .btn { margin: 12px 0 0; width: 100%; }
 

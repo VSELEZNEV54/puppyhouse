@@ -1,5 +1,5 @@
-/* домщенков.рф — /otzyvy/: фильтр отзывов по породе и модалка «Оставить отзыв».
-   Фильтр: [data-rf] → кнопки [data-rf-value], список [data-rf-list] > li[data-breed]. Состояние в адресе: ?breed=maltipu.
+/* домщенков.рф — /otzyvy/: «Показать ещё отзывы» и модалка «Оставить отзыв».
+   Отзывы: [data-rvw-grid] > li — сначала 12 (на телефоне 6), кнопка [data-rvw-grid-more] открывает остальные.
    Модалка: любая кнопка [data-rv-open] открывает #review-modal. Форма #review-form: два отдельных согласия (обработка
    данных и публикация, 152-ФЗ); в рабочем режиме (window.DSH.live, main.js) — POST {api}/reviews через общую очередь
    и повторы main.js, в прототипе — «отправка» без сервера, как раньше. */
@@ -11,59 +11,23 @@
   const $$ = (sel, ctx = d) => Array.from(ctx.querySelectorAll(sel));
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  const plural = (n, one, few, many) => {
-    const a = Math.abs(n) % 100, b = a % 10;
-    if (a > 10 && a < 20) return many;
-    if (b > 1 && b < 5) return few;
-    if (b === 1) return one;
-    return many;
-  };
-
-  /* ---------- фильтр отзывов ---------- */
-  const root = $('[data-rf]');
-  if (root) {
-    const buttons = $$('[data-rf-value]', root);
-    const list = $('[data-rf-list]', root);
-    const items = $$('[data-rf-list] > li[data-breed]', root);
-    const count = $('[data-rf-count]', root);
-    const status = $('[data-rf-status]', root);
-    const empty = $('[data-rf-empty]', root);
-    const allowed = buttons.map((b) => b.dataset.rfValue);
-
-    const readUrl = () => {
-      const v = new URLSearchParams(location.search).get('breed');
-      return v && allowed.includes(v) ? v : 'all';
-    };
-    const writeUrl = (v) => {
-      if (!history.replaceState) return;
-      const q = new URLSearchParams(location.search);
-      if (v === 'all') q.delete('breed'); else q.set('breed', v);
-      const qs = q.toString();
-      history.replaceState(null, '', location.pathname + (qs ? '?' + qs : '') + location.hash);
-    };
-
-    const apply = (value, announce) => {
-      let visible = 0;
-      buttons.forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.rfValue === value)));
-      items.forEach((li) => {
-        const show = value === 'all' || li.dataset.breed === value;
-        li.hidden = !show;
-        if (show) visible++;
+  /* ---------- отзывы: первые 12 (телефон — 6), остальные по кнопке; без JS видны все ---------- */
+  const grid = $('[data-rvw-grid]');
+  const more = $('[data-rvw-grid-more]');
+  if (grid && more) {
+    const first = window.matchMedia('(max-width: 760px)').matches ? 6 : 12;
+    const rest = $$(':scope > li', grid).slice(first);
+    if (rest.length) {
+      rest.forEach((li) => { li.hidden = true; });
+      more.hidden = false;
+      more.addEventListener('click', () => {
+        rest.forEach((li) => { li.hidden = false; });
+        if (window.DSH && window.DSH.foldReviews) rest.forEach((li) => window.DSH.foldReviews(li));
+        more.parentElement.hidden = true;
+        const b = $('button', rest[0]);
+        b && b.focus({ preventScroll: true });
       });
-      list.hidden = visible === 0;
-      if (empty) empty.hidden = visible > 0;
-      const text = visible + ' ' + plural(visible, 'отзыв', 'отзыва', 'отзывов');
-      if (count) count.textContent = text;
-      if (announce && status) status.textContent = visible ? 'Показано: ' + text : 'Отзывов о такой породе пока нет';
-      writeUrl(value);
-    };
-
-    buttons.forEach((b) => b.addEventListener('click', () => apply(b.dataset.rfValue, true)));
-    $$('[data-rf-reset]', root).forEach((r) => r.addEventListener('click', () => {
-      apply('all', true);
-      if (buttons[0]) buttons[0].focus();
-    }));
-    apply(readUrl(), false);
+    }
   }
 
   /* ---------- модалка «Оставить отзыв» ---------- */

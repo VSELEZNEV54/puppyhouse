@@ -1,8 +1,13 @@
-{#- /otzyvy/ — all reviews with a breed filter and the «Оставить отзыв» modal (assets/js/trust.js: POST {api}/reviews in
-    live mode — two separate consents: processing + publication, data/consent.json).
-    Context (routes/trust.py): pg (data/trust.json → otzyvy), reviews (reviews.json), review_breeds (breeds with reviews). -#}
+{#- /otzyvy/ — the owners' photo reviews of the homepage (client 21.10: no breed filter, same cards with the real photos)
+    and the «Оставить отзыв» modal (assets/js/trust.js: POST {api}/reviews in live mode — two separate consents:
+    processing + publication, data/consent.json). Main buttons are coral, as on the homepage (body .page-reviews).
+    Order: hero → ratings + «Ваш щенок от нас?» → reviews (12, «Показать ещё отзывы» opens the rest) → «Почему нам
+    доверяют» → «Щенки в наличии» (8 cards of /shchenki/, as on the homepage, + «Весь каталог») → articles → lead form.
+    Context (routes/trust.py): pg (data/trust.json → otzyvy), reviews (home.json → reviews_home), catalog (8 puppies). -#}
 {% extends "layouts/page.html.j2" %}
 {% import "trust/_parts.html.j2" as tr %}
+
+{% block body_attrs %} class="page-reviews"{% endblock %}
 
 {% block page_css %}
   <link rel="stylesheet" href="/assets/css/trust.css">
@@ -20,8 +25,9 @@
 {% endblock %}
 
 {% block body %}
-    <section class="section section--tight container" id="vse-otzyvy" aria-labelledby="vse-otzyvy-title" data-rf>
-      <h2 class="sr-only" id="vse-otzyvy-title">Все отзывы</h2>
+    <!-- ================= РЕЙТИНГ + «ВАШ ЩЕНОК ОТ НАС?» ================= -->
+    <section class="section container tr-rate-sec" id="rejting" aria-labelledby="rejting-title">
+      <h2 class="sr-only" id="rejting-title">Рейтинг питомника</h2>
       <div class="tr-rate">
         {{ cards.ratings() }}
         <div class="tr-write tone--lilac">
@@ -30,36 +36,39 @@
           <button class="btn btn--ink" type="button" data-rv-open>{{ pg.write.label }}</button>
         </div>
       </div>
+    </section>
 
-      <div class="tr-filter">
-        <div class="chips" role="group" aria-label="Порода">
-          <button class="chip" type="button" data-rf-value="all" aria-pressed="true">Все</button>
-          {% for b in review_breeds %}
-          <button class="chip" type="button" data-rf-value="{{ b.slug }}" aria-pressed="false"><span class="chip__dot {{ b.tone_class }}" aria-hidden="true"></span>{{ b.name }}</button>
-          {% endfor %}
-        </div>
-        <p class="tr-filter__count" data-rf-count>{{ reviews|length }}&nbsp;{{ reviews|length|plural('отзыв', 'отзыва', 'отзывов') }}</p>
-      </div>
-      <p class="sr-only" role="status" aria-live="polite" data-rf-status></p>
-
-      <ul class="vrev-grid" data-rf-list>
+    <!-- ================= ОТЗЫВЫ — те же карточки с фото, что на главной ================= -->
+    {#- 12 карточек (на телефоне 6), «Показать ещё отзывы» открывает остальные (trust.js); без JS видны все -#}
+    <section class="section container tr-rvws-sec" id="vse-otzyvy" aria-labelledby="vse-otzyvy-title">
+      <h2 class="sr-only" id="vse-otzyvy-title">Отзывы владельцев</h2>
+      <ul class="tr-rvws" data-rvw-grid>
         {% for r in reviews %}
-        <li data-breed="{{ r.breed }}">
-          {{ media.video_review_card(r, full=true)|indent(10) }}
+        <li>
+          {{ media.photo_review_card(r)|indent(10) }}
         </li>
         {% endfor %}
       </ul>
-
-      {% call ui.empty_state('Отзывов о такой породе пока нет', 'Посмотрите отзывы о других породах или спросите куратора — дадим контакты владельцев.', button=none, attrs='data-rf-empty hidden') %}
-      <button class="btn btn--ink" type="button" data-rf-reset>Показать все отзывы</button>
-      {% endcall %}
+      <div class="tr-rvws__foot">
+        <button class="btn btn--white btn--lg" type="button" data-rvw-grid-more hidden>{{ pg.more }}</button>
+      </div>
     </section>
 
     {{ ui.advantages(title='Почему нам доверяют', link={'url': '/dokumenty-i-garantii/', 'label': 'Документы и гарантии'}) }}
 
-    <section class="section container" id="eshchyo" aria-labelledby="eshchyo-title">
-      {{ ui.section_head(pg.links_title, id='eshchyo-title') }}
-      {{ ui.link_tiles(pg.links) }}
+    <!-- ================= ЩЕНКИ В НАЛИЧИИ — как каталог на главной: карточки и кнопка под сеткой ================= -->
+    <section class="section container" id="pups" aria-labelledby="pups-title">
+      {{ ui.section_head('Щенки в наличии', id='pups-title') }}
+      <ul class="pups hm-pups tr-pups" data-reveal="items">
+        {% for p in catalog %}
+        <li class="pups__item">
+          {{ cards.puppy_card(p) }}
+        </li>
+        {% endfor %}
+      </ul>
+      <div class="hm-pups__foot">
+        <a class="btn btn--ink btn--lg" href="/shchenki/">Весь каталог {{ ui.icon('arrow') }}</a>
+      </div>
     </section>
 {% endblock %}
 

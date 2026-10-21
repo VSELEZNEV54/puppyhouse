@@ -1,13 +1,14 @@
 """Trust pages: /o-pitomnike/, /otzyvy/, /dokumenty-i-garantii/.
 Owns: src/templates/trust/, src/data/trust.json (copy), assets/css/trust.css, assets/js/trust.js
-(review filter + «Оставить отзыв» modal on /otzyvy/).
+(«Показать ещё отзывы» + «Оставить отзыв» modal on /otzyvy/).
 Client 21.10: /vypuskniki/ is gone — the graduates (owners' photo reviews, as on the homepage) are a block of
-«О питомнике» (/o-pitomnike/), the page about the kennel itself."""
+«О питомнике» (/o-pitomnike/), the page about the kennel itself. /otzyvy/ shows the same photo reviews, no breed filter."""
 
 from _lib import by_id, crumbs, sort_puppies
 from blog import rich
 
 ABOUT_PUPS = 8  # «Каталог щенков» on /o-pitomnike/: 4 / 2 per row — full rows (3 per row: the first 6, trust.css)
+OTZ_PUPS = 8  # «Щенки в наличии» on /otzyvy/: the first puppies of /shchenki/, as on the homepage
 
 
 def _faq(items, faq):
@@ -24,9 +25,6 @@ def routes(data):
     about_seo = dict(about["seo"], blocks=[dict(b, p=rich(b["p"])) for b in about["seo"]["blocks"]])
 
     otz = t["otzyvy"]
-    reviews = data["reviews"]
-    # filter chips: only breeds that have reviews, in breeds.json order
-    review_breeds = [b for b in data["breeds"] if any(r["breed"] == b["slug"] for r in reviews)]
 
     dok = t["dokumenty"]
     groups = {
@@ -63,8 +61,10 @@ def routes(data):
                 description=otz["description"],
                 breadcrumbs=crumbs(("Отзывы", None)),
                 pg=otz,
-                reviews=reviews,
-                review_breeds=review_breeds,
+                # the owners' photo reviews of the homepage (home.json → reviews_home), all of them
+                reviews=data["home"]["reviews_home"],
+                catalog=sort_puppies(data["puppies"])[:OTZ_PUPS],
+                pups_strip=False,      # the template places «Щенки в наличии» itself, right after the advantages
             ),
         ),
         dict(
