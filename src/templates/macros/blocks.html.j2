@@ -102,28 +102,20 @@
     slugs: blog slugs in order (default: the first `limit` of data.blog), or posts: ready dicts
     [{"url", "title", "line", "cover": {"src", "alt", "pos"?}, "topic"}]. 3 per row on desktop (4 posts → 4),
     a compact list on phones (thumbnail left, text right). title → section with H2; without title — just the list. -#}
-{#- «Полезные статьи» before the lead form of every inner page (client 19.10, layouts/page.html.j2 → block blog):
-    3 articles — the page's breed first (breed = slug), then the general ones, then the rest. -#}
-{% macro reading(breed=none, limit=3) -%}
-{%- set own = (data.blog|selectattr('breed', 'equalto', breed)|list) if breed else [] -%}
-{%- set general = data.blog|selectattr('breed', 'none')|list -%}
-{%- set others = data.blog|rejectattr('breed', 'none')|rejectattr('breed', 'equalto', breed)|list -%}
-{%- set slugs = ((own + general + others)|map(attribute='slug')|list)[:limit] -%}
-{{ blog_teasers(slugs=slugs, title='Полезные статьи', id='poleznoe', lead='Характер, уход и выбор щенка: коротко и по делу', limit=limit) }}
-{%- endmacro %}
-
 {#- «Читайте также» (client 21.10): one block instead of «Полезные статьи» + «Ещё о …» / «Читайте также» on every
-    page of a breed — the articles first (3 in a row, the breed's own first, as in reading()), then four plates of the
+    page of a breed — the articles first (3 in a row, the breed's own first, then the general ones), then four plates of the
     breed's sections under them, the same everywhere: the breed page · its price page OR its varieties page
     (interchangeable: alt='varieties' on the price page, the price page everywhere else) · the puppy catalog · the
-    breed quiz. Put it after the FAQ (or into {% block blog %}); the layout's «Полезные статьи» must not repeat it.
+    breed quiz. Put it after the FAQ (or into {% block blog %}); the layout's default block blog is this macro too.
     b: breeds.json item; none on a page about all breeds (/faq/, /dokumenty-i-garantii/) — then the plates are the
     first four of: the catalog, the quiz, «Документы и гарантии», «Доставка», «Вопросы и ответы», without the page
-    itself (here = its url). -#}
-{% macro read_more(b=none, alt='price', title='Читайте также', id='eshche', limit=3, here=none) -%}
-{%- set own = (data.blog|selectattr('breed', 'equalto', b.slug)|list) if b else [] -%}
-{%- set general = data.blog|selectattr('breed', 'none')|list -%}
-{%- set others = data.blog|rejectattr('breed', 'none')|rejectattr('breed', 'equalto', b.slug if b else none)|list -%}
+    itself (here = its url). The layout puts it on every page by default (client 21.10: the same blocks everywhere).
+    skip: an article's slug not to offer (the article itself). -#}
+{% macro read_more(b=none, alt='price', title='Читайте также', id='eshche', limit=3, here=none, skip=none) -%}
+{%- set pool = data.blog|rejectattr('slug', 'equalto', skip)|list -%}
+{%- set own = (pool|selectattr('breed', 'equalto', b.slug)|list) if b else [] -%}
+{%- set general = pool|selectattr('breed', 'none')|list -%}
+{%- set others = pool|rejectattr('breed', 'none')|rejectattr('breed', 'equalto', b.slug if b else none)|list -%}
 {%- set slugs = ((own + general + others)|map(attribute='slug')|list)[:limit] -%}
 {%- set catalog = {'url': '/shchenki/', 'title': 'Каталог щенков', 'line': 'Все щенки в наличии — ' ~ puppies|length, 'icon': 'paw', 'color': 'coral'} -%}
 {%- set quiz = {'url': '/podbor-porody/', 'title': 'Подобрать породу', 'line': 'Тест на 2 минуты', 'icon': 'sparkle', 'color': 'lilac'} -%}

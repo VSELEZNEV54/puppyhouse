@@ -10,13 +10,12 @@
 
 {#- Article card. c: card dict from routes/blog.py (url, title, line, topic, read, cover, studio, tone_class, style).
     A studio cover stands on the card «floor» in its measured colours (like the puppy card); a lifestyle cover sits
-    inside the tile with an inset and a 20 px radius. row=true: photo left, text right (related articles).
-    eager=true: the card is on the first screen (no lazy loading). -#}
-{% macro card(c, row=false, eager=false) -%}
+    inside the tile with an inset and a 20 px radius. eager=true: the card is on the first screen (no lazy loading). -#}
+{% macro card(c, eager=false) -%}
 {%- set size = imgsize(c.cover.src) -%}
-{#- studio cover: --tone / --tone-floor for the card, + the full measurement for the wide (row) layout -#}
+{#- studio cover: --tone / --tone-floor for the card -#}
 {%- set st = (c.style ~ ';' ~ tone_style(c.cover.src)) if c.studio else '' -%}
-<article class="blg-card {{ c.tone_class }}{{ ' blg-card--row' if row }}{{ ' blg-card--studio' if c.studio }}"{% if st %} style="{{ st }}"{% endif %}>
+<article class="blg-card {{ c.tone_class }}{{ ' blg-card--studio' if c.studio }}"{% if st %} style="{{ st }}"{% endif %}>
   <div class="blg-card__media{{ ' blg-card__media--studio' if c.studio }}">
     <img src="{{ c.cover.src }}" alt="{{ c.cover.alt|typo }}" width="{{ size[0] }}" height="{{ size[1] }}"{% if c.cover.pos is defined and c.cover.pos %} style="object-position:{{ c.cover.pos }}"{% endif %}{% if not eager %} loading="lazy"{% endif %} decoding="async">
     <span class="blg-card__topic">{{ c.topic }}</span>

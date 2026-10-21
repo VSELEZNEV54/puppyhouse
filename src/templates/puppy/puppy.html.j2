@@ -1,7 +1,7 @@
 {#- /shchenki/<slug>/ — puppy page (layout of 13.10, client notes 19.10). Context from routes/puppy.py:
     p (puppy), b (its breed), h1 (colour + breed + generation + sex, no nickname), rows (characteristics table), docs,
     docs_note, colour_note, gallery (the puppy's own photos and video only), includes, intro + facts («Про <породу>»),
-    fits («Кому подойдёт», photo cards), more («Читайте о породе» tiles), booking, delivery, similar,
+    fits («Кому подойдёт», photo cards), more («Читайте о породе» tiles), booking, delivery,
     faq_items, lead_line. No status badges and no parents block (client 19.10).
     Order: hero → «Как купить щенка» → «Похожие щенки» → «Кому подойдёт» → «Что входит» → «Бронь и доставка» →
     «Про <породу>» with the facts and «Читайте о породе» → «Частые вопросы» → lead form. Links in block heads and
@@ -10,7 +10,6 @@
     one photo — no arrows, counter or thumbnails.
     Hero CTAs: coral «Узнать цену» (body.page-puppy) + «Связаться в Telegram», the same for every status. -#}
 {% extends "layouts/page.html.j2" %}
-{% import "catalog/_card.html.j2" as ct %}
 
 {% block page_css %}
   <link rel="stylesheet" href="/assets/css/puppy.css">
@@ -98,14 +97,8 @@
 {% block body %}
     {{ blocks.how_to_buy() }}
 
-    <section class="section container" id="pohozhie" aria-labelledby="pohozhie-title">
-      {{ ui.section_head('Похожие щенки', id='pohozhie-title', link={'url': '/shchenki/', 'label': 'Весь каталог — ' ~ puppies|length}, button=true) }}
-      {% if similar %}
-      {{ ct.strip(similar, breed=b) }}
-      {% else %}
-      {{ ui.empty_state('Других щенков этой породы сейчас нет', 'Оставьте заявку — напишем, когда появится новый помёт.') }}
-      {% endif %}
-    </section>
+    {#- «Похожие щенки» — the standard 8-card block (client 21.10): the breed's other puppies, «Все щенки <породы>» -#}
+    {{ cards.pups_std(breed=b, exclude=[p.slug], title='Похожие щенки', id='pohozhie') }}
 
     <section class="section container" id="komu-podojdet" aria-labelledby="komu-podojdet-title">
       {{ ui.section_head('Кому подойдёт ' ~ b.name|lower, id='komu-podojdet-title') }}

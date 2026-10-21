@@ -40,34 +40,6 @@
 </article>
 {%- endmacro %}
 
-{#- «Щенки в наличии» section for inner pages: up to `limit` cards (available first) and a link to the catalog.
-    breed: breeds.json item → only that breed, link to the filtered catalog. Grid: 4 / 3 / 2 columns, one per row ≤ 560 px.
-    .pups--strip: at 3 columns (901–1199 px) a 4th card that would sit alone in the second row is hidden (pages.css). -#}
-{% macro pups_section(title='Щенки в наличии', breed=none, limit=4, id='pups', exclude=none) -%}
-{%- set pool = (breed.puppies if breed else puppies)|rejectattr('slug', 'equalto', exclude)|sort(attribute='status_order')|list -%}
-{%- set list = pool[:limit] -%}
-<section class="section container" id="{{ id }}" aria-labelledby="{{ id }}-title">
-  {{ ui.section_head(title, id=id ~ '-title', link={'url': '/shchenki/', 'label': 'Весь каталог — ' ~ puppies|length}) }}
-  {% if list %}
-  <ul class="pups pups--strip" data-reveal="items">
-    {% for p in list %}
-    <li class="pups__item">
-      {{ puppy_card(p) }}
-    </li>
-    {% endfor %}
-    {% if list|length < limit %}
-    {%- set n = list|length %}
-    <li class="pups__more pups__more--fill" style="--s4:{{ 4 - n % 4 }};--s3:{{ 3 - n % 3 }};--s2:{{ 2 - n % 2 }}">
-      {{ soon_tile(breed=breed) }}
-    </li>
-    {% endif %}
-  </ul>
-  {% else %}
-  {{ ui.empty_state('Сейчас щенков нет в наличии', 'Оставьте заявку — напишем, когда появится новый помёт.') }}
-  {% endif %}
-</section>
-{%- endmacro %}
-
 {#- «Щенки в наличии» as on the homepage (client 21.10): 8 cards — 4 / 2 per row; at three per row the first 6
     (main.css .hm-pups--8), so every row is full — and the catalog button under them. items: puppies
     (_lib.mixed_puppies on a page about all breeds). -#}
@@ -82,9 +54,27 @@
     {% endfor %}
   </ul>
   <div class="hm-pups__foot">
-    <a class="btn btn--ink btn--lg" href="{{ url }}">{{ label|typo }} {{ ui.icon('arrow') }}</a>
+    <a class="btn btn--ink btn--lg" href="{{ url }}"><span>{{ label|typo }}</span> {{ ui.icon('arrow') }}</a>
   </div>
 </section>
+{%- endmacro %}
+
+{#- The standard «Щенки в наличии» block of every page (client 21.10: the same blocks on all pages) — pups_grid with
+    8 cards. breed (breeds.json item): its puppies, «Щенки <породы> в наличии» and «Все щенки <породы>» → the breed
+    page's #shchenki; none: two puppies of every breed (each row of four shows all four breeds, as
+    _lib.mixed_puppies) and «Весь каталог». exclude: slugs not to repeat (the puppy of the page, the colour's puppies
+    shown above); title: own heading (e.g. «Похожие щенки»). -#}
+{% macro pups_std(breed=none, exclude=[], title=none, id='pups') -%}
+{%- if breed -%}
+{%- set items = (breed.puppies|rejectattr('slug', 'in', exclude)|sort(attribute='status_order')|list)[:8] -%}
+{{ pups_grid(items, title=title or ui.nohyph('Щенки ' ~ breed.name_plural_gen ~ ' в наличии'), id=id, url=breed.urls.hub ~ '#shchenki', label=ui.nohyph('Все щенки ' ~ breed.name_plural_gen)) }}
+{%- else -%}
+{%- set per = [] -%}
+{%- for b in breeds %}{% set _ = per.append(b.puppies|rejectattr('slug', 'in', exclude)|sort(attribute='status_order')|list) %}{% endfor -%}
+{%- set items = [] -%}
+{%- for i in range(2) %}{% for l in per %}{% if l|length > i %}{% set _ = items.append(l[i]) %}{% endif %}{% endfor %}{% endfor -%}
+{{ pups_grid(items, title=title or 'Щенки в наличии', id=id) }}
+{%- endif -%}
 {%- endmacro %}
 
 {#- «Ждёте другого щенка?» tile: fills the rest of a puppy row, opens the modal as a waiting-list request

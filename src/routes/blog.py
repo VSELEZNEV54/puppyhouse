@@ -246,7 +246,6 @@ def routes(data):
                                                           if breed else dict(url="/shchenki/", label="Смотреть щенков")),
                              second=cta.get("second") or (dict(url=breed["urls"]["hub"] + "#shchenki",
                                                                label="Щенки в наличии") if breed else None)),
-                    related=[cards[s] for s in post["related"]],
                 ),
                 hero_photo=dict(src=hero["src"], alt=hero["alt"]) if hero else None,  # size: imgsize() in the template
                 # a landscape hero (four breeds in a row) takes the wide-photo hero of /o-pitomnike/

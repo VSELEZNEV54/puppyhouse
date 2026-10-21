@@ -5,7 +5,8 @@
     Order: hero (the homepage photo of the four breeds; 9 лет / по всей России / средний рейтинг 4,9 из 5) → «Кто мы»
     (text + three numbers) → «Почему нам доверяют» (eight photo cards, the puppy-card look) → «Породы щенков питомника»
     and «Каталог щенков» exactly as on the homepage (8 cards + «Перейти в каталог») → «Наши выпускники» (ratings on
-    Яндекс / Google / Авито + photo reviews) → FAQ about the kennel → more about the kennel → SEO text → lead form. -#}
+    Яндекс / Google / Авито + photo reviews) → FAQ about the kennel → «Читайте также» (blocks.read_more: articles +
+    four plates, the standard block of every page, client 21.10; instead of «Ещё о питомнике») → SEO text → lead form. -#}
 {% extends "layouts/page.html.j2" %}
 
 {% block body_attrs %} class="page-about"{% endblock %}
@@ -80,11 +81,8 @@
     <!-- ================= ВОПРОСЫ О ПИТОМНИКЕ ================= -->
     {{ blocks.faq_section(faq_items, title=pg.faq_title) }}
 
-    <!-- ================= ЕЩЁ О ПИТОМНИКЕ ================= -->
-    <section class="section container" id="eshchyo" aria-labelledby="eshchyo-title">
-      {{ ui.section_head(pg.links_title, id='eshchyo-title') }}
-      {{ ui.link_tiles(pg.links) }}
-    </section>
+    <!-- ================= ЧИТАЙТЕ ТАКЖЕ — стандартный блок всех страниц (правка 21.10) ================= -->
+    {{ blocks.read_more(here=page.url) }}
 
 {% endblock %}
 

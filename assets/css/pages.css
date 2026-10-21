@@ -457,11 +457,6 @@ a.stile:hover .stile__photo img { transform: scale(1.04); }
   .steps--5 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }
 
-/* лента «Щенки в наличии» (cards.pups_section) в три колонки: четвёртая карточка не остаётся одна во втором ряду */
-@media (min-width: 901px) and (max-width: 1199px) {
-  .pups--strip > .pups__item:nth-child(4):last-child { display: none; }
-}
-
 @media (max-width: 1000px) {
   .grid--3, .grid--4 { --cols: 2; }
   .split { grid-template-columns: minmax(0, 1fr); }

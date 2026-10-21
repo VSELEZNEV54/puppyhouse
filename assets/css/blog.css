@@ -79,30 +79,6 @@
   .blg-card:hover .tcta .i { transform: translateX(3px); }
 }
 
-/* широкая карточка (статья → «Читайте также»): текст слева, фото справа во всю высоту */
-.blg-related { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--gap); }
-.blg-related > li { min-width: 0; }
-.blg-card--row { display: grid; grid-template-columns: minmax(0, 1fr) 44%; min-height: 280px; }
-.blg-card--row .blg-card__media { grid-column: 2; grid-row: 1; aspect-ratio: auto; min-height: 100%; }
-.blg-card--row .blg-card__body { grid-column: 1; grid-row: 1; padding: clamp(20px, 2vw, 28px); }
-.blg-card--row .blg-card__body { justify-content: flex-start; }
-.blg-card--row .blg-card__media img { inset: var(--inset) var(--inset) var(--inset) 0; width: calc(100% - var(--inset)); height: calc(100% - 2 * var(--inset)); }
-/* студийная широкая карточка — приём шапки страницы: плитка в замер кадра, квадрат справа во всю высоту,
-   правый край с виньеткой — за плиткой, левый и верхний гаснут в стену */
-.blg-card--row.blg-card--studio {
-  background: linear-gradient(180deg, var(--tone-top, var(--tone)) 0, var(--tone-hi, var(--tone)) 22%, var(--tone-hi, var(--tone)) calc(var(--fa, .78) * 100%), var(--tone-floor) calc(var(--fb, .97) * 100%));
-}
-.blg-card--row .blg-card__media--studio { background: none; position: relative; overflow: visible; }
-.blg-card--row .blg-card__media--studio img {
-  inset: 0 auto 0 auto; right: 0; height: 100%; width: auto; aspect-ratio: 1; max-width: none;
-  transform: translateX(8%); transform-origin: 50% 92%;
-  -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 34%), linear-gradient(180deg, transparent 0, #000 14%);
-  mask-image: linear-gradient(90deg, transparent 0, #000 34%), linear-gradient(180deg, transparent 0, #000 14%);
-  -webkit-mask-composite: source-in; mask-composite: intersect;
-}
-@media (hover: hover) { .blg-card--row:hover .blg-card__media--studio img { transform: translateX(8%) scale(1.03); } }
-.blg-card--row:not(.blg-card--studio):hover .blg-card__media img { transform: scale(1.02); }
-
 /* =========================================================
    СТАТЬЯ
    ========================================================= */
@@ -170,8 +146,6 @@
   .blg-aside .toc { position: static; order: -1; }
   .blg-form { order: 1; }
   .blg-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .blg-related { grid-template-columns: minmax(0, 1fr); }
-  .blg-card--row { min-height: 240px; grid-template-columns: minmax(0, 1fr) 40%; }
 }
 
 @media (max-width: 760px) {
@@ -202,19 +176,18 @@
 /* мобильный список: миниатюра слева, текст справа */
 @media (max-width: 560px) {
   .blg-grid { grid-template-columns: minmax(0, 1fr); }
-  .blg-card, .blg-card--row, .blg-card--row.blg-card--studio {
+  .blg-card {
     display: grid; grid-template-columns: 112px minmax(0, 1fr); align-items: stretch; min-height: 0;
     background: var(--tone-floor);
   }
-  .blg-card__media, .blg-card--row .blg-card__media { grid-column: 1; grid-row: 1; aspect-ratio: auto; min-height: 128px; }
-  .blg-card__media img, .blg-card--row .blg-card__media img,
-  .blg-card__media--studio img, .blg-card--row .blg-card__media--studio img {
+  .blg-card__media { grid-column: 1; grid-row: 1; aspect-ratio: auto; min-height: 128px; }
+  .blg-card__media img, .blg-card__media--studio img {
     inset: var(--inset) 0 var(--inset) var(--inset); right: auto; width: calc(100% - var(--inset)); height: calc(100% - 2 * var(--inset));
     aspect-ratio: auto; border-radius: 16px; transform: none; object-fit: cover; object-position: 50% 60%;
     -webkit-mask-image: none; mask-image: none;
   }
-  .blg-card__media--studio, .blg-card--row .blg-card__media--studio { background: none; }
-  .blg-card__body, .blg-card--row .blg-card__body { grid-column: 2; grid-row: 1; padding: 14px 16px 14px 14px; }
+  .blg-card__media--studio { background: none; }
+  .blg-card__body { grid-column: 2; grid-row: 1; padding: 14px 16px 14px 14px; }
   .blg-card__topic { display: none; }
   .blg-card__title { font-size: 18px; line-height: 1.18; }
   .blg-card__line { display: none; }
