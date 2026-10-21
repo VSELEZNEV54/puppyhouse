@@ -210,6 +210,9 @@ Globals: `site`, `breeds` (list), `breed_map` (slug → breed), `puppies`, `data
 groups for «Меню» and the burger: items `{label, url}` + `breed` face / `count` / `icon`, or `{label, sub: [...]}` — a caption
 with a short list of links, one per row, thin rule on the left; client 15.10: no pills; phones: every item on its own row, the
 burger's top bar with the close button never scrolls away — only `.mmenu__scroll` scrolls; footer links on phones: one per row, 46 px),
+`footer` (client 21.10, big footer after the client's screenshots: `columns` — the site sections next to the logo; under them
+partials/footer.html.j2 builds a column per breed from breedsub.json colours + «Виды и окрасы» + «Цена» + coral «Все щенки …», then
+the delivery cities from cities.json under `cities_title`; phones ≤ 560 px: the breed columns and the cities fold, main.js `details[data-fold]`),
 `tg_cta` («Написать в Telegram»), `messengers.telegram|whatsapp|max` (`url_placeholder` marks placeholder links; `icon` — `tg` / `wa` / `max`: the official mark shapes
 in one colour; in a `.msgr` circle they are dark brown on a soft peach gradient — client sample 15.10, no brand-colour logos),
 `advantages`, `stats`; `domain` «домщенков.рф» + `domain_ascii` (punycode `xn--b1adduihee9g.xn--p1ai`, for JSON-LD URLs),

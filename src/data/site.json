@@ -347,33 +347,22 @@
   },
   "cta_label": "Подобрать щенка",
   "footer": {
+    "cities_title": "Доставка щенков по России",
     "columns": [
       {
-        "title": "Щенки и породы",
+        "title": "Щенки",
         "links": [
           {
             "label": "Все щенки в наличии",
             "url": "/shchenki/"
           },
           {
-            "label": "Мальтипу",
-            "url": "/maltipu/"
-          },
-          {
-            "label": "Французский бульдог",
-            "url": "/francuzskij-buldog/"
-          },
-          {
-            "label": "Той-пудель",
-            "url": "/toj-pudel/"
-          },
-          {
-            "label": "Бордер-колли",
-            "url": "/border-kolli/"
-          },
-          {
             "label": "Подбор породы — пройдите тест",
             "url": "/podbor-porody/"
+          },
+          {
+            "label": "Щенок в подарок",
+            "url": "/shchenok-v-podarok/"
           }
         ]
       },
@@ -381,20 +370,16 @@
         "title": "Покупка",
         "links": [
           {
-            "label": "Документы и гарантии",
-            "url": "/dokumenty-i-garantii/"
+            "label": "Бронь щенка",
+            "url": "/rassrochka/"
           },
           {
             "label": "Доставка",
             "url": "/dostavka/"
           },
           {
-            "label": "Бронь щенка",
-            "url": "/rassrochka/"
-          },
-          {
-            "label": "Щенок в подарок",
-            "url": "/shchenok-v-podarok/"
+            "label": "Документы и гарантии",
+            "url": "/dokumenty-i-garantii/"
           },
           {
             "label": "Вопросы и ответы",

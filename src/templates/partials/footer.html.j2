@@ -1,5 +1,15 @@
+{#- Footer (client 21.10: a big footer of links by section, after the two reference screenshots). Top: logo, hours,
+    address (not on the city pages), e-mail; phone and messengers once site.contacts_ready; the site sections on the right
+    (site.json → footer.columns). Then a column per breed: its colour pages /<breed>/<colour>/ (order of breedsub.json),
+    «Виды и окрасы …», «Цена …» and a coral «Все щенки …» button. Then the delivery cities (cities.json → /shchenki-v-…/)
+    and «Условия доставки». Bottom: requisites, documents, studio credit.
+    Phones ≤ 560 px: the breed columns and the cities fold (<details data-fold>; main.js closes them on phones, without
+    the script they stay open). A link to the current page gets aria-current and is not clickable. -#}
 {% import "macros/ui.html.j2" as ui %}
 {% set is_home = page.url == '/' %}
+{%- macro flink(url, label) -%}
+<a href="{{ url }}"{% if url == page.url %} aria-current="page"{% endif %}>{{ label|typo }}</a>
+{%- endmacro %}
   <!-- ================= ПОДВАЛ ================= -->
   <footer class="footer container">
     <div class="footer__tile">
@@ -31,13 +41,43 @@
             <h2 class="fcol__h">{{ col.title|typo }}</h2>
             <ul>
               {% for l in col.links %}
-              <li><a href="{{ l.url }}">{{ l.label|typo }}</a></li>
+              <li>{{ flink(l.url, l.label) }}</li>
               {% endfor %}
             </ul>
           </div>
           {% endfor %}
         </nav>
       </div>
+
+      <nav class="footer__breeds" aria-label="Породы и окрасы">
+        {% for b in breeds %}
+        {%- set colours = (data.breedsub[b.slug].varieties.blocks | selectattr('type', 'equalto', 'colours') | first)['items'] %}
+        <details class="fcol fcol--fold" data-fold open>
+          <summary class="fcol__h">{{ b.name|typo }} {{ ui.icon('chevron', sm=true) }}</summary>
+          <ul>
+            {% for c in colours %}
+            <li>{{ flink(b.urls.hub ~ c.slug ~ '/', c.get('title') or c.name) }}</li>
+            {% endfor %}
+            <li class="fcol__gap">{{ flink(b.urls.varieties, 'Виды и окрасы ' ~ b.name_gen) }}</li>
+            <li>{{ flink(b.urls.price, 'Цена ' ~ b.name_gen) }}</li>
+          </ul>
+          <a class="btn btn--coral fcol__all" href="{{ b.urls.hub }}"{% if b.urls.hub == page.url %} aria-current="page"{% endif %}>{{ ('Все щенки ' ~ b.name_plural_gen)|typo }}</a>
+        </details>
+        {% endfor %}
+      </nav>
+
+      <details class="footer__cities fcol--fold" data-fold open>
+        <summary class="fcol__h">{{ site.footer.cities_title|typo }} {{ ui.icon('chevron', sm=true) }}</summary>
+        <div class="footer__cities-body">
+          <ul class="fcities">
+            {% for c in data.cities %}
+            <li>{{ flink(c.url, c.name) }}</li>
+            {% endfor %}
+          </ul>
+          <a class="btn btn--coral fcol__all" href="/dostavka/"{% if page.url == '/dostavka/' %} aria-current="page"{% endif %}>Условия доставки</a>
+        </div>
+      </details>
+
       <div class="footer__legal">
         <div class="footer__legal-text">
           <span>{{ site.footer.legal.requisites|typo }}</span>
