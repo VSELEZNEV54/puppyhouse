@@ -243,4 +243,8 @@
   .bsub-kind__line, .bsub-kind__rows > div { font-size: 14.5px; }
 }
 
-
+/* «Щенки <породы> в наличии» на странице цены — 8 карточек, как на главной (.hm-pups); при трёх в ряд — первые 6,
+   ряды полные (правка 21.10) */
+@media (min-width: 901px) and (max-width: 1199px) {
+  .bsub-pups > .pups__item:nth-child(n + 7) { display: none; }
+}
