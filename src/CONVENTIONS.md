@@ -229,9 +229,13 @@ Live photos for the catalog (client 13.10, waiting for the client's files): put 
 Values in `[square brackets]` are placeholders (see `site.placeholders`); keep them bracketed until the client gives real data.
 `cities.json`: `name`, `prep` («в Казани»), `acc` («в Казань»), `gen` («из Казани»), `url` (`/shchenki-v-<город>/` — the city page), `km_approx` (rough road distance, groups on /dostavka/), `methods` (car/plane/train).
 `breeds.json` also has `facts`, `compare` (comparison rows), `docs`, `studio` / `mood` / `adult` photos, `varieties`, `colours` (drafts — check, some with `standard` and `photo`).
-**Colour anchors** (stage 3): every colour has its own card on `/<breed>/vidy-i-okrasy/#<colour-slug>` (e.g. `/maltipu/vidy-i-okrasy/#ryzhij`,
-`/francuzskij-buldog/vidy-i-okrasy/#goluboj`); slugs, photos and texts live in `breedsub.json` → `<breed>.varieties` → the `colours`
-block (the hubs read the same list). Link a colour there instead of the page top. The hubs' carousels use `data.media[<breed>]`
+**Colours** (client 21.10): every colour has its own page `/<breed>/<colour-slug>/` (e.g. `/maltipu/ryzhij/`); link a colour there.
+Slugs, photos and texts live in `breedsub.json` → `<breed>.varieties` → the `colours` block (breed page, colour pages and
+«Виды и окрасы» read the same list; the last two show it as the breed page's carousel `breeds/_parts.colour_carousel`).
+**«Виды и окрасы»** `/<breed>/vidy-i-okrasy/` (client 21.10): hero «Какие бывают …» → `types` block (one studio photo of the
+breed's adult dogs, `assets/img/kinds-<breed>.jpg`, numbered pin under each dog + a card per kind; `sub` = generations or
+the colour standard) → colour carousel → «Как выбрать окрас» → 8 puppies + «Все щенки …» → FAQ → «Читайте также» → SEO →
+homepage-size lead form with contact tiles. The hubs' carousels use `data.media[<breed>]`
 in the order of `breeds-hub.json` → `media` (+ extra placeholders), so a video file added to `media.json` shows on the hub too.
 
 ## Macros (`ui.`, `cards.`, `forms.`, `blocks.`) — text params are plain text, escaped and run through `|typo`
@@ -263,6 +267,7 @@ in the order of `breeds-hub.json` → `media` (+ extra placeholders), so a video
 | `media.media_card` | `m` (media.json item) | one 9:16 card (button → lightbox); video = poster + play |
 | `media.video_review_card` | `r, full=false, cls=''` | 9:16 poster + play + review text (`r.short`; `full=true` → `r.text` + source and puppy) + name, city, breed on a white panel. In `ul.vrev-grid` (or `cls='vrev--stack'`) the card grows with its text. /otzyvy/ (21.10) shows the homepage photo reviews (`media.photo_review_card`, `home.json → reviews_home`) in `.tr-rvws`: 12, «Показать ещё отзывы» opens the rest |
 | `media.video_reviews` | `reviews, title='Отзывы владельцев', id='otzyvy', title_id, link, lead, ratings=true` | section: rating tiles + row of video review cards (arrows under it); phones: first three stacked + «Все отзывы» |
+| `blocks.read_more` | `links, breed, title='Читайте также', id='eshche', limit=3, cols` | ONE block instead of «Полезные статьи» + «Ещё о …» (client 21.10): 3 article cards (the breed's first), then `ui.link_tiles(links)` under them; an article that is also a plate is not repeated. After the FAQ; set `{% block blog %}{% endblock %}`. `cols=3` → plates three per row (comparison pages). Used on /sravnenie/*, /<breed>/cena/, /<breed>/vidy-i-okrasy/ |
 | `blocks.blog_teasers` | `slugs` (or `posts[{url,title,line,cover,topic}]`), `title='Гид по породам', id='blog', lead, link, limit=3` | article cards: photo, title, one line, «Читать»; phones — compact list |
 | `forms.lead_form` | `title='Подберём щенка за 1 час', line, tone, breed, id='zayavka', contacts=true, cls=''` | one per page (the layout adds it); phones: phone number on its own line, three messengers (`.lead__msgrs`, never split) under it. `contacts=false` — no phone/messengers in the tile (a «ответим за 15 минут» note instead); `{% call %}` content goes after the tile in the same section (homepage: contact tiles `.hm-cts`) |
 | `forms.price_button(label, cls, breed)`, `forms.msgr(kind)` | `kind = telegram \| whatsapp \| max` | generic «Узнать цену» / messenger round button |

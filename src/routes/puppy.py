@@ -98,7 +98,9 @@ def h1_of(p, b):
 
 
 def colour_url(p, b, data):
-    """/<breed>/vidy-i-okrasy/#<colour> — the colour's own card (breedsub.json); the colours block otherwise."""
+    """/<breed>/<colour>/ — the colour's own page (breedsub.json colour slug); the colours block of
+    /<breed>/vidy-i-okrasy/ otherwise (client 21.10: that page shows the colours as the breed page's carousel, no
+    anchored card per colour)."""
     base = b["urls"]["varieties"]
     try:
         blocks = data["breedsub"][b["slug"]]["varieties"]["blocks"]
@@ -110,7 +112,7 @@ def colour_url(p, b, data):
     for c in block.get("items", []):
         name = str(c.get("name", "")).lower()
         if c.get("slug") and (name == want or name.split(" (")[0] == short):
-            return f"{base}#{c['slug']}"
+            return f"{b['urls']['hub']}{c['slug']}/"
     return f"{base}#{block.get('id', 'okrasy')}"
 
 

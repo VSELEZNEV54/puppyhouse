@@ -97,15 +97,14 @@
 
     {{ blocks.faq_section(pg.faq, title=com.faq_title) }}
 
-    <section class="section container cho-links" id="eshche" aria-labelledby="eshche-title">
-      {{ ui.section_head(com.links_title, id='eshche-title') }}
-      {{ ui.link_tiles(links) }}
-    </section>
+    {#- «Читайте также» (client 21.10): the breed's articles, then these plates — one block -#}
+    {{ blocks.read_more(links, breed=b.slug, cols=3) }}
 
 {% endblock %}
 
-{#- the breed's puppies are higher on the page (#katalog) — no second strip -#}
+{#- the breed's puppies are higher on the page (#katalog) — no second strip; the articles are in «Читайте также» -#}
 {% block pups %}{% endblock %}
+{% block blog %}{% endblock %}
 
 {% block seo %}
     {% call blocks.seo_block(pg.seo.title, pg.seo.lead, id='podrobnee') %}

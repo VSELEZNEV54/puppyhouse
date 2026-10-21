@@ -90,27 +90,45 @@ def _price(common, own):
     return pg
 
 
+def _std(c):
+    """One side of the colour-standard comparison (part.vs): {title, note?, items: [{title, line?}]}."""
+    return dict(title=nobr(c["title"]), note=nobr(c.get("note")),
+                items=[_nb({"line": None, **i}, "title", "line") for i in c["items"]])
+
+
+def _kind(k):
+    """A comparison tile (generation F1 / F1b / F2) or a card of the «types» block."""
+    return dict(_nb({**KIND, **k}, "title", "line"), rows=[[r[0], nobr(r[1])] for r in k.get("rows", [])])
+
+
 def _varieties(b, common, own, alts):
-    """Varieties page copy. own.blocks are rendered in their order: kinds | colours | std | tips."""
+    """Varieties page copy. own.blocks are rendered in their order: types | colours | tips.
+    types (client 21.10): the breed's kinds on one studio photo of adult dogs (a pin per dog at x % of the photo
+    width) + a card per kind; sub = the generations (kind «tags») or what the FCI standard says about colours («std»)."""
     v = _copy.deepcopy(common)
     v.update(own)
+    gen = b["name_gen"]
+    v["eyebrow"] = v["eyebrow"].replace("{gen}", gen)
+    v["lead_line"] = v["lead_line"].replace("{gen}", gen)
     v["h1"], v["lead"], v["lead_line"] = nobr(v["h1"]), nobr(v["lead"]), nobr(v["lead_line"])
     v["facts"] = [dict(f, value=nobr(f["value"])) for f in own["facts"]]
     v["hero_photo"] = dict(src=own["hero_photo"], alt=alts.get(own["hero_photo"], f"Щенок {b['name_gen']}"))
     blocks = []
     for s in own["blocks"]:
         s = _nb({**BLOCK, **s}, "title", "lead")
-        if s["type"] == "kinds":
-            s["items"] = [dict(_nb({**KIND, **k}, "title", "line"), rows=[[r[0], nobr(r[1])] for r in k.get("rows", [])])
-                          for k in s["items"]]
+        if s["type"] == "types":
+            s["items"] = [dict(_kind(k), x=k["x"], label=k["label"]) for k in s["items"]]
+            sub = s.get("sub")
+            if sub:
+                sub = dict(sub, title=nobr(sub["title"]), lead=nobr(sub.get("lead")))
+                if sub["kind"] == "tags":
+                    sub["items"] = [_kind(k) for k in sub["items"]]
+                else:
+                    sub["ok"], sub["no"] = _std(sub["ok"]), _std(sub["no"])
+            s["sub"] = sub
         elif s["type"] == "colours":
             s["items"] = colour_items(b, s["items"], alts)
             s["note"] = nobr(s["note"])
-        elif s["type"] == "std":
-            for side in ("ok", "no"):
-                c = s[side]
-                s[side] = dict(title=nobr(c["title"]), note=nobr(c.get("note")),
-                               items=[_nb({"line": None, **i}, "title", "line") for i in c["items"]])
         elif s["type"] == "tips":
             s["title"] = nobr(common["tips_title"])
             s["items"] = [_nb(t, "title", "text") for t in common["tips"] + [own["tip"]]]
@@ -163,7 +181,6 @@ def routes(data):
         own = copy[b["slug"]]
         urls = b["urls"]
         alts = _alts(b)
-        links_title = nobr(f"Ещё о {own['name_prep']}")
         hub_tile = dict(url=urls["hub"], title=b["name"], line="О породе и щенки в наличии", breed=b)
 
         v = _varieties(b, common["varieties"], own["varieties"], alts)
@@ -181,7 +198,7 @@ def routes(data):
                 pg=pg,
                 tint=own["tint"],
                 faces=_faces(colours),
-                links_title=links_title,
+                # «Читайте также» (client 21.10): the breed's articles + these plates in one block (blocks.read_more)
                 links=[
                     hub_tile,
                     dict(url=urls["varieties"], title=common["price"]["links_varieties_title"],
@@ -217,7 +234,6 @@ def routes(data):
                 b=b,
                 v=v,
                 tint=own["tint"],
-                links_title=links_title,
                 links=var_links,
                 pups_breed=b,
                 lead_breed=b["slug"],

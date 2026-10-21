@@ -1,9 +1,14 @@
-{#- /<breed>/vidy-i-okrasy/ — varieties and colours of a breed. One template, blocks in the order of data:
-    kinds (comparison tiles: generations, sizes, coats, «мини»), colours (round faces → one anchored card per colour,
-    id = colour slug — the breed hub links here), std (what the FCI standard allows), tips. Context from routes/breedsub.py:
-    b (breed), v (copy, Markup), tint, links_title, links. The layout adds «Щенки в наличии» (pups_breed = b). -#}
+{#- /<breed>/vidy-i-okrasy/ — varieties and colours of a breed (client 21.10). One template, blocks in the order of data:
+    types (the breed's kinds on one studio photo of adult dogs — a numbered pin on each dog — and a card per kind,
+    + sub: the generations F1 / F1b / F2 or what the FCI standard says about colours), colours (the breed page's colour
+    carousel: «Подобрать …» and «Подробнее» → the colour page), tips. Then the breed's 8 puppies + «Все щенки …»,
+    FAQ, «Читайте также» (articles + plates), SEO text, the homepage-size lead form with contact tiles.
+    Context from routes/breedsub.py: b (breed), v (copy, Markup), tint, links. Main buttons coral (body .page-varieties). -#}
 {% extends "layouts/page.html.j2" %}
 {% import "breedsub/_parts.html.j2" as part %}
+{% import "breeds/_parts.html.j2" as brd %}
+
+{% block body_attrs %} class="page-varieties"{% endblock %}
 
 {% block page_css %}
   <link rel="stylesheet" href="/assets/css/breedsub.css">
@@ -21,40 +26,14 @@
 
 {% block body %}
 {% for s in v.blocks %}
-    {%- set first_block = loop.first %}
     <section class="section{{ ' section--tight' if loop.first }} container" id="{{ s.id }}" aria-labelledby="{{ s.id }}-title">
-    {% if s.type == 'kinds' %}
+    {% if s.type == 'types' %}
       {{ ui.section_head(s.title, id=s.id ~ '-title', lead=s.lead) }}
-      <ul class="bsub-kinds bsub-kinds--{{ s['items']|length }}">
-        {% for k in s['items'] %}
-        <li class="bsub-kind{{ ' bsub-kind--off' if k.off }}">
-          <div class="bsub-kind__head">
-            {% if k.face %}<span class="bsub-kind__face" style="--s:{{ k.face }}" aria-hidden="true">{{ ui.face(b, eager=first_block) }}</span>
-            {% elif k.tag %}<span class="bsub-kind__tag" style="--c:var(--{{ k.color }})" aria-hidden="true">{{ k.tag }}</span>
-            {% else %}{{ ui.ico(k.icon, k.color) }}{% endif %}
-            {% if k.badge %}<span class="bsub-kind__badge{{ ' bsub-kind__badge--off' if k.off }}">{{ k.badge|typo }}</span>{% endif %}
-          </div>
-          <h3 class="bsub-kind__title">{% if k.tag %}<span class="sr-only">{{ k.tag }}: </span>{% endif %}{{ k.title|typo }}</h3>
-          <p class="bsub-kind__line">{{ k.line|typo }}</p>
-          {% if k.rows %}
-          <dl class="bsub-kind__rows">
-            {% for r in k.rows %}<div><dt>{{ r[0]|typo }}</dt><dd>{{ r[1]|typo }}</dd></div>{% endfor %}
-          </dl>
-          {% endif %}
-        </li>
-        {% endfor %}
-      </ul>
+      {{ part.types(s, b, tint) }}
 
     {% elif s.type == 'colours' %}
-      {{ ui.section_head(s.title, id=s.id ~ '-title', lead=s.lead) }}
-      {{ part.colour_nav(s['items'], b, label='Окрасы: перейти к описанию', eager=loop.first) }}
-      {%- set odd = s['items']|length is odd %}
-      {{ part.colour_cards(s['items'], b, ask={'title': 'Ищете другой окрас?', 'line': s.note or 'Расскажите, какого щенка ищете, — подберём и пришлём видео', 'tint': tint}) }}
-      {% if s.note and not odd %}<p class="bsub-cols__note">{{ s.note|typo }}</p>{% endif %}
-
-    {% elif s.type == 'std' %}
-      {{ ui.section_head(s.title, id=s.id ~ '-title', lead=s.lead) }}
-      {{ part.vs(s.no, s.ok, tint, order='ok-no', id=s.id) }}
+      {% call ui.section_head(s.title, id=s.id ~ '-title', lead=s.lead) %}{{ brd.colour_consult(b) }}{% endcall %}
+      {{ brd.colour_carousel(s['items'], b, label=s.title|striptags) }}
 
     {% elif s.type == 'tips' %}
       {{ ui.section_head(s.title, id=s.id ~ '-title') }}
@@ -63,11 +42,36 @@
     </section>
 
 {% endfor %}
+    <!-- ================= ЩЕНКИ ПОРОДЫ — 8 карточек и кнопка под ними, как каталог на главной (правка 21.10) ================= -->
+    {%- set pups8 = (b.puppies|sort(attribute='status_order'))[:8] %}
+    <section class="section container" id="pups" aria-labelledby="pups-title">
+      {{ ui.section_head(ui.nohyph('Щенки ' ~ b.name_plural_gen ~ ' в наличии'), id='pups-title') }}
+      {% if pups8 %}
+      <ul class="pups hm-pups bsub-pups" data-reveal="items">
+        {% for p in pups8 %}
+        <li class="pups__item">
+          {{ cards.puppy_card(p) }}
+        </li>
+        {% endfor %}
+      </ul>
+      <div class="hm-pups__foot">
+        <a class="btn btn--ink btn--lg" href="{{ b.urls.hub }}#shchenki"><span>{{ ui.nohyph('Все щенки ' ~ b.name_plural_gen) }}</span> {{ ui.icon('arrow') }}</a>
+      </div>
+      {% else %}
+      {{ ui.empty_state('Сейчас щенков нет в наличии', 'Оставьте заявку — напишем, когда появится новый помёт.') }}
+      {% endif %}
+    </section>
+
     {{ blocks.faq_section(v.faq, title=v.faq_title) }}
 
-    {{ part.links(links_title, links) }}
+    {{ blocks.read_more(links, breed=b.slug) }}
 
 {% endblock %}
+
+{#- the breed's puppies are higher on the page (#pups, after «Как выбрать окрас») — no second strip;
+    the articles are in «Читайте также» -#}
+{% block pups %}{% endblock %}
+{% block blog %}{% endblock %}
 
 {% block seo %}
     {% call blocks.seo_block(v.seo.title, v.seo.lead, id='ob-okrasah') %}
@@ -78,6 +82,9 @@
     {% endcall %}
 {% endblock %}
 
+{#- the homepage lead form (client 21.10): large title, paws, contact tiles under it -#}
 {% block lead %}
-    {{ forms.lead_form(title=v.lead_title, line=v.lead_line, tone=b.tone, breed=b.slug) }}
+    {% call forms.lead_form(title=v.lead_title, line=v.lead_line, tone=b.tone, breed=b.slug, contacts=false, cls='hm-lead') %}
+      {{ forms.contact_tiles() }}
+    {% endcall %}
 {% endblock %}

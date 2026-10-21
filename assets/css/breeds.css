@@ -127,29 +127,7 @@
    Страница породы v2 (body.page-breed, правки 15.10): «Помочь с выбором» у каталога, окрасы-карусель,
    «Как мы отдаём щенка». Коралловые кнопки, крупная карусель фото и SEO-текст — общие правила в main.css
    ========================================================= */
-.brd-help { flex: none; }
-
-/* окрасы: лента карточек «с начала» (data-align="start" в main.js) — первая карточка у левого поля, без увеличения
-   активной; на 1440 видно четыре карточки и край пятой, дальше — свайп и стрелки под лентой */
-.brd-cols { --mc-w: clamp(256px, 22.4vw, 330px); }
-.brd-cols .media-carousel__track { padding-inline: var(--pad); }
-.brd-cols .media-carousel__viewport { scroll-padding-inline: var(--pad); }
-.brd-cols .media-carousel__item { display: flex; scroll-snap-align: start; transform: none; opacity: 1; }
-.brd-col { display: flex; flex-direction: column; width: 100%; border-radius: var(--r-tile); background: var(--tile); overflow: hidden; }
-/* студийный кадр окраса целиком, на своём замеренном фоне (tone_style): квадрат во всю ширину карточки */
-.brd-col__media { display: block; aspect-ratio: 1 / 1; background: var(--tone-hi, var(--peach)); overflow: hidden; }
-.brd-col__media img { display: block; width: 100%; height: 100%; object-fit: cover; transition: transform 1.1s var(--ease); }
-@media (hover: hover) { .brd-col:hover .brd-col__media img { transform: scale(1.04); } }
-.brd-col__body { flex: 1; display: flex; flex-direction: column; align-items: flex-start; gap: 8px; padding: 20px 22px 22px; }
-.brd-col__name { font-size: clamp(21px, 1.7vw, 26px); font-weight: 500; letter-spacing: -0.03em; line-height: 1.08; }
-.brd-col__name a { text-decoration: none; }
-.brd-col__name a:hover { text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 4px; }
-/* две кнопки друг под другом: «Подобрать …» (коралловая) и «Подробнее» (белая, страница окраса) */
-.brd-col__actions { display: flex; flex-direction: column; gap: 8px; width: 100%; margin-top: auto; }
-.brd-col__text { font-size: 15px; line-height: 1.45; color: var(--muted); }
-/* «Подобрать абрикосового мальтипу» — длинная подпись: кнопка во всю ширину, перенос в две строки вместо обрезки */
-.brd-col__btn { width: 100%; height: auto; min-height: 46px; padding: 11px 14px; font-size: 14px; white-space: normal; line-height: 1.2; text-align: center; }
-.brd-col__text { margin-bottom: 14px; }
+/* окрасы-карусель (.brd-cols, «Получить консультацию» .brd-help) — в pages.css: она же на «Видах и окрасах» */
 
 /* карточка щенка на странице породы и окраса (cards.puppy_card simple=true): кнопки — как у всех карточек (main.css) */
 .ct-card--simple .pup__name { padding-right: 0; }
@@ -246,9 +224,6 @@
 @media (max-width: 760px) {
   /* «Помочь с выбором» — под заголовком каталога, во всю ширину */
   #shchenki .sec-head { flex-wrap: wrap; }
-  .brd-help { width: 100%; }
-  /* окрасы: карточка ≈ три четверти экрана — видно край следующей, листается свайпом */
-  .brd-cols { --mc-w: min(76vw, 320px); }
   /* статьи: на телефоне не листаются вбок (правка 13.10) — компактный список, как в blocks.blog_teasers */
   .brd-posts .media-carousel__viewport { overflow: visible; margin: 0; padding: 0; scroll-snap-type: none; }
   .brd-posts .media-carousel__track { display: grid; grid-template-columns: minmax(0, 1fr); width: auto; padding: 0; }

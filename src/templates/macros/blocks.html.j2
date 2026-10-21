@@ -110,6 +110,27 @@
 {{ blog_teasers(slugs=slugs, title='Полезные статьи', id='poleznoe', lead='Характер, уход и выбор щенка — коротко и по делу', limit=limit) }}
 {%- endmacro %}
 
+{#- «Читайте также» (client 21.10): one block instead of «Полезные статьи» + «Ещё о …» / «Читайте также» — the
+    articles first (3 in a row, the page's breed first, as in reading()), then the link plates (ui.link_tiles) under
+    them. An article that is also a plate is not repeated in the article row. Put it after the FAQ and set
+    {% block blog %}{% endblock %} on that page (the layout's «Полезные статьи» would repeat it).
+    links: ui.link_tiles items; cols=3: three plates per row on desktop, two on tablets (pages.css .rmore__links--3). -#}
+{% macro read_more(links, breed=none, title='Читайте также', id='eshche', limit=3, cols=none) -%}
+{%- set skip = links|map(attribute='url')|list -%}
+{%- set pool = data.blog|rejectattr('url', 'in', skip)|list -%}
+{%- set own = (pool|selectattr('breed', 'equalto', breed)|list) if breed else [] -%}
+{%- set general = pool|selectattr('breed', 'none')|list -%}
+{%- set others = pool|rejectattr('breed', 'none')|rejectattr('breed', 'equalto', breed)|list -%}
+{%- set slugs = ((own + general + others)|map(attribute='slug')|list)[:limit] -%}
+<section class="section container rmore" id="{{ id }}" aria-labelledby="{{ id }}-title">
+  {{ ui.section_head(title, id=id ~ '-title', link={'url': '/blog/', 'label': 'Все статьи'}) }}
+  {{ blog_teasers(slugs=slugs, title=none, limit=limit) }}
+  <div class="rmore__links{{ ' rmore__links--' ~ cols if cols }}">
+    {{ ui.link_tiles(links) }}
+  </div>
+</section>
+{%- endmacro %}
+
 {% macro blog_teasers(slugs=none, posts=none, title='Гид по породам', id='blog', lead=none, link={'url': '/blog/', 'label': 'Все статьи'}, limit=3) -%}
 {%- if posts is none -%}
   {%- set all = data.blog -%}

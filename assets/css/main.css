@@ -191,12 +191,12 @@ main:focus, section[tabindex="-1"]:focus, [data-anchor-focus]:focus { outline: n
 /* основная: чёрная пилюля; на ховере — коралл с тёмным текстом (контраст 6,6:1) */
 .btn--ink { background: var(--ink); color: #fff; }
 @media (hover: hover) { .btn--ink:hover { background: var(--coral); color: var(--ink); } }
-/* главная, страницы пород v2 (правки 15.10), страница щенка (19.10), «О питомнике» и «Отзывы» (21.10): основные кнопки —
+/* главная, страницы пород v2 (правки 15.10), страница щенка (19.10), «О питомнике», «Отзывы», цены, сравнения и «Виды и окрасы» (21.10): основные кнопки —
    коралловые (цвет прежнего наведения), при наведении — темнее; белые — как были. Карточка щенка одна на весь сайт:
    её «Узнать цену» остаётся чёрной */
-:is(.page-home, .page-breed, .page-puppy, .page-about, .page-reviews, .page-price, .page-compare) { --cta: var(--coral); --cta-hover: #F7805F; }
-:is(.page-home, .page-breed, .page-puppy, .page-about, .page-reviews, .page-price, .page-compare) :is(.btn--ink, .mbar__btn--ink):not(.pup .btn) { background: var(--cta); color: var(--ink); }
-@media (hover: hover) { :is(.page-home, .page-breed, .page-puppy, .page-about, .page-reviews, .page-price, .page-compare) :is(.btn--ink, .mbar__btn--ink):not(.pup .btn):hover { background: var(--cta-hover); color: var(--ink); } }
+:is(.page-home, .page-breed, .page-puppy, .page-about, .page-reviews, .page-price, .page-compare, .page-varieties) { --cta: var(--coral); --cta-hover: #F7805F; }
+:is(.page-home, .page-breed, .page-puppy, .page-about, .page-reviews, .page-price, .page-compare, .page-varieties) :is(.btn--ink, .mbar__btn--ink):not(.pup .btn) { background: var(--cta); color: var(--ink); }
+@media (hover: hover) { :is(.page-home, .page-breed, .page-puppy, .page-about, .page-reviews, .page-price, .page-compare, .page-varieties) :is(.btn--ink, .mbar__btn--ink):not(.pup .btn):hover { background: var(--cta-hover); color: var(--ink); } }
 .btn--white { background: #fff; color: var(--ink); border-color: var(--line-2); }
 /* ПРАВИЛО (клиент 19.10): кнопка в заголовке блока — всегда коралловая, на любой странице и в любом новом блоке:
    «Получить консультацию», «Узнать цену», «Весь каталог», «Документы и гарантии»… Текстовые ссылки («Все статьи →») — как были */
@@ -968,15 +968,15 @@ main:focus, section[tabindex="-1"]:focus, [data-anchor-focus]:focus { outline: n
 .seo__toggle[aria-expanded="true"] .i { transform: rotate(180deg); }
 .seo__toggle:hover span { text-decoration: underline; text-underline-offset: 3px; }
 /* главная и страницы пород v2 (правки 15.10): текст на всю ширину плитки; раскрытая часть на широком экране — в две колонки */
-:is(.page-home, .page-breed, .page-about, .page-price) .seo__body { max-width: none; }
-:is(.page-home, .page-breed, .page-about, .page-price) .seo__more a { color: var(--ink); text-decoration: underline; text-decoration-color: var(--line-2); text-underline-offset: 3px; }
-:is(.page-home, .page-breed, .page-about, .page-price) .seo__more a:hover { text-decoration-color: currentColor; }
+:is(.page-home, .page-breed, .page-about, .page-price, .page-varieties) .seo__body { max-width: none; }
+:is(.page-home, .page-breed, .page-about, .page-price, .page-varieties) .seo__more a { color: var(--ink); text-decoration: underline; text-decoration-color: var(--line-2); text-underline-offset: 3px; }
+:is(.page-home, .page-breed, .page-about, .page-price, .page-varieties) .seo__more a:hover { text-decoration-color: currentColor; }
 @media (min-width: 1200px) {
   /* верх обеих колонок на одной линии: отступ — у блока, у первого подзаголовка его нет (у колонки справа его съедает разрыв) */
-  :is(.page-home, .page-breed, .page-about, .page-price) .seo__more { columns: 2; column-gap: clamp(40px, 4vw, 72px); padding-top: 20px; }
-  :is(.page-home, .page-breed, .page-about, .page-price) .seo__more h3 { break-after: avoid; }
-  :is(.page-home, .page-breed, .page-about, .page-price) .seo__more p { break-inside: avoid; }
-  :is(.page-home, .page-breed, .page-about, .page-price) .seo__more > h3:first-child { margin-top: 0; }
+  :is(.page-home, .page-breed, .page-about, .page-price, .page-varieties) .seo__more { columns: 2; column-gap: clamp(40px, 4vw, 72px); padding-top: 20px; }
+  :is(.page-home, .page-breed, .page-about, .page-price, .page-varieties) .seo__more h3 { break-after: avoid; }
+  :is(.page-home, .page-breed, .page-about, .page-price, .page-varieties) .seo__more p { break-inside: avoid; }
+  :is(.page-home, .page-breed, .page-about, .page-price, .page-varieties) .seo__more > h3:first-child { margin-top: 0; }
 }
 
 /* =========================================================

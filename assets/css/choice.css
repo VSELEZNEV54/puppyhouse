@@ -194,14 +194,10 @@ html:not(.js) .cho-quiz { display: none; }
 
 .cho-band__faces .face img { transform-origin: 50% 30%; }
 
-/* «Читайте также»: шесть ссылок — по три в ряд */
-.cho-links .ltiles { --n: 3; }
-
 /* =========================================================
    АДАПТИВ
    ========================================================= */
 @media (max-width: 1199px) {
-  .cho-links .ltiles { --n: 2; }
   .cho-q__opts--4 { --n: 2; }
   .cho-ans { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .cho-res__row { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -258,7 +254,6 @@ html:not(.js) .cho-quiz { display: none; }
   .cho-pairs__list > li { max-width: 100%; }
   .cho-pair { height: auto; min-height: 48px; padding-block: 6px; white-space: normal; line-height: 1.25; }
 
-  .cho-links .ltiles { --n: 1; }
   .cho-fits { gap: 10px; }
   .cho-fitc__title { margin: 12px 6px 0; font-size: 18px; }
   .cho-fitc__line { margin: 4px 6px 8px; font-size: 13.5px; }
