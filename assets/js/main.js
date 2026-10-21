@@ -18,7 +18,8 @@
     name: 'Напишите, как к вам обращаться',
     phone: 'Проверьте номер: после +7 нужно 10 цифр',
     contact: 'Выберите, куда вам написать',
-    consent: 'Без согласия на обработку данных мы не сможем отправить заявку'
+    consent: 'Без согласия на обработку данных мы не сможем отправить заявку',
+    question: 'Напишите ваш вопрос'
   };
 
   const $ = (sel, ctx = d) => ctx.querySelector(sel);
@@ -604,11 +605,18 @@
       showToast(err.message || 'Проверьте, пожалуйста, поля формы');
     }
   }
+  // «Ваш вопрос» есть только в общей модалке и только у кнопки «Задать свой вопрос» (поле без hidden)
+  const askField = (form) => {
+    const q = form.elements.question;
+    return q && !q.closest('[hidden]') ? q : null;
+  };
   function validate(form) {
     const f = form.elements;
+    const q = askField(form);
     const checks = [
       ['name', !f.name.value.trim(), f.name],
       ['phone', phoneDigits(f.phone.value).length !== 10, f.phone],
+      ...(q ? [['question', q.value.trim().length < 3, q]] : []),
       ['contact', !form.querySelector('input[name="contact"]:checked'), form.querySelector('input[name="contact"]')],
       ['consent', !f.consent.checked, f.consent]
     ];
@@ -622,7 +630,7 @@
   }
   function clearForm(form) {
     form.reset();
-    ['name', 'phone', 'contact', 'consent'].forEach((k) => setError(form, k, ''));
+    ['name', 'phone', 'contact', 'consent', 'question'].forEach((k) => setError(form, k, ''));
     const btn = $('[data-submit]', form);
     btn.disabled = false;
     btn.textContent = btn.dataset.label;
@@ -632,6 +640,7 @@
       const n = e.target.name;
       if (n === 'name' && e.target.value.trim()) setError(form, 'name', '');
       if (n === 'phone' && phoneDigits(e.target.value).length === 10) setError(form, 'phone', '');
+      if (n === 'question' && e.target.value.trim().length >= 3) setError(form, 'question', '');
     });
     form.addEventListener('change', (e) => {
       const n = e.target.name;
@@ -672,6 +681,7 @@
       colour: opt(extra.colour),
       note: opt(extra.note),
       form_title: opt(extra.form_title),
+      question: askField(form) ? opt(text('question')) : null,
       quiz: quiz && quiz.winner ? { winner: quiz.winner, second: quiz.second || null } : null,
       page: pageInfo(),
       visitor_id: ctx.visitor_id,
@@ -720,6 +730,7 @@
     const thumb = $('[data-pm-thumb]', modal);
     const thumbImg = $('img', thumb);
     const breedField = $('[data-pm-breed]', modal);
+    const askBox = $('[data-pm-question]', modal);
     const breedSelect = $('select', breedField);
     const doneTitle = $('#pm-done-title');
     const doneText = $('#pm-done-text');
@@ -740,7 +751,8 @@
     // ds — data-атрибуты кнопки: data-modal-title / -sub (заголовок и подпись окна),
     // data-modal-breed (порода в списке, если окно без щенка), data-modal-note (скрытая пометка заявки),
     // data-modal-kind (тип заявки для API; без него — puppy у карточки щенка, иначе price), data-modal-colour (окрас),
-    // data-modal-submit (текст кнопки отправки), data-modal-done (текст после отправки).
+    // data-modal-submit (текст кнопки отправки), data-modal-done (текст после отправки),
+    // data-modal-question="1" — поле «Ваш вопрос» (кнопка «Задать свой вопрос» в блоке вопросов).
     // Скрытые поля (kind, puppy, puppy_name, colour, note, form_title) задаём при КАЖДОМ открытии: form.reset() их не чистит.
     const pSubmit = $('[data-submit]', pForm);
     const SUBMIT_LABEL = pSubmit.dataset.label;
@@ -774,6 +786,7 @@
         thumb.hidden = true;
         breedField.hidden = false;
       }
+      if (askBox) askBox.hidden = !ds.modalQuestion; // «Задать свой вопрос»
       if (ds.modalTitle) title.textContent = ds.modalTitle;
       if (ds.modalSub) sub.textContent = ds.modalSub;
       if (ds.modalBreed && !breedField.hidden) selectBreed(ds.modalBreed);

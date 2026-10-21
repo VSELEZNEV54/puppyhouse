@@ -527,6 +527,17 @@ def test_email_has_full_details_and_a_russian_subject(client, db, email):
     assert SMTP_PASSWORD not in msg.as_string()
 
 
+def test_question_goes_to_the_email_and_only_a_hint_to_telegram(client, db, tg, email):
+    post_lead(client, breed="maltipu", kind="consult", question="Сколько гуляет мальтипу?\nА зимой?")
+    fake = FakeHttp()
+    notify.deliver_due(db, client=fake.client())
+    content = FakeSMTP.sent[0].get_content()
+    assert "Вопрос:\nСколько гуляет мальтипу?\nА зимой?" in content
+    text = fake.json()["text"]  # free text may hold personal data: no cross-border notice → no text in Telegram
+    assert "Сколько гуляет" not in fake.requests[0].content.decode()
+    assert "Есть вопрос — текст в админке" in text
+
+
 def test_smtp_authentication_error_is_permanent(client, db, email):
     email.login_error = smtplib.SMTPAuthenticationError(535, b"5.7.8 Error: authentication failed")
     post_lead(client)

@@ -419,6 +419,7 @@
       ['Порода', d.breed ? d.breed.name : (d.breed_input ? 'не распознана: ' + d.breed_input : 'не выбрана')],
       ['Щенок', d.puppy_name || d.puppy_slug],
       ['Окрас', d.colour],
+      ['Вопрос', (d.details || {}).question],
       ['Пометка формы', d.note],
       ['Заголовок окна', d.form_title],
       ['Страница', d.page_path],

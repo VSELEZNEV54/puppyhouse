@@ -29,10 +29,10 @@
   <!-- Geist is served from our own domain (assets/fonts, SIL OFL 1.1): no visitor IP goes to Google before consent -->
   <link rel="preload" href="../../../assets/fonts/geist-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="../../../assets/fonts/geist-latin.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="../../../assets/css/main.css?v=83fd91fb">
+  <link rel="stylesheet" href="../../../assets/css/main.css?v=51eef193">
   <link rel="stylesheet" href="../../../assets/css/pages.css?v=221bc484">
   <link rel="stylesheet" href="../../../assets/css/blog.css?v=dc3bd3ca">
-  <script src="../../../assets/js/main.js?v=edd1a1dc" defer></script>
+  <script src="../../../assets/js/main.js?v=6c034f0f" defer></script>
   <script src="../../../assets/js/blog.js?v=d7b60294" defer></script>
   <script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "BlogPosting", "headline": "Воспитание мальтипу: пелёнка и команды", "description": "Как воспитывать щенка мальтипу: первые дни дома, приучение к пелёнке, первые команды, знакомство с миром и одиночество. Советы питомника домщенков.рф.", "image": "https://xn--b1adduihee9g.xn--p1ai/assets/img/color-maltipu-white.jpg", "inLanguage": "ru", "mainEntityOfPage": "https://xn--b1adduihee9g.xn--p1ai/blog/maltipu-vospitanie/", "keywords": "воспитание мальтипу, дрессировка мальтипу, как приучить мальтипу к пелёнке, щенок мальтипу первые дни, мальтипу одна дома", "author": {"@type": "Organization", "name": "домщенков.рф", "url": "https://xn--b1adduihee9g.xn--p1ai/"}, "publisher": {"@type": "Organization", "name": "домщенков.рф", "url": "https://xn--b1adduihee9g.xn--p1ai/"}}, {"@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "С какого возраста воспитывать мальтипу?", "acceptedAnswer": {"@type": "Answer", "text": "С первого дня дома. В 2–3 месяца щенок уже учит имя, «ко мне» и «место», если заниматься коротко и с лакомством."}}, {"@type": "Question", "name": "Сколько мальтипу привыкает к пелёнке?", "acceptedAnswer": {"@type": "Answer", "text": "Обычно несколько недель. Быстрее получается, если относить щенка на пелёнку после сна, еды и игры и сразу хвалить."}}, {"@type": "Question", "name": "Можно ли оставлять мальтипу одного?", "acceptedAnswer": {"@type": "Answer", "text": "Да, если приучать постепенно — начиная с нескольких минут. Но маленького щенка на целый рабочий день лучше не оставлять."}}, {"@type": "Question", "name": "Нужен ли мальтипу кинолог?", "acceptedAnswer": {"@type": "Answer", "text": "Обычно нет: базовым командам мальтипу учится дома. Кинолог пригодится, если щенок много лает или боится оставаться один."}}]}]}</script>
 </head>
@@ -328,7 +328,7 @@
   <div class="faq">
     <div class="faq__aside">
       <h2 class="h2" id="voprosy-title">Вопросы о воспитании мальтипу</h2>
-<a class="btn btn--coral" href="../../faq/">Все вопросы</a>    </div>
+<button class="btn btn--coral" type="button" data-open-modal data-modal-kind="consult" data-modal-question="1" data-modal-title="Задать свой вопрос" data-modal-sub="Ответим в&nbsp;течение рабочего дня по&nbsp;московскому времени" data-modal-note="Вопрос из блока «Вопросы о воспитании мальтипу»" data-modal-submit="Задать вопрос" data-modal-done="Спасибо! Ответим на&nbsp;ваш вопрос в&nbsp;течение рабочего дня">Задать свой вопрос</button>    </div>
     <ul class="faq__list">
       <li class="faq__item">
         <h3 class="faq__q"><button class="faq__btn" type="button" aria-expanded="false" aria-controls="voprosy-a1" id="voprosy-q1"><span>С какого возраста воспитывать мальтипу?</span><span class="faq__ico" aria-hidden="true"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-plus"/></svg></span></button></h3>
@@ -720,6 +720,10 @@
               <label class="field__label" for="pm-phone">Телефон</label>
               <input class="input" id="pm-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="+7 (___) ___-__-__" required aria-describedby="pm-phone-err" data-phone>
               <p class="field__err" id="pm-phone-err" hidden></p>
+            </div><div class="field" data-pm-question hidden>
+              <label class="field__label" for="pm-question">Ваш вопрос</label>
+              <textarea class="input input--area" id="pm-question" name="question" rows="4" maxlength="1000" placeholder="Например: сколько гуляет мальтипу и&nbsp;можно ли его оставлять одного?" aria-describedby="pm-question-err"></textarea>
+              <p class="field__err" id="pm-question-err" hidden></p>
             </div>
             <div class="field" data-pm-breed>
               <label class="field__label" for="pm-breed">Какая порода интересует</label>

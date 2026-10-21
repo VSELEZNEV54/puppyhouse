@@ -1067,6 +1067,8 @@ legend.field__label { margin-bottom: 8px; }
   -webkit-appearance: none; appearance: none;
   transition: border-color .2s, background-color .2s, box-shadow .2s;
 }
+/* многострочное поле: «Ваш вопрос» в общей модалке */
+.input--area { height: auto; min-height: 112px; padding: 14px 18px; line-height: 1.5; resize: vertical; }
 .input::placeholder { color: #6F6C67; }
 .input:hover { border-color: var(--line-2); }
 .input:focus { outline: none; border-color: var(--ink); background: #fff; box-shadow: 0 0 0 4px rgba(20, 20, 20, .07); }
