@@ -59,8 +59,11 @@ def _hist(db: Session, lead_id: int, action: HistoryAction, *, actor_id=None, ac
                        new_value=None if new is None else str(new)[:300], comment=comment))
 
 
+QUESTION_MAX = 1000  # «Задать свой вопрос»: the textarea has the same maxlength
+
+
 def request_hash(payload: dict) -> str:
-    keys = ("kind", "name", "phone", "contact", "breed", "puppy", "colour", "note")
+    keys = ("kind", "name", "phone", "contact", "breed", "puppy", "colour", "note", "question")
     canon = json.dumps({k: payload.get(k) for k in keys}, ensure_ascii=False, sort_keys=True, default=str)
     return hashlib.sha256(canon.encode()).hexdigest()
 
@@ -158,6 +161,9 @@ def create_from_site(db: Session, data, ctx: RequestCtx) -> Created:
         q = {k: sanitize.clean(str(v), 40) for k, v in data.quiz.items() if k in ("winner", "second") and v}
         if q:
             details["quiz"] = q
+    question = sanitize.clean(data.question, QUESTION_MAX, multiline=True)
+    if question:
+        details["question"] = question
 
     flags: list[str] = []
     if data.elapsed_ms is not None and data.elapsed_ms < s.min_fill_ms:

@@ -23,7 +23,7 @@ pixel-parity baseline no longer applies. Reference inner page: `/shchenki/`.
   desktops links hide from the end (`prio`), they stay in «Меню»; below 1100 px a burger opens the full-screen `#mmenu` with
   the same groups as accordions. Mobile sticky bar: Позвонить · Telegram · Узнать цену.
 - **No phone and messengers yet** (client 20.10): `site.contacts_ready = false` hides the kennel's number and its Telegram /
-  WhatsApp / MAX links everywhere — header, «Меню», burger, sticky bar, footer, lead form, contact tiles, «Не получилось
+  WhatsApp / MAX links everywhere — header, «Меню», burger, sticky bar, footer, lead form, «Не получилось
   отправить», lead band, video viewer, puppy hero, JSON-LD (`telephone`, `sameAs`). In their place: the coral «Оставить
   заявку» (`ui.request_button()`, `.btn--coral`, modal kind `lead`) in the header (hidden ≤ 560 px — the sticky bar has it),
   «Меню», burger, sticky bar (`.mbar--2`: Оставить заявку · Узнать цену) and video viewer. The visitor's «Куда написать»
@@ -33,22 +33,38 @@ pixel-parity baseline no longer applies. Reference inner page: `/shchenki/`.
 - **Phones (≤ 760 px): no sideways scrolling of cards.** Cards go down the page: one per row, or two small ones (colour
   faces, `.stiles--pair`). Chips and filters wrap. The ONLY swipeable rows are photo/video carousels (`media.media_carousel`);
   video reviews (`media.video_reviews`) stack on phones (three cards + «Все отзывы»), wide comparison tables (`ui.cmp_table`
-  with 3+ columns) turn into one tile per column. `.scroller` is a no-op now — don't use it. The crawler flags any other
+  with 3+ columns) stay a horizontal table that scrolls sideways, first column sticky, «Листайте таблицу вбок» above it
+  (client 21.10 — the second exception). `.scroller` is a no-op now — don't use it. The crawler flags any other
   sideways scroll container and any link/button cut off by an `overflow: hidden` parent (`control-clipped`).
-- **Block head actions (client 19.10, automatic — main.css).** A button in a block head (`ui.section_head(...)` with a
-  caller button or `button=true`) is always coral. On phones ≤ 760 px every head action — the button or the text link
-  («Все отзывы →», «Документы и гарантии →», «Все вопросы →» of `blocks.faq_section`) — leaves the head and stands under
-  the whole block as a full-width coral button. Nothing to do per page: keep the head as `section.section > .sec-head`
-  (or `.faq > .faq__aside`) and the rule applies. Don't add a second, hand-made bottom button.
-- **CTA wording: no arrow-only buttons.** Every clickable tile/card ends with a text pill (`ui.tile_cta`) or a text link
-  (`ui.text_link`): «Перейти к породе» (breed tiles), «Подробнее» (help / link / studio tiles, puppy cards),
+- **RULE — the SEO text stands right before the lead form, after the articles (client 21.10).** On every page:
+  … → «Читайте также» (`blocks.read_more`) → SEO text (`blocks.seo_block`) → lead form. Inner pages put the seo_block call
+  into `{% block seo %}` of `layouts/page.html.j2` (never into `body`); the layout places it after `pups` and `blog`.
+- **RULE — links to a section or page are coral pill buttons (client 19.10, 21.10; automatic — main.css).** No underlined
+  text links with an arrow anywhere on the site. «Все отзывы», «Все статьи», «Документы и гарантии», «Задать свой вопрос»,
+  «Весь каталог», «Узнать цену», «Получить консультацию» — every such link is a rounded coral button: `ui.link_button(url,
+  label)` (`.btn.btn--coral`), and `ui.section_head(link=…)` and `blocks.faq_section` (its «Задать свой вопрос») render it themselves (the old
+  `button=` argument changes nothing). On phones ≤ 760 px the button of a block head leaves the head and stands under the
+  whole block, full width, 52 px. Nothing to do per page: keep the head as `section.section > .sec-head` (or
+  `.faq > .faq__aside`) and the rule applies. Don't add a second, hand-made bottom button. Exceptions that stay as
+  they are (client 21.10): links to the legal documents in «Другие документы» on the consent / privacy pages
+  (`ui.text_link` — underlined with an arrow, used nowhere else) and the plain links of the header, menus and footer
+  (the footer's «Все щенки … →» / «Все условия доставки →» — bold, not underlined, as on the client's reference).
+- **CTA wording: no arrow-only buttons.** Every clickable tile/card ends with a text pill (`ui.tile_cta`) or a coral
+  button (`ui.link_button`): «Перейти к породе» (breed tiles), «Подробнее» (help / link / studio tiles, puppy cards),
   «Все окрасы» / «Смотреть окрас» (colours), «Читать» (articles). `ui.round_arrow` is decorative only.
 - **Advantages everywhere it fits**: `ui.advantages()` (привиты по возрасту, ветпаспорт и договор, пожизненная гарантия,
   пожизненная консультация, видео до покупки, доставка — `site.advantages`). Used on /, hubs, catalog, puppy pages,
-  /dokumenty-i-garantii/, /dostavka/ + cities, /otzyvy/, /roditeli/, /vypuskniki/, /rassrochka/, /shchenok-v-podarok/, /faq/.
+  /dokumenty-i-garantii/, /dostavka/, /otzyvy/, /o-pitomnike/, /rassrochka/, /shchenok-v-podarok/, /faq/.
   The guarantee is **lifetime** everywhere («Пожизненная гарантия на врождённые и генетические заболевания — условия в договоре»).
-- **Promises**: picking a puppy — «Подберём щенка за 1 час» (hub hero, modal, `forms.lead_form` default); «за 15 минут» is only
-  the reply time («Ответим за 15 минут», «Цену пришлём за 15 минут»).
+- **Promises** (client 21.10): no «за 1 час». The offer is «Пришлём варианты щенков» / «Оставьте заявку, и мы пришлём варианты ваших будущих питомцев: фото, видео и цены» (`forms.lead_form` default,
+  modals, blog form; breed pages «Пришлём варианты мальтипу»); the reply time is only
+  «в течение рабочего дня» (owner 19.10: «Свяжемся с вами в течение рабочего дня», `site.phone.response`) — never «за 15 минут».
+- **City pages** (client 21.10): `/shchenki-v-<город>/` (`/shchenki-v-novosibirske/`, address = `cities.json → url`) for
+  every city is the homepage — the same template `pages/home.html.j2` with `city` (route `home.py`, copy `home-city.json`).
+  It differs only by the heading («Щенки в Новосибирске напрямую от заводчика»). No «доставка в <город>», and the
+  kennel's own city is never named: context `hide_city=true` drops «Москва» from the logo caption (`site.tagline_plain`),
+  the footer address and «по московскому времени» (modal; `forms.lead_form(local_time=false)`); the eyebrow and texts
+  lose «Москва»; reviews from Moscow and its region are left out; the SEO text's Moscow paragraph is the city's own.
 - **First screen**: `ui.page_hero(..., full=true)` = the whole screen (breed pages); homepage hero: `.hero--full`.
   Studio photos in page heroes are larger on desktop (≥ 1200 px the tile is taller; the photo is never cropped).
 - **Images.** Placeholders come from `assets/img/` (`src/data/media.json` lists sets per page/breed); a video is a
@@ -64,7 +80,7 @@ pixel-parity baseline no longer applies. Reference inner page: `/shchenki/`.
   `data-align="start"`, each card «Подобрать кремового мальтипу» — `pick` in `breedsub.json`) · «Какой он» · «Как мы отдаём
   щенка» (what travels with the puppy + photo tiles: documents, guarantee, delivery, price) · FAQ · «Всё о <породе>» (articles +
   the breed's colours and price pages: `part.post_carousel` — four wide cards in a row, the rest beyond the edge with arrows,
-  a list on phones) · SEO text · lead form with contact tiles (`forms.contact_tiles()`), as on the homepage. 15 puppies per
+  a list on phones) · SEO text · lead form, as on the homepage. 15 puppies per
   breed with the client's real photos (`puppies.json`), no studio renders in the catalog. `breeds/hub.html.j2` is unused now.
   Colour pages `/<breed>/<colour>/` (`breeds/colour.html.j2`, copy in `breedsub.json` colour items: `title`, `short`,
   `rarity` / `age` / `nose`, `about`, `care`; `colour_price` in `breeds-hub.json` = what the price depends on). Colour photos
@@ -83,10 +99,12 @@ python3 tools/build.py --clean    # + delete pages from earlier builds that no r
 python3 tools/build.py --kit      # + /_kit/ — every macro with sample data (git-ignored, never deployed)
 ```
 
-**Staged release (client 19.10).** The repo = what GitHub Pages and the server show. Out now: the homepage, the four
-breed pages and the privacy policy (the forms link to it). Everything else stays in `src/` and is built with `--all`.
-Links to an unpublished page go to a block on the published page (`publish.json → link_fallbacks`: «Каталог щенков» →
-`#shchenki` on a breed page or the homepage `#porody`, «Контакты» → `#zayavka`, «Отзывы», «О питомнике», «Все вопросы»);
+**Staged release (client 19.10, third step 21.10).** The repo = what GitHub Pages and the server show. Out now (151 pages):
+the homepage, the four breed pages with their colour, «Виды и окрасы» and price pages, the catalog and 60 puppy pages,
+«О питомнике», «Отзывы», «Доставка», «Контакты», «Вопросы и ответы», «Документы и гарантии», «Бронь щенка», the breed
+quiz, the four comparisons, the /blog/ index, the 30 city pages and the legal pages. Not out: «Щенок в подарок» and the
+blog articles — they stay in `src/` and are built with `--all` / `--full`. Links to an unpublished page can go to a
+block on the published page (`publish.json → link_fallbacks`, empty now: every former target is published);
 the rest show the toast «Раздел скоро откроется. Пока напишите нам — пришлём фото и видео щенков» and carry `rel="nofollow"`. sitemap.xml lists only
 published pages. To release a page: add its URL to `src/data/publish.json → pages` (`/maltipu/*` = the whole section),
 build, commit. A malformed publish.json stops the build before anything is written (a typo must not publish the whole
@@ -194,10 +212,15 @@ Globals: `site`, `breeds` (list), `breed_map` (slug → breed), `puppies`, `data
 groups for «Меню» and the burger: items `{label, url}` + `breed` face / `count` / `icon`, or `{label, sub: [...]}` — a caption
 with a short list of links, one per row, thin rule on the left; client 15.10: no pills; phones: every item on its own row, the
 burger's top bar with the close button never scrolls away — only `.mmenu__scroll` scrolls; footer links on phones: one per row, 46 px),
+`footer` (client 21.10, big footer after the client's screenshots: `about` — the line under the logo; `columns` — «Покупка» and «Питомник»; under them
+partials/footer.html.j2 builds a column per breed from breedsub.json colours + «Виды и окрасы» + «Цена» + coral «Все щенки …», then
+the delivery cities from cities.json under `cities_title`. One grid for every row (columns sized to the longest breed links), the
+contacts in the right column — they are not repeated under the lead form; ≤ 760 px: one column, the breed columns and the cities fold,
+main.js `details[data-fold]`),
 `tg_cta` («Написать в Telegram»), `messengers.telegram|whatsapp|max` (`url_placeholder` marks placeholder links; `icon` — `tg` / `wa` / `max`: the official mark shapes
 in one colour; in a `.msgr` circle they are dark brown on a soft peach gradient — client sample 15.10, no brand-colour logos),
 `advantages`, `stats`; `domain` «домщенков.рф» + `domain_ascii` (punycode `xn--b1adduihee9g.xn--p1ai`, for JSON-LD URLs),
-`email` (placeholder «[почта]@домщенков.рф»).
+`email` «main@домщенков.рф» (client 20.10; on the page) + `email_ascii` (the same in punycode — `mailto:` links use it).
 `media.json`: photo/video sets for carousels — `home`, `maltipu`, `francuzskij-buldog`, `toj-pudel`, `border-kolli`; item
 `{src, alt, kind: photo|video, caption, video: null|file, pos?}` (`data.media.home`, `data.media[b.slug]`).
 `reviews.json`: + `poster {src, alt, pos?}` (placeholder lifestyle photo), `video: null`, `short` (≤ 160 chars) for every review.
@@ -212,18 +235,22 @@ Computed by the build:
 Live photos for the catalog (client 13.10, waiting for the client's files): put the real photo first in `photos` with
 `kind: "life"` (+ `pos` if needed) — every card then shows it cropped to cover (default `object-position: 50% 60%`), no code change.
 Values in `[square brackets]` are placeholders (see `site.placeholders`); keep them bracketed until the client gives real data.
-`cities.json`: `name`, `prep` («в Казани»), `acc` («в Казань»), `gen` («из Казани»), `km_approx` (rough road distance), `methods` (car/plane/train), `duration` (bracketed estimate from distance and the first method, to confirm).
+`cities.json`: `name`, `prep` («в Казани»), `acc` («в Казань»), `gen` («из Казани»), `url` (`/shchenki-v-<город>/` — the city page), `km_approx` (rough road distance, groups on /dostavka/), `methods` (car/plane/train).
 `breeds.json` also has `facts`, `compare` (comparison rows), `docs`, `studio` / `mood` / `adult` photos, `varieties`, `colours` (drafts — check, some with `standard` and `photo`).
-**Colour anchors** (stage 3): every colour has its own card on `/<breed>/vidy-i-okrasy/#<colour-slug>` (e.g. `/maltipu/vidy-i-okrasy/#ryzhij`,
-`/francuzskij-buldog/vidy-i-okrasy/#goluboj`); slugs, photos and texts live in `breedsub.json` → `<breed>.varieties` → the `colours`
-block (the hubs read the same list). Link a colour there instead of the page top. The hubs' carousels use `data.media[<breed>]`
+**Colours** (client 21.10): every colour has its own page `/<breed>/<colour-slug>/` (e.g. `/maltipu/ryzhij/`); link a colour there.
+Slugs, photos and texts live in `breedsub.json` → `<breed>.varieties` → the `colours` block (breed page, colour pages and
+«Виды и окрасы» read the same list; the last two show it as the breed page's carousel `breeds/_parts.colour_carousel`).
+**«Виды и окрасы»** `/<breed>/vidy-i-okrasy/` (client 21.10): hero «Какие бывают …» → `types` block (one studio photo of the
+breed's adult dogs, `assets/img/kinds-<breed>.jpg`, numbered pin under each dog + a card per kind; `sub` = generations or
+the colour standard) → colour carousel → «Как выбрать окрас» → 8 puppies + «Все щенки …» → FAQ → «Читайте также» → SEO →
+homepage-size lead form. The hubs' carousels use `data.media[<breed>]`
 in the order of `breeds-hub.json` → `media` (+ extra placeholders), so a video file added to `media.json` shows on the hub too.
 
 ## Macros (`ui.`, `cards.`, `forms.`, `blocks.`) — text params are plain text, escaped and run through `|typo`
 
 | Macro | Params | Use |
 |---|---|---|
-| `ui.page_hero` | `title, lead, tone, breed, photo, faces, facts, chips, eyebrow, id, full=false, note` + `call` → buttons | H1 tile. `breed=` → its tone and studio photo blended. `full=true` → the whole screen (100svh − header, min 560), copy centred; phones: photo grows. `note` → one muted line under the buttons. Breed pages: `btn btn--white btn--lg` «Подобрать щенка» + `btn btn--outline btn--lg` |
+| `ui.page_hero` | `title, lead, tone, breed, photo, faces, facts, chips, eyebrow, id, full=false, note, cls` + `call` → buttons | H1 tile. `breed=` → its tone and studio photo blended. `full=true` → the whole screen (100svh − header, min 560), copy centred; phones: photo grows. `note` → one muted line under the buttons. Breed pages: `btn btn--white btn--lg` «Подобрать щенка» + `btn btn--outline btn--lg`. `cls='phero--group'` + `photo` hero-four-breeds.jpg → the wide four-puppies hero (pages.css; /o-pitomnike/, blog «Как выбрать щенка») |
 | `ui.section_head` | `title, id, link={url,label}, lead` + `call` → buttons | H2 row |
 | `ui.breadcrumbs` | `items` | used by the layout |
 | `ui.studio_tile(s)` | `photo{src,alt}, title, line, url, badge, tone, priority, cta='Подробнее'` / `items` (+ `t.cta`), `pair=false` | colour / parent photo tile, backdrop = measured photo tone; `priority=true` on the first screen. Phones: one wide tile per row (photo right); `pair=true` → two small 3:4 tiles per row (titles only) |
@@ -236,26 +263,27 @@ in the order of `breeds-hub.json` → `media` (+ extra placeholders), so a video
 | `ui.lead_band` | `title, line, label='Оставить заявку', tone='lilac', tag='h3', title_id, faces=true, note, modal_title, submit='Записаться на видеозвонок', done` | CTA band right under a carousel: «Оставить заявку» (modal with its own title + hidden note) + «Написать в Telegram». Inside a section with an H2 keep `tag='h3'`. `faces=[{src, tone}]` → those studio photos as round faces (breed page: its colours) |
 | `ui.cta_band` | `title, line, button='modal'\|{url,label}, label, tone, faces, title_id` | mid-page CTA (wrap in a section, `title_id` → its `aria-labelledby`) |
 | `ui.keyfacts`, `ui.callout(kind,title)` + call, `ui.toc([[id,label]])` | | articles (`.article`, `.prose`) |
-| `ui.cmp_table` | `cols` (names or breed dicts), `rows[[label, v1, v2…]]`, `caption` | comparison table in a white tile; column names never break at a hyphen. 3+ columns: phones ≤ 760 get one tile per column (`.cmp-cards`) instead of the table |
+| `ui.cmp_table` | `cols` (names or breed dicts), `rows[[label, v1, v2…]]`, `caption` | comparison table in a white tile; column names never break at a hyphen. first column sticky; 3+ columns: on phones ≤ 760 the table scrolls sideways (min 640 px, labels 100 px) under «Листайте таблицу вбок» (client 21.10) |
 | `ui.gallery` | `photos[{src,alt,caption?}]` | 1–5+ photos; phones: a grid (first photo full width, the rest two per row). Swipeable row → `media.media_carousel` |
-| `ui.badges`, `ui.empty_state(title,text,button,label,attrs)`, `ui.img(src,alt,…)`, `ui.icon`, `ui.ico`, `ui.face`, `ui.round_arrow`, `ui.text_link` | | small parts |
-| `cards.puppy_card(p, tag='h3', eager=false, simple=false)` | puppy | THE puppy card of the whole site (every strip, hub, catalog, «Похожие щенки»): photo (a link), white «Узнать цену» (modal for that puppy) + «Подробнее» with a white outline (`.btn--outline`), heart in the photo corner; studio photo → card in that photo's measured colours; phones ≤ 560 — a compact row, photo left. `simple=true` (breed pages v2): name, sex · colour, the same two buttons, no age / heart; photo and name are not links. Styles: `main.css` (`.pup` + `.ct-card`) |
+| `ui.badges`, `ui.empty_state(title,text,button,label,attrs)`, `ui.img(src,alt,…)`, `ui.icon`, `ui.ico`, `ui.face`, `ui.round_arrow`, `ui.link_button(url, label)` (coral pill link) | | small parts |
+| `cards.puppy_card(p, tag='h3', eager=false, simple=false)` | puppy | THE puppy card of the whole site (every strip, hub, catalog, «Похожие щенки»): photo (a link), white «Узнать цену» (modal for that puppy) + «Подробнее» with a white outline (`.btn--outline`), no «В избранное» heart (client 21.10); studio photo → card in that photo's measured colours; phones ≤ 560 — a compact row, photo left. `simple=true` (breed pages v2): name, sex · colour, the same two buttons, no age; photo and name are not links. Styles: `main.css` (`.pup` + `.ct-card`) |
 | `ct.card(p, eager=false)` / `ct.strip(items, breed)` | `{% import "catalog/_card.html.j2" as ct %}` | `ct.card` = `cards.puppy_card`; `ct.strip` = a strip of cards + «Ждёте другого щенка?» («Похожие щенки») |
-| `cards.pups_section` | `title, breed, limit=4, id, exclude=slug` | «Щенки в наличии» strip (`.pups--strip`: at 3 columns a lone 4th card is hidden) |
+| `cards.pups_grid` | `items, title='Щенки в наличии', id='pups', url='/shchenki/', label='Весь каталог'` | the standard «Щенки в наличии» (client 21.10): 8 cards as on the homepage (`.hm-pups--8`: six at three per row), the catalog button under them. On a page about all breeds pass `_lib.mixed_puppies(data['breeds'])` — two of every breed |
+| `cards.pups_std` | `breed=none, exclude=[], title, id='pups'` | THE «Щенки в наличии» block of every page (client 21.10): `pups_grid` with 8 cards — with `breed` its 8 puppies, «Щенки <породы> в наличии» and «Все щенки <породы>» → `#shchenki` of the breed page; without — two of every breed (each row shows all four) and «Весь каталог». `exclude`: slugs already on the page (the puppy itself, a colour's puppies). The layout's default `{% block pups %}` renders it (`pups_breed`); «Похожие щенки» on puppy pages, the breed's puppies on colour pages, /dostavka/, the gift page |
 | `cards.breed_tile(s)` | `b, count=false, cta='Перейти к породе'` / `items, count=false, cols=4` | pastel breed tiles; `cols=2` → two wide tiles per row on desktop (photo right). «В наличии» only with `count=true` (removed from the homepage 13.10). Phones: one wide tile per row |
 | `cards.review_card(r, short)`, `cards.ratings()`, `cards.soon_tile()` | | |
 | `media.media_carousel` | `items, title, id='media', lead, link, label, start, priority` + `call` → content under it | row of 9:16 photo/video cards, centred card larger, arrows (a pair under the row from 561 px; over the row on phones), swipe, ← →, snap; opens `#lightbox`. Starts on the middle card. `title` → whole section; `caller()` → e.g. `ui.lead_band()` under the carousel |
 | `media.media_card` | `m` (media.json item) | one 9:16 card (button → lightbox); video = poster + play |
-| `media.video_review_card` | `r, full=false, cls=''` | 9:16 poster + play + review text (`r.short`; `full=true` → `r.text` + source and puppy) + name, city, breed on a white panel. In `ul.vrev-grid` (or `cls='vrev--stack'`) the card grows with its text — /otzyvy/ uses the grid |
+| `media.video_review_card` | `r, full=false, cls=''` | 9:16 poster + play + review text (`r.short`; `full=true` → `r.text` + source and puppy) + name, city, breed on a white panel. In `ul.vrev-grid` (or `cls='vrev--stack'`) the card grows with its text. /otzyvy/ (21.10) shows the homepage photo reviews (`media.photo_review_card`, `home.json → reviews_home`) in `.tr-rvws`: 12, «Показать ещё отзывы» opens the rest |
 | `media.video_reviews` | `reviews, title='Отзывы владельцев', id='otzyvy', title_id, link, lead, ratings=true` | section: rating tiles + row of video review cards (arrows under it); phones: first three stacked + «Все отзывы» |
+| `blocks.read_more` | `b, alt='price', title='Читайте также', id='eshche', limit=3, here, skip` | THE articles block of every page (client 21.10: «the same blocks on all pages»; replaced «Полезные статьи» and «Ещё о …»): 3 article cards (the breed's first; `skip` = an article's own slug), then four plates — with `b`: the breed page · price page OR varieties page (`alt='varieties'` on the price page) · «Каталог щенков» · «Подобрать породу»; without `b`: the first four of «Каталог щенков» · «Подобрать породу» · «Документы и гарантии» · «Доставка» · «Вопросы и ответы» without the page itself (`here=` its url). The layout's default `{% block blog %}` renders it (`lead_breed` → `b`, `here=page.url`); pages that place it themselves override the block. Not on the homepage / city pages («Почитать о породах»), breed pages («Всё о породе»), «Контакты», the blog index and documents |
 | `blocks.blog_teasers` | `slugs` (or `posts[{url,title,line,cover,topic}]`), `title='Гид по породам', id='blog', lead, link, limit=3` | article cards: photo, title, one line, «Читать»; phones — compact list |
-| `forms.lead_form` | `title='Подберём щенка за 1 час', line, tone, breed, id='zayavka', contacts=true, cls=''` | one per page (the layout adds it); phones: phone number on its own line, three messengers (`.lead__msgrs`, never split) under it. `contacts=false` — no phone/messengers in the tile (a «ответим за 15 минут» note instead); `{% call %}` content goes after the tile in the same section (homepage: contact tiles `.hm-cts`) |
+| `forms.lead_form` | `title='Пришлём варианты щенков', line='Оставьте заявку, и мы пришлём варианты ваших будущих питомцев: фото, видео и цены', tone, breed, id='zayavka', contacts=true, cls=''` | one per page (the layout adds it); phones: phone number on its own line, three messengers (`.lead__msgrs`, never split) under it. `contacts=false` — no phone/messengers in the tile (the «Свяжемся с вами в течение рабочего дня» note, `site.phone.response`, instead); `{% call %}` content goes after the tile in the same section. Contacts are not repeated under the form: they are in the footer, right column (client 21.10) |
 | `forms.price_button(label, cls, breed)`, `forms.msgr(kind)` | `kind = telegram \| whatsapp \| max` | generic «Узнать цену» / messenger round button |
-| `forms.contact_tiles()` | | phone, messengers, e-mail, address — four white tiles under `forms.lead_form(contacts=false, cls='hm-lead')` (homepage, breed pages v2) |
 | `forms.contact_field(prefix)` | `'lf' \| 'pm' \| yours` | «Куда написать» chips Telegram / WhatsApp / MAX / Звонок |
 | `forms.consent_check(prefix, kind='processing', name='consent', privacy=true)` | `kind = processing \| distribution` | 152-ФЗ consent checkbox from `data/consent.json` (current version): «Даю согласие на …» linking `/soglasie/` (or `/soglasie-na-publikaciyu/`), privacy link on the next line. Every form that sends personal data needs it |
 | `forms.honeypot(prefix)`, `forms.send_fail(what, saved)` | | hidden `hp_note` field (off-screen, out of the Tab order); «Не получилось отправить…» + phone / Telegram / MAX (shown by JS when the API is unreachable) |
-| `blocks.faq_section` / `faq_list` | `items` (faq.json or `{q,a}`), `title, id, link, short, ld=true` | accordion; `ld=true` also emits FAQPage JSON-LD for its questions (one FAQ section per page — pass `ld=false` where the page outputs its own FAQPage: /faq/, blog articles) |
+| `blocks.faq_section` / `faq_list` | `items` (faq.json or `{q,a}`), `title, id, ask=true, short, ld=true` | accordion + «Задать свой вопрос» (client 21.10, instead of «Все вопросы»): a coral button under the H2 (phones: under all the questions) that opens the shared modal with the required «Ваш вопрос» field (`data-modal-question="1"`, kind consult; the API keeps the text in `details.question`, the e-mail carries it, Telegram only says «Есть вопрос» unless personal data may go there); `ask=false` hides it (/faq/); `ld=true` also emits FAQPage JSON-LD for its questions (one FAQ section per page — pass `ld=false` where the page outputs its own FAQPage: /faq/, blog articles) |
 | `blocks.reviews_section` | `reviews, title, id, title_id, link, short` | text reviews (one per row on phones); for video reviews use `media.video_reviews` |
 | `blocks.seo_block` | `title, lead, id, key` + `call` → hidden `<h3>/<p>` | collapsed SEO text |
 
@@ -278,7 +306,7 @@ in the order of `breeds-hub.json` → `media` (+ extra placeholders), so a video
 
 `base.html.j2` renders `<meta name="dsh-api" content="/api/v1" data-origins="…" data-consent="…">` from `site.api` and
 `consent.json`. `main.js` is in live mode only on a production origin (or with `localStorage['dsh:api']` = an absolute API
-URL for local testing): the price modal and `#lead-form` POST `/leads`, `/otzyvy/` POSTs `/reviews` (trust.js), anonymous
+URL for local testing): the price modal and `#lead-form` POST `/leads`, `/otzyvy/` POSTs `/reviews` (trust.js). Every `form[data-lead-form]` is a lead form (main.js: `data-prefix` of its field ids, `data-kind`, `data-note`; «Спасибо» / «Не получилось» in its `[data-lead-box]`) — the bottom form and the open form in a blog article's right column (`blg.aside_form`, kind `help`), anonymous
 events (page_view, form_open, contact_click, quiz_complete) go to `/events`. GitHub Pages stays in prototype mode (fake
 send, no tracking). Helpers for page scripts: `window.DSH` (`live`, `submit(path, payload, state)`, `context()`, `track()`).
 Breed `<select>` values are slugs (`forms.breed_options`). Never put the API URL into `href` / `src` / `action`.
@@ -299,7 +327,7 @@ Breed `<select>` values are slugs (`forms.breed_options`). Never put the API URL
 
 ## Copy
 
-Russian, short sentences, warm and concrete. No prices anywhere (every puppy → «Узнать цену»), no «лучший», «№1». H2 ≤ 5 words, one-line lead ≤ 90 chars,
+Russian, short sentences, warm and concrete. No prices of puppies anywhere (every puppy → «Узнать цену»); the price pages /<breed>/cena/ show only approximate ranges (client 21.10, breedsub.json → price_cheap / price_kennel), no installment for now (client 21.10: booking only — prepayment 30% of the price, the rest on the moving day; /rassrochka/ is «Бронь щенка»), no «лучший», «№1». H2 ≤ 5 words, one-line lead ≤ 90 chars,
 card line ≤ 60 chars, long SEO text only in `blocks.seo_block`, FAQ or article prose. Keywords: the semantic core CSV, target URL column.
 Facts about breeds — from `breeds.json` / `content/home.md`; anything unverified stays in `[brackets]`.
 `|typo` adds non-breaking spaces (after 1–2 letter words, before dashes, number + unit) and a word joiner after the hyphen of

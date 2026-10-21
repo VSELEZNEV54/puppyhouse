@@ -204,6 +204,23 @@ def test_missing_or_garbage_key_gets_a_generated_one(client, db):
     assert len(keys) == 2 and all(isinstance(k, uuid.UUID) for k in keys) and keys[0] != keys[1]
 
 
+# ---------------------------------------------------------------- «Задать свой вопрос»
+def test_question_is_kept_in_details_with_its_line_breaks_and_capped(safe_client, db):
+    r = post(safe_client, lead_payload(kind="consult", question="  Сколько гуляет мальтипу?\r\n\n\n\nА\u202e зимой?  "))
+    assert r.status_code == 201, r.text
+    assert lead_of(db, r)["details"]["question"] == "Сколько гуляет мальтипу?\n\nА зимой?"
+    r = post(safe_client, lead_payload(kind="consult", question="в" * 5000))
+    assert r.status_code == 201, r.text
+    assert len(lead_of(db, r)["details"]["question"]) == 1000
+
+
+@pytest.mark.parametrize("question", [None, "", "   ", ["список"], {"q": 1}])
+def test_empty_or_junk_question_is_not_stored_and_never_costs_the_request(safe_client, db, question):
+    r = post(safe_client, lead_payload(question=question))
+    assert r.status_code == 201, r.text
+    assert "question" not in lead_of(db, r)["details"]
+
+
 # ---------------------------------------------------------------- never lose a request
 def test_unknown_kind_becomes_other_with_raw_text(safe_client, db):
     r = post(safe_client, lead_payload(kind="Хочу щенка на день рождения"))

@@ -1,5 +1,5 @@
 /* =========================================================
-   домщенков.рф — подбор породы, сравнения пород, стартовый набор (группа choice).
+   домщенков.рф — подбор породы и сравнения пород (группа choice).
    Подключается после main.css и pages.css. Только раскладка этих страниц:
    токены, плитки, кнопки, студийные плитки, таблица, CTA — из общих файлов.
    ========================================================= */
@@ -164,130 +164,49 @@ html:not(.js) .cho-quiz { display: none; }
 #preimushchestva .adv { align-content: start; }
 @media (min-width: 761px) { #preimushchestva .adv__title { align-self: start; } }
 
-/* «Кому подойдёт»: тинт породы с галочками и белая карточка с крестиками (как «Почему не бывает дёшево» на /<breed>/cena/) */
-.cho-fit { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--gap); }
-.cho-fit__card {
-  display: flex; flex-direction: column; gap: clamp(20px, 2vw, 28px);
-  padding: clamp(24px, 3vw, 44px); border-radius: var(--r-tile); background: var(--tile);
+/* «Кому подойдёт» (правка 21.10): четыре карточки с фото — как на странице щенка (puppy.css .pp-fit): фото с отступом
+   8 px на тоне породы, заголовок и строка под ним */
+.cho-fits { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--gap); }
+.cho-fitc { display: flex; flex-direction: column; min-width: 0; padding: var(--inset); border-radius: var(--r-tile); background: var(--tile); }
+.cho-fitc__photo { position: relative; aspect-ratio: 4 / 5; border-radius: var(--r-img); overflow: hidden; background: var(--tone); }
+.cho-fitc__photo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.cho-fitc__title { margin: 16px 10px 0; font-size: clamp(20px, 1.6vw, 24px); font-weight: 500; letter-spacing: -0.025em; line-height: 1.15; }
+.cho-fitc__line { margin: 6px 10px 12px; font-size: 15px; line-height: 1.45; color: var(--ink-soft); }
+
+/* «Лучше подобрать другую породу»: три белые плашки — крестик, кому не подойдёт, и почему */
+.cho-unfit { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--gap); }
+.cho-unfit__item {
+  display: grid; grid-template-columns: 36px minmax(0, 1fr); column-gap: 14px; row-gap: 10px; align-content: start; min-width: 0;
+  padding: clamp(22px, 2.4vw, 32px); border-radius: var(--r-tile); background: var(--tile);
 }
-.cho-fit__card--yes { background: linear-gradient(180deg, var(--tone) 0 55%, var(--tone-floor) 100%); }
-.cho-fit__title { font-size: clamp(22px, 1.9vw, 30px); font-weight: 500; letter-spacing: -0.03em; line-height: 1.1; }
-.cho-fit__list { display: grid; gap: 16px; }
-.cho-fit__list li { display: grid; grid-template-columns: 30px minmax(0, 1fr); column-gap: 14px; align-items: start; font-size: 17px; line-height: 1.4; }
-.cho-fit__list li > span:last-child { padding-top: 3px; }
-.cho-fit__mark {
-  width: 30px; height: 30px; border-radius: 50%;
+.cho-unfit__mark {
+  grid-row: 1 / span 2; width: 36px; height: 36px; border-radius: 50%;
   display: grid; place-items: center; background: var(--coral-50); color: var(--ink);
 }
-.cho-fit__card--yes .cho-fit__mark { background: #fff; color: var(--ok); }
-.cho-fit__mark .i { stroke-width: 2.2; }
-.cho-fit__more { margin-top: auto; padding-top: 4px; }
+.cho-unfit__mark .i { stroke-width: 2.2; }
+.cho-unfit__title { padding-top: 5px; font-size: clamp(19px, 1.5vw, 23px); font-weight: 500; letter-spacing: -0.025em; line-height: 1.2; }
+.cho-unfit__text { font-size: 15.5px; line-height: 1.5; color: var(--ink-soft); }
 
-/* «<порода> и другие породы»: три белые карточки — заголовок пары, общая строка, кому какая порода, ссылка */
-/* строки карточек выровнены между собой (subgrid): заголовки в одну или две строки не сдвигают «кому какая» */
-.cho-others { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--gap); }
-.cho-other {
-  display: grid; grid-row: span 5; grid-template-rows: subgrid; row-gap: 14px; align-content: start; min-width: 0;
-  padding: clamp(22px, 2.4vw, 34px); border-radius: var(--r-tile); background: var(--tile);
-  scroll-margin-top: 110px;
+/* «Щенки <породы> в наличии» — 8 карточек, как на главной (.hm-pups); при трёх в ряд — первые 6, ряды полные */
+@media (min-width: 901px) and (max-width: 1199px) {
+  .cho-pups > .pups__item:nth-child(n + 7) { display: none; }
 }
-.cho-other__faces { display: flex; margin-bottom: 4px; }
-.cho-other__faces .face { width: 56px; height: 56px; border: 3px solid var(--tile); }
-.cho-other__faces .face + .face { margin-left: -14px; }
-.cho-other__title { align-self: end; font-size: clamp(21px, 1.6vw, 26px); font-weight: 500; letter-spacing: -0.028em; line-height: 1.12; }
-.cho-other__lead { font-size: 15px; line-height: 1.45; color: var(--muted); }
-.cho-other__picks { display: grid; align-content: start; gap: 12px; margin-top: 4px; padding-top: 18px; border-top: 1px solid var(--line); }
-.cho-other__picks li { display: grid; grid-template-columns: 36px minmax(0, 1fr); column-gap: 12px; align-items: start; }
-.cho-other__picks .face { width: 36px; height: 36px; }
-.cho-other__picks p { padding-top: 6px; font-size: 15.5px; line-height: 1.4; }
-.cho-other__name { font-weight: 500; }
-.cho-other__more { align-self: end; padding-top: 8px; }
 
 .cho-band__faces .face img { transform-origin: 50% 30%; }
-
-/* «Читайте также»: шесть ссылок — по три в ряд */
-.cho-links .ltiles { --n: 3; }
-
-/* =========================================================
-   СТАРТОВЫЙ НАБОР (/magazin/)
-   ========================================================= */
-.cho-kit { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: var(--gap); }
-.cho-kit__copy { min-height: clamp(360px, 33vw, 520px); }
-.cho-kit .phero__copy { max-width: none; }
-.cho-kit__media { position: relative; min-height: 300px; border-radius: var(--r-tile); overflow: hidden; background: var(--sand); }
-.cho-kit__media img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 45%; }
-
-/* чек-лист: «лист бумаги» в белой плитке */
-.cho-list { padding: clamp(24px, 3.4vw, 52px); border-radius: var(--r-tile); background: var(--tile); }
-/* шапка листа (логотип и заголовок) — только на бумаге; на экране заголовок даёт H2 секции, кнопка «Распечатать» — рядом с ним */
-.cho-list__head {
-  display: none; gap: 6px;
-  padding-bottom: 18px; margin-bottom: 20px; border-bottom: 1.5px dashed var(--line-2);
-}
-.cho-list__brand { display: inline-flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 500; color: var(--muted); }
-.cho-list__brand .i { color: var(--coral-strong); }
-.cho-list__title { font-size: clamp(22px, 2vw, 30px); font-weight: 500; letter-spacing: -0.028em; line-height: 1.1; }
-.cho-list__print { flex: none; }
-.cho-list__print .i { transform: none; }
-.cho-list__cols { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px clamp(20px, 2.6vw, 40px); }
-.cho-list__group { min-width: 0; margin: 0; padding: 0; border: 0; }
-.cho-list__gtitle { padding: 0; margin-bottom: 6px; font-size: 15px; font-weight: 500; color: var(--muted); }
-.cho-list__items li + li { border-top: 1px solid var(--line); }
-.cho-check {
-  position: relative; display: grid; grid-template-columns: 26px minmax(0, 1fr); align-items: start; column-gap: 12px;
-  padding: 11px 0; cursor: pointer; font-size: 16px; line-height: 1.35;
-}
-.cho-check input { position: absolute; opacity: 0; width: 1px; height: 1px; pointer-events: none; }
-.cho-check__box {
-  width: 26px; height: 26px; border-radius: 8px;
-  display: grid; place-items: center;
-  border: 1.5px solid var(--line-2); background: #fff; color: transparent;
-  transition: background-color .2s, border-color .2s, color .2s;
-}
-.cho-check__box .i { stroke-width: 2.4; }
-.cho-check__txt { padding-top: 2px; transition: color .2s; }
-.cho-check:hover .cho-check__box { border-color: var(--ink); }
-.cho-check input:checked + .cho-check__box { background: var(--ink); border-color: var(--ink); color: #fff; }
-.cho-check input:checked ~ .cho-check__txt { color: var(--muted); text-decoration: line-through; text-decoration-color: rgba(20, 20, 20, .35); }
-.cho-check input:focus-visible + .cho-check__box { outline: 2px solid var(--ink); outline-offset: 2px; }
-
-/* CTA «Соберём набор»: вместо мордочек — круглые кадры вещей из того же флэтлея */
-.cho-kit-face { background: var(--sand); }
-.cho-kit-face img { transform: scale(var(--z, 2.4)) translate(calc(50% - var(--x, 50%)), calc(50% - var(--y, 50%))); transform-origin: 50% 50%; }
-
-/* печать: только чек-лист */
-@media print {
-  body.cho-print-list { background: #fff; }
-  body.cho-print-list > :not(main):not(.sprite) { display: none !important; }
-  body.cho-print-list main > :not(#chek-list) { display: none !important; }
-  body.cho-print-list #chek-list { margin: 0; width: 100%; }
-  body.cho-print-list #chek-list .sec-head, body.cho-print-list .cho-list__print { display: none !important; }
-  body.cho-print-list .cho-list { padding: 0; }
-  body.cho-print-list .cho-list__head { display: grid; }
-  body.cho-print-list .cho-list__cols { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-}
 
 /* =========================================================
    АДАПТИВ
    ========================================================= */
 @media (max-width: 1199px) {
-  .cho-links .ltiles { --n: 2; }
   .cho-q__opts--4 { --n: 2; }
   .cho-ans { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .cho-list__cols { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 22px; }
   .cho-res__row { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .cho-res__notes { grid-column: 1 / -1; }
 }
 
 @media (max-width: 1000px) {
-  .cho-others { grid-template-columns: minmax(0, 1fr); }
-  .cho-other { grid-row: auto; grid-template-rows: none; grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); grid-template-areas: "faces picks" "title picks" "lead picks" "more picks"; column-gap: 32px; }
-  .cho-other__faces { grid-area: faces; }
-  .cho-other__title { grid-area: title; align-self: start; }
-  .cho-other__lead { grid-area: lead; }
-  .cho-other__picks { grid-area: picks; align-self: center; margin: 0; padding: 0 0 0 32px; border-top: 0; border-left: 1px solid var(--line); }
-  .cho-other__more { grid-area: more; margin-top: 4px; }
-  .cho-kit { grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); }
+  .cho-fits { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .cho-unfit { grid-template-columns: minmax(0, 1fr); }
   .cho-res__copy { max-width: 62%; }
 }
 
@@ -299,7 +218,6 @@ html:not(.js) .cho-quiz { display: none; }
   .cho-opt__mark { top: 50%; margin-top: -15px; }
   .cho-q__opts--4 .cho-opt { flex-direction: column; align-items: flex-start; padding: 16px; }
   .cho-q__opts--4 .cho-opt__mark { top: 14px; margin-top: 0; right: 14px; }
-  .cho-fit { grid-template-columns: minmax(0, 1fr); }
 }
 
 @media (max-width: 760px) {
@@ -336,28 +254,20 @@ html:not(.js) .cho-quiz { display: none; }
   .cho-pairs__list > li { max-width: 100%; }
   .cho-pair { height: auto; min-height: 48px; padding-block: 6px; white-space: normal; line-height: 1.25; }
 
-  .cho-links .ltiles { --n: 1; }
-  .cho-fit__card { padding: 22px 20px; gap: 18px; }
-  .cho-fit__list { gap: 14px; }
-  .cho-fit__list li { font-size: 16px; }
-
-  .cho-other { display: flex; flex-direction: column; padding: 22px 20px; gap: 12px; }
-  .cho-other__title, .cho-other__more { align-self: stretch; }
-  .cho-other__faces .face { width: 48px; height: 48px; }
-  .cho-other__title { font-size: 21px; }
-  .cho-other__picks { margin-top: 2px; padding: 16px 0 0; border-left: 0; border-top: 1px solid var(--line); }
-  .cho-other__picks p { font-size: 15px; }
-
-  .cho-kit { grid-template-columns: minmax(0, 1fr); }
-  .cho-kit__copy { min-height: 0; }
-  .cho-kit__media { order: -1; min-height: 0; aspect-ratio: 4 / 3; }
-  .cho-list { padding: 20px 18px; }
-  .cho-check { font-size: 15.5px; padding: 10px 0; }
+  .cho-fits { gap: 10px; }
+  .cho-fitc__title { margin: 12px 6px 0; font-size: 18px; }
+  .cho-fitc__line { margin: 4px 6px 8px; font-size: 13.5px; }
+  .cho-unfit__item { padding: 20px 18px; column-gap: 12px; }
+  .cho-unfit__title { font-size: 19px; }
+  .cho-unfit__text { font-size: 15px; }
 }
 
 @media (max-width: 560px) {
-  .cho-list__cols { grid-template-columns: minmax(0, 1fr); }
   .cho-res__again .cho-alt__links { flex-direction: column; align-items: flex-start; }
+  .cho-fits { grid-template-columns: minmax(0, 1fr); gap: 12px; }
+  .cho-fitc__photo { aspect-ratio: 1 / .86; }
+  .cho-fitc__title { margin: 14px 10px 0; font-size: 22px; }
+  .cho-fitc__line { margin: 6px 10px 12px; font-size: 15px; }
 }
 
 @media (max-width: 420px) {

@@ -1,6 +1,10 @@
-{#- /dokumenty-i-garantii/ — documents, vaccinations, chip, contract guarantees, vet check.
-    Context (routes/trust.py): pg (data/trust.json → dokumenty), docs (items + fit_breeds), faq_items. -#}
+{#- /dokumenty-i-garantii/ — documents, vaccinations, chip, contract guarantees, vet check. Main buttons coral as on the
+    homepage (body.page-docs); «Щенки в наличии» — two of every breed (cards.pups_grid); «Читайте также» — articles +
+    plates (blocks.read_more without a breed).
+    Context (routes/trust.py): pg (data/trust.json → dokumenty), docs (items + fit_breeds), faq_items, catalog. -#}
 {% extends "layouts/page.html.j2" %}
+
+{% block body_attrs %} class="page-docs"{% endblock %}
 {% import "trust/_parts.html.j2" as tr %}
 
 {% block page_css %}
@@ -57,7 +61,7 @@
     </section>
 
     <section class="section container" id="osmotr" aria-labelledby="osmotr-title">
-      {{ ui.section_head(pg.health.title, id='osmotr-title', link={'url': '/roditeli/', 'label': 'Родители щенков'}) }}
+      {{ ui.section_head(pg.health.title, id='osmotr-title') }}
       <div class="split tr-health">
         <figure class="split__media tr-health__media">
           {{ ui.img(pg.health.photo.src, pg.health.photo.alt) }}
@@ -75,6 +79,15 @@
       {{ ui.cta_band(pg.cta.title, line=pg.cta.line, label=pg.cta.label, tone='sky', title_id='vybrali-shchenka-title') }}
     </section>
 
+    {{ cards.pups_grid(catalog) }}
+{% endblock %}
+
+{#- «Читайте также» (client 21.10): articles + four plates, instead of «Полезные статьи» -#}
+{% block blog %}
+    {{ blocks.read_more(here='/dokumenty-i-garantii/') }}
+{% endblock %}
+
+{% block seo %}
     {% call blocks.seo_block(pg.seo.title, pg.seo.lead, id='o-dokumentah', key='seo') %}
         {% for s in pg.seo.blocks %}
         <h3>{{ s.h|typo }}</h3>

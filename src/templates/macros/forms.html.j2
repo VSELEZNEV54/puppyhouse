@@ -20,13 +20,6 @@
 <option value="undecided">Пока не&nbsp;решил(а)</option>
 {%- endmacro %}
 
-{#- «Оставить заявку» — the way to reach the kennel while its phone, e-mail and messengers are not on the site
-    (site.contacts_ready = false, first stage). Opens the shared request modal; place goes to the request as its note
-    (the admin panel shows where the person clicked). -#}
-{% macro request_button(cls='btn btn--ink', place='', label='Оставить заявку') -%}
-<button class="{{ cls }}" type="button" data-open-modal data-modal-kind="consult" data-modal-title="Оставьте заявку" data-modal-sub="Подберём щенка и пришлём фото, видео и цену туда, где вам удобно" data-modal-note="Заявка{{ ': ' ~ place if place }}" data-modal-submit="Отправить заявку">{{ label }}</button>
-{%- endmacro %}
-
 {#- Button that opens the price modal without a puppy (generic request). breed: breed name or slug to preselect.
     kind: the request type sent to the API (LeadKind: price | consult | help | colour | waitlist | video_call | …). -#}
 {% macro price_button(label='Узнать цену', cls='btn btn--ink', breed=none, kind='price') -%}
@@ -44,7 +37,7 @@
 <div class="field">
   <div class="check">
     <input type="checkbox" id="{{ id }}" name="{{ name }}" aria-describedby="{{ prefix }}-{{ name }}-err">
-    <label for="{{ id }}">{% if parts %}{{ parts[0]|typo }}<a href="{{ doc.url }}" target="_blank" rel="noopener">{{ term|typo }}</a>{{ parts[1]|typo }}{% else %}<a href="{{ doc.url }}" target="_blank" rel="noopener">{{ doc.checkbox|typo }}</a>{% endif %}</label>
+    <label for="{{ id }}">{% if parts %}{{ parts[0]|typo }}<a href="{{ doc.url }}" target="_blank" rel="noopener">{{ term|typo }}</a>{{ parts[1]|typo }}{% else %}{% set w = doc.checkbox.split(' ', 1) %}{{ w[0] }} <a href="{{ doc.url }}" target="_blank" rel="noopener">{{ w[1]|typo }}</a>{% endif %}</label>
   </div>
   {% if privacy %}
   <p class="check__note"><a href="{{ site.footer.legal.privacy.url }}" target="_blank" rel="noopener">{{ site.footer.legal.privacy.label }}</a></p>
@@ -103,8 +96,9 @@
     title ≤ 5 words, line ≤ 90 chars. tone: studio/tint tone of the tile. breed: slug to preselect in the select.
     contacts=false: no phone / messengers in the tile (the page shows them itself, e.g. via caller); while
     site.contacts_ready is false the tile never shows them (the response-time note instead); cls: extra class
-    on the tile; caller() → content after the tile inside the same section (homepage: contact tiles). -#}
-{% macro lead_form(title='Подберём щенка в течение рабочего дня', line='Пришлём щенков в наличии, цены и свежие видео', tone='peach', breed=none, id='zayavka', contacts=true, cls='') -%}
+    on the tile; caller() → content after the tile inside the same section.
+    local_time=false: the response-time note without «по московскому времени» (city pages). -#}
+{% macro lead_form(title='Пришлём варианты щенков', line='Оставьте заявку, и мы пришлём варианты ваших будущих питомцев: фото, видео и цены', tone='peach', breed=none, id='zayavka', contacts=true, cls='', local_time=true) -%}
 <section class="section container" id="{{ id }}" aria-labelledby="lead-title">
   <div class="lead tone--{{ tone }}{{ ' ' ~ cls if cls }}">
     <div class="lead__intro">
@@ -117,14 +111,14 @@
       </div>
       {% else %}
       <div class="lead__notes">
-        <p class="lead__note">{{ ui.icon('clock', sm=true) }}{{ site.phone.response|typo }}</p>
-        <p class="lead__note">{{ ui.icon('mail', sm=true) }}<a href="{{ site.email_href }}">{{ site.email }}</a></p>
+        <p class="lead__note">{{ ui.icon('clock', sm=true) }}{{ (site.phone.response if local_time else site.phone.response_plain)|typo }}</p>
+        <p class="lead__note">{{ ui.icon('mail', sm=true) }}<a href="mailto:{{ site.email_ascii }}">{{ site.email }}</a></p>
       </div>
       {% endif %}
     </div>
 
-    <div class="lead__box">
-      <form class="form" id="lead-form" novalidate>
+    <div class="lead__box" data-lead-box>
+      <form class="form" id="lead-form" data-lead-form data-prefix="lf" novalidate>
         <div class="form__grid">
           <div class="field">
             <label class="field__label" for="lf-name">Имя</label>
@@ -161,41 +155,3 @@
 </section>
 {%- endmacro %}
 
-{#- Contact tiles under the lead form (homepage 15.10, breed pages): phone, messengers, e-mail and address — four
-    white tiles in a row (two on tablets, one per row on phones). Use inside {% call lead_form(contacts=false, cls='hm-lead') %}.
-    site.contacts_ready = false: e-mail and address only (.hm-cts--2, two per row). -#}
-{% macro contact_tiles() -%}
-  <ul class="hm-cts{{ ' hm-cts--2' if not site.contacts_ready }}" aria-label="Контакты питомника">
-    {% if site.contacts_ready %}
-    <li class="hm-ct">
-      {{ ui.ico('phone', 'coral') }}
-      <p class="hm-ct__label">Телефон</p>
-      <a class="hm-ct__value" href="{{ site.phone.tel }}">{{ site.phone.display }}</a>
-      <p class="hm-ct__line">{{ site.phone.hours|typo }}</p>
-    </li>
-    <li class="hm-ct">
-      {{ ui.ico('chat', 'sky') }}
-      <p class="hm-ct__label">Мессенджеры</p>
-      <div class="hm-ct__msgrs">
-        {% for k in ('telegram', 'whatsapp', 'max') %}
-        {%- set m = site.messengers[k] %}
-        <a class="hm-msgr" href="{{ m.url }}" target="_blank" rel="noopener" aria-label="{{ m.aria }}"><span class="msgr msgr--{{ m.icon }}" aria-hidden="true">{{ ui.icon(m.icon) }}</span>{{ m.label }}</a>
-        {% endfor %}
-      </div>
-      <p class="hm-ct__line">Пришлём видео щенков и&nbsp;цену</p>
-    </li>
-    {% endif %}
-    <li class="hm-ct">
-      {{ ui.ico('mail', 'sun') }}
-      <p class="hm-ct__label">Почта</p>
-      <a class="hm-ct__value hm-ct__value--mail" href="{{ site.email_href }}">{{ site.email }}</a>
-      <p class="hm-ct__line">Для документов и&nbsp;вопросов по&nbsp;договору</p>
-    </li>
-    <li class="hm-ct">
-      {{ ui.ico('pin', 'mint') }}
-      <p class="hm-ct__label">Адрес</p>
-      <p class="hm-ct__value">{{ site.address.city }}, {{ site.address.street|typo }}</p>
-      <p class="hm-ct__line">{{ site.address.visit|typo }}</p>
-    </li>
-  </ul>
-{%- endmacro %}

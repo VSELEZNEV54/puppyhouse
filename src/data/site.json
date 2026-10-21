@@ -2,6 +2,7 @@
   "_note": "Shared site data. READ-ONLY for page-group agents. Values in [square brackets] are placeholders to replace with real data (see placeholders).",
   "brand": "домщенков.рф",
   "tagline": "питомник щенков · Москва",
+  "tagline_plain": "питомник щенков",
   "domain": "домщенков.рф",
   "domain_ascii": "xn--b1adduihee9g.xn--p1ai",
   "api": {
@@ -33,15 +34,23 @@
     "display": "+7 (495) 123-45-67",
     "tel": "tel:+74951234567",
     "hours": "Ежедневно с 8:00 до 22:00",
-    "response": "Свяжемся с вами в течение рабочего дня по московскому времени"
+    "response": "Свяжемся с вами в течение рабочего дня по московскому времени",
+    "response_plain": "Свяжемся с вами в течение рабочего дня"
   },
   "email": "main@домщенков.рф",
   "email_href": "mailto:main@xn--b1adduihee9g.xn--p1ai",
+  "email_ascii": "main@xn--b1adduihee9g.xn--p1ai",
   "address": {
     "city": "Москва",
     "street": "Ташкентская ул., 19",
     "short": "Москва, Ташкентская ул., 19",
-    "visit": "Приезд по предварительной записи"
+    "visit": "Приезд по предварительной записи",
+    "map": {
+      "_note": "Яндекс Карты (клиент 21.10): embed — карта с меткой для страницы «Контакты» (iframe), url — ссылка клиента на дом, route — маршрут до питомника. Точка: Ташкентская ул., 19 — 55.702064, 37.814348.",
+      "embed": "https://yandex.ru/map-widget/v1/?ll=37.814348%2C55.702064&z=16&pt=37.814348%2C55.702064%2Cpm2rdm",
+      "url": "https://yandex.ru/maps/213/moscow/house/tashkentskaya_ulitsa_19/Z04YfgZkSkEPQFtvfXtxc3xlYA==/?ll=37.814348%2C55.702064&z=16",
+      "route": "https://yandex.ru/maps/?rtext=~55.702064%2C37.814348&rtt=auto"
+    }
   },
   "messengers": {
     "telegram": {
@@ -78,7 +87,7 @@
     },
     {
       "label": "О питомнике",
-      "url": "/roditeli/",
+      "url": "/o-pitomnike/",
       "prio": 2
     },
     {
@@ -219,19 +228,19 @@
           "sub": [
             {
               "label": "Санкт-Петербург",
-              "url": "/dostavka/sankt-peterburg/"
+              "url": "/shchenki-v-sankt-peterburge/"
             },
             {
               "label": "Новосибирск",
-              "url": "/dostavka/novosibirsk/"
+              "url": "/shchenki-v-novosibirske/"
             },
             {
               "label": "Екатеринбург",
-              "url": "/dostavka/ekaterinburg/"
+              "url": "/shchenki-v-ekaterinburge/"
             },
             {
               "label": "Казань",
-              "url": "/dostavka/kazan/"
+              "url": "/shchenki-v-kazani/"
             },
             {
               "label": "Все 30 городов",
@@ -240,16 +249,12 @@
           ]
         },
         {
-          "label": "Рассрочка и бронь",
+          "label": "Бронь щенка",
           "url": "/rassrochka/"
         },
         {
           "label": "Щенок в подарок",
           "url": "/shchenok-v-podarok/"
-        },
-        {
-          "label": "Стартовый набор",
-          "url": "/magazin/"
         },
         {
           "label": "Вопросы и ответы",
@@ -261,12 +266,8 @@
       "title": "О питомнике",
       "items": [
         {
-          "label": "Родители щенков",
-          "url": "/roditeli/"
-        },
-        {
-          "label": "Выпускники",
-          "url": "/vypuskniki/"
+          "label": "О питомнике",
+          "url": "/o-pitomnike/"
         },
         {
           "label": "Отзывы владельцев",
@@ -348,79 +349,57 @@
   },
   "cta_label": "Подобрать щенка",
   "footer": {
+    "cities_title": "Доставка щенков по России",
+    "about": "Мальтипу, французские бульдоги, той-пудели и бордер-колли с документами и доставкой по России",
     "columns": [
-      {
-        "title": "Щенки и породы",
-        "links": [
-          {
-            "label": "Все щенки в наличии",
-            "url": "/shchenki/"
-          },
-          {
-            "label": "Мальтипу",
-            "url": "/maltipu/"
-          },
-          {
-            "label": "Французский бульдог",
-            "url": "/francuzskij-buldog/"
-          },
-          {
-            "label": "Той-пудель",
-            "url": "/toj-pudel/"
-          },
-          {
-            "label": "Бордер-колли",
-            "url": "/border-kolli/"
-          },
-          {
-            "label": "Подбор породы — пройдите тест",
-            "url": "/podbor-porody/"
-          }
-        ]
-      },
       {
         "title": "Покупка",
         "links": [
           {
-            "label": "Документы и гарантии",
-            "url": "/dokumenty-i-garantii/"
+            "label": "Каталог щенков",
+            "url": "/shchenki/"
+          },
+          {
+            "label": "Бронь щенка",
+            "url": "/rassrochka/"
           },
           {
             "label": "Доставка",
             "url": "/dostavka/"
           },
           {
-            "label": "Рассрочка и бронь",
-            "url": "/rassrochka/"
+            "label": "Документы и гарантии",
+            "url": "/dokumenty-i-garantii/"
           },
           {
             "label": "Щенок в подарок",
             "url": "/shchenok-v-podarok/"
           },
           {
-            "label": "Стартовый набор",
-            "url": "/magazin/"
-          },
-          {
-            "label": "Вопросы и ответы",
-            "url": "/faq/"
+            "label": "Подбор породы — тест",
+            "url": "/podbor-porody/",
+            "icon": "sparkle"
           }
         ]
       },
       {
-        "title": "О питомнике",
+        "title": "Породы",
+        "breeds": true
+      },
+      {
+        "title": "Питомник",
         "links": [
           {
-            "label": "Родители",
-            "url": "/roditeli/"
-          },
-          {
-            "label": "Выпускники",
-            "url": "/vypuskniki/"
+            "label": "О питомнике",
+            "url": "/o-pitomnike/"
           },
           {
             "label": "Отзывы",
             "url": "/otzyvy/"
+          },
+          {
+            "label": "Вопросы и ответы",
+            "url": "/faq/"
           },
           {
             "label": "Блог",
@@ -433,6 +412,12 @@
         ]
       }
     ],
+    "credit": {
+      "_note": "Подпись студии в подвале (клиент 20.10): справа от реквизитов, на телефоне — последней строкой",
+      "label": "Создание и продвижение сайта",
+      "name": "MOON",
+      "url": "https://moon-dsgn.ru"
+    },
     "legal": {
       "requisites": "© 2017–2026 домщенков.рф · ИП Селезнев Владимир Игоревич · ИНН 220703337790 · ОГРНИП 324547600187418",
       "offer": "Сайт не является публичной офертой",
@@ -541,7 +526,7 @@
   ],
   "toast": "Раздел скоро откроется. Пока напишите нам — пришлём фото и видео щенков",
   "placeholders": [
-    "Телефон +7 (495) 123-45-67, ссылки Telegram (t.me/puppyhouse_msk — заглушка со старым названием) / WhatsApp / MAX (max.ru/domshchenkov), почта ([почта]@домщенков.рф), адрес питомника",
+    "Телефон +7 (495) 123-45-67, ссылки Telegram (t.me/puppyhouse_msk — заглушка со старым названием) / WhatsApp / MAX (max.ru/domshchenkov)",
     "Год основания питомника [2017] (реквизиты ИП на сайте — из выписки ЕГРИП от 14.11.2024)",
     "Цифры доверия: 9 лет, 640+ выпускников, рейтинг 4,9, 60+ городов",
     "Рейтинги и число отзывов: Яндекс 4,9 / 128, Google 4,8 / 64, Авито 5,0 / 87 + ссылки",

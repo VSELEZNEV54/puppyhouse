@@ -34,7 +34,15 @@
 <button class="{{ cls }}" type="button" data-open-modal data-modal-kind="lead" data-modal-title="Оставить заявку" data-modal-sub="Подберём щенка и&nbsp;пришлём фото, видео и&nbsp;цены" data-modal-note="{{ note }}" data-modal-submit="Оставить заявку">Оставить заявку</button>
 {%- endmacro %}
 
-{#- Underlined text link with an arrow glued to the last word: ui.text_link('/faq/', 'Все вопросы') -#}
+{#- ПРАВИЛО (клиент 19.10, 21.10): ссылка на раздел или страницу — ВСЕГДА круглая коралловая кнопка, без подчёркивания
+    и стрелки: ui.link_button('/faq/', 'Все вопросы'). Подчёркнутых ссылок-«стрелочек» на сайте нет. На телефоне кнопка
+    из заголовка блока (ui.section_head, blocks.faq_section) уходит под весь блок во всю ширину (main.css). -#}
+{% macro link_button(url, label, cls='') -%}
+<a class="btn btn--coral{{ ' ' ~ cls if cls }}" href="{{ url }}">{{ label|typo }}</a>
+{%- endmacro %}
+
+{#- Underlined text link with an arrow — ТОЛЬКО ссылки на юридические документы (согласия, политика конфиденциальности)
+    в «Другие документы» на их страницах (клиент 21.10: «это пускай так и будет»). Для разделов и страниц — ui.link_button. -#}
 {% macro text_link(url, label) -%}
 {%- set words = label.rsplit(' ', 1) -%}
 <a class="text-link" href="{{ url }}">{% if words|length > 1 %}{{ (words[0] ~ ' ')|typo }}{% endif %}<span class="nw">{{ words[-1]|typo }} {{ icon('arrow', sm=true) }}</span></a>
@@ -65,8 +73,7 @@
 
 {#- Section head: H2 (+ optional one-line lead) on the left, optional link on the right, caller() for extra buttons.
     ui.section_head('Щенки в наличии', id='pups-title', link={'url': '/shchenki/', 'label': 'Весь каталог'}) -#}
-{#- button=true: the link is a button (btn--ink — coral on the home, breed and puppy pages), like «Узнать цену»
-    in «Как купить щенка» (client 19.10, puppy pages); otherwise a text link with an arrow. -#}
+{#- link → a coral pill button (ui.link_button) on every page; `button` is kept for old calls and changes nothing. -#}
 {% macro section_head(title, id=none, link=none, lead=none, button=false) -%}
 <div class="sec-head">
   {% if lead %}
@@ -77,9 +84,7 @@
   {% else %}
   <h2 class="h2"{% if id %} id="{{ id }}"{% endif %}>{{ title|typo }}</h2>
   {% endif %}
-  {% if link and button %}<a class="btn btn--ink" href="{{ link.url }}">{{ link.label|typo }}</a>
-  {% else %}{{ text_link(link.url, link.label) if link else '' }}
-  {% endif %}{{ caller() if caller is defined else '' }}
+  {% if link %}{{ link_button(link.url, link.label) }}{% endif %}{{ caller() if caller is defined else '' }}
 </div>
 {%- endmacro %}
 
@@ -91,7 +96,7 @@
     facts:  [{"label": "Вес", "value": "2–5 кг"}] → small fact tiles under the lead
     chips:  [{"icon": "doc", "label": "Договор"}] → small pills under the lead
     eyebrow: short label above H1.  caller() → buttons row.  note: one muted line under the buttons
-    («Подберём щенка в течение рабочего дня — пришлём видео и цену»).
+    («Пришлём варианты щенков: фото, видео и цену»).
     full=true: first screen on the whole screen (100svh minus the header, min 560 px), copy centred vertically,
     on phones the photo grows to fill the screen. Desktop ≥ 1200 px: the studio photo is larger than before (client 13.10).
     cls: extra class of the section (phero--colour: the colour page, a taller tile with the close-up photo, breeds.css).
@@ -354,9 +359,11 @@
 {%- endmacro %}
 
 {#- Comparison table. cols: ["Мальтипу", "Той-пудель"] or breeds.json items (shows faces);
-    rows: [["Вес", "2–5 кг", "2–4 кг"], ...]. Scrolls inside its tile on narrow screens, first column sticky.
+    rows: [["Вес", "2–5 кг", "2–4 кг"], ...]. Scrolls sideways inside its tile on narrow screens, first column sticky
+    (client 21.10: a horizontal table on phones too, no stacked cards); 3+ columns: «Листайте таблицу вбок» on phones.
     Column names never break at a hyphen. -#}
 {% macro cmp_table(cols, rows, caption=none, eager=false) -%}
+{% if cols|length > 2 %}<p class="cmp-hint">Листайте таблицу вбок {{ icon('arrow', sm=true) }}</p>{% endif %}
 <div class="cmp{{ ' cmp--wide' if cols|length > 2 }}" role="region" aria-label="{{ caption or 'Сравнение' }}" tabindex="0">
   <table class="cmp__table">
     {% if caption %}<caption class="sr-only">{{ caption }}</caption>{% endif %}
@@ -378,22 +385,6 @@
     </tbody>
   </table>
 </div>
-{% if cols|length > 2 %}
-{#- phones and tablets ≤ 900 px: the wide table is hidden and the same data is shown transposed — one tile per column, stacked -#}
-<ul class="cmp-cards" aria-label="{{ caption or 'Сравнение' }}">
-  {% for c in cols %}
-  {%- set ci = loop.index %}
-  <li class="cmp-card">
-    <h3 class="cmp-card__head">{% if c is mapping %}{{ face(c) }}<span>{{ nohyph(c.name) }}</span>{% else %}{{ nohyph(c) }}{% endif %}</h3>
-    <dl class="cmp-card__rows">
-      {% for r in rows %}
-      <div class="cmp-card__row"><dt>{{ r[0]|typo }}</dt><dd>{{ r[ci]|typo }}</dd></div>
-      {% endfor %}
-    </dl>
-  </li>
-  {% endfor %}
-</ul>
-{% endif %}
 {%- endmacro %}
 
 {#- Small pills with a check icon (documents, badges). items: ["Метрика РКФ", "Чип"] -#}

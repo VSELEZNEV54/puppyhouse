@@ -1,7 +1,7 @@
 """Puppy pages /shchenki/<slug>/ — one conversion page per puppy in puppies.json (layout of 13.10, client notes 19.10):
 gallery of the puppy's own photos + info tile with the characteristics table → «Как купить щенка» → «Про <породу>»
 (SEO text and facts) → «Кому подойдёт» (photo cards) → «Читайте о породе» (hub, price, colours) → what's included →
-booking and delivery → similar puppies → FAQ → lead form. No status badges, no parents block (client 19.10).
+booking and delivery → similar puppies (cards.pups_std, 8) → FAQ → lead form. No status badges, no parents block (client 19.10).
 Owns: src/routes/puppy.py, src/templates/puppy/, src/data/puppy.json, assets/css/puppy.css, assets/js/puppy.js.
 The puppy card of «Похожие щенки» is the shared card cards.puppy_card (via src/templates/catalog/_card.html.j2, main.css)."""
 
@@ -98,7 +98,9 @@ def h1_of(p, b):
 
 
 def colour_url(p, b, data):
-    """/<breed>/vidy-i-okrasy/#<colour> — the colour's own card (breedsub.json); the colours block otherwise."""
+    """/<breed>/<colour>/ — the colour's own page (breedsub.json colour slug); the colours block of
+    /<breed>/vidy-i-okrasy/ otherwise (client 21.10: that page shows the colours as the breed page's carousel, no
+    anchored card per colour)."""
     base = b["urls"]["varieties"]
     try:
         blocks = data["breedsub"][b["slug"]]["varieties"]["blocks"]
@@ -110,7 +112,7 @@ def colour_url(p, b, data):
     for c in block.get("items", []):
         name = str(c.get("name", "")).lower()
         if c.get("slug") and (name == want or name.split(" (")[0] == short):
-            return f"{base}#{c['slug']}"
+            return f"{b['urls']['hub']}{c['slug']}/"
     return f"{base}#{block.get('id', 'okrasy')}"
 
 
@@ -190,18 +192,6 @@ def routes(data):
         ]
 
         bt = texts["breeds"][b["slug"]]
-        # «Читайте о породе»: разделы, куда можно перейти (клиент 19.10 — вместо трёх ссылок в «Кому подойдёт»)
-        more = [
-            {"url": b["urls"]["hub"], "title": f"{b['name']}: о породе", "line": "Характер, размер, уход и здоровье",
-             "icon": "paw", "color": "coral"},
-            {"url": b["urls"]["price"], "title": f"Цена щенка {bg}", "line": "От чего зависит цена и что входит в покупку",
-             "icon": "wallet", "color": "sun"},
-            {"url": b["urls"]["varieties"], "title": f"Окрасы {bg}", "line": "Все окрасы с фото и чем они отличаются",
-             "icon": "sparkle", "color": "lilac"},
-        ]
-
-        similar_pool = sorted([x for x in b["puppies"] if x["slug"] != p["slug"]], key=lambda x: x["status_order"])
-        similar = similar_pool[:4]
 
         lead_line = f"Пришлём всех щенков {b['name_plural_gen']} в наличии, цены и видео"
         if len(lead_line) > 90:
@@ -226,10 +216,8 @@ def routes(data):
                 intro=bt["intro"],
                 facts=bt["facts"],
                 fits=bt["fits"],
-                more=more,
                 booking=texts["booking"],
                 delivery=texts["delivery"],
-                similar=similar,
                 faq_items=[faq[i] for i in texts["faq"]],
                 lead_breed=b["slug"],
                 lead_line=lead_line,

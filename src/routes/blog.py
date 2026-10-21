@@ -1,4 +1,4 @@
-"""Blog: /blog/ and the 9 articles /blog/<slug>/.
+"""Blog: /blog/ (filters «Тема» × «Порода») and the articles /blog/<slug>/ (hub.order).
 Owns: src/templates/blog/, src/data/blog-posts.json (all copy, keyed by slug), assets/css/blog.css, assets/js/blog.js.
 The list of articles (url, breed, keywords) comes from the shared blog.json; everything shown on the pages —
 titles, leads, covers, article text, FAQ — from blog-posts.json. Read time is computed from the article text."""
@@ -70,7 +70,7 @@ def _block_text(b):
         return b["proscons"]["pros"] + b["proscons"]["cons"]
     if "figure" in b:
         return [b["figure"].get("caption", "")]
-    return []
+    return []  # photos: no text
 
 
 def read_minutes(post):
@@ -117,6 +117,8 @@ def _render_block(b):
     if "figure" in b:
         f = b["figure"]
         return {"type": "figure", "src": f["src"], "alt": f["alt"], "caption": nobr(f.get("caption", ""))}
+    if "photos" in b:
+        return {"type": "photos", "items": [dict(src=p["src"], alt=p["alt"]) for p in b["photos"]]}
     raise ValueError(f"unknown block {sorted(b)}")
 
 
@@ -127,21 +129,23 @@ def _tones():
         return {}
 
 
-def _card(meta, post, breed, tones, general):
-    """Article card for /blog/ and «Читайте также». A measured studio cover takes its own backdrop colours."""
+def _card(meta, post, breed, tones, tag):
+    """Article card for /blog/ and «Читайте также». A measured studio cover takes its own backdrop colours.
+    tag / breed: the two filters of /blog/ (data-tag, data-breed on the card's <li>)."""
     cover = post["cover"]
     t = tones.get(Path(cover["src"]).stem)
     return dict(
         slug=meta["slug"],
         url=meta["url"],
-        topic_key=breed["slug"] if breed else general["key"],
+        tag=tag,
+        breed=breed["slug"] if breed else "",
         topic=post["topic"],
         title=nobr(post["h1"]),
         line=nobr(post["card_line"]),
         read=minutes_label(read_minutes(post)),
         cover=cover,
         studio=bool(t),
-        tone_class=breed["tone_class"] if breed else "tone--" + general["tone"],
+        tone_class=breed["tone_class"] if breed else "tone--cream",
         style=f"--tone:{t['top']};--tone-floor:{t['floor']}" if t else "",
     )
 
@@ -166,7 +170,8 @@ def _ld(meta, post, site_url, page_url, brand):
 def routes(data):
     cfg = data["blog_posts"]
     hub, posts = cfg["hub"], cfg["posts"]
-    general = hub["general"]
+    # «Тема» filter: post topic label → tag key (a topic missing from hub.tags is a data error)
+    tag_of = {t["label"]: t["key"] for t in hub["tags"]}
     metas = by_id(data["blog"], "slug")
     bmap = by_id(data["breeds"], "slug")
     tones = _tones()
@@ -178,13 +183,14 @@ def routes(data):
     for slug in hub["order"]:
         meta, post = metas[slug], posts[slug]
         breed = bmap.get(meta["breed"]) if meta.get("breed") else None
-        cards[slug] = _card(meta, post, breed, tones, general)
+        if post["topic"] not in tag_of:
+            raise ValueError(f"blog-posts.json: {slug}: topic «{post['topic']}» is not in hub.tags")
+        cards[slug] = _card(meta, post, breed, tones, tag_of[post["topic"]])
 
-    topics = [dict(key=b["slug"], label=b["name_short"], tone_class=b["tone_class"],
-                   n=sum(1 for c in cards.values() if c["topic_key"] == b["slug"])) for b in data["breeds"]]
-    topics.append(dict(key=general["key"], label=general["label"], tone_class="tone--" + general["tone"],
-                       n=sum(1 for c in cards.values() if c["topic_key"] == general["key"])))
-    topics = [t for t in topics if t["n"]]
+    # filter chips: only tags and breeds that have articles (hub.tags / breeds.json order)
+    tags = [t for t in hub["tags"] if any(c["tag"] == t["key"] for c in cards.values())]
+    breed_chips = [dict(key=b["slug"], label=b["name"], tone_class=b["tone_class"])
+                   for b in data["breeds"] if any(c["breed"] == b["slug"] for c in cards.values())]
 
     out = [dict(
         url="/blog/",
@@ -198,7 +204,8 @@ def routes(data):
                      seo=dict(title=nobr(hub["seo"]["title"]), lead=nobr(hub["seo"]["lead"]),
                               blocks=[dict(h=nobr(b["h"]), p=nobr(b["p"])) for b in hub["seo"]["blocks"]])),
             articles=[cards[s] for s in hub["order"]],
-            topics=topics,
+            tags=tags,
+            breed_chips=breed_chips,
             hero_chips=[
                 dict(icon="paw", label=f"{len(data['breeds'])}{NBSP}{plural(len(data['breeds']), 'порода', 'породы', 'пород')}"),
                 dict(icon="clock", label="до " + minutes_label(max(read_minutes(posts[s]) for s in hub["order"])) + " чтения"),
@@ -228,7 +235,6 @@ def routes(data):
                     date=post["date"],
                     read=minutes_label(read_minutes(post)),
                     intro=rich(post["intro"]),
-                    keyfacts=[dict(label=f["label"], value=nobr(f["value"])) for f in post["keyfacts"]],
                     toc=[[s["id"], s["toc"]] for s in post["sections"]],
                     sections=sections,
                     faq_title=post["faq_title"],
@@ -240,9 +246,10 @@ def routes(data):
                                                           if breed else dict(url="/shchenki/", label="Смотреть щенков")),
                              second=cta.get("second") or (dict(url=breed["urls"]["hub"] + "#shchenki",
                                                                label="Щенки в наличии") if breed else None)),
-                    related=[cards[s] for s in post["related"]],
                 ),
                 hero_photo=dict(src=hero["src"], alt=hero["alt"]) if hero else None,  # size: imgsize() in the template
+                # a landscape hero (four breeds in a row) takes the wide-photo hero of /o-pitomnike/
+                hero_wide=bool(post["hero"]) and not breed,
                 tone=breed["tone"] if breed else "cream",
                 breed=breed,
                 ld=_ld(meta, post, site_url, meta["url"], data["site"]["brand"]),

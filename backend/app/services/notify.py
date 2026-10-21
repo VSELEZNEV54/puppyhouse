@@ -163,9 +163,14 @@ def telegram_text(lead: Lead | None, review: Review | None, event: str, s: Setti
         lines.append(f"🎨 Окрас: {e(colour)}")
     if lead.note:
         lines.append(f"🖱 Кнопка: {e(lead.note)}")
+    question = (lead.details or {}).get("question")
     if s.telegram_include_pd and consent.allows_cross_border(lead.consent_version):
         lines += ["", f"👤 Имя: {e(lead.name)}", f"📞 Телефон: {e(phones.display(lead.phone))}",
                   f"💬 Куда написать: {e(CHANNEL_LABELS.get(Channel(lead.channel), lead.channel))}"]
+        if question:
+            lines.append(f"❓ Вопрос: {e(question[:500])}")
+    elif question:  # free text may hold personal data: its text goes to Telegram only with the cross-border notice
+        lines.append("❓ Есть вопрос — текст в админке")
     lines += ["", f"📍 Источник: {e(source_label(lead.source, lead.medium))}"]
     if lead.landing_path:
         lines.append(f"   • Вошёл на: {e(lead.landing_path)}")
@@ -224,6 +229,9 @@ def email_message(lead: Lead | None, review: Review | None, event: str, s: Setti
             body.append(f"Окрас: {lead.colour}")
         if lead.note:
             body.append(f"Пометка формы: {lead.note}")
+        question = (lead.details or {}).get("question")
+        if question:
+            body += ["", "Вопрос:", question, ""] if s.email_include_pd else ["Есть вопрос — текст в админке"]
         if lead.page_path:
             body.append(f"Страница: {lead.page_path}")
         src = " / ".join(x for x in (lead.source, lead.medium) if x)

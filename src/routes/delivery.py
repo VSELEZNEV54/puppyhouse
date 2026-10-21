@@ -1,17 +1,16 @@
 """Service pages (group «delivery»):
-    /dostavka/ + one page per city in cities.json (/dostavka/<slug>/), /rassrochka/, /shchenok-v-podarok/, /faq/,
-    /kontakty/, /politika-konfidencialnosti/.
-Owns: src/templates/delivery/, src/data/delivery.json, delivery-cities.json, delivery-service.json, assets/css/delivery.css.
-Copy lives in the data files; this module only picks the right variant per city (distance, methods, time zone)."""
+    /dostavka/ (cities.json grouped by distance, links to the city pages /<slug>/ of routes/home.py), /rassrochka/,
+    /shchenok-v-podarok/, /faq/, /kontakty/, /politika-konfidencialnosti/.
+Owns: src/templates/delivery/, src/data/delivery.json, delivery-service.json, assets/css/delivery.css.
+Copy lives in the data files; this module only prepares it (unbreakable words, filled placeholders)."""
 
 import json
 import re
 
-from markupsafe import Markup, escape
+from markupsafe import Markup
 
-from _lib import by_id, crumbs
+from _lib import NBSP, by_id, crumbs, mixed_puppies, nb, nobr
 
-NBSP = " "
 TITLE_MAX, DESC_MAX = 60, 160
 BRAND = " | домщенков.рф"
 
@@ -26,55 +25,14 @@ def plural(n, one, few, many):
     return many
 
 
-def km(n):
-    """710 → «710 км», 9300 → «9 300 км» (non-breaking spaces)."""
-    s = f"{int(n):,}".replace(",", NBSP)
-    return f"{s}{NBSP}км"
-
-
 def fill(text, **kw):
     """str.format for copy templates; unknown keys stay as they are."""
     return re.sub(r"\{(\w+)\}", lambda m: str(kw.get(m.group(1), m.group(0))), text)
 
 
-# Visible copy never breaks inside «Санкт-Петербург», «о бордер-колли» or a range like «10–16 лет»: such words go into
-# <span class="nw"> (the macros' |typo keeps Markup tags). Copy with a hand-written link (<a href="/…/">) is trusted
-# Markup from our own data; everything else is escaped first. Meta title/description and attributes stay plain text.
-_HYPHENATED = re.compile(r"(?<![\w-])((?:\w{1,2} )?\w+(?:-\w+)+)")
-_RANGE = re.compile(r"(?<![\w,])(\d+(?:,\d+)?–\d+(?:,\d+)?)(?: (?=[а-яё])(?!(?:и|или|а|но|до|в|во|на|с|со|по|за|из|от|к|у|о)\b))?")
-_TAG = re.compile(r"(<[^>]+>)")
-
-
-def _nobr_text(s):
-    s = _HYPHENATED.sub(r'<span class="nw">\1</span>', s)
-    return _RANGE.sub(lambda m: f'<span class="nw">{m.group(1)}</span>' + (NBSP if m.group(0).endswith(" ") else ""), s)
-
-
-def nobr(text):
-    """Text → Markup with hyphenated words and number ranges kept on one line (links in our own copy stay links)."""
-    if not isinstance(text, str):
-        return text
-    raw = text if "<a " in text else str(escape(text))
-    return Markup("".join(p if p.startswith("<") else _nobr_text(p) for p in _TAG.split(raw)))
-
-
-def nb(d, *keys):
-    """Copy of dict d with the given text keys passed through nobr()."""
-    return {k: (nobr(v) if k in keys else v) for k, v in d.items()}
-
-
 def qa(items):
     """FAQ items for blocks.faq_*: the question in one <span> (the button is a flex box), both kept unbroken."""
     return [{"q": Markup("<span>") + nobr(i["q"]) + Markup("</span>"), "a": nobr(i["a"])} for i in items]
-
-
-def join_or(words):
-    words = list(words)
-    return words[0] if len(words) == 1 else ", ".join(words[:-1]) + " или " + words[-1]
-
-
-def cap(s):
-    return s[:1].upper() + s[1:]
 
 
 def check_meta(url, title, description):
@@ -109,7 +67,10 @@ def seo_copy(seo, **v):
 
 def hub_page(data, cities):
     d = data["delivery"]
-    hub = nb(d["hub"], "lead", "geo_more", "lead_title", "lead_line")
+    hub = nb(d["hub"], "lead", "lead_title", "lead_line")
+    msk = nb(hub["moscow"], "lead", "box_line", "pickup")
+    msk["steps"] = [nb(x, "title", "text") for x in msk["steps"]]
+    hub["moscow"] = msk
     hub["steps"] = [nb(x, "title", "text") for x in hub["steps"]]
     hub["kit"] = [nb(x, "title", "line") for x in hub["kit"]]
     hub["seo"] = seo_copy(hub["seo"])
@@ -136,133 +97,23 @@ def hub_page(data, cities):
     )
 
 
-# ---------------------------------------------------------------- /dostavka/<city>/
-def city_pages(data, cities):
-    d = data["delivery"]
-    cc = d["city"]
-    extra = data["delivery_cities"]
-    breeds = data["breeds"]
-    methods = d["methods"]
-    out = []
-    for c in cities:
-        slug, ms = c["slug"], list(c["methods"])
-        tz = extra["tz"][slug]
-        ov = extra["overrides"].get(slug, {})
-        dist = km(c["km_approx"])
-        has_car, has_plane, has_train = "car" in ms, "plane" in ms, "train" in ms
-        primary = ms[0]
-        v = dict(name=c["name"], prep=c["prep"], acc=c["acc"], gen=c["gen"], km=dist,
-                 methods=join_or(methods[m]["phrase"] for m in ms))
-        tz_txt = f"+{tz}{NBSP}{plural(tz, 'час', 'часа', 'часов')}" if tz else ""
-
-        # hero
-        if ms == ["car"]:
-            lead_key = "car_near" if c["km_approx"] <= 600 else "car"
-        elif ms == ["plane"]:
-            lead_key = "plane"
-        elif has_car and has_train:
-            lead_key = "train_car" if primary == "train" else "car_train"
-        elif primary == "plane" and has_car:
-            lead_key = "plane_car"
-        else:
-            lead_key = "car_plane"
-        facts = [
-            {"label": "От Москвы", "value": "≈" + NBSP + dist},
-            {"label": "Как везём", "value": cap(join_or(methods[m]["short"] for m in ms))},
-            {"label": "В пути", "value": nobr(c["duration"])},
-        ]
-        if tz:
-            facts.append({"label": "Время", "value": f"{tz_txt} к Москве"})
-
-        # how it works: 3 steps, travel and meeting by the primary method (car / plane / train)
-        travel = primary
-        st = cc["steps"]
-        steps = [nb({k: fill(x, **v) for k, x in s.items()}, "title", "text") for s in (st["book"], st[travel], st["meet_" + travel])]
-
-        # ways for this city: available methods (city-specific line and note) + pick-up in Moscow
-        ways = []
-        for m in method_tiles(methods, breeds, ms):
-            m = dict(m, fit_breeds=None)
-            if m["key"] == "car":
-                m["tag"] = dist
-                m["line"] = "От двери до двери, с остановками на воду и отдых"
-                m["note"] = next(n["note"] for n in cc["car_notes"] if c["km_approx"] <= n["max_km"])
-            elif m["key"] == "plane":
-                m["tag"] = f"Аэропорт {c['gen']}"
-            elif m["key"] == "train":
-                m["tag"] = f"Вокзал {c['gen']}"
-            ways.append(nb(m, "tag", "line", "note"))
-        # coming to Moscow yourself: by road or rail from nearer cities, by air from far ones
-        fly_in = has_plane and (c["km_approx"] > 1200 or not (has_car or has_train))
-        p = cc["pickup"]
-        ways.append(nb(dict(p, key="pickup", tag="Москва", fit_breeds=None,
-                            note=fill(p["note_plane"] if fly_in else p["note_car"], **v)),
-                       "title", "line", "note"))
-
-        # breeds: stock (computed from puppies.json) + how this breed travels to this city, by the primary method;
-        # a border collie never flies, so where a car is offered too it goes by car
-        hint = cc["breed_hint"]
-        btiles = []
-        for b in breeds:
-            if primary == "plane":
-                h = hint["car"] if (b["slug"] == "border-kolli" and has_car) else hint["plane"][b["slug"]]
-            else:
-                h = hint[primary]
-            btiles.append({"url": b["urls"]["hub"], "title": nobr(b["name"]), "line": nobr(f"В наличии: {b['stock']} · {h}"), "breed": b})
-
-        # local FAQ: 3 questions, wording by method, distance and time zone
-        f = cc["faq"]
-        trip = dict(f[{"plane": "trip_plane", "train": "trip_train"}.get(travel, "trip_car")])
-        if travel == "plane" and has_car:
-            trip["a"] = trip["a"] + " Бордер-колли везём на машине с куратором."
-        if tz:
-            trip["a"] = trip["a"] + " " + fill(cc["tz_note"], tz=tz_txt)
-        cost = f["cost_car" if has_car else "cost_plane"]
-        self_ = f["self_train"] if has_train else (f["self_plane"] if fly_in else f["self_car"])
-        faq = qa([{k: fill(x, **v) for k, x in q.items()} for q in (trip, cost, self_)])
-        seo = seo_copy(ov.get("seo") or cc["seo"], **v)
-
-        desc = ov.get("description") or (
-            f"Щенки мальтипу, французского бульдога, той-пуделя и бордер-колли с доставкой {c['acc']}: "
-            f"{dist}, {v['methods']}.")
-        out.append(page(
-            c["url"], "delivery/city.html.j2",
-            f"Щенки с доставкой {c['acc']}" + BRAND, desc,
-            [("Доставка", "/dostavka/"), (c["name"], None)],
-            city=c,
-            tone="sky" if travel == "plane" else "sand",
-            h1=nobr(f"Щенки с доставкой {c['acc']}"),
-            lead=nobr(fill(cc["lead"][lead_key], km=dist)),
-            facts=facts,
-            steps=steps,
-            ways=ways,
-            breed_tiles=btiles,
-            faq_items=faq,
-            others=[o for o in cities if o["slug"] != slug],
-            seo=seo,
-            lead_title=nobr(fill(cc["lead_title"], **v)),
-            lead_line=nobr(cc["lead_line"]),
-            pups_strip=False,
-        ))
-    return out
-
-
 # ---------------------------------------------------------------- service pages
 def rassrochka_page(data):
-    r = nb(data["delivery_service"]["rassrochka"], "lead", "bank_lead", "bank_note", "lead_line")
+    """Booking only (client 21.10: no installment for now; prepayment 30% of the price). The URL stays /rassrochka/."""
+    r = nb(data["delivery_service"]["rassrochka"], "lead", "lead_line")
     r["steps"] = [nb(x, "title", "text") for x in r["steps"]]
-    r["bank_steps"] = [nb(x, "title", "text") for x in r["bank_steps"]]
     r["terms"] = [nb(x, "value") for x in r["terms"]]
-    r["bank_facts"] = [nb(x, "value") for x in r["bank_facts"]]
     faq = by_id(data["faq"])
     return page(
         "/rassrochka/", "delivery/rassrochka.html.j2",
-        "Бронь и рассрочка на щенка" + BRAND,
-        "Как забронировать щенка: договор и предоплата — и щенок закреплён за вами. "
-        "Остаток можно оплатить в рассрочку через банк-партнёр.",
-        [("Бронь и рассрочка", None)],
+        "Бронь щенка: предоплата 30%" + BRAND,
+        "Как забронировать щенка: договор и предоплата 30% от цены — и щенок закреплён за вами "
+        "до переезда. Остаток — при встрече или при доставке.",
+        [("Бронь щенка", None)],
         r=r,
         faq_items=qa([faq[i] for i in r["faq_ids"]] + r["faq_extra"]),
+        # «Щенки в наличии» and «Читайте также» — the standard blocks, as on /faq/
+        catalog=mixed_puppies(data["breeds"]),
         pups_strip=False,
     )
 
@@ -317,20 +168,24 @@ def faq_page(data):
         f=f,
         cats=[dict(cat, qs=qa(cat["qs"])) for cat in cats],
         faq_ld=Markup(json.dumps(ld, ensure_ascii=False).replace("</", "<\\/")),
+        # «Щенки в наличии» (client 21.10): the standard block — two puppies of every breed, 8 cards, «Весь каталог»
+        catalog=mixed_puppies(data["breeds"]),
         pups_strip=False,
     )
 
 
 def contacts_page(data):
-    c = nb(data["delivery_service"]["contacts"], "lead", "visit_note")
+    c = nb(data["delivery_service"]["contacts"], "lead", "lead_no_phone", "visit_note")
     c["visit"] = [nb(x, "title", "text") for x in c["visit"]]
     return page(
         "/kontakty/", "delivery/contacts.html.j2",
         "Контакты питомника домщенков.рф в Москве",
-        "Телефон, Telegram и WhatsApp питомника щенков домщенков.рф. Москва, приезд по записи. "
-        "Ответим в течение рабочего дня по московскому времени.",
+        "Контакты питомника щенков домщенков.рф: почта, адрес в Москве и карта проезда. Приезд по записи, "
+        "ответим в течение рабочего дня.",
         [("Контакты", None)],
         c=c,
+        pups_strip=False,
+        blog_strip=False,
     )
 
 
@@ -354,5 +209,5 @@ def privacy_page(data):
 
 def routes(data):
     cities = data["cities"]
-    return ([hub_page(data, cities)] + city_pages(data, cities)
-            + [rassrochka_page(data), gift_page(data), faq_page(data), contacts_page(data), privacy_page(data)])
+    return [hub_page(data, cities), rassrochka_page(data), gift_page(data), faq_page(data), contacts_page(data),
+            privacy_page(data)]

@@ -1,4 +1,4 @@
-{#- Parts of the trust pages (/roditeli/, /vypuskniki/, /otzyvy/, /dokumenty-i-garantii/).
+{#- Parts of the trust pages (/o-pitomnike/, /otzyvy/, /dokumenty-i-garantii/).
     Import: {% import "trust/_parts.html.j2" as tr %}. Text params are plain text (escaped, |typo). -#}
 {% import "macros/ui.html.j2" as ui %}
 
@@ -36,38 +36,6 @@
   {% endfor %}
 </ul>
 {%- endmacro %}
-
-{#- Parent tile — ui.studio_tile technique (the tile takes the photo's measured backdrop, the photo stands on the
-    tile floor) with a name, a role line and up to two small pills. p = {name, role, pills, b: breeds.json item} -#}
-{% macro parent_tile(p) -%}
-{%- set photo = p.b.adult -%}
-{%- set size = imgsize(photo.src) -%}
-<article class="stile tr-parent tone--{{ p.b.tone }}" style="--ar:{{ size[0] }}/{{ size[1] }};{{ tone_style(photo.src) }}">
-  <div class="stile__top">
-    <h3 class="stile__title">{{ p.name|typo }}</h3>
-    <p class="stile__line">{{ p.role|typo }}</p>
-    <ul class="tr-pills">
-      {% for x in p.pills %}<li>{% if not x.startswith('[') %}{{ ui.icon('check', sm=true) }}{% endif %}{{ x|typo }}</li>{% endfor %}
-    </ul>
-  </div>
-  <div class="stile__photo"><img src="{{ photo.src }}" alt="{{ photo.alt|typo }}" width="{{ size[0] }}" height="{{ size[1] }}" loading="lazy" decoding="async"></div>
-</article>
-{%- endmacro %}
-
-{#- Graduate story: breed face, «Кличка, город», breed · age, 2–3 sentences. s = {name, meta, text, b} -#}
-{% macro story(s) -%}
-<article class="tr-story">
-  <div class="tr-story__head">
-    {{ ui.face(s.b) }}
-    <div>
-      <h3 class="tr-story__name">{{ s.name|typo }}</h3>
-      <p class="tr-story__meta">{{ s.meta|typo }}</p>
-    </div>
-  </div>
-  <p class="tr-story__text">{{ s.text|typo }}</p>
-</article>
-{%- endmacro %}
-
 
 {#- Document card: icon, title, one line, which breeds get it (faces + label). d = trust.json docs item + fit_breeds -#}
 {% macro doc_card(d) -%}

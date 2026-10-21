@@ -67,9 +67,6 @@
     <section class="section container" id="pered-pokupkoj" aria-labelledby="pered-pokupkoj-title">
       {{ ui.section_head('Перед покупкой', id='pered-pokupkoj-title') }}
       <div class="brd-pre">
-        <div class="brd-pre__parents">
-          {{ ui.studio_tile(b.adult, 'Родители щенков', line=hub.parents_line, url='/roditeli/', tone=b.tone) }}
-        </div>
         <div class="brd-pre__price brd-card">
           <div class="brd-card__head">
             <h3 class="brd-card__title">{{ hub.price_title|typo }}</h3>
@@ -81,7 +78,7 @@
           </ul>
           <div class="brd-card__actions">
             {{ forms.price_button(breed=b.name) }}
-            {{ ui.text_link(b.urls.price, 'Подробнее о цене') }}
+            {{ ui.link_button(b.urls.price, 'Подробнее о цене') }}
           </div>
         </div>
         <div class="brd-pre__docs brd-card">
@@ -92,7 +89,7 @@
           <p class="brd-card__line">{{ hub.docs_line|typo }}</p>
           {{ ui.badges(hub.docs) }}
           <div class="brd-card__actions">
-            {{ ui.text_link('/dokumenty-i-garantii/', 'Документы и гарантии') }}
+            {{ ui.link_button('/dokumenty-i-garantii/', 'Документы и гарантии') }}
           </div>
         </div>
       </div>
@@ -105,6 +102,9 @@
       {{ ui.link_tiles(links) }}
     </section>
 
+{% endblock %}
+
+{% block seo %}
     {% call blocks.seo_block(hub.seo.title, hub.seo.lead, id='o-porode') %}
         {% for s in hub.seo.blocks %}
         <h3>{{ s.h|typo }}</h3>

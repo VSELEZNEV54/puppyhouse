@@ -7,7 +7,6 @@
     site.nav items have "prio": the higher the number, the earlier the link hides on a narrower desktop (it stays in «Меню»).
     On the homepage the logo scrolls to #top, elsewhere it goes home. main.js: [data-hdr], [data-dd], [data-mega], [data-burger]. -#}
 {% import "macros/ui.html.j2" as ui %}
-{% import "macros/forms.html.j2" as forms %}
 {% import "partials/menu.html.j2" as menu %}
 {% set is_home = page.url == '/' %}
   <!-- ================= ШАПКА ================= -->
@@ -15,7 +14,7 @@
     <div class="hdr__bar">
       <a class="logo" href="{{ '#top' if is_home else '/' }}" aria-label="{{ site.brand }} — {{ 'наверх страницы' if is_home else 'на главную' }}">
         <span class="logo__mark" aria-hidden="true">{{ ui.icon('paw') }}</span>
-        <span class="logo__text"><span class="logo__name">{{ site.brand }}</span><span class="logo__sub">{{ site.tagline }}</span></span>
+        <span class="logo__text"><span class="logo__name">{{ site.brand }}</span><span class="logo__sub">{{ site.tagline_plain if hide_city | default(false) else site.tagline }}</span></span>
       </a>
 
       <div class="hdr__menu" data-mega>
@@ -34,7 +33,7 @@
             {% if site.contacts_ready %}
             <a class="mega__phone" href="{{ site.phone.tel }}">{{ site.phone.display }}<small>{{ site.phone.hours|typo }}</small></a>
             {% else %}
-            <p class="mega__phone">Оставьте заявку<small>{{ site.phone.response|typo }} · почта <a class="mega__mail" href="{{ site.email_href }}">{{ site.email }}</a></small></p>
+            <p class="mega__phone">Оставьте заявку<small>{{ (site.phone.response_plain if hide_city | default(false) else site.phone.response)|typo }} · почта <a class="mega__mail" href="{{ site.email_href }}">{{ site.email }}</a></small></p>
             {% endif %}
             <div class="mega__actions">
               <button class="btn btn--white" type="button" data-open-modal data-modal-kind="price">Узнать цену</button>

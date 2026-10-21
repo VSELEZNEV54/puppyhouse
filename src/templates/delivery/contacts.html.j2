@@ -1,4 +1,7 @@
-{#- /kontakty/ — phone, messengers, address, how to visit, map placeholder, requisites.
+{#- /kontakty/ — «Наши контакты» (client 21.10): hero with the homepage photo of the four breeds, how to reach us,
+    how to visit with the Yandex map (site.address.map), then only the lead form «Пришлём варианты щенков» — no
+    requisites (they stay in the footer), no puppy strip, no articles.
+    site.contacts_ready = false: no phone and no messengers anywhere on the page — «Оставить заявку» and the e-mail instead.
     Context (routes/delivery.py): c (copy, data/delivery-service.json). Contacts themselves come from site.json. -#}
 {% extends "layouts/page.html.j2" %}
 
@@ -7,20 +10,25 @@
 {% endblock %}
 
 {% block hero %}
-    <div class="dlv-konhero">
-    {% call ui.page_hero(c.h1, lead=c.lead, eyebrow=c.eyebrow, photo=dict(c.photo, w=imgsize(c.photo.src)[0], h=imgsize(c.photo.src)[1]), tone='sage') %}
+    {%- set size = imgsize(c.photo.src) or [1536, 1024] %}
+    {% call ui.page_hero(c.h1, lead=c.lead if site.contacts_ready else c.lead_no_phone, eyebrow=c.eyebrow, photo=dict(c.photo, w=size[0], h=size[1]), tone='cream', cls='dlv-konhero') %}
+      {% if site.contacts_ready %}
       <a class="btn btn--ink btn--lg" href="{{ site.phone.tel }}">{{ ui.icon('phone') }}Позвонить</a>
       {{ forms.msgr('telegram') }}
       {{ forms.msgr('whatsapp') }}
       {{ forms.msgr('max') }}
+      {% else %}
+      {{ ui.request_button(cls='btn btn--coral btn--lg', note='Заявка: страница «Контакты»') }}
+      <a class="btn btn--white btn--lg" href="mailto:{{ site.email_ascii }}">{{ ui.icon('mail') }}Написать на&nbsp;почту</a>
+      {% endif %}
     {% endcall %}
-    </div>
 {% endblock %}
 
 {% block body %}
     <section class="section section--tight container" id="svyaz" aria-labelledby="svyaz-title">
       {{ ui.section_head(c.ways_title, id='svyaz-title') }}
-      <ul class="dlv-cts" data-reveal="items">
+      <ul class="dlv-cts{{ ' dlv-cts--3' if not site.contacts_ready }}" data-reveal="items">
+        {% if site.contacts_ready %}
         <li class="dlv-ct">
           {{ ui.ico('phone', 'coral') }}
           <p class="dlv-ct__label">Телефон</p>
@@ -38,10 +46,18 @@
           </div>
           <p class="dlv-ct__line">Пришлём видео щенков и&nbsp;цену</p>
         </li>
+        {% else %}
+        <li class="dlv-ct">
+          {{ ui.ico('clock', 'coral') }}
+          <p class="dlv-ct__label">Часы работы</p>
+          <p class="dlv-ct__value">{{ site.phone.hours|typo }}</p>
+          <p class="dlv-ct__line">{{ site.phone.response|typo }}</p>
+        </li>
+        {% endif %}
         <li class="dlv-ct">
           {{ ui.ico('mail', 'sun') }}
           <p class="dlv-ct__label">Почта</p>
-          <a class="dlv-ct__value dlv-ct__value--mail" href="{{ site.email_href }}">{{ site.email }}</a>
+          <a class="dlv-ct__value dlv-ct__value--mail" href="mailto:{{ site.email_ascii }}">{{ site.email }}</a>
           <p class="dlv-ct__line">Для документов и&nbsp;вопросов по&nbsp;договору</p>
         </li>
         <li class="dlv-ct">
@@ -56,22 +72,22 @@
     <section class="section container" id="kak-priehat" aria-labelledby="kak-priehat-title">
       {{ ui.section_head(c.visit_title, id='kak-priehat-title') }}
       <div class="dlv-visit">
-        <div class="dlv-map" role="img" aria-label="Здесь будет карта: {{ c.map_line }}">
-          <span class="dlv-map__pin" aria-hidden="true">{{ ui.icon('paw') }}</span>
-          <div class="dlv-map__card">
-            <p class="dlv-map__title">{{ c.map_title|typo }}</p>
-            <p class="dlv-map__line">{{ c.map_line|typo }}</p>
-          </div>
-        </div>
+        {#- Яндекс Карты: iframe грузится, когда блок близко к экрану (loading="lazy"); под картой — адрес и две ссылки -#}
+        <figure class="dlv-map">
+          <iframe class="dlv-map__frame" src="{{ site.address.map.embed }}" title="{{ c.map_label }}: {{ site.address.short }}" loading="lazy" allowfullscreen referrerpolicy="no-referrer-when-downgrade"></iframe>
+          <figcaption class="dlv-map__card">
+            <p class="dlv-map__title">{{ site.address.short|typo }}</p>
+            <p class="dlv-map__line">{{ site.address.visit|typo }}</p>
+            <div class="dlv-map__links">
+              <a class="btn btn--coral" href="{{ site.address.map.route }}" target="_blank" rel="noopener">Построить маршрут</a>
+              <a class="btn btn--white" href="{{ site.address.map.url }}" target="_blank" rel="noopener">Открыть в&nbsp;Яндекс Картах</a>
+            </div>
+          </figcaption>
+        </figure>
         <div class="dlv-visit__side">
           {{ ui.timeline(c.visit) }}
           {% call ui.callout('warn', 'Перед визитом') %}<p>{{ c.visit_note|typo }}</p>{% endcall %}
         </div>
       </div>
-    </section>
-
-    <section class="section container" id="rekvizity" aria-labelledby="rekvizity-title">
-      {{ ui.section_head(c.req_title, id='rekvizity-title', link={'url': site.footer.legal.privacy.url, 'label': 'Политика конфиденциальности'}) }}
-      {{ ui.spec_grid(c.requisites, cols=4) }}
     </section>
 {% endblock %}

@@ -97,6 +97,7 @@ class LeadIn(TrackIn):
     colour: OptStr = None             # colour slug
     note: OptStr = None               # data-modal-note of the button
     form_title: OptStr = None
+    question: OptStr = None           # «Задать свой вопрос» (FAQ blocks): free text, kept in details["question"]
     quiz: OptDict = None              # {"winner": "maltipu", "second": "toj-pudel"}
     consent_version: OptStr = None
     page: Annotated[PageIn, BeforeValidator(_page)] = Field(default_factory=PageIn)

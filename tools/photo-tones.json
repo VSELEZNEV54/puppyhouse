@@ -120,6 +120,17 @@
   "floor": "#ECCE92",
   "floor_line": 0.91
  },
+ "hero-four-breeds": {
+  "size": [
+   1264,
+   848
+  ],
+  "top": "#F3DEC2",
+  "wall": "#F3DFC1",
+  "wall_right": "#EAD2B1",
+  "floor": "#F9E9D3",
+  "floor_line": 0.91
+ },
  "okras-buldog-goluboj": {
   "size": [
    1024,
@@ -867,5 +878,49 @@
   "wall_right": "#EDCE8C",
   "floor": "#F9E3AD",
   "floor_line": 0.79
+ },
+ "kinds-maltipu": {
+  "size": [
+   1376,
+   768
+  ],
+  "top": "#F8C99F",
+  "wall": "#EAB588",
+  "wall_right": "#EAB487",
+  "floor": "#FDD2AC",
+  "floor_line": 0.85
+ },
+ "kinds-buldog": {
+  "size": [
+   1376,
+   768
+  ],
+  "top": "#C3DEEA",
+  "wall": "#ADD0DE",
+  "wall_right": "#BFDAE7",
+  "floor": "#D4E9F2",
+  "floor_line": 0.83
+ },
+ "kinds-pudel": {
+  "size": [
+   1376,
+   768
+  ],
+  "top": "#F6D79C",
+  "wall": "#EFD090",
+  "wall_right": "#EBCA87",
+  "floor": "#F6DEAC",
+  "floor_line": 0.76
+ },
+ "kinds-kolli": {
+  "size": [
+   1376,
+   768
+  ],
+  "top": "#A1AF96",
+  "wall": "#98A68D",
+  "wall_right": "#9BA88F",
+  "floor": "#C8D3C3",
+  "floor_line": 0.87
  }
 }

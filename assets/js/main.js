@@ -18,7 +18,8 @@
     name: 'Напишите, как к вам обращаться',
     phone: 'Проверьте номер: после +7 нужно 10 цифр',
     contact: 'Выберите, куда вам написать',
-    consent: 'Без согласия на обработку данных мы не сможем отправить заявку'
+    consent: 'Без согласия на обработку данных мы не сможем отправить заявку',
+    question: 'Напишите ваш вопрос'
   };
 
   const $ = (sel, ctx = d) => ctx.querySelector(sel);
@@ -604,11 +605,18 @@
       showToast(err.message || 'Проверьте, пожалуйста, поля формы');
     }
   }
+  // «Ваш вопрос» есть только в общей модалке и только у кнопки «Задать свой вопрос» (поле без hidden)
+  const askField = (form) => {
+    const q = form.elements.question;
+    return q && !q.closest('[hidden]') ? q : null;
+  };
   function validate(form) {
     const f = form.elements;
+    const q = askField(form);
     const checks = [
       ['name', !f.name.value.trim(), f.name],
       ['phone', phoneDigits(f.phone.value).length !== 10, f.phone],
+      ...(q ? [['question', q.value.trim().length < 3, q]] : []),
       ['contact', !form.querySelector('input[name="contact"]:checked'), form.querySelector('input[name="contact"]')],
       ['consent', !f.consent.checked, f.consent]
     ];
@@ -622,7 +630,7 @@
   }
   function clearForm(form) {
     form.reset();
-    ['name', 'phone', 'contact', 'consent'].forEach((k) => setError(form, k, ''));
+    ['name', 'phone', 'contact', 'consent', 'question'].forEach((k) => setError(form, k, ''));
     const btn = $('[data-submit]', form);
     btn.disabled = false;
     btn.textContent = btn.dataset.label;
@@ -632,6 +640,7 @@
       const n = e.target.name;
       if (n === 'name' && e.target.value.trim()) setError(form, 'name', '');
       if (n === 'phone' && phoneDigits(e.target.value).length === 10) setError(form, 'phone', '');
+      if (n === 'question' && e.target.value.trim().length >= 3) setError(form, 'question', '');
     });
     form.addEventListener('change', (e) => {
       const n = e.target.name;
@@ -672,6 +681,7 @@
       colour: opt(extra.colour),
       note: opt(extra.note),
       form_title: opt(extra.form_title),
+      question: askField(form) ? opt(text('question')) : null,
       quiz: quiz && quiz.winner ? { winner: quiz.winner, second: quiz.second || null } : null,
       page: pageInfo(),
       visitor_id: ctx.visitor_id,
@@ -720,6 +730,7 @@
     const thumb = $('[data-pm-thumb]', modal);
     const thumbImg = $('img', thumb);
     const breedField = $('[data-pm-breed]', modal);
+    const askBox = $('[data-pm-question]', modal);
     const breedSelect = $('select', breedField);
     const doneTitle = $('#pm-done-title');
     const doneText = $('#pm-done-text');
@@ -740,7 +751,8 @@
     // ds — data-атрибуты кнопки: data-modal-title / -sub (заголовок и подпись окна),
     // data-modal-breed (порода в списке, если окно без щенка), data-modal-note (скрытая пометка заявки),
     // data-modal-kind (тип заявки для API; без него — puppy у карточки щенка, иначе price), data-modal-colour (окрас),
-    // data-modal-submit (текст кнопки отправки), data-modal-done (текст после отправки).
+    // data-modal-submit (текст кнопки отправки), data-modal-done (текст после отправки),
+    // data-modal-question="1" — поле «Ваш вопрос» (кнопка «Задать свой вопрос» в блоке вопросов).
     // Скрытые поля (kind, puppy, puppy_name, colour, note, form_title) задаём при КАЖДОМ открытии: form.reset() их не чистит.
     const pSubmit = $('[data-submit]', pForm);
     const SUBMIT_LABEL = pSubmit.dataset.label;
@@ -774,6 +786,7 @@
         thumb.hidden = true;
         breedField.hidden = false;
       }
+      if (askBox) askBox.hidden = !ds.modalQuestion; // «Задать свой вопрос»
       if (ds.modalTitle) title.textContent = ds.modalTitle;
       if (ds.modalSub) sub.textContent = ds.modalSub;
       if (ds.modalBreed && !breedField.hidden) selectBreed(ds.modalBreed);
@@ -897,20 +910,23 @@
     });
   }
 
-  /* ---------- форма заявки внизу ---------- */
-  const lForm = $('#lead-form');
-  if (lForm) {
-    lForm.dataset.prefix = 'lf';
+  /* ---------- формы заявки на странице: внизу (#lead-form) и открытая форма в колонке статьи блога ----------
+     form[data-lead-form]: data-prefix — приставка id полей и ошибок (lf, af…), data-kind — тип заявки для API
+     (по умолчанию lead), data-note — скрытая пометка. «Спасибо» и «Не получилось» — в её [data-lead-box]. */
+  $$('form[data-lead-form]').forEach((lForm) => {
+    lForm.dataset.prefix = lForm.dataset.prefix || 'lf';
     bindLiveClear(lForm);
-    const done = $('[data-done]');
-    const doneText = $('[data-done-text]');
-    const fail = $('[data-fail]');
+    const box = lForm.closest('[data-lead-box]') || lForm.parentElement;
+    const done = $('[data-done]', box);
+    const doneText = $('[data-done-text]', box);
+    const fail = $('[data-fail]', box);
+    const kind = lForm.dataset.kind || 'lead';
     const lState = { key: '' };
     let startedAt = 0; // elapsed_ms — от первого касания формы
     const start = () => {
       if (startedAt) return;
       startedAt = Date.now();
-      track('form_open', { kind: 'lead', breed: (lForm.elements.breed && lForm.elements.breed.value) || null, puppy: null, colour: null });
+      track('form_open', { kind, breed: (lForm.elements.breed && lForm.elements.breed.value) || null, puppy: null, colour: null });
     };
     lForm.addEventListener('focusin', start);
     lForm.addEventListener('input', start);
@@ -927,11 +943,11 @@
       if (!validate(lForm)) return;
       if (!LIVE) { fakeSend(lForm, showDone); return; }
       if (fail) fail.hidden = true;
-      const title = $('#lead-title');
-      const payload = leadPayload(lForm, { kind: 'lead', form_title: title ? title.textContent.trim() : '' }, startedAt);
+      const title = d.getElementById(lForm.getAttribute('aria-labelledby') || 'lead-title');
+      const payload = leadPayload(lForm, { kind, note: lForm.dataset.note, form_title: title ? title.textContent.trim() : '' }, startedAt);
       liveLead(lForm, payload, lState, { done: showDone, fail: (saved) => { failMode(fail, saved); if (fail) fail.hidden = false; } });
     });
-  }
+  });
 
   /* ---------- фильтр щенков ---------- */
   const grid = $('[data-pups]');
@@ -971,13 +987,6 @@
     chips.forEach((c) => c.addEventListener('click', () => apply(c.dataset.filter)));
     fitMore();
   }
-
-  /* ---------- избранное ---------- */
-  $$('.fav').forEach((btn) => {
-    btn.addEventListener('click', () => {
-      btn.setAttribute('aria-pressed', String(btn.getAttribute('aria-pressed') !== 'true'));
-    });
-  });
 
   /* ---------- FAQ ---------- */
   $$('.faq__btn').forEach((btn) => {
@@ -1236,6 +1245,8 @@
     t.classList.toggle('is-folded', over);
     btn.hidden = !over;
   };
+  /* скрытые карточки (display: none) не измерить — страница складывает их тексты, когда показывает (trust.js) */
+  window.DSH.foldReviews = (scope) => $$('[data-rvw-text]', scope).forEach(fold);
   if (rvTexts.length) {
     rvTexts.forEach((t) => {
       fold(t);
@@ -1355,6 +1366,15 @@
     let downOnBackdrop = false;
     lb.addEventListener('pointerdown', (e) => { downOnBackdrop = e.target === lb; });
     lb.addEventListener('click', (e) => { if (e.target === lb && downOnBackdrop) lb.close(); });
+  }
+
+  /* ---------- подвал: на телефоне (≤ 760 px, как в main.css) колонки пород и города свёрнуты, шире — открыты ---------- */
+  const folds = $$('details[data-fold]');
+  if (folds.length) {
+    const phone = window.matchMedia('(max-width: 760px)');
+    const setFolds = () => folds.forEach((d) => { d.open = !phone.matches; });
+    setFolds();
+    phone.addEventListener('change', setFolds);
   }
 
   /* ---------- мягкое появление при скролле ---------- */

@@ -119,7 +119,6 @@
 .pp-breed__text p + p { color: var(--ink-soft); }
 .pp-facts { margin-top: var(--gap); }
 .pp-facts .adv { align-content: start; }
-.pp-more__title { margin: clamp(28px, 3vw, 44px) 0 18px; font-size: var(--fs-h3); font-weight: 500; letter-spacing: -0.025em; line-height: 1.15; }
 
 /* ---------- «Кому подойдёт»: 4 фото-карточки на белой плитке (клиент 19.10) ---------- */
 .pp-fits { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--gap); }

@@ -3,7 +3,6 @@
     The top bar (logo + close) never scrolls away: only .mmenu__scroll scrolls (client 15.10).
     main.js: [data-burger], #mmenu, .mmenu__acc (aria-controls → its list), [data-menu-close], [data-menu-link]. -#}
 {% import "macros/ui.html.j2" as ui %}
-{% import "macros/forms.html.j2" as forms %}
 {% import "partials/menu.html.j2" as menu %}
 {% set is_home = page.url == '/' %}
   <!-- Мобильное меню -->
@@ -11,7 +10,7 @@
     <div class="mmenu__top">
       <a class="logo" href="{{ '#top' if is_home else '/' }}" data-menu-link aria-label="{{ site.brand }} — {{ 'наверх страницы' if is_home else 'на главную' }}">
         <span class="logo__mark" aria-hidden="true">{{ ui.icon('paw') }}</span>
-        <span class="logo__text"><span class="logo__name">{{ site.brand }}</span><span class="logo__sub">{{ site.tagline }}</span></span>
+        <span class="logo__text"><span class="logo__name">{{ site.brand }}</span><span class="logo__sub">{{ site.tagline_plain if hide_city | default(false) else site.tagline }}</span></span>
       </a>
       <button class="msgr msgr--ink" type="button" aria-label="Закрыть меню" data-menu-close>{{ ui.icon('close') }}</button>
     </div>
@@ -41,7 +40,7 @@
       <a class="btn btn--tg btn--lg btn--block" href="{{ site.messengers.telegram.url }}" target="_blank" rel="noopener">{{ ui.icon('tg') }}{{ site.tg_cta.label }}</a>
       {% else %}
       {#- no phone and messengers yet (site.contacts_ready): the e-mail, «Узнать цену» + «Оставить заявку» -#}
-      <a class="mmenu__phone mmenu__mail" href="{{ site.email_href }}">{{ site.email }}<small>Почта питомника · {{ site.phone.response|typo }}</small></a>
+      <a class="mmenu__phone mmenu__mail" href="{{ site.email_href }}">{{ site.email }}<small>Почта питомника · {{ (site.phone.response_plain if hide_city | default(false) else site.phone.response)|typo }}</small></a>
       <button class="btn btn--white btn--lg btn--block" type="button" data-open-modal data-modal-kind="price">Узнать цену</button>
       {{ ui.request_button(cls='btn btn--coral btn--lg btn--block', note='Мобильное меню') }}
       {% endif %}

@@ -1,6 +1,9 @@
 {#- Blog article /blog/<slug>/ — one template for all nine. Copy: data/blog-posts.json → posts[slug]; prepared in routes/blog.py.
-    Context: post (h1, lead, eyebrow, date, read, intro, keyfacts, toc, sections, faq_title, faq, cta, related),
-    hero_photo ({src, alt} of a studio photo or none → four breed faces), tone, breed (or none), ld (JSON-LD). -#}
+    Context: post (h1, lead, eyebrow, date, read, intro, toc, sections, faq_title, faq, cta),
+    hero_photo ({src, alt} of a studio photo or none → four breed faces), hero_wide (four breeds in a row — the wide
+    photo hero of /o-pitomnike/), tone, breed (or none), ld (JSON-LD).
+    Right column (client 21.10): the open request form, then «Содержание» (it sticks when the form has scrolled away);
+    phones: «Содержание» above the text, the form under it. -#}
 {% extends "layouts/page.html.j2" %}
 {% import "blog/_parts.html.j2" as blg %}
 
@@ -24,7 +27,8 @@
     {%- set size = imgsize(hero_photo.src) if hero_photo else none %}
     {%- set photo = dict(hero_photo, w=size[0], h=size[1]) if hero_photo else none %}
     {{ ui.page_hero(post.h1, lead=post.lead, tone=tone, photo=photo, faces=not photo, eyebrow=post.eyebrow,
-        chips=[{'icon': 'clock', 'label': post.read}, {'icon': 'calendar', 'label': post.date}]) }}
+        chips=[{'icon': 'clock', 'label': post.read}, {'icon': 'calendar', 'label': post.date}],
+        cls='phero--group' if hero_wide else none) }}
 {% endblock %}
 
 {% block body %}
@@ -38,8 +42,8 @@
           {% endfor %}
         </article>
         <div class="article__aside blg-aside">
+          {{ blg.aside_form(post, breed) }}
           {{ ui.toc(post.toc) }}
-          {{ ui.keyfacts(post.keyfacts) }}
         </div>
       </div>
     </div>
@@ -60,18 +64,13 @@
       </div>
     </section>
 
-    <section class="section container" id="chitat" aria-labelledby="chitat-title">
-      {{ ui.section_head('Читайте также', id='chitat-title', link={'url': '/blog/', 'label': 'Все статьи'}) }}
-      <ul class="blg-related" data-reveal="items">
-        {% for c in post.related %}
-        <li>{{ blg.card(c, row=true) }}</li>
-        {% endfor %}
-      </ul>
-    </section>
 {% endblock %}
 
-{# articles: this page lists its own or is a document (client 19.10: «Полезные статьи» elsewhere) #}
-{% block blog %}{% endblock %}
+{#- «Читайте также» — the standard block of every page (client 21.10): three other articles (the breed's first) + four
+    plates; the layout puts the standard 8 puppies (pups_breed) before it -#}
+{% block blog %}
+    {{ blocks.read_more(b=breed, skip=post.slug) }}
+{% endblock %}
 
 {% block lead %}
     {{ forms.lead_form(tone=tone, breed=lead_breed) }}

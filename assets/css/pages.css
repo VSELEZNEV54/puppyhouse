@@ -336,19 +336,10 @@ a.stile:hover .stile__photo img { transform: scale(1.04); }
 .cmp__head { display: flex; align-items: center; gap: 10px; }
 .cmp__head .face { width: 40px; height: 40px; }
 .cmp tbody th { width: 20%; font-size: 14px; font-weight: 500; color: var(--muted); }
-/* таблица на 3–4 колонки на телефоне и планшете — плитками по колонке (ui.cmp_table): без прокрутки вбок, все породы
-   видны. До 900 px: на 768 четыре колонки по-человечески уже не помещаются */
-.cmp-cards { display: none; }
-@media (max-width: 900px) {
-  .cmp--wide { display: none; }
-  .cmp-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr)); gap: 8px; }
-  .cmp-card { padding: 18px 18px 8px; border-radius: var(--r-tile); background: var(--tile); }
-  .cmp-card__head { display: flex; align-items: center; gap: 12px; font-size: 20px; font-weight: 500; letter-spacing: -0.02em; line-height: 1.2; }
-  .cmp-card__head .face { width: 44px; height: 44px; }
-  .cmp-card__rows { margin-top: 10px; }
-  .cmp-card__row { display: grid; grid-template-columns: minmax(0, 36%) minmax(0, 1fr); gap: 12px; padding: 10px 0; border-top: 1px solid var(--line); font-size: 14px; line-height: 1.4; }
-  .cmp-card__row dt { color: var(--muted); }
-  .cmp-card__row dd { margin: 0; }
+/* подсказка над широкой таблицей (3+ колонки) — только на телефоне, где таблица листается вбок */
+.cmp-hint { display: none; }
+@media (max-width: 760px) {
+  .cmp-hint { display: flex; align-items: center; gap: 6px; margin: 0 0 10px 4px; font-size: 13.5px; color: var(--muted); }
 }
 .cmp thead > tr > :first-child, .cmp tbody th { position: sticky; left: 0; z-index: 1; background: var(--tile); }
 
@@ -464,11 +455,6 @@ a.stile:hover .stile__photo img { transform: scale(1.04); }
   .pups--grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .pups__more--fill { grid-column: span var(--s3, 1); }
   .steps--5 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-}
-
-/* лента «Щенки в наличии» (cards.pups_section) в три колонки: четвёртая карточка не остаётся одна во втором ряду */
-@media (min-width: 901px) and (max-width: 1199px) {
-  .pups--strip > .pups__item:nth-child(4):last-child { display: none; }
 }
 
 @media (max-width: 1000px) {
@@ -603,7 +589,13 @@ a.stile:hover .stile__photo img { transform: scale(1.04); }
   .cmp__head { flex-direction: column; align-items: flex-start; gap: 6px; }
   .cmp__head .face { width: 34px; height: 34px; }
   .cmp tbody th { width: 28%; font-size: 13px; }
-  .cmp--wide .cmp__table { min-width: 600px; }
+  /* широкая таблица на телефоне (клиент 21.10): горизонтальная, листается вбок; колонка подписей узкая и закреплена,
+     у пород — по 135 px, тонкая черта отделяет закреплённую колонку при прокрутке */
+  .cmp--wide .cmp__table { min-width: 640px; }
+  .cmp.cmp--wide tbody th, .cmp.cmp--wide thead > tr > :first-child { width: 100px; min-width: 100px; border-right: 1px solid var(--line); }
+  /* без левого поля у плитки: прокрученный текст не просвечивает слева от закреплённой колонки, поле — внутри неё */
+  .cmp.cmp--wide { padding-left: 0; }
+  .cmp.cmp--wide tbody th { padding-left: 12px; }
 
   .article__body { padding: 22px 20px; }
   .prose { font-size: 16.5px; }
@@ -662,3 +654,83 @@ a.stile:hover .stile__photo img { transform: scale(1.04); }
   .cmp thead th { font-size: 13.5px; }
   .cmp tbody th { width: 23%; font-size: 12.5px; }
 }
+
+/* =========================================================
+   ШАПКА С ГРУППОЙ ЩЕНКОВ (ui.page_hero(cls='phero--group')): фото главной hero-four-breeds.jpg — четыре щенка в ряд —
+   справа во всю высоту плитки, шире квадрата, щенки видны целиком; левый край кадра гаснет в тон плитки.
+   «О питомнике» и статья блога «Как выбрать щенка и заводчика».
+   ========================================================= */
+@media (min-width: 761px) {
+  .phero--group .phero__tile { --ph: clamp(440px, 38vw, 580px); min-height: var(--ph); align-items: center; }
+  .phero--group .phero__photo { width: 62%; aspect-ratio: auto; transform: none; }
+  .phero--group .phero__photo img {
+    object-position: 50% 62%;
+    -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 22%), linear-gradient(180deg, transparent 0, #000 10%);
+    mask-image: linear-gradient(90deg, transparent 0, #000 22%), linear-gradient(180deg, transparent 0, #000 10%);
+  }
+  .phero--group .phero__copy { max-width: min(620px, 46%); }
+}
+/* планшет: справа кадру тесно (щенки режутся) — фото сверху во всю ширину плитки, текст под ним, как на телефоне */
+@media (min-width: 761px) and (max-width: 1000px) {
+  .phero--group .phero__tile { --p: clamp(28px, 3.4vw, 52px); flex-direction: column; align-items: stretch; min-height: 0; padding-top: 0; background: var(--tone-floor); }
+  .phero--group .phero__photo {
+    position: relative; order: -1; top: auto; bottom: auto; right: auto;
+    width: calc(100% + 2 * var(--p)); height: auto; margin: 0 calc(-1 * var(--p)) 8px; aspect-ratio: 2 / 1;
+  }
+  .phero--group .phero__photo img {
+    object-position: 50% 70%;
+    -webkit-mask-image: linear-gradient(180deg, #000 86%, transparent 100%);
+    mask-image: linear-gradient(180deg, #000 86%, transparent 100%);
+  }
+  .phero--group .phero__copy { max-width: none; }
+}
+@media (max-width: 760px) {
+  .phero--group .phero__photo img { object-position: 50% 100%; }
+}
+/* телефон: в pages.css кадр шапки — квадрат по центру с гаснущими краями (под одного щенка); здесь четыре щенка в ряд —
+   кадр во всю ширину полосы, гаснет только нижний край */
+@media (max-width: 560px) {
+  .phero--group .phero__photo { aspect-ratio: 1.45; }
+  .phero--group .phero__photo img {
+    left: 0; width: 100%; aspect-ratio: auto; transform: none; object-fit: cover; object-position: 50% 92%;
+    -webkit-mask-image: linear-gradient(180deg, #000 86%, transparent 100%);
+    mask-image: linear-gradient(180deg, #000 86%, transparent 100%);
+  }
+}
+
+/* =========================================================
+   ОКРАСЫ-КАРУСЕЛЬ породы (breeds/_parts.colour_carousel): страница породы и «Виды и окрасы»
+   ========================================================= */
+.brd-help { flex: none; }
+
+/* окрасы: лента карточек «с начала» (data-align="start" в main.js) — первая карточка у левого поля, без увеличения
+   активной; на 1440 видно четыре карточки и край пятой, дальше — свайп и стрелки под лентой */
+.brd-cols { --mc-w: clamp(256px, 22.4vw, 330px); }
+.brd-cols .media-carousel__track { padding-inline: var(--pad); }
+.brd-cols .media-carousel__viewport { scroll-padding-inline: var(--pad); }
+.brd-cols .media-carousel__item { display: flex; scroll-snap-align: start; transform: none; opacity: 1; }
+.brd-col { display: flex; flex-direction: column; width: 100%; border-radius: var(--r-tile); background: var(--tile); overflow: hidden; }
+/* студийный кадр окраса целиком, на своём замеренном фоне (tone_style): квадрат во всю ширину карточки */
+.brd-col__media { display: block; aspect-ratio: 1 / 1; background: var(--tone-hi, var(--peach)); overflow: hidden; }
+.brd-col__media img { display: block; width: 100%; height: 100%; object-fit: cover; transition: transform 1.1s var(--ease); }
+@media (hover: hover) { .brd-col:hover .brd-col__media img { transform: scale(1.04); } }
+.brd-col__body { flex: 1; display: flex; flex-direction: column; align-items: flex-start; gap: 8px; padding: 20px 22px 22px; }
+.brd-col__name { font-size: clamp(21px, 1.7vw, 26px); font-weight: 500; letter-spacing: -0.03em; line-height: 1.08; }
+.brd-col__name a { text-decoration: none; }
+.brd-col__name a:hover { text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 4px; }
+/* две кнопки друг под другом: «Подобрать …» (коралловая) и «Подробнее» (белая, страница окраса) */
+.brd-col__actions { display: flex; flex-direction: column; gap: 8px; width: 100%; margin-top: auto; }
+.brd-col__text { font-size: 15px; line-height: 1.45; color: var(--muted); }
+/* «Подобрать абрикосового мальтипу» — длинная подпись: кнопка во всю ширину, перенос в две строки вместо обрезки */
+.brd-col__btn { width: 100%; height: auto; min-height: 46px; padding: 11px 14px; font-size: 14px; white-space: normal; line-height: 1.2; text-align: center; }
+.brd-col__text { margin-bottom: 14px; }
+@media (max-width: 760px) {
+  .brd-help { width: 100%; }
+  /* окрасы: карточка ≈ три четверти экрана — видно край следующей, листается свайпом */
+  .brd-cols { --mc-w: min(76vw, 320px); }
+}
+
+/* =========================================================
+   «ЧИТАЙТЕ ТАКЖЕ» (blocks.read_more): статьи три в ряд, под ними четыре плашки разделов породы — один блок
+   ========================================================= */
+.rmore__links { margin-top: var(--gap); }

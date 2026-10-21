@@ -5,13 +5,13 @@
 {#- Puppy card — one card for the whole site (catalog, «Похожие щенки», every «Щенки в наличии» strip, hubs, comparisons).
     p = puppies.json item (enriched by build.py). Two CTAs (client 19.10): white «Узнать цену» → the shared modal
     prefilled with this puppy (main.js reads data-pup), «Подробнее» with a white outline → the puppy page. The photo links to the page too
-    (a duplicate link, out of the tab order); «В избранное» sits in the photo corner.
+    (a duplicate link, out of the tab order). No «В избранное» heart anywhere (client 21.10).
     Studio photo: the card takes that photo's measured backdrop (tools/photo-tones.json) unless the photo has
     "backdrop": "token". Lifestyle photo: object-fit cover, "pos" → object-position (default 50% 60%).
     Styles: main.css (.pup + .ct-card). Phones ≤ 560 px: a compact row — photo left, name and both buttons right.
     tag: heading tag of the name; eager=true: no lazy loading (cards on the first screen).
     simple=true (breed pages v2, client 15.10): photo, name, «мальчик · кремовый» and the same two buttons — no age,
-    no «В избранное», the photo and the name are not links.
+    the photo and the name are not links.
     No status badge, dot or status text (client 19.10: the site shows no «забронирован» / «скоро»). -#}
 {% macro puppy_card(p, tag='h3', eager=false, simple=false) -%}
 {%- set t = photo_tone(p.photo.src) if p.photo.kind == 'studio' and p.photo.get('backdrop') != 'token' else none -%}
@@ -19,8 +19,7 @@
 <article class="pup ct-card {{ p.tone_class }}{{ ' ct-card--studio' if studio else ' ct-card--life' }}{{ ' ct-card--simple' if simple }}"{% if t %} style="--tone:{{ t.top }};--tone-floor:{{ t.floor }}"{% endif %} data-pup data-slug="{{ p.slug }}" data-breed="{{ p.breed }}" data-name="{{ p.name }}" data-desc="{{ (p.breed_name ~ ' · ' ~ p.sex_label ~ ' · ' ~ p.colour) if simple else p.desc }}" data-img="{{ p.photo.src.rsplit('/', 1)[-1] }}">
   {% if simple %}<div class="pup__media ct-card__media{{ ' pup__media--studio' if studio }}">{% else %}<a class="pup__media ct-card__media{{ ' pup__media--studio' if studio }}" href="{{ p.url }}" tabindex="-1" aria-hidden="true">{% endif %}
     <img{% if p.photo['class'] %} class="{{ p.photo['class'] }}"{% endif %} src="{{ p.photo.src }}" alt="{{ p.photo.alt|typo }}" width="{{ p.photo.w }}" height="{{ p.photo.h }}"{% if p.photo.get('pos') %} style="object-position:{{ p.photo.pos }}"{% endif %}{% if not eager %} loading="lazy"{% endif %} decoding="async">
-  {% if simple %}</div>{% else %}</a>
-  <button class="fav ct-card__fav" type="button" aria-pressed="false" aria-label="В избранное: {{ p.name }}">{{ ui.icon('heart') }}</button>{% endif %}
+  {% if simple %}</div>{% else %}</a>{% endif %}
   <div class="pup__body ct-card__body">
     {% if simple %}
     <{{ tag }} class="pup__name">{{ p.name }}</{{ tag }}>
@@ -41,32 +40,41 @@
 </article>
 {%- endmacro %}
 
-{#- «Щенки в наличии» section for inner pages: up to `limit` cards (available first) and a link to the catalog.
-    breed: breeds.json item → only that breed, link to the filtered catalog. Grid: 4 / 3 / 2 columns, one per row ≤ 560 px.
-    .pups--strip: at 3 columns (901–1199 px) a 4th card that would sit alone in the second row is hidden (pages.css). -#}
-{% macro pups_section(title='Щенки в наличии', breed=none, limit=4, id='pups', exclude=none) -%}
-{%- set pool = (breed.puppies if breed else puppies)|rejectattr('slug', 'equalto', exclude)|sort(attribute='status_order')|list -%}
-{%- set list = pool[:limit] -%}
+{#- «Щенки в наличии» as on the homepage (client 21.10): 8 cards — 4 / 2 per row; at three per row the first 6
+    (main.css .hm-pups--8), so every row is full — and the catalog button under them. items: puppies
+    (_lib.mixed_puppies on a page about all breeds). -#}
+{% macro pups_grid(items, title='Щенки в наличии', id='pups', url='/shchenki/', label='Весь каталог') -%}
 <section class="section container" id="{{ id }}" aria-labelledby="{{ id }}-title">
-  {{ ui.section_head(title, id=id ~ '-title', link={'url': '/shchenki/', 'label': 'Весь каталог — ' ~ puppies|length}) }}
-  {% if list %}
-  <ul class="pups pups--strip" data-reveal="items">
-    {% for p in list %}
+  {{ ui.section_head(title, id=id ~ '-title') }}
+  <ul class="pups hm-pups hm-pups--8" data-reveal="items">
+    {% for p in items %}
     <li class="pups__item">
       {{ puppy_card(p) }}
     </li>
     {% endfor %}
-    {% if list|length < limit %}
-    {%- set n = list|length %}
-    <li class="pups__more pups__more--fill" style="--s4:{{ 4 - n % 4 }};--s3:{{ 3 - n % 3 }};--s2:{{ 2 - n % 2 }}">
-      {{ soon_tile(breed=breed) }}
-    </li>
-    {% endif %}
   </ul>
-  {% else %}
-  {{ ui.empty_state('Сейчас щенков нет в наличии', 'Оставьте заявку — напишем, когда появится новый помёт.') }}
-  {% endif %}
+  <div class="hm-pups__foot">
+    <a class="btn btn--ink btn--lg" href="{{ url }}"><span>{{ label|typo }}</span> {{ ui.icon('arrow') }}</a>
+  </div>
 </section>
+{%- endmacro %}
+
+{#- The standard «Щенки в наличии» block of every page (client 21.10: the same blocks on all pages) — pups_grid with
+    8 cards. breed (breeds.json item): its puppies, «Щенки <породы> в наличии» and «Все щенки <породы>» → the breed
+    page's #shchenki; none: two puppies of every breed (each row of four shows all four breeds, as
+    _lib.mixed_puppies) and «Весь каталог». exclude: slugs not to repeat (the puppy of the page, the colour's puppies
+    shown above); title: own heading (e.g. «Похожие щенки»). -#}
+{% macro pups_std(breed=none, exclude=[], title=none, id='pups') -%}
+{%- if breed -%}
+{%- set items = (breed.puppies|rejectattr('slug', 'in', exclude)|sort(attribute='status_order')|list)[:8] -%}
+{{ pups_grid(items, title=title or ui.nohyph('Щенки ' ~ breed.name_plural_gen ~ ' в наличии'), id=id, url=breed.urls.hub ~ '#shchenki', label=ui.nohyph('Все щенки ' ~ breed.name_plural_gen)) }}
+{%- else -%}
+{%- set per = [] -%}
+{%- for b in breeds %}{% set _ = per.append(b.puppies|rejectattr('slug', 'in', exclude)|sort(attribute='status_order')|list) %}{% endfor -%}
+{%- set items = [] -%}
+{%- for i in range(2) %}{% for l in per %}{% if l|length > i %}{% set _ = items.append(l[i]) %}{% endif %}{% endfor %}{% endfor -%}
+{{ pups_grid(items, title=title or 'Щенки в наличии', id=id) }}
+{%- endif -%}
 {%- endmacro %}
 
 {#- «Ждёте другого щенка?» tile: fills the rest of a puppy row, opens the modal as a waiting-list request

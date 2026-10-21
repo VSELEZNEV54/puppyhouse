@@ -29,12 +29,12 @@
   <!-- Geist is served from our own domain (assets/fonts, SIL OFL 1.1): no visitor IP goes to Google before consent -->
   <link rel="preload" href="../../../assets/fonts/geist-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="../../../assets/fonts/geist-latin.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="../../../assets/css/main.css?v=7b61bf5e">
-  <link rel="stylesheet" href="../../../assets/css/pages.css?v=221bc484">
-  <link rel="stylesheet" href="../../../assets/css/breedsub.css?v=dc73b370">
-  <script src="../../../assets/js/main.js?v=90a61a0f" defer></script>
+  <link rel="stylesheet" href="../../../assets/css/main.css?v=b47380d3">
+  <link rel="stylesheet" href="../../../assets/css/pages.css?v=694a13c3">
+  <link rel="stylesheet" href="../../../assets/css/breedsub.css?v=eda282cc">
+  <script src="../../../assets/js/main.js?v=697d735d" defer></script>
 </head>
-<body>
+<body class="page-varieties">
   <!-- Иконки: инлайн-спрайт 24×24. Линейные — stroke currentColor, заливочные — fill. -->
   <svg class="sprite" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
     <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
@@ -140,19 +140,17 @@
                 <li class="mega__sub">
                   <span class="mega__subh">Доставка по городам</span>
                   <ul class="mega__subl">
-              <li><a class="mega__sublink" href="../../dostavka/sankt-peterburg/"><span><span class="nw">Санкт-Петербург</span></span></a></li><li><a class="mega__sublink" href="../../dostavka/novosibirsk/"><span>Новосибирск</span></a></li><li><a class="mega__sublink" href="../../dostavka/ekaterinburg/"><span>Екатеринбург</span></a></li><li><a class="mega__sublink" href="../../dostavka/kazan/"><span>Казань</span></a></li><li><a class="mega__sublink" href="../../dostavka/#goroda"><span>Все 30 городов</span></a></li>    </ul>
+              <li><a class="mega__sublink" href="../../shchenki-v-sankt-peterburge/"><span><span class="nw">Санкт-Петербург</span></span></a></li><li><a class="mega__sublink" href="../../shchenki-v-novosibirske/"><span>Новосибирск</span></a></li><li><a class="mega__sublink" href="../../shchenki-v-ekaterinburge/"><span>Екатеринбург</span></a></li><li><a class="mega__sublink" href="../../shchenki-v-kazani/"><span>Казань</span></a></li><li><a class="mega__sublink" href="../../dostavka/#goroda"><span>Все 30 городов</span></a></li>    </ul>
                 </li>
-                <li><a class="mega__link" href="../../rassrochka/"><span>Рассрочка и бронь</span></a></li>
+                <li><a class="mega__link" href="../../rassrochka/"><span>Бронь щенка</span></a></li>
                 <li><a class="mega__link" href="../../shchenok-v-podarok/"><span>Щенок в подарок</span></a></li>
-                <li><a class="mega__link" href="../../magazin/"><span>Стартовый набор</span></a></li>
                 <li><a class="mega__link" href="../../faq/"><span>Вопросы и ответы</span></a></li>
               </ul>
             </div>
             <div class="mega__col">
               <p class="mega__h">О питомнике</p>
               <ul class="mega__list">
-                <li><a class="mega__link" href="../../roditeli/"><span>Родители щенков</span></a></li>
-                <li><a class="mega__link" href="../../vypuskniki/"><span>Выпускники</span></a></li>
+                <li><a class="mega__link" href="../../o-pitomnike/"><span>О питомнике</span></a></li>
                 <li><a class="mega__link" href="../../otzyvy/"><span>Отзывы владельцев</span></a></li>
                 <li><a class="mega__link" href="../../dokumenty-i-garantii/"><span>Документы и гарантии</span></a></li>
                 <li><a class="mega__link" href="../../kontakty/"><span>Контакты</span></a></li>
@@ -201,7 +199,7 @@
               <a class="dd__test" href="../../podbor-porody/"><span class="ico ico--sm" style="--c:var(--lilac)"><svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-sparkle"/></svg></span><span>Подобрать породу — тест</span><svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></a>
             </div>
           </li>
-          <li class="nav__item nav__item--p2"><a class="nav__link" href="../../roditeli/">О питомнике</a></li>
+          <li class="nav__item nav__item--p2"><a class="nav__link" href="../../o-pitomnike/">О питомнике</a></li>
           <li class="nav__item nav__item--p3"><a class="nav__link" href="../../dostavka/">Доставка</a></li>
           <li class="nav__item nav__item--p4"><a class="nav__link" href="../../otzyvy/">Отзывы</a></li>
           <li class="nav__item nav__item--p5"><a class="nav__link" href="../../kontakty/">Контакты</a></li>
@@ -229,7 +227,7 @@
   <div class="phero__tile tone--peach phero--photo" style="--tone-top:#F5C29C;--tone-hi:#F8C7A1;--tone-floor:#FED5B2;--fa:0.83;--fb:0.99" data-hero-ctas>
     <div class="phero__photo"><img src="../../../assets/img/color-maltipu-red.jpg" alt="Щенок мальтипу" width="1024" height="1024" fetchpriority="high" decoding="async"></div>
     <div class="phero__copy">
-<p class="eyebrow"><span class="eyebrow__dot" aria-hidden="true"></span>Питомник домщенков.рф · Москва</p>      <h1 class="phero__title" id="page-title">Виды и окрасы мальтипу</h1>
+<p class="eyebrow"><span class="eyebrow__dot" aria-hidden="true"></span>Виды и окрасы мальтипу</p>      <h1 class="phero__title" id="page-title">Какие бывают мальтипу</h1>
 <p class="phero__lead">F1, F1b и F2, мини и стандарт, все окрасы — коротко и с фото</p>      <dl class="phero__facts">
 <div class="phero__fact"><dt>Поколения</dt><dd>F1, F1b, F2</dd></div><div class="phero__fact"><dt>Размеры</dt><dd>той, мини, стандарт</dd></div><div class="phero__fact"><dt>Живут</dt><dd><span class="nw">12–15</span> лет</dd></div>      </dl>
 <div class="phero__actions">      <button class="btn btn--ink btn--lg" type="button" data-open-modal data-modal-kind="price" data-modal-breed="Мальтипу">Узнать цену</button>
@@ -237,229 +235,235 @@
 </div>    </div>
   </div>
 </section>
-    <section class="section section--tight container" id="pokoleniya" aria-labelledby="pokoleniya-title">
+    <section class="section section--tight container" id="vidy" aria-labelledby="vidy-title">
       <div class="sec-head">
   <div class="sec-head__txt">
-    <h2 class="h2" id="pokoleniya-title">Поколения мальтипу</h2>
-    <p class="sec-head__lead">F1, F1b и F2 — чем они отличаются</p>
+    <h2 class="h2" id="vidy-title">Виды и поколения мальтипу</h2>
+    <p class="sec-head__lead">Той, мини и стандарт — по весу взрослой собаки. Деление неофициальное, прогноз даём по родителям</p>
   </div>
 
-
 </div>
-      <ul class="bsub-kinds bsub-kinds--3">
-        <li class="bsub-kind">
-          <div class="bsub-kind__head">
-<span class="bsub-kind__tag" style="--c:var(--coral)" aria-hidden="true">F1</span>
-          </div>
-          <h3 class="bsub-kind__title"><span class="sr-only">F1: </span>Первое поколение</h3>
-          <p class="bsub-kind__line">Мальтийская болонка × пудель</p>
-          <dl class="bsub-kind__rows">
-<div><dt>Шерсть</dt><dd>волнистая, мягкая</dd></div><div><dt>Линька</dt><dd>слабая</dd></div>          </dl>
-        </li>
-        <li class="bsub-kind">
-          <div class="bsub-kind__head">
-<span class="bsub-kind__tag" style="--c:var(--sun)" aria-hidden="true">F1b</span>
-          </div>
-          <h3 class="bsub-kind__title"><span class="sr-only">F1b: </span>Больше пуделя</h3>
-          <p class="bsub-kind__line">Мальтипу F1 × пудель</p>
-          <dl class="bsub-kind__rows">
-<div><dt>Шерсть</dt><dd>кудрявее, чем у F1</dd></div><div><dt>Линька</dt><dd>ещё меньше</dd></div>          </dl>
-        </li>
-        <li class="bsub-kind">
-          <div class="bsub-kind__head">
-<span class="bsub-kind__tag" style="--c:var(--sky)" aria-hidden="true">F2</span>
-          </div>
-          <h3 class="bsub-kind__title"><span class="sr-only">F2: </span>Второе поколение</h3>
-          <p class="bsub-kind__line">Мальтипу F1 × мальтипу F1</p>
-          <dl class="bsub-kind__rows">
-<div><dt>Шерсть</dt><dd>от прямой до кудрявой</dd></div><div><dt>Внешность</dt><dd>менее предсказуема</dd></div>          </dl>
-        </li>
-      </ul>
-
-    </section>
-
-    <section class="section container" id="razmery" aria-labelledby="razmery-title">
-      <div class="sec-head">
-  <div class="sec-head__txt">
-    <h2 class="h2" id="razmery-title">Той, мини и стандарт</h2>
-    <p class="sec-head__lead">Деление неофициальное: вес взрослой собаки — прогноз по родителям</p>
-  </div>
-
-
+      <figure class="bsub-types__photo" style="--tone-top:#F8C99F;--tone-hi:#EAB588;--tone-floor:#FDD2AC;--fa:0.81;--fb:0.97">
+  <img src="../../../assets/img/kinds-maltipu.jpg" alt="Три взрослых мальтипу в ряд: той, мини и стандарт — от маленького к большому" width="1376" height="768" style="object-position:50% 75%" loading="lazy" decoding="async">
+  <ol class="bsub-types__pins" aria-hidden="true">
+<li class="bsub-types__pin" style="--x:23.7%"><b>1</b><span>Той</span></li><li class="bsub-types__pin" style="--x:49.6%"><b>2</b><span>Мини</span></li><li class="bsub-types__pin" style="--x:77.0%"><b>3</b><span>Стандарт</span></li>  </ol>
+</figure>
+<ol class="bsub-types bsub-types--3">
+  <li class="bsub-kind bsub-type">
+    <div class="bsub-kind__head">
+      <span class="bsub-type__n" aria-hidden="true">1</span>
+    </div>
+    <h3 class="bsub-kind__title">Той</h3>
+    <p class="bsub-kind__line">Самые маленькие мальтипу</p>
+<dl class="bsub-kind__rows">
+<div><dt>Вес</dt><dd>около <span class="nw">2–3</span> кг</dd></div><div class="bsub-kind__row--long"><dt>Особенности</dt><dd>помещается <span class="nw">в сумку-переноску</span>, нужен бережный уход</dd></div></dl>  </li>
+  <li class="bsub-kind bsub-type">
+    <div class="bsub-kind__head">
+      <span class="bsub-type__n" aria-hidden="true">2</span>
+    </div>
+    <h3 class="bsub-kind__title">Мини</h3>
+    <p class="bsub-kind__line">Размером с небольшую кошку</p>
+<dl class="bsub-kind__rows">
+<div><dt>Вес</dt><dd>около <span class="nw">3–5</span> кг</dd></div><div class="bsub-kind__row--long"><dt>Особенности</dt><dd>самый частый размер, удобен в квартире и поездках</dd></div></dl>  </li>
+  <li class="bsub-kind bsub-type">
+    <div class="bsub-kind__head">
+      <span class="bsub-type__n" aria-hidden="true">3</span>
+    </div>
+    <h3 class="bsub-kind__title">Стандарт</h3>
+    <p class="bsub-kind__line">Крупнее и крепче</p>
+<dl class="bsub-kind__rows">
+<div><dt>Вес</dt><dd>до 7 кг</dd></div><div class="bsub-kind__row--long"><dt>Особенности</dt><dd>крепкое сложение — спокойнее с маленькими детьми</dd></div></dl>  </li>
+</ol>
+<div class="bsub-sub">
+  <h3 class="bsub-sub__title">Поколения: F1, F1b и F2</h3>
+<p class="bsub-sub__lead">Поколение подсказывает, какой будет шерсть и насколько щенок похож на родителей</p>  <ul class="bsub-kinds bsub-kinds--3">
+    <li class="bsub-kind">
+      <div class="bsub-kind__head"><span class="bsub-kind__tag" style="--c:var(--coral)" aria-hidden="true">F1</span></div>
+      <h4 class="bsub-kind__title"><span class="sr-only">F1: </span>Первое поколение</h4>
+      <p class="bsub-kind__line">Мальтийская болонка × пудель</p>
+<dl class="bsub-kind__rows">
+<div><dt>Шерсть</dt><dd>волнистая, мягкая</dd></div><div><dt>Линька</dt><dd>слабая</dd></div></dl>    </li>
+    <li class="bsub-kind">
+      <div class="bsub-kind__head"><span class="bsub-kind__tag" style="--c:var(--sun)" aria-hidden="true">F1b</span></div>
+      <h4 class="bsub-kind__title"><span class="sr-only">F1b: </span>Больше пуделя</h4>
+      <p class="bsub-kind__line">Мальтипу F1 × пудель</p>
+<dl class="bsub-kind__rows">
+<div><dt>Шерсть</dt><dd>кудрявее, чем у F1</dd></div><div><dt>Линька</dt><dd>ещё меньше</dd></div></dl>    </li>
+    <li class="bsub-kind">
+      <div class="bsub-kind__head"><span class="bsub-kind__tag" style="--c:var(--sky)" aria-hidden="true">F2</span></div>
+      <h4 class="bsub-kind__title"><span class="sr-only">F2: </span>Второе поколение</h4>
+      <p class="bsub-kind__line">Мальтипу F1 × мальтипу F1</p>
+<dl class="bsub-kind__rows">
+<div><dt>Шерсть</dt><dd>от прямой до кудрявой</dd></div><div><dt>Внешность</dt><dd>менее предсказуема</dd></div></dl>    </li>
+  </ul>
 </div>
-      <ul class="bsub-kinds bsub-kinds--3">
-        <li class="bsub-kind">
-          <div class="bsub-kind__head">
-<span class="bsub-kind__face" style="--s:0.62" aria-hidden="true"><span class="face tone--peach"><img src="../../../assets/img/studio-maltipu-peach.jpg" alt="" width="1024" height="1024" loading="lazy" decoding="async"></span></span>
-          </div>
-          <h3 class="bsub-kind__title">Той</h3>
-          <p class="bsub-kind__line">Самые маленькие мальтипу</p>
-          <dl class="bsub-kind__rows">
-<div><dt>Вес</dt><dd>около <span class="nw">2–3</span> кг</dd></div>          </dl>
-        </li>
-        <li class="bsub-kind">
-          <div class="bsub-kind__head">
-<span class="bsub-kind__face" style="--s:0.8" aria-hidden="true"><span class="face tone--peach"><img src="../../../assets/img/studio-maltipu-peach.jpg" alt="" width="1024" height="1024" loading="lazy" decoding="async"></span></span>
-          </div>
-          <h3 class="bsub-kind__title">Мини</h3>
-          <p class="bsub-kind__line">Размером с небольшую кошку</p>
-          <dl class="bsub-kind__rows">
-<div><dt>Вес</dt><dd>около <span class="nw">3–5</span> кг</dd></div>          </dl>
-        </li>
-        <li class="bsub-kind">
-          <div class="bsub-kind__head">
-<span class="bsub-kind__face" style="--s:1" aria-hidden="true"><span class="face tone--peach"><img src="../../../assets/img/studio-maltipu-peach.jpg" alt="" width="1024" height="1024" loading="lazy" decoding="async"></span></span>
-          </div>
-          <h3 class="bsub-kind__title">Стандарт</h3>
-          <p class="bsub-kind__line">Крупнее и крепче</p>
-          <dl class="bsub-kind__rows">
-<div><dt>Вес</dt><dd>до 7 кг</dd></div>          </dl>
-        </li>
-      </ul>
+
 
     </section>
 
     <section class="section container" id="okrasy" aria-labelledby="okrasy-title">
-      <div class="sec-head">
+<div class="sec-head">
   <div class="sec-head__txt">
     <h2 class="h2" id="okrasy-title">Окрасы мальтипу</h2>
     <p class="sec-head__lead">Стандарта у мальтипу нет, поэтому окрасов много. Вот все, что бывают у наших щенков</p>
   </div>
-
-
+<button class="btn btn--white brd-help" type="button" data-open-modal data-modal-kind="consult" data-modal-breed="Мальтипу" data-modal-title="Поможем выбрать окрас" data-modal-sub="Расскажем, как меняется окрас с возрастом, и пришлём щенков нужного цвета с видео" data-modal-note="Консультация: окрас, мальтипу" data-modal-submit="Получить консультацию">Получить консультацию</button>
+</div>      <div class="media-carousel brd-cols" data-carousel data-align="start" data-start="0" role="region" aria-roledescription="карусель" aria-label="Окрасы мальтипу">
+  <div class="media-carousel__viewport" tabindex="0" data-carousel-viewport>
+    <ul class="media-carousel__track">
+      <li class="media-carousel__item is-active" aria-roledescription="слайд" aria-label="1 из 10: Кремовый мальтипу">
+        <article class="brd-col">          <a class="brd-col__media" href="../kremovyj/" tabindex="-1" aria-hidden="true" style="--tone-top:#F6C49D;--tone-hi:#FAC9A2;--tone-floor:#FFDDBA;--fa:0.74;--fb:0.90">
+            <img src="../../../assets/img/okras-maltipu-kremovyj.jpg" alt="Кремовый щенок мальтипу на персиковом фоне" width="1024" height="1024" loading="lazy" decoding="async">
+          </a>
+          <div class="brd-col__body">
+            <h3 class="brd-col__name"><a href="../kremovyj/">Кремовый мальтипу</a></h3>
+            <p class="brd-col__text">Тёплый молочный оттенок и тёмные глаза</p>
+            <div class="brd-col__actions">
+              <button class="btn btn--ink brd-col__btn" type="button" data-open-modal data-modal-kind="colour" data-modal-colour="kremovyj" data-modal-breed="Мальтипу" data-modal-title="Подберём кремового мальтипу" data-modal-sub="Пришлём щенков этого окраса с фото, видео и ценой. Нет сейчас — напишем, когда появятся" data-modal-note="Окрас: кремовый" data-modal-submit="Подобрать щенка" aria-label="Подобрать щенка: кремовый окрас">Подобрать щенка</button>
+              <a class="btn btn--white brd-col__btn" href="../kremovyj/" aria-label="Подробнее: Кремовый мальтипу">Подробнее</a>
+            </div>
+          </div>
+        </article>
+      </li>
+      <li class="media-carousel__item" aria-roledescription="слайд" aria-label="2 из 10: Белый мальтипу">
+        <article class="brd-col">          <a class="brd-col__media" href="../belyj/" tabindex="-1" aria-hidden="true" style="--tone-top:#F8C49E;--tone-hi:#FDCBA4;--tone-floor:#FFE0C6;--fa:0.70;--fb:0.86">
+            <img src="../../../assets/img/okras-maltipu-belyj.jpg" alt="Белый щенок мальтипу с наклонённой головой на персиковом фоне" width="1024" height="1024" loading="lazy" decoding="async">
+          </a>
+          <div class="brd-col__body">
+            <h3 class="brd-col__name"><a href="../belyj/">Белый мальтипу</a></h3>
+            <p class="brd-col__text">Белоснежная шерсть, как у мальтийской болонки</p>
+            <div class="brd-col__actions">
+              <button class="btn btn--ink brd-col__btn" type="button" data-open-modal data-modal-kind="colour" data-modal-colour="belyj" data-modal-breed="Мальтипу" data-modal-title="Подберём белого мальтипу" data-modal-sub="Пришлём щенков этого окраса с фото, видео и ценой. Нет сейчас — напишем, когда появятся" data-modal-note="Окрас: белый" data-modal-submit="Подобрать щенка" aria-label="Подобрать щенка: белый окрас">Подобрать щенка</button>
+              <a class="btn btn--white brd-col__btn" href="../belyj/" aria-label="Подробнее: Белый мальтипу">Подробнее</a>
+            </div>
+          </div>
+        </article>
+      </li>
+      <li class="media-carousel__item" aria-roledescription="слайд" aria-label="3 из 10: Абрикосовый мальтипу">
+        <article class="brd-col">          <a class="brd-col__media" href="../abrikosovyj/" tabindex="-1" aria-hidden="true" style="--tone-top:#F5BF99;--tone-hi:#FFCEA9;--tone-floor:#FFDFC2;--fa:0.71;--fb:0.87">
+            <img src="../../../assets/img/okras-maltipu-abrikosovyj.jpg" alt="Абрикосовый щенок мальтипу на персиковом фоне" width="1024" height="1024" loading="lazy" decoding="async">
+          </a>
+          <div class="brd-col__body">
+            <h3 class="brd-col__name"><a href="../abrikosovyj/">Абрикосовый мальтипу</a></h3>
+            <p class="brd-col__text">Тёплый оттенок между кремовым и рыжим</p>
+            <div class="brd-col__actions">
+              <button class="btn btn--ink brd-col__btn" type="button" data-open-modal data-modal-kind="colour" data-modal-colour="abrikosovyj" data-modal-breed="Мальтипу" data-modal-title="Подберём абрикосового мальтипу" data-modal-sub="Пришлём щенков этого окраса с фото, видео и ценой. Нет сейчас — напишем, когда появятся" data-modal-note="Окрас: абрикосовый" data-modal-submit="Подобрать щенка" aria-label="Подобрать щенка: абрикосовый окрас">Подобрать щенка</button>
+              <a class="btn btn--white brd-col__btn" href="../abrikosovyj/" aria-label="Подробнее: Абрикосовый мальтипу">Подробнее</a>
+            </div>
+          </div>
+        </article>
+      </li>
+      <li class="media-carousel__item" aria-roledescription="слайд" aria-label="4 из 10: Рыжий мальтипу">
+        <article class="brd-col">          <a class="brd-col__media" href="../ryzhij/" tabindex="-1" aria-hidden="true" style="--tone-top:#F9C79E;--tone-hi:#FCCCA4;--tone-floor:#FFE4C9;--fa:0.66;--fb:0.82">
+            <img src="../../../assets/img/okras-maltipu-ryzhij.jpg" alt="Рыжий щенок мальтипу на персиковом фоне" width="1024" height="1024" loading="lazy" decoding="async">
+          </a>
+          <div class="brd-col__body">
+            <h3 class="brd-col__name"><a href="../ryzhij/">Рыжий мальтипу</a></h3>
+            <p class="brd-col__text">Насыщенный рыжий, почти красный — «ред»</p>
+            <div class="brd-col__actions">
+              <button class="btn btn--ink brd-col__btn" type="button" data-open-modal data-modal-kind="colour" data-modal-colour="ryzhij" data-modal-breed="Мальтипу" data-modal-title="Подберём рыжего мальтипу" data-modal-sub="Пришлём щенков этого окраса с фото, видео и ценой. Нет сейчас — напишем, когда появятся" data-modal-note="Окрас: рыжий" data-modal-submit="Подобрать щенка" aria-label="Подобрать щенка: рыжий окрас">Подобрать щенка</button>
+              <a class="btn btn--white brd-col__btn" href="../ryzhij/" aria-label="Подробнее: Рыжий мальтипу">Подробнее</a>
+            </div>
+          </div>
+        </article>
+      </li>
+      <li class="media-carousel__item" aria-roledescription="слайд" aria-label="5 из 10: Шоколадный мальтипу">
+        <article class="brd-col">          <a class="brd-col__media" href="../shokoladnyj/" tabindex="-1" aria-hidden="true" style="--tone-top:#F8C59D;--tone-hi:#FAC69F;--tone-floor:#FFD8B9;--fa:0.61;--fb:0.77">
+            <img src="../../../assets/img/okras-maltipu-shokoladnyj.jpg" alt="Шоколадный щенок мальтипу на персиковом фоне" width="1024" height="1024" loading="lazy" decoding="async">
+          </a>
+          <div class="brd-col__body">
+            <h3 class="brd-col__name"><a href="../shokoladnyj/">Шоколадный мальтипу</a></h3>
+            <p class="brd-col__text">Глубокий коричневый, нос в тон шерсти</p>
+            <div class="brd-col__actions">
+              <button class="btn btn--ink brd-col__btn" type="button" data-open-modal data-modal-kind="colour" data-modal-colour="shokoladnyj" data-modal-breed="Мальтипу" data-modal-title="Подберём шоколадного мальтипу" data-modal-sub="Пришлём щенков этого окраса с фото, видео и ценой. Нет сейчас — напишем, когда появятся" data-modal-note="Окрас: шоколадный" data-modal-submit="Подобрать щенка" aria-label="Подобрать щенка: шоколадный окрас">Подобрать щенка</button>
+              <a class="btn btn--white brd-col__btn" href="../shokoladnyj/" aria-label="Подробнее: Шоколадный мальтипу">Подробнее</a>
+            </div>
+          </div>
+        </article>
+      </li>
+      <li class="media-carousel__item" aria-roledescription="слайд" aria-label="6 из 10: Чёрный мальтипу">
+        <article class="brd-col">          <a class="brd-col__media" href="../chernyj/" tabindex="-1" aria-hidden="true" style="--tone-top:#F9C49E;--tone-hi:#FBC7A1;--tone-floor:#FFDEC3;--fa:0.68;--fb:0.84">
+            <img src="../../../assets/img/okras-maltipu-chernyj.jpg" alt="Чёрный щенок мальтипу лежит на персиковом фоне" width="1024" height="1024" loading="lazy" decoding="async">
+          </a>
+          <div class="brd-col__body">
+            <h3 class="brd-col__name"><a href="../chernyj/">Чёрный мальтипу</a></h3>
+            <p class="brd-col__text">Глубокий блестящий чёрный от пуделя</p>
+            <div class="brd-col__actions">
+              <button class="btn btn--ink brd-col__btn" type="button" data-open-modal data-modal-kind="colour" data-modal-colour="chernyj" data-modal-breed="Мальтипу" data-modal-title="Подберём чёрного мальтипу" data-modal-sub="Пришлём щенков этого окраса с фото, видео и ценой. Нет сейчас — напишем, когда появятся" data-modal-note="Окрас: чёрный" data-modal-submit="Подобрать щенка" aria-label="Подобрать щенка: чёрный окрас">Подобрать щенка</button>
+              <a class="btn btn--white brd-col__btn" href="../chernyj/" aria-label="Подробнее: Чёрный мальтипу">Подробнее</a>
+            </div>
+          </div>
+        </article>
+      </li>
+      <li class="media-carousel__item" aria-roledescription="слайд" aria-label="7 из 10: Серебристый мальтипу">
+        <article class="brd-col">          <a class="brd-col__media" href="../serebristyj/" tabindex="-1" aria-hidden="true" style="--tone-top:#F7C299;--tone-hi:#F4BD95;--tone-floor:#FDCFA8;--fa:0.68;--fb:0.84">
+            <img src="../../../assets/img/okras-maltipu-serebristyj.jpg" alt="Серебристый щенок мальтипу сидит вполоборота на персиковом фоне" width="1024" height="1024" loading="lazy" decoding="async">
+          </a>
+          <div class="brd-col__body">
+            <h3 class="brd-col__name"><a href="../serebristyj/">Серебристый мальтипу</a></h3>
+            <p class="brd-col__text">Рождается тёмным, светлеет до серебра</p>
+            <div class="brd-col__actions">
+              <button class="btn btn--ink brd-col__btn" type="button" data-open-modal data-modal-kind="colour" data-modal-colour="serebristyj" data-modal-breed="Мальтипу" data-modal-title="Подберём серебристого мальтипу" data-modal-sub="Пришлём щенков этого окраса с фото, видео и ценой. Нет сейчас — напишем, когда появятся" data-modal-note="Окрас: серебристый" data-modal-submit="Подобрать щенка" aria-label="Подобрать щенка: серебристый окрас">Подобрать щенка</button>
+              <a class="btn btn--white brd-col__btn" href="../serebristyj/" aria-label="Подробнее: Серебристый мальтипу">Подробнее</a>
+            </div>
+          </div>
+        </article>
+      </li>
+      <li class="media-carousel__item" aria-roledescription="слайд" aria-label="8 из 10: Мальтипу партиколор">
+        <article class="brd-col">          <a class="brd-col__media" href="../partikolor/" tabindex="-1" aria-hidden="true" style="--tone-top:#F6C6A1;--tone-hi:#FAC8A0;--tone-floor:#FFD9B8;--fa:0.69;--fb:0.85">
+            <img src="../../../assets/img/okras-maltipu-partikolor.jpg" alt="Щенок мальтипу партиколор — белый с чёрными пятнами" width="1024" height="1024" loading="lazy" decoding="async">
+          </a>
+          <div class="brd-col__body">
+            <h3 class="brd-col__name"><a href="../partikolor/">Мальтипу партиколор</a></h3>
+            <p class="brd-col__text">Белая основа и цветные пятна</p>
+            <div class="brd-col__actions">
+              <button class="btn btn--ink brd-col__btn" type="button" data-open-modal data-modal-kind="colour" data-modal-colour="partikolor" data-modal-breed="Мальтипу" data-modal-title="Подберём мальтипу партиколор" data-modal-sub="Пришлём щенков этого окраса с фото, видео и ценой. Нет сейчас — напишем, когда появятся" data-modal-note="Окрас: партиколор" data-modal-submit="Подобрать щенка" aria-label="Подобрать щенка: партиколор окрас">Подобрать щенка</button>
+              <a class="btn btn--white brd-col__btn" href="../partikolor/" aria-label="Подробнее: Мальтипу партиколор">Подробнее</a>
+            </div>
+          </div>
+        </article>
+      </li>
+      <li class="media-carousel__item" aria-roledescription="слайд" aria-label="9 из 10: Мальтипу фантом">
+        <article class="brd-col">          <a class="brd-col__media" href="../fantom/" tabindex="-1" aria-hidden="true" style="--tone-top:#F4BE95;--tone-hi:#FBCAA2;--tone-floor:#FFDEBB;--fa:0.70;--fb:0.86">
+            <img src="../../../assets/img/okras-maltipu-fantom.jpg" alt="Щенок мальтипу окраса фантом с поднятой лапкой" width="1024" height="1024" loading="lazy" decoding="async">
+          </a>
+          <div class="brd-col__body">
+            <h3 class="brd-col__name"><a href="../fantom/">Мальтипу фантом</a></h3>
+            <p class="brd-col__text">Тёмный окрас с рыжими подпалинами</p>
+            <div class="brd-col__actions">
+              <button class="btn btn--ink brd-col__btn" type="button" data-open-modal data-modal-kind="colour" data-modal-colour="fantom" data-modal-breed="Мальтипу" data-modal-title="Подберём мальтипу фантом" data-modal-sub="Пришлём щенков этого окраса с фото, видео и ценой. Нет сейчас — напишем, когда появятся" data-modal-note="Окрас: фантом" data-modal-submit="Подобрать щенка" aria-label="Подобрать щенка: фантом окрас">Подобрать щенка</button>
+              <a class="btn btn--white brd-col__btn" href="../fantom/" aria-label="Подробнее: Мальтипу фантом">Подробнее</a>
+            </div>
+          </div>
+        </article>
+      </li>
+      <li class="media-carousel__item" aria-roledescription="слайд" aria-label="10 из 10: Соболиный мальтипу">
+        <article class="brd-col">          <a class="brd-col__media" href="../sobolinyj/" tabindex="-1" aria-hidden="true" style="--tone-top:#F8C49C;--tone-hi:#FBCAA3;--tone-floor:#FFDDC0;--fa:0.68;--fb:0.84">
+            <img src="../../../assets/img/okras-maltipu-sobolinyj.jpg" alt="Соболиный щенок мальтипу смотрит вверх" width="1024" height="1024" loading="lazy" decoding="async">
+          </a>
+          <div class="brd-col__body">
+            <h3 class="brd-col__name"><a href="../sobolinyj/">Соболиный мальтипу</a></h3>
+            <p class="brd-col__text">Светлая шерсть с тёмными кончиками</p>
+            <div class="brd-col__actions">
+              <button class="btn btn--ink brd-col__btn" type="button" data-open-modal data-modal-kind="colour" data-modal-colour="sobolinyj" data-modal-breed="Мальтипу" data-modal-title="Подберём соболиного мальтипу" data-modal-sub="Пришлём щенков этого окраса с фото, видео и ценой. Нет сейчас — напишем, когда появятся" data-modal-note="Окрас: соболиный" data-modal-submit="Подобрать щенка" aria-label="Подобрать щенка: соболиный окрас">Подобрать щенка</button>
+              <a class="btn btn--white brd-col__btn" href="../sobolinyj/" aria-label="Подробнее: Соболиный мальтипу">Подробнее</a>
+            </div>
+          </div>
+        </article>
+      </li>
+    </ul>
+  </div>
+  <div class="media-carousel__nav">
+    <button class="media-carousel__btn" type="button" data-carousel-prev aria-label="Предыдущий окрас"><svg class="i i--flip" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></button>
+    <button class="media-carousel__btn" type="button" data-carousel-next aria-label="Следующий окрас"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></button>
+  </div>
 </div>
-      <div class="bsub-cnav">
-  <ul class="bsub-cnav__list" aria-label="Окрасы: перейти к описанию">
-    <li><a class="bsub-cnav__item" href="#kremovyj"><span class="bsub-cface" style="--tone:#F6C49D" aria-hidden="true"><img src="../../../assets/img/okras-maltipu-kremovyj.jpg" alt="" width="1024" height="1024" loading="lazy" decoding="async"></span><span class="bsub-cnav__name">Кремовый</span></a></li>
-    <li><a class="bsub-cnav__item" href="#belyj"><span class="bsub-cface" style="--tone:#F8C49E" aria-hidden="true"><img src="../../../assets/img/okras-maltipu-belyj.jpg" alt="" width="1024" height="1024" loading="lazy" decoding="async"></span><span class="bsub-cnav__name">Белый</span></a></li>
-    <li><a class="bsub-cnav__item" href="#abrikosovyj"><span class="bsub-cface" style="--tone:#F5BF99" aria-hidden="true"><img src="../../../assets/img/okras-maltipu-abrikosovyj.jpg" alt="" width="1024" height="1024" loading="lazy" decoding="async"></span><span class="bsub-cnav__name">Абрикосовый</span></a></li>
-    <li><a class="bsub-cnav__item" href="#ryzhij"><span class="bsub-cface" style="--tone:#F9C79E" aria-hidden="true"><img src="../../../assets/img/okras-maltipu-ryzhij.jpg" alt="" width="1024" height="1024" loading="lazy" decoding="async"></span><span class="bsub-cnav__name">Рыжий</span></a></li>
-    <li><a class="bsub-cnav__item" href="#shokoladnyj"><span class="bsub-cface" style="--tone:#F8C59D" aria-hidden="true"><img src="../../../assets/img/okras-maltipu-shokoladnyj.jpg" alt="" width="1024" height="1024" loading="lazy" decoding="async"></span><span class="bsub-cnav__name">Шоколадный</span></a></li>
-    <li><a class="bsub-cnav__item" href="#chernyj"><span class="bsub-cface" style="--tone:#F9C49E" aria-hidden="true"><img src="../../../assets/img/okras-maltipu-chernyj.jpg" alt="" width="1024" height="1024" loading="lazy" decoding="async"></span><span class="bsub-cnav__name">Чёрный</span></a></li>
-    <li><a class="bsub-cnav__item" href="#serebristyj"><span class="bsub-cface" style="--tone:#F7C299" aria-hidden="true"><img src="../../../assets/img/okras-maltipu-serebristyj.jpg" alt="" width="1024" height="1024" loading="lazy" decoding="async"></span><span class="bsub-cnav__name">Серебристый</span></a></li>
-    <li><a class="bsub-cnav__item" href="#partikolor"><span class="bsub-cface" style="--tone:#F6C6A1" aria-hidden="true"><img src="../../../assets/img/okras-maltipu-partikolor.jpg" alt="" width="1024" height="1024" loading="lazy" decoding="async"></span><span class="bsub-cnav__name">Партиколор</span></a></li>
-    <li><a class="bsub-cnav__item" href="#fantom"><span class="bsub-cface" style="--tone:#F4BE95" aria-hidden="true"><img src="../../../assets/img/okras-maltipu-fantom.jpg" alt="" width="1024" height="1024" loading="lazy" decoding="async"></span><span class="bsub-cnav__name">Фантом</span></a></li>
-    <li><a class="bsub-cnav__item" href="#sobolinyj"><span class="bsub-cface" style="--tone:#F8C49C" aria-hidden="true"><img src="../../../assets/img/okras-maltipu-sobolinyj.jpg" alt="" width="1024" height="1024" loading="lazy" decoding="async"></span><span class="bsub-cnav__name">Соболиный</span></a></li>
-  </ul>
-</div>      <ul class="bsub-cols">
-  <li class="bsub-col" id="kremovyj">
-    <div class="bsub-col__media" style="--tone-top:#F6C49D;--tone-hi:#FAC9A2;--tone-floor:#FFDDBA;--fa:0.74;--fb:0.90">
-      <img src="../../../assets/img/okras-maltipu-kremovyj.jpg" alt="Кремовый щенок мальтипу на персиковом фоне" width="1024" height="1024" loading="lazy" decoding="async">
-    </div>
-    <div class="bsub-col__body">
-      <span class="bsub-col__badge bsub-col__badge--none">без стандарта</span>
-      <h3 class="bsub-col__name">Кремовый</h3>
-      <p class="bsub-col__text">От молочного <span class="nw">до светло-бежевого</span>. На светлой шерсти особенно заметны тёмные глаза и нос.</p>
-      <button class="btn btn--white bsub-col__btn" type="button" data-open-modal data-modal-kind="colour" data-modal-colour="kremovyj" data-modal-breed="Мальтипу" data-modal-title="Мальтипу: кремовый" data-modal-sub="Пришлём щенков этого окраса с фото, видео и ценой" data-modal-note="Окрас: кремовый">Спросить о&nbsp;щенках</button>
-    </div>
-  </li>
-  <li class="bsub-col" id="belyj">
-    <div class="bsub-col__media" style="--tone-top:#F8C49E;--tone-hi:#FDCBA4;--tone-floor:#FFE0C6;--fa:0.70;--fb:0.86">
-      <img src="../../../assets/img/okras-maltipu-belyj.jpg" alt="Белый щенок мальтипу с наклонённой головой на персиковом фоне" width="1024" height="1024" loading="lazy" decoding="async">
-    </div>
-    <div class="bsub-col__body">
-      <span class="bsub-col__badge bsub-col__badge--none">без стандарта</span>
-      <h3 class="bsub-col__name">Белый</h3>
-      <p class="bsub-col__text"><span class="nw">Чисто-белая</span> шерсть, как у мальтийской болонки. Тёмные глаза и нос дают яркий контраст.</p>
-      <button class="btn btn--white bsub-col__btn" type="button" data-open-modal data-modal-kind="colour" data-modal-colour="belyj" data-modal-breed="Мальтипу" data-modal-title="Мальтипу: белый" data-modal-sub="Пришлём щенков этого окраса с фото, видео и ценой" data-modal-note="Окрас: белый">Спросить о&nbsp;щенках</button>
-    </div>
-  </li>
-  <li class="bsub-col" id="abrikosovyj">
-    <div class="bsub-col__media" style="--tone-top:#F5BF99;--tone-hi:#FFCEA9;--tone-floor:#FFDFC2;--fa:0.71;--fb:0.87">
-      <img src="../../../assets/img/okras-maltipu-abrikosovyj.jpg" alt="Абрикосовый щенок мальтипу на персиковом фоне" width="1024" height="1024" loading="lazy" decoding="async">
-    </div>
-    <div class="bsub-col__body">
-      <span class="bsub-col__badge bsub-col__badge--none">без стандарта</span>
-      <h3 class="bsub-col__name">Абрикосовый</h3>
-      <p class="bsub-col__text">Светлый тёплый оттенок между кремовым и рыжим, как у плюшевого мишки. С возрастом может посветлеть.</p>
-      <button class="btn btn--white bsub-col__btn" type="button" data-open-modal data-modal-kind="colour" data-modal-colour="abrikosovyj" data-modal-breed="Мальтипу" data-modal-title="Мальтипу: абрикосовый" data-modal-sub="Пришлём щенков этого окраса с фото, видео и ценой" data-modal-note="Окрас: абрикосовый">Спросить о&nbsp;щенках</button>
-    </div>
-  </li>
-  <li class="bsub-col" id="ryzhij">
-    <div class="bsub-col__media" style="--tone-top:#F9C79E;--tone-hi:#FCCCA4;--tone-floor:#FFE4C9;--fa:0.66;--fb:0.82">
-      <img src="../../../assets/img/okras-maltipu-ryzhij.jpg" alt="Рыжий щенок мальтипу на персиковом фоне" width="1024" height="1024" loading="lazy" decoding="async">
-    </div>
-    <div class="bsub-col__body">
-      <span class="bsub-col__badge bsub-col__badge--none">без стандарта</span>
-      <h3 class="bsub-col__name">Рыжий</h3>
-      <p class="bsub-col__text">Насыщенный рыжий, иногда почти красный — его называют «ред». Достаётся от пуделя, к году часто светлеет.</p>
-      <button class="btn btn--white bsub-col__btn" type="button" data-open-modal data-modal-kind="colour" data-modal-colour="ryzhij" data-modal-breed="Мальтипу" data-modal-title="Мальтипу: рыжий" data-modal-sub="Пришлём щенков этого окраса с фото, видео и ценой" data-modal-note="Окрас: рыжий">Спросить о&nbsp;щенках</button>
-    </div>
-  </li>
-  <li class="bsub-col" id="shokoladnyj">
-    <div class="bsub-col__media" style="--tone-top:#F8C59D;--tone-hi:#FAC69F;--tone-floor:#FFD8B9;--fa:0.61;--fb:0.77">
-      <img src="../../../assets/img/okras-maltipu-shokoladnyj.jpg" alt="Шоколадный щенок мальтипу на персиковом фоне" width="1024" height="1024" loading="lazy" decoding="async">
-    </div>
-    <div class="bsub-col__body">
-      <span class="bsub-col__badge bsub-col__badge--none">без стандарта</span>
-      <h3 class="bsub-col__name">Шоколадный</h3>
-      <p class="bsub-col__text">Глубокий коричневый окрас, нос и подушечки лап — в тон шерсти. С возрастом может посветлеть до кофейного.</p>
-      <button class="btn btn--white bsub-col__btn" type="button" data-open-modal data-modal-kind="colour" data-modal-colour="shokoladnyj" data-modal-breed="Мальтипу" data-modal-title="Мальтипу: шоколадный" data-modal-sub="Пришлём щенков этого окраса с фото, видео и ценой" data-modal-note="Окрас: шоколадный">Спросить о&nbsp;щенках</button>
-    </div>
-  </li>
-  <li class="bsub-col" id="chernyj">
-    <div class="bsub-col__media" style="--tone-top:#F9C49E;--tone-hi:#FBC7A1;--tone-floor:#FFDEC3;--fa:0.68;--fb:0.84">
-      <img src="../../../assets/img/okras-maltipu-chernyj.jpg" alt="Чёрный щенок мальтипу лежит на персиковом фоне" width="1024" height="1024" loading="lazy" decoding="async">
-    </div>
-    <div class="bsub-col__body">
-      <span class="bsub-col__badge bsub-col__badge--none">без стандарта</span>
-      <h3 class="bsub-col__name">Чёрный</h3>
-      <p class="bsub-col__text">Глубокий чёрный окрас достаётся от пуделя. Кудрявая шерсть блестит и выглядит особенно густой.</p>
-      <button class="btn btn--white bsub-col__btn" type="button" data-open-modal data-modal-kind="colour" data-modal-colour="chernyj" data-modal-breed="Мальтипу" data-modal-title="Мальтипу: чёрный" data-modal-sub="Пришлём щенков этого окраса с фото, видео и ценой" data-modal-note="Окрас: чёрный">Спросить о&nbsp;щенках</button>
-    </div>
-  </li>
-  <li class="bsub-col" id="serebristyj">
-    <div class="bsub-col__media" style="--tone-top:#F7C299;--tone-hi:#F4BD95;--tone-floor:#FDCFA8;--fa:0.68;--fb:0.84">
-      <img src="../../../assets/img/okras-maltipu-serebristyj.jpg" alt="Серебристый щенок мальтипу сидит вполоборота на персиковом фоне" width="1024" height="1024" loading="lazy" decoding="async">
-    </div>
-    <div class="bsub-col__body">
-      <span class="bsub-col__badge bsub-col__badge--none">без стандарта</span>
-      <h3 class="bsub-col__name">Серебристый</h3>
-      <p class="bsub-col__text">Щенок рождается тёмным и <span class="nw">к году-двум</span> светлеет <span class="nw">до серебристо-серого</span>. Редкий окрас, достаётся от пуделя.</p>
-      <button class="btn btn--white bsub-col__btn" type="button" data-open-modal data-modal-kind="colour" data-modal-colour="serebristyj" data-modal-breed="Мальтипу" data-modal-title="Мальтипу: серебристый" data-modal-sub="Пришлём щенков этого окраса с фото, видео и ценой" data-modal-note="Окрас: серебристый">Спросить о&nbsp;щенках</button>
-    </div>
-  </li>
-  <li class="bsub-col" id="partikolor">
-    <div class="bsub-col__media" style="--tone-top:#F6C6A1;--tone-hi:#FAC8A0;--tone-floor:#FFD9B8;--fa:0.69;--fb:0.85">
-      <img src="../../../assets/img/okras-maltipu-partikolor.jpg" alt="Щенок мальтипу партиколор — белый с чёрными пятнами" width="1024" height="1024" loading="lazy" decoding="async">
-    </div>
-    <div class="bsub-col__body">
-      <span class="bsub-col__badge bsub-col__badge--none">без стандарта</span>
-      <h3 class="bsub-col__name">Партиколор</h3>
-      <p class="bsub-col__text">Белая основа и крупные цветные пятна — чёрные, рыжие или шоколадные. Рисунок у каждого щенка свой.</p>
-      <button class="btn btn--white bsub-col__btn" type="button" data-open-modal data-modal-kind="colour" data-modal-colour="partikolor" data-modal-breed="Мальтипу" data-modal-title="Мальтипу: партиколор" data-modal-sub="Пришлём щенков этого окраса с фото, видео и ценой" data-modal-note="Окрас: партиколор">Спросить о&nbsp;щенках</button>
-    </div>
-  </li>
-  <li class="bsub-col" id="fantom">
-    <div class="bsub-col__media" style="--tone-top:#F4BE95;--tone-hi:#FBCAA2;--tone-floor:#FFDEBB;--fa:0.70;--fb:0.86">
-      <img src="../../../assets/img/okras-maltipu-fantom.jpg" alt="Щенок мальтипу окраса фантом с поднятой лапкой" width="1024" height="1024" loading="lazy" decoding="async">
-    </div>
-    <div class="bsub-col__body">
-      <span class="bsub-col__badge bsub-col__badge--none">без стандарта</span>
-      <h3 class="bsub-col__name">Фантом</h3>
-      <p class="bsub-col__text">Чёрный или шоколадный окрас с рыжими подпалинами над глазами, на морде, груди и лапах — как у йорка.</p>
-      <button class="btn btn--white bsub-col__btn" type="button" data-open-modal data-modal-kind="colour" data-modal-colour="fantom" data-modal-breed="Мальтипу" data-modal-title="Мальтипу: фантом" data-modal-sub="Пришлём щенков этого окраса с фото, видео и ценой" data-modal-note="Окрас: фантом">Спросить о&nbsp;щенках</button>
-    </div>
-  </li>
-  <li class="bsub-col" id="sobolinyj">
-    <div class="bsub-col__media" style="--tone-top:#F8C49C;--tone-hi:#FBCAA3;--tone-floor:#FFDDC0;--fa:0.68;--fb:0.84">
-      <img src="../../../assets/img/okras-maltipu-sobolinyj.jpg" alt="Соболиный щенок мальтипу смотрит вверх" width="1024" height="1024" loading="lazy" decoding="async">
-    </div>
-    <div class="bsub-col__body">
-      <span class="bsub-col__badge bsub-col__badge--none">без стандарта</span>
-      <h3 class="bsub-col__name">Соболиный</h3>
-      <p class="bsub-col__text">Светлая основа и тёмные кончики шерсти на ушах, голове и спине. С возрастом окрас обычно светлеет.</p>
-      <button class="btn btn--white bsub-col__btn" type="button" data-open-modal data-modal-kind="colour" data-modal-colour="sobolinyj" data-modal-breed="Мальтипу" data-modal-title="Мальтипу: соболиный" data-modal-sub="Пришлём щенков этого окраса с фото, видео и ценой" data-modal-note="Окрас: соболиный">Спросить о&nbsp;щенках</button>
-    </div>
-  </li>
-</ul>
-<p class="bsub-cols__note">Спросите о ближайших помётах — пришлём фото и видео щенков нужного окраса</p>
+
     </section>
 
     <section class="section container" id="kak-vybrat" aria-labelledby="kak-vybrat-title">
       <div class="sec-head">
   <h2 class="h2" id="kak-vybrat-title">Как выбрать окрас</h2>
-
 
 </div>
       <ol class="steps steps--3">
@@ -469,11 +473,127 @@
 </ol>
     </section>
 
+    <!-- ================= ЩЕНКИ ПОРОДЫ — 8 карточек и кнопка под ними, как каталог на главной (правка 21.10) ================= -->    <section class="section container" id="pups" aria-labelledby="pups-title">
+      <div class="sec-head">
+  <h2 class="h2" id="pups-title">Щенки мальтипу в наличии</h2>
+
+</div>
+      <ul class="pups hm-pups bsub-pups" data-reveal="items">
+        <li class="pups__item">
+          <article class="pup ct-card tone--peach ct-card--life" data-pup data-slug="maltipu-f1-krem-2026-08" data-breed="maltipu" data-name="Пломбир" data-desc="Мальтипу F1 · 10 недель · мальчик" data-img="pup-maltipu-408.jpg">
+<a class="pup__media ct-card__media" href="../../shchenki/maltipu-f1-krem-2026-08/" tabindex="-1" aria-hidden="true">    <img src="../../../assets/img/pup-maltipu-408.jpg" alt="Кремовый щенок мальтипу Пломбир на руках" width="1200" height="1600" style="object-position:50% 38%" loading="lazy" decoding="async">
+</a>  <div class="pup__body ct-card__body">
+    <h3 class="pup__name"><a href="../../shchenki/maltipu-f1-krem-2026-08/">Пломбир</a></h3>
+    <p class="pup__meta"><span>Мальтипу&nbsp;·</span> <span>10 недель&nbsp;·</span> <span>мальчик</span></p>
+    <div class="ct-card__actions">
+      <button class="btn btn--white ct-card__price" type="button" data-open-modal data-modal-kind="puppy" aria-label="Узнать цену: Пломбир">Узнать цену</button>
+      <a class="btn btn--outline ct-card__more" href="../../shchenki/maltipu-f1-krem-2026-08/" aria-label="Подробнее: Пломбир">Подробнее</a>
+    </div>
+  </div>
+</article>
+        </li>
+        <li class="pups__item">
+          <article class="pup ct-card tone--peach ct-card--life" data-pup data-slug="maltipu-f1b-mini-ryzhij-2026-07" data-breed="maltipu" data-name="Ириска" data-desc="Мальтипу F1b мини · 12 недель · девочка" data-img="pup-maltipu-480.jpg">
+<a class="pup__media ct-card__media" href="../../shchenki/maltipu-f1b-mini-ryzhij-2026-07/" tabindex="-1" aria-hidden="true">    <img src="../../../assets/img/pup-maltipu-480.jpg" alt="Рыжая малышка мальтипу Ириска в кружевном воротничке" width="960" height="1280" style="object-position:50% 40%" loading="lazy" decoding="async">
+</a>  <div class="pup__body ct-card__body">
+    <h3 class="pup__name"><a href="../../shchenki/maltipu-f1b-mini-ryzhij-2026-07/">Ириска</a></h3>
+    <p class="pup__meta"><span>Мальтипу&nbsp;·</span> <span>12 недель&nbsp;·</span> <span>девочка</span></p>
+    <div class="ct-card__actions">
+      <button class="btn btn--white ct-card__price" type="button" data-open-modal data-modal-kind="puppy" aria-label="Узнать цену: Ириска">Узнать цену</button>
+      <a class="btn btn--outline ct-card__more" href="../../shchenki/maltipu-f1b-mini-ryzhij-2026-07/" aria-label="Подробнее: Ириска">Подробнее</a>
+    </div>
+  </div>
+</article>
+        </li>
+        <li class="pups__item">
+          <article class="pup ct-card tone--peach ct-card--life" data-pup data-slug="maltipu-f1-ryzhij-2026-07" data-breed="maltipu" data-name="Персик" data-desc="Мальтипу F1 · 11 недель · мальчик" data-img="pup-maltipu-376.jpg">
+<a class="pup__media ct-card__media" href="../../shchenki/maltipu-f1-ryzhij-2026-07/" tabindex="-1" aria-hidden="true">    <img src="../../../assets/img/pup-maltipu-376.jpg" alt="Рыжий щенок мальтипу Персик на розовой лежанке" width="1120" height="1280" style="object-position:50% 38%" loading="lazy" decoding="async">
+</a>  <div class="pup__body ct-card__body">
+    <h3 class="pup__name"><a href="../../shchenki/maltipu-f1-ryzhij-2026-07/">Персик</a></h3>
+    <p class="pup__meta"><span>Мальтипу&nbsp;·</span> <span>11 недель&nbsp;·</span> <span>мальчик</span></p>
+    <div class="ct-card__actions">
+      <button class="btn btn--white ct-card__price" type="button" data-open-modal data-modal-kind="puppy" aria-label="Узнать цену: Персик">Узнать цену</button>
+      <a class="btn btn--outline ct-card__more" href="../../shchenki/maltipu-f1-ryzhij-2026-07/" aria-label="Подробнее: Персик">Подробнее</a>
+    </div>
+  </div>
+</article>
+        </li>
+        <li class="pups__item">
+          <article class="pup ct-card tone--peach ct-card--life" data-pup data-slug="maltipu-f1b-parti-2026-07" data-breed="maltipu" data-name="Бусинка" data-desc="Мальтипу F1b · 12 недель · девочка" data-img="pup-maltipu-391.jpg">
+<a class="pup__media ct-card__media" href="../../shchenki/maltipu-f1b-parti-2026-07/" tabindex="-1" aria-hidden="true">    <img src="../../../assets/img/pup-maltipu-391.jpg" alt="Бело-абрикосовая малышка мальтипу Бусинка на розовом пледе" width="1200" height="1600" style="object-position:50% 40%" loading="lazy" decoding="async">
+</a>  <div class="pup__body ct-card__body">
+    <h3 class="pup__name"><a href="../../shchenki/maltipu-f1b-parti-2026-07/">Бусинка</a></h3>
+    <p class="pup__meta"><span>Мальтипу&nbsp;·</span> <span>12 недель&nbsp;·</span> <span>девочка</span></p>
+    <div class="ct-card__actions">
+      <button class="btn btn--white ct-card__price" type="button" data-open-modal data-modal-kind="puppy" aria-label="Узнать цену: Бусинка">Узнать цену</button>
+      <a class="btn btn--outline ct-card__more" href="../../shchenki/maltipu-f1b-parti-2026-07/" aria-label="Подробнее: Бусинка">Подробнее</a>
+    </div>
+  </div>
+</article>
+        </li>
+        <li class="pups__item">
+          <article class="pup ct-card tone--peach ct-card--life" data-pup data-slug="maltipu-f1b-mini-krem-2026-08" data-breed="maltipu" data-name="Зефир" data-desc="Мальтипу F1b мини · 9 недель · мальчик" data-img="pup-maltipu-383.jpg">
+<a class="pup__media ct-card__media" href="../../shchenki/maltipu-f1b-mini-krem-2026-08/" tabindex="-1" aria-hidden="true">    <img src="../../../assets/img/pup-maltipu-383.jpg" alt="Кремовый щенок мальтипу Зефир выглядывает из лежанки" width="1200" height="1600" style="object-position:50% 34%" loading="lazy" decoding="async">
+</a>  <div class="pup__body ct-card__body">
+    <h3 class="pup__name"><a href="../../shchenki/maltipu-f1b-mini-krem-2026-08/">Зефир</a></h3>
+    <p class="pup__meta"><span>Мальтипу&nbsp;·</span> <span>9 недель&nbsp;·</span> <span>мальчик</span></p>
+    <div class="ct-card__actions">
+      <button class="btn btn--white ct-card__price" type="button" data-open-modal data-modal-kind="puppy" aria-label="Узнать цену: Зефир">Узнать цену</button>
+      <a class="btn btn--outline ct-card__more" href="../../shchenki/maltipu-f1b-mini-krem-2026-08/" aria-label="Подробнее: Зефир">Подробнее</a>
+    </div>
+  </div>
+</article>
+        </li>
+        <li class="pups__item">
+          <article class="pup ct-card tone--peach ct-card--life" data-pup data-slug="maltipu-f1-belyj-2026-08" data-breed="maltipu" data-name="Снежок" data-desc="Мальтипу F1 · 9 недель · мальчик" data-img="pup-maltipu-441.jpg">
+<a class="pup__media ct-card__media" href="../../shchenki/maltipu-f1-belyj-2026-08/" tabindex="-1" aria-hidden="true">    <img src="../../../assets/img/pup-maltipu-441.jpg" alt="Белый щенок мальтипу Снежок на руках во дворе" width="1200" height="1600" style="object-position:50% 45%" loading="lazy" decoding="async">
+</a>  <div class="pup__body ct-card__body">
+    <h3 class="pup__name"><a href="../../shchenki/maltipu-f1-belyj-2026-08/">Снежок</a></h3>
+    <p class="pup__meta"><span>Мальтипу&nbsp;·</span> <span>9 недель&nbsp;·</span> <span>мальчик</span></p>
+    <div class="ct-card__actions">
+      <button class="btn btn--white ct-card__price" type="button" data-open-modal data-modal-kind="puppy" aria-label="Узнать цену: Снежок">Узнать цену</button>
+      <a class="btn btn--outline ct-card__more" href="../../shchenki/maltipu-f1-belyj-2026-08/" aria-label="Подробнее: Снежок">Подробнее</a>
+    </div>
+  </div>
+</article>
+        </li>
+        <li class="pups__item">
+          <article class="pup ct-card tone--peach ct-card--life" data-pup data-slug="maltipu-f2-abrikos-2026-07" data-breed="maltipu" data-name="Нуга" data-desc="Мальтипу F2 · 10 недель · девочка" data-img="pup-maltipu-452.jpg">
+<a class="pup__media ct-card__media" href="../../shchenki/maltipu-f2-abrikos-2026-07/" tabindex="-1" aria-hidden="true">    <img src="../../../assets/img/pup-maltipu-452.jpg" alt="Абрикосовый щенок мальтипу Нуга в корзине с игрушками" width="1200" height="1600" style="object-position:45% 40%" loading="lazy" decoding="async">
+</a>  <div class="pup__body ct-card__body">
+    <h3 class="pup__name"><a href="../../shchenki/maltipu-f2-abrikos-2026-07/">Нуга</a></h3>
+    <p class="pup__meta"><span>Мальтипу&nbsp;·</span> <span>10 недель&nbsp;·</span> <span>девочка</span></p>
+    <div class="ct-card__actions">
+      <button class="btn btn--white ct-card__price" type="button" data-open-modal data-modal-kind="puppy" aria-label="Узнать цену: Нуга">Узнать цену</button>
+      <a class="btn btn--outline ct-card__more" href="../../shchenki/maltipu-f2-abrikos-2026-07/" aria-label="Подробнее: Нуга">Подробнее</a>
+    </div>
+  </div>
+</article>
+        </li>
+        <li class="pups__item">
+          <article class="pup ct-card tone--peach ct-card--life" data-pup data-slug="maltipu-f1b-mini-ryzhij-2026-08" data-breed="maltipu" data-name="Корица" data-desc="Мальтипу F1b мини · 8 недель · девочка" data-img="pup-maltipu-472.jpg">
+<a class="pup__media ct-card__media" href="../../shchenki/maltipu-f1b-mini-ryzhij-2026-08/" tabindex="-1" aria-hidden="true">    <img src="../../../assets/img/pup-maltipu-472.jpg" alt="Рыжий щенок мальтипу Корица на ладони" width="1038" height="1280" style="object-position:50% 30%" loading="lazy" decoding="async">
+</a>  <div class="pup__body ct-card__body">
+    <h3 class="pup__name"><a href="../../shchenki/maltipu-f1b-mini-ryzhij-2026-08/">Корица</a></h3>
+    <p class="pup__meta"><span>Мальтипу&nbsp;·</span> <span>8 недель&nbsp;·</span> <span>девочка</span></p>
+    <div class="ct-card__actions">
+      <button class="btn btn--white ct-card__price" type="button" data-open-modal data-modal-kind="puppy" aria-label="Узнать цену: Корица">Узнать цену</button>
+      <a class="btn btn--outline ct-card__more" href="../../shchenki/maltipu-f1b-mini-ryzhij-2026-08/" aria-label="Подробнее: Корица">Подробнее</a>
+    </div>
+  </div>
+</article>
+        </li>
+      </ul>
+      <div class="hm-pups__foot">
+        <a class="btn btn--ink btn--lg" href="../#shchenki"><span>Все щенки мальтипу</span> <svg class="i" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></a>
+      </div>
+    </section>
+
     <section class="section container" id="faq" aria-labelledby="faq-title">
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "acceptedAnswer": {"@type": "Answer", "text": "F1 \u2014 \u0449\u0435\u043d\u043a\u0438 \u043c\u0430\u043b\u044c\u0442\u0438\u0439\u0441\u043a\u043e\u0439 \u0431\u043e\u043b\u043e\u043d\u043a\u0438 \u0438 \u043f\u0443\u0434\u0435\u043b\u044f. F2 \u2014 \u0449\u0435\u043d\u043a\u0438 \u0434\u0432\u0443\u0445 \u043c\u0430\u043b\u044c\u0442\u0438\u043f\u0443 F1: \u0438\u0445 \u0448\u0435\u0440\u0441\u0442\u044c \u0438 \u0432\u043d\u0435\u0448\u043d\u043e\u0441\u0442\u044c \u043f\u0440\u0435\u0434\u0441\u043a\u0430\u0437\u0430\u0442\u044c \u0441\u043b\u043e\u0436\u043d\u0435\u0435."}, "name": "\u0427\u0435\u043c \u043e\u0442\u043b\u0438\u0447\u0430\u044e\u0442\u0441\u044f \u043c\u0430\u043b\u044c\u0442\u0438\u043f\u0443 F1 \u0438 F2?"}, {"@type": "Question", "acceptedAnswer": {"@type": "Answer", "text": "\u042d\u0442\u043e \u043c\u0430\u043b\u044c\u0442\u0438\u043f\u0443 F1, \u043f\u043e\u0432\u044f\u0437\u0430\u043d\u043d\u044b\u0439 \u0441 \u043f\u0443\u0434\u0435\u043b\u0435\u043c. \u0428\u0435\u0440\u0441\u0442\u044c \u0443 F1b \u043a\u0443\u0434\u0440\u044f\u0432\u0435\u0435 \u0438 \u043b\u0438\u043d\u044f\u0435\u0442 \u0435\u0449\u0451 \u043c\u0435\u043d\u044c\u0448\u0435."}, "name": "\u0427\u0442\u043e \u0442\u0430\u043a\u043e\u0435 \u043c\u0430\u043b\u044c\u0442\u0438\u043f\u0443 F1b?"}, {"@type": "Question", "acceptedAnswer": {"@type": "Answer", "text": "\u041e\u0431\u044b\u0447\u043d\u043e \u043e\u043a\u043e\u043b\u043e 3\u20135 \u043a\u0433. \u0422\u043e\u0447\u043d\u0435\u0435 \u043f\u043e\u0434\u0441\u043a\u0430\u0436\u0435\u043c \u043f\u043e \u0440\u043e\u0434\u0438\u0442\u0435\u043b\u044f\u043c \u0449\u0435\u043d\u043a\u0430: \u043f\u043e\u043a\u0430\u0436\u0435\u043c \u0438\u0445 \u043f\u043e \u0432\u0438\u0434\u0435\u043e."}, "name": "\u041a\u0430\u043a\u0438\u043c \u0432\u044b\u0440\u0430\u0441\u0442\u0435\u0442 \u043c\u0430\u043b\u044c\u0442\u0438\u043f\u0443 \u043c\u0438\u043d\u0438?"}, {"@type": "Question", "acceptedAnswer": {"@type": "Answer", "text": "\u041a\u0430\u043a \u0438 \u0434\u0440\u0443\u0433\u0438\u0435 \u043c\u0430\u043b\u044c\u0442\u0438\u043f\u0443, \u0432 \u0441\u0440\u0435\u0434\u043d\u0435\u043c 12\u201315 \u043b\u0435\u0442 \u043f\u0440\u0438 \u0445\u043e\u0440\u043e\u0448\u0435\u043c \u0443\u0445\u043e\u0434\u0435."}, "name": "\u0421\u043a\u043e\u043b\u044c\u043a\u043e \u0436\u0438\u0432\u0443\u0442 \u043c\u0430\u043b\u044c\u0442\u0438\u043f\u0443 \u043c\u0438\u043d\u0438?"}, {"@type": "Question", "acceptedAnswer": {"@type": "Answer", "text": "\u0427\u0430\u0441\u0442\u043e \u0434\u0430: \u0440\u044b\u0436\u0438\u0435 \u0438 \u0448\u043e\u043a\u043e\u043b\u0430\u0434\u043d\u044b\u0435 \u0449\u0435\u043d\u043a\u0438 \u043a \u0433\u043e\u0434\u0443 \u0441\u0432\u0435\u0442\u043b\u0435\u044e\u0442. \u041e\u043a\u043e\u043d\u0447\u0430\u0442\u0435\u043b\u044c\u043d\u044b\u0439 \u043e\u0442\u0442\u0435\u043d\u043e\u043a \u0432\u0438\u0434\u043d\u043e \u0431\u043b\u0438\u0436\u0435 \u043a \u0432\u0437\u0440\u043e\u0441\u043b\u043e\u043c\u0443 \u0432\u043e\u0437\u0440\u0430\u0441\u0442\u0443."}, "name": "\u041c\u0435\u043d\u044f\u0435\u0442\u0441\u044f \u043b\u0438 \u043e\u043a\u0440\u0430\u0441 \u0441 \u0432\u043e\u0437\u0440\u0430\u0441\u0442\u043e\u043c?"}]}</script>  <div class="faq">
     <div class="faq__aside">
       <h2 class="h2" id="faq-title">Вопросы о видах и окрасах</h2>
-<a class="text-link" href="../../faq/">Все <span class="nw">вопросы <svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></span></a>    </div>
+<button class="btn btn--coral" type="button" data-open-modal data-modal-kind="consult" data-modal-question="1" data-modal-title="Задать свой вопрос" data-modal-sub="Ответим в&nbsp;течение рабочего дня по&nbsp;московскому времени" data-modal-note="Вопрос из блока «Вопросы о видах и окрасах»" data-modal-submit="Задать вопрос" data-modal-done="Спасибо! Ответим на&nbsp;ваш вопрос в&nbsp;течение рабочего дня">Задать свой вопрос</button>    </div>
     <ul class="faq__list">
       <li class="faq__item">
         <h3 class="faq__q"><button class="faq__btn" type="button" aria-expanded="false" aria-controls="faq-a1" id="faq-q1"><span>Чем отличаются мальтипу F1 и F2?</span><span class="faq__ico" aria-hidden="true"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-plus"/></svg></span></button></h3>
@@ -499,135 +619,10 @@
   </div>
 </section>
 
-    <section class="section container" id="eshche" aria-labelledby="eshche-title">
+    <section class="section container rmore" id="eshche" aria-labelledby="eshche-title">
   <div class="sec-head">
-  <h2 class="h2" id="eshche-title">Ещё о мальтипу</h2>
-
-
-</div>
-  <ul class="ltiles ltiles--4">
-  <li>
-    <a class="ltile ltile--white" href="../">
-<span class="face tone--peach"><img src="../../../assets/img/studio-maltipu-peach.jpg" alt="" width="1024" height="1024" loading="lazy" decoding="async"></span>
-      <span class="ltile__txt"><span class="ltile__title">Мальтипу</span><span class="ltile__line">О породе и щенки в наличии</span></span>
-      <span class="tcta tcta--soft">Подробнее <svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></span>
-    </a>
-  </li>
-  <li>
-    <a class="ltile ltile--white" href="../cena/">
-<span class="ico" style="--c:var(--sun)" aria-hidden="true"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-wallet"/></svg></span>      <span class="ltile__txt"><span class="ltile__title">Цена щенка</span><span class="ltile__line">От чего зависит и что входит</span></span>
-      <span class="tcta tcta--soft">Подробнее <svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></span>
-    </a>
-  </li>
-  <li>
-    <a class="ltile ltile--white" href="../../blog/maltipu-uhod/">
-<span class="ico" style="--c:var(--mint)" aria-hidden="true"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-book"/></svg></span>      <span class="ltile__txt"><span class="ltile__title">Уход за мальтипу</span><span class="ltile__line">Шерсть, стрижка и размеры</span></span>
-      <span class="tcta tcta--soft">Подробнее <svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></span>
-    </a>
-  </li>
-  <li>
-    <a class="ltile ltile--white" href="../../podbor-porody/">
-<span class="ico" style="--c:var(--lilac)" aria-hidden="true"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-sparkle"/></svg></span>      <span class="ltile__txt"><span class="ltile__title">Подобрать породу</span><span class="ltile__line">Тест на 2 минуты</span></span>
-      <span class="tcta tcta--soft">Подробнее <svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></span>
-    </a>
-  </li>
-</ul>
-</section>
-
-<section class="section container" id="ob-okrasah" aria-labelledby="seo-title">
-  <div class="seo">
-    <h2 class="seo__title" id="seo-title">Мальтипу мини, F1 и F2: какого выбрать</h2>
-    <div class="seo__body" data-seo>
-      <p class="seo__lead">Мальтипу — гибрид мальтийской болонки и пуделя, поэтому щенки бывают разных поколений, размеров и окрасов. Коротко рассказываем, чем они отличаются, и помогаем выбрать щенка под вашу семью.</p>
-      <div class="seo__more" id="seo-more" hidden>
-                <h3>Мальтипу F1 и F2: разница</h3>
-        <p>Мальтипу F1 — первое поколение: родители щенка — мальтийская болонка и той- или миниатюрный пудель. Шерсть у F1 обычно волнистая и мягкая. F2 — потомство двух мальтипу F1: в одном помёте щенки могут заметно отличаться шерстью и внешностью. F1b — мальтипу F1, повязанный с пуделем: шерсть кудрявее и линяет ещё меньше.</p>
-        <h3>Мальтипу мини и другие размеры</h3>
-        <p>Деление на той, мини и стандарт неофициальное: у гибрида нет стандарта. Той весит около <span class="nw">2–3</span> кг, мини — около <span class="nw">3–5</span> кг, стандарт — до 7 кг. Мальтипу F1 мини получаются, когда в паре мелкий пудель. Живут мальтипу мини, как и остальные, <span class="nw">12–15</span> лет.</p>
-        <h3>Окрасы мальтипу</h3>
-        <p>Самые узнаваемые окрасы — кремовый, абрикосовый, рыжий и шоколадный. Бывают белый, чёрный, серебристый, партиколор, фантом и соболиный. С возрастом рыжие, шоколадные и серебристые щенки часто меняют оттенок, поэтому окончательный цвет видно ближе к году.</p>
-        <h3>Каким вырастет мальтипу F2</h3>
-        <p>Взрослый мальтипу F2 может быть похож и на болонку, и на пуделя. Поэтому смотрите на родителей: покажем их по видео и подскажем, каким, скорее всего, вырастет щенок.</p>
-
-      </div>
-    </div>
-    <button class="seo__toggle" type="button" aria-expanded="false" aria-controls="seo-more" data-seo-toggle><span data-seo-label>Читать полностью</span><svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-chevron"/></svg></button>
-  </div>
-</section>
-    <section class="section container" id="pups" aria-labelledby="pups-title">
-  <div class="sec-head">
-  <h2 class="h2" id="pups-title">Щенки в наличии</h2>
-<a class="text-link" href="../../shchenki/">Весь каталог — <span class="nw">60 <svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></span></a>
-
-</div>
-  <ul class="pups pups--strip" data-reveal="items">
-    <li class="pups__item">
-      <article class="pup ct-card tone--peach ct-card--life" data-pup data-slug="maltipu-f1-krem-2026-08" data-breed="maltipu" data-name="Пломбир" data-desc="Мальтипу F1 · 10 недель · мальчик" data-img="pup-maltipu-408.jpg">
-<a class="pup__media ct-card__media" href="../../shchenki/maltipu-f1-krem-2026-08/" tabindex="-1" aria-hidden="true">    <img src="../../../assets/img/pup-maltipu-408.jpg" alt="Кремовый щенок мальтипу Пломбир на руках" width="1200" height="1600" style="object-position:50% 38%" loading="lazy" decoding="async">
-</a>
-  <button class="fav ct-card__fav" type="button" aria-pressed="false" aria-label="В избранное: Пломбир"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-heart"/></svg></button>  <div class="pup__body ct-card__body">
-    <h3 class="pup__name"><a href="../../shchenki/maltipu-f1-krem-2026-08/">Пломбир</a></h3>
-    <p class="pup__meta"><span>Мальтипу&nbsp;·</span> <span>10 недель&nbsp;·</span> <span>мальчик</span></p>
-    <div class="ct-card__actions">
-      <button class="btn btn--white ct-card__price" type="button" data-open-modal data-modal-kind="puppy" aria-label="Узнать цену: Пломбир">Узнать цену</button>
-      <a class="btn btn--outline ct-card__more" href="../../shchenki/maltipu-f1-krem-2026-08/" aria-label="Подробнее: Пломбир">Подробнее</a>
-    </div>
-  </div>
-</article>
-    </li>
-    <li class="pups__item">
-      <article class="pup ct-card tone--peach ct-card--life" data-pup data-slug="maltipu-f1b-mini-ryzhij-2026-07" data-breed="maltipu" data-name="Ириска" data-desc="Мальтипу F1b мини · 12 недель · девочка" data-img="pup-maltipu-480.jpg">
-<a class="pup__media ct-card__media" href="../../shchenki/maltipu-f1b-mini-ryzhij-2026-07/" tabindex="-1" aria-hidden="true">    <img src="../../../assets/img/pup-maltipu-480.jpg" alt="Рыжая малышка мальтипу Ириска в кружевном воротничке" width="960" height="1280" style="object-position:50% 40%" loading="lazy" decoding="async">
-</a>
-  <button class="fav ct-card__fav" type="button" aria-pressed="false" aria-label="В избранное: Ириска"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-heart"/></svg></button>  <div class="pup__body ct-card__body">
-    <h3 class="pup__name"><a href="../../shchenki/maltipu-f1b-mini-ryzhij-2026-07/">Ириска</a></h3>
-    <p class="pup__meta"><span>Мальтипу&nbsp;·</span> <span>12 недель&nbsp;·</span> <span>девочка</span></p>
-    <div class="ct-card__actions">
-      <button class="btn btn--white ct-card__price" type="button" data-open-modal data-modal-kind="puppy" aria-label="Узнать цену: Ириска">Узнать цену</button>
-      <a class="btn btn--outline ct-card__more" href="../../shchenki/maltipu-f1b-mini-ryzhij-2026-07/" aria-label="Подробнее: Ириска">Подробнее</a>
-    </div>
-  </div>
-</article>
-    </li>
-    <li class="pups__item">
-      <article class="pup ct-card tone--peach ct-card--life" data-pup data-slug="maltipu-f1-ryzhij-2026-07" data-breed="maltipu" data-name="Персик" data-desc="Мальтипу F1 · 11 недель · мальчик" data-img="pup-maltipu-376.jpg">
-<a class="pup__media ct-card__media" href="../../shchenki/maltipu-f1-ryzhij-2026-07/" tabindex="-1" aria-hidden="true">    <img src="../../../assets/img/pup-maltipu-376.jpg" alt="Рыжий щенок мальтипу Персик на розовой лежанке" width="1120" height="1280" style="object-position:50% 38%" loading="lazy" decoding="async">
-</a>
-  <button class="fav ct-card__fav" type="button" aria-pressed="false" aria-label="В избранное: Персик"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-heart"/></svg></button>  <div class="pup__body ct-card__body">
-    <h3 class="pup__name"><a href="../../shchenki/maltipu-f1-ryzhij-2026-07/">Персик</a></h3>
-    <p class="pup__meta"><span>Мальтипу&nbsp;·</span> <span>11 недель&nbsp;·</span> <span>мальчик</span></p>
-    <div class="ct-card__actions">
-      <button class="btn btn--white ct-card__price" type="button" data-open-modal data-modal-kind="puppy" aria-label="Узнать цену: Персик">Узнать цену</button>
-      <a class="btn btn--outline ct-card__more" href="../../shchenki/maltipu-f1-ryzhij-2026-07/" aria-label="Подробнее: Персик">Подробнее</a>
-    </div>
-  </div>
-</article>
-    </li>
-    <li class="pups__item">
-      <article class="pup ct-card tone--peach ct-card--life" data-pup data-slug="maltipu-f1b-parti-2026-07" data-breed="maltipu" data-name="Бусинка" data-desc="Мальтипу F1b · 12 недель · девочка" data-img="pup-maltipu-391.jpg">
-<a class="pup__media ct-card__media" href="../../shchenki/maltipu-f1b-parti-2026-07/" tabindex="-1" aria-hidden="true">    <img src="../../../assets/img/pup-maltipu-391.jpg" alt="Бело-абрикосовая малышка мальтипу Бусинка на розовом пледе" width="1200" height="1600" style="object-position:50% 40%" loading="lazy" decoding="async">
-</a>
-  <button class="fav ct-card__fav" type="button" aria-pressed="false" aria-label="В избранное: Бусинка"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-heart"/></svg></button>  <div class="pup__body ct-card__body">
-    <h3 class="pup__name"><a href="../../shchenki/maltipu-f1b-parti-2026-07/">Бусинка</a></h3>
-    <p class="pup__meta"><span>Мальтипу&nbsp;·</span> <span>12 недель&nbsp;·</span> <span>девочка</span></p>
-    <div class="ct-card__actions">
-      <button class="btn btn--white ct-card__price" type="button" data-open-modal data-modal-kind="puppy" aria-label="Узнать цену: Бусинка">Узнать цену</button>
-      <a class="btn btn--outline ct-card__more" href="../../shchenki/maltipu-f1b-parti-2026-07/" aria-label="Подробнее: Бусинка">Подробнее</a>
-    </div>
-  </div>
-</article>
-    </li>
-  </ul>
-</section>
-
-    <section class="section container" id="poleznoe" aria-labelledby="poleznoe-title">
-  <div class="sec-head">
-  <div class="sec-head__txt">
-    <h2 class="h2" id="poleznoe-title">Полезные статьи</h2>
-    <p class="sec-head__lead">Характер, уход и выбор щенка — коротко и по делу</p>
-  </div>
-<a class="text-link" href="../../blog/">Все <span class="nw">статьи <svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></span></a>
-
+  <h2 class="h2" id="eshche-title">Читайте также</h2>
+<a class="btn btn--coral" href="../../blog/">Все статьи</a>
 </div>
   <ul class="bteasers bteasers--3">
   <li>
@@ -667,19 +662,71 @@
     </article>
   </li>
 </ul>
+
+  <div class="rmore__links">
+    <ul class="ltiles ltiles--4">
+  <li>
+    <a class="ltile ltile--white" href="../">
+<span class="face tone--peach"><img src="../../../assets/img/studio-maltipu-peach.jpg" alt="" width="1024" height="1024" loading="lazy" decoding="async"></span>
+      <span class="ltile__txt"><span class="ltile__title">Мальтипу</span><span class="ltile__line">О породе и щенки в наличии</span></span>
+      <span class="tcta tcta--soft">Подробнее <svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></span>
+    </a>
+  </li>
+  <li>
+    <a class="ltile ltile--white" href="../cena/">
+<span class="ico" style="--c:var(--sun)" aria-hidden="true"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-wallet"/></svg></span>      <span class="ltile__txt"><span class="ltile__title">Цена щенка</span><span class="ltile__line">От чего зависит и что входит</span></span>
+      <span class="tcta tcta--soft">Подробнее <svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></span>
+    </a>
+  </li>
+  <li>
+    <a class="ltile ltile--white" href="../../shchenki/">
+<span class="ico" style="--c:var(--coral)" aria-hidden="true"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-paw"/></svg></span>      <span class="ltile__txt"><span class="ltile__title">Каталог щенков</span><span class="ltile__line">Все щенки в наличии — 60</span></span>
+      <span class="tcta tcta--soft">Подробнее <svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></span>
+    </a>
+  </li>
+  <li>
+    <a class="ltile ltile--white" href="../../podbor-porody/">
+<span class="ico" style="--c:var(--lilac)" aria-hidden="true"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-sparkle"/></svg></span>      <span class="ltile__txt"><span class="ltile__title">Подобрать породу</span><span class="ltile__line">Тест на 2 минуты</span></span>
+      <span class="tcta tcta--soft">Подробнее <svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></span>
+    </a>
+  </li>
+</ul>
+  </div>
 </section>
 
 
+
+
+<section class="section container" id="ob-okrasah" aria-labelledby="seo-title">
+  <div class="seo">
+    <h2 class="seo__title" id="seo-title">Мальтипу мини, F1 и F2: какого выбрать</h2>
+    <div class="seo__body" data-seo>
+      <p class="seo__lead">Мальтипу — гибрид мальтийской болонки и пуделя, поэтому щенки бывают разных поколений, размеров и окрасов. Коротко рассказываем, чем они отличаются, и помогаем выбрать щенка под вашу семью.</p>
+      <div class="seo__more" id="seo-more" hidden>
+                <h3>Мальтипу F1 и F2: разница</h3>
+        <p>Мальтипу F1 — первое поколение: родители щенка — мальтийская болонка и той- или миниатюрный пудель. Шерсть у F1 обычно волнистая и мягкая. F2 — потомство двух мальтипу F1: в одном помёте щенки могут заметно отличаться шерстью и внешностью. F1b — мальтипу F1, повязанный с пуделем: шерсть кудрявее и линяет ещё меньше.</p>
+        <h3>Мальтипу мини и другие размеры</h3>
+        <p>Деление на той, мини и стандарт неофициальное: у гибрида нет стандарта. Той весит около <span class="nw">2–3</span> кг, мини — около <span class="nw">3–5</span> кг, стандарт — до 7 кг. Мальтипу F1 мини получаются, когда в паре мелкий пудель. Живут мальтипу мини, как и остальные, <span class="nw">12–15</span> лет.</p>
+        <h3>Окрасы мальтипу</h3>
+        <p>Самые узнаваемые окрасы — кремовый, абрикосовый, рыжий и шоколадный. Бывают белый, чёрный, серебристый, партиколор, фантом и соболиный. С возрастом рыжие, шоколадные и серебристые щенки часто меняют оттенок, поэтому окончательный цвет видно ближе к году.</p>
+        <h3>Каким вырастет мальтипу F2</h3>
+        <p>Взрослый мальтипу F2 может быть похож и на болонку, и на пуделя. Поэтому смотрите на родителей: покажем их по видео и подскажем, каким, скорее всего, вырастет щенок.</p>
+
+      </div>
+    </div>
+    <button class="seo__toggle" type="button" aria-expanded="false" aria-controls="seo-more" data-seo-toggle><span data-seo-label>Читать полностью</span><svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-chevron"/></svg></button>
+  </div>
+</section>
     <section class="section container" id="zayavka" aria-labelledby="lead-title">
-  <div class="lead tone--peach">
+  <div class="lead tone--peach hm-lead">
     <div class="lead__intro">
-      <h2 class="h2" id="lead-title">Подберём щенка по окрасу</h2>
-      <p class="lead__line">Расскажите, какой окрас и размер ищете, — пришлём щенков с видео</p>
+      <h2 class="h2" id="lead-title">Подбор щенка по окрасу</h2>
+      <p class="lead__line">Оставьте заявку на подбор щенка мальтипу — пришлём подходящих щенков с видео</p>
       <p class="lead__note"><svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-clock"/></svg>Свяжемся с вами в течение рабочего дня по московскому времени</p>
     </div>
 
-    <div class="lead__box">
-      <form class="form" id="lead-form" novalidate>
+    <div class="lead__box" data-lead-box>
+      <form class="form" id="lead-form" data-lead-form data-prefix="lf" novalidate>
         <div class="form__grid">
           <div class="field">
             <label class="field__label" for="lf-name">Имя</label>
@@ -742,56 +789,158 @@
   <!-- ================= ПОДВАЛ ================= -->
   <footer class="footer container">
     <div class="footer__tile">
-      <div class="footer__top">
+      <div class="footer__row footer__top">
         <div class="footer__brand">
           <a class="logo" href="../../" aria-label="домщенков.рф — на главную">
             <span class="logo__mark" aria-hidden="true"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-paw"/></svg></span>
             <span class="logo__text"><span class="logo__name">домщенков.рф</span><span class="logo__sub">питомник щенков · Москва</span></span>
           </a>
+          <p class="footer__about">Мальтипу, французские бульдоги, <span class="nw">той-пудели</span> <span class="nw">и бордер-колли</span> с документами и доставкой по России</p>
+        </div>
+        <nav class="fcol" aria-label="Покупка">
+          <h2 class="fcol__h">Покупка</h2>
+          <ul>
+            <li><a href="../../shchenki/">Каталог щенков</a></li>
+            <li><a href="../../rassrochka/">Бронь щенка</a></li>
+            <li><a href="../../dostavka/">Доставка</a></li>
+            <li><a href="../../dokumenty-i-garantii/">Документы и гарантии</a></li>
+            <li><a href="../../shchenok-v-podarok/">Щенок в подарок</a></li>
+            <li><a class="flink-ico" href="../../podbor-porody/"><span class="ico ico--sm" style="--c:var(--lilac)" aria-hidden="true"><svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-sparkle"/></svg></span><span>Подбор породы — тест</span></a></li>
+          </ul>
+        </nav>
+        <nav class="fcol" aria-label="Породы">
+          <h2 class="fcol__h">Породы</h2>
+          <ul>
+            <li><a href="../">Мальтипу</a></li>
+            <li><a href="../../francuzskij-buldog/">Французский бульдог</a></li>
+            <li><a href="../../toj-pudel/">Той-пудель</a></li>
+            <li><a href="../../border-kolli/">Бордер-колли</a></li>
+          </ul>
+        </nav>
+        <nav class="fcol" aria-label="Питомник">
+          <h2 class="fcol__h">Питомник</h2>
+          <ul>
+            <li><a href="../../o-pitomnike/">О питомнике</a></li>
+            <li><a href="../../otzyvy/">Отзывы</a></li>
+            <li><a href="../../faq/">Вопросы и ответы</a></li>
+            <li><a href="../../blog/">Блог</a></li>
+            <li><a href="../../kontakty/">Контакты</a></li>
+          </ul>
+        </nav>
+        <div class="fcol footer__contacts">
+          <h2 class="fcol__h">Контакты</h2>
           <ul class="footer__info">
             <li><svg class="i i--sm" aria-hidden="true"><use href="#i-clock"/></svg>Ежедневно с 8:00 до 22:00</li>
+            <li><svg class="i i--sm" aria-hidden="true"><use href="#i-mail"/></svg><a href="mailto:main@xn--b1adduihee9g.xn--p1ai">main@домщенков.рф</a></li>
             <li><svg class="i i--sm" aria-hidden="true"><use href="#i-pin"/></svg>Москва, Ташкентская ул., 19</li>
-            <li><svg class="i i--sm" aria-hidden="true"><use href="#i-mail"/></svg><a href="mailto:[почта]@домщенков.рф">[почта]@домщенков.рф</a></li>
           </ul>
+          <button class="btn btn--coral footer__cta" type="button" data-open-modal data-modal-kind="lead" data-modal-title="Оставить заявку" data-modal-sub="Подберём щенка и&nbsp;пришлём фото, видео и&nbsp;цены" data-modal-note="Подвал — оставить заявку" data-modal-submit="Оставить заявку">Оставить заявку</button>
         </div>
-        <nav class="footer__nav" aria-label="Разделы сайта">
-          <div class="fcol">
-            <h2 class="fcol__h">Щенки и породы</h2>
-            <ul>
-              <li><a href="../../shchenki/">Все щенки в наличии</a></li>
-              <li><a href="../">Мальтипу</a></li>
-              <li><a href="../../francuzskij-buldog/">Французский бульдог</a></li>
-              <li><a href="../../toj-pudel/">Той-пудель</a></li>
-              <li><a href="../../border-kolli/">Бордер-колли</a></li>
-              <li><a href="../../podbor-porody/">Подбор породы — пройдите тест</a></li>
-            </ul>
-          </div>
-          <div class="fcol">
-            <h2 class="fcol__h">Покупка</h2>
-            <ul>
-              <li><a href="../../dokumenty-i-garantii/">Документы и гарантии</a></li>
-              <li><a href="../../dostavka/">Доставка</a></li>
-              <li><a href="../../rassrochka/">Рассрочка и бронь</a></li>
-              <li><a href="../../shchenok-v-podarok/">Щенок в подарок</a></li>
-              <li><a href="../../magazin/">Стартовый набор</a></li>
-              <li><a href="../../faq/">Вопросы и ответы</a></li>
-            </ul>
-          </div>
-          <div class="fcol">
-            <h2 class="fcol__h">О питомнике</h2>
-            <ul>
-              <li><a href="../../roditeli/">Родители</a></li>
-              <li><a href="../../vypuskniki/">Выпускники</a></li>
-              <li><a href="../../otzyvy/">Отзывы</a></li>
-              <li><a href="../../blog/">Блог</a></li>
-              <li><a href="../../kontakty/">Контакты</a></li>
-            </ul>
-          </div>
-        </nav>
       </div>
-      <div class="footer__legal">
-        <span>© 2017–2026 домщенков.рф · ИП Селезнев Владимир Игоревич · ИНН 220703337790 · ОГРНИП 324547600187418</span>
-        <span>Сайт не является публичной офертой · <a href="../../politika-konfidencialnosti/">Политика конфиденциальности</a> · <a href="../../soglasie/">Согласие на обработку данных</a> · <a href="../../soglasie-na-publikaciyu/">Согласие на публикацию отзыва</a></span>
+
+      <nav class="footer__row footer__breeds" aria-label="Породы и окрасы">
+        <details class="fcol fcol--fold" data-fold open>
+          <summary class="fcol__h">Мальтипу <svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-chevron"/></svg></summary>
+          <ul>
+            <li><a href="../kremovyj/">Кремовый мальтипу</a></li>
+            <li><a href="../belyj/">Белый мальтипу</a></li>
+            <li><a href="../abrikosovyj/">Абрикосовый мальтипу</a></li>
+            <li><a href="../ryzhij/">Рыжий мальтипу</a></li>
+            <li><a href="../shokoladnyj/">Шоколадный мальтипу</a></li>
+            <li><a href="../chernyj/">Чёрный мальтипу</a></li>
+            <li><a href="../serebristyj/">Серебристый мальтипу</a></li>
+            <li><a href="../partikolor/">Мальтипу партиколор</a></li>
+            <li><a href="../fantom/">Мальтипу фантом</a></li>
+            <li><a href="../sobolinyj/">Соболиный мальтипу</a></li>
+            <li><a href="./" aria-current="page">Виды и окрасы мальтипу</a></li>
+            <li><a href="../cena/">Цена мальтипу</a></li>
+          </ul>
+        </details>
+        <details class="fcol fcol--fold" data-fold open>
+          <summary class="fcol__h">Французский бульдог <svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-chevron"/></svg></summary>
+          <ul>
+            <li><a href="../../francuzskij-buldog/palevyj/">Палевый французский бульдог</a></li>
+            <li><a href="../../francuzskij-buldog/tigrovyj/">Тигровый французский бульдог</a></li>
+            <li><a href="../../francuzskij-buldog/pegij/">Пегий французский бульдог</a></li>
+            <li><a href="../../francuzskij-buldog/goluboj/">Голубой французский бульдог</a></li>
+            <li><a href="../../francuzskij-buldog/kremovyj/">Кремовый французский бульдог</a></li>
+            <li><a href="../../francuzskij-buldog/shokoladnyj/">Шоколадный французский бульдог</a></li>
+            <li><a href="../../francuzskij-buldog/mramornyj/">Мраморный французский бульдог</a></li>
+            <li><a href="../../francuzskij-buldog/vidy-i-okrasy/">Виды и окрасы французского бульдога</a></li>
+            <li><a href="../../francuzskij-buldog/cena/">Цена французского бульдога</a></li>
+          </ul>
+        </details>
+        <details class="fcol fcol--fold" data-fold open>
+          <summary class="fcol__h">Той-пудель <svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-chevron"/></svg></summary>
+          <ul>
+            <li><a href="../../toj-pudel/abrikosovyj/">Абрикосовый той-пудель</a></li>
+            <li><a href="../../toj-pudel/chernyj/">Чёрный той-пудель</a></li>
+            <li><a href="../../toj-pudel/belyj/">Белый той-пудель</a></li>
+            <li><a href="../../toj-pudel/korichnevyj/">Коричневый той-пудель</a></li>
+            <li><a href="../../toj-pudel/ryzhij/">Рыжий той-пудель</a></li>
+            <li><a href="../../toj-pudel/seryj/">Серый той-пудель</a></li>
+            <li><a href="../../toj-pudel/vidy-i-okrasy/">Виды и окрасы той-пуделя</a></li>
+            <li><a href="../../toj-pudel/cena/">Цена той-пуделя</a></li>
+          </ul>
+        </details>
+        <details class="fcol fcol--fold" data-fold open>
+          <summary class="fcol__h">Бордер-колли <svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-chevron"/></svg></summary>
+          <ul>
+            <li><a href="../../border-kolli/goluboj-mramor/">Бордер-колли голубой мрамор</a></li>
+            <li><a href="../../border-kolli/trehcvetnyj/">Трёхцветный бордер-колли</a></li>
+            <li><a href="../../border-kolli/krasno-belyj/">Красно-белый бордер-колли</a></li>
+            <li><a href="../../border-kolli/cherno-belyj/">Чёрно-белый бордер-колли</a></li>
+            <li><a href="../../border-kolli/krasnyj-mramor/">Бордер-колли красный мрамор</a></li>
+            <li><a href="../../border-kolli/mramornyj-trikolor/">Бордер-колли мраморный триколор</a></li>
+            <li><a href="../../border-kolli/lilovyj/">Лиловый бордер-колли</a></li>
+            <li><a href="../../border-kolli/vidy-i-okrasy/">Виды и окрасы бордер-колли</a></li>
+            <li><a href="../../border-kolli/cena/">Цена бордер-колли</a></li>
+          </ul>
+        </details>
+      </nav>
+
+      <details class="footer__row footer__cities fcol--fold" data-fold open>
+        <summary class="fcol__h">Доставка щенков по России <svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-chevron"/></svg></summary>
+        <ul class="fcities">
+          <li><a href="../../shchenki-v-sankt-peterburge/">Санкт-Петербург</a></li>
+          <li><a href="../../shchenki-v-novosibirske/">Новосибирск</a></li>
+          <li><a href="../../shchenki-v-ekaterinburge/">Екатеринбург</a></li>
+          <li><a href="../../shchenki-v-kazani/">Казань</a></li>
+          <li><a href="../../shchenki-v-nizhnem-novgorode/">Нижний Новгород</a></li>
+          <li><a href="../../shchenki-v-krasnoyarske/">Красноярск</a></li>
+          <li><a href="../../shchenki-v-chelyabinske/">Челябинск</a></li>
+          <li><a href="../../shchenki-v-samare/">Самара</a></li>
+          <li><a href="../../shchenki-v-ufe/">Уфа</a></li>
+          <li><a href="../../shchenki-v-rostove-na-donu/">Ростов-на-Дону</a></li>
+          <li><a href="../../shchenki-v-krasnodare/">Краснодар</a></li>
+          <li><a href="../../shchenki-v-omske/">Омск</a></li>
+          <li><a href="../../shchenki-v-voronezhe/">Воронеж</a></li>
+          <li><a href="../../shchenki-v-permi/">Пермь</a></li>
+          <li><a href="../../shchenki-v-volgograde/">Волгоград</a></li>
+          <li><a href="../../shchenki-v-saratove/">Саратов</a></li>
+          <li><a href="../../shchenki-v-tyumeni/">Тюмень</a></li>
+          <li><a href="../../shchenki-v-tolyatti/">Тольятти</a></li>
+          <li><a href="../../shchenki-v-mahachkale/">Махачкала</a></li>
+          <li><a href="../../shchenki-v-barnaule/">Барнаул</a></li>
+          <li><a href="../../shchenki-v-izhevske/">Ижевск</a></li>
+          <li><a href="../../shchenki-v-habarovske/">Хабаровск</a></li>
+          <li><a href="../../shchenki-v-ulyanovske/">Ульяновск</a></li>
+          <li><a href="../../shchenki-v-irkutske/">Иркутск</a></li>
+          <li><a href="../../shchenki-vo-vladivostoke/">Владивосток</a></li>
+          <li><a href="../../shchenki-v-yaroslavle/">Ярославль</a></li>
+          <li><a href="../../shchenki-v-sevastopole/">Севастополь</a></li>
+          <li><a href="../../shchenki-v-stavropole/">Ставрополь</a></li>
+          <li><a href="../../shchenki-v-tomske/">Томск</a></li>
+          <li><a href="../../shchenki-v-kemerove/">Кемерово</a></li>
+          <li class="fcities__all"><a class="flink-all" href="../../dostavka/">Все условия доставки&nbsp;<svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></a></li>
+        </ul>
+      </details>
+
+      <div class="footer__row footer__legal">
+        <div class="footer__legal-text">
+          <span>© 2017–2026 домщенков.рф · ИП Селезнев Владимир Игоревич · ИНН 220703337790 · ОГРНИП 324547600187418</span>
+          <span>Сайт не является публичной офертой · <a href="../../politika-konfidencialnosti/">Политика конфиденциальности</a> · <a href="../../soglasie/">Согласие на обработку данных</a> · <a href="../../soglasie-na-publikaciyu/">Согласие на публикацию отзыва</a></span>
+        </div>        <a class="footer__credit" href="https://moon-dsgn.ru" target="_blank" rel="noopener">Создание и продвижение сайта — MOON</a>
       </div>
     </div>
   </footer>
@@ -858,11 +1007,10 @@
               <li class="mega__sub">
                 <span class="mega__subh">Доставка по городам</span>
                 <ul class="mega__subl">
-            <li><a class="mega__sublink" href="../../dostavka/sankt-peterburg/"><span><span class="nw">Санкт-Петербург</span></span></a></li><li><a class="mega__sublink" href="../../dostavka/novosibirsk/"><span>Новосибирск</span></a></li><li><a class="mega__sublink" href="../../dostavka/ekaterinburg/"><span>Екатеринбург</span></a></li><li><a class="mega__sublink" href="../../dostavka/kazan/"><span>Казань</span></a></li><li><a class="mega__sublink" href="../../dostavka/#goroda"><span>Все 30 городов</span></a></li>    </ul>
+            <li><a class="mega__sublink" href="../../shchenki-v-sankt-peterburge/"><span><span class="nw">Санкт-Петербург</span></span></a></li><li><a class="mega__sublink" href="../../shchenki-v-novosibirske/"><span>Новосибирск</span></a></li><li><a class="mega__sublink" href="../../shchenki-v-ekaterinburge/"><span>Екатеринбург</span></a></li><li><a class="mega__sublink" href="../../shchenki-v-kazani/"><span>Казань</span></a></li><li><a class="mega__sublink" href="../../dostavka/#goroda"><span>Все 30 городов</span></a></li>    </ul>
               </li>
-              <li><a class="mega__link" href="../../rassrochka/"><span>Рассрочка и бронь</span></a></li>
+              <li><a class="mega__link" href="../../rassrochka/"><span>Бронь щенка</span></a></li>
               <li><a class="mega__link" href="../../shchenok-v-podarok/"><span>Щенок в подарок</span></a></li>
-              <li><a class="mega__link" href="../../magazin/"><span>Стартовый набор</span></a></li>
               <li><a class="mega__link" href="../../faq/"><span>Вопросы и ответы</span></a></li>
             </ul>
           </div>
@@ -871,8 +1019,7 @@
           <button class="mmenu__acc" type="button" aria-expanded="false" aria-controls="mm-g4">О питомнике <svg class="i" aria-hidden="true" focusable="false"><use href="#i-chevron"/></svg></button>
           <div class="mmenu__group" id="mm-g4" hidden>
             <ul class="mega__list">
-              <li><a class="mega__link" href="../../roditeli/"><span>Родители щенков</span></a></li>
-              <li><a class="mega__link" href="../../vypuskniki/"><span>Выпускники</span></a></li>
+              <li><a class="mega__link" href="../../o-pitomnike/"><span>О питомнике</span></a></li>
               <li><a class="mega__link" href="../../otzyvy/"><span>Отзывы владельцев</span></a></li>
               <li><a class="mega__link" href="../../dokumenty-i-garantii/"><span>Документы и гарантии</span></a></li>
               <li><a class="mega__link" href="../../kontakty/"><span>Контакты</span></a></li>
@@ -936,6 +1083,10 @@
               <label class="field__label" for="pm-phone">Телефон</label>
               <input class="input" id="pm-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="+7 (___) ___-__-__" required aria-describedby="pm-phone-err" data-phone>
               <p class="field__err" id="pm-phone-err" hidden></p>
+            </div><div class="field" data-pm-question hidden>
+              <label class="field__label" for="pm-question">Ваш вопрос</label>
+              <textarea class="input input--area" id="pm-question" name="question" rows="4" maxlength="1000" placeholder="Например: сколько гуляет мальтипу и&nbsp;можно ли его оставлять одного?" aria-describedby="pm-question-err"></textarea>
+              <p class="field__err" id="pm-question-err" hidden></p>
             </div>
             <div class="field" data-pm-breed>
               <label class="field__label" for="pm-breed">Какая порода интересует</label>

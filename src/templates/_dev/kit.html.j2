@@ -114,11 +114,11 @@
       {{ ui.link_tiles([
         {'url': '/maltipu/cena/', 'title': 'Цена мальтипу', 'line': 'От чего зависит', 'breed': mal},
         {'url': '/dostavka/', 'title': 'Доставка', 'line': 'По Москве и в другие города', 'icon': 'car', 'color': 'mint'},
-        {'url': '/roditeli/', 'title': 'Родители', 'line': 'Домашние, с родословными РКФ', 'image': '/assets/img/parents-maltipu.jpg'},
+        {'url': '/o-pitomnike/', 'title': 'О питомнике', 'line': '9 лет в Москве, 640+ выпускников', 'image': '/assets/img/hero-four-breeds.jpg'},
       ]) }}
       <div class="kit-gap"></div>
       {{ ui.link_tiles([
-        {'url': '/rassrochka/', 'title': 'Бронь и рассрочка', 'line': 'Остаток частями', 'icon': 'wallet', 'color': 'sun'},
+        {'url': '/rassrochka/', 'title': 'Бронь щенка', 'line': 'Предоплата 30%', 'icon': 'wallet', 'color': 'sun'},
         {'url': '/dokumenty-i-garantii/', 'title': 'Документы', 'line': 'Договор и ветпаспорт', 'icon': 'doc', 'color': 'sky'},
         {'url': '/shchenok-v-podarok/', 'title': 'Щенок в подарок', 'line': 'Успеем к празднику', 'icon': 'gift', 'color': 'coral'},
         {'url': '/podbor-porody/', 'title': 'Подобрать породу', 'line': 'Тест на 2 минуты', 'icon': 'sparkle', 'color': 'lilac'},
@@ -212,7 +212,7 @@
 
     {{ blocks.reviews_section(data.reviews[3:], title='Отзывы: полный текст', id='kit-reviews', title_id='kit-reviews-title', short=false) }}
 
-    {{ blocks.faq_section(data.faq[5:], title='FAQ', id='kit-faq', link=none) }}
+    {{ blocks.faq_section(data.faq[5:], title='FAQ', id='kit-faq') }}
 
     <section class="section container">
       {% call ui.empty_state('Таких щенков сейчас нет', 'Оставьте заявку — напишем, когда появится новый помёт.') %}<button class="btn btn--white" type="button">Показать всех</button>{% endcall %}

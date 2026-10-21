@@ -1,6 +1,10 @@
 {#- /faq/ — every question of faq.json (+ the group's own) in five topics, each an accordion with its own anchor.
-    Context (routes/delivery.py): f (copy, data/delivery-service.json), cats [{id, title, items}], faq_ld (JSON-LD). -#}
+    Main buttons coral as on the homepage (body.page-faq); «Щенки в наличии» — two of every breed (cards.pups_grid);
+    «Читайте также» — articles + plates (blocks.read_more without a breed).
+    Context (routes/delivery.py): f (copy, data/delivery-service.json), cats [{id, title, items}], faq_ld (JSON-LD), catalog. -#}
 {% extends "layouts/page.html.j2" %}
+
+{% block body_attrs %} class="page-faq"{% endblock %}
 
 {% block page_css %}
   <link rel="stylesheet" href="/assets/css/delivery.css">
@@ -13,7 +17,7 @@
 {% block hero %}
     {% call ui.page_hero(f.h1, lead=f.lead, eyebrow=f.eyebrow, photo=dict(f.photo, w=imgsize(f.photo.src)[0], h=imgsize(f.photo.src)[1]), tone='peach') %}
       {{ forms.price_button(cls='btn btn--ink btn--lg') }}
-      <a class="btn btn--white btn--lg" href="#zayavka">Задать вопрос</a>
+      {{ blocks.ask_button(where='Вопросы и ответы', cls='btn btn--white btn--lg', label='Задать вопрос') }}
     {% endcall %}
 {% endblock %}
 
@@ -28,13 +32,18 @@
 
     <div class="dlv-faqcats">
     {% for c in cats %}
-    {{ blocks.faq_section(c.qs, title=c.title, id=c.id, link=none, ld=false) }}
+    {{ blocks.faq_section(c.qs, title=c.title, id=c.id, ask=false, ld=false) }}
     {% endfor %}
     </div>
 
     {{ ui.advantages(title='Почему выбирают нас', link={'url': '/dokumenty-i-garantii/', 'label': 'Документы и гарантии'}) }}
 
-    {{ cards.pups_section() }}
+    {{ cards.pups_grid(catalog) }}
+{% endblock %}
+
+{#- «Читайте также» (client 21.10): articles + four plates (catalog, quiz, documents, delivery), instead of «Полезные статьи» -#}
+{% block blog %}
+    {{ blocks.read_more(here='/faq/') }}
 {% endblock %}
 
 {% block lead %}

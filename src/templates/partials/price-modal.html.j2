@@ -34,6 +34,12 @@
               <input class="input" id="pm-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="+7 (___) ___-__-__" required aria-describedby="pm-phone-err" data-phone>
               <p class="field__err" id="pm-phone-err" hidden></p>
             </div>
+            {#- «Задать свой вопрос» (blocks.faq_section): shown and required only when the button has data-modal-question -#}
+            <div class="field" data-pm-question hidden>
+              <label class="field__label" for="pm-question">Ваш вопрос</label>
+              <textarea class="input input--area" id="pm-question" name="question" rows="4" maxlength="1000" placeholder="Например: сколько гуляет мальтипу и&nbsp;можно ли его оставлять одного?" aria-describedby="pm-question-err"></textarea>
+              <p class="field__err" id="pm-question-err" hidden></p>
+            </div>
             <div class="field" data-pm-breed>
               <label class="field__label" for="pm-breed">Какая порода интересует</label>
               <select class="input select" id="pm-breed" name="breed">
@@ -45,7 +51,7 @@
             {{ forms.consent_check('pm')|indent(12) }}
           </div>
           <button class="btn btn--ink btn--lg btn--block form__submit" type="submit" data-submit data-label="Узнать цену">Узнать цену</button>
-          <p class="form__hint">Свяжемся с&nbsp;вами в&nbsp;течение рабочего дня по&nbsp;московскому времени</p>
+          <p class="form__hint">Свяжемся с&nbsp;вами в&nbsp;течение рабочего дня{% if not hide_city | default(false) %} по&nbsp;московскому времени{% endif %}</p>
         </form>
       </div>
       <div class="modal__view modal__done" data-view="done" hidden>

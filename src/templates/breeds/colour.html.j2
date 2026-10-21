@@ -3,7 +3,8 @@
     rarity / age / nose, about, care). Context (routes/breeds.py): b, c (this colour, breedsub.colour_items), others (the
     other colours), pups (puppies of this colour, simple cards), faq, hub (the breed page copy).
     Order: hero (the colour's puppy close up, okras-…-big.jpg, three facts, «Подобрать …» + «Получить консультацию») → «Особенности окраса» (text,
-    care, «Подобрать …») → puppies of this colour or a waiting-list band → the other colours → FAQ → lead form with contact tiles. -#}
+    care, «Подобрать …») → puppies of this colour or a waiting-list band → the other colours → the breed's other
+    puppies (cards.pups_std, the standard 8-card block of every page, client 21.10) → FAQ → «Читайте также» → lead form. -#}
 {% extends "layouts/page.html.j2" %}
 {% import "breeds/_parts.html.j2" as part %}
 
@@ -74,12 +75,18 @@
       {{ part.colour_carousel(others, b, label='Другие окрасы ' ~ b.name_gen) }}
     </section>
 
+    <!-- ================= ЩЕНКИ ПОРОДЫ — стандартный блок на 8 карточек (правка 21.10), без щенков этого окраса выше ================= -->
+    {{ cards.pups_std(breed=b, exclude=pups|map(attribute='slug')|list) }}
+
     <!-- ================= ВОПРОСЫ ================= -->
-    {{ blocks.faq_section(faq, title='Вопросы об окрасе', link={'url': b.urls.hub ~ '#faq', 'label': 'Все вопросы о ' ~ b.name_gen}) }}
+    {{ blocks.faq_section(faq, title='Вопросы об окрасе') }}
+{% endblock %}
+
+{#- «Читайте также» (client 21.10): articles about the breed + four plates of its sections, instead of «Полезные статьи» -#}
+{% block blog %}
+    {{ blocks.read_more(b) }}
 {% endblock %}
 
 {% block lead %}
-    {% call forms.lead_form(title='Подберём ' ~ c.pick, line='Пришлём щенков этого окраса с фото, видео и ценой', breed=b.slug, contacts=false, cls='hm-lead') %}
-      {{ forms.contact_tiles() }}
-    {% endcall %}
+    {{ forms.lead_form(title='Подберём ' ~ c.pick, line='Пришлём щенков этого окраса с фото, видео и ценой', breed=b.slug, contacts=false, cls='hm-lead') }}
 {% endblock %}

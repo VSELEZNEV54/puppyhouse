@@ -1,9 +1,12 @@
 {#- /podbor-porody/ — breed quiz (assets/js/choice.js), quick answers to the semantic queries, the 4-breed table,
-    links to the four breed pages «Чем хорош щенок …», collapsed SEO text. Context from routes/choice.py: qz (copy + breeds
-    + results), why_links.
-    The layout adds «Щенки в наличии» (all breeds) and the lead form. -#}
+    links to the four breed pages «Чем хорош щенок …», «Щенки в наличии» (8: two of every breed), collapsed SEO text.
+    Context from routes/choice.py: qz (copy + breeds + results + catalog), why_links.
+    Client 21.10: main buttons coral and white as on the homepage (body .page-quiz, main.css); «Всё о породе»,
+    «Сравнить породы», «Все породы в таблице» are plain white outline buttons, not coral. -#}
 {% extends "layouts/page.html.j2" %}
 {% import "choice/_parts.html.j2" as part %}
+
+{% block body_attrs %} class="page-quiz"{% endblock %}
 
 {% block page_css %}
   <link rel="stylesheet" href="/assets/css/choice.css">
@@ -92,10 +95,10 @@
                   <p class="cho-alt__txt"><span class="cho-alt__label">{{ qz.second_label }}</span><span class="cho-alt__name">{{ s.name|typo }}</span></p>
                 </div>
                 <p class="cho-alt__links">
-                  {{ ui.text_link(s.urls.hub, 'Всё о породе') }}
-                  {#- the card «<второй> или <победитель>» on the second breed's page «Чем хорош щенок …» -#}
+                  <a class="btn btn--white" href="{{ s.urls.hub }}">Всё о&nbsp;породе</a>
+                  {#- the comparison table of all breeds on the second breed's page «Чем хорош щенок …» -#}
                   {% for w in qz.breeds if w.slug != s.slug %}
-                  <a class="text-link" href="/sravnenie/{{ s.slug }}/#ili-{{ w.slug }}" data-win="{{ w.slug }}" hidden>Сравнить <span class="nw">две породы {{ ui.icon('arrow', sm=true) }}</span></a>
+                  <a class="btn btn--white" href="/sravnenie/{{ s.slug }}/#sravnenie" data-win="{{ w.slug }}" hidden>Сравнить породы</a>
                   {% endfor %}
                 </p>
               </div>
@@ -105,7 +108,7 @@
               <p class="cho-alt__txt"><span class="cho-alt__label">Не&nbsp;тот результат?</span><span class="cho-alt__name">Ответьте ещё раз</span></p>
               <p class="cho-alt__links">
                 <button class="btn btn--white" type="button" data-quiz-restart>{{ ui.icon('reset', sm=true) }}{{ qz.restart }}</button>
-                <a class="text-link" href="#sravnenie">Все породы <span class="nw">в&nbsp;таблице {{ ui.icon('arrow', sm=true) }}</span></a>
+                <a class="btn btn--white" href="#sravnenie">Все породы в&nbsp;таблице</a>
               </p>
             </div>
           </div>
@@ -135,6 +138,26 @@
       {{ part.pills(why_links, qz.pairs_label, 'pary-label') }}
     </section>
 
+{% endblock %}
+
+{#- «Щенки в наличии»: 8 карточек, по две каждой породы (в каждом ряду из четырёх — все породы), кнопка под ними -#}
+{% block pups %}
+    <section class="section container" id="pups" aria-labelledby="pups-title">
+      {{ ui.section_head('Щенки в наличии', id='pups-title') }}
+      <ul class="pups hm-pups cho-pups" data-reveal="items">
+        {% for p in qz.catalog %}
+        <li class="pups__item">
+          {{ cards.puppy_card(p) }}
+        </li>
+        {% endfor %}
+      </ul>
+      <div class="hm-pups__foot">
+        <a class="btn btn--ink btn--lg" href="/shchenki/">Весь каталог {{ ui.icon('arrow') }}</a>
+      </div>
+    </section>
+{% endblock %}
+
+{% block seo %}
     {% call blocks.seo_block(qz.seo.title, qz.seo.lead, id='kak-vybrat') %}
         {% for s in qz.seo.blocks %}
         <h3>{{ s.h|typo }}</h3>

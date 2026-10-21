@@ -82,7 +82,8 @@ if git rev-parse --git-dir >/dev/null 2>&1; then
     | while IFS= read -r -d '' f; do [ -f "$f" ] && install -D -m "$( [ -x "$f" ] && echo 755 || echo 644 )" "$f" "$TMP/$f"; done
 else
   for d in backend src/data; do
-    rsync -a --exclude 'tests/' --exclude '__pycache__/' --exclude '.env' --exclude '.env.*' --include '.env.example' \
+    mkdir -p "$TMP/$d"   # rsync does not create the nested src/data
+    rsync -a --include '.env.example' --exclude 'tests/' --exclude '__pycache__/' --exclude '.env' --exclude '.env.*' \
       --exclude '.pytest_cache/' --exclude '.venv/' "$d/" "$TMP/$d/"
   done
   install -D -m 644 tools/check_launch.py "$TMP/tools/check_launch.py"

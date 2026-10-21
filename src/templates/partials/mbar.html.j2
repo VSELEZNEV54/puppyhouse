@@ -2,7 +2,6 @@
     On a single-breed page (context lead_breed) «Узнать цену» opens the modal with that breed selected.
     site.contacts_ready = false: «Оставить заявку» instead of «Позвонить» and «Telegram» (.mbar--2, two halves). -#}
 {% import "macros/ui.html.j2" as ui %}
-{% import "macros/forms.html.j2" as forms %}
   <!-- Липкая панель на мобиле -->
   <nav class="mbar{{ ' mbar--2' if not site.contacts_ready }}" aria-label="Быстрая связь" data-mbar>
     {% if site.contacts_ready %}

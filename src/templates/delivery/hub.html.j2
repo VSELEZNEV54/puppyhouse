@@ -1,5 +1,6 @@
-{#- /dostavka/ — delivery hub. Context (routes/delivery.py): hub (copy, data/delivery.json), ways (methods + fit_breeds),
-    groups (cities by distance), geo_lead, faq_items. -#}
+{#- /dostavka/ — delivery hub. Context (routes/delivery.py): hub (copy, data/delivery.json; hub.moscow — «Доставка по
+    Москве», hub.geo_more — the «Нет вашего города?» band), ways (methods + fit_breeds), groups (cities by distance),
+    geo_lead, faq_items. -#}
 {% extends "layouts/page.html.j2" %}
 {% import "delivery/_parts.html.j2" as dlv %}
 
@@ -9,7 +10,7 @@
 
 {% block hero %}
     {% call dlv.framed_hero(hub.h1, hub.photo, lead=hub.lead, tone='sand', eyebrow=hub.eyebrow, chips=hub.chips, pos='62% 55%') %}
-      <a class="btn btn--ink btn--lg" href="#zayavka">Рассчитать доставку</a>
+      <a class="btn btn--coral btn--lg" href="#zayavka">Рассчитать доставку</a>
       <a class="btn btn--white btn--lg" href="#goroda">Города доставки</a>
     {% endcall %}
 {% endblock %}
@@ -18,6 +19,59 @@
     <section class="section section--tight container" id="sposoby" aria-labelledby="sposoby-title">
       {{ ui.section_head(hub.ways_title, id='sposoby-title', lead=hub.ways_lead) }}
       {{ dlv.ways(ways) }}
+    </section>
+
+    {%- set msk = hub.moscow %}
+    <section class="section container" id="moskva" aria-labelledby="moskva-title">
+      {{ ui.section_head(msk.title, id='moskva-title', lead=msk.lead) }}
+      <div class="dlv-msk">
+        <figure class="split__media dlv-split__media dlv-msk__media">
+          {{ ui.img(msk.photo.src, msk.photo.alt) }}
+          <figcaption class="dlv-cap">{{ msk.photo.caption|typo }}</figcaption>
+        </figure>
+        <div class="dlv-msk__box">
+          <div class="dlv-msk__head">
+            {{ ui.ico('home', 'coral') }}
+            <div>
+              <h3 class="dlv-msk__title">{{ msk.box_title|typo }}</h3>
+              <p class="dlv-msk__line">{{ msk.box_line|typo }}</p>
+            </div>
+          </div>
+          <ol class="dlv-msk__steps">
+            {% for st in msk.steps %}
+            <li class="dlv-msk__step"><span class="dlv-msk__num" aria-hidden="true">{{ loop.index }}</span><span class="dlv-msk__txt"><span class="dlv-msk__stitle">{{ st.title|typo }}</span><span class="dlv-msk__stext">{{ st.text|typo }}</span></span></li>
+            {% endfor %}
+          </ol>
+          <div class="dlv-msk__area">
+            <p class="dlv-msk__label">{{ msk.area_title|typo }}</p>
+            <ul class="dlv-chips" aria-label="{{ msk.area_title }}">
+              {% for a in msk.area %}<li><span class="dlv-chip dlv-chip--static">{{ a|typo }}</span></li>{% endfor %}
+              <li><span class="dlv-chip dlv-chip--static dlv-chip--more">{{ msk.area_more|typo }}</span></li>
+            </ul>
+          </div>
+          <p class="dlv-way__note tone--sand">{{ ui.icon('info', sm=true) }}<span>{{ msk.pickup|typo }}</span></p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section container" id="goroda" aria-labelledby="goroda-title">
+      {{ ui.section_head(hub.geo_title, id='goroda-title', lead=geo_lead) }}
+      <div class="dlv-geo" data-reveal="items">
+        {% for g in groups %}
+        <div class="dlv-geo__group">
+          <div class="dlv-geo__head">
+            {{ ui.ico(g.icon, g.color) }}
+            <div>
+              <h3 class="dlv-geo__title">{{ g.title|typo }}</h3>
+              <p class="dlv-geo__line">{{ g.line|typo }}</p>
+            </div>
+          </div>
+          {{ dlv.city_chips(g.cities, label='Города: ' ~ (g.title|striptags)) }}
+        </div>
+        {% endfor %}
+      </div>
+      {%- set gm = hub.geo_more %}
+      {{ ui.lead_band(title=gm.title, line=gm.line, label=gm.label, tone='peach', tag='h3', note=gm.note, modal_title=gm.modal_title, submit=gm.label, done=gm.done, kind='consult') }}
     </section>
 
     <section class="section container" id="kak-prohodit" aria-labelledby="kak-prohodit-title">
@@ -45,31 +99,15 @@
       </div>
     </section>
 
-    <section class="section container" id="goroda" aria-labelledby="goroda-title">
-      {{ ui.section_head(hub.geo_title, id='goroda-title', lead=geo_lead) }}
-      <div class="dlv-geo" data-reveal="items">
-        {% for g in groups %}
-        <div class="dlv-geo__group">
-          <div class="dlv-geo__head">
-            {{ ui.ico(g.icon, g.color) }}
-            <div>
-              <h3 class="dlv-geo__title">{{ g.title|typo }}</h3>
-              <p class="dlv-geo__line">{{ g.line|typo }}</p>
-            </div>
-          </div>
-          {{ dlv.city_chips(g.cities, label='Города: ' ~ (g.title|striptags)) }}
-        </div>
-        {% endfor %}
-      </div>
-      {{ dlv.ask_row(hub.geo_more) }}
-    </section>
-
     {{ ui.advantages(title='Щенок с гарантией', lead='Привезём здорового щенка с документами — и останемся на связи') }}
 
-    {{ cards.pups_section() }}
+    {{ cards.pups_std() }}
 
-    {{ blocks.faq_section(faq_items, title=hub.faq_title, id='voprosy', link={'url': '/faq/#dostavka', 'label': 'Все вопросы'}) }}
+    {{ blocks.faq_section(faq_items, title=hub.faq_title, id='voprosy') }}
 
+{% endblock %}
+
+{% block seo %}
     {% call blocks.seo_block(hub.seo.title, hub.seo.lead, id='perevozka') %}
         {% for s in hub.seo.blocks %}
         <h3>{{ s.h|typo }}</h3>

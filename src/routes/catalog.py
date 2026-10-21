@@ -22,7 +22,7 @@ def routes(data):
             related=[
                 {"url": "/dokumenty-i-garantii/", "title": "Документы и гарантии", "line": "Договор, ветпаспорт, метрика РКФ", "icon": "doc", "color": "sky"},
                 {"url": "/dostavka/", "title": "Доставка", "line": "По Москве и в другие города", "icon": "car", "color": "mint"},
-                {"url": "/rassrochka/", "title": "Бронь и рассрочка", "line": "Бронь по договору, остаток частями", "icon": "wallet", "color": "sun"},
+                {"url": "/rassrochka/", "title": "Бронь щенка", "line": "Договор и предоплата 30%", "icon": "wallet", "color": "sun"},
                 {"url": "/podbor-porody/", "title": "Подобрать породу", "line": "Тест на 2 минуты", "icon": "sparkle", "color": "lilac"},
             ],
         ),

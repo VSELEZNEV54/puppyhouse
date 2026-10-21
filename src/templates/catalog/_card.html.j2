@@ -1,4 +1,4 @@
-{#- Puppy card of the catalog /shchenki/ and of «Похожие щенки» on puppy pages (groups catalog + puppy).
+{#- Puppy card of the catalog /shchenki/ (group catalog; «Похожие щенки» on puppy pages is cards.pups_std).
     Since the review of 13.10 it is the shared card cards.puppy_card (styles in main.css: .pup + .ct-card) —
     every puppy card on the site has a white «Узнать цену» + «Подробнее» with a white outline and the compact phone row. -#}
 {% import "macros/ui.html.j2" as ui %}
@@ -8,20 +8,3 @@
 {{ cards.puppy_card(p, tag=tag, eager=eager) }}
 {%- endmacro %}
 
-{#- List of cards + the «Ждёте другого щенка?» tile that fills the last row (same rules as cards.pups_section:
-    --s4 / --s3 / --s2 = columns it spans at 4 / 3 / 2 columns, pages.css). For «Похожие щенки» on puppy pages. -#}
-{% macro strip(items, breed=none, limit=4) -%}
-{%- set n = items|length -%}
-<ul class="pups pups--strip ct-list" data-reveal="items">
-  {% for p in items %}
-  <li class="pups__item">
-    {{ card(p) }}
-  </li>
-  {% endfor %}
-  {% if n < limit %}
-  <li class="pups__more pups__more--fill" style="--s4:{{ 4 - n % 4 }};--s3:{{ 3 - n % 3 }};--s2:{{ 2 - n % 2 }}">
-    {{ cards.soon_tile(breed=breed) }}
-  </li>
-  {% endif %}
-</ul>
-{%- endmacro %}

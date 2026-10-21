@@ -1,9 +1,14 @@
 {#- /sravnenie/<breed>/ — «Чем хорош щенок …» (×4, one template; «Сравнение пород» in the menu). Context from routes/choice.py:
-    b (breeds.json item), pg (copy, Markup: advantages, fit / unfit, the other three breeds as cards, FAQ, SEO text),
-    com (choice-breeds.json → common), links (hub, price, varieties, two articles, quiz), faces (the breed's colours).
-    The layout adds «Щенки в наличии» of this breed (pups_breed = b) and the lead form (lead_breed = b.slug). -#}
+    b (breeds.json item), pg (copy, Markup: advantages, «Кому подойдёт» photo cards, three «Лучше подобрать другую
+    породу» plates, the comparison table, 8 puppies, FAQ, SEO text), com (choice-breeds.json → common), links (hub, price,
+    varieties, two articles, quiz), faces (the breed's colours).
+    Order (client 21.10): hero (why choose the breed) → advantages → «Кому подойдёт» → «Лучше подобрать другую породу» →
+    the comparison table → 8 puppies of the breed → «Пришлём видео и цену» → FAQ → «Читайте также» → SEO text →
+    lead form. Buttons are coral as on the homepage (body .page-compare, main.css). -#}
 {% extends "layouts/page.html.j2" %}
 {% import "choice/_parts.html.j2" as part %}
+
+{% block body_attrs %} class="page-compare"{% endblock %}
 
 {% block page_css %}
   <link rel="stylesheet" href="/assets/css/choice.css">
@@ -14,48 +19,65 @@
 {% block hero %}
     {% call ui.page_hero(pg.h1, lead=pg.lead, breed=b, eyebrow=com.eyebrow) %}
       {{ forms.price_button(cls='btn btn--ink btn--lg', breed=b.name) }}
-      <a class="btn btn--white btn--lg" href="#pups">Щенки в&nbsp;наличии</a>
+      <a class="btn btn--white btn--lg" href="#katalog">Щенки в&nbsp;наличии</a>
     {% endcall %}
 {% endblock %}
 
 {% block body %}
     {{ ui.advantages(pg.adv, title=pg.adv_title, lead=pg.adv_lead, cols=3, tight=true) }}
 
+    <!-- ================= КОМУ ПОДОЙДЁТ — карточки с фото, как на странице щенка ================= -->
     <section class="section container" id="komu" aria-labelledby="komu-title">
-      {{ ui.section_head(pg.fit_title, id='komu-title', lead=com.fit_lead) }}
-      <div class="cho-fit">
-        <div class="cho-fit__card cho-fit__card--yes tone--{{ pg.tint }}">
-          <h3 class="cho-fit__title" id="komu-da">{{ com.fit_yes|typo }}</h3>
-          <ul class="cho-fit__list" aria-labelledby="komu-da">
-            {% for t in pg.fit %}<li><span class="cho-fit__mark" aria-hidden="true">{{ ui.icon('check', sm=true) }}</span><span>{{ t|typo }}</span></li>{% endfor %}
-          </ul>
-          <p class="cho-fit__more">{{ ui.text_link('#pups', com.fit_yes_link) }}</p>
-        </div>
-        <div class="cho-fit__card cho-fit__card--no">
-          <h3 class="cho-fit__title" id="komu-net">{{ com.fit_no|typo }}</h3>
-          <ul class="cho-fit__list" aria-labelledby="komu-net">
-            {% for t in pg.unfit %}<li><span class="cho-fit__mark" aria-hidden="true">{{ ui.icon('close', sm=true) }}</span><span>{{ t|typo }}</span></li>{% endfor %}
-          </ul>
-          <p class="cho-fit__more">{{ ui.text_link('/podbor-porody/', com.fit_no_link) }}</p>
-        </div>
-      </div>
-    </section>
-
-    <section class="section container" id="drugie-porody" aria-labelledby="drugie-porody-title">
-      {{ ui.section_head(pg.others_title, id='drugie-porody-title', lead=com.others_lead, link={'url': '/podbor-porody/#sravnenie', 'label': com.others_link}) }}
-      <ul class="cho-others" data-reveal="items">
-        {% for c in pg.others %}
-        <li class="cho-other" id="{{ c.id }}">
-          <span class="cho-other__faces" aria-hidden="true">{{ ui.face(c.b) }}{{ ui.face(c.o) }}</span>
-          <h3 class="cho-other__title">{{ c.title|typo }}</h3>
-          <p class="cho-other__lead">{{ c.lead|typo }}</p>
-          <ul class="cho-other__picks">
-            {% for k in c.picks %}<li>{{ ui.face(k.b) }}<p><span class="cho-other__name">{{ k.name|typo }}</span>&nbsp;{{ k.text|typo }}</p></li>{% endfor %}
-          </ul>
-          <p class="cho-other__more">{{ ui.text_link(c.more.url, c.more.label) }}</p>
+      {{ ui.section_head(pg.fit_title, id='komu-title') }}
+      <ul class="cho-fits" data-reveal="items">
+        {% for f in pg.fits %}
+        {%- set fs = imgsize(f.photo) or [928, 1152] %}
+        <li class="cho-fitc {{ b.tone_class }}">
+          <span class="cho-fitc__photo"><img src="{{ f.photo }}" alt="{{ f.alt|typo }}" width="{{ fs[0] }}" height="{{ fs[1] }}" style="object-position:{{ f.pos }}" loading="lazy" decoding="async"></span>
+          <h3 class="cho-fitc__title">{{ f.title|typo }}</h3>
+          <p class="cho-fitc__line">{{ f.line|typo }}</p>
         </li>
         {% endfor %}
       </ul>
+    </section>
+
+    <!-- ================= ЛУЧШЕ ПОДОБРАТЬ ДРУГУЮ ПОРОДУ — три плашки с пояснением ================= -->
+    <section class="section container" id="drugaya-poroda" aria-labelledby="drugaya-poroda-title">
+      {{ ui.section_head(pg.unfit_title, id='drugaya-poroda-title', lead=pg.unfit_lead, link={'url': '/podbor-porody/', 'label': com.unfit_link}) }}
+      <ul class="cho-unfit" data-reveal="items">
+        {% for u in pg.unfit %}
+        <li class="cho-unfit__item">
+          <span class="cho-unfit__mark" aria-hidden="true">{{ ui.icon('close', sm=true) }}</span>
+          <h3 class="cho-unfit__title">{{ u.title|typo }}</h3>
+          <p class="cho-unfit__text">{{ u.text|typo }}</p>
+        </li>
+        {% endfor %}
+      </ul>
+    </section>
+
+    <!-- ================= СРАВНЕНИЕ СО ВСЕМИ ПОРОДАМИ — таблица (эта порода первой) ================= -->
+    <section class="section container" id="sravnenie" aria-labelledby="sravnenie-title">
+      {{ ui.section_head(pg.table_title, id='sravnenie-title', lead=pg.table_lead) }}
+      {{ ui.cmp_table(pg.table_cols, pg.table_rows, caption='Сравнение пород: ' ~ (pg.table_cols|map(attribute='name')|join(', '))) }}
+    </section>
+
+    <!-- ================= ЩЕНКИ ПОРОДЫ — 8 карточек, как каталог на главной ================= -->
+    <section class="section container" id="katalog" aria-labelledby="katalog-title">
+      {{ ui.section_head(pg.pups_title, id='katalog-title') }}
+      {% if pg.catalog %}
+      <ul class="pups hm-pups cho-pups" data-reveal="items">
+        {% for p in pg.catalog %}
+        <li class="pups__item">
+          {{ cards.puppy_card(p) }}
+        </li>
+        {% endfor %}
+      </ul>
+      <div class="hm-pups__foot">
+        <a class="btn btn--ink btn--lg" href="{{ b.urls.hub }}#shchenki">{{ pg.catalog_button|typo }} {{ ui.icon('arrow') }}</a>
+      </div>
+      {% else %}
+      {{ ui.empty_state('Сейчас щенков нет в наличии', 'Оставьте заявку — напишем, когда появится новый помёт.') }}
+      {% endif %}
     </section>
 
     <section class="section container" id="cena" aria-labelledby="cena-title">
@@ -75,21 +97,22 @@
 
     {{ blocks.faq_section(pg.faq, title=com.faq_title) }}
 
-    <section class="section container cho-links" id="eshche" aria-labelledby="eshche-title">
-      {{ ui.section_head(com.links_title, id='eshche-title') }}
-      {{ ui.link_tiles(links) }}
-    </section>
+    {#- «Читайте также» (client 21.10): the breed's articles, then four plates of its sections — one block -#}
+    {{ blocks.read_more(b) }}
 
+{% endblock %}
+
+{#- the breed's puppies are higher on the page (#katalog) — no second strip; the articles are in «Читайте также» -#}
+{% block pups %}{% endblock %}
+{% block blog %}{% endblock %}
+
+{% block seo %}
     {% call blocks.seo_block(pg.seo.title, pg.seo.lead, id='podrobnee') %}
         {% for s in pg.seo.blocks %}
         <h3>{{ s.h|typo }}</h3>
         <p>{{ s.p|typo }}</p>
         {% endfor %}
     {% endcall %}
-{% endblock %}
-
-{% block pups %}
-    {{ cards.pups_section(title=pg.pups_title, breed=b) }}
 {% endblock %}
 
 {% block lead %}

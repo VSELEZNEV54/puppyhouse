@@ -1,7 +1,9 @@
 /* домщенков.рф — блог.
-   /blog/: фильтр статей по теме. Состояние в адресе: ?tema=maltipu (значение «all» не пишется).
-     Разметка: [data-blog] → кнопки [data-bf-value], список [data-bf-list] > li[data-topic],
-     счётчик [data-bf-count], [data-bf-status].
+   /blog/: два фильтра — тема и порода; выбраны оба — статьи, подходящие под оба. На кнопке — сколько статей
+     останется, если нажать (0 — кнопка неактивна). Состояние в адресе: ?tema=uhod&poroda=maltipu
+     (старые ссылки ?tema=<порода> со страниц пород тоже работают).
+     Разметка: [data-blog] → кнопки [data-bf-group="tag|breed"][data-bf-value], число [data-bf-n] внутри кнопки,
+     список [data-bf-list] > li[data-tag][data-breed], [data-bf-count], [data-bf-reset], [data-bf-empty], [data-bf-status].
    Статья: оглавление .toc подсвечивает текущий раздел (aria-current="true"). */
 (() => {
   'use strict';
@@ -14,53 +16,78 @@
     return many;
   };
 
-  /* ---------- /blog/: фильтр по теме ---------- */
+  /* ---------- /blog/: фильтр по теме и породе ---------- */
   const root = document.querySelector('[data-blog]');
   if (root) {
     const buttons = Array.from(root.querySelectorAll('[data-bf-value]'));
-    const items = Array.from(root.querySelectorAll('[data-bf-list] > li[data-topic]'));
+    const items = Array.from(root.querySelectorAll('[data-bf-list] > li'));
     const count = root.querySelector('[data-bf-count]');
     const status = root.querySelector('[data-bf-status]');
-    const allowed = buttons.map((b) => b.dataset.bfValue);
-    const KEY = 'tema';
+    const empty = root.querySelector('[data-bf-empty]');
+    const list = root.querySelector('[data-bf-list]');
+    const resets = Array.from(root.querySelectorAll('[data-bf-reset]'));
+    const PARAM = { tag: 'tema', breed: 'poroda' };
+    const values = (g) => buttons.filter((b) => b.dataset.bfGroup === g).map((b) => b.dataset.bfValue);
 
+    const fits = (li, st) => (st.tag === 'all' || li.dataset.tag === st.tag) && (st.breed === 'all' || li.dataset.breed === st.breed);
     const read = () => {
-      const v = new URLSearchParams(location.search).get(KEY);
-      return v && allowed.includes(v) ? v : 'all';
+      const q = new URLSearchParams(location.search);
+      const st = { tag: q.get(PARAM.tag) || 'all', breed: q.get(PARAM.breed) || 'all' };
+      if (values('breed').includes(st.tag) && st.breed === 'all') { st.breed = st.tag; st.tag = 'all'; } // ?tema=maltipu
+      if (!values('tag').includes(st.tag)) st.tag = 'all';
+      if (!values('breed').includes(st.breed)) st.breed = 'all';
+      return st;
     };
-    const write = (v) => {
+    const write = (st) => {
       if (!history.replaceState) return;
       const q = new URLSearchParams(location.search);
-      if (v === 'all') q.delete(KEY); else q.set(KEY, v);
+      Object.keys(PARAM).forEach((g) => { if (st[g] === 'all') q.delete(PARAM[g]); else q.set(PARAM[g], st[g]); });
       const qs = q.toString();
       history.replaceState(null, '', location.pathname + (qs ? '?' + qs : '') + location.hash);
     };
 
-    const apply = (value, announce) => {
+    const apply = (st, announce) => {
       let visible = 0;
-      buttons.forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.bfValue === value)));
       items.forEach((li) => {
-        const show = value === 'all' || li.dataset.topic === value;
+        const show = fits(li, st);
         li.hidden = !show;
         if (show) visible++;
       });
-      const text = visible + ' ' + plural(visible, 'статья', 'статьи', 'статей');
+      // кнопки: выбранная — нажата; на остальных — сколько статей будет, если выбрать её (при второй группе как есть)
+      buttons.forEach((b) => {
+        const g = b.dataset.bfGroup, v = b.dataset.bfValue;
+        const on = st[g] === v;
+        b.setAttribute('aria-pressed', String(on));
+        const n = items.filter((li) => fits(li, Object.assign({}, st, { [g]: v }))).length;
+        const badge = b.querySelector('[data-bf-n]');
+        if (badge) badge.textContent = n;
+        b.disabled = !on && n === 0;
+      });
+      const text = visible + ' ' + plural(visible, 'статья', 'статьи', 'статей');
       if (count) count.textContent = text;
-      if (status && announce) {
-        const btn = buttons.find((b) => b.dataset.bfValue === value);
-        status.textContent = 'Показано: ' + text + (value === 'all' || !btn ? '' : ' — ' + btn.textContent.trim());
-      }
+      if (list) list.hidden = visible === 0;
+      if (empty) empty.hidden = visible > 0;
+      const filtered = st.tag !== 'all' || st.breed !== 'all';
+      resets.forEach((r) => { if (r.closest('.blg-filters')) r.hidden = !filtered; });
+      if (status && announce) status.textContent = 'Показано: ' + text;
     };
 
     let state = read();
     apply(state, false);
 
     buttons.forEach((b) => b.addEventListener('click', () => {
-      const v = b.dataset.bfValue;
-      // повторный клик по выбранной теме возвращает все статьи
-      state = v === state && v !== 'all' ? 'all' : v;
+      const g = b.dataset.bfGroup, v = b.dataset.bfValue;
+      // повторный клик по выбранной кнопке снимает выбор в этой группе
+      state = Object.assign({}, state, { [g]: v === state[g] && v !== 'all' ? 'all' : v });
       apply(state, true);
       write(state);
+    }));
+    resets.forEach((r) => r.addEventListener('click', () => {
+      state = { tag: 'all', breed: 'all' };
+      apply(state, true);
+      write(state);
+      const first = buttons[0];
+      if (first) first.focus();
     }));
 
     window.addEventListener('popstate', () => { state = read(); apply(state, false); });

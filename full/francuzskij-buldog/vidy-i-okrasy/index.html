@@ -29,12 +29,12 @@
   <!-- Geist is served from our own domain (assets/fonts, SIL OFL 1.1): no visitor IP goes to Google before consent -->
   <link rel="preload" href="../../../assets/fonts/geist-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="../../../assets/fonts/geist-latin.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="../../../assets/css/main.css?v=7b61bf5e">
-  <link rel="stylesheet" href="../../../assets/css/pages.css?v=221bc484">
-  <link rel="stylesheet" href="../../../assets/css/breedsub.css?v=dc73b370">
-  <script src="../../../assets/js/main.js?v=90a61a0f" defer></script>
+  <link rel="stylesheet" href="../../../assets/css/main.css?v=b47380d3">
+  <link rel="stylesheet" href="../../../assets/css/pages.css?v=694a13c3">
+  <link rel="stylesheet" href="../../../assets/css/breedsub.css?v=eda282cc">
+  <script src="../../../assets/js/main.js?v=697d735d" defer></script>
 </head>
-<body>
+<body class="page-varieties">
   <!-- Иконки: инлайн-спрайт 24×24. Линейные — stroke currentColor, заливочные — fill. -->
   <svg class="sprite" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
     <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
@@ -140,19 +140,17 @@
                 <li class="mega__sub">
                   <span class="mega__subh">Доставка по городам</span>
                   <ul class="mega__subl">
-              <li><a class="mega__sublink" href="../../dostavka/sankt-peterburg/"><span><span class="nw">Санкт-Петербург</span></span></a></li><li><a class="mega__sublink" href="../../dostavka/novosibirsk/"><span>Новосибирск</span></a></li><li><a class="mega__sublink" href="../../dostavka/ekaterinburg/"><span>Екатеринбург</span></a></li><li><a class="mega__sublink" href="../../dostavka/kazan/"><span>Казань</span></a></li><li><a class="mega__sublink" href="../../dostavka/#goroda"><span>Все 30 городов</span></a></li>    </ul>
+              <li><a class="mega__sublink" href="../../shchenki-v-sankt-peterburge/"><span><span class="nw">Санкт-Петербург</span></span></a></li><li><a class="mega__sublink" href="../../shchenki-v-novosibirske/"><span>Новосибирск</span></a></li><li><a class="mega__sublink" href="../../shchenki-v-ekaterinburge/"><span>Екатеринбург</span></a></li><li><a class="mega__sublink" href="../../shchenki-v-kazani/"><span>Казань</span></a></li><li><a class="mega__sublink" href="../../dostavka/#goroda"><span>Все 30 городов</span></a></li>    </ul>
                 </li>
-                <li><a class="mega__link" href="../../rassrochka/"><span>Рассрочка и бронь</span></a></li>
+                <li><a class="mega__link" href="../../rassrochka/"><span>Бронь щенка</span></a></li>
                 <li><a class="mega__link" href="../../shchenok-v-podarok/"><span>Щенок в подарок</span></a></li>
-                <li><a class="mega__link" href="../../magazin/"><span>Стартовый набор</span></a></li>
                 <li><a class="mega__link" href="../../faq/"><span>Вопросы и ответы</span></a></li>
               </ul>
             </div>
             <div class="mega__col">
               <p class="mega__h">О питомнике</p>
               <ul class="mega__list">
-                <li><a class="mega__link" href="../../roditeli/"><span>Родители щенков</span></a></li>
-                <li><a class="mega__link" href="../../vypuskniki/"><span>Выпускники</span></a></li>
+                <li><a class="mega__link" href="../../o-pitomnike/"><span>О питомнике</span></a></li>
                 <li><a class="mega__link" href="../../otzyvy/"><span>Отзывы владельцев</span></a></li>
                 <li><a class="mega__link" href="../../dokumenty-i-garantii/"><span>Документы и гарантии</span></a></li>
                 <li><a class="mega__link" href="../../kontakty/"><span>Контакты</span></a></li>
@@ -201,7 +199,7 @@
               <a class="dd__test" href="../../podbor-porody/"><span class="ico ico--sm" style="--c:var(--lilac)"><svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-sparkle"/></svg></span><span>Подобрать породу — тест</span><svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></a>
             </div>
           </li>
-          <li class="nav__item nav__item--p2"><a class="nav__link" href="../../roditeli/">О питомнике</a></li>
+          <li class="nav__item nav__item--p2"><a class="nav__link" href="../../o-pitomnike/">О питомнике</a></li>
           <li class="nav__item nav__item--p3"><a class="nav__link" href="../../dostavka/">Доставка</a></li>
           <li class="nav__item nav__item--p4"><a class="nav__link" href="../../otzyvy/">Отзывы</a></li>
           <li class="nav__item nav__item--p5"><a class="nav__link" href="../../kontakty/">Контакты</a></li>
@@ -229,7 +227,7 @@
   <div class="phero__tile tone--powder phero--photo" style="--tone-top:#AED3E3;--tone-hi:#A3CDDD;--tone-floor:#B8DAE9;--fa:0.84;--fb:1.00" data-hero-ctas>
     <div class="phero__photo"><img src="../../../assets/img/color-buldog-brindle.jpg" alt="Щенок французского бульдога" width="1024" height="1024" fetchpriority="high" decoding="async"></div>
     <div class="phero__copy">
-<p class="eyebrow"><span class="eyebrow__dot" aria-hidden="true"></span>Питомник домщенков.рф · Москва</p>      <h1 class="phero__title" id="page-title">Виды и окрасы французского бульдога</h1>
+<p class="eyebrow"><span class="eyebrow__dot" aria-hidden="true"></span>Виды и окрасы французского бульдога</p>      <h1 class="phero__title" id="page-title">Какие бывают французские бульдоги</h1>
 <p class="phero__lead">Что признаёт стандарт FCI, а что — нет. Честно и с фото</p>      <dl class="phero__facts">
 <div class="phero__fact"><dt>Стандарт</dt><dd>FCI 101</dd></div><div class="phero__fact"><dt>Вес</dt><dd><span class="nw">8–14</span> кг</dd></div><div class="phero__fact"><dt>Окрасы</dt><dd>палевый, тигровый, пегий</dd></div>      </dl>
 <div class="phero__actions">      <button class="btn btn--ink btn--lg" type="button" data-open-modal data-modal-kind="price" data-modal-breed="Французский бульдог">Узнать цену</button>
@@ -237,126 +235,51 @@
 </div>    </div>
   </div>
 </section>
-    <section class="section section--tight container" id="okrasy" aria-labelledby="okrasy-title">
+    <section class="section section--tight container" id="vidy" aria-labelledby="vidy-title">
       <div class="sec-head">
   <div class="sec-head__txt">
-    <h2 class="h2" id="okrasy-title">Окрасы французского бульдога</h2>
-    <p class="sec-head__lead">Палевый, тигровый и пегий — по стандарту. Голубой и другие — нет</p>
+    <h2 class="h2" id="vidy-title">Виды французского бульдога</h2>
+    <p class="sec-head__lead">Стандарт FCI знает один размер и короткую шерсть. «Мини» и флаффи часто ищут, но они вне стандарта</p>
   </div>
 
-
 </div>
-      <div class="bsub-cnav">
-  <ul class="bsub-cnav__list" aria-label="Окрасы: перейти к описанию">
-    <li><a class="bsub-cnav__item" href="#palevyj"><span class="bsub-cface" style="--tone:#B3D2E7" aria-hidden="true"><img src="../../../assets/img/okras-buldog-palevyj.jpg" alt="" width="1024" height="1024" decoding="async"></span><span class="bsub-cnav__name">Палевый</span></a></li>
-    <li><a class="bsub-cnav__item" href="#tigrovyj"><span class="bsub-cface" style="--tone:#A6C9DF" aria-hidden="true"><img src="../../../assets/img/okras-buldog-tigrovyj.jpg" alt="" width="1024" height="1024" decoding="async"></span><span class="bsub-cnav__name">Тигровый</span></a></li>
-    <li><a class="bsub-cnav__item" href="#pegij"><span class="bsub-cface" style="--tone:#B2D0E5" aria-hidden="true"><img src="../../../assets/img/okras-buldog-pegij.jpg" alt="" width="1024" height="1024" decoding="async"></span><span class="bsub-cnav__name">Пегий</span></a></li>
-    <li><a class="bsub-cnav__item" href="#goluboj"><span class="bsub-cface" style="--tone:#B0CFE3" aria-hidden="true"><img src="../../../assets/img/okras-buldog-goluboj.jpg" alt="" width="1024" height="1024" decoding="async"></span><span class="bsub-cnav__name">Голубой</span></a></li>
-    <li><a class="bsub-cnav__item" href="#kremovyj"><span class="bsub-cface" style="--tone:#AECEE3" aria-hidden="true"><img src="../../../assets/img/okras-buldog-kremovyj.jpg" alt="" width="1024" height="1024" decoding="async"></span><span class="bsub-cnav__name">Кремовый</span></a></li>
-    <li><a class="bsub-cnav__item" href="#shokoladnyj"><span class="bsub-cface" style="--tone:#B5D2E4" aria-hidden="true"><img src="../../../assets/img/okras-buldog-shokoladnyj.jpg" alt="" width="1024" height="1024" decoding="async"></span><span class="bsub-cnav__name">Шоколадный</span></a></li>
-    <li><a class="bsub-cnav__item" href="#mramornyj"><span class="bsub-cface" style="--tone:#B1D0E4" aria-hidden="true"><img src="../../../assets/img/okras-buldog-mramornyj.jpg" alt="" width="1024" height="1024" decoding="async"></span><span class="bsub-cnav__name">Мраморный (мерль)</span></a></li>
-  </ul>
-</div>      <ul class="bsub-cols">
-  <li class="bsub-col" id="palevyj">
-    <div class="bsub-col__media" style="--tone-top:#B3D2E7;--tone-hi:#B9D6EB;--tone-floor:#CDE0EF;--fa:0.75;--fb:0.91">
-      <img src="../../../assets/img/okras-buldog-palevyj.jpg" alt="Палевый щенок французского бульдога сидит, наклонив голову, на голубом фоне" width="1024" height="1024" loading="lazy" decoding="async">
-    </div>
-    <div class="bsub-col__body">
-      <span class="bsub-col__badge bsub-col__badge--ok">стандарт FCI</span>
-      <h3 class="bsub-col__name">Палевый</h3>
-      <p class="bsub-col__text">Песочный окрас от светлого <span class="nw">до тёмно-рыжего</span>, часто с тёмной маской на морде. Классика породы.</p>
-      <button class="btn btn--white bsub-col__btn" type="button" data-open-modal data-modal-kind="colour" data-modal-colour="palevyj" data-modal-breed="Французский бульдог" data-modal-title="Французский бульдог: палевый" data-modal-sub="Пришлём щенков этого окраса с фото, видео и ценой" data-modal-note="Окрас: палевый">Спросить о&nbsp;щенках</button>
-    </div>
-  </li>
-  <li class="bsub-col" id="tigrovyj">
-    <div class="bsub-col__media" style="--tone-top:#A6C9DF;--tone-hi:#BAD7E8;--tone-floor:#CADFEE;--fa:0.66;--fb:0.82">
-      <img src="../../../assets/img/okras-buldog-tigrovyj.jpg" alt="Тигровый щенок французского бульдога лежит, положив морду на лапы, на голубом фоне" width="1024" height="1024" loading="lazy" decoding="async">
-    </div>
-    <div class="bsub-col__body">
-      <span class="bsub-col__badge bsub-col__badge--ok">стандарт FCI</span>
-      <h3 class="bsub-col__name">Тигровый</h3>
-      <p class="bsub-col__text">Тёмные полосы на палевом фоне — иногда такие густые, что щенок кажется чёрным. Бывает белое пятно на груди.</p>
-      <button class="btn btn--white bsub-col__btn" type="button" data-open-modal data-modal-kind="colour" data-modal-colour="tigrovyj" data-modal-breed="Французский бульдог" data-modal-title="Французский бульдог: тигровый" data-modal-sub="Пришлём щенков этого окраса с фото, видео и ценой" data-modal-note="Окрас: тигровый">Спросить о&nbsp;щенках</button>
-    </div>
-  </li>
-  <li class="bsub-col" id="pegij">
-    <div class="bsub-col__media" style="--tone-top:#B2D0E5;--tone-hi:#BEDBF0;--tone-floor:#D7E8F4;--fa:0.75;--fb:0.91">
-      <img src="../../../assets/img/okras-buldog-pegij.jpg" alt="Пегий щенок французского бульдога стоит боком на голубом фоне" width="1024" height="1024" loading="lazy" decoding="async">
-    </div>
-    <div class="bsub-col__body">
-      <span class="bsub-col__badge bsub-col__badge--ok">стандарт FCI</span>
-      <h3 class="bsub-col__name">Пегий</h3>
-      <p class="bsub-col__text">Белая основа с тигровыми или палевыми пятнами. Рисунок у каждого щенка свой.</p>
-      <button class="btn btn--white bsub-col__btn" type="button" data-open-modal data-modal-kind="colour" data-modal-colour="pegij" data-modal-breed="Французский бульдог" data-modal-title="Французский бульдог: пегий" data-modal-sub="Пришлём щенков этого окраса с фото, видео и ценой" data-modal-note="Окрас: пегий">Спросить о&nbsp;щенках</button>
-    </div>
-  </li>
-  <li class="bsub-col" id="goluboj">
-    <div class="bsub-col__media" style="--tone-top:#B0CFE3;--tone-hi:#AECDE4;--tone-floor:#C9DEEF;--fa:0.74;--fb:0.90">
-      <img src="../../../assets/img/okras-buldog-goluboj.jpg" alt="Голубой щенок французского бульдога сидит и смотрит в сторону на голубом фоне" width="1024" height="1024" loading="lazy" decoding="async">
-    </div>
-    <div class="bsub-col__body">
-      <span class="bsub-col__badge bsub-col__badge--no">вне стандарта FCI</span>
-      <h3 class="bsub-col__name">Голубой</h3>
-      <p class="bsub-col__text">Он же серый — разбавленный чёрный. Его любят за необычный вид, но к выставкам такой француз не допускается.</p>
-      <button class="btn btn--white bsub-col__btn" type="button" data-open-modal data-modal-kind="colour" data-modal-colour="goluboj" data-modal-breed="Французский бульдог" data-modal-title="Французский бульдог: голубой" data-modal-sub="Пришлём щенков этого окраса с фото, видео и ценой" data-modal-note="Окрас: голубой">Спросить о&nbsp;щенках</button>
-    </div>
-  </li>
-  <li class="bsub-col" id="kremovyj">
-    <div class="bsub-col__media" style="--tone-top:#AECEE3;--tone-hi:#BFDCEE;--tone-floor:#C5DDF0;--fa:0.68;--fb:0.84">
-      <img src="../../../assets/img/okras-buldog-kremovyj.jpg" alt="Кремовый щенок французского бульдога лежит на боку и машет лапой на голубом фоне" width="1024" height="1024" loading="lazy" decoding="async">
-    </div>
-    <div class="bsub-col__body">
-      <span class="bsub-col__badge bsub-col__badge--no">вне стандарта FCI</span>
-      <h3 class="bsub-col__name">Кремовый</h3>
-      <p class="bsub-col__text">Очень светлый ровный окрас без маски. Прекрасный друг, но не выставочная собака.</p>
-      <button class="btn btn--white bsub-col__btn" type="button" data-open-modal data-modal-kind="colour" data-modal-colour="kremovyj" data-modal-breed="Французский бульдог" data-modal-title="Французский бульдог: кремовый" data-modal-sub="Пришлём щенков этого окраса с фото, видео и ценой" data-modal-note="Окрас: кремовый">Спросить о&nbsp;щенках</button>
-    </div>
-  </li>
-  <li class="bsub-col" id="shokoladnyj">
-    <div class="bsub-col__media" style="--tone-top:#B5D2E4;--tone-hi:#BBD6EB;--tone-floor:#D4E6F4;--fa:0.67;--fb:0.83">
-      <img src="../../../assets/img/okras-buldog-shokoladnyj.jpg" alt="Шоколадный щенок французского бульдога сидит спиной и оглядывается на голубом фоне" width="1024" height="1024" loading="lazy" decoding="async">
-    </div>
-    <div class="bsub-col__body">
-      <span class="bsub-col__badge bsub-col__badge--no">вне стандарта FCI</span>
-      <h3 class="bsub-col__name">Шоколадный</h3>
-      <p class="bsub-col__text">Коричневая шерсть, нос и подушечки лап — в тон. Стандарт FCI этот окрас не признаёт.</p>
-      <button class="btn btn--white bsub-col__btn" type="button" data-open-modal data-modal-kind="colour" data-modal-colour="shokoladnyj" data-modal-breed="Французский бульдог" data-modal-title="Французский бульдог: шоколадный" data-modal-sub="Пришлём щенков этого окраса с фото, видео и ценой" data-modal-note="Окрас: шоколадный">Спросить о&nbsp;щенках</button>
-    </div>
-  </li>
-  <li class="bsub-col" id="mramornyj">
-    <div class="bsub-col__media" style="--tone-top:#B1D0E4;--tone-hi:#BCDAEE;--tone-floor:#C9E0F0;--fa:0.73;--fb:0.89">
-      <img src="../../../assets/img/okras-buldog-mramornyj.jpg" alt="Мраморный щенок французского бульдога сидит, подняв лапу, на голубом фоне" width="1024" height="1024" loading="lazy" decoding="async">
-    </div>
-    <div class="bsub-col__body">
-      <span class="bsub-col__badge bsub-col__badge--no">вне стандарта FCI</span>
-      <h3 class="bsub-col__name">Мраморный (мерль)</h3>
-      <p class="bsub-col__text">Тёмные пятна на светлом фоне. Вязка двух мраморных собак грозит щенкам глухотой.</p>
-      <button class="btn btn--white bsub-col__btn" type="button" data-open-modal data-modal-kind="colour" data-modal-colour="mramornyj" data-modal-breed="Французский бульдог" data-modal-title="Французский бульдог: мраморный (мерль)" data-modal-sub="Пришлём щенков этого окраса с фото, видео и ценой" data-modal-note="Окрас: мраморный (мерль)">Спросить о&nbsp;щенках</button>
-    </div>
-  </li>
-  <li class="bsub-col bsub-col--ask tone--sky">
-    <span class="ico" style="--c:var(--lilac)" aria-hidden="true"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-palette"/></svg></span>
-    <h3 class="bsub-col__name">Ищете другой окрас?</h3>
-    <p class="bsub-col__text">Расскажите, какого щенка ищете, — подберём и пришлём видео</p>
-    <button class="btn btn--ink" type="button" data-open-modal data-modal-kind="colour" data-modal-breed="Французский бульдог" data-modal-title="Ищете другой окрас?" data-modal-sub="Пришлём щенков нужного окраса с фото, видео и ценой" data-modal-note="Подбор по окрасу">Оставить заявку</button>
-  </li>
-</ul>
-
-    </section>
-
-    <section class="section container" id="standart" aria-labelledby="standart-title">
-      <div class="sec-head">
-  <div class="sec-head__txt">
-    <h2 class="h2" id="standart-title">Что признаёт стандарт</h2>
-    <p class="sec-head__lead">РКФ работает по стандарту FCI. Вот что он говорит об окрасах</p>
-  </div>
-
-
-</div>
-      <div class="bsub-vs">
+      <figure class="bsub-types__photo" style="--tone-top:#C3DEEA;--tone-hi:#ADD0DE;--tone-floor:#D4E9F2;--fa:0.79;--fb:0.95">
+  <img src="../../../assets/img/kinds-buldog.jpg" alt="Три взрослых французских бульдога в ряд: стандартный, «мини» и флаффи" width="1376" height="768" style="object-position:50% 65%" loading="lazy" decoding="async">
+  <ol class="bsub-types__pins" aria-hidden="true">
+<li class="bsub-types__pin" style="--x:18.5%"><b>1</b><span>Стандарт</span></li><li class="bsub-types__pin" style="--x:50.0%"><b>2</b><span>«Мини»</span></li><li class="bsub-types__pin" style="--x:82.5%"><b>3</b><span>Флаффи</span></li>  </ol>
+</figure>
+<ol class="bsub-types bsub-types--3">
+  <li class="bsub-kind bsub-type">
+    <div class="bsub-kind__head">
+      <span class="bsub-type__n" aria-hidden="true">1</span>
+<span class="bsub-kind__badge">стандарт FCI</span>    </div>
+    <h3 class="bsub-kind__title">Французский бульдог</h3>
+    <p class="bsub-kind__line">Один размер по стандарту FCI</p>
+<dl class="bsub-kind__rows">
+<div><dt>Вес</dt><dd><span class="nw">8–14</span> кг</dd></div><div><dt>Рост</dt><dd><span class="nw">24–35</span> см</dd></div><div class="bsub-kind__row--long"><dt>Особенности</dt><dd>крепкий, компактный, короткая гладкая шерсть</dd></div></dl>  </li>
+  <li class="bsub-kind bsub-type bsub-kind--off">
+    <div class="bsub-kind__head">
+      <span class="bsub-type__n" aria-hidden="true">2</span>
+<span class="bsub-kind__badge bsub-kind__badge--off">нет в стандарте</span>    </div>
+    <h3 class="bsub-kind__title">«Мини»</h3>
+    <p class="bsub-kind__line">Отдельной <span class="nw">мини-разновидности</span> нет</p>
+<dl class="bsub-kind__rows">
+<div><dt>Стандарт FCI</dt><dd>не признаёт</dd></div><div><dt>Вес взрослого</dt><dd>обычно те же <span class="nw">8–14</span> кг</dd></div><div class="bsub-kind__row--long"><dt>Особенности</dt><dd>так часто называют просто мелкого щенка</dd></div></dl>  </li>
+  <li class="bsub-kind bsub-type bsub-kind--off">
+    <div class="bsub-kind__head">
+      <span class="bsub-type__n" aria-hidden="true">3</span>
+<span class="bsub-kind__badge bsub-kind__badge--off">нет в стандарте</span>    </div>
+    <h3 class="bsub-kind__title">Флаффи</h3>
+    <p class="bsub-kind__line">Длинная шерсть от рецессивного гена</p>
+<dl class="bsub-kind__rows">
+<div><dt>Стандарт FCI</dt><dd>не признаёт</dd></div><div class="bsub-kind__row--long"><dt>Шерсть</dt><dd>длинная, мягкая; по стандарту — короткая</dd></div><div class="bsub-kind__row--long"><dt>Особенности</dt><dd>нужно чаще вычёсывать, выставки закрыты</dd></div></dl>  </li>
+</ol>
+<div class="bsub-sub">
+  <h3 class="bsub-sub__title">Какие окрасы признаёт стандарт</h3>
+<p class="bsub-sub__lead">РКФ работает по стандарту FCI. Вот что он говорит об окрасах</p>  <div class="bsub-vs">
   <div class="bsub-vs__card bsub-vs__card--ok tone--sky">
-    <h3 class="bsub-vs__title" id="standart-ok">По стандарту</h3>
-    <ul class="bsub-vs__list" aria-labelledby="standart-ok">
+    <h4 class="bsub-vs__title" id="vidy-std-ok">По стандарту</h4>
+    <ul class="bsub-vs__list" aria-labelledby="vidy-std-ok">
       <li class="bsub-vs__item">
         <span class="bsub-vs__mark" aria-hidden="true"><svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-check"/></svg></span>
         <span class="bsub-vs__txt"><span class="bsub-vs__name">Палевый</span><span class="bsub-vs__line">От светлого до тёмного, с маской или без</span></span>
@@ -372,8 +295,8 @@
     </ul>
 <p class="bsub-vs__note">Мы разводим [палевых, тигровых и пегих] французов. Окрас вне стандарта честно отмечаем в карточке щенка.</p>  </div>
   <div class="bsub-vs__card bsub-vs__card--no">
-    <h3 class="bsub-vs__title" id="standart-no">Вне стандарта</h3>
-    <ul class="bsub-vs__list" aria-labelledby="standart-no">
+    <h4 class="bsub-vs__title" id="vidy-std-no">Вне стандарта</h4>
+    <ul class="bsub-vs__list" aria-labelledby="vidy-std-no">
       <li class="bsub-vs__item">
         <span class="bsub-vs__mark" aria-hidden="true"><svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-close"/></svg></span>
         <span class="bsub-vs__txt"><span class="bsub-vs__name">Голубой, он же серый</span></span>
@@ -397,52 +320,132 @@
     </ul>
 <p class="bsub-vs__note">Таких собак не допускают к выставкам и разведению. Вязка двух мраморных грозит щенкам глухотой.</p>  </div>
 </div>
+</div>
+
 
     </section>
 
-    <section class="section container" id="vidy" aria-labelledby="vidy-title">
-      <div class="sec-head">
+    <section class="section container" id="okrasy" aria-labelledby="okrasy-title">
+<div class="sec-head">
   <div class="sec-head__txt">
-    <h2 class="h2" id="vidy-title">Мини и флаффи</h2>
-    <p class="sec-head__lead">Их часто ищут, но стандарт FCI таких разновидностей не знает</p>
+    <h2 class="h2" id="okrasy-title">Окрасы французского бульдога</h2>
+    <p class="sec-head__lead">Палевый, тигровый и пегий — по стандарту. Голубой и другие — нет</p>
   </div>
-
-
+<button class="btn btn--white brd-help" type="button" data-open-modal data-modal-kind="consult" data-modal-breed="Французский бульдог" data-modal-title="Поможем выбрать окрас" data-modal-sub="Расскажем, как меняется окрас с возрастом, и пришлём щенков нужного цвета с видео" data-modal-note="Консультация: окрас, французский бульдог" data-modal-submit="Получить консультацию">Получить консультацию</button>
+</div>      <div class="media-carousel brd-cols" data-carousel data-align="start" data-start="0" role="region" aria-roledescription="карусель" aria-label="Окрасы французского бульдога">
+  <div class="media-carousel__viewport" tabindex="0" data-carousel-viewport>
+    <ul class="media-carousel__track">
+      <li class="media-carousel__item is-active" aria-roledescription="слайд" aria-label="1 из 7: Палевый французский бульдог">
+        <article class="brd-col">          <a class="brd-col__media" href="../palevyj/" tabindex="-1" aria-hidden="true" style="--tone-top:#B3D2E7;--tone-hi:#B9D6EB;--tone-floor:#CDE0EF;--fa:0.75;--fb:0.91">
+            <img src="../../../assets/img/okras-buldog-palevyj.jpg" alt="Палевый щенок французского бульдога сидит, наклонив голову, на голубом фоне" width="1024" height="1024" loading="lazy" decoding="async">
+          </a>
+          <div class="brd-col__body">
+            <h3 class="brd-col__name"><a href="../palevyj/">Палевый французский бульдог</a></h3>
+            <p class="brd-col__text">Песочная шерсть и тёмная маска на морде</p>
+            <div class="brd-col__actions">
+              <button class="btn btn--ink brd-col__btn" type="button" data-open-modal data-modal-kind="colour" data-modal-colour="palevyj" data-modal-breed="Французский бульдог" data-modal-title="Подберём палевого француза" data-modal-sub="Пришлём щенков этого окраса с фото, видео и ценой. Нет сейчас — напишем, когда появятся" data-modal-note="Окрас: палевый" data-modal-submit="Подобрать щенка" aria-label="Подобрать щенка: палевый окрас">Подобрать щенка</button>
+              <a class="btn btn--white brd-col__btn" href="../palevyj/" aria-label="Подробнее: Палевый французский бульдог">Подробнее</a>
+            </div>
+          </div>
+        </article>
+      </li>
+      <li class="media-carousel__item" aria-roledescription="слайд" aria-label="2 из 7: Тигровый французский бульдог">
+        <article class="brd-col">          <a class="brd-col__media" href="../tigrovyj/" tabindex="-1" aria-hidden="true" style="--tone-top:#A6C9DF;--tone-hi:#BAD7E8;--tone-floor:#CADFEE;--fa:0.66;--fb:0.82">
+            <img src="../../../assets/img/okras-buldog-tigrovyj.jpg" alt="Тигровый щенок французского бульдога лежит, положив морду на лапы, на голубом фоне" width="1024" height="1024" loading="lazy" decoding="async">
+          </a>
+          <div class="brd-col__body">
+            <h3 class="brd-col__name"><a href="../tigrovyj/">Тигровый французский бульдог</a></h3>
+            <p class="brd-col__text">Тёмные полосы на палевом фоне</p>
+            <div class="brd-col__actions">
+              <button class="btn btn--ink brd-col__btn" type="button" data-open-modal data-modal-kind="colour" data-modal-colour="tigrovyj" data-modal-breed="Французский бульдог" data-modal-title="Подберём тигрового француза" data-modal-sub="Пришлём щенков этого окраса с фото, видео и ценой. Нет сейчас — напишем, когда появятся" data-modal-note="Окрас: тигровый" data-modal-submit="Подобрать щенка" aria-label="Подобрать щенка: тигровый окрас">Подобрать щенка</button>
+              <a class="btn btn--white brd-col__btn" href="../tigrovyj/" aria-label="Подробнее: Тигровый французский бульдог">Подробнее</a>
+            </div>
+          </div>
+        </article>
+      </li>
+      <li class="media-carousel__item" aria-roledescription="слайд" aria-label="3 из 7: Пегий французский бульдог">
+        <article class="brd-col">          <a class="brd-col__media" href="../pegij/" tabindex="-1" aria-hidden="true" style="--tone-top:#B2D0E5;--tone-hi:#BEDBF0;--tone-floor:#D7E8F4;--fa:0.75;--fb:0.91">
+            <img src="../../../assets/img/okras-buldog-pegij.jpg" alt="Пегий щенок французского бульдога стоит боком на голубом фоне" width="1024" height="1024" loading="lazy" decoding="async">
+          </a>
+          <div class="brd-col__body">
+            <h3 class="brd-col__name"><a href="../pegij/">Пегий французский бульдог</a></h3>
+            <p class="brd-col__text">Белая основа и тигровые или палевые пятна</p>
+            <div class="brd-col__actions">
+              <button class="btn btn--ink brd-col__btn" type="button" data-open-modal data-modal-kind="colour" data-modal-colour="pegij" data-modal-breed="Французский бульдог" data-modal-title="Подберём пегого француза" data-modal-sub="Пришлём щенков этого окраса с фото, видео и ценой. Нет сейчас — напишем, когда появятся" data-modal-note="Окрас: пегий" data-modal-submit="Подобрать щенка" aria-label="Подобрать щенка: пегий окрас">Подобрать щенка</button>
+              <a class="btn btn--white brd-col__btn" href="../pegij/" aria-label="Подробнее: Пегий французский бульдог">Подробнее</a>
+            </div>
+          </div>
+        </article>
+      </li>
+      <li class="media-carousel__item" aria-roledescription="слайд" aria-label="4 из 7: Голубой французский бульдог">
+        <article class="brd-col">          <a class="brd-col__media" href="../goluboj/" tabindex="-1" aria-hidden="true" style="--tone-top:#B0CFE3;--tone-hi:#AECDE4;--tone-floor:#C9DEEF;--fa:0.74;--fb:0.90">
+            <img src="../../../assets/img/okras-buldog-goluboj.jpg" alt="Голубой щенок французского бульдога сидит и смотрит в сторону на голубом фоне" width="1024" height="1024" loading="lazy" decoding="async">
+          </a>
+          <div class="brd-col__body">
+            <h3 class="brd-col__name"><a href="../goluboj/">Голубой французский бульдог</a></h3>
+            <p class="brd-col__text"><span class="nw">Дымчато-серая</span> шерсть и серый нос</p>
+            <div class="brd-col__actions">
+              <button class="btn btn--ink brd-col__btn" type="button" data-open-modal data-modal-kind="colour" data-modal-colour="goluboj" data-modal-breed="Французский бульдог" data-modal-title="Подберём голубого француза" data-modal-sub="Пришлём щенков этого окраса с фото, видео и ценой. Нет сейчас — напишем, когда появятся" data-modal-note="Окрас: голубой" data-modal-submit="Подобрать щенка" aria-label="Подобрать щенка: голубой окрас">Подобрать щенка</button>
+              <a class="btn btn--white brd-col__btn" href="../goluboj/" aria-label="Подробнее: Голубой французский бульдог">Подробнее</a>
+            </div>
+          </div>
+        </article>
+      </li>
+      <li class="media-carousel__item" aria-roledescription="слайд" aria-label="5 из 7: Кремовый французский бульдог">
+        <article class="brd-col">          <a class="brd-col__media" href="../kremovyj/" tabindex="-1" aria-hidden="true" style="--tone-top:#AECEE3;--tone-hi:#BFDCEE;--tone-floor:#C5DDF0;--fa:0.68;--fb:0.84">
+            <img src="../../../assets/img/okras-buldog-kremovyj.jpg" alt="Кремовый щенок французского бульдога лежит на боку и машет лапой на голубом фоне" width="1024" height="1024" loading="lazy" decoding="async">
+          </a>
+          <div class="brd-col__body">
+            <h3 class="brd-col__name"><a href="../kremovyj/">Кремовый французский бульдог</a></h3>
+            <p class="brd-col__text">Светлый молочный окрас без маски</p>
+            <div class="brd-col__actions">
+              <button class="btn btn--ink brd-col__btn" type="button" data-open-modal data-modal-kind="colour" data-modal-colour="kremovyj" data-modal-breed="Французский бульдог" data-modal-title="Подберём кремового француза" data-modal-sub="Пришлём щенков этого окраса с фото, видео и ценой. Нет сейчас — напишем, когда появятся" data-modal-note="Окрас: кремовый" data-modal-submit="Подобрать щенка" aria-label="Подобрать щенка: кремовый окрас">Подобрать щенка</button>
+              <a class="btn btn--white brd-col__btn" href="../kremovyj/" aria-label="Подробнее: Кремовый французский бульдог">Подробнее</a>
+            </div>
+          </div>
+        </article>
+      </li>
+      <li class="media-carousel__item" aria-roledescription="слайд" aria-label="6 из 7: Шоколадный французский бульдог">
+        <article class="brd-col">          <a class="brd-col__media" href="../shokoladnyj/" tabindex="-1" aria-hidden="true" style="--tone-top:#B5D2E4;--tone-hi:#BBD6EB;--tone-floor:#D4E6F4;--fa:0.67;--fb:0.83">
+            <img src="../../../assets/img/okras-buldog-shokoladnyj.jpg" alt="Шоколадный щенок французского бульдога сидит спиной и оглядывается на голубом фоне" width="1024" height="1024" loading="lazy" decoding="async">
+          </a>
+          <div class="brd-col__body">
+            <h3 class="brd-col__name"><a href="../shokoladnyj/">Шоколадный французский бульдог</a></h3>
+            <p class="brd-col__text">Коричневая шерсть, нос в тон окраса</p>
+            <div class="brd-col__actions">
+              <button class="btn btn--ink brd-col__btn" type="button" data-open-modal data-modal-kind="colour" data-modal-colour="shokoladnyj" data-modal-breed="Французский бульдог" data-modal-title="Подберём шоколадного француза" data-modal-sub="Пришлём щенков этого окраса с фото, видео и ценой. Нет сейчас — напишем, когда появятся" data-modal-note="Окрас: шоколадный" data-modal-submit="Подобрать щенка" aria-label="Подобрать щенка: шоколадный окрас">Подобрать щенка</button>
+              <a class="btn btn--white brd-col__btn" href="../shokoladnyj/" aria-label="Подробнее: Шоколадный французский бульдог">Подробнее</a>
+            </div>
+          </div>
+        </article>
+      </li>
+      <li class="media-carousel__item" aria-roledescription="слайд" aria-label="7 из 7: Мраморный французский бульдог">
+        <article class="brd-col">          <a class="brd-col__media" href="../mramornyj/" tabindex="-1" aria-hidden="true" style="--tone-top:#B1D0E4;--tone-hi:#BCDAEE;--tone-floor:#C9E0F0;--fa:0.73;--fb:0.89">
+            <img src="../../../assets/img/okras-buldog-mramornyj.jpg" alt="Мраморный щенок французского бульдога сидит, подняв лапу, на голубом фоне" width="1024" height="1024" loading="lazy" decoding="async">
+          </a>
+          <div class="brd-col__body">
+            <h3 class="brd-col__name"><a href="../mramornyj/">Мраморный французский бульдог</a></h3>
+            <p class="brd-col__text">Тёмные пятна на светлом дымчатом фоне</p>
+            <div class="brd-col__actions">
+              <button class="btn btn--ink brd-col__btn" type="button" data-open-modal data-modal-kind="colour" data-modal-colour="mramornyj" data-modal-breed="Французский бульдог" data-modal-title="Подберём мраморного француза" data-modal-sub="Пришлём щенков этого окраса с фото, видео и ценой. Нет сейчас — напишем, когда появятся" data-modal-note="Окрас: мраморный (мерль)" data-modal-submit="Подобрать щенка" aria-label="Подобрать щенка: мраморный (мерль) окрас">Подобрать щенка</button>
+              <a class="btn btn--white brd-col__btn" href="../mramornyj/" aria-label="Подробнее: Мраморный французский бульдог">Подробнее</a>
+            </div>
+          </div>
+        </article>
+      </li>
+    </ul>
+  </div>
+  <div class="media-carousel__nav">
+    <button class="media-carousel__btn" type="button" data-carousel-prev aria-label="Предыдущий окрас"><svg class="i i--flip" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></button>
+    <button class="media-carousel__btn" type="button" data-carousel-next aria-label="Следующий окрас"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></button>
+  </div>
 </div>
-      <ul class="bsub-kinds bsub-kinds--3">
-        <li class="bsub-kind">
-          <div class="bsub-kind__head">
-<span class="bsub-kind__face" style="--s:1" aria-hidden="true"><span class="face tone--powder"><img src="../../../assets/img/studio-buldog-blue.jpg" alt="" width="1024" height="1024" loading="lazy" decoding="async"></span></span>
-<span class="bsub-kind__badge">стандарт FCI</span>          </div>
-          <h3 class="bsub-kind__title">Французский бульдог</h3>
-          <p class="bsub-kind__line">Один размер по стандарту FCI</p>
-          <dl class="bsub-kind__rows">
-<div><dt>Вес</dt><dd><span class="nw">8–14</span> кг</dd></div><div><dt>Рост</dt><dd><span class="nw">24–35</span> см</dd></div>          </dl>
-        </li>
-        <li class="bsub-kind bsub-kind--off">
-          <div class="bsub-kind__head">
-<span class="ico" style="--c:var(--sun)" aria-hidden="true"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-ruler"/></svg></span><span class="bsub-kind__badge bsub-kind__badge--off">нет в стандарте</span>          </div>
-          <h3 class="bsub-kind__title">«Мини»</h3>
-          <p class="bsub-kind__line">Отдельной <span class="nw">мини-разновидности</span> нет</p>
-          <dl class="bsub-kind__rows">
-<div><dt>Стандарт FCI</dt><dd>не признаёт</dd></div><div><dt>Вес взрослого</dt><dd><span class="nw">8–14</span> кг</dd></div>          </dl>
-        </li>
-        <li class="bsub-kind bsub-kind--off">
-          <div class="bsub-kind__head">
-<span class="ico" style="--c:var(--lilac)" aria-hidden="true"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-scissors"/></svg></span><span class="bsub-kind__badge bsub-kind__badge--off">нет в стандарте</span>          </div>
-          <h3 class="bsub-kind__title">Флаффи</h3>
-          <p class="bsub-kind__line">Длинная шерсть от рецессивного гена</p>
-          <dl class="bsub-kind__rows">
-<div><dt>Стандарт FCI</dt><dd>не признаёт</dd></div><div><dt>Шерсть по стандарту</dt><dd>короткая</dd></div>          </dl>
-        </li>
-      </ul>
 
     </section>
 
     <section class="section container" id="kak-vybrat" aria-labelledby="kak-vybrat-title">
       <div class="sec-head">
   <h2 class="h2" id="kak-vybrat-title">Как выбрать окрас</h2>
-
 
 </div>
       <ol class="steps steps--3">
@@ -452,11 +455,127 @@
 </ol>
     </section>
 
+    <!-- ================= ЩЕНКИ ПОРОДЫ — 8 карточек и кнопка под ними, как каталог на главной (правка 21.10) ================= -->    <section class="section container" id="pups" aria-labelledby="pups-title">
+      <div class="sec-head">
+  <h2 class="h2" id="pups-title">Щенки французских бульдогов в наличии</h2>
+
+</div>
+      <ul class="pups hm-pups bsub-pups" data-reveal="items">
+        <li class="pups__item">
+          <article class="pup ct-card tone--powder ct-card--life" data-pup data-slug="francuzskij-buldog-palevyj-2026-07" data-breed="francuzskij-buldog" data-name="Бруно" data-desc="Французский бульдог · 13 недель · мальчик" data-img="cl-buldog-47.jpg">
+<a class="pup__media ct-card__media" href="../../shchenki/francuzskij-buldog-palevyj-2026-07/" tabindex="-1" aria-hidden="true">    <img src="../../../assets/img/cl-buldog-47.jpg" alt="Палевый щенок французского бульдога Бруно с плюшевым тапком" width="1001" height="1200" style="object-position:50% 40%" loading="lazy" decoding="async">
+</a>  <div class="pup__body ct-card__body">
+    <h3 class="pup__name"><a href="../../shchenki/francuzskij-buldog-palevyj-2026-07/">Бруно</a></h3>
+    <p class="pup__meta"><span>Французский бульдог&nbsp;·</span> <span>13 недель&nbsp;·</span> <span>мальчик</span></p>
+    <div class="ct-card__actions">
+      <button class="btn btn--white ct-card__price" type="button" data-open-modal data-modal-kind="puppy" aria-label="Узнать цену: Бруно">Узнать цену</button>
+      <a class="btn btn--outline ct-card__more" href="../../shchenki/francuzskij-buldog-palevyj-2026-07/" aria-label="Подробнее: Бруно">Подробнее</a>
+    </div>
+  </div>
+</article>
+        </li>
+        <li class="pups__item">
+          <article class="pup ct-card tone--powder ct-card--life" data-pup data-slug="francuzskij-buldog-goluboj-2026-07" data-breed="francuzskij-buldog" data-name="Граф" data-desc="Французский бульдог · 12 недель · мальчик" data-img="cl-buldog-16.jpg">
+<a class="pup__media ct-card__media" href="../../shchenki/francuzskij-buldog-goluboj-2026-07/" tabindex="-1" aria-hidden="true">    <img src="../../../assets/img/cl-buldog-16.jpg" alt="Голубой щенок французского бульдога Граф сидит на светлом фоне" width="1067" height="1600" style="object-position:50% 45%" loading="lazy" decoding="async">
+</a>  <div class="pup__body ct-card__body">
+    <h3 class="pup__name"><a href="../../shchenki/francuzskij-buldog-goluboj-2026-07/">Граф</a></h3>
+    <p class="pup__meta"><span>Французский бульдог&nbsp;·</span> <span>12 недель&nbsp;·</span> <span>мальчик</span></p>
+    <div class="ct-card__actions">
+      <button class="btn btn--white ct-card__price" type="button" data-open-modal data-modal-kind="puppy" aria-label="Узнать цену: Граф">Узнать цену</button>
+      <a class="btn btn--outline ct-card__more" href="../../shchenki/francuzskij-buldog-goluboj-2026-07/" aria-label="Подробнее: Граф">Подробнее</a>
+    </div>
+  </div>
+</article>
+        </li>
+        <li class="pups__item">
+          <article class="pup ct-card tone--powder ct-card--life" data-pup data-slug="francuzskij-buldog-goluboj-2026-08" data-breed="francuzskij-buldog" data-name="Ника" data-desc="Французский бульдог · 9 недель · девочка" data-img="cl-buldog-12.jpg">
+<a class="pup__media ct-card__media" href="../../shchenki/francuzskij-buldog-goluboj-2026-08/" tabindex="-1" aria-hidden="true">    <img src="../../../assets/img/cl-buldog-12.jpg" alt="Голубой щенок французского бульдога Ника рядом с игрушечной машинкой" width="1024" height="768" style="object-position:62% 50%" loading="lazy" decoding="async">
+</a>  <div class="pup__body ct-card__body">
+    <h3 class="pup__name"><a href="../../shchenki/francuzskij-buldog-goluboj-2026-08/">Ника</a></h3>
+    <p class="pup__meta"><span>Французский бульдог&nbsp;·</span> <span>9 недель&nbsp;·</span> <span>девочка</span></p>
+    <div class="ct-card__actions">
+      <button class="btn btn--white ct-card__price" type="button" data-open-modal data-modal-kind="puppy" aria-label="Узнать цену: Ника">Узнать цену</button>
+      <a class="btn btn--outline ct-card__more" href="../../shchenki/francuzskij-buldog-goluboj-2026-08/" aria-label="Подробнее: Ника">Подробнее</a>
+    </div>
+  </div>
+</article>
+        </li>
+        <li class="pups__item">
+          <article class="pup ct-card tone--powder ct-card--life" data-pup data-slug="francuzskij-buldog-podpal-2026-07" data-breed="francuzskij-buldog" data-name="Джек" data-desc="Французский бульдог · 11 недель · мальчик" data-img="cl-buldog-48.jpg">
+<a class="pup__media ct-card__media" href="../../shchenki/francuzskij-buldog-podpal-2026-07/" tabindex="-1" aria-hidden="true">    <img src="../../../assets/img/cl-buldog-48.jpg" alt="Чёрно-подпалый щенок французского бульдога Джек" width="1600" height="1064" style="object-position:50% 50%" loading="lazy" decoding="async">
+</a>  <div class="pup__body ct-card__body">
+    <h3 class="pup__name"><a href="../../shchenki/francuzskij-buldog-podpal-2026-07/">Джек</a></h3>
+    <p class="pup__meta"><span>Французский бульдог&nbsp;·</span> <span>11 недель&nbsp;·</span> <span>мальчик</span></p>
+    <div class="ct-card__actions">
+      <button class="btn btn--white ct-card__price" type="button" data-open-modal data-modal-kind="puppy" aria-label="Узнать цену: Джек">Узнать цену</button>
+      <a class="btn btn--outline ct-card__more" href="../../shchenki/francuzskij-buldog-podpal-2026-07/" aria-label="Подробнее: Джек">Подробнее</a>
+    </div>
+  </div>
+</article>
+        </li>
+        <li class="pups__item">
+          <article class="pup ct-card tone--powder ct-card--life" data-pup data-slug="francuzskij-buldog-palevyj-2026-08" data-breed="francuzskij-buldog" data-name="Мила" data-desc="Французский бульдог · 10 недель · девочка" data-img="cl-buldog-49.jpg">
+<a class="pup__media ct-card__media" href="../../shchenki/francuzskij-buldog-palevyj-2026-08/" tabindex="-1" aria-hidden="true">    <img src="../../../assets/img/cl-buldog-49.jpg" alt="Палевая девочка французского бульдога Мила идёт к мячику" width="1200" height="900" style="object-position:55% 50%" loading="lazy" decoding="async">
+</a>  <div class="pup__body ct-card__body">
+    <h3 class="pup__name"><a href="../../shchenki/francuzskij-buldog-palevyj-2026-08/">Мила</a></h3>
+    <p class="pup__meta"><span>Французский бульдог&nbsp;·</span> <span>10 недель&nbsp;·</span> <span>девочка</span></p>
+    <div class="ct-card__actions">
+      <button class="btn btn--white ct-card__price" type="button" data-open-modal data-modal-kind="puppy" aria-label="Узнать цену: Мила">Узнать цену</button>
+      <a class="btn btn--outline ct-card__more" href="../../shchenki/francuzskij-buldog-palevyj-2026-08/" aria-label="Подробнее: Мила">Подробнее</a>
+    </div>
+  </div>
+</article>
+        </li>
+        <li class="pups__item">
+          <article class="pup ct-card tone--powder ct-card--life" data-pup data-slug="francuzskij-buldog-goluboj-2026-07-tosha" data-breed="francuzskij-buldog" data-name="Тоша" data-desc="Французский бульдог · 10 недель · мальчик" data-img="cl-buldog-54.jpg">
+<a class="pup__media ct-card__media" href="../../shchenki/francuzskij-buldog-goluboj-2026-07-tosha/" tabindex="-1" aria-hidden="true">    <img src="../../../assets/img/cl-buldog-54.jpg" alt="Голубой щенок французского бульдога Тоша лежит на светлом фоне" width="1600" height="1068" style="object-position:48% 50%" loading="lazy" decoding="async">
+</a>  <div class="pup__body ct-card__body">
+    <h3 class="pup__name"><a href="../../shchenki/francuzskij-buldog-goluboj-2026-07-tosha/">Тоша</a></h3>
+    <p class="pup__meta"><span>Французский бульдог&nbsp;·</span> <span>10 недель&nbsp;·</span> <span>мальчик</span></p>
+    <div class="ct-card__actions">
+      <button class="btn btn--white ct-card__price" type="button" data-open-modal data-modal-kind="puppy" aria-label="Узнать цену: Тоша">Узнать цену</button>
+      <a class="btn btn--outline ct-card__more" href="../../shchenki/francuzskij-buldog-goluboj-2026-07-tosha/" aria-label="Подробнее: Тоша">Подробнее</a>
+    </div>
+  </div>
+</article>
+        </li>
+        <li class="pups__item">
+          <article class="pup ct-card tone--powder ct-card--life" data-pup data-slug="francuzskij-buldog-palevyj-2026-07-bonni" data-breed="francuzskij-buldog" data-name="Бонни" data-desc="Французский бульдог · 12 недель · девочка" data-img="cl-buldog-79.jpg">
+<a class="pup__media ct-card__media" href="../../shchenki/francuzskij-buldog-palevyj-2026-07-bonni/" tabindex="-1" aria-hidden="true">    <img src="../../../assets/img/cl-buldog-79.jpg" alt="Рыже-палевая девочка французского бульдога Бонни" width="962" height="1280" style="object-position:50% 45%" loading="lazy" decoding="async">
+</a>  <div class="pup__body ct-card__body">
+    <h3 class="pup__name"><a href="../../shchenki/francuzskij-buldog-palevyj-2026-07-bonni/">Бонни</a></h3>
+    <p class="pup__meta"><span>Французский бульдог&nbsp;·</span> <span>12 недель&nbsp;·</span> <span>девочка</span></p>
+    <div class="ct-card__actions">
+      <button class="btn btn--white ct-card__price" type="button" data-open-modal data-modal-kind="puppy" aria-label="Узнать цену: Бонни">Узнать цену</button>
+      <a class="btn btn--outline ct-card__more" href="../../shchenki/francuzskij-buldog-palevyj-2026-07-bonni/" aria-label="Подробнее: Бонни">Подробнее</a>
+    </div>
+  </div>
+</article>
+        </li>
+        <li class="pups__item">
+          <article class="pup ct-card tone--powder ct-card--life" data-pup data-slug="francuzskij-buldog-palevyj-2026-08-barni" data-breed="francuzskij-buldog" data-name="Барни" data-desc="Французский бульдог · 8 недель · мальчик" data-img="pup-buldog-9.jpg">
+<a class="pup__media ct-card__media" href="../../shchenki/francuzskij-buldog-palevyj-2026-08-barni/" tabindex="-1" aria-hidden="true">    <img src="../../../assets/img/pup-buldog-9.jpg" alt="Палевый щенок французского бульдога Барни на руках" width="960" height="1280" style="object-position:50% 35%" loading="lazy" decoding="async">
+</a>  <div class="pup__body ct-card__body">
+    <h3 class="pup__name"><a href="../../shchenki/francuzskij-buldog-palevyj-2026-08-barni/">Барни</a></h3>
+    <p class="pup__meta"><span>Французский бульдог&nbsp;·</span> <span>8 недель&nbsp;·</span> <span>мальчик</span></p>
+    <div class="ct-card__actions">
+      <button class="btn btn--white ct-card__price" type="button" data-open-modal data-modal-kind="puppy" aria-label="Узнать цену: Барни">Узнать цену</button>
+      <a class="btn btn--outline ct-card__more" href="../../shchenki/francuzskij-buldog-palevyj-2026-08-barni/" aria-label="Подробнее: Барни">Подробнее</a>
+    </div>
+  </div>
+</article>
+        </li>
+      </ul>
+      <div class="hm-pups__foot">
+        <a class="btn btn--ink btn--lg" href="../#shchenki"><span>Все щенки французских бульдогов</span> <svg class="i" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></a>
+      </div>
+    </section>
+
     <section class="section container" id="faq" aria-labelledby="faq-title">
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "acceptedAnswer": {"@type": "Answer", "text": "\u0420\u041a\u0424 \u0440\u0430\u0431\u043e\u0442\u0430\u0435\u0442 \u043f\u043e \u0441\u0442\u0430\u043d\u0434\u0430\u0440\u0442\u0443 FCI: \u043f\u0430\u043b\u0435\u0432\u044b\u0439 \u0438 \u0442\u0438\u0433\u0440\u043e\u0432\u044b\u0439, \u0441 \u0431\u0435\u043b\u044b\u043c\u0438 \u043f\u044f\u0442\u043d\u0430\u043c\u0438 \u0438\u043b\u0438 \u0431\u0435\u0437. \u041e\u0441\u0442\u0430\u043b\u044c\u043d\u044b\u0435 \u043e\u043a\u0440\u0430\u0441\u044b \u2014 \u0432\u043d\u0435 \u0441\u0442\u0430\u043d\u0434\u0430\u0440\u0442\u0430."}, "name": "\u041a\u0430\u043a\u0438\u0435 \u043e\u043a\u0440\u0430\u0441\u044b \u0444\u0440\u0430\u043d\u0446\u0443\u0437\u0441\u043a\u043e\u0433\u043e \u0431\u0443\u043b\u044c\u0434\u043e\u0433\u0430 \u043f\u0440\u0438\u0437\u043d\u0430\u0451\u0442 \u0420\u041a\u0424?"}, {"@type": "Question", "acceptedAnswer": {"@type": "Answer", "text": "\u0414\u0430, \u0442\u0430\u043a \u043d\u0430\u0437\u044b\u0432\u0430\u044e\u0442 \u0440\u0430\u0437\u0431\u0430\u0432\u043b\u0435\u043d\u043d\u044b\u0439 \u0447\u0451\u0440\u043d\u044b\u0439. \u0421\u0442\u0430\u043d\u0434\u0430\u0440\u0442 FCI \u0435\u0433\u043e \u043d\u0435 \u043f\u0440\u0438\u0437\u043d\u0430\u0451\u0442."}, "name": "\u0413\u043e\u043b\u0443\u0431\u043e\u0439 \u0438 \u0441\u0435\u0440\u044b\u0439 \u2014 \u044d\u0442\u043e \u043e\u0434\u0438\u043d \u043e\u043a\u0440\u0430\u0441?"}, {"@type": "Question", "acceptedAnswer": {"@type": "Answer", "text": "\u041e\u0442\u0434\u0435\u043b\u044c\u043d\u043e\u0439 \u043c\u0438\u043d\u0438-\u0440\u0430\u0437\u043d\u043e\u0432\u0438\u0434\u043d\u043e\u0441\u0442\u0438 \u043d\u0435\u0442. \u041f\u043e \u0441\u0442\u0430\u043d\u0434\u0430\u0440\u0442\u0443 \u0432\u0437\u0440\u043e\u0441\u043b\u044b\u0439 \u0444\u0440\u0430\u043d\u0446\u0443\u0437 \u0432\u0435\u0441\u0438\u0442 8\u201314 \u043a\u0433."}, "name": "\u0411\u044b\u0432\u0430\u044e\u0442 \u043b\u0438 \u0444\u0440\u0430\u043d\u0446\u0443\u0437\u0441\u043a\u0438\u0435 \u0431\u0443\u043b\u044c\u0434\u043e\u0433\u0438 \u043c\u0438\u043d\u0438?"}, {"@type": "Question", "acceptedAnswer": {"@type": "Answer", "text": "\u0414\u043b\u0438\u043d\u043d\u043e\u0448\u0451\u0440\u0441\u0442\u043d\u044b\u0435 \u0444\u0440\u0430\u043d\u0446\u0443\u0437\u044b. \u0414\u043b\u0438\u043d\u043d\u0430\u044f \u0448\u0435\u0440\u0441\u0442\u044c \u043f\u0435\u0440\u0435\u0434\u0430\u0451\u0442\u0441\u044f \u0440\u0435\u0446\u0435\u0441\u0441\u0438\u0432\u043d\u044b\u043c \u0433\u0435\u043d\u043e\u043c, \u0441\u0442\u0430\u043d\u0434\u0430\u0440\u0442 FCI \u0435\u0451 \u043d\u0435 \u0434\u043e\u043f\u0443\u0441\u043a\u0430\u0435\u0442."}, "name": "\u041a\u0442\u043e \u0442\u0430\u043a\u0438\u0435 \u0444\u043b\u0430\u0444\u0444\u0438?"}, {"@type": "Question", "acceptedAnswer": {"@type": "Answer", "text": "\u0423 \u043c\u0440\u0430\u043c\u043e\u0440\u043d\u044b\u0445 \u2014 \u0434\u0430: \u043e\u0442 \u0432\u044f\u0437\u043a\u0438 \u0434\u0432\u0443\u0445 \u043c\u0435\u0440\u043b\u0435\u0439 \u0449\u0435\u043d\u043a\u0438 \u0440\u0438\u0441\u043a\u0443\u044e\u0442 \u0440\u043e\u0434\u0438\u0442\u044c\u0441\u044f \u0433\u043b\u0443\u0445\u0438\u043c\u0438 \u0438\u043b\u0438 \u0441 \u043f\u0440\u043e\u0431\u043b\u0435\u043c\u0430\u043c\u0438 \u0433\u043b\u0430\u0437. \u041f\u043e\u044d\u0442\u043e\u043c\u0443 \u0442\u0430\u043a \u0432\u0430\u0436\u043d\u043e \u0437\u043d\u0430\u0442\u044c \u0440\u043e\u0434\u0438\u0442\u0435\u043b\u0435\u0439."}, "name": "\u0412\u043b\u0438\u044f\u0435\u0442 \u043b\u0438 \u043e\u043a\u0440\u0430\u0441 \u043d\u0430 \u0437\u0434\u043e\u0440\u043e\u0432\u044c\u0435?"}]}</script>  <div class="faq">
     <div class="faq__aside">
       <h2 class="h2" id="faq-title">Вопросы о видах и окрасах</h2>
-<a class="text-link" href="../../faq/">Все <span class="nw">вопросы <svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></span></a>    </div>
+<button class="btn btn--coral" type="button" data-open-modal data-modal-kind="consult" data-modal-question="1" data-modal-title="Задать свой вопрос" data-modal-sub="Ответим в&nbsp;течение рабочего дня по&nbsp;московскому времени" data-modal-note="Вопрос из блока «Вопросы о видах и окрасах»" data-modal-submit="Задать вопрос" data-modal-done="Спасибо! Ответим на&nbsp;ваш вопрос в&nbsp;течение рабочего дня">Задать свой вопрос</button>    </div>
     <ul class="faq__list">
       <li class="faq__item">
         <h3 class="faq__q"><button class="faq__btn" type="button" aria-expanded="false" aria-controls="faq-a1" id="faq-q1"><span>Какие окрасы французского бульдога признаёт РКФ?</span><span class="faq__ico" aria-hidden="true"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-plus"/></svg></span></button></h3>
@@ -482,135 +601,10 @@
   </div>
 </section>
 
-    <section class="section container" id="eshche" aria-labelledby="eshche-title">
+    <section class="section container rmore" id="eshche" aria-labelledby="eshche-title">
   <div class="sec-head">
-  <h2 class="h2" id="eshche-title">Ещё о французском бульдоге</h2>
-
-
-</div>
-  <ul class="ltiles ltiles--4">
-  <li>
-    <a class="ltile ltile--white" href="../">
-<span class="face tone--powder"><img src="../../../assets/img/studio-buldog-blue.jpg" alt="" width="1024" height="1024" loading="lazy" decoding="async"></span>
-      <span class="ltile__txt"><span class="ltile__title">Французский бульдог</span><span class="ltile__line">О породе и щенки в наличии</span></span>
-      <span class="tcta tcta--soft">Подробнее <svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></span>
-    </a>
-  </li>
-  <li>
-    <a class="ltile ltile--white" href="../cena/">
-<span class="ico" style="--c:var(--sun)" aria-hidden="true"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-wallet"/></svg></span>      <span class="ltile__txt"><span class="ltile__title">Цена щенка</span><span class="ltile__line">От чего зависит и что входит</span></span>
-      <span class="tcta tcta--soft">Подробнее <svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></span>
-    </a>
-  </li>
-  <li>
-    <a class="ltile ltile--white" href="../../blog/francuzskij-buldog-uhod/">
-<span class="ico" style="--c:var(--mint)" aria-hidden="true"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-book"/></svg></span>      <span class="ltile__txt"><span class="ltile__title">Уход за французом</span><span class="ltile__line">Кормление, жара и сколько живут</span></span>
-      <span class="tcta tcta--soft">Подробнее <svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></span>
-    </a>
-  </li>
-  <li>
-    <a class="ltile ltile--white" href="../../podbor-porody/">
-<span class="ico" style="--c:var(--lilac)" aria-hidden="true"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-sparkle"/></svg></span>      <span class="ltile__txt"><span class="ltile__title">Подобрать породу</span><span class="ltile__line">Тест на 2 минуты</span></span>
-      <span class="tcta tcta--soft">Подробнее <svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></span>
-    </a>
-  </li>
-</ul>
-</section>
-
-<section class="section container" id="ob-okrasah" aria-labelledby="seo-title">
-  <div class="seo">
-    <h2 class="seo__title" id="seo-title">Окрасы французского бульдога: стандарт и мода</h2>
-    <div class="seo__body" data-seo>
-      <p class="seo__lead">Французский бульдог по стандарту FCI бывает палевым или тигровым — с белыми пятнами или без. Голубые, серые, кремовые, шоколадные и мраморные французы популярны, но стандартом не признаны. Рассказываем честно, что это значит для покупателя.</p>
-      <div class="seo__more" id="seo-more" hidden>
-                <h3>Французский бульдог голубой и серый</h3>
-        <p>Голубой и серый — один и тот же окрас: разбавленный чёрный. Его часто называют редким, но стандарт FCI относит его к дисквалифицирующим. На выставки и в разведение по правилам РКФ такую собаку не возьмут.</p>
-        <h3>Редкие окрасы и окрасы РКФ</h3>
-        <p>РКФ работает по стандарту FCI. Признаны палевый — от светлого до тёмного, тигровый и пегий, то есть любой из них с белыми пятнами. Кремовый, шоколадный, мраморный, <span class="nw">чёрно-подпалый</span> и другие «редкие» окрасы — вне стандарта. Мраморных нельзя вязать между собой: у щенков высок риск глухоты и проблем с глазами.</p>
-        <h3>Французский бульдог мини и флаффи</h3>
-        <p><span class="nw">Мини-французов</span> как разновидности нет: взрослый весит <span class="nw">8–14</span> кг. Флаффи — длинношёрстные французы: длинная шерсть передаётся рецессивным геном, и стандарт FCI её не допускает. Если вам важен небольшой размер, спросите куратора — подскажем щенка от компактных родителей.</p>
-        <h3>Какой окрас выбрать</h3>
-        <p>Если планируете выставки или разведение, выбирайте окрас по стандарту. Если нужен друг для дома, смотрите прежде всего на дыхание, здоровье и характер щенка: окрас на них не влияет.</p>
-
-      </div>
-    </div>
-    <button class="seo__toggle" type="button" aria-expanded="false" aria-controls="seo-more" data-seo-toggle><span data-seo-label>Читать полностью</span><svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-chevron"/></svg></button>
-  </div>
-</section>
-    <section class="section container" id="pups" aria-labelledby="pups-title">
-  <div class="sec-head">
-  <h2 class="h2" id="pups-title">Щенки в наличии</h2>
-<a class="text-link" href="../../shchenki/">Весь каталог — <span class="nw">60 <svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></span></a>
-
-</div>
-  <ul class="pups pups--strip" data-reveal="items">
-    <li class="pups__item">
-      <article class="pup ct-card tone--powder ct-card--life" data-pup data-slug="francuzskij-buldog-palevyj-2026-07" data-breed="francuzskij-buldog" data-name="Бруно" data-desc="Французский бульдог · 13 недель · мальчик" data-img="cl-buldog-47.jpg">
-<a class="pup__media ct-card__media" href="../../shchenki/francuzskij-buldog-palevyj-2026-07/" tabindex="-1" aria-hidden="true">    <img src="../../../assets/img/cl-buldog-47.jpg" alt="Палевый щенок французского бульдога Бруно с плюшевым тапком" width="1001" height="1200" style="object-position:50% 40%" loading="lazy" decoding="async">
-</a>
-  <button class="fav ct-card__fav" type="button" aria-pressed="false" aria-label="В избранное: Бруно"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-heart"/></svg></button>  <div class="pup__body ct-card__body">
-    <h3 class="pup__name"><a href="../../shchenki/francuzskij-buldog-palevyj-2026-07/">Бруно</a></h3>
-    <p class="pup__meta"><span>Французский бульдог&nbsp;·</span> <span>13 недель&nbsp;·</span> <span>мальчик</span></p>
-    <div class="ct-card__actions">
-      <button class="btn btn--white ct-card__price" type="button" data-open-modal data-modal-kind="puppy" aria-label="Узнать цену: Бруно">Узнать цену</button>
-      <a class="btn btn--outline ct-card__more" href="../../shchenki/francuzskij-buldog-palevyj-2026-07/" aria-label="Подробнее: Бруно">Подробнее</a>
-    </div>
-  </div>
-</article>
-    </li>
-    <li class="pups__item">
-      <article class="pup ct-card tone--powder ct-card--life" data-pup data-slug="francuzskij-buldog-goluboj-2026-07" data-breed="francuzskij-buldog" data-name="Граф" data-desc="Французский бульдог · 12 недель · мальчик" data-img="cl-buldog-16.jpg">
-<a class="pup__media ct-card__media" href="../../shchenki/francuzskij-buldog-goluboj-2026-07/" tabindex="-1" aria-hidden="true">    <img src="../../../assets/img/cl-buldog-16.jpg" alt="Голубой щенок французского бульдога Граф сидит на светлом фоне" width="1067" height="1600" style="object-position:50% 45%" loading="lazy" decoding="async">
-</a>
-  <button class="fav ct-card__fav" type="button" aria-pressed="false" aria-label="В избранное: Граф"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-heart"/></svg></button>  <div class="pup__body ct-card__body">
-    <h3 class="pup__name"><a href="../../shchenki/francuzskij-buldog-goluboj-2026-07/">Граф</a></h3>
-    <p class="pup__meta"><span>Французский бульдог&nbsp;·</span> <span>12 недель&nbsp;·</span> <span>мальчик</span></p>
-    <div class="ct-card__actions">
-      <button class="btn btn--white ct-card__price" type="button" data-open-modal data-modal-kind="puppy" aria-label="Узнать цену: Граф">Узнать цену</button>
-      <a class="btn btn--outline ct-card__more" href="../../shchenki/francuzskij-buldog-goluboj-2026-07/" aria-label="Подробнее: Граф">Подробнее</a>
-    </div>
-  </div>
-</article>
-    </li>
-    <li class="pups__item">
-      <article class="pup ct-card tone--powder ct-card--life" data-pup data-slug="francuzskij-buldog-goluboj-2026-08" data-breed="francuzskij-buldog" data-name="Ника" data-desc="Французский бульдог · 9 недель · девочка" data-img="cl-buldog-12.jpg">
-<a class="pup__media ct-card__media" href="../../shchenki/francuzskij-buldog-goluboj-2026-08/" tabindex="-1" aria-hidden="true">    <img src="../../../assets/img/cl-buldog-12.jpg" alt="Голубой щенок французского бульдога Ника рядом с игрушечной машинкой" width="1024" height="768" style="object-position:62% 50%" loading="lazy" decoding="async">
-</a>
-  <button class="fav ct-card__fav" type="button" aria-pressed="false" aria-label="В избранное: Ника"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-heart"/></svg></button>  <div class="pup__body ct-card__body">
-    <h3 class="pup__name"><a href="../../shchenki/francuzskij-buldog-goluboj-2026-08/">Ника</a></h3>
-    <p class="pup__meta"><span>Французский бульдог&nbsp;·</span> <span>9 недель&nbsp;·</span> <span>девочка</span></p>
-    <div class="ct-card__actions">
-      <button class="btn btn--white ct-card__price" type="button" data-open-modal data-modal-kind="puppy" aria-label="Узнать цену: Ника">Узнать цену</button>
-      <a class="btn btn--outline ct-card__more" href="../../shchenki/francuzskij-buldog-goluboj-2026-08/" aria-label="Подробнее: Ника">Подробнее</a>
-    </div>
-  </div>
-</article>
-    </li>
-    <li class="pups__item">
-      <article class="pup ct-card tone--powder ct-card--life" data-pup data-slug="francuzskij-buldog-podpal-2026-07" data-breed="francuzskij-buldog" data-name="Джек" data-desc="Французский бульдог · 11 недель · мальчик" data-img="cl-buldog-48.jpg">
-<a class="pup__media ct-card__media" href="../../shchenki/francuzskij-buldog-podpal-2026-07/" tabindex="-1" aria-hidden="true">    <img src="../../../assets/img/cl-buldog-48.jpg" alt="Чёрно-подпалый щенок французского бульдога Джек" width="1600" height="1064" style="object-position:50% 50%" loading="lazy" decoding="async">
-</a>
-  <button class="fav ct-card__fav" type="button" aria-pressed="false" aria-label="В избранное: Джек"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-heart"/></svg></button>  <div class="pup__body ct-card__body">
-    <h3 class="pup__name"><a href="../../shchenki/francuzskij-buldog-podpal-2026-07/">Джек</a></h3>
-    <p class="pup__meta"><span>Французский бульдог&nbsp;·</span> <span>11 недель&nbsp;·</span> <span>мальчик</span></p>
-    <div class="ct-card__actions">
-      <button class="btn btn--white ct-card__price" type="button" data-open-modal data-modal-kind="puppy" aria-label="Узнать цену: Джек">Узнать цену</button>
-      <a class="btn btn--outline ct-card__more" href="../../shchenki/francuzskij-buldog-podpal-2026-07/" aria-label="Подробнее: Джек">Подробнее</a>
-    </div>
-  </div>
-</article>
-    </li>
-  </ul>
-</section>
-
-    <section class="section container" id="poleznoe" aria-labelledby="poleznoe-title">
-  <div class="sec-head">
-  <div class="sec-head__txt">
-    <h2 class="h2" id="poleznoe-title">Полезные статьи</h2>
-    <p class="sec-head__lead">Характер, уход и выбор щенка — коротко и по делу</p>
-  </div>
-<a class="text-link" href="../../blog/">Все <span class="nw">статьи <svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></span></a>
-
+  <h2 class="h2" id="eshche-title">Читайте также</h2>
+<a class="btn btn--coral" href="../../blog/">Все статьи</a>
 </div>
   <ul class="bteasers bteasers--3">
   <li>
@@ -650,19 +644,71 @@
     </article>
   </li>
 </ul>
+
+  <div class="rmore__links">
+    <ul class="ltiles ltiles--4">
+  <li>
+    <a class="ltile ltile--white" href="../">
+<span class="face tone--powder"><img src="../../../assets/img/studio-buldog-blue.jpg" alt="" width="1024" height="1024" loading="lazy" decoding="async"></span>
+      <span class="ltile__txt"><span class="ltile__title">Французский бульдог</span><span class="ltile__line">О породе и щенки в наличии</span></span>
+      <span class="tcta tcta--soft">Подробнее <svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></span>
+    </a>
+  </li>
+  <li>
+    <a class="ltile ltile--white" href="../cena/">
+<span class="ico" style="--c:var(--sun)" aria-hidden="true"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-wallet"/></svg></span>      <span class="ltile__txt"><span class="ltile__title">Цена щенка</span><span class="ltile__line">От чего зависит и что входит</span></span>
+      <span class="tcta tcta--soft">Подробнее <svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></span>
+    </a>
+  </li>
+  <li>
+    <a class="ltile ltile--white" href="../../shchenki/">
+<span class="ico" style="--c:var(--coral)" aria-hidden="true"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-paw"/></svg></span>      <span class="ltile__txt"><span class="ltile__title">Каталог щенков</span><span class="ltile__line">Все щенки в наличии — 60</span></span>
+      <span class="tcta tcta--soft">Подробнее <svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></span>
+    </a>
+  </li>
+  <li>
+    <a class="ltile ltile--white" href="../../podbor-porody/">
+<span class="ico" style="--c:var(--lilac)" aria-hidden="true"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-sparkle"/></svg></span>      <span class="ltile__txt"><span class="ltile__title">Подобрать породу</span><span class="ltile__line">Тест на 2 минуты</span></span>
+      <span class="tcta tcta--soft">Подробнее <svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></span>
+    </a>
+  </li>
+</ul>
+  </div>
 </section>
 
 
+
+
+<section class="section container" id="ob-okrasah" aria-labelledby="seo-title">
+  <div class="seo">
+    <h2 class="seo__title" id="seo-title">Окрасы французского бульдога: стандарт и мода</h2>
+    <div class="seo__body" data-seo>
+      <p class="seo__lead">Французский бульдог по стандарту FCI бывает палевым или тигровым — с белыми пятнами или без. Голубые, серые, кремовые, шоколадные и мраморные французы популярны, но стандартом не признаны. Рассказываем честно, что это значит для покупателя.</p>
+      <div class="seo__more" id="seo-more" hidden>
+                <h3>Французский бульдог голубой и серый</h3>
+        <p>Голубой и серый — один и тот же окрас: разбавленный чёрный. Его часто называют редким, но стандарт FCI относит его к дисквалифицирующим. На выставки и в разведение по правилам РКФ такую собаку не возьмут.</p>
+        <h3>Редкие окрасы и окрасы РКФ</h3>
+        <p>РКФ работает по стандарту FCI. Признаны палевый — от светлого до тёмного, тигровый и пегий, то есть любой из них с белыми пятнами. Кремовый, шоколадный, мраморный, <span class="nw">чёрно-подпалый</span> и другие «редкие» окрасы — вне стандарта. Мраморных нельзя вязать между собой: у щенков высок риск глухоты и проблем с глазами.</p>
+        <h3>Французский бульдог мини и флаффи</h3>
+        <p><span class="nw">Мини-французов</span> как разновидности нет: взрослый весит <span class="nw">8–14</span> кг. Флаффи — длинношёрстные французы: длинная шерсть передаётся рецессивным геном, и стандарт FCI её не допускает. Если вам важен небольшой размер, спросите куратора — подскажем щенка от компактных родителей.</p>
+        <h3>Какой окрас выбрать</h3>
+        <p>Если планируете выставки или разведение, выбирайте окрас по стандарту. Если нужен друг для дома, смотрите прежде всего на дыхание, здоровье и характер щенка: окрас на них не влияет.</p>
+
+      </div>
+    </div>
+    <button class="seo__toggle" type="button" aria-expanded="false" aria-controls="seo-more" data-seo-toggle><span data-seo-label>Читать полностью</span><svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-chevron"/></svg></button>
+  </div>
+</section>
     <section class="section container" id="zayavka" aria-labelledby="lead-title">
-  <div class="lead tone--powder">
+  <div class="lead tone--powder hm-lead">
     <div class="lead__intro">
-      <h2 class="h2" id="lead-title">Подберём щенка по окрасу</h2>
-      <p class="lead__line">Расскажите, какой окрас и размер ищете, — пришлём щенков с видео</p>
+      <h2 class="h2" id="lead-title">Подбор щенка по окрасу</h2>
+      <p class="lead__line">Оставьте заявку на подбор щенка французского бульдога — пришлём подходящих щенков с видео</p>
       <p class="lead__note"><svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-clock"/></svg>Свяжемся с вами в течение рабочего дня по московскому времени</p>
     </div>
 
-    <div class="lead__box">
-      <form class="form" id="lead-form" novalidate>
+    <div class="lead__box" data-lead-box>
+      <form class="form" id="lead-form" data-lead-form data-prefix="lf" novalidate>
         <div class="form__grid">
           <div class="field">
             <label class="field__label" for="lf-name">Имя</label>
@@ -725,56 +771,158 @@
   <!-- ================= ПОДВАЛ ================= -->
   <footer class="footer container">
     <div class="footer__tile">
-      <div class="footer__top">
+      <div class="footer__row footer__top">
         <div class="footer__brand">
           <a class="logo" href="../../" aria-label="домщенков.рф — на главную">
             <span class="logo__mark" aria-hidden="true"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-paw"/></svg></span>
             <span class="logo__text"><span class="logo__name">домщенков.рф</span><span class="logo__sub">питомник щенков · Москва</span></span>
           </a>
+          <p class="footer__about">Мальтипу, французские бульдоги, <span class="nw">той-пудели</span> <span class="nw">и бордер-колли</span> с документами и доставкой по России</p>
+        </div>
+        <nav class="fcol" aria-label="Покупка">
+          <h2 class="fcol__h">Покупка</h2>
+          <ul>
+            <li><a href="../../shchenki/">Каталог щенков</a></li>
+            <li><a href="../../rassrochka/">Бронь щенка</a></li>
+            <li><a href="../../dostavka/">Доставка</a></li>
+            <li><a href="../../dokumenty-i-garantii/">Документы и гарантии</a></li>
+            <li><a href="../../shchenok-v-podarok/">Щенок в подарок</a></li>
+            <li><a class="flink-ico" href="../../podbor-porody/"><span class="ico ico--sm" style="--c:var(--lilac)" aria-hidden="true"><svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-sparkle"/></svg></span><span>Подбор породы — тест</span></a></li>
+          </ul>
+        </nav>
+        <nav class="fcol" aria-label="Породы">
+          <h2 class="fcol__h">Породы</h2>
+          <ul>
+            <li><a href="../../maltipu/">Мальтипу</a></li>
+            <li><a href="../">Французский бульдог</a></li>
+            <li><a href="../../toj-pudel/">Той-пудель</a></li>
+            <li><a href="../../border-kolli/">Бордер-колли</a></li>
+          </ul>
+        </nav>
+        <nav class="fcol" aria-label="Питомник">
+          <h2 class="fcol__h">Питомник</h2>
+          <ul>
+            <li><a href="../../o-pitomnike/">О питомнике</a></li>
+            <li><a href="../../otzyvy/">Отзывы</a></li>
+            <li><a href="../../faq/">Вопросы и ответы</a></li>
+            <li><a href="../../blog/">Блог</a></li>
+            <li><a href="../../kontakty/">Контакты</a></li>
+          </ul>
+        </nav>
+        <div class="fcol footer__contacts">
+          <h2 class="fcol__h">Контакты</h2>
           <ul class="footer__info">
             <li><svg class="i i--sm" aria-hidden="true"><use href="#i-clock"/></svg>Ежедневно с 8:00 до 22:00</li>
+            <li><svg class="i i--sm" aria-hidden="true"><use href="#i-mail"/></svg><a href="mailto:main@xn--b1adduihee9g.xn--p1ai">main@домщенков.рф</a></li>
             <li><svg class="i i--sm" aria-hidden="true"><use href="#i-pin"/></svg>Москва, Ташкентская ул., 19</li>
-            <li><svg class="i i--sm" aria-hidden="true"><use href="#i-mail"/></svg><a href="mailto:[почта]@домщенков.рф">[почта]@домщенков.рф</a></li>
           </ul>
+          <button class="btn btn--coral footer__cta" type="button" data-open-modal data-modal-kind="lead" data-modal-title="Оставить заявку" data-modal-sub="Подберём щенка и&nbsp;пришлём фото, видео и&nbsp;цены" data-modal-note="Подвал — оставить заявку" data-modal-submit="Оставить заявку">Оставить заявку</button>
         </div>
-        <nav class="footer__nav" aria-label="Разделы сайта">
-          <div class="fcol">
-            <h2 class="fcol__h">Щенки и породы</h2>
-            <ul>
-              <li><a href="../../shchenki/">Все щенки в наличии</a></li>
-              <li><a href="../../maltipu/">Мальтипу</a></li>
-              <li><a href="../">Французский бульдог</a></li>
-              <li><a href="../../toj-pudel/">Той-пудель</a></li>
-              <li><a href="../../border-kolli/">Бордер-колли</a></li>
-              <li><a href="../../podbor-porody/">Подбор породы — пройдите тест</a></li>
-            </ul>
-          </div>
-          <div class="fcol">
-            <h2 class="fcol__h">Покупка</h2>
-            <ul>
-              <li><a href="../../dokumenty-i-garantii/">Документы и гарантии</a></li>
-              <li><a href="../../dostavka/">Доставка</a></li>
-              <li><a href="../../rassrochka/">Рассрочка и бронь</a></li>
-              <li><a href="../../shchenok-v-podarok/">Щенок в подарок</a></li>
-              <li><a href="../../magazin/">Стартовый набор</a></li>
-              <li><a href="../../faq/">Вопросы и ответы</a></li>
-            </ul>
-          </div>
-          <div class="fcol">
-            <h2 class="fcol__h">О питомнике</h2>
-            <ul>
-              <li><a href="../../roditeli/">Родители</a></li>
-              <li><a href="../../vypuskniki/">Выпускники</a></li>
-              <li><a href="../../otzyvy/">Отзывы</a></li>
-              <li><a href="../../blog/">Блог</a></li>
-              <li><a href="../../kontakty/">Контакты</a></li>
-            </ul>
-          </div>
-        </nav>
       </div>
-      <div class="footer__legal">
-        <span>© 2017–2026 домщенков.рф · ИП Селезнев Владимир Игоревич · ИНН 220703337790 · ОГРНИП 324547600187418</span>
-        <span>Сайт не является публичной офертой · <a href="../../politika-konfidencialnosti/">Политика конфиденциальности</a> · <a href="../../soglasie/">Согласие на обработку данных</a> · <a href="../../soglasie-na-publikaciyu/">Согласие на публикацию отзыва</a></span>
+
+      <nav class="footer__row footer__breeds" aria-label="Породы и окрасы">
+        <details class="fcol fcol--fold" data-fold open>
+          <summary class="fcol__h">Мальтипу <svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-chevron"/></svg></summary>
+          <ul>
+            <li><a href="../../maltipu/kremovyj/">Кремовый мальтипу</a></li>
+            <li><a href="../../maltipu/belyj/">Белый мальтипу</a></li>
+            <li><a href="../../maltipu/abrikosovyj/">Абрикосовый мальтипу</a></li>
+            <li><a href="../../maltipu/ryzhij/">Рыжий мальтипу</a></li>
+            <li><a href="../../maltipu/shokoladnyj/">Шоколадный мальтипу</a></li>
+            <li><a href="../../maltipu/chernyj/">Чёрный мальтипу</a></li>
+            <li><a href="../../maltipu/serebristyj/">Серебристый мальтипу</a></li>
+            <li><a href="../../maltipu/partikolor/">Мальтипу партиколор</a></li>
+            <li><a href="../../maltipu/fantom/">Мальтипу фантом</a></li>
+            <li><a href="../../maltipu/sobolinyj/">Соболиный мальтипу</a></li>
+            <li><a href="../../maltipu/vidy-i-okrasy/">Виды и окрасы мальтипу</a></li>
+            <li><a href="../../maltipu/cena/">Цена мальтипу</a></li>
+          </ul>
+        </details>
+        <details class="fcol fcol--fold" data-fold open>
+          <summary class="fcol__h">Французский бульдог <svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-chevron"/></svg></summary>
+          <ul>
+            <li><a href="../palevyj/">Палевый французский бульдог</a></li>
+            <li><a href="../tigrovyj/">Тигровый французский бульдог</a></li>
+            <li><a href="../pegij/">Пегий французский бульдог</a></li>
+            <li><a href="../goluboj/">Голубой французский бульдог</a></li>
+            <li><a href="../kremovyj/">Кремовый французский бульдог</a></li>
+            <li><a href="../shokoladnyj/">Шоколадный французский бульдог</a></li>
+            <li><a href="../mramornyj/">Мраморный французский бульдог</a></li>
+            <li><a href="./" aria-current="page">Виды и окрасы французского бульдога</a></li>
+            <li><a href="../cena/">Цена французского бульдога</a></li>
+          </ul>
+        </details>
+        <details class="fcol fcol--fold" data-fold open>
+          <summary class="fcol__h">Той-пудель <svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-chevron"/></svg></summary>
+          <ul>
+            <li><a href="../../toj-pudel/abrikosovyj/">Абрикосовый той-пудель</a></li>
+            <li><a href="../../toj-pudel/chernyj/">Чёрный той-пудель</a></li>
+            <li><a href="../../toj-pudel/belyj/">Белый той-пудель</a></li>
+            <li><a href="../../toj-pudel/korichnevyj/">Коричневый той-пудель</a></li>
+            <li><a href="../../toj-pudel/ryzhij/">Рыжий той-пудель</a></li>
+            <li><a href="../../toj-pudel/seryj/">Серый той-пудель</a></li>
+            <li><a href="../../toj-pudel/vidy-i-okrasy/">Виды и окрасы той-пуделя</a></li>
+            <li><a href="../../toj-pudel/cena/">Цена той-пуделя</a></li>
+          </ul>
+        </details>
+        <details class="fcol fcol--fold" data-fold open>
+          <summary class="fcol__h">Бордер-колли <svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-chevron"/></svg></summary>
+          <ul>
+            <li><a href="../../border-kolli/goluboj-mramor/">Бордер-колли голубой мрамор</a></li>
+            <li><a href="../../border-kolli/trehcvetnyj/">Трёхцветный бордер-колли</a></li>
+            <li><a href="../../border-kolli/krasno-belyj/">Красно-белый бордер-колли</a></li>
+            <li><a href="../../border-kolli/cherno-belyj/">Чёрно-белый бордер-колли</a></li>
+            <li><a href="../../border-kolli/krasnyj-mramor/">Бордер-колли красный мрамор</a></li>
+            <li><a href="../../border-kolli/mramornyj-trikolor/">Бордер-колли мраморный триколор</a></li>
+            <li><a href="../../border-kolli/lilovyj/">Лиловый бордер-колли</a></li>
+            <li><a href="../../border-kolli/vidy-i-okrasy/">Виды и окрасы бордер-колли</a></li>
+            <li><a href="../../border-kolli/cena/">Цена бордер-колли</a></li>
+          </ul>
+        </details>
+      </nav>
+
+      <details class="footer__row footer__cities fcol--fold" data-fold open>
+        <summary class="fcol__h">Доставка щенков по России <svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-chevron"/></svg></summary>
+        <ul class="fcities">
+          <li><a href="../../shchenki-v-sankt-peterburge/">Санкт-Петербург</a></li>
+          <li><a href="../../shchenki-v-novosibirske/">Новосибирск</a></li>
+          <li><a href="../../shchenki-v-ekaterinburge/">Екатеринбург</a></li>
+          <li><a href="../../shchenki-v-kazani/">Казань</a></li>
+          <li><a href="../../shchenki-v-nizhnem-novgorode/">Нижний Новгород</a></li>
+          <li><a href="../../shchenki-v-krasnoyarske/">Красноярск</a></li>
+          <li><a href="../../shchenki-v-chelyabinske/">Челябинск</a></li>
+          <li><a href="../../shchenki-v-samare/">Самара</a></li>
+          <li><a href="../../shchenki-v-ufe/">Уфа</a></li>
+          <li><a href="../../shchenki-v-rostove-na-donu/">Ростов-на-Дону</a></li>
+          <li><a href="../../shchenki-v-krasnodare/">Краснодар</a></li>
+          <li><a href="../../shchenki-v-omske/">Омск</a></li>
+          <li><a href="../../shchenki-v-voronezhe/">Воронеж</a></li>
+          <li><a href="../../shchenki-v-permi/">Пермь</a></li>
+          <li><a href="../../shchenki-v-volgograde/">Волгоград</a></li>
+          <li><a href="../../shchenki-v-saratove/">Саратов</a></li>
+          <li><a href="../../shchenki-v-tyumeni/">Тюмень</a></li>
+          <li><a href="../../shchenki-v-tolyatti/">Тольятти</a></li>
+          <li><a href="../../shchenki-v-mahachkale/">Махачкала</a></li>
+          <li><a href="../../shchenki-v-barnaule/">Барнаул</a></li>
+          <li><a href="../../shchenki-v-izhevske/">Ижевск</a></li>
+          <li><a href="../../shchenki-v-habarovske/">Хабаровск</a></li>
+          <li><a href="../../shchenki-v-ulyanovske/">Ульяновск</a></li>
+          <li><a href="../../shchenki-v-irkutske/">Иркутск</a></li>
+          <li><a href="../../shchenki-vo-vladivostoke/">Владивосток</a></li>
+          <li><a href="../../shchenki-v-yaroslavle/">Ярославль</a></li>
+          <li><a href="../../shchenki-v-sevastopole/">Севастополь</a></li>
+          <li><a href="../../shchenki-v-stavropole/">Ставрополь</a></li>
+          <li><a href="../../shchenki-v-tomske/">Томск</a></li>
+          <li><a href="../../shchenki-v-kemerove/">Кемерово</a></li>
+          <li class="fcities__all"><a class="flink-all" href="../../dostavka/">Все условия доставки&nbsp;<svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></a></li>
+        </ul>
+      </details>
+
+      <div class="footer__row footer__legal">
+        <div class="footer__legal-text">
+          <span>© 2017–2026 домщенков.рф · ИП Селезнев Владимир Игоревич · ИНН 220703337790 · ОГРНИП 324547600187418</span>
+          <span>Сайт не является публичной офертой · <a href="../../politika-konfidencialnosti/">Политика конфиденциальности</a> · <a href="../../soglasie/">Согласие на обработку данных</a> · <a href="../../soglasie-na-publikaciyu/">Согласие на публикацию отзыва</a></span>
+        </div>        <a class="footer__credit" href="https://moon-dsgn.ru" target="_blank" rel="noopener">Создание и продвижение сайта — MOON</a>
       </div>
     </div>
   </footer>
@@ -841,11 +989,10 @@
               <li class="mega__sub">
                 <span class="mega__subh">Доставка по городам</span>
                 <ul class="mega__subl">
-            <li><a class="mega__sublink" href="../../dostavka/sankt-peterburg/"><span><span class="nw">Санкт-Петербург</span></span></a></li><li><a class="mega__sublink" href="../../dostavka/novosibirsk/"><span>Новосибирск</span></a></li><li><a class="mega__sublink" href="../../dostavka/ekaterinburg/"><span>Екатеринбург</span></a></li><li><a class="mega__sublink" href="../../dostavka/kazan/"><span>Казань</span></a></li><li><a class="mega__sublink" href="../../dostavka/#goroda"><span>Все 30 городов</span></a></li>    </ul>
+            <li><a class="mega__sublink" href="../../shchenki-v-sankt-peterburge/"><span><span class="nw">Санкт-Петербург</span></span></a></li><li><a class="mega__sublink" href="../../shchenki-v-novosibirske/"><span>Новосибирск</span></a></li><li><a class="mega__sublink" href="../../shchenki-v-ekaterinburge/"><span>Екатеринбург</span></a></li><li><a class="mega__sublink" href="../../shchenki-v-kazani/"><span>Казань</span></a></li><li><a class="mega__sublink" href="../../dostavka/#goroda"><span>Все 30 городов</span></a></li>    </ul>
               </li>
-              <li><a class="mega__link" href="../../rassrochka/"><span>Рассрочка и бронь</span></a></li>
+              <li><a class="mega__link" href="../../rassrochka/"><span>Бронь щенка</span></a></li>
               <li><a class="mega__link" href="../../shchenok-v-podarok/"><span>Щенок в подарок</span></a></li>
-              <li><a class="mega__link" href="../../magazin/"><span>Стартовый набор</span></a></li>
               <li><a class="mega__link" href="../../faq/"><span>Вопросы и ответы</span></a></li>
             </ul>
           </div>
@@ -854,8 +1001,7 @@
           <button class="mmenu__acc" type="button" aria-expanded="false" aria-controls="mm-g4">О питомнике <svg class="i" aria-hidden="true" focusable="false"><use href="#i-chevron"/></svg></button>
           <div class="mmenu__group" id="mm-g4" hidden>
             <ul class="mega__list">
-              <li><a class="mega__link" href="../../roditeli/"><span>Родители щенков</span></a></li>
-              <li><a class="mega__link" href="../../vypuskniki/"><span>Выпускники</span></a></li>
+              <li><a class="mega__link" href="../../o-pitomnike/"><span>О питомнике</span></a></li>
               <li><a class="mega__link" href="../../otzyvy/"><span>Отзывы владельцев</span></a></li>
               <li><a class="mega__link" href="../../dokumenty-i-garantii/"><span>Документы и гарантии</span></a></li>
               <li><a class="mega__link" href="../../kontakty/"><span>Контакты</span></a></li>
@@ -919,6 +1065,10 @@
               <label class="field__label" for="pm-phone">Телефон</label>
               <input class="input" id="pm-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="+7 (___) ___-__-__" required aria-describedby="pm-phone-err" data-phone>
               <p class="field__err" id="pm-phone-err" hidden></p>
+            </div><div class="field" data-pm-question hidden>
+              <label class="field__label" for="pm-question">Ваш вопрос</label>
+              <textarea class="input input--area" id="pm-question" name="question" rows="4" maxlength="1000" placeholder="Например: сколько гуляет мальтипу и&nbsp;можно ли его оставлять одного?" aria-describedby="pm-question-err"></textarea>
+              <p class="field__err" id="pm-question-err" hidden></p>
             </div>
             <div class="field" data-pm-breed>
               <label class="field__label" for="pm-breed">Какая порода интересует</label>

@@ -11,13 +11,15 @@
 {%- endmacro %}
 
 {#- Two cards side by side: «no» (white, crosses) and «ok» (breed tint, checks). Used for «Почему не бывает дёшево»
-    and for the colour standard. card = {title, items:[{title, line?}], note?}. order: 'no-ok' | 'ok-no' -#}
-{% macro vs(no, ok, tint, order='no-ok', id='vs') -%}
+    and for the colour standard. card = {title, items:[{title, line?}], note?, price?, price_label?} — price: the
+    approximate range of that side on the price page («50–100 тыс. ₽»). order: 'no-ok' | 'ok-no'; tag: heading of a card -#}
+{% macro vs(no, ok, tint, order='no-ok', id='vs', tag='h3') -%}
 <div class="bsub-vs">
   {% for side in (['no', 'ok'] if order == 'no-ok' else ['ok', 'no']) %}
   {%- set c = no if side == 'no' else ok %}
   <div class="bsub-vs__card bsub-vs__card--{{ side }}{{ ' tone--' ~ tint if side == 'ok' }}">
-    <h3 class="bsub-vs__title" id="{{ id }}-{{ side }}">{{ c.title|typo }}</h3>
+    <{{ tag }} class="bsub-vs__title" id="{{ id }}-{{ side }}">{{ c.title|typo }}</{{ tag }}>
+    {% if c.get('price') %}<p class="bsub-vs__price">{% if c.get('price_label') %}<span>{{ c.price_label|typo }}</span>{% endif %}<b>{{ c.price|typo }}</b></p>{% endif %}
     <ul class="bsub-vs__list" aria-labelledby="{{ id }}-{{ side }}">
       {% for i in c['items'] %}
       <li class="bsub-vs__item">
@@ -76,48 +78,56 @@
 </div>
 {%- endmacro %}
 
-{#- One card per colour, anchored by its slug (links from the hub land here): studio shot on its measured backdrop
-    (or a colour dot), standard badge, name, two sentences and «Спросить о щенках» (modal with the colour noted).
-    An odd number of colours: the last cell of the two-column grid is a request tile (ask.title, ask.line). -#}
-{% macro colour_cards(items, b, ask=none) -%}
-<ul class="bsub-cols">
-  {% for c in items %}
-  <li class="bsub-col" id="{{ c.slug }}">
-    <div class="bsub-col__media{{ ' bsub-col__media--dot' if not c.photo }}" style="{{ tone_style(c.photo.src if c.photo else b.studio.src) }}">
-      {% if c.photo %}
-      {%- set size = imgsize(c.photo.src) %}
-      <img src="{{ c.photo.src }}" alt="{{ c.photo.alt|typo }}" width="{{ size[0] }}" height="{{ size[1] }}" loading="lazy" decoding="async">
-      {% if c.photo_note %}<span class="bsub-col__pnote">{{ c.photo_note|typo }}</span>{% endif %}
-      {% else %}
-      <span class="bsub-col__swatch">
-        <span class="bsub-col__dot" style="background:{{ c.swatch }}" aria-hidden="true"></span>
-        <span class="bsub-col__pnote bsub-col__pnote--dot">Фото по&nbsp;запросу</span>
-      </span>
-      {% endif %}
-    </div>
-    <div class="bsub-col__body">
-      <span class="bsub-col__badge bsub-col__badge--{{ c.std or 'none' }}">{{ c.badge|typo }}</span>
-      <h3 class="bsub-col__name">{{ c.name|typo }}</h3>
-      <p class="bsub-col__text">{{ c.text|typo }}</p>
-      <button class="btn btn--white bsub-col__btn" type="button" data-open-modal data-modal-kind="colour" data-modal-colour="{{ c.slug }}" data-modal-breed="{{ b.name }}" data-modal-title="{{ b.name }}: {{ c.label|lower }}" data-modal-sub="Пришлём щенков этого окраса с фото, видео и ценой" data-modal-note="Окрас: {{ c.label|lower }}">Спросить о&nbsp;щенках</button>
-    </div>
-  </li>
-  {% endfor %}
-  {% if ask and items|length is odd %}
-  <li class="bsub-col bsub-col--ask tone--{{ ask.tint }}">
-    {{ ui.ico('palette', 'lilac') }}
-    <h3 class="bsub-col__name">{{ ask.title|typo }}</h3>
-    <p class="bsub-col__text">{{ ask.line|typo }}</p>
-    <button class="btn btn--ink" type="button" data-open-modal data-modal-kind="colour" data-modal-breed="{{ b.name }}" data-modal-title="{{ ask.title }}" data-modal-sub="Пришлём щенков нужного окраса с фото, видео и ценой" data-modal-note="Подбор по окрасу">Оставить заявку</button>
-  </li>
-  {% endif %}
-</ul>
+{#- Spec rows of a card: a long value (a phrase, not «8–14 кг») goes under its label instead of beside it -#}
+{% macro rows(items) -%}
+<dl class="bsub-kind__rows">
+  {% for r in items %}<div{% if r[1]|striptags|length > 24 %} class="bsub-kind__row--long"{% endif %}><dt>{{ r[0]|typo }}</dt><dd>{{ r[1]|typo }}</dd></div>{% endfor %}
+</dl>
 {%- endmacro %}
 
-{#- Links to the breed hub and the sibling page -#}
-{% macro links(title, items, id='eshche') -%}
-<section class="section container" id="{{ id }}" aria-labelledby="{{ id }}-title">
-  {{ ui.section_head(title, id=id ~ '-title') }}
-  {{ ui.link_tiles(items) }}
-</section>
+{#- «Виды» (client 21.10): one studio photo of the breed's adult dogs side by side — under it a strip with a numbered
+    pin below each dog (x % of the photo width) — then a card per kind with the same number (badge, title, line, rows:
+    height, weight, features). s.sub: the generations F1 / F1b / F2 (kind «tags») or what the FCI standard says about
+    colours («std», part.vs). s: «types» block from routes/breedsub.py; tint: the breed's tone class. -#}
+{% macro types(s, b, tint) -%}
+{%- set size = imgsize(s.photo) or [1376, 768] -%}
+<figure class="bsub-types__photo" style="{{ tone_style(s.photo) }}">
+  <img src="{{ s.photo }}" alt="{{ s.alt|typo }}" width="{{ size[0] }}" height="{{ size[1] }}" style="object-position:{{ s.pos or '50% 70%' }}" loading="lazy" decoding="async">
+  <ol class="bsub-types__pins" aria-hidden="true">
+    {% for k in s['items'] %}<li class="bsub-types__pin" style="--x:{{ k.x }}%"><b>{{ loop.index }}</b><span>{{ k.label|typo }}</span></li>{% endfor %}
+  </ol>
+</figure>
+<ol class="bsub-types bsub-types--{{ s['items']|length }}">
+  {% for k in s['items'] %}
+  <li class="bsub-kind bsub-type{{ ' bsub-kind--off' if k.off }}">
+    <div class="bsub-kind__head">
+      <span class="bsub-type__n" aria-hidden="true">{{ loop.index }}</span>
+      {% if k.badge %}<span class="bsub-kind__badge{{ ' bsub-kind__badge--off' if k.off }}">{{ k.badge|typo }}</span>{% endif %}
+    </div>
+    <h3 class="bsub-kind__title">{{ k.title|typo }}</h3>
+    <p class="bsub-kind__line">{{ k.line|typo }}</p>
+    {% if k.rows %}{{ rows(k.rows) }}{% endif %}
+  </li>
+  {% endfor %}
+</ol>
+{% if s.sub %}
+<div class="bsub-sub">
+  <h3 class="bsub-sub__title">{{ s.sub.title|typo }}</h3>
+  {% if s.sub.lead %}<p class="bsub-sub__lead">{{ s.sub.lead|typo }}</p>{% endif %}
+  {% if s.sub.kind == 'tags' %}
+  <ul class="bsub-kinds bsub-kinds--{{ s.sub['items']|length }}">
+    {% for k in s.sub['items'] %}
+    <li class="bsub-kind">
+      <div class="bsub-kind__head"><span class="bsub-kind__tag" style="--c:var(--{{ k.color }})" aria-hidden="true">{{ k.tag }}</span></div>
+      <h4 class="bsub-kind__title"><span class="sr-only">{{ k.tag }}: </span>{{ k.title|typo }}</h4>
+      <p class="bsub-kind__line">{{ k.line|typo }}</p>
+      {% if k.rows %}{{ rows(k.rows) }}{% endif %}
+    </li>
+    {% endfor %}
+  </ul>
+  {% else %}
+  {{ vs(s.sub.no, s.sub.ok, tint, order='ok-no', id=s.id ~ '-std', tag='h4') }}
+  {% endif %}
+</div>
+{% endif %}
 {%- endmacro %}

@@ -1,6 +1,5 @@
-/* домщенков.рф — подбор породы, сравнения, стартовый набор (группа choice). Ванильный JS, без библиотек.
-   1. Тест /podbor-porody/: шаги-радиогруппы, прогресс, «Назад», результат без перезагрузки (#rezultat-<порода>).
-   2. Чек-лист /magazin/: отметки запоминаются в этом браузере, кнопка «Распечатать».
+/* домщенков.рф — подбор породы и сравнения (группа choice). Ванильный JS, без библиотек.
+   Тест /podbor-porody/: шаги-радиогруппы, прогресс, «Назад», результат без перезагрузки (#rezultat-<порода>).
    Кнопки «Узнать цену» с data-modal-title / -sub / -breed / -note настраивает общая модалка в main.js.
    Завершённый тест → window.DSH.quizDone (main.js): событие quiz_complete и результат к следующей заявке. */
 (() => {
@@ -11,13 +10,6 @@
   const $$ = (sel, ctx = d) => Array.from(ctx.querySelectorAll(sel));
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const scrollBehavior = reduceMotion ? 'auto' : 'smooth';
-
-  // хранилище может быть недоступно (приватный режим, запрет cookies) — страница работает и без него
-  const store = {
-    get(key) { try { return window.localStorage.getItem(key); } catch (e) { return null; } },
-    set(key, value) { try { window.localStorage.setItem(key, value); } catch (e) { /* ничего */ } },
-    del(key) { try { window.localStorage.removeItem(key); } catch (e) { /* ничего */ } }
-  };
 
   // прокрутить к элементу, если его верх не виден (с учётом липкой шапки)
   const bringIntoView = (el) => {
@@ -173,24 +165,5 @@
     // ссылка на результат: /podbor-porody/#rezultat-maltipu
     const m = /^#rezultat-([a-z-]+)$/.exec(location.hash);
     if (m && order.includes(m[1])) showResult(m[1], null, null);
-  }
-
-  /* ---------- 2. чек-лист ---------- */
-  const list = $('[data-checklist]');
-  if (list) {
-    const KEY = 'ph-kit-checklist';
-    const boxes = $$('input[type="checkbox"]', list);
-    let saved = [];
-    try { saved = JSON.parse(store.get(KEY) || '[]'); } catch (e) { saved = []; }
-    boxes.forEach((b) => { b.checked = Array.isArray(saved) && saved.includes(b.name); });
-    list.addEventListener('change', () => {
-      const on = boxes.filter((b) => b.checked).map((b) => b.name);
-      if (on.length) store.set(KEY, JSON.stringify(on)); else store.del(KEY);
-    });
-    const print = $('[data-print]', list.closest('section') || list);
-    if (print && typeof window.print === 'function') {
-      print.hidden = false;
-      print.addEventListener('click', () => window.print());
-    }
   }
 })();

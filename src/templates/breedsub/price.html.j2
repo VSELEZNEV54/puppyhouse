@@ -1,8 +1,13 @@
-{#- /<breed>/cena/ — price page of a breed. No numbers or prices anywhere (client decision): factors, what is included,
-    honest «why not cheap», booking teaser, FAQ, CTA. Context from routes/breedsub.py:
-    b (breed), pg (copy, Markup), tint, faces, links_title, links. The layout adds «Щенки в наличии» (pups_breed = b). -#}
+{#- /<breed>/cena/ — price page of a breed (client 21.10): «Сколько стоит щенок …?», what the price is made of, what is
+    included, «Почему не бывает дёшево» — what a cheap puppy saves on vs a kennel puppy, each side with an approximate
+    price range (breedsub.json → price_cheap / price_kennel; no prices of individual puppies), then «Щенки <породы>
+    в наличии» — 8 cards and «Все щенки <породы>» under them, as the homepage catalog (client 21.10; no strip at the
+    bottom), booking teaser, FAQ, CTA. Coral main buttons as on the homepage (body.page-price, main.css).
+    Context from routes/breedsub.py: b (breed), pg (copy, Markup), tint, faces. -#}
 {% extends "layouts/page.html.j2" %}
 {% import "breedsub/_parts.html.j2" as part %}
+
+{% block body_attrs %} class="page-price"{% endblock %}
 
 {% block page_css %}
   <link rel="stylesheet" href="/assets/css/breedsub.css">
@@ -11,7 +16,7 @@
 {% block sprite_extra %}{{ part.icons() }}{% endblock %}
 
 {% block hero %}
-    {% call ui.page_hero(pg.h1, lead=pg.lead, breed=b, eyebrow=pg.eyebrow, chips=pg.chips) %}
+    {% call ui.page_hero(pg.h1, lead=pg.lead, breed=b, eyebrow=pg.eyebrow, facts=[{'label': pg.hero_price_label, 'value': pg.price_kennel}]) %}
       {{ forms.price_button(cls='btn btn--ink btn--lg', breed=b.name) }}
       <a class="btn btn--white btn--lg" href="#pups">Щенки в&nbsp;наличии</a>
     {% endcall %}
@@ -50,20 +55,50 @@
 
     <section class="section container" id="nedorogo" aria-labelledby="nedorogo-title">
       {{ ui.section_head(pg.cheap_title, id='nedorogo-title', lead=pg.cheap_lead) }}
-      {{ part.vs({'title': pg.cheap_bad_title, 'items': pg.cheap_bad}, {'title': pg.cheap_good_title, 'items': pg.cheap_good}, tint, id='nedorogo') }}
+      {{ part.vs({'title': pg.cheap_bad_title, 'items': pg.cheap_bad, 'price': pg.price_cheap, 'price_label': pg.cheap_bad_label, 'note': pg.cheap_bad_note},
+                 {'title': pg.cheap_good_title, 'items': pg.cheap_good, 'price': pg.price_kennel, 'price_label': pg.cheap_good_label, 'note': pg.cheap_good_note},
+                 tint, id='nedorogo') }}
+    </section>
+
+    <!-- ================= ЩЕНКИ ПОРОДЫ — 8 карточек и кнопка под ними, как каталог на главной (правка 21.10) ================= -->
+    {%- set pups8 = (b.puppies|sort(attribute='status_order'))[:8] %}
+    <section class="section container" id="pups" aria-labelledby="pups-title">
+      {{ ui.section_head(ui.nohyph('Щенки ' ~ b.name_plural_gen ~ ' в наличии'), id='pups-title') }}
+      {% if pups8 %}
+      <ul class="pups hm-pups bsub-pups" data-reveal="items">
+        {% for p in pups8 %}
+        <li class="pups__item">
+          {{ cards.puppy_card(p) }}
+        </li>
+        {% endfor %}
+      </ul>
+      <div class="hm-pups__foot">
+        <a class="btn btn--ink btn--lg" href="{{ b.urls.hub }}#shchenki"><span>{{ ui.nohyph('Все щенки ' ~ b.name_plural_gen) }}</span> {{ ui.icon('arrow') }}</a>
+      </div>
+      {% else %}
+      {{ ui.empty_state('Сейчас щенков нет в наличии', 'Оставьте заявку — напишем, когда появится новый помёт.') }}
+      {% endif %}
     </section>
 
     {{ part.cta(pg.cta_title, pg.cta_line, tint, faces=faces, breed=b.name) }}
 
     <section class="section container" id="bron" aria-labelledby="bron-title">
-      {{ ui.section_head(pg.booking_title, id='bron-title', lead=pg.booking_lead, link={'url': '/rassrochka/', 'label': 'Условия брони и рассрочки'}) }}
+      {{ ui.section_head(pg.booking_title, id='bron-title', lead=pg.booking_lead, link={'url': '/rassrochka/', 'label': 'Условия брони'}) }}
       {{ ui.steps(pg.booking, cols=3) }}
     </section>
 
     {{ blocks.faq_section(pg.faq, title=pg.faq_title) }}
 
-    {{ part.links(links_title, links) }}
+    {{ blocks.read_more(b, alt='varieties') }}
 
+{% endblock %}
+
+{#- the breed's puppies are higher on the page (#pups, after «Почему не бывает дёшево») — no second strip;
+    the articles are in «Читайте также» -#}
+{% block pups %}{% endblock %}
+{% block blog %}{% endblock %}
+
+{% block seo %}
     {% call blocks.seo_block(pg.seo.title, pg.seo.lead, id='o-cene') %}
         {% for s in pg.seo.blocks %}
         <h3>{{ s.h|typo }}</h3>

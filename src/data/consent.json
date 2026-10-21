@@ -1,7 +1,7 @@
 {
   "_note": "Consent documents (152-ФЗ, ст. 9 and 10.1 as amended on 01.09.2025: consent is a separate document, not part of the privacy policy). ONE source for the site (the pages /soglasie/, /soglasie-na-otzyv/ and /soglasie-na-publikaciyu/, the form checkboxes) and for the backend (python -m app sync-catalog loads every version into consent_versions; a published version is never edited — add a new version and switch `current`). Values in [square brackets] are placeholders: fill them in before collecting real requests. Before launch (no real consent collected yet) the texts were edited in place; after launch never edit a version. cross_border: true only in a version whose text names the transfer abroad (Telegram notifications with personal data, DSH_TELEGRAM_INCLUDE_PD). 19.10.2026: the operator's requisites (ИП Селезнев В. И.) — new versions *-2026-10-19; the *-2026-10-16 versions stay as they were (they may already be stored with test requests). 20.10.2026: first stage without the kennel's e-mail or phone on the site — consent is withdrawn by replying to the kennel's message or call about the request (versions *-2026-10-20).",
   "current": {
-    "processing": "processing-2026-10-20-2",
+    "processing": "processing-2026-10-21",
     "review": "review-2026-10-20-2",
     "distribution": "distribution-2026-10-20-2"
   },
@@ -218,6 +218,22 @@
         "Я могу отозвать согласие, написав оператору на почту main@домщенков.рф или сообщив об этом питомнику в ответ на сообщение или звонок по моей заявке — в выбранном мной мессенджере или по телефону. Оператор прекратит обработку и уничтожит мои данные в срок не более 30 дней с получения отзыва."
       ],
       "cross_border": true
+    },
+    {
+      "version": "processing-2026-10-21",
+      "kind": "processing",
+      "url": "/soglasie/",
+      "title": "Согласие на обработку персональных данных",
+      "checkbox": "Даю согласие на обработку персональных данных",
+      "body": [
+        "Отправляя форму на сайте домщенков.рф, я свободно, своей волей и в своём интересе даю согласие ИП Селезнев Владимир Игоревич (ИНН 220703337790, ОГРНИП 324547600187418, почта main@домщенков.рф) (далее — оператор), на обработку моих персональных данных на условиях ниже.",
+        "Цель обработки: ответить на мою заявку — подобрать щенка, сообщить цену и наличие, записать в лист ожидания, договориться о видеозвонке, бронировании, доставке и покупке, а также понять, что меня интересовало на сайте, чтобы ответить точнее.",
+        "Персональные данные: имя; номер телефона; выбранный способ связи (Telegram, WhatsApp, MAX или звонок); сведения из заявки (порода, щенок, окрас, пометка формы, текст вопроса или сообщения); страница сайта, с которой отправлена заявка, и страницы сайта, просмотренные перед её отправкой; источник перехода на сайт (поисковая система, сайт-источник, рекламная метка); IP-адрес и сведения о браузере.",
+        "Действия с данными: сбор, запись, систематизация, накопление, хранение, уточнение (обновление, изменение), извлечение, использование, обезличивание, блокирование, удаление, уничтожение. Обработка смешанная, с использованием средств автоматизации. Данные хранятся на серверах, расположенных в России, и не передаются третьим лицам и за рубеж.",
+        "Срок: до достижения цели обработки, но не дольше трёх лет с моего последнего обращения, или до отзыва согласия.",
+        "Я могу отозвать согласие, написав оператору на почту main@домщенков.рф или сообщив об этом питомнику в ответ на сообщение или звонок по моей заявке — в выбранном мной мессенджере или по телефону. Оператор прекратит обработку и уничтожит мои данные в срок не более 30 дней с получения отзыва."
+      ],
+      "cross_border": false
     }
   ]
 }
