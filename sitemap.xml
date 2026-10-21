@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://xn--b1adduihee9g.xn--p1ai/</loc><lastmod>2026-10-21</lastmod><changefreq>daily</changefreq><priority>1.0</priority></url>
+  <url><loc>https://xn--b1adduihee9g.xn--p1ai/blog/</loc><lastmod>2026-10-21</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://xn--b1adduihee9g.xn--p1ai/border-kolli/</loc><lastmod>2026-10-21</lastmod><changefreq>daily</changefreq><priority>0.9</priority></url>
+  <url><loc>https://xn--b1adduihee9g.xn--p1ai/border-kolli/cena/</loc><lastmod>2026-10-21</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://xn--b1adduihee9g.xn--p1ai/border-kolli/cherno-belyj/</loc><lastmod>2026-10-21</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://xn--b1adduihee9g.xn--p1ai/border-kolli/goluboj-mramor/</loc><lastmod>2026-10-21</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://xn--b1adduihee9g.xn--p1ai/border-kolli/krasno-belyj/</loc><lastmod>2026-10-21</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
@@ -9,7 +11,12 @@
   <url><loc>https://xn--b1adduihee9g.xn--p1ai/border-kolli/lilovyj/</loc><lastmod>2026-10-21</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://xn--b1adduihee9g.xn--p1ai/border-kolli/mramornyj-trikolor/</loc><lastmod>2026-10-21</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://xn--b1adduihee9g.xn--p1ai/border-kolli/trehcvetnyj/</loc><lastmod>2026-10-21</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://xn--b1adduihee9g.xn--p1ai/border-kolli/vidy-i-okrasy/</loc><lastmod>2026-10-21</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://xn--b1adduihee9g.xn--p1ai/dokumenty-i-garantii/</loc><lastmod>2026-10-21</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://xn--b1adduihee9g.xn--p1ai/dostavka/</loc><lastmod>2026-10-21</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://xn--b1adduihee9g.xn--p1ai/faq/</loc><lastmod>2026-10-21</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://xn--b1adduihee9g.xn--p1ai/francuzskij-buldog/</loc><lastmod>2026-10-21</lastmod><changefreq>daily</changefreq><priority>0.9</priority></url>
+  <url><loc>https://xn--b1adduihee9g.xn--p1ai/francuzskij-buldog/cena/</loc><lastmod>2026-10-21</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://xn--b1adduihee9g.xn--p1ai/francuzskij-buldog/goluboj/</loc><lastmod>2026-10-21</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://xn--b1adduihee9g.xn--p1ai/francuzskij-buldog/kremovyj/</loc><lastmod>2026-10-21</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://xn--b1adduihee9g.xn--p1ai/francuzskij-buldog/mramornyj/</loc><lastmod>2026-10-21</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
@@ -17,9 +24,12 @@
   <url><loc>https://xn--b1adduihee9g.xn--p1ai/francuzskij-buldog/pegij/</loc><lastmod>2026-10-21</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://xn--b1adduihee9g.xn--p1ai/francuzskij-buldog/shokoladnyj/</loc><lastmod>2026-10-21</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://xn--b1adduihee9g.xn--p1ai/francuzskij-buldog/tigrovyj/</loc><lastmod>2026-10-21</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://xn--b1adduihee9g.xn--p1ai/francuzskij-buldog/vidy-i-okrasy/</loc><lastmod>2026-10-21</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://xn--b1adduihee9g.xn--p1ai/kontakty/</loc><lastmod>2026-10-21</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://xn--b1adduihee9g.xn--p1ai/maltipu/</loc><lastmod>2026-10-21</lastmod><changefreq>daily</changefreq><priority>0.9</priority></url>
   <url><loc>https://xn--b1adduihee9g.xn--p1ai/maltipu/abrikosovyj/</loc><lastmod>2026-10-21</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://xn--b1adduihee9g.xn--p1ai/maltipu/belyj/</loc><lastmod>2026-10-21</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://xn--b1adduihee9g.xn--p1ai/maltipu/cena/</loc><lastmod>2026-10-21</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://xn--b1adduihee9g.xn--p1ai/maltipu/chernyj/</loc><lastmod>2026-10-21</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://xn--b1adduihee9g.xn--p1ai/maltipu/fantom/</loc><lastmod>2026-10-21</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://xn--b1adduihee9g.xn--p1ai/maltipu/kremovyj/</loc><lastmod>2026-10-21</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
@@ -28,7 +38,41 @@
   <url><loc>https://xn--b1adduihee9g.xn--p1ai/maltipu/serebristyj/</loc><lastmod>2026-10-21</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://xn--b1adduihee9g.xn--p1ai/maltipu/shokoladnyj/</loc><lastmod>2026-10-21</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://xn--b1adduihee9g.xn--p1ai/maltipu/sobolinyj/</loc><lastmod>2026-10-21</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://xn--b1adduihee9g.xn--p1ai/maltipu/vidy-i-okrasy/</loc><lastmod>2026-10-21</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://xn--b1adduihee9g.xn--p1ai/o-pitomnike/</loc><lastmod>2026-10-21</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://xn--b1adduihee9g.xn--p1ai/otzyvy/</loc><lastmod>2026-10-21</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://xn--b1adduihee9g.xn--p1ai/podbor-porody/</loc><lastmod>2026-10-21</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://xn--b1adduihee9g.xn--p1ai/rassrochka/</loc><lastmod>2026-10-21</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://xn--b1adduihee9g.xn--p1ai/shchenki-v-barnaule/</loc><lastmod>2026-10-21</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://xn--b1adduihee9g.xn--p1ai/shchenki-v-chelyabinske/</loc><lastmod>2026-10-21</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://xn--b1adduihee9g.xn--p1ai/shchenki-v-ekaterinburge/</loc><lastmod>2026-10-21</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://xn--b1adduihee9g.xn--p1ai/shchenki-v-habarovske/</loc><lastmod>2026-10-21</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://xn--b1adduihee9g.xn--p1ai/shchenki-v-irkutske/</loc><lastmod>2026-10-21</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://xn--b1adduihee9g.xn--p1ai/shchenki-v-izhevske/</loc><lastmod>2026-10-21</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://xn--b1adduihee9g.xn--p1ai/shchenki-v-kazani/</loc><lastmod>2026-10-21</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://xn--b1adduihee9g.xn--p1ai/shchenki-v-kemerove/</loc><lastmod>2026-10-21</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://xn--b1adduihee9g.xn--p1ai/shchenki-v-krasnodare/</loc><lastmod>2026-10-21</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://xn--b1adduihee9g.xn--p1ai/shchenki-v-krasnoyarske/</loc><lastmod>2026-10-21</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://xn--b1adduihee9g.xn--p1ai/shchenki-v-mahachkale/</loc><lastmod>2026-10-21</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://xn--b1adduihee9g.xn--p1ai/shchenki-v-nizhnem-novgorode/</loc><lastmod>2026-10-21</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://xn--b1adduihee9g.xn--p1ai/shchenki-v-novosibirske/</loc><lastmod>2026-10-21</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://xn--b1adduihee9g.xn--p1ai/shchenki-v-omske/</loc><lastmod>2026-10-21</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://xn--b1adduihee9g.xn--p1ai/shchenki-v-permi/</loc><lastmod>2026-10-21</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://xn--b1adduihee9g.xn--p1ai/shchenki-v-rostove-na-donu/</loc><lastmod>2026-10-21</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://xn--b1adduihee9g.xn--p1ai/shchenki-v-samare/</loc><lastmod>2026-10-21</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://xn--b1adduihee9g.xn--p1ai/shchenki-v-sankt-peterburge/</loc><lastmod>2026-10-21</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://xn--b1adduihee9g.xn--p1ai/shchenki-v-saratove/</loc><lastmod>2026-10-21</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://xn--b1adduihee9g.xn--p1ai/shchenki-v-sevastopole/</loc><lastmod>2026-10-21</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://xn--b1adduihee9g.xn--p1ai/shchenki-v-stavropole/</loc><lastmod>2026-10-21</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://xn--b1adduihee9g.xn--p1ai/shchenki-v-tolyatti/</loc><lastmod>2026-10-21</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://xn--b1adduihee9g.xn--p1ai/shchenki-v-tomske/</loc><lastmod>2026-10-21</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://xn--b1adduihee9g.xn--p1ai/shchenki-v-tyumeni/</loc><lastmod>2026-10-21</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://xn--b1adduihee9g.xn--p1ai/shchenki-v-ufe/</loc><lastmod>2026-10-21</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://xn--b1adduihee9g.xn--p1ai/shchenki-v-ulyanovske/</loc><lastmod>2026-10-21</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://xn--b1adduihee9g.xn--p1ai/shchenki-v-volgograde/</loc><lastmod>2026-10-21</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://xn--b1adduihee9g.xn--p1ai/shchenki-v-voronezhe/</loc><lastmod>2026-10-21</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://xn--b1adduihee9g.xn--p1ai/shchenki-v-yaroslavle/</loc><lastmod>2026-10-21</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://xn--b1adduihee9g.xn--p1ai/shchenki-vo-vladivostoke/</loc><lastmod>2026-10-21</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://xn--b1adduihee9g.xn--p1ai/shchenki/</loc><lastmod>2026-10-21</lastmod><changefreq>daily</changefreq><priority>0.9</priority></url>
   <url><loc>https://xn--b1adduihee9g.xn--p1ai/shchenki/border-kolli-cherno-belyj-2026-07-grom/</loc><lastmod>2026-10-21</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
   <url><loc>https://xn--b1adduihee9g.xn--p1ai/shchenki/border-kolli-cherno-belyj-2026-07-rokki/</loc><lastmod>2026-10-21</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
@@ -90,11 +134,17 @@
   <url><loc>https://xn--b1adduihee9g.xn--p1ai/shchenki/toj-pudel-ryzhij-2026-08-ogonek/</loc><lastmod>2026-10-21</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
   <url><loc>https://xn--b1adduihee9g.xn--p1ai/shchenki/toj-pudel-ryzhij-2026-08/</loc><lastmod>2026-10-21</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
   <url><loc>https://xn--b1adduihee9g.xn--p1ai/shchenki/toj-pudel-shokolad-2026-07/</loc><lastmod>2026-10-21</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+  <url><loc>https://xn--b1adduihee9g.xn--p1ai/sravnenie/border-kolli/</loc><lastmod>2026-10-21</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://xn--b1adduihee9g.xn--p1ai/sravnenie/francuzskij-buldog/</loc><lastmod>2026-10-21</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://xn--b1adduihee9g.xn--p1ai/sravnenie/maltipu/</loc><lastmod>2026-10-21</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://xn--b1adduihee9g.xn--p1ai/sravnenie/toj-pudel/</loc><lastmod>2026-10-21</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://xn--b1adduihee9g.xn--p1ai/toj-pudel/</loc><lastmod>2026-10-21</lastmod><changefreq>daily</changefreq><priority>0.9</priority></url>
   <url><loc>https://xn--b1adduihee9g.xn--p1ai/toj-pudel/abrikosovyj/</loc><lastmod>2026-10-21</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://xn--b1adduihee9g.xn--p1ai/toj-pudel/belyj/</loc><lastmod>2026-10-21</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://xn--b1adduihee9g.xn--p1ai/toj-pudel/cena/</loc><lastmod>2026-10-21</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://xn--b1adduihee9g.xn--p1ai/toj-pudel/chernyj/</loc><lastmod>2026-10-21</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://xn--b1adduihee9g.xn--p1ai/toj-pudel/korichnevyj/</loc><lastmod>2026-10-21</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://xn--b1adduihee9g.xn--p1ai/toj-pudel/ryzhij/</loc><lastmod>2026-10-21</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://xn--b1adduihee9g.xn--p1ai/toj-pudel/seryj/</loc><lastmod>2026-10-21</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://xn--b1adduihee9g.xn--p1ai/toj-pudel/vidy-i-okrasy/</loc><lastmod>2026-10-21</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
 </urlset>
