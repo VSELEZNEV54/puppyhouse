@@ -131,7 +131,7 @@
     {{ blocks.how_to_buy() }}
 
     <!-- ================= ВОПРОСЫ ================= -->
-    {{ blocks.faq_section(faq_items, title='Вопросы о покупке щенка') }}
+    {{ blocks.faq_section(faq_items, title='Вопросы о покупке щенка', local_time=not city) }}
 
     <!-- ================= СТАТЬИ О ПОРОДАХ ================= -->
     {{ blocks.blog_teasers(posts=teasers, title='Почитать о породах', lead='Характер, уход и выбор щенка: коротко и по делу') }}

@@ -99,10 +99,12 @@ python3 tools/build.py --clean    # + delete pages from earlier builds that no r
 python3 tools/build.py --kit      # + /_kit/ — every macro with sample data (git-ignored, never deployed)
 ```
 
-**Staged release (client 19.10).** The repo = what GitHub Pages and the server show. Out now: the homepage, the four
-breed pages and the privacy policy (the forms link to it). Everything else stays in `src/` and is built with `--all`.
-Links to an unpublished page go to a block on the published page (`publish.json → link_fallbacks`: «Каталог щенков» →
-`#shchenki` on a breed page or the homepage `#porody`, «Контакты» → `#zayavka`, «Отзывы», «О питомнике», «Все вопросы»);
+**Staged release (client 19.10, third step 21.10).** The repo = what GitHub Pages and the server show. Out now (151 pages):
+the homepage, the four breed pages with their colour, «Виды и окрасы» and price pages, the catalog and 60 puppy pages,
+«О питомнике», «Отзывы», «Доставка», «Контакты», «Вопросы и ответы», «Документы и гарантии», «Бронь щенка», the breed
+quiz, the four comparisons, the /blog/ index, the 30 city pages and the legal pages. Not out: «Щенок в подарок» and the
+blog articles — they stay in `src/` and are built with `--all` / `--full`. Links to an unpublished page can go to a
+block on the published page (`publish.json → link_fallbacks`, empty now: every former target is published);
 the rest show the toast «Раздел скоро откроется. Пока напишите нам — пришлём фото и видео щенков» and carry `rel="nofollow"`. sitemap.xml lists only
 published pages. To release a page: add its URL to `src/data/publish.json → pages` (`/maltipu/*` = the whole section),
 build, commit. A malformed publish.json stops the build before anything is written (a typo must not publish the whole

@@ -131,10 +131,11 @@ def _colour_pages(b, hub, colours):
         title = next(t for t in (f"{c['title']} — купить щенка в Москве | домщенков.рф",
                                  f"{c['title']} — щенки в Москве | домщенков.рф",
                                  f"{c['title']} | домщенков.рф") if len(t) <= 60 or t.startswith(f"{c['title']} |"))
-        desc = (f"{c['title']}: {str(c['short'] or '').lower()}. {c['facts'][0]['value']}. Фото и описание окраса, "
+        short = re.sub(r"<[^>]+>", "", str(c['short'] or '')).lower()   # the meta text: no <span class="nw"> of |typo
+        desc = (f"{c['title']}: {short}. {c['facts'][0]['value']}. Фото и описание окраса, "
                 f"щенки в наличии, видео и цена за 15 минут.")
         if len(desc) > 160:   # без строки о редкости
-            desc = f"{c['title']}: {str(c['short'] or '').lower()}. Фото и описание окраса, щенки в наличии, видео и цена за 15 минут."
+            desc = f"{c['title']}: {short}. Фото и описание окраса, щенки в наличии, видео и цена за 15 минут."
         out.append(dict(
             url=f"{b['urls']['hub']}{c['slug']}/",
             template="breeds/colour.html.j2",
