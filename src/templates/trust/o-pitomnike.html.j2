@@ -1,10 +1,11 @@
 {#- /o-pitomnike/ — the page about the kennel itself (client 21.10; replaces /roditeli/ and /vypuskniki/).
     Key phrase «питомник щенков в Москве». Context (routes/trust.py): pg (data/trust.json → o_pitomnike), seo (its SEO
-    text, links rendered), stats (site.stats), graduates (home.json → reviews_home: the owners' photo reviews, as on the
-    homepage), faq_items. No parents and no «как растим щенков» on this page.
-    Order: hero (four breeds together, 9 лет / 640+ / 4,9) → «Кто мы» (text + numbers) → «Почему нам доверяют» (eight
-    photo cards, the puppy-card look) → four breeds → «Наши выпускники» (ratings on Яндекс / Google / Авито + photo
-    reviews) → puppies in stock → FAQ about the kennel → more about the kennel → SEO text → lead form with contact tiles. -#}
+    text, links rendered), catalog (the first 8 puppies of /shchenki/), graduates (home.json → reviews_home: the owners'
+    photo reviews, as on the homepage), faq_items. No parents, no «как растим щенков», no number of graduates.
+    Order: hero (the homepage photo of the four breeds; 9 лет / по всей России / средний рейтинг 4,9 из 5) → «Кто мы»
+    (text + three numbers) → «Почему нам доверяют» (eight photo cards, the puppy-card look) → «Породы щенков питомника»
+    and «Каталог щенков» exactly as on the homepage (8 cards + «Перейти в каталог») → «Наши выпускники» (ratings on
+    Яндекс / Google / Авито + photo reviews) → FAQ about the kennel → more about the kennel → SEO text → lead form. -#}
 {% extends "layouts/page.html.j2" %}
 
 {% block body_attrs %} class="page-about"{% endblock %}
@@ -16,7 +17,7 @@
 {% block hero %}
     {%- set h = pg.hero %}
     {%- set size = imgsize(h.photo.src) or [1536, 1024] %}
-    {% call ui.page_hero(h.h1, lead=h.lead, tone='peach', photo={'src': h.photo.src, 'w': size[0], 'h': size[1], 'alt': h.photo.alt}, eyebrow=h.eyebrow, facts=h.facts, cls='phero--about') %}
+    {% call ui.page_hero(h.h1, lead=h.lead, tone='cream', photo={'src': h.photo.src, 'w': size[0], 'h': size[1], 'alt': h.photo.alt}, eyebrow=h.eyebrow, facts=h.facts, cls='phero--about') %}
       <a class="btn btn--ink btn--lg" href="/shchenki/">Щенки в наличии {{ ui.icon('arrow') }}</a>
       <button class="btn btn--white btn--lg" type="button" data-open-modal data-modal-kind="consult" data-modal-title="Получить консультацию" data-modal-sub="Расскажем о питомнике и породах, ответим на вопросы и пришлём щенков в наличии с ценами" data-modal-note="Консультация: о питомнике" data-modal-submit="Получить консультацию" data-modal-done="Спасибо! Куратор свяжется с вами в течение рабочего дня">Получить консультацию</button>
     {% endcall %}
@@ -30,7 +31,7 @@
         <div class="abt-who__text">
           {% for para in pg.about.text %}<p>{{ para|typo }}</p>{% endfor %}
         </div>
-        {{ ui.stat_tiles(stats) }}
+        {{ ui.stat_tiles(pg.stats) }}
       </div>
     </section>
 
@@ -52,17 +53,29 @@
       </ul>
     </section>
 
-    <!-- ================= ЧЕТЫРЕ ПОРОДЫ ================= -->
+    <!-- ================= ПОРОДЫ — как на главной: по две в ряд ================= -->
     <section class="section container" id="porody" aria-labelledby="porody-title">
-      {{ ui.section_head(pg.breeds.title, id='porody-title', lead=pg.breeds.lead, link={'url': '/shchenki/', 'label': 'Все щенки в наличии — ' ~ puppies|length}) }}
-      {{ cards.breed_tiles() }}
+      {{ ui.section_head('Породы щенков питомника', id='porody-title') }}
+      {{ cards.breed_tiles(cols=2) }}
+    </section>
+
+    <!-- ================= КАТАЛОГ — как на главной: 8 карточек и «Перейти в каталог» под ними ================= -->
+    <section class="section container" id="katalog" aria-labelledby="katalog-title">
+      {{ ui.section_head(pg.catalog.title, id='katalog-title') }}
+      <ul class="pups hm-pups abt-pups" data-reveal="items">
+        {% for p in catalog %}
+        <li class="pups__item">
+          {{ cards.puppy_card(p) }}
+        </li>
+        {% endfor %}
+      </ul>
+      <div class="hm-pups__foot">
+        <a class="btn btn--ink btn--lg" href="/shchenki/">{{ pg.catalog.button|typo }} {{ ui.icon('arrow') }}</a>
+      </div>
     </section>
 
     <!-- ================= НАШИ ВЫПУСКНИКИ — рейтинг на площадках + отзывы с фото щенков (как на главной) ================= -->
     {{ media.video_reviews(graduates, title=pg.graduates.title, id='vypuskniki', lead=pg.graduates.lead, photo=true) }}
-
-    <!-- ================= ЩЕНКИ В НАЛИЧИИ ================= -->
-    {{ cards.pups_section() }}
 
     <!-- ================= ВОПРОСЫ О ПИТОМНИКЕ ================= -->
     {{ blocks.faq_section(faq_items, title=pg.faq_title) }}
