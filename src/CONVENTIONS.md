@@ -33,7 +33,8 @@ pixel-parity baseline no longer applies. Reference inner page: `/shchenki/`.
 - **Phones (≤ 760 px): no sideways scrolling of cards.** Cards go down the page: one per row, or two small ones (colour
   faces, `.stiles--pair`). Chips and filters wrap. The ONLY swipeable rows are photo/video carousels (`media.media_carousel`);
   video reviews (`media.video_reviews`) stack on phones (three cards + «Все отзывы»), wide comparison tables (`ui.cmp_table`
-  with 3+ columns) turn into one tile per column. `.scroller` is a no-op now — don't use it. The crawler flags any other
+  with 3+ columns) stay a horizontal table that scrolls sideways, first column sticky, «Листайте таблицу вбок» above it
+  (client 21.10 — the second exception). `.scroller` is a no-op now — don't use it. The crawler flags any other
   sideways scroll container and any link/button cut off by an `overflow: hidden` parent (`control-clipped`).
 - **RULE — links to a section or page are coral pill buttons (client 19.10, 21.10; automatic — main.css).** No underlined
   text links with an arrow anywhere on the site. «Все отзывы», «Все статьи», «Документы и гарантии», «Задать свой вопрос»,
@@ -247,7 +248,7 @@ in the order of `breeds-hub.json` → `media` (+ extra placeholders), so a video
 | `ui.lead_band` | `title, line, label='Оставить заявку', tone='lilac', tag='h3', title_id, faces=true, note, modal_title, submit='Записаться на видеозвонок', done` | CTA band right under a carousel: «Оставить заявку» (modal with its own title + hidden note) + «Написать в Telegram». Inside a section with an H2 keep `tag='h3'`. `faces=[{src, tone}]` → those studio photos as round faces (breed page: its colours) |
 | `ui.cta_band` | `title, line, button='modal'\|{url,label}, label, tone, faces, title_id` | mid-page CTA (wrap in a section, `title_id` → its `aria-labelledby`) |
 | `ui.keyfacts`, `ui.callout(kind,title)` + call, `ui.toc([[id,label]])` | | articles (`.article`, `.prose`) |
-| `ui.cmp_table` | `cols` (names or breed dicts), `rows[[label, v1, v2…]]`, `caption` | comparison table in a white tile; column names never break at a hyphen. 3+ columns: phones ≤ 760 get one tile per column (`.cmp-cards`) instead of the table |
+| `ui.cmp_table` | `cols` (names or breed dicts), `rows[[label, v1, v2…]]`, `caption` | comparison table in a white tile; column names never break at a hyphen. first column sticky; 3+ columns: on phones ≤ 760 the table scrolls sideways (min 640 px, labels 100 px) under «Листайте таблицу вбок» (client 21.10) |
 | `ui.gallery` | `photos[{src,alt,caption?}]` | 1–5+ photos; phones: a grid (first photo full width, the rest two per row). Swipeable row → `media.media_carousel` |
 | `ui.badges`, `ui.empty_state(title,text,button,label,attrs)`, `ui.img(src,alt,…)`, `ui.icon`, `ui.ico`, `ui.face`, `ui.round_arrow`, `ui.link_button(url, label)` (coral pill link) | | small parts |
 | `cards.puppy_card(p, tag='h3', eager=false, simple=false)` | puppy | THE puppy card of the whole site (every strip, hub, catalog, «Похожие щенки»): photo (a link), white «Узнать цену» (modal for that puppy) + «Подробнее» with a white outline (`.btn--outline`), no «В избранное» heart (client 21.10); studio photo → card in that photo's measured colours; phones ≤ 560 — a compact row, photo left. `simple=true` (breed pages v2): name, sex · colour, the same two buttons, no age; photo and name are not links. Styles: `main.css` (`.pup` + `.ct-card`) |

@@ -359,9 +359,11 @@
 {%- endmacro %}
 
 {#- Comparison table. cols: ["Мальтипу", "Той-пудель"] or breeds.json items (shows faces);
-    rows: [["Вес", "2–5 кг", "2–4 кг"], ...]. Scrolls inside its tile on narrow screens, first column sticky.
+    rows: [["Вес", "2–5 кг", "2–4 кг"], ...]. Scrolls sideways inside its tile on narrow screens, first column sticky
+    (client 21.10: a horizontal table on phones too, no stacked cards); 3+ columns: «Листайте таблицу вбок» on phones.
     Column names never break at a hyphen. -#}
 {% macro cmp_table(cols, rows, caption=none, eager=false) -%}
+{% if cols|length > 2 %}<p class="cmp-hint">Листайте таблицу вбок {{ icon('arrow', sm=true) }}</p>{% endif %}
 <div class="cmp{{ ' cmp--wide' if cols|length > 2 }}" role="region" aria-label="{{ caption or 'Сравнение' }}" tabindex="0">
   <table class="cmp__table">
     {% if caption %}<caption class="sr-only">{{ caption }}</caption>{% endif %}
@@ -383,22 +385,6 @@
     </tbody>
   </table>
 </div>
-{% if cols|length > 2 %}
-{#- phones and tablets ≤ 900 px: the wide table is hidden and the same data is shown transposed — one tile per column, stacked -#}
-<ul class="cmp-cards" aria-label="{{ caption or 'Сравнение' }}">
-  {% for c in cols %}
-  {%- set ci = loop.index %}
-  <li class="cmp-card">
-    <h3 class="cmp-card__head">{% if c is mapping %}{{ face(c) }}<span>{{ nohyph(c.name) }}</span>{% else %}{{ nohyph(c) }}{% endif %}</h3>
-    <dl class="cmp-card__rows">
-      {% for r in rows %}
-      <div class="cmp-card__row"><dt>{{ r[0]|typo }}</dt><dd>{{ r[ci]|typo }}</dd></div>
-      {% endfor %}
-    </dl>
-  </li>
-  {% endfor %}
-</ul>
-{% endif %}
 {%- endmacro %}
 
 {#- Small pills with a check icon (documents, badges). items: ["Метрика РКФ", "Чип"] -#}
