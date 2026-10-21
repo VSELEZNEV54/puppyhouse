@@ -1,6 +1,10 @@
 {#- /faq/ — every question of faq.json (+ the group's own) in five topics, each an accordion with its own anchor.
-    Context (routes/delivery.py): f (copy, data/delivery-service.json), cats [{id, title, items}], faq_ld (JSON-LD). -#}
+    Main buttons coral as on the homepage (body.page-faq); «Щенки в наличии» — two of every breed (cards.pups_grid);
+    «Читайте также» — articles + plates (blocks.read_more without a breed).
+    Context (routes/delivery.py): f (copy, data/delivery-service.json), cats [{id, title, items}], faq_ld (JSON-LD), catalog. -#}
 {% extends "layouts/page.html.j2" %}
+
+{% block body_attrs %} class="page-faq"{% endblock %}
 
 {% block page_css %}
   <link rel="stylesheet" href="/assets/css/delivery.css">
@@ -34,7 +38,12 @@
 
     {{ ui.advantages(title='Почему выбирают нас', link={'url': '/dokumenty-i-garantii/', 'label': 'Документы и гарантии'}) }}
 
-    {{ cards.pups_section() }}
+    {{ cards.pups_grid(catalog) }}
+{% endblock %}
+
+{#- «Читайте также» (client 21.10): articles + four plates (catalog, quiz, documents, delivery), instead of «Полезные статьи» -#}
+{% block blog %}
+    {{ blocks.read_more() }}
 {% endblock %}
 
 {% block lead %}

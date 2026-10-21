@@ -9,7 +9,7 @@ import re
 
 from markupsafe import Markup
 
-from _lib import NBSP, by_id, crumbs, nb, nobr
+from _lib import NBSP, by_id, crumbs, mixed_puppies, nb, nobr
 
 TITLE_MAX, DESC_MAX = 60, 160
 BRAND = " | домщенков.рф"
@@ -167,6 +167,8 @@ def faq_page(data):
         f=f,
         cats=[dict(cat, qs=qa(cat["qs"])) for cat in cats],
         faq_ld=Markup(json.dumps(ld, ensure_ascii=False).replace("</", "<\\/")),
+        # «Щенки в наличии» (client 21.10): the standard block — two puppies of every breed, 8 cards, «Весь каталог»
+        catalog=mixed_puppies(data["breeds"]),
         pups_strip=False,
     )
 

@@ -68,6 +68,25 @@
 </section>
 {%- endmacro %}
 
+{#- «Щенки в наличии» as on the homepage (client 21.10): 8 cards — 4 / 2 per row; at three per row the first 6
+    (main.css .hm-pups--8), so every row is full — and the catalog button under them. items: puppies
+    (_lib.mixed_puppies on a page about all breeds). -#}
+{% macro pups_grid(items, title='Щенки в наличии', id='pups', url='/shchenki/', label='Весь каталог') -%}
+<section class="section container" id="{{ id }}" aria-labelledby="{{ id }}-title">
+  {{ ui.section_head(title, id=id ~ '-title') }}
+  <ul class="pups hm-pups hm-pups--8" data-reveal="items">
+    {% for p in items %}
+    <li class="pups__item">
+      {{ puppy_card(p) }}
+    </li>
+    {% endfor %}
+  </ul>
+  <div class="hm-pups__foot">
+    <a class="btn btn--ink btn--lg" href="{{ url }}">{{ label|typo }} {{ ui.icon('arrow') }}</a>
+  </div>
+</section>
+{%- endmacro %}
+
 {#- «Ждёте другого щенка?» tile: fills the rest of a puppy row, opens the modal as a waiting-list request
     (its own title, line, submit label and success text; hidden note «Лист ожидания»). breed: breeds.json item → preselected. -#}
 {% macro soon_tile(title='Ждёте другого щенка?', line='Напишем, когда появится новый помёт', label='Оставить заявку', breed=none) -%}

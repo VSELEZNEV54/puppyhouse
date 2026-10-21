@@ -1,7 +1,7 @@
 """Small helpers for route modules. READ-ONLY for page-group agents (copy what you need into your module
 if you want something different). Files starting with "_" are not route modules.
 
-    from _lib import crumbs, by_id, sort_puppies
+    from _lib import crumbs, by_id, sort_puppies, mixed_puppies
     from _lib import nobr, nb      # copy text → Markup that never breaks inside «Санкт-Петербург» or «10–16 лет»
 """
 
@@ -29,6 +29,13 @@ def by_id(items, key="id"):
 def sort_puppies(puppies):
     """Available first, then «скоро», then reserved; source order inside each group."""
     return sorted(puppies, key=lambda p: p["status_order"])
+
+
+def mixed_puppies(breeds, per_breed=2):
+    """«Щенки в наличии» of a page about all breeds (client 21.10): per_breed puppies of every breed, breed after breed,
+    so each row of four cards shows all four breeds (8 cards with the default)."""
+    per = [sort_puppies(b["puppies"]) for b in breeds]
+    return [pups[i] for i in range(per_breed) for pups in per if len(pups) > i]
 
 
 # Visible copy never breaks inside «Санкт-Петербург», «о бордер-колли» or a range like «10–16 лет»: such words go into

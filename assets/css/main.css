@@ -194,9 +194,9 @@ main:focus, section[tabindex="-1"]:focus, [data-anchor-focus]:focus { outline: n
 /* главная, страницы пород v2 (правки 15.10), страница щенка (19.10), «О питомнике», «Отзывы», цены, сравнения и «Виды и окрасы» (21.10): основные кнопки —
    коралловые (цвет прежнего наведения), при наведении — темнее; белые — как были. Карточка щенка одна на весь сайт:
    её «Узнать цену» остаётся чёрной */
-:is(.page-home, .page-breed, .page-puppy, .page-about, .page-reviews, .page-price, .page-compare, .page-quiz, .page-varieties) { --cta: var(--coral); --cta-hover: #F7805F; }
-:is(.page-home, .page-breed, .page-puppy, .page-about, .page-reviews, .page-price, .page-compare, .page-quiz, .page-varieties) :is(.btn--ink, .mbar__btn--ink):not(.pup .btn) { background: var(--cta); color: var(--ink); }
-@media (hover: hover) { :is(.page-home, .page-breed, .page-puppy, .page-about, .page-reviews, .page-price, .page-compare, .page-quiz, .page-varieties) :is(.btn--ink, .mbar__btn--ink):not(.pup .btn):hover { background: var(--cta-hover); color: var(--ink); } }
+:is(.page-home, .page-breed, .page-puppy, .page-about, .page-reviews, .page-price, .page-compare, .page-quiz, .page-varieties, .page-faq) { --cta: var(--coral); --cta-hover: #F7805F; }
+:is(.page-home, .page-breed, .page-puppy, .page-about, .page-reviews, .page-price, .page-compare, .page-quiz, .page-varieties, .page-faq) :is(.btn--ink, .mbar__btn--ink):not(.pup .btn) { background: var(--cta); color: var(--ink); }
+@media (hover: hover) { :is(.page-home, .page-breed, .page-puppy, .page-about, .page-reviews, .page-price, .page-compare, .page-quiz, .page-varieties, .page-faq) :is(.btn--ink, .mbar__btn--ink):not(.pup .btn):hover { background: var(--cta-hover); color: var(--ink); } }
 .btn--white { background: #fff; color: var(--ink); border-color: var(--line-2); }
 /* ПРАВИЛО (клиент 19.10): кнопка в заголовке блока — всегда коралловая, на любой странице и в любом новом блоке:
    «Получить консультацию», «Узнать цену», «Весь каталог», «Документы и гарантии»… Текстовые ссылки («Все статьи →») — как были */
@@ -825,6 +825,8 @@ main:focus, section[tabindex="-1"]:focus, [data-anchor-focus]:focus { outline: n
 .pups__item { min-width: 0; }
 /* главная, «Каталог щенков» (21.10): 12 карточек каталога и кнопка под сеткой */
 .hm-pups__foot { display: flex; justify-content: center; margin-top: clamp(24px, 3vw, 40px); }
+/* 8 карточек (cards.pups_grid): при трёх в ряд — первые 6, ряды полные */
+@media (min-width: 901px) and (max-width: 1199px) { .hm-pups--8 > .pups__item:nth-child(n + 7) { display: none; } }
 .pup {
   position: relative; /* держит .sr-only внутри ленты — иначе он вылезает за её обрезку */
   height: 100%; display: flex; flex-direction: column;
