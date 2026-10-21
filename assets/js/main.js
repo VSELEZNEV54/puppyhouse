@@ -910,20 +910,23 @@
     });
   }
 
-  /* ---------- форма заявки внизу ---------- */
-  const lForm = $('#lead-form');
-  if (lForm) {
-    lForm.dataset.prefix = 'lf';
+  /* ---------- формы заявки на странице: внизу (#lead-form) и открытая форма в колонке статьи блога ----------
+     form[data-lead-form]: data-prefix — приставка id полей и ошибок (lf, af…), data-kind — тип заявки для API
+     (по умолчанию lead), data-note — скрытая пометка. «Спасибо» и «Не получилось» — в её [data-lead-box]. */
+  $$('form[data-lead-form]').forEach((lForm) => {
+    lForm.dataset.prefix = lForm.dataset.prefix || 'lf';
     bindLiveClear(lForm);
-    const done = $('[data-done]');
-    const doneText = $('[data-done-text]');
-    const fail = $('[data-fail]');
+    const box = lForm.closest('[data-lead-box]') || lForm.parentElement;
+    const done = $('[data-done]', box);
+    const doneText = $('[data-done-text]', box);
+    const fail = $('[data-fail]', box);
+    const kind = lForm.dataset.kind || 'lead';
     const lState = { key: '' };
     let startedAt = 0; // elapsed_ms — от первого касания формы
     const start = () => {
       if (startedAt) return;
       startedAt = Date.now();
-      track('form_open', { kind: 'lead', breed: (lForm.elements.breed && lForm.elements.breed.value) || null, puppy: null, colour: null });
+      track('form_open', { kind, breed: (lForm.elements.breed && lForm.elements.breed.value) || null, puppy: null, colour: null });
     };
     lForm.addEventListener('focusin', start);
     lForm.addEventListener('input', start);
@@ -940,11 +943,11 @@
       if (!validate(lForm)) return;
       if (!LIVE) { fakeSend(lForm, showDone); return; }
       if (fail) fail.hidden = true;
-      const title = $('#lead-title');
-      const payload = leadPayload(lForm, { kind: 'lead', form_title: title ? title.textContent.trim() : '' }, startedAt);
+      const title = d.getElementById(lForm.getAttribute('aria-labelledby') || 'lead-title');
+      const payload = leadPayload(lForm, { kind, note: lForm.dataset.note, form_title: title ? title.textContent.trim() : '' }, startedAt);
       liveLead(lForm, payload, lState, { done: showDone, fail: (saved) => { failMode(fail, saved); if (fail) fail.hidden = false; } });
     });
-  }
+  });
 
   /* ---------- фильтр щенков ---------- */
   const grid = $('[data-pups]');

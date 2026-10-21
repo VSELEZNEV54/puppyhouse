@@ -29,10 +29,10 @@
   <link rel="preload" href="../../assets/fonts/geist-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="../../assets/fonts/geist-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="../../assets/css/main.css?v=51eef193">
-  <link rel="stylesheet" href="../../assets/css/pages.css?v=221bc484">
-  <link rel="stylesheet" href="../../assets/css/blog.css?v=dc3bd3ca">
-  <script src="../../assets/js/main.js?v=6c034f0f" defer></script>
-  <script src="../../assets/js/blog.js?v=d7b60294" defer></script>
+  <link rel="stylesheet" href="../../assets/css/pages.css?v=9b1a639b">
+  <link rel="stylesheet" href="../../assets/css/blog.css?v=ea8151c2">
+  <script src="../../assets/js/main.js?v=fb7f2364" defer></script>
+  <script src="../../assets/js/blog.js?v=13b72f7f" defer></script>
 </head>
 <body>
   <!-- Иконки: инлайн-спрайт 24×24. Линейные — stroke currentColor, заливочные — fill. -->
@@ -224,29 +224,44 @@
     <div class="phero__faces" aria-hidden="true"><span class="face tone--peach"><img src="../../assets/img/studio-maltipu-peach.jpg" alt="" width="1024" height="1024" decoding="async"></span><span class="face tone--powder"><img src="../../assets/img/studio-buldog-blue.jpg" alt="" width="1024" height="1024" decoding="async"></span><span class="face tone--butter"><img src="../../assets/img/studio-pudel-yellow.jpg" alt="" width="1024" height="1024" decoding="async"></span><span class="face tone--sage"><img src="../../assets/img/studio-kolli-green.jpg" alt="" width="1024" height="1024" decoding="async"></span></div>
     <div class="phero__copy">
 <p class="eyebrow"><span class="eyebrow__dot" aria-hidden="true"></span>Блог питомника</p>      <h1 class="phero__title" id="page-title">Блог о щенках и породах</h1>
-<p class="phero__lead">Характер, уход и выбор щенка — коротко и по делу</p>      <ul class="phero__chips">
+<p class="phero__lead">Всё, что пригодится будущему хозяину: выбор щенка, уход, воспитание и характер пород</p>      <ul class="phero__chips">
 <li><svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-paw"/></svg>4 породы</li><li><svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-clock"/></svg>до 5 минут чтения</li>      </ul>
     </div>
   </div>
 </section>
 
     <section class="section section--tight container" id="stati" aria-labelledby="stati-title" data-blog>
-      <h2 class="sr-only" id="stati-title">Все статьи</h2>
-      <div class="filters blg-filters">
-        <div class="chips" role="group" aria-label="Тема статей">
-          <button class="chip" type="button" data-bf-value="all" aria-pressed="true">Все статьи</button>
-          <button class="chip" type="button" data-bf-value="maltipu" aria-pressed="false"><span class="chip__dot tone--peach" aria-hidden="true"></span>Мальтипу</button>
-          <button class="chip" type="button" data-bf-value="francuzskij-buldog" aria-pressed="false"><span class="chip__dot tone--powder" aria-hidden="true"></span>Французы</button>
-          <button class="chip" type="button" data-bf-value="toj-pudel" aria-pressed="false"><span class="chip__dot tone--butter" aria-hidden="true"></span>Той-пудели</button>
-          <button class="chip" type="button" data-bf-value="border-kolli" aria-pressed="false"><span class="chip__dot tone--sage" aria-hidden="true"></span>Бордер-колли</button>
-          <button class="chip" type="button" data-bf-value="vybor" aria-pressed="false"><span class="chip__dot tone--cream" aria-hidden="true"></span>Выбор щенка</button>
+      <h2 class="sr-only" id="stati-title">Все статьи</h2>      <div class="blg-filters">
+        <div class="blg-filters__row">
+          <p class="blg-filters__label" id="bf-tag-label">Тема</p>
+          <div class="chips" role="group" aria-labelledby="bf-tag-label">
+            <button class="chip" type="button" data-bf-group="tag" data-bf-value="all" aria-pressed="true">Все темы</button>
+            <button class="chip" type="button" data-bf-group="tag" data-bf-value="vybor" aria-pressed="false">Выбор щенка<span class="blg-chip__n" data-bf-n aria-hidden="true"></span></button>
+            <button class="chip" type="button" data-bf-group="tag" data-bf-value="harakter" aria-pressed="false">Характер<span class="blg-chip__n" data-bf-n aria-hidden="true"></span></button>
+            <button class="chip" type="button" data-bf-group="tag" data-bf-value="uhod" aria-pressed="false">Уход<span class="blg-chip__n" data-bf-n aria-hidden="true"></span></button>
+            <button class="chip" type="button" data-bf-group="tag" data-bf-value="kormlenie" aria-pressed="false">Кормление<span class="blg-chip__n" data-bf-n aria-hidden="true"></span></button>
+            <button class="chip" type="button" data-bf-group="tag" data-bf-value="vospitanie" aria-pressed="false">Воспитание<span class="blg-chip__n" data-bf-n aria-hidden="true"></span></button>
+          </div>
         </div>
-        <p class="filters__count blg-filters__count" data-bf-count>11&nbsp;статей</p>
+        <div class="blg-filters__row">
+          <p class="blg-filters__label" id="bf-breed-label">Порода</p>
+          <div class="chips" role="group" aria-labelledby="bf-breed-label">
+            <button class="chip" type="button" data-bf-group="breed" data-bf-value="all" aria-pressed="true">Все породы</button>
+            <button class="chip" type="button" data-bf-group="breed" data-bf-value="maltipu" aria-pressed="false"><span class="chip__dot tone--peach" aria-hidden="true"></span>Мальтипу<span class="blg-chip__n" data-bf-n aria-hidden="true"></span></button>
+            <button class="chip" type="button" data-bf-group="breed" data-bf-value="francuzskij-buldog" aria-pressed="false"><span class="chip__dot tone--powder" aria-hidden="true"></span>Французский бульдог<span class="blg-chip__n" data-bf-n aria-hidden="true"></span></button>
+            <button class="chip" type="button" data-bf-group="breed" data-bf-value="toj-pudel" aria-pressed="false"><span class="chip__dot tone--butter" aria-hidden="true"></span>Той-пудель<span class="blg-chip__n" data-bf-n aria-hidden="true"></span></button>
+            <button class="chip" type="button" data-bf-group="breed" data-bf-value="border-kolli" aria-pressed="false"><span class="chip__dot tone--sage" aria-hidden="true"></span>Бордер-колли<span class="blg-chip__n" data-bf-n aria-hidden="true"></span></button>
+          </div>
+        </div>
+        <div class="blg-filters__foot">
+          <p class="blg-filters__count" data-bf-count>11&nbsp;статей</p>
+          <button class="blg-filters__reset" type="button" data-bf-reset hidden><svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-close"/></svg>Сбросить</button>
+        </div>
         <p class="sr-only" role="status" aria-live="polite" data-bf-status></p>
       </div>
 
       <ul class="blg-grid" data-bf-list data-reveal="items">
-        <li class="blg-grid__item" data-topic="vybor">
+        <li class="blg-grid__item" data-tag="vybor" data-breed="">
           <article class="blg-card tone--cream">
   <div class="blg-card__media">
     <img src="../../assets/img/parents-maltipu.jpg" alt="Мама-мальтипу со щенками на лежанке" width="1264" height="848" style="object-position:56% 60%" decoding="async">
@@ -259,7 +274,7 @@
   </div>
 </article>
         </li>
-        <li class="blg-grid__item" data-topic="maltipu">
+        <li class="blg-grid__item" data-tag="harakter" data-breed="maltipu">
           <article class="blg-card tone--peach">
   <div class="blg-card__media">
     <img src="../../assets/img/family-maltipu.jpg" alt="Девушка обнимает щенка мальтипу на диване" width="1264" height="848" style="object-position:54% 40%" decoding="async">
@@ -272,7 +287,7 @@
   </div>
 </article>
         </li>
-        <li class="blg-grid__item" data-topic="maltipu">
+        <li class="blg-grid__item" data-tag="uhod" data-breed="maltipu">
           <article class="blg-card tone--peach blg-card--studio" style="--tone:#F5C29C;--tone-floor:#FED5B2;--tone-top:#F5C29C;--tone-hi:#F8C7A1;--tone-floor:#FED5B2;--fa:0.83;--fb:0.99">
   <div class="blg-card__media blg-card__media--studio">
     <img src="../../assets/img/color-maltipu-red.jpg" alt="Рыжий щенок мальтипу на персиковом фоне" width="1024" height="1024" decoding="async">
@@ -285,7 +300,7 @@
   </div>
 </article>
         </li>
-        <li class="blg-grid__item" data-topic="maltipu">
+        <li class="blg-grid__item" data-tag="kormlenie" data-breed="maltipu">
           <article class="blg-card tone--peach">
   <div class="blg-card__media">
     <img src="../../assets/img/color-maltipu-apricot.jpg" alt="Абрикосовый щенок мальтипу на персиковом фоне" width="1024" height="1024" loading="lazy" decoding="async">
@@ -298,7 +313,7 @@
   </div>
 </article>
         </li>
-        <li class="blg-grid__item" data-topic="maltipu">
+        <li class="blg-grid__item" data-tag="vospitanie" data-breed="maltipu">
           <article class="blg-card tone--peach">
   <div class="blg-card__media">
     <img src="../../assets/img/color-maltipu-white.jpg" alt="Белый щенок мальтипу на персиковом фоне" width="1024" height="1024" loading="lazy" decoding="async">
@@ -311,7 +326,7 @@
   </div>
 </article>
         </li>
-        <li class="blg-grid__item" data-topic="francuzskij-buldog">
+        <li class="blg-grid__item" data-tag="harakter" data-breed="francuzskij-buldog">
           <article class="blg-card tone--powder">
   <div class="blg-card__media">
     <img src="../../assets/img/grad-family-buldog.jpg" alt="Семья с дочкой и щенком французского бульдога на диване" width="1264" height="848" style="object-position:52% 50%" loading="lazy" decoding="async">
@@ -324,7 +339,7 @@
   </div>
 </article>
         </li>
-        <li class="blg-grid__item" data-topic="francuzskij-buldog">
+        <li class="blg-grid__item" data-tag="uhod" data-breed="francuzskij-buldog">
           <article class="blg-card tone--powder blg-card--studio" style="--tone:#AED3E3;--tone-floor:#B8DAE9;--tone-top:#AED3E3;--tone-hi:#A3CDDD;--tone-floor:#B8DAE9;--fa:0.84;--fb:1.00">
   <div class="blg-card__media blg-card__media--studio">
     <img src="../../assets/img/color-buldog-brindle.jpg" alt="Тигровый щенок французского бульдога на голубом фоне" width="1024" height="1024" loading="lazy" decoding="async">
@@ -337,7 +352,7 @@
   </div>
 </article>
         </li>
-        <li class="blg-grid__item" data-topic="toj-pudel">
+        <li class="blg-grid__item" data-tag="harakter" data-breed="toj-pudel">
           <article class="blg-card tone--butter">
   <div class="blg-card__media">
     <img src="../../assets/img/grad-woman-pudel.jpg" alt="Женщина с той-пуделем в кресле у окна" width="1264" height="848" style="object-position:34% 50%" loading="lazy" decoding="async">
@@ -350,7 +365,7 @@
   </div>
 </article>
         </li>
-        <li class="blg-grid__item" data-topic="toj-pudel">
+        <li class="blg-grid__item" data-tag="uhod" data-breed="toj-pudel">
           <article class="blg-card tone--butter blg-card--studio" style="--tone:#EBC586;--tone-floor:#ECCE92;--tone-top:#EBC586;--tone-hi:#E9C382;--tone-floor:#ECCE92;--fa:0.87;--fb:1.00">
   <div class="blg-card__media blg-card__media--studio">
     <img src="../../assets/img/color-pudel-white.jpg" alt="Белый щенок той-пуделя на жёлтом фоне" width="1024" height="1024" loading="lazy" decoding="async">
@@ -363,7 +378,7 @@
   </div>
 </article>
         </li>
-        <li class="blg-grid__item" data-topic="border-kolli">
+        <li class="blg-grid__item" data-tag="harakter" data-breed="border-kolli">
           <article class="blg-card tone--sage">
   <div class="blg-card__media">
     <img src="../../assets/img/grad-man-kolli.jpg" alt="Мужчина играет с бордер-колли в осеннем парке" width="1264" height="848" style="object-position:56% 50%" loading="lazy" decoding="async">
@@ -376,7 +391,7 @@
   </div>
 </article>
         </li>
-        <li class="blg-grid__item" data-topic="border-kolli">
+        <li class="blg-grid__item" data-tag="uhod" data-breed="border-kolli">
           <article class="blg-card tone--sage blg-card--studio" style="--tone:#A3BFA9;--tone-floor:#C2DAC7;--tone-top:#A3BFA9;--tone-hi:#A8C4AF;--tone-floor:#C2DAC7;--fa:0.74;--fb:0.90">
   <div class="blg-card__media blg-card__media--studio">
     <img src="../../assets/img/color-kolli-tricolor.jpg" alt="Трёхцветный щенок бордер-колли на мятном фоне" width="1024" height="1024" loading="lazy" decoding="async">
@@ -390,7 +405,13 @@
 </article>
         </li>
       </ul>
-    </section>
+<div class="empty" data-bf-empty hidden>
+  <span class="empty__faces" aria-hidden="true"><span class="face tone--peach"><img src="../../assets/img/studio-maltipu-peach.jpg" alt="" width="1024" height="1024" loading="lazy" decoding="async"></span><span class="face tone--powder"><img src="../../assets/img/studio-buldog-blue.jpg" alt="" width="1024" height="1024" loading="lazy" decoding="async"></span><span class="face tone--butter"><img src="../../assets/img/studio-pudel-yellow.jpg" alt="" width="1024" height="1024" loading="lazy" decoding="async"></span><span class="face tone--sage"><img src="../../assets/img/studio-kolli-green.jpg" alt="" width="1024" height="1024" loading="lazy" decoding="async"></span></span>
+  <p class="empty__title">Таких статей пока нет</p>
+<p class="empty__text">Выберите другую тему или породу — или спросите нас, расскажем сами.</p>  <div class="empty__actions">
+      <button class="btn btn--ink" type="button" data-bf-reset>Показать все статьи</button>
+  </div>
+</div>    </section>
 
     <section class="section section--tight container" id="podbor" aria-labelledby="podbor-title">
       <div class="cta-band tone--lilac">
@@ -492,8 +513,8 @@
       <p class="lead__note"><svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-clock"/></svg>Свяжемся с вами в течение рабочего дня по московскому времени</p>
     </div>
 
-    <div class="lead__box">
-      <form class="form" id="lead-form" novalidate>
+    <div class="lead__box" data-lead-box>
+      <form class="form" id="lead-form" data-lead-form data-prefix="lf" novalidate>
         <div class="form__grid">
           <div class="field">
             <label class="field__label" for="lf-name">Имя</label>

@@ -1,6 +1,7 @@
 {#- Blog parts (group blog): article card, article copy blocks, extra icons.
     Import: {% import "blog/_parts.html.j2" as blg %} -#}
 {% import "macros/ui.html.j2" as ui %}
+{% import "macros/forms.html.j2" as forms %}
 
 {#- Extra icons for {% block sprite_extra %} (24×24, stroke = currentColor like the shared sprite). Prefix i-blg-. -#}
 {% macro icons() -%}
@@ -26,6 +27,42 @@
     <p class="blg-card__foot"><span class="blg-card__time">{{ ui.icon('clock', sm=true) }}<span class="sr-only">Время чтения: </span>{{ c.read }}</span>{{ ui.tile_cta('Читать') }}</p>
   </div>
 </article>
+{%- endmacro %}
+
+{#- Open request form in the article's right column (client 21.10, instead of «Коротко»): name, phone, «Куда написать»,
+    consent. main.js wires every form[data-lead-form] like the form at the bottom; kind «help» (подбор щенка), the
+    hidden note names the article, a breed article sends its breed. -#}
+{% macro aside_form(post, breed=none) -%}
+<section class="blg-form" aria-labelledby="af-title" data-lead-box>
+  <p class="blg-form__title" id="af-title">Подберём щенка за&nbsp;1&nbsp;час</p>
+  <p class="blg-form__line">Оставьте телефон — пришлём щенков в&nbsp;наличии, цены и&nbsp;видео</p>
+  <form class="form blg-form__form" id="article-form" data-lead-form data-prefix="af" data-kind="help" data-note="Статья блога: {{ post.h1 }}" aria-labelledby="af-title" novalidate>
+    <div class="form__grid">
+      <div class="field">
+        <label class="field__label" for="af-name">Имя</label>
+        <input class="input" id="af-name" name="name" type="text" autocomplete="given-name" placeholder="Как к&nbsp;вам обращаться" required aria-describedby="af-name-err">
+        <p class="field__err" id="af-name-err" hidden></p>
+      </div>
+      <div class="field">
+        <label class="field__label" for="af-phone">Телефон</label>
+        <input class="input" id="af-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="+7 (___) ___-__-__" required aria-describedby="af-phone-err" data-phone>
+        <p class="field__err" id="af-phone-err" hidden></p>
+      </div>
+      {% if breed %}<input type="hidden" name="breed" value="{{ breed.slug }}">{% endif %}
+      {{ forms.contact_field('af')|indent(6) }}
+      {{ forms.honeypot('af')|indent(6) }}
+      {{ forms.consent_check('af')|indent(6) }}
+    </div>
+    <button class="btn btn--ink btn--lg btn--block form__submit" type="submit" data-submit data-label="Подобрать щенка">Подобрать щенка</button>
+  </form>
+  <div class="form-fail" data-fail role="alert" hidden>
+    {{ forms.send_fail()|indent(4) }}
+  </div>
+  <div class="form-done" data-done tabindex="-1" hidden>
+    <span class="form-done__ico" aria-hidden="true">{{ ui.icon('check') }}</span>
+    <p class="form-done__title" data-done-text>Спасибо! Свяжемся с&nbsp;вами в&nbsp;течение рабочего дня</p>
+  </div>
+</section>
 {%- endmacro %}
 
 {#- Article copy: blocks from routes/blog.py (Markup already escaped, links and <b> resolved). -#}
@@ -73,6 +110,8 @@
           </div>
 {% elif b.type == 'figure' %}
           <figure class="blg-figure">{{ ui.img(b.src, b.alt) }}{% if b.caption %}<figcaption>{{ b.caption|typo }}</figcaption>{% endif %}</figure>
+{% elif b.type == 'photos' %}
+          <div class="blg-photos">{% for p in b['items'] %}{{ ui.img(p.src, p.alt) }}{% endfor %}</div>
 {% endif %}
 {% endfor %}
 {%- endmacro %}

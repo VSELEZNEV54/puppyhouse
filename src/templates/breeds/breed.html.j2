@@ -115,7 +115,7 @@
 
     <!-- ================= СТАТЬИ О ПОРОДЕ — четыре в ряд, остальные за краем (стрелки, свайп) ================= -->
     <section class="section container" id="stati" aria-labelledby="stati-title">
-      {{ ui.section_head(hub.blog_title, id='stati-title', link={'url': '/blog/?tema=' ~ b.slug, 'label': hub.blog_link}, lead=hub.blog_lead) }}
+      {{ ui.section_head(hub.blog_title, id='stati-title', link={'url': '/blog/?poroda=' ~ b.slug, 'label': hub.blog_link}, lead=hub.blog_lead) }}
       {{ part.post_carousel(posts, label=hub.blog_title|striptags) }}
     </section>
 

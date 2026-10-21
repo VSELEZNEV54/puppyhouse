@@ -234,7 +234,7 @@ in the order of `breeds-hub.json` → `media` (+ extra placeholders), so a video
 
 | Macro | Params | Use |
 |---|---|---|
-| `ui.page_hero` | `title, lead, tone, breed, photo, faces, facts, chips, eyebrow, id, full=false, note` + `call` → buttons | H1 tile. `breed=` → its tone and studio photo blended. `full=true` → the whole screen (100svh − header, min 560), copy centred; phones: photo grows. `note` → one muted line under the buttons. Breed pages: `btn btn--white btn--lg` «Подобрать щенка» + `btn btn--outline btn--lg` |
+| `ui.page_hero` | `title, lead, tone, breed, photo, faces, facts, chips, eyebrow, id, full=false, note, cls` + `call` → buttons | H1 tile. `breed=` → its tone and studio photo blended. `full=true` → the whole screen (100svh − header, min 560), copy centred; phones: photo grows. `note` → one muted line under the buttons. Breed pages: `btn btn--white btn--lg` «Подобрать щенка» + `btn btn--outline btn--lg`. `cls='phero--group'` + `photo` hero-four-breeds.jpg → the wide four-puppies hero (pages.css; /o-pitomnike/, blog «Как выбрать щенка») |
 | `ui.section_head` | `title, id, link={url,label}, lead` + `call` → buttons | H2 row |
 | `ui.breadcrumbs` | `items` | used by the layout |
 | `ui.studio_tile(s)` | `photo{src,alt}, title, line, url, badge, tone, priority, cta='Подробнее'` / `items` (+ `t.cta`), `pair=false` | colour / parent photo tile, backdrop = measured photo tone; `priority=true` on the first screen. Phones: one wide tile per row (photo right); `pair=true` → two small 3:4 tiles per row (titles only) |
@@ -289,7 +289,7 @@ in the order of `breeds-hub.json` → `media` (+ extra placeholders), so a video
 
 `base.html.j2` renders `<meta name="dsh-api" content="/api/v1" data-origins="…" data-consent="…">` from `site.api` and
 `consent.json`. `main.js` is in live mode only on a production origin (or with `localStorage['dsh:api']` = an absolute API
-URL for local testing): the price modal and `#lead-form` POST `/leads`, `/otzyvy/` POSTs `/reviews` (trust.js), anonymous
+URL for local testing): the price modal and `#lead-form` POST `/leads`, `/otzyvy/` POSTs `/reviews` (trust.js). Every `form[data-lead-form]` is a lead form (main.js: `data-prefix` of its field ids, `data-kind`, `data-note`; «Спасибо» / «Не получилось» in its `[data-lead-box]`) — the bottom form and the open form in a blog article's right column (`blg.aside_form`, kind `help`), anonymous
 events (page_view, form_open, contact_click, quiz_complete) go to `/events`. GitHub Pages stays in prototype mode (fake
 send, no tracking). Helpers for page scripts: `window.DSH` (`live`, `submit(path, payload, state)`, `context()`, `track()`).
 Breed `<select>` values are slugs (`forms.breed_options`). Never put the API URL into `href` / `src` / `action`.

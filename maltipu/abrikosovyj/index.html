@@ -30,9 +30,9 @@
   <link rel="preload" href="../../assets/fonts/geist-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="../../assets/fonts/geist-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="../../assets/css/main.css?v=51eef193">
-  <link rel="stylesheet" href="../../assets/css/pages.css?v=221bc484">
+  <link rel="stylesheet" href="../../assets/css/pages.css?v=9b1a639b">
   <link rel="stylesheet" href="../../assets/css/breeds.css?v=a61f68a5">
-  <script src="../../assets/js/main.js?v=6c034f0f" defer></script>
+  <script src="../../assets/js/main.js?v=fb7f2364" defer></script>
 </head>
 <body class="page-breed">
   <!-- Иконки: инлайн-спрайт 24×24. Линейные — stroke currentColor, заливочные — fill. -->
@@ -549,8 +549,8 @@
       <p class="lead__note"><svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-clock"/></svg>Свяжемся с вами в течение рабочего дня по московскому времени</p>
     </div>
 
-    <div class="lead__box">
-      <form class="form" id="lead-form" novalidate>
+    <div class="lead__box" data-lead-box>
+      <form class="form" id="lead-form" data-lead-form data-prefix="lf" novalidate>
         <div class="form__grid">
           <div class="field">
             <label class="field__label" for="lf-name">Имя</label>

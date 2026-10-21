@@ -30,9 +30,9 @@
   <link rel="preload" href="../../assets/fonts/geist-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="../../assets/fonts/geist-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="../../assets/css/main.css?v=51eef193">
-  <link rel="stylesheet" href="../../assets/css/pages.css?v=221bc484">
-  <link rel="stylesheet" href="../../assets/css/trust.css?v=6ab8c16f">
-  <script src="../../assets/js/main.js?v=6c034f0f" defer></script>
+  <link rel="stylesheet" href="../../assets/css/pages.css?v=9b1a639b">
+  <link rel="stylesheet" href="../../assets/css/trust.css?v=040765a6">
+  <script src="../../assets/js/main.js?v=fb7f2364" defer></script>
 </head>
 <body class="page-about">
   <!-- Иконки: инлайн-спрайт 24×24. Линейные — stroke currentColor, заливочные — fill. -->
@@ -219,7 +219,7 @@
   </ol>
 </nav>
 
-<section class="phero container phero--about" aria-labelledby="page-title">
+<section class="phero container phero--group" aria-labelledby="page-title">
   <div class="phero__tile tone--cream phero--photo" style="--tone-top:#F3DEC2;--tone-hi:#F3DFC1;--tone-floor:#F9E9D3;--fa:0.87;--fb:1.00" data-hero-ctas>
     <div class="phero__photo"><img src="../../assets/img/hero-four-breeds.jpg" alt="Щенки мальтипу, французского бульдога, той-пуделя и бордер-колли сидят в ряд" width="1264" height="848" fetchpriority="high" decoding="async"></div>
     <div class="phero__copy">
@@ -858,8 +858,8 @@
       <p class="lead__note"><svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-clock"/></svg>Свяжемся с вами в течение рабочего дня по московскому времени</p>
     </div>
 
-    <div class="lead__box">
-      <form class="form" id="lead-form" novalidate>
+    <div class="lead__box" data-lead-box>
+      <form class="form" id="lead-form" data-lead-form data-prefix="lf" novalidate>
         <div class="form__grid">
           <div class="field">
             <label class="field__label" for="lf-name">Имя</label>

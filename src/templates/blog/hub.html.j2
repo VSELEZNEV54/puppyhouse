@@ -1,5 +1,5 @@
-{#- /blog/ — list of articles with topic chips (assets/js/blog.js), then the «Подобрать породу» band.
-    Copy: data/blog-posts.json → hub; cards: routes/blog.py. Context: hub, articles (cards), topics, hero_chips. -#}
+{#- /blog/ — list of articles with two filters, «Тема» and «Порода» (assets/js/blog.js), then the «Подобрать породу» band.
+    Copy: data/blog-posts.json → hub; cards: routes/blog.py. Context: hub, articles (cards), tags, breed_chips, hero_chips. -#}
 {% extends "layouts/page.html.j2" %}
 {% import "blog/_parts.html.j2" as blg %}
 
@@ -19,24 +19,45 @@
     {%- set n = articles|length %}
     <section class="section section--tight container" id="stati" aria-labelledby="stati-title" data-blog>
       <h2 class="sr-only" id="stati-title">Все статьи</h2>
-      <div class="filters blg-filters">
-        <div class="chips" role="group" aria-label="Тема статей">
-          <button class="chip" type="button" data-bf-value="all" aria-pressed="true">{{ hub.all_label }}</button>
-          {% for t in topics %}
-          <button class="chip" type="button" data-bf-value="{{ t.key }}" aria-pressed="false"><span class="chip__dot {{ t.tone_class }}" aria-hidden="true"></span>{{ t.label }}</button>
-          {% endfor %}
+      {#- два ряда фильтров: тема и порода; выбор в обоих — статьи, подходящие под оба (blog.js). Число на кнопке —
+          сколько статей останется; кнопка без статей неактивна -#}
+      {%- set f = hub.filters %}
+      <div class="blg-filters">
+        <div class="blg-filters__row">
+          <p class="blg-filters__label" id="bf-tag-label">{{ f.tag_label }}</p>
+          <div class="chips" role="group" aria-labelledby="bf-tag-label">
+            <button class="chip" type="button" data-bf-group="tag" data-bf-value="all" aria-pressed="true">{{ f.all_tags }}</button>
+            {% for t in tags %}
+            <button class="chip" type="button" data-bf-group="tag" data-bf-value="{{ t.key }}" aria-pressed="false">{{ t.label }}<span class="blg-chip__n" data-bf-n aria-hidden="true"></span></button>
+            {% endfor %}
+          </div>
         </div>
-        <p class="filters__count blg-filters__count" data-bf-count>{{ n }}&nbsp;{{ n|plural('статья', 'статьи', 'статей') }}</p>
+        <div class="blg-filters__row">
+          <p class="blg-filters__label" id="bf-breed-label">{{ f.breed_label }}</p>
+          <div class="chips" role="group" aria-labelledby="bf-breed-label">
+            <button class="chip" type="button" data-bf-group="breed" data-bf-value="all" aria-pressed="true">{{ f.all_breeds }}</button>
+            {% for b in breed_chips %}
+            <button class="chip" type="button" data-bf-group="breed" data-bf-value="{{ b.key }}" aria-pressed="false"><span class="chip__dot {{ b.tone_class }}" aria-hidden="true"></span>{{ b.label }}<span class="blg-chip__n" data-bf-n aria-hidden="true"></span></button>
+            {% endfor %}
+          </div>
+        </div>
+        <div class="blg-filters__foot">
+          <p class="blg-filters__count" data-bf-count>{{ n }}&nbsp;{{ n|plural('статья', 'статьи', 'статей') }}</p>
+          <button class="blg-filters__reset" type="button" data-bf-reset hidden>{{ ui.icon('close', sm=true) }}{{ f.reset }}</button>
+        </div>
         <p class="sr-only" role="status" aria-live="polite" data-bf-status></p>
       </div>
 
       <ul class="blg-grid" data-bf-list data-reveal="items">
         {% for c in articles %}
-        <li class="blg-grid__item" data-topic="{{ c.topic_key }}">
+        <li class="blg-grid__item" data-tag="{{ c.tag }}" data-breed="{{ c.breed }}">
           {{ blg.card(c, eager=loop.index <= 3) }}
         </li>
         {% endfor %}
       </ul>
+      {% call ui.empty_state(f.empty_title, f.empty_text, button=none, attrs='data-bf-empty hidden') %}
+      <button class="btn btn--ink" type="button" data-bf-reset>Показать все статьи</button>
+      {% endcall %}
     </section>
 
     <section class="section section--tight container" id="podbor" aria-labelledby="podbor-title">

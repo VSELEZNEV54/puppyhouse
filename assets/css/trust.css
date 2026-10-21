@@ -138,45 +138,7 @@
 /* =========================================================
    «О ПИТОМНИКЕ» (/o-pitomnike/, клиент 21.10): про сам питомник — годы на рынке, выпускники, преимущества
    ========================================================= */
-/* первый экран: основное фото главной (hero-four-breeds.jpg — четыре щенка в ряд) — справа во всю высоту плитки,
-   шире квадрата, щенки видны целиком; левый край кадра гаснет в тон плитки */
-@media (min-width: 761px) {
-  .phero--about .phero__tile { --ph: clamp(440px, 38vw, 580px); min-height: var(--ph); align-items: center; }
-  .phero--about .phero__photo { width: 62%; aspect-ratio: auto; transform: none; }
-  .phero--about .phero__photo img {
-    object-position: 50% 62%;
-    -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 22%), linear-gradient(180deg, transparent 0, #000 10%);
-    mask-image: linear-gradient(90deg, transparent 0, #000 22%), linear-gradient(180deg, transparent 0, #000 10%);
-  }
-  .phero--about .phero__copy { max-width: min(620px, 46%); }
-}
-/* планшет: справа кадру тесно (щенки режутся) — фото сверху во всю ширину плитки, текст под ним, как на телефоне */
-@media (min-width: 761px) and (max-width: 1000px) {
-  .phero--about .phero__tile { --p: clamp(28px, 3.4vw, 52px); flex-direction: column; align-items: stretch; min-height: 0; padding-top: 0; background: var(--tone-floor); }
-  .phero--about .phero__photo {
-    position: relative; order: -1; top: auto; bottom: auto; right: auto;
-    width: calc(100% + 2 * var(--p)); height: auto; margin: 0 calc(-1 * var(--p)) 8px; aspect-ratio: 2 / 1;
-  }
-  .phero--about .phero__photo img {
-    object-position: 50% 70%;
-    -webkit-mask-image: linear-gradient(180deg, #000 86%, transparent 100%);
-    mask-image: linear-gradient(180deg, #000 86%, transparent 100%);
-  }
-  .phero--about .phero__copy { max-width: none; }
-}
-@media (max-width: 760px) {
-  .phero--about .phero__photo img { object-position: 50% 100%; }
-}
-/* телефон: в pages.css кадр шапки — квадрат по центру с гаснущими краями (под одного щенка); здесь четыре щенка в ряд —
-   кадр во всю ширину полосы, гаснет только нижний край */
-@media (max-width: 560px) {
-  .phero--about .phero__photo { aspect-ratio: 1.45; }
-  .phero--about .phero__photo img {
-    left: 0; width: 100%; aspect-ratio: auto; transform: none; object-fit: cover; object-position: 50% 92%;
-    -webkit-mask-image: linear-gradient(180deg, #000 86%, transparent 100%);
-    mask-image: linear-gradient(180deg, #000 86%, transparent 100%);
-  }
-}
+/* первый экран: широкая шапка с четырьмя щенками в ряд — .phero--group в pages.css */
 
 /* «Кто мы»: текст слева, три цифры столбиком справа */
 .abt-who { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: var(--gap); }

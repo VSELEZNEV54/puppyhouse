@@ -17,7 +17,7 @@
 {% block hero %}
     {%- set h = pg.hero %}
     {%- set size = imgsize(h.photo.src) or [1536, 1024] %}
-    {% call ui.page_hero(h.h1, lead=h.lead, tone='cream', photo={'src': h.photo.src, 'w': size[0], 'h': size[1], 'alt': h.photo.alt}, eyebrow=h.eyebrow, facts=h.facts, cls='phero--about') %}
+    {% call ui.page_hero(h.h1, lead=h.lead, tone='cream', photo={'src': h.photo.src, 'w': size[0], 'h': size[1], 'alt': h.photo.alt}, eyebrow=h.eyebrow, facts=h.facts, cls='phero--group') %}
       <a class="btn btn--ink btn--lg" href="/shchenki/">Щенки в наличии {{ ui.icon('arrow') }}</a>
       <button class="btn btn--white btn--lg" type="button" data-open-modal data-modal-kind="consult" data-modal-title="Получить консультацию" data-modal-sub="Расскажем о питомнике и породах, ответим на вопросы и пришлём щенков в наличии с ценами" data-modal-note="Консультация: о питомнике" data-modal-submit="Получить консультацию" data-modal-done="Спасибо! Куратор свяжется с вами в течение рабочего дня">Получить консультацию</button>
     {% endcall %}
