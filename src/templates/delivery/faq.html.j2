@@ -43,7 +43,7 @@
 
 {#- «Читайте также» (client 21.10): articles + four plates (catalog, quiz, documents, delivery), instead of «Полезные статьи» -#}
 {% block blog %}
-    {{ blocks.read_more() }}
+    {{ blocks.read_more(here='/faq/') }}
 {% endblock %}
 
 {% block lead %}

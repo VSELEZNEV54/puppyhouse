@@ -115,9 +115,10 @@
     breed's sections under them, the same everywhere: the breed page · its price page OR its varieties page
     (interchangeable: alt='varieties' on the price page, the price page everywhere else) · the puppy catalog · the
     breed quiz. Put it after the FAQ (or into {% block blog %}); the layout's «Полезные статьи» must not repeat it.
-    b: breeds.json item; none on a page about all breeds (/faq/) — then the plates are the catalog, the quiz,
-    «Документы и гарантии» and «Доставка». -#}
-{% macro read_more(b=none, alt='price', title='Читайте также', id='eshche', limit=3) -%}
+    b: breeds.json item; none on a page about all breeds (/faq/, /dokumenty-i-garantii/) — then the plates are the
+    first four of: the catalog, the quiz, «Документы и гарантии», «Доставка», «Вопросы и ответы», without the page
+    itself (here = its url). -#}
+{% macro read_more(b=none, alt='price', title='Читайте также', id='eshche', limit=3, here=none) -%}
 {%- set own = (data.blog|selectattr('breed', 'equalto', b.slug)|list) if b else [] -%}
 {%- set general = data.blog|selectattr('breed', 'none')|list -%}
 {%- set others = data.blog|rejectattr('breed', 'none')|rejectattr('breed', 'equalto', b.slug if b else none)|list -%}
@@ -130,9 +131,11 @@
     {'url': b.urls.price, 'title': 'Цена щенка', 'line': 'От чего зависит и что входит', 'icon': 'wallet', 'color': 'sun'} -%}
 {%- set links = [{'url': b.urls.hub, 'title': b.name, 'line': 'О породе и щенки в наличии', 'breed': b}, second, catalog, quiz] -%}
 {%- else -%}
-{%- set links = [catalog, quiz,
+{%- set links = ([catalog, quiz,
     {'url': '/dokumenty-i-garantii/', 'title': 'Документы и гарантии', 'line': 'Договор, ветпаспорт, прививки', 'icon': 'doc', 'color': 'sky'},
-    {'url': '/dostavka/', 'title': 'Доставка', 'line': 'По Москве и в 60+ городов России', 'icon': 'car', 'color': 'mint'}] -%}
+    {'url': '/dostavka/', 'title': 'Доставка', 'line': 'По Москве и в 60+ городов России', 'icon': 'car', 'color': 'mint'},
+    {'url': '/faq/', 'title': 'Вопросы и ответы', 'line': 'Цена, бронь, документы, первые дни', 'icon': 'chat', 'color': 'sun'}]
+    |rejectattr('url', 'equalto', here)|list)[:4] -%}
 {%- endif -%}
 <section class="section container rmore" id="{{ id }}" aria-labelledby="{{ id }}-title">
   {{ ui.section_head(title, id=id ~ '-title', link={'url': '/blog/', 'label': 'Все статьи'}) }}
