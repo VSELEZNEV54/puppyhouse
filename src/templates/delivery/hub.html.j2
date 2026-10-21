@@ -54,6 +54,26 @@
       </div>
     </section>
 
+    <section class="section container" id="goroda" aria-labelledby="goroda-title">
+      {{ ui.section_head(hub.geo_title, id='goroda-title', lead=geo_lead) }}
+      <div class="dlv-geo" data-reveal="items">
+        {% for g in groups %}
+        <div class="dlv-geo__group">
+          <div class="dlv-geo__head">
+            {{ ui.ico(g.icon, g.color) }}
+            <div>
+              <h3 class="dlv-geo__title">{{ g.title|typo }}</h3>
+              <p class="dlv-geo__line">{{ g.line|typo }}</p>
+            </div>
+          </div>
+          {{ dlv.city_chips(g.cities, label='Города: ' ~ (g.title|striptags)) }}
+        </div>
+        {% endfor %}
+      </div>
+      {%- set gm = hub.geo_more %}
+      {{ ui.lead_band(title=gm.title, line=gm.line, label=gm.label, tone='peach', tag='h3', note=gm.note, modal_title=gm.modal_title, submit=gm.label, done=gm.done, kind='consult') }}
+    </section>
+
     <section class="section container" id="kak-prohodit" aria-labelledby="kak-prohodit-title">
       {{ ui.section_head(hub.steps_title, id='kak-prohodit-title') }}
       <div class="split dlv-split">
@@ -77,26 +97,6 @@
           {% endfor %}
         </ul>
       </div>
-    </section>
-
-    <section class="section container" id="goroda" aria-labelledby="goroda-title">
-      {{ ui.section_head(hub.geo_title, id='goroda-title', lead=geo_lead) }}
-      <div class="dlv-geo" data-reveal="items">
-        {% for g in groups %}
-        <div class="dlv-geo__group">
-          <div class="dlv-geo__head">
-            {{ ui.ico(g.icon, g.color) }}
-            <div>
-              <h3 class="dlv-geo__title">{{ g.title|typo }}</h3>
-              <p class="dlv-geo__line">{{ g.line|typo }}</p>
-            </div>
-          </div>
-          {{ dlv.city_chips(g.cities, label='Города: ' ~ (g.title|striptags)) }}
-        </div>
-        {% endfor %}
-      </div>
-      {%- set gm = hub.geo_more %}
-      {{ ui.lead_band(title=gm.title, line=gm.line, label=gm.label, tone='peach', tag='h3', note=gm.note, modal_title=gm.modal_title, submit=gm.label, done=gm.done, kind='consult') }}
     </section>
 
     {{ ui.advantages(title='Щенок с гарантией', lead='Привезём здорового щенка с документами — и останемся на связи') }}
