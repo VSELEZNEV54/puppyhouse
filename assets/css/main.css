@@ -212,6 +212,20 @@ main:focus, section[tabindex="-1"]:focus, [data-anchor-focus]:focus { outline: n
 .btn--tg .i { width: 19px; height: 19px; margin-left: -2px; }
 @media (hover: hover) { .btn--tg:hover { background: linear-gradient(180deg, var(--tg-b) 0%, #11639A 100%); } }
 .btn--tg:hover .i { transform: none; }
+/* подчёркнутая ссылка со стрелкой — только ссылки на юридические документы в «Другие документы» (ui.text_link, 21.10) */
+.text-link {
+  position: relative;
+  display: inline-block;
+  font-size: 15px; font-weight: 500; line-height: 1.4;
+  text-decoration: none; color: var(--ink);
+  background: linear-gradient(currentColor, currentColor) 0 100% / 0 1px no-repeat;
+  padding-bottom: 2px;
+  transition: background-size .35s var(--ease);
+}
+.text-link .i { display: inline-block; vertical-align: -3px; margin-left: 2px; transition: transform .3s var(--ease); }
+.text-link:hover { background-size: 100% 1px; }
+.text-link::after { content: ""; position: absolute; inset: -11px -6px; } /* зона нажатия ≥ 44 px */
+.text-link:hover .i { transform: translateX(3px); }
 /* коралловая: кнопка к разделу или странице (ui.link_button — правило 21.10), «Оставить заявку» в шапке, меню
    и просмотре видео, пока телефона и мессенджеров нет (site.contacts_ready, 20.10) */
 .btn--coral { background: var(--coral); color: var(--ink); border-color: transparent; }

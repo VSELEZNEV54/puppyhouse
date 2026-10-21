@@ -41,6 +41,13 @@
 <a class="btn btn--coral{{ ' ' ~ cls if cls }}" href="{{ url }}">{{ label|typo }}</a>
 {%- endmacro %}
 
+{#- Underlined text link with an arrow — ТОЛЬКО ссылки на юридические документы (согласия, политика конфиденциальности)
+    в «Другие документы» на их страницах (клиент 21.10: «это пускай так и будет»). Для разделов и страниц — ui.link_button. -#}
+{% macro text_link(url, label) -%}
+{%- set words = label.rsplit(' ', 1) -%}
+<a class="text-link" href="{{ url }}">{% if words|length > 1 %}{{ (words[0] ~ ' ')|typo }}{% endif %}<span class="nw">{{ words[-1]|typo }} {{ icon('arrow', sm=true) }}</span></a>
+{%- endmacro %}
+
 {#- Image with width/height read from the file: ui.img('/assets/img/x.jpg', 'Описание').
     loading: 'lazy' | 'eager'; priority=true adds fetchpriority="high" (first screen only). -#}
 {% macro img(src, alt, cls='', loading='lazy', priority=false, w=none, h=none) -%}

@@ -41,8 +41,9 @@ pixel-parity baseline no longer applies. Reference inner page: `/shchenki/`.
   label)` (`.btn.btn--coral`), and `ui.section_head(link=…)` / `blocks.faq_section(link=…)` render it themselves (the old
   `button=` argument changes nothing). On phones ≤ 760 px the button of a block head leaves the head and stands under the
   whole block, full width, 52 px. Nothing to do per page: keep the head as `section.section > .sec-head` (or
-  `.faq > .faq__aside`) and the rule applies. Don't add a second, hand-made bottom button, and never bring back
-  `.text-link` (its styles are gone).
+  `.faq > .faq__aside`) and the rule applies. Don't add a second, hand-made bottom button. Exceptions that stay as
+  they are (client 21.10): links to the legal documents in «Другие документы» on the consent / privacy pages
+  (`ui.text_link` — underlined with an arrow, used nowhere else) and the plain links of the header, menus and footer.
 - **CTA wording: no arrow-only buttons.** Every clickable tile/card ends with a text pill (`ui.tile_cta`) or a coral
   button (`ui.link_button`): «Перейти к породе» (breed tiles), «Подробнее» (help / link / studio tiles, puppy cards),
   «Все окрасы» / «Смотреть окрас» (colours), «Читать» (articles). `ui.round_arrow` is decorative only.

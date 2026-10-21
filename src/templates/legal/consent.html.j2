@@ -27,9 +27,9 @@
             <p class="lgl-links__title">Другие документы</p>
             <ul>
               {% for o in others %}
-              <li>{{ ui.link_button(o.url, o.title) }}</li>
+              <li>{{ ui.text_link(o.url, o.title) }}</li>
               {% endfor %}
-              <li>{{ ui.link_button(site.footer.legal.privacy.url, site.footer.legal.privacy.label) }}</li>
+              <li>{{ ui.text_link(site.footer.legal.privacy.url, site.footer.legal.privacy.label) }}</li>
             </ul>
           </nav>
         </aside>
