@@ -36,6 +36,14 @@
 }
 .bsub-vs__card--ok { background: linear-gradient(180deg, var(--tone) 0 55%, var(--tone-floor) 100%); }
 .bsub-vs__title { font-size: clamp(22px, 1.9vw, 30px); font-weight: 500; letter-spacing: -0.03em; line-height: 1.1; }
+/* цена стороны (страница цены, правка 21.10): «Обычно просят 50–100 тыс. ₽» / «Цена в питомнике 120 тыс. – 1,5 млн ₽» */
+.bsub-vs__price { display: grid; gap: 2px; margin-top: -8px; }
+.bsub-vs__price span { font-size: 14px; color: var(--muted); }
+.bsub-vs__card--ok .bsub-vs__price span { color: var(--ink-soft); }
+.bsub-vs__price b { font-size: clamp(26px, 2.4vw, 38px); font-weight: 500; letter-spacing: -0.035em; line-height: 1.05; }
+.bsub-vs__card--no .bsub-vs__price b { color: var(--err); }
+/* итоговая строка под списком — крупнее и тёмная: «А платите как за щенка мальтипу» */
+.bsub-vs__card:has(.bsub-vs__price) .bsub-vs__note { font-size: 16.5px; font-weight: 500; color: var(--ink); }
 .bsub-vs__list { display: grid; gap: 18px; }
 .bsub-vs__item { display: grid; grid-template-columns: 30px minmax(0, 1fr); column-gap: 14px; align-items: start; }
 .bsub-vs__mark {
