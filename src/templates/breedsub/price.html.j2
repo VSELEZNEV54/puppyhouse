@@ -91,6 +91,12 @@
 
     {{ part.links(links_title, links) }}
 
+{% endblock %}
+
+{#- the breed's puppies are higher on the page (#pups, after «Почему не бывает дёшево») — no second strip -#}
+{% block pups %}{% endblock %}
+
+{% block seo %}
     {% call blocks.seo_block(pg.seo.title, pg.seo.lead, id='o-cene') %}
         {% for s in pg.seo.blocks %}
         <h3>{{ s.h|typo }}</h3>
@@ -98,9 +104,6 @@
         {% endfor %}
     {% endcall %}
 {% endblock %}
-
-{#- the breed's puppies are higher on the page (#pups, after «Почему не бывает дёшево») — no second strip -#}
-{% block pups %}{% endblock %}
 
 {% block lead %}
     {{ forms.lead_form(title=pg.lead_title, line=pg.lead_line, tone=b.tone, breed=b.slug) }}

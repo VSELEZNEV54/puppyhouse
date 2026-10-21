@@ -135,6 +135,9 @@
       {{ part.pills(why_links, qz.pairs_label, 'pary-label') }}
     </section>
 
+{% endblock %}
+
+{% block seo %}
     {% call blocks.seo_block(qz.seo.title, qz.seo.lead, id='kak-vybrat') %}
         {% for s in qz.seo.blocks %}
         <h3>{{ s.h|typo }}</h3>

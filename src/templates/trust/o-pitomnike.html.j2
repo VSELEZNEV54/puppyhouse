@@ -86,6 +86,9 @@
       {{ ui.link_tiles(pg.links) }}
     </section>
 
+{% endblock %}
+
+{% block seo %}
     <!-- ================= SEO-ТЕКСТ — как на главной ================= -->
     {% call blocks.seo_block(seo.title, seo.lead, id='pitomnik-v-moskve', key='seo') %}
         {% for s in seo.blocks %}

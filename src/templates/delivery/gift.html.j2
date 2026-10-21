@@ -51,6 +51,9 @@
 
     {{ blocks.faq_section(faq_items, title=g.faq_title, id='voprosy') }}
 
+{% endblock %}
+
+{% block seo %}
     {% call blocks.seo_block(g.seo.title, g.seo.lead, id='o-podarke') %}
         {% for s in g.seo.blocks %}
         <h3>{{ s.h|typo }}</h3>

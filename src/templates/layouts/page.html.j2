@@ -6,6 +6,8 @@
                   narrows it to one breed; `pups_strip = false` hides it.
       blog      — «Полезные статьи» before the lead form (blocks.reading; the `lead_breed` breed first);
                   `blog_strip = false` or an empty block hides it.
+      seo       — the page's SEO text (blocks.seo_block). RULE (client 21.10): on every page it stands right before
+                  the lead form and after the articles block — put the seo_block call here, never in `body`.
       lead      — final lead form; default forms.lead_form(). Context `lead_breed` preselects a breed.
       page_css / page_js — your group's stylesheet / script (loaded after pages.css / main.js)
     Context:   title, description, breadcrumbs = [["Главная", "/"], ..., ["Текущая", none]] -#}
@@ -43,6 +45,8 @@
     {{ blocks.reading(breed=(lead_breed | default(none))) }}
 {% endif %}
 {% endblock %}
+
+{% block seo %}{% endblock %}
 
 {% block lead %}
     {{ forms.lead_form(breed=(lead_breed | default(none))) }}

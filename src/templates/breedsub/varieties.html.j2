@@ -67,6 +67,9 @@
 
     {{ part.links(links_title, links) }}
 
+{% endblock %}
+
+{% block seo %}
     {% call blocks.seo_block(v.seo.title, v.seo.lead, id='ob-okrasah') %}
         {% for s in v.seo.blocks %}
         <h3>{{ s.h|typo }}</h3>

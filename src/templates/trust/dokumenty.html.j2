@@ -75,6 +75,9 @@
       {{ ui.cta_band(pg.cta.title, line=pg.cta.line, label=pg.cta.label, tone='sky', title_id='vybrali-shchenka-title') }}
     </section>
 
+{% endblock %}
+
+{% block seo %}
     {% call blocks.seo_block(pg.seo.title, pg.seo.lead, id='o-dokumentah', key='seo') %}
         {% for s in pg.seo.blocks %}
         <h3>{{ s.h|typo }}</h3>

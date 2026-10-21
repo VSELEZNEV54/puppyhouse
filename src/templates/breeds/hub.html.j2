@@ -102,6 +102,9 @@
       {{ ui.link_tiles(links) }}
     </section>
 
+{% endblock %}
+
+{% block seo %}
     {% call blocks.seo_block(hub.seo.title, hub.seo.lead, id='o-porode') %}
         {% for s in hub.seo.blocks %}
         <h3>{{ s.h|typo }}</h3>

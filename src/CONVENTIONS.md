@@ -36,6 +36,9 @@ pixel-parity baseline no longer applies. Reference inner page: `/shchenki/`.
   with 3+ columns) stay a horizontal table that scrolls sideways, first column sticky, «Листайте таблицу вбок» above it
   (client 21.10 — the second exception). `.scroller` is a no-op now — don't use it. The crawler flags any other
   sideways scroll container and any link/button cut off by an `overflow: hidden` parent (`control-clipped`).
+- **RULE — the SEO text stands right before the lead form, after the articles (client 21.10).** On every page:
+  … → «Полезные статьи» / blog block → SEO text (`blocks.seo_block`) → lead form. Inner pages put the seo_block call
+  into `{% block seo %}` of `layouts/page.html.j2` (never into `body`); the layout places it after `pups` and `blog`.
 - **RULE — links to a section or page are coral pill buttons (client 19.10, 21.10; automatic — main.css).** No underlined
   text links with an arrow anywhere on the site. «Все отзывы», «Все статьи», «Документы и гарантии», «Задать свой вопрос»,
   «Весь каталог», «Узнать цену», «Получить консультацию» — every such link is a rounded coral button: `ui.link_button(url,

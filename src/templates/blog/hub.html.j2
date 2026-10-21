@@ -64,6 +64,12 @@
       {{ ui.cta_band(hub.more.title, line=hub.more.line, button={'url': hub.more.url, 'label': hub.more.label}, tone='lilac', faces=true, title_id='podbor-title') }}
     </section>
 
+{% endblock %}
+
+{# articles: this page lists its own or is a document (client 19.10: «Полезные статьи» elsewhere) #}
+{% block blog %}{% endblock %}
+
+{% block seo %}
     {% call blocks.seo_block(hub.seo.title, hub.seo.lead, id='o-bloge') %}
         {% for s in hub.seo.blocks %}
         <h3>{{ s.h|typo }}</h3>
@@ -71,6 +77,3 @@
         {% endfor %}
     {% endcall %}
 {% endblock %}
-
-{# articles: this page lists its own or is a document (client 19.10: «Полезные статьи» elsewhere) #}
-{% block blog %}{% endblock %}

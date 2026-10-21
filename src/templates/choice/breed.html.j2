@@ -102,6 +102,12 @@
       {{ ui.link_tiles(links) }}
     </section>
 
+{% endblock %}
+
+{#- the breed's puppies are higher on the page (#katalog) — no second strip -#}
+{% block pups %}{% endblock %}
+
+{% block seo %}
     {% call blocks.seo_block(pg.seo.title, pg.seo.lead, id='podrobnee') %}
         {% for s in pg.seo.blocks %}
         <h3>{{ s.h|typo }}</h3>
@@ -109,9 +115,6 @@
         {% endfor %}
     {% endcall %}
 {% endblock %}
-
-{#- the breed's puppies are higher on the page (#katalog) — no second strip -#}
-{% block pups %}{% endblock %}
 
 {% block lead %}
     {{ forms.lead_form(title=pg.lead_title, line=com.lead_line, tone=b.tone, breed=b.slug) }}
