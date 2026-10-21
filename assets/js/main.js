@@ -972,13 +972,6 @@
     fitMore();
   }
 
-  /* ---------- избранное ---------- */
-  $$('.fav').forEach((btn) => {
-    btn.addEventListener('click', () => {
-      btn.setAttribute('aria-pressed', String(btn.getAttribute('aria-pressed') !== 'true'));
-    });
-  });
-
   /* ---------- FAQ ---------- */
   $$('.faq__btn').forEach((btn) => {
     btn.addEventListener('click', () => {

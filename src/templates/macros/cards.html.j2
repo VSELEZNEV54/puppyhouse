@@ -5,13 +5,13 @@
 {#- Puppy card — one card for the whole site (catalog, «Похожие щенки», every «Щенки в наличии» strip, hubs, comparisons).
     p = puppies.json item (enriched by build.py). Two CTAs (client 19.10): white «Узнать цену» → the shared modal
     prefilled with this puppy (main.js reads data-pup), «Подробнее» with a white outline → the puppy page. The photo links to the page too
-    (a duplicate link, out of the tab order); «В избранное» sits in the photo corner.
+    (a duplicate link, out of the tab order). No «В избранное» heart anywhere (client 21.10).
     Studio photo: the card takes that photo's measured backdrop (tools/photo-tones.json) unless the photo has
     "backdrop": "token". Lifestyle photo: object-fit cover, "pos" → object-position (default 50% 60%).
     Styles: main.css (.pup + .ct-card). Phones ≤ 560 px: a compact row — photo left, name and both buttons right.
     tag: heading tag of the name; eager=true: no lazy loading (cards on the first screen).
     simple=true (breed pages v2, client 15.10): photo, name, «мальчик · кремовый» and the same two buttons — no age,
-    no «В избранное», the photo and the name are not links.
+    the photo and the name are not links.
     No status badge, dot or status text (client 19.10: the site shows no «забронирован» / «скоро»). -#}
 {% macro puppy_card(p, tag='h3', eager=false, simple=false) -%}
 {%- set t = photo_tone(p.photo.src) if p.photo.kind == 'studio' and p.photo.get('backdrop') != 'token' else none -%}
@@ -19,8 +19,7 @@
 <article class="pup ct-card {{ p.tone_class }}{{ ' ct-card--studio' if studio else ' ct-card--life' }}{{ ' ct-card--simple' if simple }}"{% if t %} style="--tone:{{ t.top }};--tone-floor:{{ t.floor }}"{% endif %} data-pup data-slug="{{ p.slug }}" data-breed="{{ p.breed }}" data-name="{{ p.name }}" data-desc="{{ (p.breed_name ~ ' · ' ~ p.sex_label ~ ' · ' ~ p.colour) if simple else p.desc }}" data-img="{{ p.photo.src.rsplit('/', 1)[-1] }}">
   {% if simple %}<div class="pup__media ct-card__media{{ ' pup__media--studio' if studio }}">{% else %}<a class="pup__media ct-card__media{{ ' pup__media--studio' if studio }}" href="{{ p.url }}" tabindex="-1" aria-hidden="true">{% endif %}
     <img{% if p.photo['class'] %} class="{{ p.photo['class'] }}"{% endif %} src="{{ p.photo.src }}" alt="{{ p.photo.alt|typo }}" width="{{ p.photo.w }}" height="{{ p.photo.h }}"{% if p.photo.get('pos') %} style="object-position:{{ p.photo.pos }}"{% endif %}{% if not eager %} loading="lazy"{% endif %} decoding="async">
-  {% if simple %}</div>{% else %}</a>
-  <button class="fav ct-card__fav" type="button" aria-pressed="false" aria-label="В избранное: {{ p.name }}">{{ ui.icon('heart') }}</button>{% endif %}
+  {% if simple %}</div>{% else %}</a>{% endif %}
   <div class="pup__body ct-card__body">
     {% if simple %}
     <{{ tag }} class="pup__name">{{ p.name }}</{{ tag }}>

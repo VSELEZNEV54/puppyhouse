@@ -873,16 +873,6 @@ main:focus, section[tabindex="-1"]:focus, [data-anchor-focus]:focus { outline: n
 .pup__meta { margin-top: 6px; font-size: 13px; line-height: 1.35; color: var(--ink-soft); }
 .pup__actions { display: flex; gap: 8px; margin-top: auto; padding-top: 16px; }
 .pup__actions .btn { flex: 1; }
-.fav {
-  width: 48px; height: 48px; flex: none; border-radius: 50%; border: 0;
-  display: grid; place-items: center;
-  background: rgba(255, 255, 255, .78); color: var(--ink);
-  transition: background-color .2s, transform .25s var(--ease);
-}
-.fav:hover { background: #fff; }
-.fav:active { transform: scale(.92); }
-.fav[aria-pressed="true"] { background: #fff; color: var(--coral-strong); }
-.fav[aria-pressed="true"] .i { fill: currentColor; }
 
 .pups__more { min-width: 0; container-type: inline-size; }
 /* =========================================================
@@ -1859,9 +1849,6 @@ legend.field__label { margin-bottom: 8px; }
 
 /* «Мальтипу · 12 недель · девочка»: части не рвутся, точка остаётся в конце строки (разметка — в шаблоне) */
 .ct-card .pup__meta span { white-space: nowrap; }
-
-/* «В избранное» — в углу фото, не отнимает место у кнопок */
-.ct-card__fav { position: absolute; z-index: 3; top: calc(var(--inset) + 10px); right: calc(var(--inset) + 10px); width: 44px; height: 44px; }
 
 /* «Узнать цену» (белая) + «Подробнее» (белая обводка, .btn--outline): в ряд, а в узкой карточке — друг под другом.
    Обе стоят на цветной плитке карточки (--tone-floor), на телефоне тоже */
