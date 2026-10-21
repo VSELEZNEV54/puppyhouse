@@ -422,6 +422,7 @@ FAQ, статьи), `sitemap.xml`, `robots.txt`, своя `404.html`, `site.webm
 **Принято клиентом, ждёт переноса на основной домен** (список — `src/data/publish.json` → `accepted`):
 - `/otzyvy/` «Отзывы» — принята 21.10.2026.
 - `/dostavka/` «Доставка» — принята 21.10.2026.
+- `/kontakty/` «Контакты» — принята 21.10.2026.
 - Страницы городов `/shchenki-v-<город>/`, все 30 (`/shchenki-v-novosibirske/` и др.) — приняты 21.10.2026;
   в `publish.json → pages` их выкладывает одна строка `/shchenki-v*`.
 
