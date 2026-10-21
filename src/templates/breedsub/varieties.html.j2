@@ -3,7 +3,7 @@
     + sub: the generations F1 / F1b / F2 or what the FCI standard says about colours), colours (the breed page's colour
     carousel: «Подобрать …» and «Подробнее» → the colour page), tips. Then the breed's 8 puppies + «Все щенки …»,
     FAQ, «Читайте также» (articles + plates), SEO text, the homepage-size lead form with contact tiles.
-    Context from routes/breedsub.py: b (breed), v (copy, Markup), tint, links. Main buttons coral (body .page-varieties). -#}
+    Context from routes/breedsub.py: b (breed), v (copy, Markup), tint. Main buttons coral (body .page-varieties). -#}
 {% extends "layouts/page.html.j2" %}
 {% import "breedsub/_parts.html.j2" as part %}
 {% import "breeds/_parts.html.j2" as brd %}
@@ -64,7 +64,7 @@
 
     {{ blocks.faq_section(v.faq, title=v.faq_title) }}
 
-    {{ blocks.read_more(links, breed=b.slug) }}
+    {{ blocks.read_more(b) }}
 
 {% endblock %}
 

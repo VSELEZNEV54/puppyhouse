@@ -99,9 +99,9 @@ def _fmt(tpl, b):
     return tpl.format(name=b["name"], lname=_lower(b["name"]), gen=b["name_gen"], pgen=b["name_plural_gen"])
 
 
-def _breed_page(cfg, b, bm, order, blog, colours, compare, fits):
+def _breed_page(cfg, b, bm, order, colours, compare, fits):
     """Context of /sravnenie/<breed>/: copy (Markup), «Кому подойдёт» photo cards, «Лучше подобрать другую породу»,
-    the comparison table (this breed first), links."""
+    the comparison table (this breed first). «Читайте также» — blocks.read_more."""
     com, own = cfg["common"], cfg["breeds"][b["slug"]]
     pg = dict(own)
     for k in ("h1", "lead"):
@@ -127,18 +127,9 @@ def _breed_page(cfg, b, bm, order, blog, colours, compare, fits):
     # collapsed SEO text «Почему выбирают …»: about this breed only (client 15.10: no comparison with our other dogs)
     pg["seo"] = _seo(own["seo"])
 
-    ln, cl = com["links"], own["links"]
-    links = [
-        dict(url=b["urls"]["hub"], breed=b, title=nobr(f"Щенки {b['name_gen']}"), line=ln["hub_line"]),
-        dict(url=b["urls"]["price"], icon="wallet", color="sun", title=nobr(f"Цена щенка {b['name_gen']}"), line=ln["price_line"]),
-        dict(url=b["urls"]["varieties"], icon="ruler", color="mint", title=ln["varieties_title"], line=ln["varieties_line"]),
-        dict(url=blog[f"{b['slug']}-harakter"]["url"], icon="book", color="coral", title=nobr(cl["char_title"]), line=cl["char_line"], cta="Читать"),
-        dict(url=blog[f"{b['slug']}-uhod"]["url"], icon="book", color="sky", title=nobr(cl["care_title"]), line=cl["care_line"], cta="Читать"),
-        dict(url="/podbor-porody/", icon="sparkle", color="lilac", title=ln["quiz_title"], line=ln["quiz_line"]),
-    ]
     # round faces in the CTA band: the breed's colours (studio shots of puppies, as on /<breed>/cena/)
     faces = [c["photo"] for c in colours if c["photo"] and "/parent-" not in c["photo"]["src"]][:4]
-    return pg, links, faces
+    return pg, faces
 
 
 def _quiz(cfg, breeds, bm):
@@ -181,7 +172,6 @@ def routes(data):
     breeds = data["breeds"]
     bm = by_id(breeds, "slug")
     order = [b["slug"] for b in breeds]
-    blog = by_id(data["blog"], "slug")
     out = []
 
     quiz = _quiz(cfg, breeds, bm)
@@ -200,8 +190,8 @@ def routes(data):
     com = why["common"]
     for b in breeds:
         own = why["breeds"][b["slug"]]
-        pg, links, faces = _breed_page(why, b, bm, order, blog, breed_colours(data, b), cfg,
-                                       data["puppy"]["breeds"][b["slug"]]["fits"])
+        pg, faces = _breed_page(why, b, bm, order, breed_colours(data, b), cfg,
+                                data["puppy"]["breeds"][b["slug"]]["fits"])
         out.append(dict(
             url=_why_url(b),
             template="choice/breed.html.j2",
@@ -210,7 +200,6 @@ def routes(data):
                 description=own["description"],
                 breadcrumbs=crumbs((b["name"], b["urls"]["hub"]), (own["crumb"], None)),
                 pg=pg, com=com, b=b,
-                links=links,
                 faces=faces,
                 pups_breed=b,
                 lead_breed=b["slug"],

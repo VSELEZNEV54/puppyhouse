@@ -78,6 +78,11 @@
     {{ blocks.faq_section(faq, title='Вопросы об окрасе') }}
 {% endblock %}
 
+{#- «Читайте также» (client 21.10): articles about the breed + four plates of its sections, instead of «Полезные статьи» -#}
+{% block blog %}
+    {{ blocks.read_more(b) }}
+{% endblock %}
+
 {% block lead %}
     {% call forms.lead_form(title='Подберём ' ~ c.pick, line='Пришлём щенков этого окраса с фото, видео и ценой', breed=b.slug, contacts=false, cls='hm-lead') %}
       {{ forms.contact_tiles() }}

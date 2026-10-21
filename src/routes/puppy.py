@@ -192,16 +192,6 @@ def routes(data):
         ]
 
         bt = texts["breeds"][b["slug"]]
-        # «Читайте о породе»: разделы, куда можно перейти (клиент 19.10 — вместо трёх ссылок в «Кому подойдёт»)
-        more = [
-            {"url": b["urls"]["hub"], "title": f"{b['name']}: о породе", "line": "Характер, размер, уход и здоровье",
-             "icon": "paw", "color": "coral"},
-            {"url": b["urls"]["price"], "title": f"Цена щенка {bg}", "line": "От чего зависит цена и что входит в покупку",
-             "icon": "wallet", "color": "sun"},
-            {"url": b["urls"]["varieties"], "title": f"Окрасы {bg}", "line": "Все окрасы с фото и чем они отличаются",
-             "icon": "sparkle", "color": "lilac"},
-        ]
-
         similar_pool = sorted([x for x in b["puppies"] if x["slug"] != p["slug"]], key=lambda x: x["status_order"])
         similar = similar_pool[:4]
 
@@ -228,7 +218,6 @@ def routes(data):
                 intro=bt["intro"],
                 facts=bt["facts"],
                 fits=bt["fits"],
-                more=more,
                 booking=texts["booking"],
                 delivery=texts["delivery"],
                 similar=similar,

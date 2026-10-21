@@ -736,9 +736,6 @@ a.stile:hover .stile__photo img { transform: scale(1.04); }
 }
 
 /* =========================================================
-   «ЧИТАЙТЕ ТАКЖЕ» (blocks.read_more): статьи три в ряд, под ними плашки ссылок — один блок
+   «ЧИТАЙТЕ ТАКЖЕ» (blocks.read_more): статьи три в ряд, под ними четыре плашки разделов породы — один блок
    ========================================================= */
 .rmore__links { margin-top: var(--gap); }
-.rmore__links--3 .ltiles { --n: 3; }
-@media (max-width: 1199px) { .rmore__links--3 .ltiles { --n: 2; } }
-@media (max-width: 760px) { .rmore__links--3 .ltiles { --n: 1; } }

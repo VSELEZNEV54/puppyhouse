@@ -3,7 +3,7 @@
     price range (breedsub.json → price_cheap / price_kennel; no prices of individual puppies), then «Щенки <породы>
     в наличии» — 8 cards and «Все щенки <породы>» under them, as the homepage catalog (client 21.10; no strip at the
     bottom), booking teaser, FAQ, CTA. Coral main buttons as on the homepage (body.page-price, main.css).
-    Context from routes/breedsub.py: b (breed), pg (copy, Markup), tint, faces, links. -#}
+    Context from routes/breedsub.py: b (breed), pg (copy, Markup), tint, faces. -#}
 {% extends "layouts/page.html.j2" %}
 {% import "breedsub/_parts.html.j2" as part %}
 
@@ -89,7 +89,7 @@
 
     {{ blocks.faq_section(pg.faq, title=pg.faq_title) }}
 
-    {{ blocks.read_more(links, breed=b.slug) }}
+    {{ blocks.read_more(b, alt='varieties') }}
 
 {% endblock %}
 

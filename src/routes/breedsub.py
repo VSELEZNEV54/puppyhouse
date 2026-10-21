@@ -10,7 +10,7 @@ import re
 
 from markupsafe import Markup, escape
 
-from _lib import by_id, crumbs
+from _lib import crumbs
 
 # Visible copy never breaks inside «той-пуделя», «по-разному» or a range like «2–5 кг»: such words go into
 # <span class="nw"> (the macros' |typo keeps Markup tags). Meta title/description, photo alts and text that sits
@@ -175,13 +175,11 @@ def _faces(colours, limit=4):
 def routes(data):
     copy = data["breedsub"]
     common = copy["common"]
-    blog = by_id(data["blog"], "slug")
     out = []
     for b in data["breeds"]:
         own = copy[b["slug"]]
         urls = b["urls"]
         alts = _alts(b)
-        hub_tile = dict(url=urls["hub"], title=b["name"], line="О породе и щенки в наличии", breed=b)
 
         v = _varieties(b, common["varieties"], own["varieties"], alts)
         colours = next((s["items"] for s in v["blocks"] if s["type"] == "colours"), [])
@@ -198,32 +196,11 @@ def routes(data):
                 pg=pg,
                 tint=own["tint"],
                 faces=_faces(colours),
-                # «Читайте также» (client 21.10): the breed's articles + these plates in one block (blocks.read_more)
-                links=[
-                    hub_tile,
-                    dict(url=urls["varieties"], title=common["price"]["links_varieties_title"],
-                         line=nobr(own["price"]["links_varieties_line"]), icon="sparkle", color="lilac"),
-                    dict(url="/dokumenty-i-garantii/", title="Документы и гарантии",
-                         line="Что получите вместе со щенком", icon="doc", color="sky"),
-                    dict(url="/dostavka/", title="Доставка", line="Стоимость назовём при брони",
-                         icon="car", color="mint"),
-                ],
                 pups_breed=b,
                 lead_breed=b["slug"],
             ),
         ))
 
-        var_links = [
-            hub_tile,
-            dict(url=urls["price"], title=common["varieties"]["links_price_title"],
-                 line=common["varieties"]["links_price_line"], icon="wallet", color="sun"),
-        ]
-        care = blog.get(f"{b['slug']}-uhod")
-        if care:
-            var_links.append(dict(url=care["url"], title=nobr(own["varieties"]["links_care_title"]),
-                                  line=nobr(own["varieties"]["links_care_line"]), icon="book", color="mint"))
-        var_links.append(dict(url="/podbor-porody/", title="Подобрать породу", line="Тест на 2 минуты",
-                              icon="sparkle", color="lilac"))
         out.append(dict(
             url=urls["varieties"],
             template="breedsub/varieties.html.j2",
@@ -234,7 +211,6 @@ def routes(data):
                 b=b,
                 v=v,
                 tint=own["tint"],
-                links=var_links,
                 pups_breed=b,
                 lead_breed=b["slug"],
             ),
