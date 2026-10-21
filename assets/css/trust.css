@@ -138,13 +138,13 @@
 /* =========================================================
    «О ПИТОМНИКЕ» (/o-pitomnike/, клиент 21.10): про сам питомник — годы на рынке, выпускники, преимущества
    ========================================================= */
-/* первый экран: студийный кадр четырёх щенков (about-four-breeds.jpg) — справа во всю высоту плитки, шире квадрата,
-   щенки в правой части кадра видны целиком; левый край кадра гаснет в тон плитки */
+/* первый экран: основное фото главной (hero-four-breeds.jpg — четыре щенка в ряд) — справа во всю высоту плитки,
+   шире квадрата, щенки видны целиком; левый край кадра гаснет в тон плитки */
 @media (min-width: 761px) {
   .phero--about .phero__tile { --ph: clamp(440px, 38vw, 580px); min-height: var(--ph); align-items: center; }
   .phero--about .phero__photo { width: 62%; aspect-ratio: auto; transform: none; }
   .phero--about .phero__photo img {
-    object-position: 78% 62%;
+    object-position: 50% 62%;
     -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 22%), linear-gradient(180deg, transparent 0, #000 10%);
     mask-image: linear-gradient(90deg, transparent 0, #000 22%), linear-gradient(180deg, transparent 0, #000 10%);
   }
@@ -158,24 +158,39 @@
     width: calc(100% + 2 * var(--p)); height: auto; margin: 0 calc(-1 * var(--p)) 8px; aspect-ratio: 2 / 1;
   }
   .phero--about .phero__photo img {
-    object-position: 70% 70%;
+    object-position: 50% 70%;
     -webkit-mask-image: linear-gradient(180deg, #000 86%, transparent 100%);
     mask-image: linear-gradient(180deg, #000 86%, transparent 100%);
   }
   .phero--about .phero__copy { max-width: none; }
 }
 @media (max-width: 760px) {
-  .phero--about .phero__photo img { object-position: 74% 100%; }
+  .phero--about .phero__photo img { object-position: 50% 100%; }
+}
+/* телефон: в pages.css кадр шапки — квадрат по центру с гаснущими краями (под одного щенка); здесь четыре щенка в ряд —
+   кадр во всю ширину полосы, гаснет только нижний край */
+@media (max-width: 560px) {
+  .phero--about .phero__photo { aspect-ratio: 1.45; }
+  .phero--about .phero__photo img {
+    left: 0; width: 100%; aspect-ratio: auto; transform: none; object-fit: cover; object-position: 50% 92%;
+    -webkit-mask-image: linear-gradient(180deg, #000 86%, transparent 100%);
+    mask-image: linear-gradient(180deg, #000 86%, transparent 100%);
+  }
 }
 
-/* «Кто мы»: текст слева, четыре цифры квадратом справа */
+/* «Кто мы»: текст слева, три цифры столбиком справа */
 .abt-who { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: var(--gap); }
 .abt-who__text { padding: clamp(26px, 3.2vw, 48px); border-radius: var(--r-tile); background: var(--tile); }
 .abt-who__text p { font-size: clamp(16px, 1.2vw, 18px); line-height: 1.55; color: var(--ink-soft); max-width: 60ch; }
 .abt-who__text p:first-child { font-size: clamp(22px, 2vw, 30px); line-height: 1.28; letter-spacing: -0.022em; color: var(--ink); max-width: 30ch; }
 .abt-who__text p + p { margin-top: 16px; }
-.abt-who .kpis { --n: 2; }
+.abt-who .kpis { --n: 1; }
 .abt-who .stat { align-content: center; }
+
+/* «Каталог щенков» — 8 карточек, как на главной (.hm-pups); при трёх в ряд — первые 6, чтобы ряды были полными */
+@media (min-width: 901px) and (max-width: 1199px) {
+  .abt-pups > .pups__item:nth-child(n + 7) { display: none; }
+}
 
 /* «Почему нам доверяют»: карточки с фото, как карточки щенков — фото с отступом 8 px, под ним заголовок и строка */
 .abt-advs { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--gap); }
@@ -192,7 +207,7 @@
    ========================================================= */
 @media (max-width: 1199px) {
   .abt-who { grid-template-columns: minmax(0, 1fr); }
-  .abt-who .kpis { --n: 4; }
+  .abt-who .kpis { --n: 3; }
   .abt-advs { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .tr-hero__tile { grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); }
   /* четыре плитки документов — по две в ряд */

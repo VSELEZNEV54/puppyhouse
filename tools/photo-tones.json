@@ -1,15 +1,4 @@
 {
- "about-four-breeds": {
-  "size": [
-   1536,
-   1024
-  ],
-  "top": "#F0BC9B",
-  "wall": "#F0BC9A",
-  "wall_right": "#C29A82",
-  "floor": "#F6D0B9",
-  "floor_line": 0.7
- },
  "color-buldog-blue": {
   "size": [
    1024,
@@ -129,6 +118,17 @@
   "wall": "#E9C382",
   "wall_right": "#ECC783",
   "floor": "#ECCE92",
+  "floor_line": 0.91
+ },
+ "hero-four-breeds": {
+  "size": [
+   1264,
+   848
+  ],
+  "top": "#F3DEC2",
+  "wall": "#F3DFC1",
+  "wall_right": "#EAD2B1",
+  "floor": "#F9E9D3",
   "floor_line": 0.91
  },
  "okras-buldog-goluboj": {

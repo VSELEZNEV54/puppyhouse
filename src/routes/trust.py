@@ -5,9 +5,10 @@ Client 21.10: /vypuskniki/ is gone — the graduates (owners' photo reviews, as 
 «О питомнике» (/o-pitomnike/), the page about the kennel itself. /otzyvy/ shows the same photo reviews, no breed filter."""
 
 from _lib import by_id, crumbs, sort_puppies
-
-OTZ_PUPS = 8  # «Щенки в наличии» on /otzyvy/: the first puppies of /shchenki/, as on the homepage
 from blog import rich
+
+ABOUT_PUPS = 8  # «Каталог щенков» on /o-pitomnike/: 4 / 2 per row — full rows (3 per row: the first 6, trust.css)
+OTZ_PUPS = 8  # «Щенки в наличии» on /otzyvy/: the first puppies of /shchenki/, as on the homepage
 
 
 def _faq(items, faq):
@@ -43,11 +44,12 @@ def routes(data):
                 breadcrumbs=crumbs(("О питомнике", None)),
                 pg=about,
                 seo=about_seo,
-                stats=data["site"]["stats"],
+                # «Каталог щенков» as on the homepage: the first 8 cards in the catalog's order + «Перейти в каталог»
+                catalog=sort_puppies(data["puppies"])[:ABOUT_PUPS],
                 # «Наши выпускники»: the owners' photo reviews of the homepage (home.json → reviews_home)
                 graduates=data["home"]["reviews_home"],
                 faq_items=_faq(about["faq"], faq),
-                pups_strip=False,      # the template places the «Щенки в наличии» strip itself, before the FAQ
+                pups_strip=False,      # the template has its own catalog block (8 cards), like the homepage
                 blog_strip=False,
             ),
         ),

@@ -9,13 +9,7 @@
 
 .lgl-links { padding: 22px 24px; border-radius: var(--r-tile); background: var(--tile); }
 .lgl-links__title { font-size: 14px; font-weight: 500; color: var(--muted); }
-.lgl-links ul { display: grid; gap: 8px; margin-top: 12px; }
-/* названия документов длинные: кнопка во всю ширину плитки, текст переносится; скругление мягче, чтобы
-   кнопка в две строки не превращалась в овал */
-.lgl-links .btn {
-  width: 100%; height: auto; min-height: 44px; padding: 11px 18px; border-radius: 22px;
-  justify-content: flex-start; white-space: normal; text-align: left; font-size: 14.5px; line-height: 1.3;
-}
+.lgl-links ul { display: grid; gap: 12px; margin-top: 12px; font-size: 15px; line-height: 1.4; }
 
 @media (max-width: 760px) {
   .lgl-hero .phero__title { font-size: clamp(27px, 7.4vw, 44px); }
