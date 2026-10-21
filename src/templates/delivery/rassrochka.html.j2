@@ -1,13 +1,17 @@
-{#- /rassrochka/ — booking and installment. Context (routes/delivery.py): r (copy, data/delivery-service.json), faq_items. -#}
+{#- /rassrochka/ — booking only (client 21.10: no installment for now; prepayment 30% of the price). Main buttons coral
+    as on the homepage (body.page-booking); «Щенки в наличии» — two of every breed (cards.pups_grid); «Читайте также» —
+    articles + plates (blocks.read_more without a breed). Context (routes/delivery.py): r (copy, data/delivery-service.json),
+    faq_items, catalog. -#}
 {% extends "layouts/page.html.j2" %}
+
+{% block body_attrs %} class="page-booking"{% endblock %}
 
 {% block page_css %}
   <link rel="stylesheet" href="/assets/css/delivery.css">
 {% endblock %}
 
 {% block hero %}
-    {% call ui.page_hero(r.h1, lead=r.lead, eyebrow=r.eyebrow, photo=dict(r.photo, w=imgsize(r.photo.src)[0], h=imgsize(r.photo.src)[1]), tone='butter',
-        chips=[{'icon': 'doc', 'label': 'Договор'}, {'icon': 'wallet', 'label': 'Предоплата'}, {'icon': 'calendar', 'label': 'Рассрочка'}]) %}
+    {% call ui.page_hero(r.h1, lead=r.lead, eyebrow=r.eyebrow, photo=dict(r.photo, w=imgsize(r.photo.src)[0], h=imgsize(r.photo.src)[1]), tone='butter') %}
       {{ forms.price_button(cls='btn btn--ink btn--lg') }}
       <a class="btn btn--white btn--lg" href="#bron">Как забронировать</a>
     {% endcall %}
@@ -24,28 +28,15 @@
       {{ ui.spec_grid(r.terms, cols=4) }}
     </section>
 
-    <section class="section container" id="rassrochka" aria-labelledby="rassrochka-title">
-      {{ ui.section_head(r.bank_title, id='rassrochka-title', lead=r.bank_lead) }}
-      <div class="dlv-bank">
-        <div class="dlv-bank__card tone--sun">
-          <div class="dlv-bank__head">
-            {{ ui.ico('wallet', 'sun') }}
-            <p class="dlv-bank__name">{{ r.bank_name|typo }}</p>
-          </div>
-          <dl class="dlv-bank__facts">
-            {% for f in r.bank_facts %}<div><dt>{{ f.label|typo }}</dt><dd>{{ f.value|typo }}</dd></div>{% endfor %}
-          </dl>
-          <p class="dlv-bank__note">{{ ui.icon('info', sm=true) }}<span>{{ r.bank_note|typo }}</span></p>
-        </div>
-        {{ ui.timeline(r.bank_steps, colors=('sun', 'mint', 'coral')) }}
-      </div>
-    </section>
-
     {{ ui.advantages(title='Что входит в покупку', link={'url': '/dokumenty-i-garantii/', 'label': 'Документы и гарантии'}) }}
 
-    {{ cards.pups_section() }}
+    {{ cards.pups_grid(catalog) }}
 
     {{ blocks.faq_section(faq_items, title=r.faq_title, id='voprosy') }}
+{% endblock %}
+
+{% block blog %}
+    {{ blocks.read_more() }}
 {% endblock %}
 
 {% block lead %}

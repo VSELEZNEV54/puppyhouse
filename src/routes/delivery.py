@@ -99,20 +99,21 @@ def hub_page(data, cities):
 
 # ---------------------------------------------------------------- service pages
 def rassrochka_page(data):
-    r = nb(data["delivery_service"]["rassrochka"], "lead", "bank_lead", "bank_note", "lead_line")
+    """Booking only (client 21.10: no installment for now; prepayment 30% of the price). The URL stays /rassrochka/."""
+    r = nb(data["delivery_service"]["rassrochka"], "lead", "lead_line")
     r["steps"] = [nb(x, "title", "text") for x in r["steps"]]
-    r["bank_steps"] = [nb(x, "title", "text") for x in r["bank_steps"]]
     r["terms"] = [nb(x, "value") for x in r["terms"]]
-    r["bank_facts"] = [nb(x, "value") for x in r["bank_facts"]]
     faq = by_id(data["faq"])
     return page(
         "/rassrochka/", "delivery/rassrochka.html.j2",
-        "Бронь и рассрочка на щенка" + BRAND,
-        "Как забронировать щенка: договор и предоплата — и щенок закреплён за вами. "
-        "Остаток можно оплатить в рассрочку через банк-партнёр.",
-        [("Бронь и рассрочка", None)],
+        "Бронь щенка: предоплата 30%" + BRAND,
+        "Как забронировать щенка: договор и предоплата 30% от цены — и щенок закреплён за вами "
+        "до переезда. Остаток — при встрече или при доставке.",
+        [("Бронь щенка", None)],
         r=r,
         faq_items=qa([faq[i] for i in r["faq_ids"]] + r["faq_extra"]),
+        # «Щенки в наличии» and «Читайте также» — the standard blocks, as on /faq/
+        catalog=mixed_puppies(data["breeds"]),
         pups_strip=False,
     )
 
