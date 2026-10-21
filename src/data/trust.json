@@ -1,67 +1,5 @@
 {
-  "_note": "Group «trust»: /roditeli/, /vypuskniki/, /otzyvy/, /dokumenty-i-garantii/. Values in [square brackets] are placeholders — replace with real data from the kennel. Breed facts: see src/data/breeds.json.",
-
-  "roditeli": {
-    "title": "Родители щенков — питомник домщенков.рф в Москве",
-    "description": "Мамы и папы наших щенков живут с нами дома. Родословные, осмотр ветеринара перед вязкой, отдых между помётами. Покажем родителей щенка по видео.",
-    "hero": {
-      "eyebrow": "О питомнике",
-      "h1": "Родители наших щенков",
-      "lead": "Мамы и папы живут с нами дома. Покажем родителей вашего щенка по видео",
-      "photo": { "src": "/assets/img/parents-maltipu.jpg", "alt": "Мама-мальтипу со щенками на лежанке" },
-      "pos": "50% 60%",
-      "chips": [
-        { "icon": "home", "label": "Растим дома" },
-        { "icon": "shield", "label": "Осмотр перед вязкой" },
-        { "icon": "doc", "label": "Родословные родителей" }
-      ]
-    },
-    "ways": {
-      "title": "Как растим щенков",
-      "items": [
-        { "icon": "home", "color": "coral", "title": "Дома, а не в вольере", "line": "С рождения слышат голоса, пылесос и дверной звонок" },
-        { "icon": "calendar", "color": "sun", "title": "Мама отдыхает", "line": "Не больше [одного помёта в год] у каждой мамы" },
-        { "icon": "shield", "color": "mint", "title": "Здоровые родители", "line": "Осмотр ветеринара и [ДНК-тесты] перед каждой вязкой" }
-      ]
-    },
-    "parents": {
-      "title": "Мамы и папы",
-      "lead": "Покажем маму и папу вашего щенка по видео или в питомнике",
-      "items": [
-        { "breed": "maltipu", "name": "[Кличка]", "role": "Мама · мальтипу F1", "pills": ["[ДНК-тесты]", "[4 кг]"] },
-        { "breed": "francuzskij-buldog", "name": "[Кличка]", "role": "Папа · французский бульдог", "pills": ["Родословная РКФ", "[Титул]"] },
-        { "breed": "toj-pudel", "name": "[Кличка]", "role": "Мама · той-пудель", "pills": ["Родословная РКФ", "[ДНК-тесты]"] },
-        { "breed": "border-kolli", "name": "[Кличка]", "role": "Папа · бордер-колли", "pills": ["Родословная РКФ", "[Титул]"] }
-      ],
-      "note": "Мальтипу — гибрид. У щенков F1 родители — мальтийская болонка и пудель, у F1b — мальтипу и пудель."
-    },
-    "cta": {
-      "title": "Хотите увидеть родителей?",
-      "line": "Покажем маму и папу щенка по видео или ждём в питомнике по записи",
-      "label": "Оставить заявку"
-    },
-    "pairs": {
-      "title": "Как выбираем пары",
-      "items": [
-        { "title": "Характер", "text": "В разведении — только спокойные, контактные собаки" },
-        { "title": "Здоровье", "text": "Осмотр ветеринара и [ДНК-тесты] на болезни породы" },
-        { "title": "Родословная", "text": "Проверяем предков, чтобы не было близкого родства" },
-        { "title": "Пара", "text": "Подбираем по размеру, шерсти и окрасу" }
-      ]
-    },
-    "links_title": "Ещё о питомнике",
-    "links": [
-      { "url": "/vypuskniki/", "title": "Выпускники", "line": "Как живут наши щенки дома", "image": "/assets/img/grad-man-kolli.jpg" },
-      { "url": "/otzyvy/", "title": "Отзывы", "line": "Пишут владельцы щенков", "image": "/assets/img/family-maltipu.jpg" },
-      { "url": "/dokumenty-i-garantii/", "title": "Документы и гарантии", "line": "Договор, ветпаспорт, прививки", "image": "/assets/img/documents.jpg" }
-    ],
-    "faq_title": "Вопросы о питомнике",
-    "faq": [
-      { "ref": "visit" },
-      { "q": "Можно увидеть родителей щенка?", "a": "Да. Маму покажем вживую или по видео. Если папа щенка живёт не у нас, пришлём его фото, видео и копию родословной." },
-      { "q": "Есть ли у родителей родословные?", "a": "У французских бульдогов, той-пуделей и бордер-колли — родословные РКФ, поэтому щенки получают метрику. Мальтипу — гибрид, РКФ его не регистрирует: к щенку прилагаем копии родословных породистых предков." }
-    ]
-  },
+  "_note": "Group «trust»: /vypuskniki/, /otzyvy/, /dokumenty-i-garantii/. Values in [square brackets] are placeholders — replace with real data from the kennel. Breed facts: see src/data/breeds.json.",
 
   "vypuskniki": {
     "title": "Выпускники домщенков.рф — щенки в новых семьях",
@@ -101,7 +39,6 @@
     "links_title": "Ещё о питомнике",
     "links": [
       { "url": "/otzyvy/", "title": "Отзывы владельцев", "line": "Что пишут о щенках и о нас", "image": "/assets/img/family-maltipu.jpg" },
-      { "url": "/roditeli/", "title": "Родители", "line": "Мамы и папы наших щенков", "image": "/assets/img/parents-maltipu.jpg" },
       { "url": "/dokumenty-i-garantii/", "title": "Документы и гарантии", "line": "Договор, ветпаспорт, прививки", "image": "/assets/img/documents.jpg" }
     ]
   },
@@ -126,7 +63,6 @@
     "links_title": "Ещё о питомнике",
     "links": [
       { "url": "/vypuskniki/", "title": "Выпускники", "line": "Фото и истории из новых семей", "image": "/assets/img/grad-man-kolli.jpg" },
-      { "url": "/roditeli/", "title": "Родители", "line": "Мамы и папы наших щенков", "image": "/assets/img/parents-maltipu.jpg" },
       { "url": "/dokumenty-i-garantii/", "title": "Документы и гарантии", "line": "Договор, ветпаспорт, прививки", "image": "/assets/img/documents.jpg" }
     ]
   },

@@ -1,5 +1,5 @@
 /* =========================================================
-   домщенков.рф — подбор породы, сравнения пород, стартовый набор (группа choice).
+   домщенков.рф — подбор породы и сравнения пород (группа choice).
    Подключается после main.css и pages.css. Только раскладка этих страниц:
    токены, плитки, кнопки, студийные плитки, таблица, CTA — из общих файлов.
    ========================================================= */
@@ -209,72 +209,12 @@ html:not(.js) .cho-quiz { display: none; }
 .cho-links .ltiles { --n: 3; }
 
 /* =========================================================
-   СТАРТОВЫЙ НАБОР (/magazin/)
-   ========================================================= */
-.cho-kit { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: var(--gap); }
-.cho-kit__copy { min-height: clamp(360px, 33vw, 520px); }
-.cho-kit .phero__copy { max-width: none; }
-.cho-kit__media { position: relative; min-height: 300px; border-radius: var(--r-tile); overflow: hidden; background: var(--sand); }
-.cho-kit__media img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 45%; }
-
-/* чек-лист: «лист бумаги» в белой плитке */
-.cho-list { padding: clamp(24px, 3.4vw, 52px); border-radius: var(--r-tile); background: var(--tile); }
-/* шапка листа (логотип и заголовок) — только на бумаге; на экране заголовок даёт H2 секции, кнопка «Распечатать» — рядом с ним */
-.cho-list__head {
-  display: none; gap: 6px;
-  padding-bottom: 18px; margin-bottom: 20px; border-bottom: 1.5px dashed var(--line-2);
-}
-.cho-list__brand { display: inline-flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 500; color: var(--muted); }
-.cho-list__brand .i { color: var(--coral-strong); }
-.cho-list__title { font-size: clamp(22px, 2vw, 30px); font-weight: 500; letter-spacing: -0.028em; line-height: 1.1; }
-.cho-list__print { flex: none; }
-.cho-list__print .i { transform: none; }
-.cho-list__cols { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px clamp(20px, 2.6vw, 40px); }
-.cho-list__group { min-width: 0; margin: 0; padding: 0; border: 0; }
-.cho-list__gtitle { padding: 0; margin-bottom: 6px; font-size: 15px; font-weight: 500; color: var(--muted); }
-.cho-list__items li + li { border-top: 1px solid var(--line); }
-.cho-check {
-  position: relative; display: grid; grid-template-columns: 26px minmax(0, 1fr); align-items: start; column-gap: 12px;
-  padding: 11px 0; cursor: pointer; font-size: 16px; line-height: 1.35;
-}
-.cho-check input { position: absolute; opacity: 0; width: 1px; height: 1px; pointer-events: none; }
-.cho-check__box {
-  width: 26px; height: 26px; border-radius: 8px;
-  display: grid; place-items: center;
-  border: 1.5px solid var(--line-2); background: #fff; color: transparent;
-  transition: background-color .2s, border-color .2s, color .2s;
-}
-.cho-check__box .i { stroke-width: 2.4; }
-.cho-check__txt { padding-top: 2px; transition: color .2s; }
-.cho-check:hover .cho-check__box { border-color: var(--ink); }
-.cho-check input:checked + .cho-check__box { background: var(--ink); border-color: var(--ink); color: #fff; }
-.cho-check input:checked ~ .cho-check__txt { color: var(--muted); text-decoration: line-through; text-decoration-color: rgba(20, 20, 20, .35); }
-.cho-check input:focus-visible + .cho-check__box { outline: 2px solid var(--ink); outline-offset: 2px; }
-
-/* CTA «Соберём набор»: вместо мордочек — круглые кадры вещей из того же флэтлея */
-.cho-kit-face { background: var(--sand); }
-.cho-kit-face img { transform: scale(var(--z, 2.4)) translate(calc(50% - var(--x, 50%)), calc(50% - var(--y, 50%))); transform-origin: 50% 50%; }
-
-/* печать: только чек-лист */
-@media print {
-  body.cho-print-list { background: #fff; }
-  body.cho-print-list > :not(main):not(.sprite) { display: none !important; }
-  body.cho-print-list main > :not(#chek-list) { display: none !important; }
-  body.cho-print-list #chek-list { margin: 0; width: 100%; }
-  body.cho-print-list #chek-list .sec-head, body.cho-print-list .cho-list__print { display: none !important; }
-  body.cho-print-list .cho-list { padding: 0; }
-  body.cho-print-list .cho-list__head { display: grid; }
-  body.cho-print-list .cho-list__cols { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-}
-
-/* =========================================================
    АДАПТИВ
    ========================================================= */
 @media (max-width: 1199px) {
   .cho-links .ltiles { --n: 2; }
   .cho-q__opts--4 { --n: 2; }
   .cho-ans { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .cho-list__cols { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 22px; }
   .cho-res__row { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .cho-res__notes { grid-column: 1 / -1; }
 }
@@ -287,7 +227,6 @@ html:not(.js) .cho-quiz { display: none; }
   .cho-other__lead { grid-area: lead; }
   .cho-other__picks { grid-area: picks; align-self: center; margin: 0; padding: 0 0 0 32px; border-top: 0; border-left: 1px solid var(--line); }
   .cho-other__more { grid-area: more; margin-top: 4px; }
-  .cho-kit { grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); }
   .cho-res__copy { max-width: 62%; }
 }
 
@@ -348,15 +287,9 @@ html:not(.js) .cho-quiz { display: none; }
   .cho-other__picks { margin-top: 2px; padding: 16px 0 0; border-left: 0; border-top: 1px solid var(--line); }
   .cho-other__picks p { font-size: 15px; }
 
-  .cho-kit { grid-template-columns: minmax(0, 1fr); }
-  .cho-kit__copy { min-height: 0; }
-  .cho-kit__media { order: -1; min-height: 0; aspect-ratio: 4 / 3; }
-  .cho-list { padding: 20px 18px; }
-  .cho-check { font-size: 15.5px; padding: 10px 0; }
 }
 
 @media (max-width: 560px) {
-  .cho-list__cols { grid-template-columns: minmax(0, 1fr); }
   .cho-res__again .cho-alt__links { flex-direction: column; align-items: flex-start; }
 }
 

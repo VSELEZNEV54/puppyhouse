@@ -1,4 +1,4 @@
-"""Trust pages: /roditeli/, /vypuskniki/, /otzyvy/, /dokumenty-i-garantii/.
+"""Trust pages: /vypuskniki/, /otzyvy/, /dokumenty-i-garantii/.
 Owns: src/templates/trust/, src/data/trust.json (copy), assets/css/trust.css, assets/js/trust.js
 (review filter + «Оставить отзыв» modal on /otzyvy/)."""
 
@@ -15,9 +15,6 @@ def routes(data):
     faq = by_id(data["faq"])
     breeds = by_id(data["breeds"], "slug")
     stats = by_id(data["site"]["stats"], "icon")
-
-    rod = t["roditeli"]
-    parents = [dict(p, b=breeds[p["breed"]]) for p in rod["parents"]["items"]]
 
     vyp = t["vypuskniki"]
     stories = [dict(s, b=breeds[s["breed"]]) for s in vyp["stories"]["items"]]
@@ -36,18 +33,6 @@ def routes(data):
     docs = [dict(d, fit_breeds=groups[d["breeds"]]) for d in dok["docs"]["items"]]
 
     return [
-        dict(
-            url="/roditeli/",
-            template="trust/roditeli.html.j2",
-            context=dict(
-                title=rod["title"],
-                description=rod["description"],
-                breadcrumbs=crumbs(("Родители", None)),
-                pg=rod,
-                parents=parents,
-                faq_items=_faq(rod["faq"], faq),
-            ),
-        ),
         dict(
             url="/vypuskniki/",
             template="trust/vypuskniki.html.j2",

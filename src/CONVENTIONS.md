@@ -45,7 +45,7 @@ pixel-parity baseline no longer applies. Reference inner page: `/shchenki/`.
   «Все окрасы» / «Смотреть окрас» (colours), «Читать» (articles). `ui.round_arrow` is decorative only.
 - **Advantages everywhere it fits**: `ui.advantages()` (привиты по возрасту, ветпаспорт и договор, пожизненная гарантия,
   пожизненная консультация, видео до покупки, доставка — `site.advantages`). Used on /, hubs, catalog, puppy pages,
-  /dokumenty-i-garantii/, /dostavka/ + cities, /otzyvy/, /roditeli/, /vypuskniki/, /rassrochka/, /shchenok-v-podarok/, /faq/.
+  /dokumenty-i-garantii/, /dostavka/ + cities, /otzyvy/, /vypuskniki/, /rassrochka/, /shchenok-v-podarok/, /faq/.
   The guarantee is **lifetime** everywhere («Пожизненная гарантия на врождённые и генетические заболевания — условия в договоре»).
 - **Promises**: picking a puppy — «Подберём щенка за 1 час» (hub hero, modal, `forms.lead_form` default); «за 15 минут» is only
   the reply time («Ответим за 15 минут», «Цену пришлём за 15 минут»).

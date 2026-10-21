@@ -1,6 +1,6 @@
 """Group «choice»: breed quiz /podbor-porody/, «Сравнение пород» — four breed pages /sravnenie/<breed>/
-«Чем хорош щенок …» (one template + data; client 15.10: they replaced the six pair pages /sravnenie/<a>-ili-<b>/)
-and the starter-kit page /magazin/.
+«Чем хорош щенок …» (one template + data; client 15.10: they replaced the six pair pages /sravnenie/<a>-ili-<b>/).
+The starter-kit page /magazin/ was removed (client 21.10).
 Owns: src/routes/choice.py, src/templates/choice/, src/data/choice.json, src/data/choice-breeds.json,
 assets/css/choice.css, assets/js/choice.js.
 Breed facts (compare rows, studio photos, urls) come from breeds.json; copy lives in choice*.json. No prices anywhere."""
@@ -176,20 +176,6 @@ def _quiz(cfg, breeds, bm):
     return q
 
 
-def _shop(cfg, bm):
-    s = dict(cfg["shop"])
-    order = cfg["breed_order"]
-    s["groups"] = [dict(title=nobr(g["title"]), items=[nobr(i) for i in g["items"]]) for g in s["groups"]]
-    s["tips"] = [dict(url=f"/blog/{slug}-uhod/", breed=bm[slug], title=bm[slug]["name"],
-                      line=s["breed_tips"][slug]) for slug in order]
-    for k in ("h1", "lead", "list_title", "list_lead", "breeds_title", "breeds_lead",
-              "band_title", "band_line"):
-        s[k] = nobr(s[k])
-    s["faq"] = _faq(s["faq"])
-    s["seo"] = _seo(cfg["shop"]["seo"])
-    return s
-
-
 def routes(data):
     cfg = data["choice"]
     why = data["choice_breeds"]
@@ -231,15 +217,4 @@ def routes(data):
             ),
         ))
 
-    shop = _shop(cfg, bm)
-    out.append(dict(
-        url="/magazin/",
-        template="choice/shop.html.j2",
-        context=dict(
-            title=cfg["shop"]["title"],
-            description=cfg["shop"]["description"],
-            breadcrumbs=crumbs((cfg["shop"]["crumb"], None)),
-            sh=shop,
-        ),
-    ))
     return out

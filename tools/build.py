@@ -401,7 +401,8 @@ _DESC_RE = re.compile(r'<meta name="description" content="([^"]*)"')
 TITLE_MAX, DESC_MAX = 60, 160
 # Стиль клиента: без капса и без жирных начертаний (максимум 500).
 _CAPS_WORD_RE = re.compile(r"\b[А-ЯЁA-Z]{4,}\b")
-CAPS_OK = {"FCI", "ФКС", "ДНК", "ИНН", "ОГРН", "ОГРНИП", "КПП", "БИК", "ОКПО", "ОКВЭД", "MAX", "HTML", "SMS", "PDF", "WhatsApp"}
+CAPS_OK = {"FCI", "ФКС", "ДНК", "ИНН", "ОГРН", "ОГРНИП", "КПП", "БИК", "ОКПО", "ОКВЭД", "MAX", "HTML", "SMS", "PDF", "WhatsApp",
+           "MOON"}  # studio name in the footer credit, written the way the studio writes it (client 20.10)
 _CSS_CAPS_RE = re.compile(r"text-transform\s*:\s*uppercase|font-variant(?:-caps)?\s*:\s*(?:all-)?small-caps", re.I)
 _CSS_WEIGHT_RE = re.compile(r"font-weight\s*:\s*(\d{3}|bold|bolder)", re.I)
 # Бренд с 13.10 — «домщенков.рф» (строчными, без дефиса): старое имя и вариант с дефисом не должны попадать на страницы

@@ -1,5 +1,5 @@
 /* =========================================================
-   Страницы доверия: /roditeli/, /vypuskniki/, /otzyvy/, /dokumenty-i-garantii/.
+   Страницы доверия: /vypuskniki/, /otzyvy/, /dokumenty-i-garantii/.
    Только раскладка своих блоков — плитки, кнопки, FAQ, формы, модалка берутся из main.css и pages.css.
    ========================================================= */
 
@@ -35,24 +35,6 @@
 }
 .tr-feat__title { margin-top: clamp(28px, 3vw, 44px); font-size: var(--fs-h3); font-weight: 500; letter-spacing: -0.025em; line-height: 1.15; }
 .tr-feat__line { margin-top: 8px; font-size: 15px; line-height: 1.45; color: var(--muted); max-width: 36ch; }
-
-/* =========================================================
-   РОДИТЕЛИ — студийные плитки (ui.studio_tile) с кличкой, ролью и метками
-   ========================================================= */
-.tr-pills { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
-.tr-pills li {
-  display: inline-flex; align-items: center; gap: 5px;
-  padding: 5px 11px; border-radius: var(--r-pill);
-  background: rgba(255, 255, 255, .62); font-size: 12.5px; font-weight: 500; line-height: 1.3;
-}
-.tr-pills .i { width: 13px; height: 13px; stroke-width: 2.2; }
-
-.tr-note {
-  display: flex; align-items: flex-start; gap: 10px;
-  margin-top: 16px; padding: 0 4px;
-  font-size: 14px; line-height: 1.45; color: var(--muted);
-}
-.tr-note .i { margin-top: 2px; }
 
 /* =========================================================
    ИСТОРИИ ВЫПУСКНИКОВ
@@ -162,7 +144,6 @@
 @media (max-width: 1199px) {
   .tr-hero__tile { grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); }
   /* родители: в узкой плитке кличка, роль и метки переносятся и закрывают морду — две плитки в ряд */
-  .tr-parents { --n: 2; }
   .tr-feats--4, .tr-docs { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .tr-rate { grid-template-columns: minmax(0, 1fr); }
   .tr-write { flex-direction: row; flex-wrap: wrap; align-items: center; column-gap: 20px; }
@@ -192,7 +173,6 @@
 
 @media (max-width: 760px) {
   /* родители — по одному в ряд, широкими плитками (pages.css: .stiles на телефоне) */
-  .tr-parents { --n: 1; }
   .tr-hero__media { aspect-ratio: 4 / 3; }
   .tr-hero__copy { padding: 18px 12px 12px; }
 
