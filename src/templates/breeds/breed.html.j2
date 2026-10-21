@@ -102,7 +102,7 @@
             {% if t.get('price') %}
             <div class="brd-give__cta">{{ forms.price_button(breed=b.name) }}</div>
             {% elif t.get('link') %}
-            <div class="brd-give__cta">{{ ui.text_link(t.link.url, t.link.label) }}</div>
+            <div class="brd-give__cta">{{ ui.link_button(t.link.url, t.link.label) }}</div>
             {% endif %}
           </div>
         </li>

@@ -49,7 +49,7 @@
   <div class="faq">
     <div class="faq__aside">
       <h2 class="h2" id="{{ id }}-title">{{ title|typo }}</h2>
-      {% if link %}{{ ui.text_link(link.url, link.label) }}{% endif %}
+      {% if link %}{{ ui.link_button(link.url, link.label) }}{% endif %}
     </div>
     {{ faq_list(items, prefix=id, short=short)|indent(4) }}
   </div>

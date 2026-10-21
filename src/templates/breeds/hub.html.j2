@@ -78,7 +78,7 @@
           </ul>
           <div class="brd-card__actions">
             {{ forms.price_button(breed=b.name) }}
-            {{ ui.text_link(b.urls.price, 'Подробнее о цене') }}
+            {{ ui.link_button(b.urls.price, 'Подробнее о цене') }}
           </div>
         </div>
         <div class="brd-pre__docs brd-card">
@@ -89,7 +89,7 @@
           <p class="brd-card__line">{{ hub.docs_line|typo }}</p>
           {{ ui.badges(hub.docs) }}
           <div class="brd-card__actions">
-            {{ ui.text_link('/dokumenty-i-garantii/', 'Документы и гарантии') }}
+            {{ ui.link_button('/dokumenty-i-garantii/', 'Документы и гарантии') }}
           </div>
         </div>
       </div>

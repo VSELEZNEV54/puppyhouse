@@ -171,19 +171,6 @@ main:focus, section[tabindex="-1"]:focus, [data-anchor-focus]:focus { outline: n
   font-weight: 500;
   letter-spacing: -0.03em;
 }
-.text-link {
-  position: relative;
-  display: inline-block;
-  font-size: 15px; font-weight: 500; line-height: 1.4;
-  text-decoration: none; color: var(--ink);
-  background: linear-gradient(currentColor, currentColor) 0 100% / 0 1px no-repeat;
-  padding-bottom: 2px;
-  transition: background-size .35s var(--ease);
-}
-.text-link .i { display: inline-block; vertical-align: -3px; margin-left: 2px; transition: transform .3s var(--ease); }
-.text-link:hover { background-size: 100% 1px; }
-.text-link::after { content: ""; position: absolute; inset: -11px -6px; } /* зона нажатия ≥ 44 px */
-.text-link:hover .i { transform: translateX(3px); }
 
 /* ---------- кнопки ---------- */
 .btn {
@@ -225,7 +212,8 @@ main:focus, section[tabindex="-1"]:focus, [data-anchor-focus]:focus { outline: n
 .btn--tg .i { width: 19px; height: 19px; margin-left: -2px; }
 @media (hover: hover) { .btn--tg:hover { background: linear-gradient(180deg, var(--tg-b) 0%, #11639A 100%); } }
 .btn--tg:hover .i { transform: none; }
-/* коралловая: «Оставить заявку» в шапке, меню и просмотре видео, пока телефона и мессенджеров нет (site.contacts_ready, 20.10) */
+/* коралловая: кнопка к разделу или странице (ui.link_button — правило 21.10), «Оставить заявку» в шапке, меню
+   и просмотре видео, пока телефона и мессенджеров нет (site.contacts_ready, 20.10) */
 .btn--coral { background: var(--coral); color: var(--ink); border-color: transparent; }
 @media (hover: hover) { .btn--coral:hover { background: #F7805F; color: var(--ink); } }
 .btn[disabled] { opacity: .7; cursor: progress; }
@@ -1888,28 +1876,20 @@ legend.field__label { margin-bottom: 8px; }
 }
 
 /* =========================================================
-   ПРАВИЛО (клиент 19.10). Телефон ≤ 760 px: кнопка или ссылка к разделу из заголовка блока («Все отзывы →»,
-   «Узнать цену», «Получить консультацию», «Все вопросы»…) стоит не под заголовком, а под всем блоком —
-   отдельной коралловой кнопкой во всю ширину. Срабатывает само для любого ui.section_head и blocks.faq_section:
+   ПРАВИЛО (клиент 19.10, 21.10). Кнопка к разделу или странице («Все отзывы», «Все статьи», «Документы и гарантии»,
+   «Все вопросы», «Узнать цену», «Получить консультацию»…) — всегда круглая коралловая кнопка (ui.link_button,
+   .btn--coral), никаких подчёркнутых ссылок со стрелкой. Телефон ≤ 760 px: кнопка из заголовка блока стоит не под
+   заголовком, а под всем блоком — во всю ширину. Срабатывает само для любого ui.section_head и blocks.faq_section:
    заголовок «растворяется» (display: contents), кнопка уходит в конец блока (order).
    ========================================================= */
 @media (max-width: 760px) {
-  .section:has(> .sec-head > :is(.btn, .text-link)),
-  .faq:has(> .faq__aside > .text-link) { display: grid; grid-template-columns: minmax(0, 1fr); }
-  .section:has(> .sec-head > :is(.btn, .text-link)) > .sec-head,
-  .faq:has(> .faq__aside > .text-link) > .faq__aside { display: contents; }
+  .section:has(> .sec-head > .btn),
+  .faq:has(> .faq__aside > .btn) { display: grid; grid-template-columns: minmax(0, 1fr); }
+  .section:has(> .sec-head > .btn) > .sec-head,
+  .faq:has(> .faq__aside > .btn) > .faq__aside { display: contents; }
   .section > .sec-head > :is(.h2, .sec-head__txt) { margin-bottom: 18px; padding-inline: 4px; }
   .faq > .faq__aside > .h2 { padding-inline: 4px; }
 
-  .section > .sec-head > :is(.btn, .text-link),
-  .faq > .faq__aside > .text-link { order: 99; width: 100%; }
-  .section > .sec-head > .btn { --h: 52px; height: 52px; margin-top: 20px; font-size: 16px; }
-  .section > .sec-head > .text-link,
-  .faq > .faq__aside > .text-link {
-    display: block; min-height: 52px; padding: 16px 20px; border-radius: var(--r-pill);
-    background: var(--coral); color: var(--ink); font-size: 16px; line-height: 1.25; text-align: center;
-  }
-  .section > .sec-head > .text-link, .faq > .faq__aside > .text-link { margin-top: 20px; }
-  .section > .sec-head > .text-link::after, .faq > .faq__aside > .text-link::after { content: none; }
-  @media (hover: hover) { .section > .sec-head > .text-link:hover, .faq > .faq__aside > .text-link:hover { background: #F7805F; } }
+  .section > .sec-head > .btn,
+  .faq > .faq__aside > .btn { order: 99; width: 100%; --h: 52px; height: 52px; margin-top: 20px; font-size: 16px; }
 }
