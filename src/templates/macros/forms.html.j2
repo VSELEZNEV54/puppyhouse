@@ -93,8 +93,9 @@
     title ≤ 5 words, line ≤ 90 chars. tone: studio/tint tone of the tile. breed: slug to preselect in the select.
     contacts=false: no phone / messengers in the tile (the page shows them itself, e.g. via caller); while
     site.contacts_ready is false the tile never shows them (the response-time note instead); cls: extra class
-    on the tile; caller() → content after the tile inside the same section (homepage: contact tiles). -#}
-{% macro lead_form(title='Подберём щенка за 1 час', line='Пришлём щенков в наличии, цены и свежие видео', tone='peach', breed=none, id='zayavka', contacts=true, cls='') -%}
+    on the tile; caller() → content after the tile inside the same section (homepage: contact tiles).
+    local_time=false: the response-time note without «по московскому времени» (city pages). -#}
+{% macro lead_form(title='Подберём щенка за 1 час', line='Пришлём щенков в наличии, цены и свежие видео', tone='peach', breed=none, id='zayavka', contacts=true, cls='', local_time=true) -%}
 <section class="section container" id="{{ id }}" aria-labelledby="lead-title">
   <div class="lead tone--{{ tone }}{{ ' ' ~ cls if cls }}">
     <div class="lead__intro">
@@ -106,7 +107,7 @@
         <span class="lead__msgrs">{{ msgr('telegram') }}{{ msgr('whatsapp') }}{{ msgr('max') }}</span>
       </div>
       {% else %}
-      <p class="lead__note">{{ ui.icon('clock', sm=true) }}{{ site.phone.response|typo }}</p>
+      <p class="lead__note">{{ ui.icon('clock', sm=true) }}{{ (site.phone.response if local_time else site.phone.response_plain)|typo }}</p>
       {% endif %}
     </div>
 
@@ -150,9 +151,11 @@
 
 {#- Contact tiles under the lead form (homepage 15.10, breed pages): phone, messengers, e-mail and address — four
     white tiles in a row (two on tablets, one per row on phones). Use inside {% call lead_form(contacts=false, cls='hm-lead') %}.
-    site.contacts_ready = false: e-mail and address only (.hm-cts--2, two per row). -#}
-{% macro contact_tiles() -%}
-  <ul class="hm-cts{{ ' hm-cts--2' if not site.contacts_ready }}" aria-label="Контакты питомника">
+    site.contacts_ready = false: e-mail and address only (.hm-cts--2, two per row). address=false: no address tile
+    (city pages never name the kennel's city) — then e-mail alone runs the full width (.hm-cts--1). -#}
+{% macro contact_tiles(address=true) -%}
+  {%- set n = (2 if site.contacts_ready else 0) + 1 + (1 if address else 0) -%}
+  <ul class="hm-cts{{ ' hm-cts--' ~ n if n < 4 }}" aria-label="Контакты питомника">
     {% if site.contacts_ready %}
     <li class="hm-ct">
       {{ ui.ico('phone', 'coral') }}
@@ -178,11 +181,13 @@
       <a class="hm-ct__value hm-ct__value--mail" href="mailto:{{ site.email_ascii }}">{{ site.email }}</a>
       <p class="hm-ct__line">Для документов и&nbsp;вопросов по&nbsp;договору</p>
     </li>
+    {% if address %}
     <li class="hm-ct">
       {{ ui.ico('pin', 'mint') }}
       <p class="hm-ct__label">Адрес</p>
       <p class="hm-ct__value">{{ site.address.city }}, {{ site.address.street|typo }}</p>
       <p class="hm-ct__line">{{ site.address.visit|typo }}</p>
     </li>
+    {% endif %}
   </ul>
 {%- endmacro %}

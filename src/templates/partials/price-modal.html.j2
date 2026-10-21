@@ -45,7 +45,7 @@
             {{ forms.consent_check('pm')|indent(12) }}
           </div>
           <button class="btn btn--ink btn--lg btn--block form__submit" type="submit" data-submit data-label="Узнать цену">Узнать цену</button>
-          <p class="form__hint">Свяжемся с&nbsp;вами в&nbsp;течение рабочего дня по&nbsp;московскому времени</p>
+          <p class="form__hint">Свяжемся с&nbsp;вами в&nbsp;течение рабочего дня{% if not hide_city | default(false) %} по&nbsp;московскому времени{% endif %}</p>
         </form>
       </div>
       <div class="modal__view modal__done" data-view="done" hidden>

@@ -1,9 +1,10 @@
 {#- Homepage — redesigned 13.10 (docs/brief.md → «Правки клиента 13.10» → «Главная (новый порядок)»).
     Route: src/routes/home.py, data: src/data/home.json. Context: title, description, stats (site.stats + line),
     media_items, reviews_home, faq_items, teasers. Loads only main.css: every homepage rule lives there.
-    City pages /<slug>/ (client 21.10) render the same template with `city` (+ hero, pups, pups_title, pups_lead,
-    pups_help, seo; data/home-city.json): hero for the city, the whole catalog after the breeds, the city's SEO text,
-    the lead form without the address tiles; they also load pages.css and catalog.js for the catalog grid. -#}
+    City pages /shchenki-v-<city>/ (client 21.10) render the same template with `city` (+ hero, pups, pups_title,
+    pups_lead, pups_help, seo; data/home-city.json). They differ from the homepage only by the heading — and by what
+    would name the kennel's city: no «в Москве», no Moscow paragraph in the SEO text, no address tile under the form.
+    Plus the whole catalog after the breeds (pages.css and catalog.js for its grid). -#}
 {% extends "base.html.j2" %}
 {% import "macros/ui.html.j2" as ui %}
 {% import "macros/cards.html.j2" as cards %}
@@ -31,27 +32,22 @@
           {% if city %}
           <p class="eyebrow"><span class="eyebrow__dot" aria-hidden="true"></span>{{ hero.eyebrow|typo }}</p>
           <h1 class="h1{{ ' hm-h1--long' if hero.long }}" id="hero-title">{{ hero.h1|typo }}</h1>
-          <p class="hero__sub">{{ hero.sub|typo }}</p>
-          <div class="hero__actions" data-hero-ctas>
-            <a class="btn btn--ink btn--lg" href="#shchenki">Смотреть щенков {{ ui.icon('arrow') }}</a>
-            {{ forms.price_button(cls='btn btn--white btn--lg') }}
-          </div>
           {% else %}
           <p class="eyebrow"><span class="eyebrow__dot" aria-hidden="true"></span>Питомник щенков · Москва</p>
           <h1 class="h1" id="hero-title">Купить щенка в&nbsp;Москве напрямую от&nbsp;заводчика</h1>
-          <p class="hero__sub">Проверенный заводчик в&nbsp;Москве. Щенки мальтипу, французского бульдога, <span class="nw">той-пуделя</span> и&nbsp;<span class="nw">бордер-колли</span>&nbsp;— с&nbsp;гарантией и&nbsp;заботой о&nbsp;каждом малыше</p>
-          <div class="hero__actions" data-hero-ctas>
-            <a class="btn btn--ink btn--lg" href="/shchenki/">Выбрать щенка {{ ui.icon('arrow') }}</a>
-            <button class="btn btn--white btn--lg" type="button" data-open-modal data-modal-kind="consult" data-modal-title="Получить консультацию" data-modal-sub="Расскажем о&nbsp;породах и&nbsp;щенках в&nbsp;наличии, ответим на&nbsp;вопросы и&nbsp;пришлём цены" data-modal-note="Консультация (главная)" data-modal-submit="Получить консультацию" data-modal-done="Куратор свяжется с&nbsp;вами в&nbsp;течение рабочего дня">Получить консультацию</button>
-          </div>
           {% endif %}
+          <p class="hero__sub">Проверенный заводчик{% if not city %} в&nbsp;Москве{% endif %}. Щенки мальтипу, французского бульдога, <span class="nw">той-пуделя</span> и&nbsp;<span class="nw">бордер-колли</span>&nbsp;— с&nbsp;гарантией и&nbsp;заботой о&nbsp;каждом малыше</p>
+          <div class="hero__actions" data-hero-ctas>
+            <a class="btn btn--ink btn--lg" href="{{ '#shchenki' if city else '/shchenki/' }}">Выбрать щенка {{ ui.icon('arrow') }}</a>
+            <button class="btn btn--white btn--lg" type="button" data-open-modal data-modal-kind="consult" data-modal-title="Получить консультацию" data-modal-sub="Расскажем о&nbsp;породах и&nbsp;щенках в&nbsp;наличии, ответим на&nbsp;вопросы и&nbsp;пришлём цены" data-modal-note="Консультация ({{ city.name if city else 'главная' }})" data-modal-submit="Получить консультацию" data-modal-done="Куратор свяжется с&nbsp;вами в&nbsp;течение рабочего дня">Получить консультацию</button>
+          </div>
         </div>
         <div class="hero__photo">
           <img src="/assets/img/hero-four-breeds.jpg" alt="Щенки мальтипу, французского бульдога, той-пуделя и&nbsp;бордер-колли сидят в&nbsp;ряд" width="1264" height="848" fetchpriority="high" decoding="async">
         </div>
         {#- четыре главных преимущества — одной строкой во всю ширину плитки, в самом низу первого экрана (правка 15.10) -#}
         <ul class="hm-chips" aria-label="Коротко о щенках">
-          {% for icon, color, label in [('syringe', 'mint', 'Привиты по возрасту'), ('doc', 'sky', 'Ветпаспорт и договор'), ('chat', 'lilac', 'Пожизненная консультация'), ('car', 'sun', hero.chip if city else 'Доставка по всей России')] %}
+          {% for icon, color, label in [('syringe', 'mint', 'Привиты по возрасту'), ('doc', 'sky', 'Ветпаспорт и договор'), ('chat', 'lilac', 'Пожизненная консультация'), ('car', 'sun', 'Доставка по всей России')] %}
           <li class="hm-chip"><span class="hm-chip__ico" style="--c:var(--{{ color }})" aria-hidden="true">{{ ui.icon(icon, sm=true) }}</span>{{ label|typo }}</li>
           {% endfor %}
         </ul>
@@ -63,11 +59,7 @@
       {{ ui.section_head('О нашем питомнике', id='about-title') }}
       <div class="hm-about">
         <div class="hm-about__txt">
-          {% if city %}
-          <p class="hm-about__lead">Мы&nbsp;— «Дом щенков», питомник собак. Разводим <a href="/maltipu/">мальтипу</a>, <a href="/francuzskij-buldog/">французских бульдогов</a>, <a class="nw" href="/toj-pudel/">той-пуделей</a> и&nbsp;<a class="nw" href="/border-kolli/">бордер-колли</a>. {{ hero.about_tail|typo }}</p>
-          {% else %}
-          <p class="hm-about__lead">Мы&nbsp;— «Дом щенков», питомник собак в&nbsp;Москве. Разводим <a href="/maltipu/">мальтипу</a>, <a href="/francuzskij-buldog/">французских бульдогов</a>, <a class="nw" href="/toj-pudel/">той-пуделей</a> и&nbsp;<a class="nw" href="/border-kolli/">бордер-колли</a>.</p>
-          {%- endif %}
+          <p class="hm-about__lead">Мы&nbsp;— «Дом щенков», питомник собак{% if not city %} в&nbsp;Москве{% endif %}. Разводим <a href="/maltipu/">мальтипу</a>, <a href="/francuzskij-buldog/">французских бульдогов</a>, <a class="nw" href="/toj-pudel/">той-пуделей</a> и&nbsp;<a class="nw" href="/border-kolli/">бордер-колли</a>.</p>
           {#- то, чего боятся при покупке щенка: перекупщики, больной щенок, «продали и пропали» -#}
           <ul class="hm-about__list">
             <li><span class="hm-about__ico" style="--c:var(--sun)" aria-hidden="true">{{ ui.icon('home', sm=true) }}</span><span><b>Без перекупщиков.</b> Щенки родились у&nbsp;нас и&nbsp;растут дома, рядом с&nbsp;людьми. Маму и&nbsp;малыша покажем по&nbsp;видео.</span></li>
@@ -155,15 +147,7 @@
     {{ blocks.blog_teasers(posts=teasers, title='Почитать о породах', lead='Характер, уход и выбор щенка — коротко и по делу') }}
 
     <!-- ================= SEO-ТЕКСТ — на всю ширину плитки (правка 15.10), ключи из семантического ядра ================= -->
-    {% if city %}
-    {% call blocks.seo_block(seo.title, seo.lead, id='kupit-shchenka', key='seo') %}
-        {% for b in seo.blocks %}
-            <h3>{{ b.h|typo }}</h3>
-            <p>{{ b.p|typo }}</p>
-        {% endfor %}
-    {% endcall %}
-    {% else %}
-    {% call blocks.seo_block('Питомник собак в Москве: щенки от заводчика', 'Купить щенка в Москве напрямую от заводчика надёжнее, чем по объявлению: вы видите маму, документы и условия, в которых рос малыш. Питомник собак «Дом щенков» продаёт щенков мальтипу, французского бульдога, той-пуделя и бордер-колли с ветпаспортом, прививками по возрасту и договором — с доставкой по Москве, Московской области и всей России.', id='kupit-shchenka', key='seo') %}
+    {% call blocks.seo_block(seo.title if city else 'Питомник собак в Москве: щенки от заводчика', seo.lead if city else 'Купить щенка в Москве напрямую от заводчика надёжнее, чем по объявлению: вы видите маму, документы и условия, в которых рос малыш. Питомник собак «Дом щенков» продаёт щенков мальтипу, французского бульдога, той-пуделя и бордер-колли с ветпаспортом, прививками по возрасту и договором — с доставкой по Москве, Московской области и всей России.', id='kupit-shchenka', key='seo') %}
 {% filter typo %}
             <h3>Щенки от заводчика без посредников</h3>
             <p>Мы не перекупщики и не зоомагазин. Все щенки родились в нашем питомнике и растут дома, рядом с людьми, а не в вольерах. Поэтому мы знаем характер каждого малыша, его родителей и родословную. До брони покажем щенка и маму по видеосвязи, пришлём свежие фото и видео. Купить щенка у заводчика — значит получить здорового, ручного малыша и честную историю его жизни.</p>
@@ -175,21 +159,21 @@
             <h3>Документы на щенка, прививки и гарантия</h3>
             <p>Каждый щенок уезжает с договором купли-продажи и ветеринарным паспортом. В паспорте — отметки о прививках по возрасту и обработках от паразитов. Щенки французского бульдога, той-пуделя и бордер-колли получают метрику РКФ, которую позже меняют на родословную. Мальтипу — гибрид, РКФ его не регистрирует, поэтому к щенку прилагаем копии родословных родителей. Перед продажей каждого щенка осматривает ветеринар. Гарантия прописана в договоре, а советы по уходу, кормлению и прививкам даём всю жизнь собаки. Подробнее — в разделе <a href="/dokumenty-i-garantii/">документы и гарантии</a>.</p>
             <h3>Доставка щенков по России</h3>
-            <p>Привезём щенка на машине с куратором, отправим самолётом в салоне с сопровождающим или поездом. Доставляем щенков в 60+ городов: <a href="/sankt-peterburg/">Санкт-Петербург</a>, <a href="/kazan/">Казань</a>, <a href="/ekaterinburg/">Екатеринбург</a>, Новосибирск, Краснодар и другие. Способ перевозки подбираем под породу и возраст: маленьким щенкам подходит перелёт в салоне, бордер-колли обычно едут на машине. В дороге присылаем фото и видео. Все условия — на странице <a href="/dostavka/">доставка щенков</a>.</p>
+            <p>Привезём щенка на машине с куратором, отправим самолётом в салоне с сопровождающим или поездом. Доставляем щенков в 60+ городов: <a href="/shchenki-v-sankt-peterburge/">Санкт-Петербург</a>, <a href="/shchenki-v-kazani/">Казань</a>, <a href="/shchenki-v-ekaterinburge/">Екатеринбург</a>, Новосибирск, Краснодар и другие. Способ перевозки подбираем под породу и возраст: маленьким щенкам подходит перелёт в салоне, бордер-колли обычно едут на машине. В дороге присылаем фото и видео. Все условия — на странице <a href="/dostavka/">доставка щенков</a>.</p>
+            {% if city %}
+            <h3>{{ seo.local_h }}</h3>
+            <p>{{ seo.local_p }}</p>
+            {% else %}
             <h3>Купить щенка в Москве и Московской области</h3>
             <p>Наш питомник собак в Москве принимает гостей по записи: познакомьтесь со щенками, посмотрите на маму и обсудите уход. Или выберите щенка по видео — привезём его к дому в Москве, Химках, Красногорске, Балашихе, Подольске, Мытищах, Люберцах или другом городе Московской области. Хотите порадовать близких — поможем подарить <a href="/shchenok-v-podarok/">щенка в подарок</a>.</p>
+            {% endif %}
             <h3>Сколько стоит щенок</h3>
             <p>Цена щенка зависит от породы, поколения, окраса, пола и перспектив малыша. Цены меняются вместе с наличием, поэтому мы присылаем их лично: оставьте заявку, и куратор пришлёт щенков в наличии с ценами и свежими видео. Понравившегося щенка можно забронировать или взять в <a href="/rassrochka/">рассрочку</a>.</p>
 {% endfilter %}
     {% endcall %}
-    {% endif %}
 
     <!-- ================= ЗАЯВКА: плитка с лапками + контакты отдельными плашками под ней (правка 15.10) ================= -->
-    {% if city %}
-    {{ forms.lead_form(contacts=false, cls='hm-lead') }}
-    {% else %}
-    {% call forms.lead_form(contacts=false, cls='hm-lead') %}
-      {{ forms.contact_tiles() }}
+    {% call forms.lead_form(contacts=false, cls='hm-lead', local_time=not city) %}
+      {{ forms.contact_tiles(address=not city) }}
     {% endcall %}
-    {% endif %}
 {% endblock %}

@@ -33,7 +33,8 @@
     "display": "+7 (495) 123-45-67",
     "tel": "tel:+74951234567",
     "hours": "Ежедневно с 8:00 до 22:00",
-    "response": "Свяжемся с вами в течение рабочего дня по московскому времени"
+    "response": "Свяжемся с вами в течение рабочего дня по московскому времени",
+    "response_plain": "Свяжемся с вами в течение рабочего дня"
   },
   "email": "main@домщенков.рф",
   "email_ascii": "main@xn--b1adduihee9g.xn--p1ai",
@@ -219,19 +220,19 @@
           "sub": [
             {
               "label": "Санкт-Петербург",
-              "url": "/sankt-peterburg/"
+              "url": "/shchenki-v-sankt-peterburge/"
             },
             {
               "label": "Новосибирск",
-              "url": "/novosibirsk/"
+              "url": "/shchenki-v-novosibirske/"
             },
             {
               "label": "Екатеринбург",
-              "url": "/ekaterinburg/"
+              "url": "/shchenki-v-ekaterinburge/"
             },
             {
               "label": "Казань",
-              "url": "/kazan/"
+              "url": "/shchenki-v-kazani/"
             },
             {
               "label": "Все 30 городов",

@@ -5,7 +5,7 @@
     "prep": "в Санкт-Петербурге",
     "acc": "в Санкт-Петербург",
     "gen": "Санкт-Петербурга",
-    "url": "/sankt-peterburg/",
+    "url": "/shchenki-v-sankt-peterburge/",
     "km_approx": 710,
     "methods": [
       "car",
@@ -18,7 +18,7 @@
     "prep": "в Новосибирске",
     "acc": "в Новосибирск",
     "gen": "Новосибирска",
-    "url": "/novosibirsk/",
+    "url": "/shchenki-v-novosibirske/",
     "km_approx": 3300,
     "methods": [
       "plane"
@@ -30,7 +30,7 @@
     "prep": "в Екатеринбурге",
     "acc": "в Екатеринбург",
     "gen": "Екатеринбурга",
-    "url": "/ekaterinburg/",
+    "url": "/shchenki-v-ekaterinburge/",
     "km_approx": 1790,
     "methods": [
       "plane",
@@ -43,7 +43,7 @@
     "prep": "в Казани",
     "acc": "в Казань",
     "gen": "Казани",
-    "url": "/kazan/",
+    "url": "/shchenki-v-kazani/",
     "km_approx": 820,
     "methods": [
       "car",
@@ -56,7 +56,7 @@
     "prep": "в Нижнем Новгороде",
     "acc": "в Нижний Новгород",
     "gen": "Нижнего Новгорода",
-    "url": "/nizhnij-novgorod/",
+    "url": "/shchenki-v-nizhnem-novgorode/",
     "km_approx": 420,
     "methods": [
       "car"
@@ -68,7 +68,7 @@
     "prep": "в Красноярске",
     "acc": "в Красноярск",
     "gen": "Красноярска",
-    "url": "/krasnoyarsk/",
+    "url": "/shchenki-v-krasnoyarske/",
     "km_approx": 4100,
     "methods": [
       "plane"
@@ -80,7 +80,7 @@
     "prep": "в Челябинске",
     "acc": "в Челябинск",
     "gen": "Челябинска",
-    "url": "/chelyabinsk/",
+    "url": "/shchenki-v-chelyabinske/",
     "km_approx": 1770,
     "methods": [
       "plane",
@@ -93,7 +93,7 @@
     "prep": "в Самаре",
     "acc": "в Самару",
     "gen": "Самары",
-    "url": "/samara/",
+    "url": "/shchenki-v-samare/",
     "km_approx": 1060,
     "methods": [
       "car",
@@ -106,7 +106,7 @@
     "prep": "в Уфе",
     "acc": "в Уфу",
     "gen": "Уфы",
-    "url": "/ufa/",
+    "url": "/shchenki-v-ufe/",
     "km_approx": 1350,
     "methods": [
       "car",
@@ -119,7 +119,7 @@
     "prep": "в Ростове-на-Дону",
     "acc": "в Ростов-на-Дону",
     "gen": "Ростова-на-Дону",
-    "url": "/rostov-na-donu/",
+    "url": "/shchenki-v-rostove-na-donu/",
     "km_approx": 1070,
     "methods": [
       "car",
@@ -132,7 +132,7 @@
     "prep": "в Краснодаре",
     "acc": "в Краснодар",
     "gen": "Краснодара",
-    "url": "/krasnodar/",
+    "url": "/shchenki-v-krasnodare/",
     "km_approx": 1350,
     "methods": [
       "car",
@@ -145,7 +145,7 @@
     "prep": "в Омске",
     "acc": "в Омск",
     "gen": "Омска",
-    "url": "/omsk/",
+    "url": "/shchenki-v-omske/",
     "km_approx": 2700,
     "methods": [
       "plane"
@@ -157,7 +157,7 @@
     "prep": "в Воронеже",
     "acc": "в Воронеж",
     "gen": "Воронежа",
-    "url": "/voronezh/",
+    "url": "/shchenki-v-voronezhe/",
     "km_approx": 520,
     "methods": [
       "car"
@@ -169,7 +169,7 @@
     "prep": "в Перми",
     "acc": "в Пермь",
     "gen": "Перми",
-    "url": "/perm/",
+    "url": "/shchenki-v-permi/",
     "km_approx": 1430,
     "methods": [
       "car",
@@ -182,7 +182,7 @@
     "prep": "в Волгограде",
     "acc": "в Волгоград",
     "gen": "Волгограда",
-    "url": "/volgograd/",
+    "url": "/shchenki-v-volgograde/",
     "km_approx": 970,
     "methods": [
       "car",
@@ -195,7 +195,7 @@
     "prep": "в Саратове",
     "acc": "в Саратов",
     "gen": "Саратова",
-    "url": "/saratov/",
+    "url": "/shchenki-v-saratove/",
     "km_approx": 850,
     "methods": [
       "car",
@@ -208,7 +208,7 @@
     "prep": "в Тюмени",
     "acc": "в Тюмень",
     "gen": "Тюмени",
-    "url": "/tyumen/",
+    "url": "/shchenki-v-tyumeni/",
     "km_approx": 2100,
     "methods": [
       "plane"
@@ -220,7 +220,7 @@
     "prep": "в Тольятти",
     "acc": "в Тольятти",
     "gen": "Тольятти",
-    "url": "/tolyatti/",
+    "url": "/shchenki-v-tolyatti/",
     "km_approx": 1000,
     "methods": [
       "car"
@@ -232,7 +232,7 @@
     "prep": "в Махачкале",
     "acc": "в Махачкалу",
     "gen": "Махачкалы",
-    "url": "/mahachkala/",
+    "url": "/shchenki-v-mahachkale/",
     "km_approx": 1950,
     "methods": [
       "plane"
@@ -244,7 +244,7 @@
     "prep": "в Барнауле",
     "acc": "в Барнаул",
     "gen": "Барнаула",
-    "url": "/barnaul/",
+    "url": "/shchenki-v-barnaule/",
     "km_approx": 3600,
     "methods": [
       "plane"
@@ -256,7 +256,7 @@
     "prep": "в Ижевске",
     "acc": "в Ижевск",
     "gen": "Ижевска",
-    "url": "/izhevsk/",
+    "url": "/shchenki-v-izhevske/",
     "km_approx": 1150,
     "methods": [
       "car",
@@ -269,7 +269,7 @@
     "prep": "в Хабаровске",
     "acc": "в Хабаровск",
     "gen": "Хабаровска",
-    "url": "/habarovsk/",
+    "url": "/shchenki-v-habarovske/",
     "km_approx": 8500,
     "methods": [
       "plane"
@@ -281,7 +281,7 @@
     "prep": "в Ульяновске",
     "acc": "в Ульяновск",
     "gen": "Ульяновска",
-    "url": "/ulyanovsk/",
+    "url": "/shchenki-v-ulyanovske/",
     "km_approx": 890,
     "methods": [
       "car"
@@ -293,7 +293,7 @@
     "prep": "в Иркутске",
     "acc": "в Иркутск",
     "gen": "Иркутска",
-    "url": "/irkutsk/",
+    "url": "/shchenki-v-irkutske/",
     "km_approx": 5100,
     "methods": [
       "plane"
@@ -305,7 +305,7 @@
     "prep": "во Владивостоке",
     "acc": "во Владивосток",
     "gen": "Владивостока",
-    "url": "/vladivostok/",
+    "url": "/shchenki-vo-vladivostoke/",
     "km_approx": 9300,
     "methods": [
       "plane"
@@ -317,7 +317,7 @@
     "prep": "в Ярославле",
     "acc": "в Ярославль",
     "gen": "Ярославля",
-    "url": "/yaroslavl/",
+    "url": "/shchenki-v-yaroslavle/",
     "km_approx": 270,
     "methods": [
       "car"
@@ -329,7 +329,7 @@
     "prep": "в Севастополе",
     "acc": "в Севастополь",
     "gen": "Севастополя",
-    "url": "/sevastopol/",
+    "url": "/shchenki-v-sevastopole/",
     "km_approx": 1900,
     "methods": [
       "train",
@@ -342,7 +342,7 @@
     "prep": "в Ставрополе",
     "acc": "в Ставрополь",
     "gen": "Ставрополя",
-    "url": "/stavropol/",
+    "url": "/shchenki-v-stavropole/",
     "km_approx": 1400,
     "methods": [
       "car",
@@ -355,7 +355,7 @@
     "prep": "в Томске",
     "acc": "в Томск",
     "gen": "Томска",
-    "url": "/tomsk/",
+    "url": "/shchenki-v-tomske/",
     "km_approx": 3500,
     "methods": [
       "plane"
@@ -367,7 +367,7 @@
     "prep": "в Кемерове",
     "acc": "в Кемерово",
     "gen": "Кемерова",
-    "url": "/kemerovo/",
+    "url": "/shchenki-v-kemerove/",
     "km_approx": 3500,
     "methods": [
       "plane"

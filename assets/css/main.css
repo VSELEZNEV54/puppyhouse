@@ -1036,6 +1036,11 @@ a.hm-ct__value:hover { text-decoration: underline; text-decoration-thickness: 1p
 .hm-msgr .msgr .i { width: 18px; height: 18px; }
 .hm-msgr:hover { background: var(--ink); color: #fff; }
 .hm-cts--2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.hm-cts--3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+/* страница города: только почта — одна плитка во всю ширину, иконка слева, текст рядом */
+.hm-cts.hm-cts--1 { grid-template-columns: minmax(0, 1fr); }
+.hm-cts--1 .hm-ct { display: grid; grid-template-columns: 48px minmax(0, 1fr); column-gap: 18px; align-items: start; }
+.hm-cts--1 .hm-ct .ico { grid-row: 1 / span 3; margin: 0; }
 @media (max-width: 1199px) { .hm-cts { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 1000px) {
   .hm-lead .lead__intro .h2 { max-width: 9em; }
