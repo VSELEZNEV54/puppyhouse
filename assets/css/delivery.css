@@ -23,9 +23,6 @@
 .dlv-hero__media { position: relative; margin: 0; border-radius: var(--r-img); overflow: hidden; background: #E7E1D8; }
 .dlv-hero__media img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: var(--pos, 50% 50%); }
 
-/* шапка города: длинное «Щенки с доставкой в Санкт-Петербург» — две-три строки по ширине текста */
-.dlv-cityhero .phero__title { max-width: 15ch; }
-
 /* контакты: круглые мессенджеры рядом с «Позвонить» — высотой с большую кнопку */
 .dlv-konhero .phero__actions { align-items: center; }
 .dlv-konhero .phero__actions .msgr { width: 56px; height: 56px; }
@@ -36,7 +33,7 @@
 .dlv-legal .phero__title { max-width: none; }
 
 /* =========================================================
-   СПОСОБЫ ДОСТАВКИ — белые плитки: иконка и метка, заголовок, строка, кому подходит, «Честно»
+   СПОСОБЫ ДОСТАВКИ — белые плитки: иконка и метка, заголовок, строка, кому подходит, пометка
    ========================================================= */
 .dlv-ways { display: grid; grid-template-columns: repeat(var(--n, 3), minmax(0, 1fr)); gap: var(--gap); }
 .dlv-ways--1 { --n: 1; }
@@ -57,12 +54,42 @@
 .dlv-way__faces { display: flex; flex: none; }
 .dlv-way__faces .face { width: 34px; height: 34px; border: 2px solid #fff; }
 .dlv-way__faces .face + .face { margin-left: -9px; }
+/* пометка к способу — на персиковой плашке, как фон шапки страницы (tone--sand, правка 21.10) */
 .dlv-way__note {
   align-self: stretch; margin-top: auto;
-  padding: 12px 15px; border-radius: 16px; background: var(--page);
-  font-size: 14px; line-height: 1.45; color: var(--ink-soft);
+  display: flex; align-items: flex-start; gap: 10px;
+  padding: 12px 15px; border-radius: 16px;
+  background: linear-gradient(180deg, var(--tone) 0 55%, var(--tone-floor) 100%);
+  font-size: 14px; line-height: 1.45; color: var(--ink);
 }
-.dlv-way__note b { font-weight: 500; color: var(--ink); }
+.dlv-way__note .i { flex: none; margin-top: 1px; color: var(--ink-soft); }
+
+/* =========================================================
+   ДОСТАВКА ПО МОСКВЕ — фото слева, справа белая плитка: Москва и область, четыре шага, города области,
+   пометка «забрать самим»
+   ========================================================= */
+.dlv-msk { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--gap); }
+.dlv-msk__media { margin: 0; min-height: 0; }
+.dlv-msk__media img { object-position: 50% 40%; }
+.dlv-msk__box {
+  display: flex; flex-direction: column; gap: 22px; min-width: 0;
+  padding: var(--tile-pad); border-radius: var(--r-tile); background: var(--tile);
+}
+.dlv-msk__head { display: flex; align-items: center; gap: 14px; }
+.dlv-msk__title { font-size: var(--fs-h3); font-weight: 500; letter-spacing: -0.025em; line-height: 1.15; }
+.dlv-msk__line { margin-top: 3px; font-size: 14px; line-height: 1.4; color: var(--muted); }
+.dlv-msk__steps { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px clamp(18px, 2.2vw, 32px); }
+.dlv-msk__step { display: grid; grid-template-columns: 32px minmax(0, 1fr); align-items: start; gap: 12px; }
+.dlv-msk__num {
+  width: 32px; height: 32px; border-radius: 50%; display: grid; place-items: center;
+  background: var(--coral-50); font-size: 14px; font-weight: 500;
+}
+.dlv-msk__txt { display: grid; gap: 3px; padding-top: 4px; }
+.dlv-msk__stitle { font-size: 17px; font-weight: 500; letter-spacing: -0.015em; line-height: 1.25; }
+.dlv-msk__stext { font-size: 14px; line-height: 1.4; color: var(--muted); }
+.dlv-msk__area { padding-top: 20px; border-top: 1px solid var(--line); }
+.dlv-msk__label { margin-bottom: 12px; font-size: 14px; font-weight: 500; line-height: 1.3; }
+.dlv-msk__box .dlv-way__note { align-self: stretch; margin-top: auto; } /* и на планшете, где пометки способов стоят колонкой */
 
 /* =========================================================
    ТАЙМЛАЙН + ФОТО, ДОРОЖНЫЙ НАБОР
@@ -104,23 +131,12 @@
   transition: background-color .2s, color .2s;
 }
 .dlv-chip:hover { background: var(--ink); color: #fff; }
-.dlv-others { padding: var(--tile-pad); border-radius: var(--r-tile); background: var(--tile); }
-
-.dlv-ask {
-  display: flex; align-items: center; gap: 16px; margin-top: var(--gap);
-  padding: 12px 12px 12px clamp(16px, 1.6vw, 22px); border-radius: var(--r-tile); background: var(--tile);
-}
-.dlv-ask__text { flex: 1; min-width: 0; font-size: 16px; font-weight: 500; letter-spacing: -0.01em; line-height: 1.35; }
-
-/* породы на странице города: 2 × 2 широкие плитки в одну строку — мордочка, текст, стрелка */
-.dlv-breeds .ltiles { --n: 2; }
-.dlv-breeds .ltile {
-  display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 18px;
-  min-height: 0; padding: 18px 18px 18px 20px;
-}
-.dlv-breeds .ltile .face { width: 60px; height: 60px; }
-.dlv-breeds .ltile .tcta { margin: 0; }
-.dlv-breeds .ltile__title { font-size: clamp(19px, 1.4vw, 22px); }
+/* города области в блоке «Доставка по Москве» — не ссылки: без смены цвета, «и другие» без плашки */
+.dlv-chip.dlv-chip--static { min-height: 36px; padding: 6px 14px; font-size: 14px; }
+.dlv-chip.dlv-chip--static:hover { background: var(--page); color: inherit; }
+.dlv-chip.dlv-chip--more, .dlv-chip.dlv-chip--more:hover { background: transparent; padding-inline: 4px; color: var(--muted); }
+/* «Нет вашего города?» — акцентная персиковая полоса (ui.lead_band) под группами городов */
+#goroda .lband { margin-top: var(--gap); }
 
 /* =========================================================
    РАССРОЧКА — карточка банка (пастель) + таймлайн
@@ -270,12 +286,12 @@ a.dlv-ct__value:hover { text-decoration: underline; text-decoration-thickness: 1
   .dlv-cts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 
-/* три способа в ряд: строки описаний на одной высоте, чтобы «кому подходит» и «Честно» стояли ровно */
+/* три способа в ряд: строки описаний на одной высоте, чтобы «кому подходит» и пометки стояли ровно */
 @media (min-width: 1001px) {
   .dlv-ways--3 .dlv-way__line, .dlv-ways--4 .dlv-way__line { min-height: calc(2 * 1.45em + 20px); }
 }
 
-/* планшет: способы — по одному в строку, широкой плиткой: иконка | метка, заголовок, строка | «Честно» */
+/* планшет: способы — по одному в строку, широкой плиткой: иконка | метка, заголовок, строка | пометка */
 @media (min-width: 761px) and (max-width: 1000px) {
   .dlv-ways, .dlv-ways--2, .dlv-ways--4 { --n: 1; }
   .dlv-way {
@@ -306,6 +322,7 @@ a.dlv-ct__value:hover { text-decoration: underline; text-decoration-thickness: 1
   .dlv-visit { grid-template-columns: minmax(0, 1fr); }
   .dlv-map { min-height: 0; aspect-ratio: 16 / 9; }
   .dlv-split__media { min-height: 0; aspect-ratio: 16 / 9; }
+  .dlv-msk { grid-template-columns: minmax(0, 1fr); }
   .dlv-policy .toc { display: none; }
 }
 
@@ -334,9 +351,7 @@ a.dlv-ct__value:hover { text-decoration: underline; text-decoration-thickness: 1
   .dlv-geo__group { gap: 18px; }
   .dlv-chip { min-height: 40px; padding: 8px 14px; font-size: 14.5px; }
 
-  .dlv-breeds .ltiles { --n: 1; }
-  .dlv-breeds .ltile { grid-template-columns: auto minmax(0, 1fr); gap: 12px 14px; padding: 16px; }
-  .dlv-breeds .ltile .face { width: 48px; height: 48px; }
+  .dlv-msk__steps { grid-template-columns: minmax(0, 1fr); gap: 16px; }
 
   .dlv-bank__facts dd { font-size: 16px; }
 
@@ -368,31 +383,11 @@ a.dlv-ct__value:hover { text-decoration: underline; text-decoration-thickness: 1
   .dlv-ct > :not(.ico) { grid-column: 2; }
   .dlv-ct__line { padding-top: 6px; }
 
-  /* «Щенки с доставкой в Санкт-Петербург»: название города не рвётся и помещается в плитку на 360 */
-  .dlv-cityhero .phero__title { font-size: clamp(30px, 8.6vw, 44px); }
   .dlv-chips { gap: 6px; }
   .dlv-chip { min-height: 36px; padding: 6px 12px; font-size: 14px; }
-  .dlv-ask { flex-wrap: wrap; padding: 16px; }
-  .dlv-ask__text { flex-basis: calc(100% - 60px); }
-  .dlv-ask .btn { flex: 1 1 100%; }
   .dlv-cts { grid-template-columns: minmax(0, 1fr); }
   .dlv-bank__facts { grid-template-columns: minmax(0, 1fr); }
 }
 
 /* шаги разной длины: номер и заголовок у всех на одной линии сверху */
 .steps .step { align-content: start; }
-
-/* планшет и узкий десктоп: четыре факта города — 2 × 2, а не 3 + 1 */
-@media (min-width: 761px) and (max-width: 1199px) {
-  .dlv-cityhero .phero__facts:has(> :nth-child(4)) { display: grid; grid-template-columns: repeat(2, max-content); }
-}
-
-/* телефон: факты города — сетка в две колонки, без ленты, обрезанной краем экрана */
-@media (max-width: 760px) {
-  .dlv-cityhero .phero__facts {
-    display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
-    overflow: visible; margin-inline: 0; padding-inline: 0;
-  }
-  .dlv-cityhero .phero__fact { flex: initial; min-width: 0; }
-  .dlv-cityhero .phero__fact:last-child:nth-child(odd) { grid-column: 1 / -1; }
-}

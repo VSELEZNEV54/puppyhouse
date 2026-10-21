@@ -5,13 +5,12 @@
     "prep": "в Санкт-Петербурге",
     "acc": "в Санкт-Петербург",
     "gen": "Санкт-Петербурга",
-    "url": "/dostavka/sankt-peterburg/",
+    "url": "/sankt-peterburg/",
     "km_approx": 710,
     "methods": [
       "car",
       "train"
-    ],
-    "duration": "[8–10 часов на машине]"
+    ]
   },
   {
     "slug": "novosibirsk",
@@ -19,12 +18,11 @@
     "prep": "в Новосибирске",
     "acc": "в Новосибирск",
     "gen": "Новосибирска",
-    "url": "/dostavka/novosibirsk/",
+    "url": "/novosibirsk/",
     "km_approx": 3300,
     "methods": [
       "plane"
-    ],
-    "duration": "[1 день самолётом]"
+    ]
   },
   {
     "slug": "ekaterinburg",
@@ -32,13 +30,12 @@
     "prep": "в Екатеринбурге",
     "acc": "в Екатеринбург",
     "gen": "Екатеринбурга",
-    "url": "/dostavka/ekaterinburg/",
+    "url": "/ekaterinburg/",
     "km_approx": 1790,
     "methods": [
       "plane",
       "car"
-    ],
-    "duration": "[1 день самолётом]"
+    ]
   },
   {
     "slug": "kazan",
@@ -46,13 +43,12 @@
     "prep": "в Казани",
     "acc": "в Казань",
     "gen": "Казани",
-    "url": "/dostavka/kazan/",
+    "url": "/kazan/",
     "km_approx": 820,
     "methods": [
       "car",
       "train"
-    ],
-    "duration": "[≈ 10 часов на машине]"
+    ]
   },
   {
     "slug": "nizhnij-novgorod",
@@ -60,12 +56,11 @@
     "prep": "в Нижнем Новгороде",
     "acc": "в Нижний Новгород",
     "gen": "Нижнего Новгорода",
-    "url": "/dostavka/nizhnij-novgorod/",
+    "url": "/nizhnij-novgorod/",
     "km_approx": 420,
     "methods": [
       "car"
-    ],
-    "duration": "[≈ 5 часов на машине]"
+    ]
   },
   {
     "slug": "krasnoyarsk",
@@ -73,12 +68,11 @@
     "prep": "в Красноярске",
     "acc": "в Красноярск",
     "gen": "Красноярска",
-    "url": "/dostavka/krasnoyarsk/",
+    "url": "/krasnoyarsk/",
     "km_approx": 4100,
     "methods": [
       "plane"
-    ],
-    "duration": "[1 день самолётом]"
+    ]
   },
   {
     "slug": "chelyabinsk",
@@ -86,13 +80,12 @@
     "prep": "в Челябинске",
     "acc": "в Челябинск",
     "gen": "Челябинска",
-    "url": "/dostavka/chelyabinsk/",
+    "url": "/chelyabinsk/",
     "km_approx": 1770,
     "methods": [
       "plane",
       "car"
-    ],
-    "duration": "[1 день самолётом]"
+    ]
   },
   {
     "slug": "samara",
@@ -100,13 +93,12 @@
     "prep": "в Самаре",
     "acc": "в Самару",
     "gen": "Самары",
-    "url": "/dostavka/samara/",
+    "url": "/samara/",
     "km_approx": 1060,
     "methods": [
       "car",
       "train"
-    ],
-    "duration": "[≈ 13 часов на машине]"
+    ]
   },
   {
     "slug": "ufa",
@@ -114,13 +106,12 @@
     "prep": "в Уфе",
     "acc": "в Уфу",
     "gen": "Уфы",
-    "url": "/dostavka/ufa/",
+    "url": "/ufa/",
     "km_approx": 1350,
     "methods": [
       "car",
       "plane"
-    ],
-    "duration": "[1–2 дня на машине]"
+    ]
   },
   {
     "slug": "rostov-na-donu",
@@ -128,13 +119,12 @@
     "prep": "в Ростове-на-Дону",
     "acc": "в Ростов-на-Дону",
     "gen": "Ростова-на-Дону",
-    "url": "/dostavka/rostov-na-donu/",
+    "url": "/rostov-na-donu/",
     "km_approx": 1070,
     "methods": [
       "car",
       "train"
-    ],
-    "duration": "[≈ 13 часов на машине]"
+    ]
   },
   {
     "slug": "krasnodar",
@@ -142,13 +132,12 @@
     "prep": "в Краснодаре",
     "acc": "в Краснодар",
     "gen": "Краснодара",
-    "url": "/dostavka/krasnodar/",
+    "url": "/krasnodar/",
     "km_approx": 1350,
     "methods": [
       "car",
       "plane"
-    ],
-    "duration": "[1–2 дня на машине]"
+    ]
   },
   {
     "slug": "omsk",
@@ -156,12 +145,11 @@
     "prep": "в Омске",
     "acc": "в Омск",
     "gen": "Омска",
-    "url": "/dostavka/omsk/",
+    "url": "/omsk/",
     "km_approx": 2700,
     "methods": [
       "plane"
-    ],
-    "duration": "[1 день самолётом]"
+    ]
   },
   {
     "slug": "voronezh",
@@ -169,12 +157,11 @@
     "prep": "в Воронеже",
     "acc": "в Воронеж",
     "gen": "Воронежа",
-    "url": "/dostavka/voronezh/",
+    "url": "/voronezh/",
     "km_approx": 520,
     "methods": [
       "car"
-    ],
-    "duration": "[≈ 7 часов на машине]"
+    ]
   },
   {
     "slug": "perm",
@@ -182,13 +169,12 @@
     "prep": "в Перми",
     "acc": "в Пермь",
     "gen": "Перми",
-    "url": "/dostavka/perm/",
+    "url": "/perm/",
     "km_approx": 1430,
     "methods": [
       "car",
       "plane"
-    ],
-    "duration": "[1–2 дня на машине]"
+    ]
   },
   {
     "slug": "volgograd",
@@ -196,13 +182,12 @@
     "prep": "в Волгограде",
     "acc": "в Волгоград",
     "gen": "Волгограда",
-    "url": "/dostavka/volgograd/",
+    "url": "/volgograd/",
     "km_approx": 970,
     "methods": [
       "car",
       "train"
-    ],
-    "duration": "[≈ 12 часов на машине]"
+    ]
   },
   {
     "slug": "saratov",
@@ -210,13 +195,12 @@
     "prep": "в Саратове",
     "acc": "в Саратов",
     "gen": "Саратова",
-    "url": "/dostavka/saratov/",
+    "url": "/saratov/",
     "km_approx": 850,
     "methods": [
       "car",
       "train"
-    ],
-    "duration": "[≈ 11 часов на машине]"
+    ]
   },
   {
     "slug": "tyumen",
@@ -224,12 +208,11 @@
     "prep": "в Тюмени",
     "acc": "в Тюмень",
     "gen": "Тюмени",
-    "url": "/dostavka/tyumen/",
+    "url": "/tyumen/",
     "km_approx": 2100,
     "methods": [
       "plane"
-    ],
-    "duration": "[1 день самолётом]"
+    ]
   },
   {
     "slug": "tolyatti",
@@ -237,12 +220,11 @@
     "prep": "в Тольятти",
     "acc": "в Тольятти",
     "gen": "Тольятти",
-    "url": "/dostavka/tolyatti/",
+    "url": "/tolyatti/",
     "km_approx": 1000,
     "methods": [
       "car"
-    ],
-    "duration": "[≈ 13 часов на машине]"
+    ]
   },
   {
     "slug": "mahachkala",
@@ -250,12 +232,11 @@
     "prep": "в Махачкале",
     "acc": "в Махачкалу",
     "gen": "Махачкалы",
-    "url": "/dostavka/mahachkala/",
+    "url": "/mahachkala/",
     "km_approx": 1950,
     "methods": [
       "plane"
-    ],
-    "duration": "[1 день самолётом]"
+    ]
   },
   {
     "slug": "barnaul",
@@ -263,12 +244,11 @@
     "prep": "в Барнауле",
     "acc": "в Барнаул",
     "gen": "Барнаула",
-    "url": "/dostavka/barnaul/",
+    "url": "/barnaul/",
     "km_approx": 3600,
     "methods": [
       "plane"
-    ],
-    "duration": "[1 день самолётом]"
+    ]
   },
   {
     "slug": "izhevsk",
@@ -276,13 +256,12 @@
     "prep": "в Ижевске",
     "acc": "в Ижевск",
     "gen": "Ижевска",
-    "url": "/dostavka/izhevsk/",
+    "url": "/izhevsk/",
     "km_approx": 1150,
     "methods": [
       "car",
       "plane"
-    ],
-    "duration": "[1–2 дня на машине]"
+    ]
   },
   {
     "slug": "habarovsk",
@@ -290,12 +269,11 @@
     "prep": "в Хабаровске",
     "acc": "в Хабаровск",
     "gen": "Хабаровска",
-    "url": "/dostavka/habarovsk/",
+    "url": "/habarovsk/",
     "km_approx": 8500,
     "methods": [
       "plane"
-    ],
-    "duration": "[1–2 дня самолётом]"
+    ]
   },
   {
     "slug": "ulyanovsk",
@@ -303,12 +281,11 @@
     "prep": "в Ульяновске",
     "acc": "в Ульяновск",
     "gen": "Ульяновска",
-    "url": "/dostavka/ulyanovsk/",
+    "url": "/ulyanovsk/",
     "km_approx": 890,
     "methods": [
       "car"
-    ],
-    "duration": "[≈ 11 часов на машине]"
+    ]
   },
   {
     "slug": "irkutsk",
@@ -316,12 +293,11 @@
     "prep": "в Иркутске",
     "acc": "в Иркутск",
     "gen": "Иркутска",
-    "url": "/dostavka/irkutsk/",
+    "url": "/irkutsk/",
     "km_approx": 5100,
     "methods": [
       "plane"
-    ],
-    "duration": "[1–2 дня самолётом]"
+    ]
   },
   {
     "slug": "vladivostok",
@@ -329,12 +305,11 @@
     "prep": "во Владивостоке",
     "acc": "во Владивосток",
     "gen": "Владивостока",
-    "url": "/dostavka/vladivostok/",
+    "url": "/vladivostok/",
     "km_approx": 9300,
     "methods": [
       "plane"
-    ],
-    "duration": "[1–2 дня самолётом]"
+    ]
   },
   {
     "slug": "yaroslavl",
@@ -342,12 +317,11 @@
     "prep": "в Ярославле",
     "acc": "в Ярославль",
     "gen": "Ярославля",
-    "url": "/dostavka/yaroslavl/",
+    "url": "/yaroslavl/",
     "km_approx": 270,
     "methods": [
       "car"
-    ],
-    "duration": "[≈ 3 часа на машине]"
+    ]
   },
   {
     "slug": "sevastopol",
@@ -355,13 +329,12 @@
     "prep": "в Севастополе",
     "acc": "в Севастополь",
     "gen": "Севастополя",
-    "url": "/dostavka/sevastopol/",
+    "url": "/sevastopol/",
     "km_approx": 1900,
     "methods": [
       "train",
       "car"
-    ],
-    "duration": "[≈ 1,5–2 дня поездом]"
+    ]
   },
   {
     "slug": "stavropol",
@@ -369,13 +342,12 @@
     "prep": "в Ставрополе",
     "acc": "в Ставрополь",
     "gen": "Ставрополя",
-    "url": "/dostavka/stavropol/",
+    "url": "/stavropol/",
     "km_approx": 1400,
     "methods": [
       "car",
       "plane"
-    ],
-    "duration": "[1–2 дня на машине]"
+    ]
   },
   {
     "slug": "tomsk",
@@ -383,12 +355,11 @@
     "prep": "в Томске",
     "acc": "в Томск",
     "gen": "Томска",
-    "url": "/dostavka/tomsk/",
+    "url": "/tomsk/",
     "km_approx": 3500,
     "methods": [
       "plane"
-    ],
-    "duration": "[1 день самолётом]"
+    ]
   },
   {
     "slug": "kemerovo",
@@ -396,11 +367,10 @@
     "prep": "в Кемерове",
     "acc": "в Кемерово",
     "gen": "Кемерова",
-    "url": "/dostavka/kemerovo/",
+    "url": "/kemerovo/",
     "km_approx": 3500,
     "methods": [
       "plane"
-    ],
-    "duration": "[1 день самолётом]"
+    ]
   }
 ]

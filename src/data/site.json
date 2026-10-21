@@ -2,6 +2,7 @@
   "_note": "Shared site data. READ-ONLY for page-group agents. Values in [square brackets] are placeholders to replace with real data (see placeholders).",
   "brand": "домщенков.рф",
   "tagline": "питомник щенков · Москва",
+  "tagline_plain": "питомник щенков",
   "domain": "домщенков.рф",
   "domain_ascii": "xn--b1adduihee9g.xn--p1ai",
   "api": {
@@ -218,19 +219,19 @@
           "sub": [
             {
               "label": "Санкт-Петербург",
-              "url": "/dostavka/sankt-peterburg/"
+              "url": "/sankt-peterburg/"
             },
             {
               "label": "Новосибирск",
-              "url": "/dostavka/novosibirsk/"
+              "url": "/novosibirsk/"
             },
             {
               "label": "Екатеринбург",
-              "url": "/dostavka/ekaterinburg/"
+              "url": "/ekaterinburg/"
             },
             {
               "label": "Казань",
-              "url": "/dostavka/kazan/"
+              "url": "/kazan/"
             },
             {
               "label": "Все 30 городов",

@@ -23,8 +23,8 @@
 </section>
 {%- endmacro %}
 
-{#- Delivery methods as white tiles: icon + tag, title, one line, breeds it suits (faces), an honest note.
-    items: method dicts from delivery.json (+ fit_breeds: [breed] or none). -#}
+{#- Delivery methods as white tiles: icon + tag, title, one line, breeds it suits (faces) and a note on a peach
+    plate (the hero's sand tone, client 21.10). items: method dicts from delivery.json (+ fit_breeds: [breed] or none). -#}
 {% macro ways(items) -%}
 <ul class="dlv-ways dlv-ways--{{ items|length }}" data-reveal="items">
   {% for m in items %}
@@ -35,7 +35,7 @@
     {% if m.fit_breeds %}
     <p class="dlv-way__fit"><span class="dlv-way__faces" aria-hidden="true">{% for b in m.fit_breeds %}{{ ui.face(b) }}{% endfor %}</span><span>{{ m.fit_label|typo }}</span></p>
     {% endif %}
-    <p class="dlv-way__note"><b>Честно.</b> {{ m.note|typo }}</p>
+    <p class="dlv-way__note tone--sand">{{ ui.icon('info', sm=true) }}<span>{{ m.note|typo }}</span></p>
   </li>
   {% endfor %}
 </ul>
@@ -46,13 +46,4 @@
 <ul class="dlv-chips" aria-label="{{ label|striptags }}">
   {% for c in cities %}<li><a class="dlv-chip" href="{{ c.url }}">{{ c.name|typo }}</a></li>{% endfor %}
 </ul>
-{%- endmacro %}
-
-{#- Slim white row: icon, one line and a link button (by default — to the lead form at the end of the page). -#}
-{% macro ask_row(text, label='Рассчитать доставку', href='#zayavka', icon='chat', color='sun') -%}
-<div class="dlv-ask">
-  {{ ui.ico(icon, color) }}
-  <p class="dlv-ask__text">{{ text|typo }}</p>
-  <a class="btn btn--white" href="{{ href }}">{{ label|typo }}</a>
-</div>
 {%- endmacro %}

@@ -14,7 +14,7 @@
     <div class="hdr__bar">
       <a class="logo" href="{{ '#top' if is_home else '/' }}" aria-label="{{ site.brand }} — {{ 'наверх страницы' if is_home else 'на главную' }}">
         <span class="logo__mark" aria-hidden="true">{{ ui.icon('paw') }}</span>
-        <span class="logo__text"><span class="logo__name">{{ site.brand }}</span><span class="logo__sub">{{ site.tagline }}</span></span>
+        <span class="logo__text"><span class="logo__name">{{ site.brand }}</span><span class="logo__sub">{{ site.tagline_plain if hide_city | default(false) else site.tagline }}</span></span>
       </a>
 
       <div class="hdr__menu" data-mega>

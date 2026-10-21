@@ -7,12 +7,14 @@
         <div class="footer__brand">
           <a class="logo" href="{{ '#top' if is_home else '/' }}" aria-label="{{ site.brand }} — {{ 'наверх страницы' if is_home else 'на главную' }}">
             <span class="logo__mark" aria-hidden="true">{{ ui.icon('paw') }}</span>
-            <span class="logo__text"><span class="logo__name">{{ site.brand }}</span><span class="logo__sub">{{ site.tagline }}</span></span>
+            <span class="logo__text"><span class="logo__name">{{ site.brand }}</span><span class="logo__sub">{{ site.tagline_plain if hide_city | default(false) else site.tagline }}</span></span>
           </a>
           {% if site.contacts_ready %}<a class="footer__phone" href="{{ site.phone.tel }}">{{ site.phone.display }}</a>{% endif %}
           <ul class="footer__info">
             <li><svg class="i i--sm" aria-hidden="true"><use href="#i-clock"/></svg>{{ site.phone.hours|typo }}</li>
+            {% if not hide_city | default(false) %}
             <li><svg class="i i--sm" aria-hidden="true"><use href="#i-pin"/></svg>{{ site.address.short|typo }}</li>
+            {% endif %}
             <li><svg class="i i--sm" aria-hidden="true"><use href="#i-mail"/></svg><a href="mailto:{{ site.email_ascii }}">{{ site.email }}</a></li>
           </ul>
           {% if site.contacts_ready %}

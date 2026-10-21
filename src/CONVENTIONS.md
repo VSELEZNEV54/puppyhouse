@@ -45,10 +45,15 @@ pixel-parity baseline no longer applies. Reference inner page: `/shchenki/`.
   «Все окрасы» / «Смотреть окрас» (colours), «Читать» (articles). `ui.round_arrow` is decorative only.
 - **Advantages everywhere it fits**: `ui.advantages()` (привиты по возрасту, ветпаспорт и договор, пожизненная гарантия,
   пожизненная консультация, видео до покупки, доставка — `site.advantages`). Used on /, hubs, catalog, puppy pages,
-  /dokumenty-i-garantii/, /dostavka/ + cities, /otzyvy/, /vypuskniki/, /rassrochka/, /shchenok-v-podarok/, /faq/.
+  /dokumenty-i-garantii/, /dostavka/, /otzyvy/, /vypuskniki/, /rassrochka/, /shchenok-v-podarok/, /faq/.
   The guarantee is **lifetime** everywhere («Пожизненная гарантия на врождённые и генетические заболевания — условия в договоре»).
 - **Promises**: picking a puppy — «Подберём щенка за 1 час» (hub hero, modal, `forms.lead_form` default); «за 15 минут» is only
   the reply time («Ответим за 15 минут», «Цену пришлём за 15 минут»).
+- **City pages** (client 21.10): `/<slug>/` for every city of `cities.json` is the homepage for that city — the same
+  template `pages/home.html.j2` with `city` (route `home.py`, copy `home-city.json`): «Купить щенка в Новосибирске напрямую
+  от заводчика», the whole catalog after the breeds, the city's SEO text. The kennel's own city is never named there:
+  context `hide_city=true` drops «Москва» from the logo caption (`site.tagline_plain`) and the footer address; reviews
+  from Moscow and its region are left out; no address tiles under the form. /dostavka/ links to them from «Доставка по городам».
 - **First screen**: `ui.page_hero(..., full=true)` = the whole screen (breed pages); homepage hero: `.hero--full`.
   Studio photos in page heroes are larger on desktop (≥ 1200 px the tile is taller; the photo is never cropped).
 - **Images.** Placeholders come from `assets/img/` (`src/data/media.json` lists sets per page/breed); a video is a
@@ -212,7 +217,7 @@ Computed by the build:
 Live photos for the catalog (client 13.10, waiting for the client's files): put the real photo first in `photos` with
 `kind: "life"` (+ `pos` if needed) — every card then shows it cropped to cover (default `object-position: 50% 60%`), no code change.
 Values in `[square brackets]` are placeholders (see `site.placeholders`); keep them bracketed until the client gives real data.
-`cities.json`: `name`, `prep` («в Казани»), `acc` («в Казань»), `gen` («из Казани»), `km_approx` (rough road distance), `methods` (car/plane/train), `duration` (bracketed estimate from distance and the first method, to confirm).
+`cities.json`: `name`, `prep` («в Казани»), `acc` («в Казань»), `gen` («из Казани»), `url` (`/<slug>/` — the city page), `km_approx` (rough road distance, groups on /dostavka/), `methods` (car/plane/train).
 `breeds.json` also has `facts`, `compare` (comparison rows), `docs`, `studio` / `mood` / `adult` photos, `varieties`, `colours` (drafts — check, some with `standard` and `photo`).
 **Colour anchors** (stage 3): every colour has its own card on `/<breed>/vidy-i-okrasy/#<colour-slug>` (e.g. `/maltipu/vidy-i-okrasy/#ryzhij`,
 `/francuzskij-buldog/vidy-i-okrasy/#goluboj`); slugs, photos and texts live in `breedsub.json` → `<breed>.varieties` → the `colours`
