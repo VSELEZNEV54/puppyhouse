@@ -1,9 +1,13 @@
 """Homepage — redesigned for the client revisions of 13.10 (docs/brief.md → «Главная (новый порядок)»).
 
-Order: full-screen hero · «О нашем питомнике» (numbers from site.stats) · breeds two per row · photo and video
-carousel + lead band · advantages · video reviews · how to buy · FAQ (12 questions) · blog · SEO text · lead form.
+Order: full-screen hero · «О нашем питомнике» (numbers from site.stats) · breeds two per row · catalog (the first
+HOME_PUPS puppies of /shchenki/, client 21.10) · photo and video carousel + lead band · advantages · video reviews · how to buy · FAQ (12 questions) · blog · SEO text · lead form.
 Own data: src/data/home.json (stat details, carousel items, reviews, blog picks, FAQ).
 """
+
+from _lib import sort_puppies
+
+HOME_PUPS = 12  # 4 / 3 / 2 per row — every row full; phones show the first 8 (main.css .hm-pups)
 
 
 def routes(data):
@@ -39,6 +43,7 @@ def routes(data):
             description="Питомник собак в Москве: щенки мальтипу, французского бульдога, той-пуделя и бордер-колли. "
                         "Прививки, ветпаспорт, договор, гарантия, доставка по России.",
             stats=stats,
+            catalog=sort_puppies(data["puppies"])[:HOME_PUPS],
             media_items=home["media"],
             # «О нашем питомнике»: фото листаются сами, видео доигрывает до конца (правка 15.10)
             about_slides=home["about_slides"],
