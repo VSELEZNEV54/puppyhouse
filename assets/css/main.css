@@ -1000,7 +1000,7 @@ main:focus, section[tabindex="-1"]:focus, [data-anchor-focus]:focus { outline: n
 .lead__box { padding: clamp(22px, 2.8vw, 40px); border-radius: var(--r-img); background: var(--tile); }
 
 /* главная, «Подберём щенка за 1 час» (правка 15.10): лапки разного размера и наклона по плитке, крупный заголовок;
-   телефон и мессенджеры — не в плитке, а отдельными плашками под ней (.hm-cts, как на /kontakty/) */
+   телефон и мессенджеры — не в плитке и не под ней, а в подвале справа (правка 21.10) */
 .hm-lead .lead__intro { background: url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22420%22 height=%22300%22 viewBox=%220 0 420 300%22%3E%3Cdefs%3E%3Cg id=%22p%22%3E%3Cpath d=%22M12 12.4c-2.7 0-5.6 3-5.6 5.5 0 1.5 1.1 2.5 2.6 2.5 1.3 0 2-.7 3-.7s1.7.7 3 .7c1.5 0 2.6-1 2.6-2.5 0-2.5-2.9-5.5-5.6-5.5Z%22/%3E%3Cellipse cx=%225.6%22 cy=%2210.6%22 rx=%221.9%22 ry=%222.4%22 transform=%22rotate(-22 5.6 10.6)%22/%3E%3Cellipse cx=%229.5%22 cy=%226.3%22 rx=%222%22 ry=%222.6%22 transform=%22rotate(-8 9.5 6.3)%22/%3E%3Cellipse cx=%2214.5%22 cy=%226.3%22 rx=%222%22 ry=%222.6%22 transform=%22rotate(8 14.5 6.3)%22/%3E%3Cellipse cx=%2218.4%22 cy=%2210.6%22 rx=%221.9%22 ry=%222.4%22 transform=%22rotate(22 18.4 10.6)%22/%3E%3C/g%3E%3C/defs%3E%3Cuse href=%22%23p%22 fill=%22rgba(255,255,255,.58)%22 transform=%22translate(330 6) scale(2.4) rotate(18 12 12)%22/%3E%3Cuse href=%22%23p%22 fill=%22rgba(173,92,48,.14)%22 transform=%22translate(196 52) scale(1.3) rotate(-22 12 12)%22/%3E%3Cuse href=%22%23p%22 fill=%22rgba(173,92,48,.14)%22 transform=%22translate(286 128) scale(1.8) rotate(30 12 12)%22/%3E%3Cuse href=%22%23p%22 fill=%22rgba(255,255,255,.58)%22 transform=%22translate(104 140) scale(2.0) rotate(-12 12 12)%22/%3E%3Cuse href=%22%23p%22 fill=%22rgba(255,255,255,.58)%22 transform=%22translate(360 224) scale(1.5) rotate(-35 12 12)%22/%3E%3Cuse href=%22%23p%22 fill=%22rgba(255,255,255,.58)%22 transform=%22translate(204 214) scale(2.6) rotate(12 12 12)%22/%3E%3Cuse href=%22%23p%22 fill=%22rgba(173,92,48,.14)%22 transform=%22translate(40 96) scale(1.1) rotate(25 12 12)%22/%3E%3C/svg%3E") right bottom / 420px 300px no-repeat; }
 .hm-lead .lead__intro { gap: 20px; }
 .hm-lead .lead__intro .h2 { max-width: 7.4em; font-size: clamp(44px, 5.4vw, 88px); letter-spacing: -0.045em; }
@@ -1011,45 +1011,11 @@ main:focus, section[tabindex="-1"]:focus, [data-anchor-focus]:focus { outline: n
   font-size: 14px; font-weight: 500; line-height: 1.3;
 }
 .lead__note .i { flex: none; width: 18px; height: 18px; }
-.hm-cts { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--gap); margin-top: var(--gap); }
-.hm-ct { display: flex; flex-direction: column; align-items: flex-start; min-width: 0; padding: var(--tile-pad); border-radius: var(--r-tile); background: var(--tile); }
-.hm-ct .ico { margin-bottom: clamp(22px, 2.4vw, 36px); }
-.hm-ct__label { font-size: 14px; line-height: 1.35; color: var(--muted); }
-.hm-ct__value {
-  max-width: 100%; margin-top: 4px;
-  font-size: clamp(20px, 1.6vw, 26px); font-weight: 500; letter-spacing: -0.025em; line-height: 1.2;
-  text-decoration: none; overflow-wrap: anywhere;
-}
-a.hm-ct__value:hover { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 4px; }
-.hm-ct__value--mail { font-size: clamp(18px, 1.35vw, 22px); }
-.hm-ct__line { margin-top: auto; padding-top: 14px; font-size: 14px; line-height: 1.4; color: var(--muted); }
-.hm-ct__msgrs { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
-.hm-msgr {
-  display: inline-flex; align-items: center; gap: 7px; height: 44px; padding: 0 14px 0 4px;
-  border-radius: var(--r-pill); background: var(--page);
-  font-size: 14.5px; font-weight: 500; text-decoration: none;
-  transition: background-color .2s, color .2s;
-}
-.hm-msgr .msgr { width: 36px; height: 36px; }
-.hm-msgr .msgr .i { width: 18px; height: 18px; }
-.hm-msgr:hover { background: var(--ink); color: #fff; }
-.hm-cts--2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-.hm-cts--3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-/* страница города: только почта — одна плитка во всю ширину, иконка слева, текст рядом */
-.hm-cts.hm-cts--1 { grid-template-columns: minmax(0, 1fr); }
-.hm-cts--1 .hm-ct { display: grid; grid-template-columns: 48px minmax(0, 1fr); column-gap: 18px; align-items: start; }
-.hm-cts--1 .hm-ct .ico { grid-row: 1 / span 3; margin: 0; }
-@media (max-width: 1199px) { .hm-cts { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 1000px) {
   .hm-lead .lead__intro .h2 { max-width: 9em; }
   .hm-lead .lead__intro { padding-bottom: 72px; background: url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22600%22 height=%2264%22 viewBox=%220 0 600 64%22%3E%3Cdefs%3E%3Cg id=%22p%22%3E%3Cpath d=%22M12 12.4c-2.7 0-5.6 3-5.6 5.5 0 1.5 1.1 2.5 2.6 2.5 1.3 0 2-.7 3-.7s1.7.7 3 .7c1.5 0 2.6-1 2.6-2.5 0-2.5-2.9-5.5-5.6-5.5Z%22/%3E%3Cellipse cx=%225.6%22 cy=%2210.6%22 rx=%221.9%22 ry=%222.4%22 transform=%22rotate(-22 5.6 10.6)%22/%3E%3Cellipse cx=%229.5%22 cy=%226.3%22 rx=%222%22 ry=%222.6%22 transform=%22rotate(-8 9.5 6.3)%22/%3E%3Cellipse cx=%2214.5%22 cy=%226.3%22 rx=%222%22 ry=%222.6%22 transform=%22rotate(8 14.5 6.3)%22/%3E%3Cellipse cx=%2218.4%22 cy=%2210.6%22 rx=%221.9%22 ry=%222.4%22 transform=%22rotate(22 18.4 10.6)%22/%3E%3C/g%3E%3C/defs%3E%3Cuse href=%22%23p%22 fill=%22rgba(255,255,255,.58)%22 transform=%22translate(6 30) scale(1.25) rotate(80 12 12)%22/%3E%3Cuse href=%22%23p%22 fill=%22rgba(173,92,48,.14)%22 transform=%22translate(96 4) scale(1.05) rotate(100 12 12)%22/%3E%3Cuse href=%22%23p%22 fill=%22rgba(255,255,255,.58)%22 transform=%22translate(186 30) scale(1.4) rotate(82 12 12)%22/%3E%3Cuse href=%22%23p%22 fill=%22rgba(173,92,48,.14)%22 transform=%22translate(276 4) scale(1.15) rotate(98 12 12)%22/%3E%3Cuse href=%22%23p%22 fill=%22rgba(255,255,255,.58)%22 transform=%22translate(366 28) scale(1.3) rotate(84 12 12)%22/%3E%3Cuse href=%22%23p%22 fill=%22rgba(173,92,48,.14)%22 transform=%22translate(456 2) scale(1.0) rotate(96 12 12)%22/%3E%3Cuse href=%22%23p%22 fill=%22rgba(255,255,255,.58)%22 transform=%22translate(540 26) scale(1.2) rotate(88 12 12)%22/%3E%3C/svg%3E") left calc(100% - 4px) / auto 54px repeat-x; }
 }
 @media (max-width: 560px) {
-  .hm-cts { grid-template-columns: minmax(0, 1fr); }
-  .hm-ct { display: grid; grid-template-columns: 44px minmax(0, 1fr); column-gap: 16px; align-items: start; padding: 18px; }
-  .hm-ct .ico { grid-row: 1 / span 3; margin: 0; }
-  .hm-ct > :not(.ico) { grid-column: 2; }
-  .hm-ct__line { padding-top: 6px; }
   .hm-lead .lead__intro .h2 { font-size: clamp(38px, 11vw, 48px); }
   .lead__note { margin-top: 4px; }
 }
@@ -1145,56 +1111,91 @@ legend.field__label { margin-bottom: 8px; }
 .modal__fail .form-fail { margin: 14px 0 24px; align-self: stretch; }
 
 /* =========================================================
-   ПОДВАЛ — компактный
+   ПОДВАЛ (правка 21.10, по скринам клиента). Одна сетка в 4 колонки на все ряды — колонки стоят ровно друг под
+   другом: 1) логотип · «Покупка» · «Питомник» · контакты справа; 2) колонка на породу; 3) города доставки;
+   4) реквизиты и подпись студии под колонкой контактов. Ссылки одного размера и цвета, «Все … →» — чёрные со
+   стрелкой. Планшет — 2 колонки, телефон и узкий планшет (≤ 699 px: уже две колонки не вмещают «Виды и окрасы
+   французского бульдога») — одна: каждая ссылка своей строкой 46 px (правка 15.10), породы и города —
+   раскрывающиеся списки (main.js закрывает их там же)
    ========================================================= */
 .footer { padding: var(--sec) 0 var(--pad); }
-.footer__tile { padding: clamp(24px, 3vw, 44px); border-radius: var(--r-tile); background: var(--tile); }
-.footer__top { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 2fr); gap: 32px; }
-.footer__brand { display: flex; flex-direction: column; align-items: flex-start; gap: 14px; }
-.footer__phone { margin-top: 10px; font-size: clamp(22px, 1.9vw, 28px); font-weight: 500; letter-spacing: -0.03em; text-decoration: none; }
-.footer__info { display: grid; gap: 6px; font-size: 14.5px; }
-.footer__info li { display: flex; align-items: center; gap: 10px; }
-.footer__info .i { color: var(--muted); }
-.footer__info a { text-decoration: none; }
-.footer__info a:hover { text-decoration: underline; }
-.footer__msgs { display: flex; gap: 8px; }
-.footer__nav { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
-.fcol__h { margin-bottom: 14px; font-size: 14px; font-weight: 500; color: var(--muted); }
-.fcol ul { display: grid; gap: 9px; }
-.fcol a { font-size: 14.5px; line-height: 1.35; text-decoration: none; }
-.fcol a:hover { text-decoration: underline; text-underline-offset: 3px; }
+.footer__tile { padding: clamp(24px, 3vw, 48px); border-radius: var(--r-tile); background: var(--tile); }
+/* колонки по ширине самых длинных ссылок пород (французский бульдог и бордер-колли — шире): от 1200 px ни одна
+   ссылка не переносится; верхний ряд и реквизиты стоят по тем же колонкам */
+.footer__row { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.45fr) minmax(0, 1fr) minmax(0, 1.35fr); gap: 40px 32px; }
+.footer__row + .footer__row { margin-top: 40px; padding-top: 36px; border-top: 1px solid var(--line); }
+
+.footer__brand { display: flex; flex-direction: column; align-items: flex-start; gap: 16px; }
+.footer .logo__sub { display: block; white-space: nowrap; }
+.footer__about { max-width: 28ch; font-size: 14.5px; line-height: 1.45; color: var(--muted); }
+
+.fcol { min-width: 0; }
+.fcol__h { margin-bottom: 16px; font-size: 14px; font-weight: 500; line-height: 1.35; color: var(--muted); }
+.fcol ul { display: grid; gap: 10px; }
+.fcol a, .fcities a { font-size: 15px; line-height: 1.35; color: var(--ink-soft); text-decoration: none; transition: color .2s; }
+.fcol a:hover, .fcities a:hover { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }
+.footer .flink-all { color: var(--ink); font-weight: 500; }
+.flink-all .i { vertical-align: -3px; transition: transform .3s var(--ease); }
+.footer .flink-all:hover { text-decoration: none; }
+.flink-all:hover .i { transform: translateX(3px); }
 .footer a[aria-current="page"] { color: var(--muted); text-decoration: none; pointer-events: none; }
-/* большой подвал (21.10, по скринам клиента): колонка на породу — окрасы, виды, цена и кнопка «Все щенки …»;
-   ниже строка городов с доставкой. На компьютере и планшете списки всегда открыты (заголовок не нажимается),
-   на телефоне — раскрывающиеся (main.js закрывает их при загрузке) */
-.footer__breeds {
-  display: grid; grid-template-columns: repeat(4, auto); justify-content: space-between; gap: 32px 24px;
-  margin-top: 32px; padding-top: 28px; border-top: 1px solid var(--line);
-}
-.fcol--fold > summary { display: flex; align-items: center; gap: 6px; list-style: none; pointer-events: none; }
+
+/* контакты — правая колонка; без телефона (site.contacts_ready = false) — часы, почта, адрес и «Оставить заявку» */
+.footer__contacts { display: flex; flex-direction: column; align-items: flex-start; }
+.footer__phone { font-size: clamp(20px, 1.6vw, 24px); font-weight: 500; letter-spacing: -0.02em; text-decoration: none; }
+.footer__msgs { display: flex; gap: 8px; margin: 12px 0 18px; }
+.footer__info { display: grid; gap: 10px; font-size: 15px; line-height: 1.35; color: var(--ink-soft); }
+.footer__info li { display: flex; align-items: center; gap: 10px; }
+.footer__info .i { flex: none; color: var(--muted); }
+.footer__info a { color: inherit; text-decoration: none; }
+.footer__info a:hover { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }
+.footer .footer__cta { --h: 44px; margin-top: 22px; padding: 0 20px; font-size: 14.5px; }
+
+/* породы и города: на компьютере и планшете списки всегда открыты, заголовок не нажимается */
+.fcol--fold > summary { display: flex; align-items: center; gap: 8px; list-style: none; pointer-events: none; }
 .fcol--fold > summary::-webkit-details-marker { display: none; }
-.fcol--fold > summary .i { display: none; margin-left: auto; transition: transform .25s var(--ease); }
-.footer__breeds .fcol__h { color: var(--ink); font-size: 16px; }
-.fcol__gap { margin-top: 8px; }
-.footer .fcol__all { --h: 40px; margin-top: 18px; padding: 0 18px; font-size: 14px; }
-.footer .fcol__all[aria-current="page"] { color: var(--ink); pointer-events: none; }
-.footer__cities { margin-top: 32px; padding-top: 28px; border-top: 1px solid var(--line); }
-.footer__cities .fcol__h { color: var(--ink); font-size: 16px; }
-.footer__cities-body { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 18px 32px; }
-.fcities { display: flex; flex-wrap: wrap; gap: 9px 22px; max-width: 1040px; }
-.fcities a { font-size: 14.5px; line-height: 1.35; text-decoration: none; }
-.fcities a:hover { text-decoration: underline; text-underline-offset: 3px; }
-.footer__cities .fcol__all { flex-shrink: 0; margin-top: 0; }
-.footer__legal {
-  display: flex; flex-wrap: wrap; justify-content: space-between; gap: 6px 24px;
-  margin-top: 32px; padding-top: 20px; border-top: 1px solid var(--line);
-  font-size: 13px; color: var(--muted);
-}
-.footer__legal a { color: var(--ink); }
-.footer__legal-text { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
-/* подпись студии (20.10): справа внизу, обычным шрифтом подвала — «Создание и продвижение сайта — MOON» */
-.footer__legal .footer__credit { align-self: flex-end; margin-left: auto; color: var(--muted); text-decoration: none; white-space: nowrap; transition: color .2s; }
+.fcol--fold > summary .i { display: none; margin-left: auto; color: var(--muted); transition: transform .25s var(--ease); }
+.footer__row.footer__cities { display: block; }
+.fcities { display: flex; flex-wrap: wrap; gap: 10px 26px; }
+
+.footer__legal { font-size: 13px; line-height: 1.5; color: var(--muted); }
+.footer__legal a { color: var(--ink); white-space: nowrap; }
+.footer__legal-text { grid-column: 1 / span 3; display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+/* подпись студии (20.10): под колонкой контактов, обычным шрифтом подвала — «Создание и продвижение сайта — MOON» */
+.footer__legal .footer__credit { align-self: end; color: var(--muted); text-decoration: none; transition: color .2s; }
 .footer__legal .footer__credit:hover { color: var(--ink); }
+
+@media (max-width: 1199px) {
+  .footer__row { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .footer__brand { order: -2; }
+  .footer__contacts { order: -1; }
+  .footer__legal { row-gap: 12px; }
+  .footer__legal-text { grid-column: 1 / -1; }
+}
+@media (max-width: 699px) {
+  .footer__row { grid-template-columns: minmax(0, 1fr); gap: 32px; }
+  .footer__row + .footer__row { margin-top: 32px; padding-top: 0; }
+  .fcol__h { margin-bottom: 4px; }
+  .fcol ul { gap: 0; }
+  .fcol li + li { border-top: 1px solid var(--line); }
+  .fcol a, .fcities a { display: flex; align-items: center; min-height: 46px; padding: 6px 0; font-size: 16px; }
+  .footer__contacts .fcol__h { margin-bottom: 12px; }
+  .footer__msgs .msgr { width: 48px; height: 48px; }
+  .footer .footer__cta { --h: 48px; width: 100%; }
+  /* породы и города — раскрывающиеся списки: строка-заголовок 56 px со стрелкой */
+  .footer__breeds { gap: 0; }
+  .footer__breeds .fcol, .footer__row.footer__cities { border-bottom: 1px solid var(--line); }
+  .footer__row.footer__cities { margin-top: 0; border-top: 0; }
+  .fcol--fold > summary { min-height: 56px; margin: 0; padding: 8px 0; font-size: 16px; color: var(--ink); pointer-events: auto; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+  .fcol--fold > summary .i { display: block; width: 20px; height: 20px; }
+  .fcol--fold[open] > summary .i { transform: rotate(180deg); }
+  .fcol--fold[open] > ul { margin-bottom: 12px; }
+  .fcities { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 16px; }
+  .fcities li { border-top: 1px solid var(--line); }
+  .fcities a { font-size: 15px; }
+  .fcities__all { grid-column: 1 / -1; }
+  .footer__row.footer__legal { gap: 14px; margin-top: 28px; border-top: 0; }
+}
 
 /* =========================================================
    ЛИПКАЯ ПАНЕЛЬ, МОДАЛКА, ТОСТ
@@ -1649,7 +1650,6 @@ legend.field__label { margin-bottom: 8px; }
 @media (max-width: 1199px) {
   .hero__main { height: clamp(480px, 58vw, 600px); }
   .pups { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-  .footer__breeds { grid-template-columns: repeat(2, minmax(0, 1fr)); justify-content: normal; }
 }
 
 /* планшет и телефон: плитки пород широкие (2 в ряд, на телефоне — по одной). Кадр — квадрат во всю высоту справа:
@@ -1715,7 +1715,6 @@ legend.field__label { margin-bottom: 8px; }
   .lead { grid-template-columns: minmax(0, 1fr); padding: var(--inset); }
   .lead__intro { padding: clamp(16px, 3vw, 28px) clamp(16px, 3vw, 28px) 8px; }
   .lead__intro .h2 { max-width: 14ch; }
-  .footer__top { grid-template-columns: minmax(0, 1fr); }
 }
 
 @media (max-width: 900px) {
@@ -1808,11 +1807,6 @@ legend.field__label { margin-bottom: 8px; }
   .seg__opts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .seg label { padding: 0 6px; font-size: 14px; gap: 6px; }
 
-  .footer__nav { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .footer__nav .fcol:last-child { grid-column: 1 / -1; }
-  .footer__legal { flex-direction: column; gap: 14px; }
-  .footer__legal .footer__credit { align-self: flex-start; margin-left: 0; white-space: normal; }
-
   /* модалка — шторка снизу */
   .modal {
     width: 100%; max-height: calc(100dvh - 24px);
@@ -1824,31 +1818,6 @@ legend.field__label { margin-bottom: 8px; }
   .modal__thumb { width: 60px; height: 60px; border-radius: 16px; }
 }
 @keyframes sheet-in { from { transform: translateY(100%); } }
-
-/* телефон: подвал — одна колонка, каждая ссылка своей строкой высотой 46 px с разделителем, удобно нажимать (правка 15.10) */
-@media (max-width: 560px) {
-  .footer__nav { grid-template-columns: minmax(0, 1fr); gap: 28px; }
-  .footer__nav .fcol:last-child { grid-column: auto; }
-  .fcol__h { margin-bottom: 4px; }
-  .fcol ul { gap: 0; }
-  .fcol li + li { border-top: 1px solid var(--line); }
-  .fcol a { display: flex; align-items: center; min-height: 46px; padding: 6px 0; font-size: 16px; }
-  .footer__info { gap: 10px; font-size: 15px; }
-  .footer__msgs .msgr { width: 48px; height: 48px; }
-  /* породы и города — раскрывающиеся списки: строка-заголовок 56 px со стрелкой */
-  .footer__breeds { grid-template-columns: minmax(0, 1fr); gap: 0; margin-top: 28px; padding-top: 0; }
-  .footer__breeds .fcol { border-bottom: 1px solid var(--line); }
-  .fcol--fold > summary { min-height: 56px; margin: 0; padding: 8px 0; pointer-events: auto; cursor: pointer; -webkit-tap-highlight-color: transparent; }
-  .fcol--fold > summary .i { display: block; width: 20px; height: 20px; color: var(--muted); }
-  .fcol--fold[open] > summary .i { transform: rotate(180deg); }
-  .footer .fcol__all { --h: 48px; width: 100%; margin: 10px 0 18px; font-size: 15px; }
-  .fcol__gap { margin-top: 0; }
-  .footer__cities { margin-top: 0; padding-top: 0; border-top: 0; border-bottom: 1px solid var(--line); }
-  .footer__cities-body { display: block; }
-  .fcities { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 16px; }
-  .fcities li { border-top: 1px solid var(--line); }
-  .fcities a { display: flex; align-items: center; min-height: 46px; padding: 6px 0; font-size: 15px; }
-}
 
 @media (max-width: 560px) {
   /* телефон: номер своей строкой, три мессенджера — рядом под ним */

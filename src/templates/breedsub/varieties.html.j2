@@ -2,7 +2,7 @@
     types (the breed's kinds on one studio photo of adult dogs — a numbered pin on each dog — and a card per kind,
     + sub: the generations F1 / F1b / F2 or what the FCI standard says about colours), colours (the breed page's colour
     carousel: «Подобрать …» and «Подробнее» → the colour page), tips. Then the breed's 8 puppies + «Все щенки …»,
-    FAQ, «Читайте также» (articles + plates), SEO text, the homepage-size lead form with contact tiles.
+    FAQ, «Читайте также» (articles + plates), SEO text, the homepage-size lead form.
     Context from routes/breedsub.py: b (breed), v (copy, Markup), tint. Main buttons coral (body .page-varieties). -#}
 {% extends "layouts/page.html.j2" %}
 {% import "breedsub/_parts.html.j2" as part %}
@@ -82,9 +82,7 @@
     {% endcall %}
 {% endblock %}
 
-{#- the homepage lead form (client 21.10): large title, paws, contact tiles under it -#}
+{#- the homepage lead form (client 21.10): large title, paws; the contacts are in the footer -#}
 {% block lead %}
-    {% call forms.lead_form(title=v.lead_title, line=v.lead_line, tone=b.tone, breed=b.slug, contacts=false, cls='hm-lead') %}
-      {{ forms.contact_tiles() }}
-    {% endcall %}
+    {{ forms.lead_form(title=v.lead_title, line=v.lead_line, tone=b.tone, breed=b.slug, contacts=false, cls='hm-lead') }}
 {% endblock %}

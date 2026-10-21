@@ -29,10 +29,10 @@
   <!-- Geist is served from our own domain (assets/fonts, SIL OFL 1.1): no visitor IP goes to Google before consent -->
   <link rel="preload" href="../../assets/fonts/geist-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="../../assets/fonts/geist-latin.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="../../assets/css/main.css?v=2d58c655">
+  <link rel="stylesheet" href="../../assets/css/main.css?v=6921876d">
   <link rel="stylesheet" href="../../assets/css/pages.css?v=a03e98e4">
   <link rel="stylesheet" href="../../assets/css/breeds.css?v=ba054f70">
-  <script src="../../assets/js/main.js?v=d2fa4a08" defer></script>
+  <script src="../../assets/js/main.js?v=bb4139c4" defer></script>
 </head>
 <body class="page-breed">
   <!-- Иконки: инлайн-спрайт 24×24. Линейные — stroke currentColor, заливочные — fill. -->
@@ -475,7 +475,7 @@
 </section>
 
 
-<section class="section container" id="zayavka" aria-labelledby="lead-title">
+    <section class="section container" id="zayavka" aria-labelledby="lead-title">
   <div class="lead tone--peach hm-lead">
     <div class="lead__intro">
       <h2 class="h2" id="lead-title">Подберём бордер-колли мраморный триколор</h2>
@@ -541,68 +541,53 @@
       </div>
     </div>
   </div>
-      <ul class="hm-cts hm-cts--2" aria-label="Контакты питомника">
-    <li class="hm-ct">
-      <span class="ico" style="--c:var(--sun)" aria-hidden="true"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-mail"/></svg></span>
-      <p class="hm-ct__label">Почта</p>
-      <a class="hm-ct__value hm-ct__value--mail" href="mailto:main@xn--b1adduihee9g.xn--p1ai">main@домщенков.рф</a>
-      <p class="hm-ct__line">Для документов и&nbsp;вопросов по&nbsp;договору</p>
-    </li>
-    <li class="hm-ct">
-      <span class="ico" style="--c:var(--mint)" aria-hidden="true"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-pin"/></svg></span>
-      <p class="hm-ct__label">Адрес</p>
-      <p class="hm-ct__value">Москва, Ташкентская ул., 19</p>
-      <p class="hm-ct__line">Приезд по предварительной записи</p>
-    </li>
-  </ul>
-</section>  </main>
+</section>
+  </main>
 
   <!-- ================= ПОДВАЛ ================= -->
   <footer class="footer container">
     <div class="footer__tile">
-      <div class="footer__top">
+      <div class="footer__row footer__top">
         <div class="footer__brand">
           <a class="logo" href="../../" aria-label="домщенков.рф — на главную">
             <span class="logo__mark" aria-hidden="true"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-paw"/></svg></span>
             <span class="logo__text"><span class="logo__name">домщенков.рф</span><span class="logo__sub">питомник щенков · Москва</span></span>
           </a>
+          <p class="footer__about">Мальтипу, французские бульдоги, <span class="nw">той-пудели</span> <span class="nw">и бордер-колли</span> с документами и доставкой по России</p>
+        </div>
+        <nav class="fcol" aria-label="Покупка">
+          <h2 class="fcol__h">Покупка</h2>
+          <ul>
+            <li><a href="../../shchenki/">Все щенки в наличии</a></li>
+            <li><a href="/podbor-porody/" rel="nofollow">Подбор породы — тест</a></li>
+            <li><a href="/rassrochka/" rel="nofollow">Бронь щенка</a></li>
+            <li><a href="/dostavka/" rel="nofollow">Доставка</a></li>
+            <li><a href="/dokumenty-i-garantii/" rel="nofollow">Документы и гарантии</a></li>
+            <li><a href="/shchenok-v-podarok/" rel="nofollow">Щенок в подарок</a></li>
+          </ul>
+        </nav>
+        <nav class="fcol" aria-label="Питомник">
+          <h2 class="fcol__h">Питомник</h2>
+          <ul>
+            <li><a href="../../o-pitomnike/">О питомнике</a></li>
+            <li><a href="../../#otzyvy">Отзывы</a></li>
+            <li><a href="#faq">Вопросы и ответы</a></li>
+            <li><a href="/blog/" rel="nofollow">Блог</a></li>
+            <li><a href="#zayavka">Контакты</a></li>
+          </ul>
+        </nav>
+        <div class="fcol footer__contacts">
+          <h2 class="fcol__h">Контакты</h2>
           <ul class="footer__info">
             <li><svg class="i i--sm" aria-hidden="true"><use href="#i-clock"/></svg>Ежедневно с 8:00 до 22:00</li>
-            <li><svg class="i i--sm" aria-hidden="true"><use href="#i-pin"/></svg>Москва, Ташкентская ул., 19</li>
             <li><svg class="i i--sm" aria-hidden="true"><use href="#i-mail"/></svg><a href="mailto:main@xn--b1adduihee9g.xn--p1ai">main@домщенков.рф</a></li>
+            <li><svg class="i i--sm" aria-hidden="true"><use href="#i-pin"/></svg>Москва, Ташкентская ул., 19</li>
           </ul>
+          <button class="btn btn--coral footer__cta" type="button" data-open-modal data-modal-kind="lead" data-modal-title="Оставить заявку" data-modal-sub="Подберём щенка и&nbsp;пришлём фото, видео и&nbsp;цены" data-modal-note="Подвал — оставить заявку" data-modal-submit="Оставить заявку">Оставить заявку</button>
         </div>
-        <nav class="footer__nav" aria-label="Разделы сайта">
-          <div class="fcol">
-            <h2 class="fcol__h">Щенки</h2>
-            <ul>
-              <li><a href="../../shchenki/">Все щенки в наличии</a></li>
-              <li><a href="/podbor-porody/" rel="nofollow">Подбор породы — пройдите тест</a></li>
-              <li><a href="/shchenok-v-podarok/" rel="nofollow">Щенок в подарок</a></li>
-            </ul>
-          </div>
-          <div class="fcol">
-            <h2 class="fcol__h">Покупка</h2>
-            <ul>
-              <li><a href="/rassrochka/" rel="nofollow">Бронь щенка</a></li>
-              <li><a href="/dostavka/" rel="nofollow">Доставка</a></li>
-              <li><a href="/dokumenty-i-garantii/" rel="nofollow">Документы и гарантии</a></li>
-              <li><a href="#faq">Вопросы и ответы</a></li>
-            </ul>
-          </div>
-          <div class="fcol">
-            <h2 class="fcol__h">О питомнике</h2>
-            <ul>
-              <li><a href="../../o-pitomnike/">О питомнике</a></li>
-              <li><a href="../../#otzyvy">Отзывы</a></li>
-              <li><a href="/blog/" rel="nofollow">Блог</a></li>
-              <li><a href="#zayavka">Контакты</a></li>
-            </ul>
-          </div>
-        </nav>
       </div>
 
-      <nav class="footer__breeds" aria-label="Породы и окрасы">
+      <nav class="footer__row footer__breeds" aria-label="Породы и окрасы">
         <details class="fcol fcol--fold" data-fold open>
           <summary class="fcol__h">Мальтипу <svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-chevron"/></svg></summary>
           <ul>
@@ -616,10 +601,10 @@
             <li><a href="../../maltipu/partikolor/">Мальтипу партиколор</a></li>
             <li><a href="../../maltipu/fantom/">Мальтипу фантом</a></li>
             <li><a href="../../maltipu/sobolinyj/">Соболиный мальтипу</a></li>
-            <li class="fcol__gap"><a href="/maltipu/vidy-i-okrasy/" rel="nofollow">Виды и окрасы мальтипу</a></li>
+            <li><a href="/maltipu/vidy-i-okrasy/" rel="nofollow">Виды и окрасы мальтипу</a></li>
             <li><a href="/maltipu/cena/" rel="nofollow">Цена мальтипу</a></li>
+            <li><a class="flink-all" href="../../maltipu/">Все щенки мальтипу&nbsp;<svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></a></li>
           </ul>
-          <a class="btn btn--coral fcol__all" href="../../maltipu/">Все щенки мальтипу</a>
         </details>
         <details class="fcol fcol--fold" data-fold open>
           <summary class="fcol__h">Французский бульдог <svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-chevron"/></svg></summary>
@@ -631,10 +616,10 @@
             <li><a href="../../francuzskij-buldog/kremovyj/">Кремовый французский бульдог</a></li>
             <li><a href="../../francuzskij-buldog/shokoladnyj/">Шоколадный французский бульдог</a></li>
             <li><a href="../../francuzskij-buldog/mramornyj/">Мраморный французский бульдог</a></li>
-            <li class="fcol__gap"><a href="/francuzskij-buldog/vidy-i-okrasy/" rel="nofollow">Виды и окрасы французского бульдога</a></li>
+            <li><a href="/francuzskij-buldog/vidy-i-okrasy/" rel="nofollow">Виды и окрасы французского бульдога</a></li>
             <li><a href="/francuzskij-buldog/cena/" rel="nofollow">Цена французского бульдога</a></li>
+            <li><a class="flink-all" href="../../francuzskij-buldog/">Все щенки французских бульдогов&nbsp;<svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></a></li>
           </ul>
-          <a class="btn btn--coral fcol__all" href="../../francuzskij-buldog/">Все щенки французских бульдогов</a>
         </details>
         <details class="fcol fcol--fold" data-fold open>
           <summary class="fcol__h">Той-пудель <svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-chevron"/></svg></summary>
@@ -645,10 +630,10 @@
             <li><a href="../../toj-pudel/korichnevyj/">Коричневый той-пудель</a></li>
             <li><a href="../../toj-pudel/ryzhij/">Рыжий той-пудель</a></li>
             <li><a href="../../toj-pudel/seryj/">Серый той-пудель</a></li>
-            <li class="fcol__gap"><a href="/toj-pudel/vidy-i-okrasy/" rel="nofollow">Виды и окрасы той-пуделя</a></li>
+            <li><a href="/toj-pudel/vidy-i-okrasy/" rel="nofollow">Виды и окрасы той-пуделя</a></li>
             <li><a href="/toj-pudel/cena/" rel="nofollow">Цена той-пуделя</a></li>
+            <li><a class="flink-all" href="../../toj-pudel/">Все щенки той-пуделей&nbsp;<svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></a></li>
           </ul>
-          <a class="btn btn--coral fcol__all" href="../../toj-pudel/">Все щенки той-пуделей</a>
         </details>
         <details class="fcol fcol--fold" data-fold open>
           <summary class="fcol__h">Бордер-колли <svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-chevron"/></svg></summary>
@@ -660,53 +645,51 @@
             <li><a href="../krasnyj-mramor/">Бордер-колли красный мрамор</a></li>
             <li><a href="./" aria-current="page">Бордер-колли мраморный триколор</a></li>
             <li><a href="../lilovyj/">Лиловый бордер-колли</a></li>
-            <li class="fcol__gap"><a href="/border-kolli/vidy-i-okrasy/" rel="nofollow">Виды и окрасы бордер-колли</a></li>
+            <li><a href="/border-kolli/vidy-i-okrasy/" rel="nofollow">Виды и окрасы бордер-колли</a></li>
             <li><a href="/border-kolli/cena/" rel="nofollow">Цена бордер-колли</a></li>
+            <li><a class="flink-all" href="../">Все щенки бордер-колли&nbsp;<svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></a></li>
           </ul>
-          <a class="btn btn--coral fcol__all" href="../">Все щенки бордер-колли</a>
         </details>
       </nav>
 
-      <details class="footer__cities fcol--fold" data-fold open>
+      <details class="footer__row footer__cities fcol--fold" data-fold open>
         <summary class="fcol__h">Доставка щенков по России <svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-chevron"/></svg></summary>
-        <div class="footer__cities-body">
-          <ul class="fcities">
-            <li><a href="/shchenki-v-sankt-peterburge/" rel="nofollow">Санкт-Петербург</a></li>
-            <li><a href="/shchenki-v-novosibirske/" rel="nofollow">Новосибирск</a></li>
-            <li><a href="/shchenki-v-ekaterinburge/" rel="nofollow">Екатеринбург</a></li>
-            <li><a href="/shchenki-v-kazani/" rel="nofollow">Казань</a></li>
-            <li><a href="/shchenki-v-nizhnem-novgorode/" rel="nofollow">Нижний Новгород</a></li>
-            <li><a href="/shchenki-v-krasnoyarske/" rel="nofollow">Красноярск</a></li>
-            <li><a href="/shchenki-v-chelyabinske/" rel="nofollow">Челябинск</a></li>
-            <li><a href="/shchenki-v-samare/" rel="nofollow">Самара</a></li>
-            <li><a href="/shchenki-v-ufe/" rel="nofollow">Уфа</a></li>
-            <li><a href="/shchenki-v-rostove-na-donu/" rel="nofollow">Ростов-на-Дону</a></li>
-            <li><a href="/shchenki-v-krasnodare/" rel="nofollow">Краснодар</a></li>
-            <li><a href="/shchenki-v-omske/" rel="nofollow">Омск</a></li>
-            <li><a href="/shchenki-v-voronezhe/" rel="nofollow">Воронеж</a></li>
-            <li><a href="/shchenki-v-permi/" rel="nofollow">Пермь</a></li>
-            <li><a href="/shchenki-v-volgograde/" rel="nofollow">Волгоград</a></li>
-            <li><a href="/shchenki-v-saratove/" rel="nofollow">Саратов</a></li>
-            <li><a href="/shchenki-v-tyumeni/" rel="nofollow">Тюмень</a></li>
-            <li><a href="/shchenki-v-tolyatti/" rel="nofollow">Тольятти</a></li>
-            <li><a href="/shchenki-v-mahachkale/" rel="nofollow">Махачкала</a></li>
-            <li><a href="/shchenki-v-barnaule/" rel="nofollow">Барнаул</a></li>
-            <li><a href="/shchenki-v-izhevske/" rel="nofollow">Ижевск</a></li>
-            <li><a href="/shchenki-v-habarovske/" rel="nofollow">Хабаровск</a></li>
-            <li><a href="/shchenki-v-ulyanovske/" rel="nofollow">Ульяновск</a></li>
-            <li><a href="/shchenki-v-irkutske/" rel="nofollow">Иркутск</a></li>
-            <li><a href="/shchenki-vo-vladivostoke/" rel="nofollow">Владивосток</a></li>
-            <li><a href="/shchenki-v-yaroslavle/" rel="nofollow">Ярославль</a></li>
-            <li><a href="/shchenki-v-sevastopole/" rel="nofollow">Севастополь</a></li>
-            <li><a href="/shchenki-v-stavropole/" rel="nofollow">Ставрополь</a></li>
-            <li><a href="/shchenki-v-tomske/" rel="nofollow">Томск</a></li>
-            <li><a href="/shchenki-v-kemerove/" rel="nofollow">Кемерово</a></li>
-          </ul>
-          <a class="btn btn--coral fcol__all" href="/dostavka/" rel="nofollow">Условия доставки</a>
-        </div>
+        <ul class="fcities">
+          <li><a href="/shchenki-v-sankt-peterburge/" rel="nofollow">Санкт-Петербург</a></li>
+          <li><a href="/shchenki-v-novosibirske/" rel="nofollow">Новосибирск</a></li>
+          <li><a href="/shchenki-v-ekaterinburge/" rel="nofollow">Екатеринбург</a></li>
+          <li><a href="/shchenki-v-kazani/" rel="nofollow">Казань</a></li>
+          <li><a href="/shchenki-v-nizhnem-novgorode/" rel="nofollow">Нижний Новгород</a></li>
+          <li><a href="/shchenki-v-krasnoyarske/" rel="nofollow">Красноярск</a></li>
+          <li><a href="/shchenki-v-chelyabinske/" rel="nofollow">Челябинск</a></li>
+          <li><a href="/shchenki-v-samare/" rel="nofollow">Самара</a></li>
+          <li><a href="/shchenki-v-ufe/" rel="nofollow">Уфа</a></li>
+          <li><a href="/shchenki-v-rostove-na-donu/" rel="nofollow">Ростов-на-Дону</a></li>
+          <li><a href="/shchenki-v-krasnodare/" rel="nofollow">Краснодар</a></li>
+          <li><a href="/shchenki-v-omske/" rel="nofollow">Омск</a></li>
+          <li><a href="/shchenki-v-voronezhe/" rel="nofollow">Воронеж</a></li>
+          <li><a href="/shchenki-v-permi/" rel="nofollow">Пермь</a></li>
+          <li><a href="/shchenki-v-volgograde/" rel="nofollow">Волгоград</a></li>
+          <li><a href="/shchenki-v-saratove/" rel="nofollow">Саратов</a></li>
+          <li><a href="/shchenki-v-tyumeni/" rel="nofollow">Тюмень</a></li>
+          <li><a href="/shchenki-v-tolyatti/" rel="nofollow">Тольятти</a></li>
+          <li><a href="/shchenki-v-mahachkale/" rel="nofollow">Махачкала</a></li>
+          <li><a href="/shchenki-v-barnaule/" rel="nofollow">Барнаул</a></li>
+          <li><a href="/shchenki-v-izhevske/" rel="nofollow">Ижевск</a></li>
+          <li><a href="/shchenki-v-habarovske/" rel="nofollow">Хабаровск</a></li>
+          <li><a href="/shchenki-v-ulyanovske/" rel="nofollow">Ульяновск</a></li>
+          <li><a href="/shchenki-v-irkutske/" rel="nofollow">Иркутск</a></li>
+          <li><a href="/shchenki-vo-vladivostoke/" rel="nofollow">Владивосток</a></li>
+          <li><a href="/shchenki-v-yaroslavle/" rel="nofollow">Ярославль</a></li>
+          <li><a href="/shchenki-v-sevastopole/" rel="nofollow">Севастополь</a></li>
+          <li><a href="/shchenki-v-stavropole/" rel="nofollow">Ставрополь</a></li>
+          <li><a href="/shchenki-v-tomske/" rel="nofollow">Томск</a></li>
+          <li><a href="/shchenki-v-kemerove/" rel="nofollow">Кемерово</a></li>
+          <li class="fcities__all"><a class="flink-all" href="/dostavka/" rel="nofollow">Все условия доставки&nbsp;<svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></a></li>
+        </ul>
       </details>
 
-      <div class="footer__legal">
+      <div class="footer__row footer__legal">
         <div class="footer__legal-text">
           <span>© 2017–2026 домщенков.рф · ИП Селезнев Владимир Игоревич · ИНН 220703337790 · ОГРНИП 324547600187418</span>
           <span>Сайт не является публичной офертой · <a href="../../politika-konfidencialnosti/">Политика конфиденциальности</a> · <a href="../../soglasie/">Согласие на обработку данных</a> · <a href="../../soglasie-na-publikaciyu/">Согласие на публикацию отзыва</a></span>

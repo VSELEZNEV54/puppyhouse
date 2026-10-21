@@ -1368,10 +1368,10 @@
     lb.addEventListener('click', (e) => { if (e.target === lb && downOnBackdrop) lb.close(); });
   }
 
-  /* ---------- подвал: на телефоне колонки пород и города свёрнуты, на планшете и компьютере открыты ---------- */
+  /* ---------- подвал: на телефоне (≤ 699 px, как в main.css) колонки пород и города свёрнуты, шире — открыты ---------- */
   const folds = $$('details[data-fold]');
   if (folds.length) {
-    const phone = window.matchMedia('(max-width: 560px)');
+    const phone = window.matchMedia('(max-width: 699px)');
     const setFolds = () => folds.forEach((d) => { d.open = !phone.matches; });
     setFolds();
     phone.addEventListener('change', setFolds);

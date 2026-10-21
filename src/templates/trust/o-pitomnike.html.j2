@@ -99,7 +99,5 @@
 {% endblock %}
 
 {% block lead %}
-    {% call forms.lead_form(title=pg.lead_title, line=pg.lead_line, contacts=false, cls='hm-lead') %}
-      {{ forms.contact_tiles() }}
-    {% endcall %}
+    {{ forms.lead_form(title=pg.lead_title, line=pg.lead_line, contacts=false, cls='hm-lead') }}
 {% endblock %}

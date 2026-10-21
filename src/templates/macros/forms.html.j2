@@ -93,7 +93,7 @@
     title ≤ 5 words, line ≤ 90 chars. tone: studio/tint tone of the tile. breed: slug to preselect in the select.
     contacts=false: no phone / messengers in the tile (the page shows them itself, e.g. via caller); while
     site.contacts_ready is false the tile never shows them (the response-time note instead); cls: extra class
-    on the tile; caller() → content after the tile inside the same section (homepage: contact tiles).
+    on the tile; caller() → content after the tile inside the same section.
     local_time=false: the response-time note without «по московскому времени» (city pages). -#}
 {% macro lead_form(title='Пришлём варианты щенков', line='Оставьте заявку, и мы пришлём варианты ваших будущих питомцев: фото, видео и цены', tone='peach', breed=none, id='zayavka', contacts=true, cls='', local_time=true) -%}
 <section class="section container" id="{{ id }}" aria-labelledby="lead-title">
@@ -149,45 +149,3 @@
 </section>
 {%- endmacro %}
 
-{#- Contact tiles under the lead form (homepage 15.10, breed pages): phone, messengers, e-mail and address — four
-    white tiles in a row (two on tablets, one per row on phones). Use inside {% call lead_form(contacts=false, cls='hm-lead') %}.
-    site.contacts_ready = false: e-mail and address only (.hm-cts--2, two per row). address=false: no address tile
-    (city pages never name the kennel's city) — then e-mail alone runs the full width (.hm-cts--1). -#}
-{% macro contact_tiles(address=true) -%}
-  {%- set n = (2 if site.contacts_ready else 0) + 1 + (1 if address else 0) -%}
-  <ul class="hm-cts{{ ' hm-cts--' ~ n if n < 4 }}" aria-label="Контакты питомника">
-    {% if site.contacts_ready %}
-    <li class="hm-ct">
-      {{ ui.ico('phone', 'coral') }}
-      <p class="hm-ct__label">Телефон</p>
-      <a class="hm-ct__value" href="{{ site.phone.tel }}">{{ site.phone.display }}</a>
-      <p class="hm-ct__line">{{ site.phone.hours|typo }}</p>
-    </li>
-    <li class="hm-ct">
-      {{ ui.ico('chat', 'sky') }}
-      <p class="hm-ct__label">Мессенджеры</p>
-      <div class="hm-ct__msgrs">
-        {% for k in ('telegram', 'whatsapp', 'max') %}
-        {%- set m = site.messengers[k] %}
-        <a class="hm-msgr" href="{{ m.url }}" target="_blank" rel="noopener" aria-label="{{ m.aria }}"><span class="msgr msgr--{{ m.icon }}" aria-hidden="true">{{ ui.icon(m.icon) }}</span>{{ m.label }}</a>
-        {% endfor %}
-      </div>
-      <p class="hm-ct__line">Пришлём видео щенков и&nbsp;цену</p>
-    </li>
-    {% endif %}
-    <li class="hm-ct">
-      {{ ui.ico('mail', 'sun') }}
-      <p class="hm-ct__label">Почта</p>
-      <a class="hm-ct__value hm-ct__value--mail" href="mailto:{{ site.email_ascii }}">{{ site.email }}</a>
-      <p class="hm-ct__line">Для документов и&nbsp;вопросов по&nbsp;договору</p>
-    </li>
-    {% if address %}
-    <li class="hm-ct">
-      {{ ui.ico('pin', 'mint') }}
-      <p class="hm-ct__label">Адрес</p>
-      <p class="hm-ct__value">{{ site.address.city }}, {{ site.address.street|typo }}</p>
-      <p class="hm-ct__line">{{ site.address.visit|typo }}</p>
-    </li>
-    {% endif %}
-  </ul>
-{%- endmacro %}

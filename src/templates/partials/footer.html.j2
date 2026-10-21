@@ -1,55 +1,59 @@
-{#- Footer (client 21.10: a big footer of links by section, after the two reference screenshots). Top: logo, hours,
-    address (not on the city pages), e-mail; phone and messengers once site.contacts_ready; the site sections on the right
-    (site.json → footer.columns). Then a column per breed: its colour pages /<breed>/<colour>/ (order of breedsub.json),
-    «Виды и окрасы …», «Цена …» and a coral «Все щенки …» button. Then the delivery cities (cities.json → /shchenki-v-…/)
-    and «Условия доставки». Bottom: requisites, documents, studio credit.
-    Phones ≤ 560 px: the breed columns and the cities fold (<details data-fold>; main.js closes them on phones, without
+{#- Footer (client 21.10, after two reference screenshots): one four-column grid for every row, so the columns line up.
+    Row 1: logo + a line about the kennel · «Покупка» · «Питомник» (site.json → footer.columns) · contacts on the right
+    (hours, e-mail, address — not on the city pages; phone and messengers once site.contacts_ready; «Оставить заявку»).
+    The contacts are not repeated under the lead form any more. Row 2: a column per breed — its colour pages
+    /<breed>/<colour>/ (order of breedsub.json), «Виды и окрасы …», «Цена …», «Все щенки … →». Row 3: the delivery cities
+    (cities.json → /shchenki-v-…/) and «Все условия доставки →». Row 4: requisites, documents, studio credit.
+    Phones and narrow tablets ≤ 699 px: one column, the breed columns and the cities fold (<details data-fold>; main.js closes them on phones, without
     the script they stay open). A link to the current page gets aria-current and is not clickable. -#}
 {% import "macros/ui.html.j2" as ui %}
 {% set is_home = page.url == '/' %}
-{%- macro flink(url, label) -%}
-<a href="{{ url }}"{% if url == page.url %} aria-current="page"{% endif %}>{{ label|typo }}</a>
+{%- macro flink(url, label, all=false) -%}
+<a{% if all %} class="flink-all"{% endif %} href="{{ url }}"{% if url == page.url %} aria-current="page"{% endif %}>{% if all %}{{ label|typo }}&nbsp;{{ ui.icon('arrow', sm=true) }}{% else %}{{ label|typo }}{% endif %}</a>
 {%- endmacro %}
   <!-- ================= ПОДВАЛ ================= -->
   <footer class="footer container">
     <div class="footer__tile">
-      <div class="footer__top">
+      <div class="footer__row footer__top">
         <div class="footer__brand">
           <a class="logo" href="{{ '#top' if is_home else '/' }}" aria-label="{{ site.brand }} — {{ 'наверх страницы' if is_home else 'на главную' }}">
             <span class="logo__mark" aria-hidden="true">{{ ui.icon('paw') }}</span>
             <span class="logo__text"><span class="logo__name">{{ site.brand }}</span><span class="logo__sub">{{ site.tagline_plain if hide_city | default(false) else site.tagline }}</span></span>
           </a>
-          {% if site.contacts_ready %}<a class="footer__phone" href="{{ site.phone.tel }}">{{ site.phone.display }}</a>{% endif %}
-          <ul class="footer__info">
-            <li><svg class="i i--sm" aria-hidden="true"><use href="#i-clock"/></svg>{{ site.phone.hours|typo }}</li>
-            {% if not hide_city | default(false) %}
-            <li><svg class="i i--sm" aria-hidden="true"><use href="#i-pin"/></svg>{{ site.address.short|typo }}</li>
-            {% endif %}
-            <li><svg class="i i--sm" aria-hidden="true"><use href="#i-mail"/></svg><a href="mailto:{{ site.email_ascii }}">{{ site.email }}</a></li>
+          <p class="footer__about">{{ ui.nohyph(site.footer.about) }}</p>
+        </div>
+        {% for col in site.footer.columns %}
+        <nav class="fcol" aria-label="{{ col.title }}">
+          <h2 class="fcol__h">{{ col.title|typo }}</h2>
+          <ul>
+            {% for l in col.links %}
+            <li>{{ flink(l.url, l.label) }}</li>
+            {% endfor %}
           </ul>
+        </nav>
+        {% endfor %}
+        <div class="fcol footer__contacts">
+          <h2 class="fcol__h">Контакты</h2>
           {% if site.contacts_ready %}
+          <a class="footer__phone" href="{{ site.phone.tel }}">{{ site.phone.display }}</a>
           <div class="footer__msgs">
             {% for k in ('telegram', 'whatsapp', 'max') %}{% set m = site.messengers[k] %}
             <a class="msgr msgr--{{ m.icon }}" href="{{ m.url }}" target="_blank" rel="noopener" aria-label="{{ m.aria }}" title="{{ m.label }}">{{ ui.icon(m.icon) }}</a>
             {% endfor %}
           </div>
           {% endif %}
+          <ul class="footer__info">
+            <li><svg class="i i--sm" aria-hidden="true"><use href="#i-clock"/></svg>{{ site.phone.hours|typo }}</li>
+            <li><svg class="i i--sm" aria-hidden="true"><use href="#i-mail"/></svg><a href="mailto:{{ site.email_ascii }}">{{ site.email }}</a></li>
+            {% if not hide_city | default(false) %}
+            <li><svg class="i i--sm" aria-hidden="true"><use href="#i-pin"/></svg>{{ site.address.short|typo }}</li>
+            {% endif %}
+          </ul>
+          {{ ui.request_button(cls='btn btn--coral footer__cta', note='Подвал — оставить заявку') }}
         </div>
-        <nav class="footer__nav" aria-label="Разделы сайта">
-          {% for col in site.footer.columns %}
-          <div class="fcol">
-            <h2 class="fcol__h">{{ col.title|typo }}</h2>
-            <ul>
-              {% for l in col.links %}
-              <li>{{ flink(l.url, l.label) }}</li>
-              {% endfor %}
-            </ul>
-          </div>
-          {% endfor %}
-        </nav>
       </div>
 
-      <nav class="footer__breeds" aria-label="Породы и окрасы">
+      <nav class="footer__row footer__breeds" aria-label="Породы и окрасы">
         {% for b in breeds %}
         {%- set colours = (data.breedsub[b.slug].varieties.blocks | selectattr('type', 'equalto', 'colours') | first)['items'] %}
         <details class="fcol fcol--fold" data-fold open>
@@ -58,32 +62,30 @@
             {% for c in colours %}
             <li>{{ flink(b.urls.hub ~ c.slug ~ '/', c.get('title') or c.name) }}</li>
             {% endfor %}
-            <li class="fcol__gap">{{ flink(b.urls.varieties, 'Виды и окрасы ' ~ b.name_gen) }}</li>
+            <li>{{ flink(b.urls.varieties, 'Виды и окрасы ' ~ b.name_gen) }}</li>
             <li>{{ flink(b.urls.price, 'Цена ' ~ b.name_gen) }}</li>
+            <li>{{ flink(b.urls.hub, 'Все щенки ' ~ b.name_plural_gen, all=true) }}</li>
           </ul>
-          <a class="btn btn--coral fcol__all" href="{{ b.urls.hub }}"{% if b.urls.hub == page.url %} aria-current="page"{% endif %}>{{ ('Все щенки ' ~ b.name_plural_gen)|typo }}</a>
         </details>
         {% endfor %}
       </nav>
 
-      <details class="footer__cities fcol--fold" data-fold open>
+      <details class="footer__row footer__cities fcol--fold" data-fold open>
         <summary class="fcol__h">{{ site.footer.cities_title|typo }} {{ ui.icon('chevron', sm=true) }}</summary>
-        <div class="footer__cities-body">
-          <ul class="fcities">
-            {% for c in data.cities %}
-            <li>{{ flink(c.url, c.name) }}</li>
-            {% endfor %}
-          </ul>
-          <a class="btn btn--coral fcol__all" href="/dostavka/"{% if page.url == '/dostavka/' %} aria-current="page"{% endif %}>Условия доставки</a>
-        </div>
+        <ul class="fcities">
+          {% for c in data.cities %}
+          <li>{{ flink(c.url, c.name) }}</li>
+          {% endfor %}
+          <li class="fcities__all">{{ flink('/dostavka/', 'Все условия доставки', all=true) }}</li>
+        </ul>
       </details>
 
-      <div class="footer__legal">
+      <div class="footer__row footer__legal">
         <div class="footer__legal-text">
           <span>{{ site.footer.legal.requisites|typo }}</span>
           <span>{{ site.footer.legal.offer|typo }} · <a href="{{ site.footer.legal.privacy.url }}">{{ site.footer.legal.privacy.label }}</a>{% for l in site.footer.legal.consents %} · <a href="{{ l.url }}">{{ l.label|typo }}</a>{% endfor %}</span>
         </div>
-        {#- studio credit (client 20.10): right of the requisites, the last line on phones -#}
+        {#- studio credit (client 20.10): under the contacts column, the last line on phones -#}
         {%- set cr = site.footer.credit %}
         <a class="footer__credit" href="{{ cr.url }}" target="_blank" rel="noopener">{{ (cr.label ~ ' — ' ~ cr.name)|typo }}</a>
       </div>

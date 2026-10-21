@@ -5,7 +5,7 @@
     the lead band (homepage size) → colour cards to scroll through («Подобрать кремового мальтипу» + «Подробнее» → the
     colour page /<breed>/<colour>/, breeds/colour.html.j2) → «Какой он» →
     «Как мы отдаём щенка» (what travels with the puppy + documents, guarantee, delivery, price) → FAQ → articles about the
-    breed (four in a row, the rest beyond the edge) → SEO text and the lead form with contact tiles, as on the homepage.
+    breed (four in a row, the rest beyond the edge) → SEO text and the lead form, as on the homepage.
     body.page-breed: coral main buttons and the homepage-size carousel / SEO text (main.css). -#}
 {% extends "layouts/page.html.j2" %}
 {% import "breeds/_parts.html.j2" as part %}
@@ -135,7 +135,5 @@
 {% endblock %}
 
 {% block lead %}
-    {% call forms.lead_form(title=hub.lead_title, line=hub.lead_line, breed=b.slug, contacts=false, cls='hm-lead') %}
-      {{ forms.contact_tiles() }}
-    {% endcall %}
+    {{ forms.lead_form(title=hub.lead_title, line=hub.lead_line, breed=b.slug, contacts=false, cls='hm-lead') }}
 {% endblock %}

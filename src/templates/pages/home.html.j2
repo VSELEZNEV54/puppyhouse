@@ -162,8 +162,6 @@
 {% endfilter %}
     {% endcall %}
 
-    <!-- ================= ЗАЯВКА: плитка с лапками + контакты отдельными плашками под ней (правка 15.10) ================= -->
-    {% call forms.lead_form(contacts=false, cls='hm-lead', local_time=not city) %}
-      {{ forms.contact_tiles(address=not city) }}
-    {% endcall %}
+    <!-- ================= ЗАЯВКА: плитка с лапками (правка 15.10); контакты — в подвале справа (21.10) ================= -->
+    {{ forms.lead_form(contacts=false, cls='hm-lead', local_time=not city) }}
 {% endblock %}

@@ -3,7 +3,7 @@
     rarity / age / nose, about, care). Context (routes/breeds.py): b, c (this colour, breedsub.colour_items), others (the
     other colours), pups (puppies of this colour, simple cards), faq, hub (the breed page copy).
     Order: hero (the colour's puppy close up, okras-…-big.jpg, three facts, «Подобрать …» + «Получить консультацию») → «Особенности окраса» (text,
-    care, «Подобрать …») → puppies of this colour or a waiting-list band → the other colours → FAQ → lead form with contact tiles. -#}
+    care, «Подобрать …») → puppies of this colour or a waiting-list band → the other colours → FAQ → lead form. -#}
 {% extends "layouts/page.html.j2" %}
 {% import "breeds/_parts.html.j2" as part %}
 
@@ -84,7 +84,5 @@
 {% endblock %}
 
 {% block lead %}
-    {% call forms.lead_form(title='Подберём ' ~ c.pick, line='Пришлём щенков этого окраса с фото, видео и ценой', breed=b.slug, contacts=false, cls='hm-lead') %}
-      {{ forms.contact_tiles() }}
-    {% endcall %}
+    {{ forms.lead_form(title='Подберём ' ~ c.pick, line='Пришлём щенков этого окраса с фото, видео и ценой', breed=b.slug, contacts=false, cls='hm-lead') }}
 {% endblock %}

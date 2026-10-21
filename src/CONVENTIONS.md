@@ -23,7 +23,7 @@ pixel-parity baseline no longer applies. Reference inner page: `/shchenki/`.
   desktops links hide from the end (`prio`), they stay in «Меню»; below 1100 px a burger opens the full-screen `#mmenu` with
   the same groups as accordions. Mobile sticky bar: Позвонить · Telegram · Узнать цену.
 - **No phone and messengers yet** (client 20.10): `site.contacts_ready = false` hides the kennel's number and its Telegram /
-  WhatsApp / MAX links everywhere — header, «Меню», burger, sticky bar, footer, lead form, contact tiles, «Не получилось
+  WhatsApp / MAX links everywhere — header, «Меню», burger, sticky bar, footer, lead form, «Не получилось
   отправить», lead band, video viewer, puppy hero, JSON-LD (`telephone`, `sameAs`). In their place: the coral «Оставить
   заявку» (`ui.request_button()`, `.btn--coral`, modal kind `lead`) in the header (hidden ≤ 560 px — the sticky bar has it),
   «Меню», burger, sticky bar (`.mbar--2`: Оставить заявку · Узнать цену) and video viewer. The visitor's «Куда написать»
@@ -47,7 +47,8 @@ pixel-parity baseline no longer applies. Reference inner page: `/shchenki/`.
   whole block, full width, 52 px. Nothing to do per page: keep the head as `section.section > .sec-head` (or
   `.faq > .faq__aside`) and the rule applies. Don't add a second, hand-made bottom button. Exceptions that stay as
   they are (client 21.10): links to the legal documents in «Другие документы» on the consent / privacy pages
-  (`ui.text_link` — underlined with an arrow, used nowhere else) and the plain links of the header, menus and footer.
+  (`ui.text_link` — underlined with an arrow, used nowhere else) and the plain links of the header, menus and footer
+  (the footer's «Все щенки … →» / «Все условия доставки →» — bold, not underlined, as on the client's reference).
 - **CTA wording: no arrow-only buttons.** Every clickable tile/card ends with a text pill (`ui.tile_cta`) or a coral
   button (`ui.link_button`): «Перейти к породе» (breed tiles), «Подробнее» (help / link / studio tiles, puppy cards),
   «Все окрасы» / «Смотреть окрас» (colours), «Читать» (articles). `ui.round_arrow` is decorative only.
@@ -63,8 +64,7 @@ pixel-parity baseline no longer applies. Reference inner page: `/shchenki/`.
   It differs only by the heading («Щенки в Новосибирске напрямую от заводчика»). No «доставка в <город>», and the
   kennel's own city is never named: context `hide_city=true` drops «Москва» from the logo caption (`site.tagline_plain`),
   the footer address and «по московскому времени» (modal; `forms.lead_form(local_time=false)`); the eyebrow and texts
-  lose «Москва»; reviews from Moscow and its region are left out; the SEO text's Moscow paragraph is the city's own;
-  under the form only the e-mail tile (`forms.contact_tiles(address=false)`).
+  lose «Москва»; reviews from Moscow and its region are left out; the SEO text's Moscow paragraph is the city's own.
 - **First screen**: `ui.page_hero(..., full=true)` = the whole screen (breed pages); homepage hero: `.hero--full`.
   Studio photos in page heroes are larger on desktop (≥ 1200 px the tile is taller; the photo is never cropped).
 - **Images.** Placeholders come from `assets/img/` (`src/data/media.json` lists sets per page/breed); a video is a
@@ -80,7 +80,7 @@ pixel-parity baseline no longer applies. Reference inner page: `/shchenki/`.
   `data-align="start"`, each card «Подобрать кремового мальтипу» — `pick` in `breedsub.json`) · «Какой он» · «Как мы отдаём
   щенка» (what travels with the puppy + photo tiles: documents, guarantee, delivery, price) · FAQ · «Всё о <породе>» (articles +
   the breed's colours and price pages: `part.post_carousel` — four wide cards in a row, the rest beyond the edge with arrows,
-  a list on phones) · SEO text · lead form with contact tiles (`forms.contact_tiles()`), as on the homepage. 15 puppies per
+  a list on phones) · SEO text · lead form, as on the homepage. 15 puppies per
   breed with the client's real photos (`puppies.json`), no studio renders in the catalog. `breeds/hub.html.j2` is unused now.
   Colour pages `/<breed>/<colour>/` (`breeds/colour.html.j2`, copy in `breedsub.json` colour items: `title`, `short`,
   `rarity` / `age` / `nose`, `about`, `care`; `colour_price` in `breeds-hub.json` = what the price depends on). Colour photos
@@ -210,9 +210,11 @@ Globals: `site`, `breeds` (list), `breed_map` (slug → breed), `puppies`, `data
 groups for «Меню» and the burger: items `{label, url}` + `breed` face / `count` / `icon`, or `{label, sub: [...]}` — a caption
 with a short list of links, one per row, thin rule on the left; client 15.10: no pills; phones: every item on its own row, the
 burger's top bar with the close button never scrolls away — only `.mmenu__scroll` scrolls; footer links on phones: one per row, 46 px),
-`footer` (client 21.10, big footer after the client's screenshots: `columns` — the site sections next to the logo; under them
+`footer` (client 21.10, big footer after the client's screenshots: `about` — the line under the logo; `columns` — «Покупка» and «Питомник»; under them
 partials/footer.html.j2 builds a column per breed from breedsub.json colours + «Виды и окрасы» + «Цена» + coral «Все щенки …», then
-the delivery cities from cities.json under `cities_title`; phones ≤ 560 px: the breed columns and the cities fold, main.js `details[data-fold]`),
+the delivery cities from cities.json under `cities_title`. One grid for every row (columns sized to the longest breed links), the
+contacts in the right column — they are not repeated under the lead form; ≤ 699 px: one column, the breed columns and the cities fold,
+main.js `details[data-fold]`),
 `tg_cta` («Написать в Telegram»), `messengers.telegram|whatsapp|max` (`url_placeholder` marks placeholder links; `icon` — `tg` / `wa` / `max`: the official mark shapes
 in one colour; in a `.msgr` circle they are dark brown on a soft peach gradient — client sample 15.10, no brand-colour logos),
 `advantages`, `stats`; `domain` «домщенков.рф» + `domain_ascii` (punycode `xn--b1adduihee9g.xn--p1ai`, for JSON-LD URLs),
@@ -239,7 +241,7 @@ Slugs, photos and texts live in `breedsub.json` → `<breed>.varieties` → the 
 **«Виды и окрасы»** `/<breed>/vidy-i-okrasy/` (client 21.10): hero «Какие бывают …» → `types` block (one studio photo of the
 breed's adult dogs, `assets/img/kinds-<breed>.jpg`, numbered pin under each dog + a card per kind; `sub` = generations or
 the colour standard) → colour carousel → «Как выбрать окрас» → 8 puppies + «Все щенки …» → FAQ → «Читайте также» → SEO →
-homepage-size lead form with contact tiles. The hubs' carousels use `data.media[<breed>]`
+homepage-size lead form. The hubs' carousels use `data.media[<breed>]`
 in the order of `breeds-hub.json` → `media` (+ extra placeholders), so a video file added to `media.json` shows on the hub too.
 
 ## Macros (`ui.`, `cards.`, `forms.`, `blocks.`) — text params are plain text, escaped and run through `|typo`
@@ -274,9 +276,8 @@ in the order of `breeds-hub.json` → `media` (+ extra placeholders), so a video
 | `media.video_reviews` | `reviews, title='Отзывы владельцев', id='otzyvy', title_id, link, lead, ratings=true` | section: rating tiles + row of video review cards (arrows under it); phones: first three stacked + «Все отзывы» |
 | `blocks.read_more` | `b, alt='price', title='Читайте также', id='eshche', limit=3` | ONE block on every page of a breed instead of «Полезные статьи» + «Ещё о …» (client 21.10): 3 article cards (the breed's first), then the same four plates everywhere — the breed page · price page OR varieties page (`alt='varieties'` on the price page, price elsewhere) · «Каталог щенков» · «Подобрать породу». After the FAQ (or in `{% block blog %}`); never with the layout's «Полезные статьи». Used on /sravnenie/*, /<breed>/cena/, /<breed>/vidy-i-okrasy/, colour pages, puppy pages. Without `b` (a page about all breeds — /faq/, /dokumenty-i-garantii/): the first four of «Каталог щенков» · «Подобрать породу» · «Документы и гарантии» · «Доставка» · «Вопросы и ответы» without the page itself (`here=` its url) |
 | `blocks.blog_teasers` | `slugs` (or `posts[{url,title,line,cover,topic}]`), `title='Гид по породам', id='blog', lead, link, limit=3` | article cards: photo, title, one line, «Читать»; phones — compact list |
-| `forms.lead_form` | `title='Пришлём варианты щенков', line='Оставьте заявку, и мы пришлём варианты ваших будущих питомцев: фото, видео и цены', tone, breed, id='zayavka', contacts=true, cls=''` | one per page (the layout adds it); phones: phone number on its own line, three messengers (`.lead__msgrs`, never split) under it. `contacts=false` — no phone/messengers in the tile (a «ответим за 15 минут» note instead); `{% call %}` content goes after the tile in the same section (homepage: contact tiles `.hm-cts`) |
+| `forms.lead_form` | `title='Пришлём варианты щенков', line='Оставьте заявку, и мы пришлём варианты ваших будущих питомцев: фото, видео и цены', tone, breed, id='zayavka', contacts=true, cls=''` | one per page (the layout adds it); phones: phone number on its own line, three messengers (`.lead__msgrs`, never split) under it. `contacts=false` — no phone/messengers in the tile (a «ответим за 15 минут» note instead); `{% call %}` content goes after the tile in the same section. Contacts are not repeated under the form: they are in the footer, right column (client 21.10) |
 | `forms.price_button(label, cls, breed)`, `forms.msgr(kind)` | `kind = telegram \| whatsapp \| max` | generic «Узнать цену» / messenger round button |
-| `forms.contact_tiles()` | | phone, messengers, e-mail, address — four white tiles under `forms.lead_form(contacts=false, cls='hm-lead')` (homepage, breed pages v2) |
 | `forms.contact_field(prefix)` | `'lf' \| 'pm' \| yours` | «Куда написать» chips Telegram / WhatsApp / MAX / Звонок |
 | `forms.consent_check(prefix, kind='processing', name='consent', privacy=true)` | `kind = processing \| distribution` | 152-ФЗ consent checkbox from `data/consent.json` (current version): «Даю согласие на …» linking `/soglasie/` (or `/soglasie-na-publikaciyu/`), privacy link on the next line. Every form that sends personal data needs it |
 | `forms.honeypot(prefix)`, `forms.send_fail(what, saved)` | | hidden `hp_note` field (off-screen, out of the Tab order); «Не получилось отправить…» + phone / Telegram / MAX (shown by JS when the API is unreachable) |
