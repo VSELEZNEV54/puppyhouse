@@ -418,6 +418,8 @@ FAQ, статьи), `sitemap.xml`, `robots.txt`, своя `404.html`, `site.webm
 70 страниц, в sitemap 66.
 Весь сайт для просмотра на GitHub Pages — https://vseleznev54.github.io/puppyhouse/full/ (закрыт от поисковиков,
 на сервер не выкладывается). Обновить: `python3 tools/build.py --full` и закоммитить папку `full/`.
+**Принято клиентом, ждёт переноса на основной домен** (список — `src/data/publish.json` → `accepted`):
+- `/otzyvy/` «Отзывы» — принята 21.10.2026.
 
 ## Правки клиента 21.10 — доставка и города
 
