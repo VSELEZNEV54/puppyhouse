@@ -29,13 +29,13 @@
   <!-- Geist is served from our own domain (assets/fonts, SIL OFL 1.1): no visitor IP goes to Google before consent -->
   <link rel="preload" href="../../assets/fonts/geist-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="../../assets/fonts/geist-latin.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="../../assets/css/main.css?v=6b88e46e">
+  <link rel="stylesheet" href="../../assets/css/main.css?v=103ddd84">
   <link rel="stylesheet" href="../../assets/css/pages.css?v=221bc484">
-  <link rel="stylesheet" href="../../assets/css/trust.css?v=beafccbc">
-  <script src="../../assets/js/main.js?v=90a61a0f" defer></script>
-  <script src="../../assets/js/trust.js?v=3340c0bf" defer></script>
+  <link rel="stylesheet" href="../../assets/css/trust.css?v=f41983ea">
+  <script src="../../assets/js/main.js?v=8eeaa1a2" defer></script>
+  <script src="../../assets/js/trust.js?v=fb638fd4" defer></script>
 </head>
-<body>
+<body class="page-reviews">
   <!-- Иконки: инлайн-спрайт 24×24. Линейные — stroke currentColor, заливочные — fill. -->
   <svg class="sprite" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
     <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
@@ -223,15 +223,16 @@
 <section class="phero tr-hero container" aria-labelledby="page-title">
   <div class="phero__tile tr-hero__tile tone--coral" data-hero-ctas>
     <div class="phero__copy tr-hero__copy">
-<p class="eyebrow"><span class="eyebrow__dot" aria-hidden="true"></span>Отзывы о питомнике</p>      <h1 class="phero__title" id="page-title">Отзывы владельцев о питомнике</h1>
+<p class="eyebrow"><span class="eyebrow__dot" aria-hidden="true"></span>Отзывы о питомнике</p>      <h1 class="phero__title" id="page-title">Посмотрите, что пишут о нас хозяева щенков</h1>
 <p class="phero__lead">Пишут те, чьи щенки уже дома. Публикуем с согласия авторов</p><div class="phero__actions">      <a class="btn btn--ink btn--lg" href="../shchenki/">Смотреть щенков <svg class="i" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></a>
       <button class="btn btn--white btn--lg" type="button" data-rv-open>Оставить отзыв</button>
 </div>    </div>
     <figure class="tr-hero__media" style="--pos:62% 45%"><img src="../../assets/img/family-maltipu.jpg" alt="Девушка обнимает щенка мальтипу" width="1264" height="848" fetchpriority="high" decoding="async"></figure>
   </div>
 </section>
-    <section class="section section--tight container" id="vse-otzyvy" aria-labelledby="vse-otzyvy-title" data-rf>
-      <h2 class="sr-only" id="vse-otzyvy-title">Все отзывы</h2>
+    <!-- ================= РЕЙТИНГ + «ВАШ ЩЕНОК ОТ НАС?» ================= -->
+    <section class="section container tr-rate-sec" id="rejting" aria-labelledby="rejting-title">
+      <h2 class="sr-only" id="rejting-title">Рейтинг питомника</h2>
       <div class="tr-rate">
         <ul class="ratings" aria-label="Рейтинг питомника">
   <li class="rating"><b class="rating__num">4,9</b><span class="rating__txt"><span class="stars" aria-hidden="true"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg></span><span>Яндекс · 128</span></span></li>
@@ -244,107 +245,268 @@
           <button class="btn btn--ink" type="button" data-rv-open>Оставить отзыв</button>
         </div>
       </div>
+    </section>
 
-      <div class="tr-filter">
-        <div class="chips" role="group" aria-label="Порода">
-          <button class="chip" type="button" data-rf-value="all" aria-pressed="true">Все</button>
-          <button class="chip" type="button" data-rf-value="maltipu" aria-pressed="false"><span class="chip__dot tone--peach" aria-hidden="true"></span>Мальтипу</button>
-          <button class="chip" type="button" data-rf-value="francuzskij-buldog" aria-pressed="false"><span class="chip__dot tone--powder" aria-hidden="true"></span>Французский бульдог</button>
-          <button class="chip" type="button" data-rf-value="toj-pudel" aria-pressed="false"><span class="chip__dot tone--butter" aria-hidden="true"></span>Той-пудель</button>
-          <button class="chip" type="button" data-rf-value="border-kolli" aria-pressed="false"><span class="chip__dot tone--sage" aria-hidden="true"></span>Бордер-колли</button>
-        </div>
-        <p class="tr-filter__count" data-rf-count>6&nbsp;отзывов</p>
-      </div>
-      <p class="sr-only" role="status" aria-live="polite" data-rf-status></p>
-
-      <ul class="vrev-grid" data-rf-list>
-        <li data-breed="maltipu">
-          <article class="vrev">
-            <button class="vrev__media" type="button" data-lightbox data-kind="video" data-caption="Отзыв: Анна, Москва" aria-label="Смотреть видеоотзыв: Анна, Москва">
-              <img src="../../assets/img/family-maltipu.jpg" alt="Девушка обнимает щенка мальтипу на диване" width="1264" height="848" style="object-position:58% 50%" loading="lazy" decoding="async">
-              <span class="mcard__play" aria-hidden="true"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-play"/></svg></span>
+    <!-- ================= ОТЗЫВЫ — те же карточки с фото, что на главной ================= --><section class="section container tr-rvws-sec" id="vse-otzyvy" aria-labelledby="vse-otzyvy-title">
+      <h2 class="sr-only" id="vse-otzyvy-title">Отзывы владельцев</h2>
+      <ul class="tr-rvws" data-rvw-grid>
+        <li>
+          <article class="rvw">
+            <button class="rvw__media" type="button" data-lightbox data-kind="photo" data-caption="Анастасия К., Москва · Мальтипу" aria-label="Фото щенка: Анастасия К., Москва">
+              <img src="../../assets/img/rv-maltipu-431.jpg" alt="Девушка держит на руках кремового щенка мальтипу" width="959" height="1280" loading="lazy" decoding="async">
             </button>
-            <div class="vrev__body">
-              <span class="vrev__top"><span class="stars" role="img" aria-label="Оценка 5 из 5"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg></span><span class="vrev__src">[Яндекс Карты]</span></span>
-              <blockquote class="vrev__text"><p>Выбирали почти неделю, и каждый вечер нам показывали двух щенков по видео. Взяли Боню — она первой подбежала к телефону. Дома с первой ночи спала на лежанке, к пелёнке привыкла за неделю. Куратор до сих пор отвечает на мои вопросы про стрижку.</p></blockquote>
-              <p class="vrev__who"><span class="ava" style="--c:var(--coral)" aria-hidden="true">А</span><span><b>Анна, Москва</b><span>Мальтипу F1 · Боня</span></span></p>
+            <div class="rvw__body">
+              <span class="stars" role="img" aria-label="Оценка 5 из 5"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg></span>
+              <blockquote class="rvw__text" id="rvw-anastasiya-busya" data-rvw-text>
+          <p>Взяли кремовую девочку Бусю в марте, ей тогда было 2,5 месяца. Выбирали долго, смотрели разные питомники, тут понравилось, что не торопили и спокойно показывали малышей по видео, даже маму показали 🙂</p><p>Забирали сами. С собой дали корм, к которому она привыкла, пелёнки, игрушку и ветпаспорт со всеми прививками. Первую ночь поскулила, а потом как будто всегда с нами жила.</p><p>Сейчас Бусе 7 месяцев, весит 2,6 кг. Не линяет, запаха нет. С пелёнкой иногда промахивается, но это уже наши недоработки)) Куратор до сих пор отвечает на мои вопросы, даже глупые. Спасибо вам огромное ❤️</p>    </blockquote>
+              <button class="rvw__more" type="button" data-rvw-toggle aria-controls="rvw-anastasiya-busya" aria-expanded="false" hidden>Читать полностью</button>
+              <p class="rvw__who"><b>Анастасия К., Москва</b><span>Мальтипу</span></p>
             </div>
           </article>
         </li>
-        <li data-breed="francuzskij-buldog">
-          <article class="vrev">
-            <button class="vrev__media" type="button" data-lightbox data-kind="video" data-caption="Отзыв: Игорь, Санкт-Петербург" aria-label="Смотреть видеоотзыв: Игорь, Санкт-Петербург">
-              <img src="../../assets/img/grad-family-buldog.jpg" alt="Семья с дочкой и щенком французского бульдога на диване" width="1264" height="848" style="object-position:52% 50%" loading="lazy" decoding="async">
-              <span class="mcard__play" aria-hidden="true"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-play"/></svg></span>
+        <li>
+          <article class="rvw">
+            <button class="rvw__media" type="button" data-lightbox data-kind="photo" data-caption="Юлия Сафина, Казань · Французский бульдог" aria-label="Фото щенка: Юлия Сафина, Казань">
+              <img src="../../assets/img/rv-buldog-17.jpg" alt="Девушка прижимает к себе голубого щенка французского бульдога" width="591" height="882" loading="lazy" decoding="async">
             </button>
-            <div class="vrev__body">
-              <span class="vrev__top"><span class="stars" role="img" aria-label="Оценка 5 из 5"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg></span><span class="vrev__src">[Яндекс Карты]</span></span>
-              <blockquote class="vrev__text"><p>Боялся везти щенка из Москвы зимой. Привезли на машине, по дороге каждые пару часов присылали видео. Тайсон приехал спокойный, с ветпаспортом и метрикой. Сейчас ему год, храпит, как и положено французу.</p></blockquote>
-              <p class="vrev__who"><span class="ava" style="--c:var(--sky)" aria-hidden="true">И</span><span><b>Игорь, Санкт-Петербург</b><span>Французский бульдог · Тайсон</span></span></p>
+            <div class="rvw__body">
+              <span class="stars" role="img" aria-label="Оценка 5 из 5"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg></span>
+              <blockquote class="rvw__text" id="rvw-yuliya-tajson" data-rvw-text>
+          <p>Нашего голубого мальчика Тайсона везли из Москвы в Казань поездом с сопровождающим. Честно, переживала ужасно, всю ночь писала куратору, мне отвечали и присылали фото из купе 😅 Приехал бодрый, сразу полез есть.</p><p>Документы все в порядке: договор, ветпаспорт, метрика. Через неделю сходили к нашему ветеринару, сказал, щенок отличный.</p><p>Из минусов — французы храпят, но это порода, нас предупреждали) Рекомендую!</p>    </blockquote>
+              <button class="rvw__more" type="button" data-rvw-toggle aria-controls="rvw-yuliya-tajson" aria-expanded="false" hidden>Читать полностью</button>
+              <p class="rvw__who"><b>Юлия Сафина, Казань</b><span>Французский бульдог</span></p>
             </div>
           </article>
         </li>
-        <li data-breed="toj-pudel">
-          <article class="vrev">
-            <button class="vrev__media" type="button" data-lightbox data-kind="video" data-caption="Отзыв: Марина, Казань" aria-label="Смотреть видеоотзыв: Марина, Казань">
-              <img src="../../assets/img/grad-woman-pudel.jpg" alt="Женщина с той-пуделем в кресле у окна" width="1264" height="848" style="object-position:40% 50%" loading="lazy" decoding="async">
-              <span class="mcard__play" aria-hidden="true"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-play"/></svg></span>
+        <li>
+          <article class="rvw">
+            <button class="rvw__media" type="button" data-lightbox data-kind="photo" data-caption="Марина, Санкт-Петербург · Той-пудель" aria-label="Фото щенка: Марина, Санкт-Петербург">
+              <img src="../../assets/img/rv-pudel-338.jpg" alt="Рыжий щенок той-пуделя на плече у хозяйки" width="1280" height="853" style="object-position:62% 50%" loading="lazy" decoding="async">
             </button>
-            <div class="vrev__body">
-              <span class="vrev__top"><span class="stars" role="img" aria-label="Оценка 5 из 5"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg></span><span class="vrev__src">[Google]</span></span>
-              <blockquote class="vrev__text"><p>Брали той-пуделя для мамы. Нас честно отговорили от самого крошечного щенка и подобрали девочку покрепче. Чапа летела в салоне с сопровождающим и перенесла дорогу спокойно. Мама говорит, что теперь гуляет вдвое больше.</p></blockquote>
-              <p class="vrev__who"><span class="ava" style="--c:var(--sun)" aria-hidden="true">М</span><span><b>Марина, Казань</b><span>Той-пудель · Чапа</span></span></p>
+            <div class="rvw__body">
+              <span class="stars" role="img" aria-label="Оценка 5 из 5"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg></span>
+              <blockquote class="rvw__text" id="rvw-marina-chapa" data-rvw-text>
+          <p>Это наш второй пудель, первый был от другого заводчика, так что есть с чем сравнить. Здесь щенок был уже социализирован: не боится пылесоса, звонка в дверь, спокойно сидит на руках.</p><p>Чапа прилетел к нам в Питер в 3 месяца, в салоне самолёта, перелёт перенёс нормально. Понравилось, что перед отправкой прислали список, что купить, и правда ничего лишнего. Метрику отдали сразу. Рост сейчас в пределах тоя, как и обещали.</p>    </blockquote>
+              <button class="rvw__more" type="button" data-rvw-toggle aria-controls="rvw-marina-chapa" aria-expanded="false" hidden>Читать полностью</button>
+              <p class="rvw__who"><b>Марина, Санкт-Петербург</b><span>Той-пудель</span></p>
             </div>
           </article>
         </li>
-        <li data-breed="border-kolli">
-          <article class="vrev">
-            <button class="vrev__media" type="button" data-lightbox data-kind="video" data-caption="Отзыв: Дмитрий и Ольга, Красногорск" aria-label="Смотреть видеоотзыв: Дмитрий и Ольга, Красногорск">
-              <img src="../../assets/img/grad-man-kolli.jpg" alt="Мужчина играет с бордер-колли в осеннем парке" width="1264" height="848" style="object-position:60% 50%" loading="lazy" decoding="async">
-              <span class="mcard__play" aria-hidden="true"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-play"/></svg></span>
+        <li>
+          <article class="rvw">
+            <button class="rvw__media" type="button" data-lightbox data-kind="photo" data-caption="Ольга Р., Тула · Бордер-колли" aria-label="Фото щенка: Ольга Р., Тула">
+              <img src="../../assets/img/rv-kolli-157.jpg" alt="Улыбающаяся девушка со щенком бордер-колли на руках" width="1067" height="1600" loading="lazy" decoding="async">
             </button>
-            <div class="vrev__body">
-              <span class="vrev__top"><span class="stars" role="img" aria-label="Оценка 5 из 5"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg></span><span class="vrev__src">[Авито]</span></span>
-              <blockquote class="vrev__text"><p>Сначала нас подробно расспросили: сколько гуляем, есть ли время на занятия. Было неожиданно, но потом поняли зачем. Рэю восемь месяцев, ходим на аджилити, тренер доволен.</p></blockquote>
-              <p class="vrev__who"><span class="ava" style="--c:var(--mint)" aria-hidden="true">Д</span><span><b>Дмитрий и Ольга, Красногорск</b><span>Бордер-колли · Рэй</span></span></p>
+            <div class="rvw__body">
+              <span class="stars" role="img" aria-label="Оценка 5 из 5"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg></span>
+              <blockquote class="rvw__text" id="rvw-olga-rej" data-rvw-text>
+          <p>Бордер — собака не для всех, нас честно об этом предупредили и даже немного отговаривали. Спрашивали, сколько гуляем, есть ли время заниматься. Мне это понравилось, видно, что не просто продают.</p><p>Рэй шоколадный, ему сейчас 5 месяцев. Умный до невозможности: сидеть, лежать, место, дай лапу выучил за пару недель. Энергии море, без двух прогулок в день разносит квартиру 😄</p><p>Заводчик до сих пор с нами на связи, подсказывает по дрессировке. Спасибо!</p>    </blockquote>
+              <button class="rvw__more" type="button" data-rvw-toggle aria-controls="rvw-olga-rej" aria-expanded="false" hidden>Читать полностью</button>
+              <p class="rvw__who"><b>Ольга Р., Тула</b><span>Бордер-колли</span></p>
             </div>
           </article>
         </li>
-        <li data-breed="maltipu">
-          <article class="vrev">
-            <button class="vrev__media" type="button" data-lightbox data-kind="video" data-caption="Отзыв: Екатерина, Нижний Новгород" aria-label="Смотреть видеоотзыв: Екатерина, Нижний Новгород">
-              <img src="../../assets/img/hero-maltipu-sofa.jpg" alt="Абрикосовый щенок мальтипу на светлом диване" width="928" height="1152" loading="lazy" decoding="async">
-              <span class="mcard__play" aria-hidden="true"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-play"/></svg></span>
+        <li>
+          <article class="rvw">
+            <button class="rvw__media" type="button" data-lightbox data-kind="photo" data-caption="Александр, Тверь · Мальтипу" aria-label="Фото щенка: Александр, Тверь">
+              <img src="../../assets/img/rv-maltipu-449.jpg" alt="Абрикосовый щенок мальтипу на руке у хозяина" width="960" height="1280" loading="lazy" decoding="async">
             </button>
-            <div class="vrev__body">
-              <span class="vrev__top"><span class="stars" role="img" aria-label="Оценка 5 из 5"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg></span><span class="vrev__src">[Яндекс Карты]</span></span>
-              <blockquote class="vrev__text"><p>Бронировали за месяц: внесли предоплату, остаток оплатили при получении. В договоре всё расписано, сюрпризов не было. Хотелось бы больше фото в первые недели, но это мелочь.</p></blockquote>
-              <p class="vrev__who"><span class="ava" style="--c:var(--lilac)" aria-hidden="true">Е</span><span><b>Екатерина, Нижний Новгород</b><span>Мальтипу F1b · Масяня</span></span></p>
+            <div class="rvw__body">
+              <span class="stars" role="img" aria-label="Оценка 5 из 5"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg></span>
+              <blockquote class="rvw__text" id="rvw-aleksandr-tver" data-rvw-text>
+          <p>Покупал жене в подарок. В собаках не разбираюсь вообще, поэтому задал наверное сто вопросов) Ответили на все, без раздражения, помогли выбрать мальчика по характеру, чтобы был поспокойнее. Привезли в Тверь на машине прямо к дому. Жена плакала от счастья, так что спасибо 😁</p>    </blockquote>
+              <button class="rvw__more" type="button" data-rvw-toggle aria-controls="rvw-aleksandr-tver" aria-expanded="false" hidden>Читать полностью</button>
+              <p class="rvw__who"><b>Александр, Тверь</b><span>Мальтипу</span></p>
             </div>
           </article>
         </li>
-        <li data-breed="francuzskij-buldog">
-          <article class="vrev">
-            <button class="vrev__media" type="button" data-lightbox data-kind="video" data-caption="Отзыв: Сергей, Москва" aria-label="Смотреть видеоотзыв: Сергей, Москва">
-              <img src="../../assets/img/pup-buldog-cream.jpg" alt="Кремовый щенок французского бульдога в светлой квартире" width="928" height="1152" loading="lazy" decoding="async">
-              <span class="mcard__play" aria-hidden="true"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-play"/></svg></span>
+        <li>
+          <article class="rvw">
+            <button class="rvw__media" type="button" data-lightbox data-kind="photo" data-caption="Сергей Н., Воронеж · Французский бульдог" aria-label="Фото щенка: Сергей Н., Воронеж">
+              <img src="../../assets/img/rv-buldog-75.jpg" alt="Палевый щенок французского бульдога на руках у девушки" width="768" height="1024" loading="lazy" decoding="async">
             </button>
-            <div class="vrev__body">
-              <span class="vrev__top"><span class="stars" role="img" aria-label="Оценка 5 из 5"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg></span><span class="vrev__src">[Google]</span></span>
-              <blockquote class="vrev__text"><p>Ездили в питомник смотреть вживую. Чисто, щенки с мамой, никто не торопил с решением. Луна теперь ходит хвостом за нашим сыном, а вечером засыпает у него в ногах.</p></blockquote>
-              <p class="vrev__who"><span class="ava" style="--c:var(--coral)" aria-hidden="true">С</span><span><b>Сергей, Москва</b><span>Французский бульдог · Луна</span></span></p>
+            <div class="rvw__body">
+              <span class="stars" role="img" aria-label="Оценка 5 из 5"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg></span>
+              <blockquote class="rvw__text" id="rvw-sergej-luna" data-rvw-text>
+          <p>Брали палевую девочку Луну для жены. Сначала смотрели объявления, но там половина перекупщики, а тут сразу показали родителей и ответили на все вопросы. Внесли предоплату, через две недели привезли на машине прямо домой.</p><p>Луне 4 месяца, ест хорошо, по ветеринару всё чисто, тьфу-тьфу. Единственное — желудок чувствительный, корм меняли только после консультации с куратором. В общем довольны, рекомендую.</p>    </blockquote>
+              <button class="rvw__more" type="button" data-rvw-toggle aria-controls="rvw-sergej-luna" aria-expanded="false" hidden>Читать полностью</button>
+              <p class="rvw__who"><b>Сергей Н., Воронеж</b><span>Французский бульдог</span></p>
+            </div>
+          </article>
+        </li>
+        <li>
+          <article class="rvw">
+            <button class="rvw__media" type="button" data-lightbox data-kind="photo" data-caption="Алина, Краснодар · Той-пудель" aria-label="Фото щенка: Алина, Краснодар">
+              <img src="../../assets/img/rv-pudel-335.jpg" alt="Рыжий щенок той-пуделя в руке на фоне белых цветов" width="960" height="1280" loading="lazy" decoding="async">
+            </button>
+            <div class="rvw__body">
+              <span class="stars" role="img" aria-label="Оценка 5 из 5"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg></span>
+              <blockquote class="rvw__text" id="rvw-alina-iriska" data-rvw-text>
+          <p>Очень долго выбирала между мальтипу и той-пуделем. В питомнике честно рассказали плюсы и минусы обоих, и я взяла пуделя. Ни разу не пожалела!</p><p>Моя Ириска красная, очень ласковая, ходит за мной по пятам. Доставили в Краснодар самолётом, встречала в аэропорту, всё прошло чётко, с куратором были на связи всё время. В 4 месяца сходили на первый груминг, мастер сказала, что шерсть отличная 🐾</p>    </blockquote>
+              <button class="rvw__more" type="button" data-rvw-toggle aria-controls="rvw-alina-iriska" aria-expanded="false" hidden>Читать полностью</button>
+              <p class="rvw__who"><b>Алина, Краснодар</b><span>Той-пудель</span></p>
+            </div>
+          </article>
+        </li>
+        <li>
+          <article class="rvw">
+            <button class="rvw__media" type="button" data-lightbox data-kind="photo" data-caption="Наталья Воронцова, Екатеринбург · Бордер-колли" aria-label="Фото щенка: Наталья Воронцова, Екатеринбург">
+              <img src="../../assets/img/rv-kolli-131.jpg" alt="Девушка держит голубого мраморного щенка бордер-колли" width="1067" height="1600" loading="lazy" decoding="async">
+            </button>
+            <div class="rvw__body">
+              <span class="stars" role="img" aria-label="Оценка 5 из 5"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg></span>
+              <blockquote class="rvw__text" id="rvw-natalya-graf" data-rvw-text>
+          <p>Мраморного мальчика забронировали, когда ему было 3 недели. Всё это время каждую неделю присылали фото и видео, как он растёт, это было очень трогательно.</p><p>Забирали в 2,5 месяца, ехали из Екатеринбурга на машине. С собой нам собрали целый пакет: корм, пелёнки, игрушку с запахом мамы. У Графа голубые глаза и характер настоящего пастуха — пытается пасти кота 😂 Спасибо питомнику!</p>    </blockquote>
+              <button class="rvw__more" type="button" data-rvw-toggle aria-controls="rvw-natalya-graf" aria-expanded="false" hidden>Читать полностью</button>
+              <p class="rvw__who"><b>Наталья Воронцова, Екатеринбург</b><span>Бордер-колли</span></p>
+            </div>
+          </article>
+        </li>
+        <li>
+          <article class="rvw">
+            <button class="rvw__media" type="button" data-lightbox data-kind="photo" data-caption="Екатерина Л., Химки · Мальтипу" aria-label="Фото щенка: Екатерина Л., Химки">
+              <img src="../../assets/img/rv-maltipu-381.jpg" alt="Рыжий щенок мальтипу на ладони" width="960" height="1280" loading="lazy" decoding="async">
+            </button>
+            <div class="rvw__body">
+              <span class="stars" role="img" aria-label="Оценка 5 из 5"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg></span>
+              <blockquote class="rvw__text" id="rvw-ekaterina-masyanya" data-rvw-text>
+          <p>Огромное спасибо за нашу рыжую Масяню!!! 🧡 Взяли в подарок дочке на день рождения, теперь не знаю, кто из нас больше рад)) Приучена к пелёнке, спит всю ночь, утром будит нас поцелуями.</p>    </blockquote>
+              <button class="rvw__more" type="button" data-rvw-toggle aria-controls="rvw-ekaterina-masyanya" aria-expanded="false" hidden>Читать полностью</button>
+              <p class="rvw__who"><b>Екатерина Л., Химки</b><span>Мальтипу</span></p>
+            </div>
+          </article>
+        </li>
+        <li>
+          <article class="rvw">
+            <button class="rvw__media" type="button" data-lightbox data-kind="photo" data-caption="Татьяна Ш., Нижний Новгород · Французский бульдог" aria-label="Фото щенка: Татьяна Ш., Нижний Новгород">
+              <img src="../../assets/img/rv-buldog-55.jpg" alt="Голубой щенок французского бульдога идёт навстречу" width="1102" height="1600" loading="lazy" decoding="async">
+            </button>
+            <div class="rvw__body">
+              <span class="stars" role="img" aria-label="Оценка 5 из 5"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg></span>
+              <blockquote class="rvw__text" id="rvw-tatyana-bruno" data-rvw-text>
+          <p>Оставляю отзыв спустя полгода, как обещала) Бруно уже 8 месяцев. Здоровый, активный, спина и дыхание в норме — для французов это очень важно, мы перед покупкой много про это читали. Нам заранее показали видео, как дышат родители на прогулке.</p><p>В Нижний привезли на машине с куратором, приехали вечером, всё рассказали, покормили при нас. Очень благодарны 🙏</p>    </blockquote>
+              <button class="rvw__more" type="button" data-rvw-toggle aria-controls="rvw-tatyana-bruno" aria-expanded="false" hidden>Читать полностью</button>
+              <p class="rvw__who"><b>Татьяна Ш., Нижний Новгород</b><span>Французский бульдог</span></p>
+            </div>
+          </article>
+        </li>
+        <li>
+          <article class="rvw">
+            <button class="rvw__media" type="button" data-lightbox data-kind="photo" data-caption="ирина миронова, Москва · Мальтипу" aria-label="Фото щенка: ирина миронова, Москва">
+              <img src="../../assets/img/rv-maltipu-418.jpg" alt="Абрикосовый кудрявый щенок мальтипу на руке" width="1200" height="1600" loading="lazy" decoding="async">
+            </button>
+            <div class="rvw__body">
+              <span class="stars" role="img" aria-label="Оценка 5 из 5"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg></span>
+              <blockquote class="rvw__text" id="rvw-irina-persik" data-rvw-text>
+          <p>Спасибо питомнику за Персика! Абрикосовый, кудрявый, как на фото, даже лучше. К пелёнке был приучен, у нас за пару дней освоился. Детям 5 и 8 лет, тискают его постоянно, он терпит и ходит за ними хвостом 😊</p>    </blockquote>
+              <button class="rvw__more" type="button" data-rvw-toggle aria-controls="rvw-irina-persik" aria-expanded="false" hidden>Читать полностью</button>
+              <p class="rvw__who"><b>ирина миронова, Москва</b><span>Мальтипу</span></p>
+            </div>
+          </article>
+        </li>
+        <li>
+          <article class="rvw">
+            <button class="rvw__media" type="button" data-lightbox data-kind="photo" data-caption="Максим, Москва · Бордер-колли" aria-label="Фото щенка: Максим, Москва">
+              <img src="../../assets/img/rv-kolli-170.jpg" alt="Голубой мраморный бордер-колли лежит рядом с хозяином на осенней траве" width="1069" height="1600" loading="lazy" decoding="async">
+            </button>
+            <div class="rvw__body">
+              <span class="stars" role="img" aria-label="Оценка 5 из 5"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg></span>
+              <blockquote class="rvw__text" id="rvw-maksim-berri" data-rvw-text>
+          <p>Брал собаку под спорт, аджилити. Заводчик помог выбрать из помёта самого контактного щенка, и не прогадали. Сейчас Бэрри 10 месяцев, начали заниматься с тренером, тренер говорит, что щенок очень хорошо социализирован. Спасибо за честность и помощь, пишу вам до сих пор по любому поводу)</p>    </blockquote>
+              <button class="rvw__more" type="button" data-rvw-toggle aria-controls="rvw-maksim-berri" aria-expanded="false" hidden>Читать полностью</button>
+              <p class="rvw__who"><b>Максим, Москва</b><span>Бордер-колли</span></p>
+            </div>
+          </article>
+        </li>
+        <li>
+          <article class="rvw">
+            <button class="rvw__media" type="button" data-lightbox data-kind="photo" data-caption="Виктория С., Ярославль · Той-пудель" aria-label="Фото щенка: Виктория С., Ярославль">
+              <img src="../../assets/img/rv-pudel-292.jpg" alt="Рыжий щенок той-пуделя выглядывает из белой лежанки" width="1200" height="1600" loading="lazy" decoding="async">
+            </button>
+            <div class="rvw__body">
+              <span class="stars" role="img" aria-label="Оценка 5 из 5"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg></span>
+              <blockquote class="rvw__text" id="rvw-viktoriya-yaroslavl" data-rvw-text>
+          <p>Купили девочку той-пуделя в июне. Плюсы: щенок здоровый, прививки по возрасту, метрика, договор. Постоянно на связи, отвечают быстро даже вечером.</p><p>Минусы: ждали дольше, чем думали, малышку отдали только после второй прививки и карантина. Но сейчас понимаю, что так правильно.</p>    </blockquote>
+              <button class="rvw__more" type="button" data-rvw-toggle aria-controls="rvw-viktoriya-yaroslavl" aria-expanded="false" hidden>Читать полностью</button>
+              <p class="rvw__who"><b>Виктория С., Ярославль</b><span>Той-пудель</span></p>
+            </div>
+          </article>
+        </li>
+        <li>
+          <article class="rvw">
+            <button class="rvw__media" type="button" data-lightbox data-kind="photo" data-caption="Кристина, Самара · Французский бульдог" aria-label="Фото щенка: Кристина, Самара">
+              <img src="../../assets/img/rv-buldog-65.jpg" alt="Девушка держит на коленях голубого щенка французского бульдога" width="960" height="1280" loading="lazy" decoding="async">
+            </button>
+            <div class="rvw__body">
+              <span class="stars" role="img" aria-label="Оценка 5 из 5"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg></span>
+              <blockquote class="rvw__text" id="rvw-kristina-samara" data-rvw-text>
+          <p>Голубая девочка с белым пятнышком на груди, как и хотели ❤️ Искали именно такую, нашли тут. По видеосвязи показали всех щенков из помёта, даже как они едят. В Самару летела со мной в салоне, перенесла спокойно, спала в переноске. Дома через пару дней освоилась, уже командует котом.</p>    </blockquote>
+              <button class="rvw__more" type="button" data-rvw-toggle aria-controls="rvw-kristina-samara" aria-expanded="false" hidden>Читать полностью</button>
+              <p class="rvw__who"><b>Кристина, Самара</b><span>Французский бульдог</span></p>
+            </div>
+          </article>
+        </li>
+        <li>
+          <article class="rvw">
+            <button class="rvw__media" type="button" data-lightbox data-kind="photo" data-caption="Денис З., Королёв · Мальтипу" aria-label="Фото щенка: Денис З., Королёв">
+              <img src="../../assets/img/rv-maltipu-442.jpg" alt="Бело-кремовый щенок мальтипу на руке во дворе" width="960" height="1280" loading="lazy" decoding="async">
+            </button>
+            <div class="rvw__body">
+              <span class="stars" role="img" aria-label="Оценка 5 из 5"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg></span>
+              <blockquote class="rvw__text" id="rvw-denis-korolev" data-rvw-text>
+          <p>Щенок отличный, здоровый, игривый, дети в восторге. Все документы отдали, договор подписали на месте. Рекомендую 👍</p>    </blockquote>
+              <button class="rvw__more" type="button" data-rvw-toggle aria-controls="rvw-denis-korolev" aria-expanded="false" hidden>Читать полностью</button>
+              <p class="rvw__who"><b>Денис З., Королёв</b><span>Мальтипу</span></p>
+            </div>
+          </article>
+        </li>
+        <li>
+          <article class="rvw">
+            <button class="rvw__media" type="button" data-lightbox data-kind="photo" data-caption="Людмила Петровна, Рязань · Той-пудель" aria-label="Фото щенка: Людмила Петровна, Рязань">
+              <img src="../../assets/img/rv-pudel-303.jpg" alt="Рыжий той-пудель идёт по сухой траве" width="1280" height="853" loading="lazy" decoding="async">
+            </button>
+            <div class="rvw__body">
+              <span class="stars" role="img" aria-label="Оценка 5 из 5"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg></span>
+              <blockquote class="rvw__text" id="rvw-lyudmila-timosha" data-rvw-text>
+          <p>Мне 63 года, хотела маленькую спокойную собачку, чтобы гулять вдвоём. Дочь нашла этот питомник. Мне всё подробно объяснили по телефону, не торопили. Мой Тимоша уже большой мальчик, гуляем два раза в день по парку, на поводке идёт хорошо. Огромное спасибо за такого друга.</p>    </blockquote>
+              <button class="rvw__more" type="button" data-rvw-toggle aria-controls="rvw-lyudmila-timosha" aria-expanded="false" hidden>Читать полностью</button>
+              <p class="rvw__who"><b>Людмила Петровна, Рязань</b><span>Той-пудель</span></p>
+            </div>
+          </article>
+        </li>
+        <li>
+          <article class="rvw">
+            <button class="rvw__media" type="button" data-lightbox data-kind="photo" data-caption="Анна Б., Балашиха · Бордер-колли" aria-label="Фото щенка: Анна Б., Балашиха">
+              <img src="../../assets/img/rv-kolli-196.jpg" alt="Чёрно-белый щенок бордер-колли встал на задние лапы перед хозяйкой" width="1067" height="1600" loading="lazy" decoding="async">
+            </button>
+            <div class="rvw__body">
+              <span class="stars" role="img" aria-label="Оценка 5 из 5"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg></span>
+              <blockquote class="rvw__text" id="rvw-anna-dzhek" data-rvw-text>
+          <p>Живём в частном доме, давно мечтали о бордер-колли. Чёрно-белый Джек с нами 3 месяца. К пелёнке его приучили ещё в питомнике, но мы сразу перевели на улицу, за неделю привык.</p><p>Очень ласковый, но если его не занять — грызёт всё подряд)) Куратор подсказал игрушки и задания для головы, стало легче. Спасибо!</p>    </blockquote>
+              <button class="rvw__more" type="button" data-rvw-toggle aria-controls="rvw-anna-dzhek" aria-expanded="false" hidden>Читать полностью</button>
+              <p class="rvw__who"><b>Анна Б., Балашиха</b><span>Бордер-колли</span></p>
+            </div>
+          </article>
+        </li>
+        <li>
+          <article class="rvw">
+            <button class="rvw__media" type="button" data-lightbox data-kind="photo" data-caption="Светлана К., Москва · Мальтипу" aria-label="Фото щенка: Светлана К., Москва">
+              <img src="../../assets/img/rv-maltipu-496.jpg" alt="Абрикосовый щенок мальтипу в кружевном воротнике на клетчатом пледе" width="960" height="1280" loading="lazy" decoding="async">
+            </button>
+            <div class="rvw__body">
+              <span class="stars" role="img" aria-label="Оценка 5 из 5"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg><svg class="i" aria-hidden="true" focusable="false"><use href="#i-star"/></svg></span>
+              <blockquote class="rvw__text" id="rvw-svetlana-moti" data-rvw-text>
+          <p>Искала мальтипу небольшого размера. Мне честно сказали, что точный вес взрослой собаки никто не гарантирует, но по родителям примерно 2,5–3 кг. Сейчас Моти 10 месяцев, 2,8 кг, всё совпало.</p><p>Глазки не текут, ничем не протираем, с желудком проблем нет. Отдельное спасибо за пожизненную консультацию, пользуюсь регулярно 🙂</p>    </blockquote>
+              <button class="rvw__more" type="button" data-rvw-toggle aria-controls="rvw-svetlana-moti" aria-expanded="false" hidden>Читать полностью</button>
+              <p class="rvw__who"><b>Светлана К., Москва</b><span>Мальтипу</span></p>
             </div>
           </article>
         </li>
       </ul>
-
-<div class="empty" data-rf-empty hidden>
-  <span class="empty__faces" aria-hidden="true"><span class="face tone--peach"><img src="../../assets/img/studio-maltipu-peach.jpg" alt="" width="1024" height="1024" loading="lazy" decoding="async"></span><span class="face tone--powder"><img src="../../assets/img/studio-buldog-blue.jpg" alt="" width="1024" height="1024" loading="lazy" decoding="async"></span><span class="face tone--butter"><img src="../../assets/img/studio-pudel-yellow.jpg" alt="" width="1024" height="1024" loading="lazy" decoding="async"></span><span class="face tone--sage"><img src="../../assets/img/studio-kolli-green.jpg" alt="" width="1024" height="1024" loading="lazy" decoding="async"></span></span>
-  <p class="empty__title">Отзывов о такой породе пока нет</p>
-<p class="empty__text">Посмотрите отзывы о других породах или спросите куратора — дадим контакты владельцев.</p>  <div class="empty__actions">
-      <button class="btn btn--ink" type="button" data-rf-reset>Показать все отзывы</button>
-  </div>
-</div>    </section>
+      <div class="tr-rvws__foot">
+        <button class="btn btn--white btn--lg" type="button" data-rvw-grid-more hidden>Показать ещё отзывы</button>
+      </div>
+    </section>
 
     <section class="section container" id="preimushchestva" aria-labelledby="preimushchestva-title">
   <div class="sec-head">
@@ -386,37 +548,15 @@
 </section>
 
 
-    <section class="section container" id="eshchyo" aria-labelledby="eshchyo-title">
-      <div class="sec-head">
-  <h2 class="h2" id="eshchyo-title">Ещё о питомнике</h2>
-
-</div>
-      <ul class="ltiles ltiles--2">
-  <li>
-    <a class="ltile ltile--white" href="../o-pitomnike/">
-<span class="ltile__img"><img src="../../assets/img/about-four-breeds.jpg" alt="" width="1536" height="1024" loading="lazy" decoding="async"></span>
-      <span class="ltile__txt"><span class="ltile__title">О питомнике</span><span class="ltile__line">9 лет в Москве, 640+ выпускников</span></span>
-      <span class="tcta tcta--soft">Подробнее <svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></span>
-    </a>
-  </li>
-  <li>
-    <a class="ltile ltile--white" href="../dokumenty-i-garantii/">
-<span class="ltile__img"><img src="../../assets/img/documents.jpg" alt="" width="1264" height="848" loading="lazy" decoding="async"></span>
-      <span class="ltile__txt"><span class="ltile__title">Документы и гарантии</span><span class="ltile__line">Договор, ветпаспорт, прививки</span></span>
-      <span class="tcta tcta--soft">Подробнее <svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></span>
-    </a>
-  </li>
-</ul>
-    </section>
-
+    <!-- ================= ЩЕНКИ В НАЛИЧИИ — как каталог на главной: карточки и кнопка под сеткой ================= -->
     <section class="section container" id="pups" aria-labelledby="pups-title">
-  <div class="sec-head">
+      <div class="sec-head">
   <h2 class="h2" id="pups-title">Щенки в наличии</h2>
-<a class="btn btn--coral" href="../shchenki/">Весь каталог — 60</a>
+
 </div>
-  <ul class="pups pups--strip" data-reveal="items">
-    <li class="pups__item">
-      <article class="pup ct-card tone--peach ct-card--life" data-pup data-slug="maltipu-f1-krem-2026-08" data-breed="maltipu" data-name="Пломбир" data-desc="Мальтипу F1 · 10 недель · мальчик" data-img="pup-maltipu-408.jpg">
+      <ul class="pups hm-pups tr-pups" data-reveal="items">
+        <li class="pups__item">
+          <article class="pup ct-card tone--peach ct-card--life" data-pup data-slug="maltipu-f1-krem-2026-08" data-breed="maltipu" data-name="Пломбир" data-desc="Мальтипу F1 · 10 недель · мальчик" data-img="pup-maltipu-408.jpg">
 <a class="pup__media ct-card__media" href="../shchenki/maltipu-f1-krem-2026-08/" tabindex="-1" aria-hidden="true">    <img src="../../assets/img/pup-maltipu-408.jpg" alt="Кремовый щенок мальтипу Пломбир на руках" width="1200" height="1600" style="object-position:50% 38%" loading="lazy" decoding="async">
 </a>
   <button class="fav ct-card__fav" type="button" aria-pressed="false" aria-label="В избранное: Пломбир"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-heart"/></svg></button>  <div class="pup__body ct-card__body">
@@ -428,9 +568,9 @@
     </div>
   </div>
 </article>
-    </li>
-    <li class="pups__item">
-      <article class="pup ct-card tone--peach ct-card--life" data-pup data-slug="maltipu-f1b-mini-ryzhij-2026-07" data-breed="maltipu" data-name="Ириска" data-desc="Мальтипу F1b мини · 12 недель · девочка" data-img="pup-maltipu-480.jpg">
+        </li>
+        <li class="pups__item">
+          <article class="pup ct-card tone--peach ct-card--life" data-pup data-slug="maltipu-f1b-mini-ryzhij-2026-07" data-breed="maltipu" data-name="Ириска" data-desc="Мальтипу F1b мини · 12 недель · девочка" data-img="pup-maltipu-480.jpg">
 <a class="pup__media ct-card__media" href="../shchenki/maltipu-f1b-mini-ryzhij-2026-07/" tabindex="-1" aria-hidden="true">    <img src="../../assets/img/pup-maltipu-480.jpg" alt="Рыжая малышка мальтипу Ириска в кружевном воротничке" width="960" height="1280" style="object-position:50% 40%" loading="lazy" decoding="async">
 </a>
   <button class="fav ct-card__fav" type="button" aria-pressed="false" aria-label="В избранное: Ириска"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-heart"/></svg></button>  <div class="pup__body ct-card__body">
@@ -442,9 +582,9 @@
     </div>
   </div>
 </article>
-    </li>
-    <li class="pups__item">
-      <article class="pup ct-card tone--powder ct-card--life" data-pup data-slug="francuzskij-buldog-palevyj-2026-07" data-breed="francuzskij-buldog" data-name="Бруно" data-desc="Французский бульдог · 13 недель · мальчик" data-img="cl-buldog-47.jpg">
+        </li>
+        <li class="pups__item">
+          <article class="pup ct-card tone--powder ct-card--life" data-pup data-slug="francuzskij-buldog-palevyj-2026-07" data-breed="francuzskij-buldog" data-name="Бруно" data-desc="Французский бульдог · 13 недель · мальчик" data-img="cl-buldog-47.jpg">
 <a class="pup__media ct-card__media" href="../shchenki/francuzskij-buldog-palevyj-2026-07/" tabindex="-1" aria-hidden="true">    <img src="../../assets/img/cl-buldog-47.jpg" alt="Палевый щенок французского бульдога Бруно с плюшевым тапком" width="1001" height="1200" style="object-position:50% 40%" loading="lazy" decoding="async">
 </a>
   <button class="fav ct-card__fav" type="button" aria-pressed="false" aria-label="В избранное: Бруно"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-heart"/></svg></button>  <div class="pup__body ct-card__body">
@@ -456,9 +596,9 @@
     </div>
   </div>
 </article>
-    </li>
-    <li class="pups__item">
-      <article class="pup ct-card tone--butter ct-card--life" data-pup data-slug="toj-pudel-abrikos-2026-07" data-breed="toj-pudel" data-name="Марго" data-desc="Той-пудель · 14 недель · девочка" data-img="pup-pudel-352.jpg">
+        </li>
+        <li class="pups__item">
+          <article class="pup ct-card tone--butter ct-card--life" data-pup data-slug="toj-pudel-abrikos-2026-07" data-breed="toj-pudel" data-name="Марго" data-desc="Той-пудель · 14 недель · девочка" data-img="pup-pudel-352.jpg">
 <a class="pup__media ct-card__media" href="../shchenki/toj-pudel-abrikos-2026-07/" tabindex="-1" aria-hidden="true">    <img src="../../assets/img/pup-pudel-352.jpg" alt="Абрикосовый щенок той-пуделя Марго сидит в саду" width="960" height="1280" style="object-position:50% 45%" loading="lazy" decoding="async">
 </a>
   <button class="fav ct-card__fav" type="button" aria-pressed="false" aria-label="В избранное: Марго"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-heart"/></svg></button>  <div class="pup__body ct-card__body">
@@ -470,9 +610,69 @@
     </div>
   </div>
 </article>
-    </li>
-  </ul>
-</section>
+        </li>
+        <li class="pups__item">
+          <article class="pup ct-card tone--sage ct-card--life" data-pup data-slug="border-kolli-goluboj-mramor-2026-07" data-breed="border-kolli" data-name="Скай" data-desc="Бордер-колли · 11 недель · мальчик" data-img="pup-kolli-109.jpg">
+<a class="pup__media ct-card__media" href="../shchenki/border-kolli-goluboj-mramor-2026-07/" tabindex="-1" aria-hidden="true">    <img src="../../assets/img/pup-kolli-109.jpg" alt="Щенок бордер-колли Скай, голубой мрамор, лежит на траве" width="1254" height="1254" style="object-position:50% 50%" loading="lazy" decoding="async">
+</a>
+  <button class="fav ct-card__fav" type="button" aria-pressed="false" aria-label="В избранное: Скай"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-heart"/></svg></button>  <div class="pup__body ct-card__body">
+    <h3 class="pup__name"><a href="../shchenki/border-kolli-goluboj-mramor-2026-07/">Скай</a></h3>
+    <p class="pup__meta"><span>Бордер-колли&nbsp;·</span> <span>11 недель&nbsp;·</span> <span>мальчик</span></p>
+    <div class="ct-card__actions">
+      <button class="btn btn--white ct-card__price" type="button" data-open-modal data-modal-kind="puppy" aria-label="Узнать цену: Скай">Узнать цену</button>
+      <a class="btn btn--outline ct-card__more" href="../shchenki/border-kolli-goluboj-mramor-2026-07/" aria-label="Подробнее: Скай">Подробнее</a>
+    </div>
+  </div>
+</article>
+        </li>
+        <li class="pups__item">
+          <article class="pup ct-card tone--butter ct-card--life" data-pup data-slug="toj-pudel-chernyj-2026-07" data-breed="toj-pudel" data-name="Уголёк" data-desc="Той-пудель · 12 недель · мальчик" data-img="pup-pudel-341.jpg">
+<a class="pup__media ct-card__media" href="../shchenki/toj-pudel-chernyj-2026-07/" tabindex="-1" aria-hidden="true">    <img src="../../assets/img/pup-pudel-341.jpg" alt="Чёрный щенок той-пуделя Уголёк на руках в саду" width="720" height="1280" style="object-position:50% 35%" loading="lazy" decoding="async">
+</a>
+  <button class="fav ct-card__fav" type="button" aria-pressed="false" aria-label="В избранное: Уголёк"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-heart"/></svg></button>  <div class="pup__body ct-card__body">
+    <h3 class="pup__name"><a href="../shchenki/toj-pudel-chernyj-2026-07/">Уголёк</a></h3>
+    <p class="pup__meta"><span>Той-пудель&nbsp;·</span> <span>12 недель&nbsp;·</span> <span>мальчик</span></p>
+    <div class="ct-card__actions">
+      <button class="btn btn--white ct-card__price" type="button" data-open-modal data-modal-kind="puppy" aria-label="Узнать цену: Уголёк">Узнать цену</button>
+      <a class="btn btn--outline ct-card__more" href="../shchenki/toj-pudel-chernyj-2026-07/" aria-label="Подробнее: Уголёк">Подробнее</a>
+    </div>
+  </div>
+</article>
+        </li>
+        <li class="pups__item">
+          <article class="pup ct-card tone--peach ct-card--life" data-pup data-slug="maltipu-f1-ryzhij-2026-07" data-breed="maltipu" data-name="Персик" data-desc="Мальтипу F1 · 11 недель · мальчик" data-img="pup-maltipu-376.jpg">
+<a class="pup__media ct-card__media" href="../shchenki/maltipu-f1-ryzhij-2026-07/" tabindex="-1" aria-hidden="true">    <img src="../../assets/img/pup-maltipu-376.jpg" alt="Рыжий щенок мальтипу Персик на розовой лежанке" width="1120" height="1280" style="object-position:50% 38%" loading="lazy" decoding="async">
+</a>
+  <button class="fav ct-card__fav" type="button" aria-pressed="false" aria-label="В избранное: Персик"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-heart"/></svg></button>  <div class="pup__body ct-card__body">
+    <h3 class="pup__name"><a href="../shchenki/maltipu-f1-ryzhij-2026-07/">Персик</a></h3>
+    <p class="pup__meta"><span>Мальтипу&nbsp;·</span> <span>11 недель&nbsp;·</span> <span>мальчик</span></p>
+    <div class="ct-card__actions">
+      <button class="btn btn--white ct-card__price" type="button" data-open-modal data-modal-kind="puppy" aria-label="Узнать цену: Персик">Узнать цену</button>
+      <a class="btn btn--outline ct-card__more" href="../shchenki/maltipu-f1-ryzhij-2026-07/" aria-label="Подробнее: Персик">Подробнее</a>
+    </div>
+  </div>
+</article>
+        </li>
+        <li class="pups__item">
+          <article class="pup ct-card tone--sage ct-card--life" data-pup data-slug="border-kolli-trehcvetnyj-2026-07" data-breed="border-kolli" data-name="Ральф" data-desc="Бордер-колли · 12 недель · мальчик" data-img="pup-kolli-112.jpg">
+<a class="pup__media ct-card__media" href="../shchenki/border-kolli-trehcvetnyj-2026-07/" tabindex="-1" aria-hidden="true">    <img src="../../assets/img/pup-kolli-112.jpg" alt="Трёхцветный щенок бордер-колли Ральф сидит на траве" width="1254" height="1254" style="object-position:50% 50%" loading="lazy" decoding="async">
+</a>
+  <button class="fav ct-card__fav" type="button" aria-pressed="false" aria-label="В избранное: Ральф"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-heart"/></svg></button>  <div class="pup__body ct-card__body">
+    <h3 class="pup__name"><a href="../shchenki/border-kolli-trehcvetnyj-2026-07/">Ральф</a></h3>
+    <p class="pup__meta"><span>Бордер-колли&nbsp;·</span> <span>12 недель&nbsp;·</span> <span>мальчик</span></p>
+    <div class="ct-card__actions">
+      <button class="btn btn--white ct-card__price" type="button" data-open-modal data-modal-kind="puppy" aria-label="Узнать цену: Ральф">Узнать цену</button>
+      <a class="btn btn--outline ct-card__more" href="../shchenki/border-kolli-trehcvetnyj-2026-07/" aria-label="Подробнее: Ральф">Подробнее</a>
+    </div>
+  </div>
+</article>
+        </li>
+      </ul>
+      <div class="hm-pups__foot">
+        <a class="btn btn--ink btn--lg" href="../shchenki/">Весь каталог <svg class="i" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></a>
+      </div>
+    </section>
+
 
     <section class="section container" id="poleznoe" aria-labelledby="poleznoe-title">
   <div class="sec-head">

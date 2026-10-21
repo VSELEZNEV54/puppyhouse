@@ -1236,6 +1236,8 @@
     t.classList.toggle('is-folded', over);
     btn.hidden = !over;
   };
+  /* скрытые карточки (display: none) не измерить — страница складывает их тексты, когда показывает (trust.js) */
+  window.DSH.foldReviews = (scope) => $$('[data-rvw-text]', scope).forEach(fold);
   if (rvTexts.length) {
     rvTexts.forEach((t) => {
       fold(t);
