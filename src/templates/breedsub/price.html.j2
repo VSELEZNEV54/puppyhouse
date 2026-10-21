@@ -1,8 +1,12 @@
-{#- /<breed>/cena/ — price page of a breed. No numbers or prices anywhere (client decision): factors, what is included,
-    honest «why not cheap», booking teaser, FAQ, CTA. Context from routes/breedsub.py:
+{#- /<breed>/cena/ — price page of a breed (client 21.10): «Сколько стоит щенок …?», what the price is made of, what is
+    included, «Почему не бывает дёшево» — what a cheap puppy saves on vs a kennel puppy, each side with an approximate
+    price range (breedsub.json → price_cheap / price_kennel; no prices of individual puppies), booking teaser, FAQ, CTA.
+    Coral main buttons as on the homepage (body.page-price, main.css). Context from routes/breedsub.py:
     b (breed), pg (copy, Markup), tint, faces, links_title, links. The layout adds «Щенки в наличии» (pups_breed = b). -#}
 {% extends "layouts/page.html.j2" %}
 {% import "breedsub/_parts.html.j2" as part %}
+
+{% block body_attrs %} class="page-price"{% endblock %}
 
 {% block page_css %}
   <link rel="stylesheet" href="/assets/css/breedsub.css">
@@ -11,7 +15,7 @@
 {% block sprite_extra %}{{ part.icons() }}{% endblock %}
 
 {% block hero %}
-    {% call ui.page_hero(pg.h1, lead=pg.lead, breed=b, eyebrow=pg.eyebrow, chips=pg.chips) %}
+    {% call ui.page_hero(pg.h1, lead=pg.lead, breed=b, eyebrow=pg.eyebrow, facts=[{'label': pg.hero_price_label, 'value': pg.price_kennel}]) %}
       {{ forms.price_button(cls='btn btn--ink btn--lg', breed=b.name) }}
       <a class="btn btn--white btn--lg" href="#pups">Щенки в&nbsp;наличии</a>
     {% endcall %}
@@ -50,7 +54,9 @@
 
     <section class="section container" id="nedorogo" aria-labelledby="nedorogo-title">
       {{ ui.section_head(pg.cheap_title, id='nedorogo-title', lead=pg.cheap_lead) }}
-      {{ part.vs({'title': pg.cheap_bad_title, 'items': pg.cheap_bad}, {'title': pg.cheap_good_title, 'items': pg.cheap_good}, tint, id='nedorogo') }}
+      {{ part.vs({'title': pg.cheap_bad_title, 'items': pg.cheap_bad, 'price': pg.price_cheap, 'price_label': pg.cheap_bad_label, 'note': pg.cheap_bad_note},
+                 {'title': pg.cheap_good_title, 'items': pg.cheap_good, 'price': pg.price_kennel, 'price_label': pg.cheap_good_label, 'note': pg.cheap_good_note},
+                 tint, id='nedorogo') }}
     </section>
 
     {{ part.cta(pg.cta_title, pg.cta_line, tint, faces=faces, breed=b.name) }}

@@ -11,13 +11,15 @@
 {%- endmacro %}
 
 {#- Two cards side by side: «no» (white, crosses) and «ok» (breed tint, checks). Used for «Почему не бывает дёшево»
-    and for the colour standard. card = {title, items:[{title, line?}], note?}. order: 'no-ok' | 'ok-no' -#}
+    and for the colour standard. card = {title, items:[{title, line?}], note?, price?, price_label?} — price: the
+    approximate range of that side on the price page («50–100 тыс. ₽»). order: 'no-ok' | 'ok-no' -#}
 {% macro vs(no, ok, tint, order='no-ok', id='vs') -%}
 <div class="bsub-vs">
   {% for side in (['no', 'ok'] if order == 'no-ok' else ['ok', 'no']) %}
   {%- set c = no if side == 'no' else ok %}
   <div class="bsub-vs__card bsub-vs__card--{{ side }}{{ ' tone--' ~ tint if side == 'ok' }}">
     <h3 class="bsub-vs__title" id="{{ id }}-{{ side }}">{{ c.title|typo }}</h3>
+    {% if c.get('price') %}<p class="bsub-vs__price">{% if c.get('price_label') %}<span>{{ c.price_label|typo }}</span>{% endif %}<b>{{ c.price|typo }}</b></p>{% endif %}
     <ul class="bsub-vs__list" aria-labelledby="{{ id }}-{{ side }}">
       {% for i in c['items'] %}
       <li class="bsub-vs__item">

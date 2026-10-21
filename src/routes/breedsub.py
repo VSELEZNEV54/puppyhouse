@@ -1,7 +1,8 @@
 """Breed sub-pages: price /<breed>/cena/ ×4 and varieties /<breed>/vidy-i-okrasy/ ×4 — two data-driven templates.
 Owns: src/routes/breedsub.py, src/templates/breedsub/, src/data/breedsub.json, assets/css/breedsub.css.
 Copy lives in breedsub.json (common.* + per-breed keys); breed urls and photo alts come from breeds.json,
-puppies (the «Щенки в наличии» strip) from puppies.json via the layout (pups_breed). No prices anywhere."""
+puppies (the «Щенки в наличии» strip) from puppies.json via the layout (pups_breed). Prices: only the approximate
+ranges of the price pages (client 21.10: price_cheap / price_kennel in breedsub.json), never a puppy's own price."""
 
 import copy as _copy
 import pathlib
@@ -76,10 +77,13 @@ def _price(common, own):
     docs = own.get("docs") or common["docs_rkf"]
     pg["incl"] = [_nb(docs if i == "DOCS" else i, "title", "line") for i in common["incl"]]
     pg["factors"] = [_nb(f, "title", "line") for f in own["factors"]]
-    pg["cheap_bad"] = [_nb(i, "title", "line") for i in common["cheap_bad"] + [own["cheap_bad"]]]
-    pg["cheap_good"] = [_nb(i, "title", "line") for i in common["cheap_good"] + [own["cheap_good"]]]
+    # «Почему не бывает дёшево» (client 21.10): what a cheap puppy saves on vs what the kennel's price is made of —
+    # the common points + the breed's own (lists), each side with its price range and a closing line
+    pg["cheap_bad"] = [_nb(i, "title", "line") for i in common["cheap_bad"] + own["cheap_bad"]]
+    pg["cheap_good"] = [_nb(i, "title", "line") for i in common["cheap_good"] + own["cheap_good"]]
     pg["booking"] = [_nb(s, "title", "text") for s in common["booking"]]
-    for k in ("h1", "lead", "factors_lead", "incl_lead", "cheap_lead", "cta_line", "booking_lead", "lead_line"):
+    for k in ("h1", "lead", "factors_lead", "incl_lead", "cheap_lead", "cheap_bad_note", "cheap_good_note", "cta_line",
+              "booking_lead", "lead_line"):
         pg[k] = nobr(pg[k])
     pg["faq"] = _faq(own["faq"])
     pg["seo"] = _seo(own["seo"])

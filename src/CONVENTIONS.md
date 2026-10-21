@@ -310,7 +310,7 @@ Breed `<select>` values are slugs (`forms.breed_options`). Never put the API URL
 
 ## Copy
 
-Russian, short sentences, warm and concrete. No prices anywhere (every puppy → «Узнать цену»), no «лучший», «№1». H2 ≤ 5 words, one-line lead ≤ 90 chars,
+Russian, short sentences, warm and concrete. No prices of puppies anywhere (every puppy → «Узнать цену»); the price pages /<breed>/cena/ show only approximate ranges (client 21.10, breedsub.json → price_cheap / price_kennel), no «лучший», «№1». H2 ≤ 5 words, one-line lead ≤ 90 chars,
 card line ≤ 60 chars, long SEO text only in `blocks.seo_block`, FAQ or article prose. Keywords: the semantic core CSV, target URL column.
 Facts about breeds — from `breeds.json` / `content/home.md`; anything unverified stays in `[brackets]`.
 `|typo` adds non-breaking spaces (after 1–2 letter words, before dashes, number + unit) and a word joiner after the hyphen of
