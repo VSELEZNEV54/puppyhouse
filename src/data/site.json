@@ -358,11 +358,6 @@
             "url": "/shchenki/"
           },
           {
-            "label": "Подбор породы — тест",
-            "url": "/podbor-porody/",
-            "icon": "sparkle"
-          },
-          {
             "label": "Бронь щенка",
             "url": "/rassrochka/"
           },
@@ -377,6 +372,11 @@
           {
             "label": "Щенок в подарок",
             "url": "/shchenok-v-podarok/"
+          },
+          {
+            "label": "Подбор породы — тест",
+            "url": "/podbor-porody/",
+            "icon": "sparkle"
           }
         ]
       },
