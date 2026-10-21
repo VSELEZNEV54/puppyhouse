@@ -42,7 +42,13 @@
     "city": "Москва",
     "street": "Ташкентская ул., 19",
     "short": "Москва, Ташкентская ул., 19",
-    "visit": "Приезд по предварительной записи"
+    "visit": "Приезд по предварительной записи",
+    "map": {
+      "_note": "Яндекс Карты (клиент 21.10): embed — карта с меткой для страницы «Контакты» (iframe), url — ссылка клиента на дом, route — маршрут до питомника. Точка: Ташкентская ул., 19 — 55.702064, 37.814348.",
+      "embed": "https://yandex.ru/map-widget/v1/?ll=37.814348%2C55.702064&z=16&pt=37.814348%2C55.702064%2Cpm2rdm",
+      "url": "https://yandex.ru/maps/213/moscow/house/tashkentskaya_ulitsa_19/Z04YfgZkSkEPQFtvfXtxc3xlYA==/?ll=37.814348%2C55.702064&z=16",
+      "route": "https://yandex.ru/maps/?rtext=~55.702064%2C37.814348&rtt=auto"
+    }
   },
   "messengers": {
     "telegram": {
