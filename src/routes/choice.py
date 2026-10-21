@@ -169,6 +169,9 @@ def _quiz(cfg, breeds, bm):
     q["seo"] = _seo(cfg["quiz"]["seo"])
     q["rows"] = _rows(cfg, q["breeds"])
     q["cols"] = q["breeds"]  # ui.cmp_table keeps «Бордер-колли» on one line itself
+    # «Щенки в наличии» (client 21.10): two puppies of every breed, breed after breed in each row of four
+    per = [sort_puppies(b["puppies"]) for b in q["breeds"]]
+    q["catalog"] = [pups[i] for i in range(2) for pups in per if len(pups) > i]
     return q
 
 
