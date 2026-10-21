@@ -2,7 +2,7 @@
 """What is still a placeholder on the site, by how much it matters for the launch.
 
   blocking  — the law needs it before the site takes real requests: the operator in the consent texts (152-ФЗ ст. 9:
-              name and address of the operator), the privacy policy, the requisites in the footer and on «Контакты».
+              name and address of the operator), the privacy policy, the requisites in the footer, the address on «Контакты».
               NB: a consent version is fixed in the database on the first deploy (migrate refuses an edited
               version), so fill these BEFORE the first production deploy — or add a new version afterwards.
   contacts  — the phone, e-mail, messenger links and the address visitors use to reach you
@@ -33,7 +33,7 @@ RULES = [
     ("delivery-service.json", "privacy", "blocking", "Политика конфиденциальности: оператор, почта, сроки, меры защиты",
      "/politika-konfidencialnosti/"),
     ("site.json", "footer", "blocking", "Подвал каждой страницы: ФИО / наименование, ИНН, ОГРН(ИП)", None),
-    ("delivery-service.json", "contacts", "blocking", "Страница «Контакты»: реквизиты и адрес", "/kontakty/"),
+    ("delivery-service.json", "contacts", "blocking", "Страница «Контакты»: адрес и как приехать", "/kontakty/"),
     ("site.json", "email", "contacts", "Почта для связи", None),
     ("site.json", "address", "contacts", "Адрес питомника", None),
     ("site.json", "messengers", "contacts", "Ссылки Telegram, MAX", None),

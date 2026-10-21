@@ -172,15 +172,17 @@ def faq_page(data):
 
 
 def contacts_page(data):
-    c = nb(data["delivery_service"]["contacts"], "lead", "visit_note")
+    c = nb(data["delivery_service"]["contacts"], "lead", "lead_no_phone", "visit_note")
     c["visit"] = [nb(x, "title", "text") for x in c["visit"]]
     return page(
         "/kontakty/", "delivery/contacts.html.j2",
         "Контакты питомника домщенков.рф в Москве",
-        "Телефон, Telegram и WhatsApp питомника щенков домщенков.рф. Москва, приезд по записи. "
-        "Ответим в течение рабочего дня по московскому времени.",
+        "Контакты питомника щенков домщенков.рф: почта, адрес в Москве и карта проезда. Приезд по записи, "
+        "ответим в течение рабочего дня.",
         [("Контакты", None)],
         c=c,
+        pups_strip=False,
+        blog_strip=False,
     )
 
 
