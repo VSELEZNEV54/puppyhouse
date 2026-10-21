@@ -1111,10 +1111,9 @@ legend.field__label { margin-bottom: 8px; }
 .modal__fail .form-fail { margin: 14px 0 24px; align-self: stretch; }
 
 /* =========================================================
-   ПОДВАЛ (правка 21.10, по скринам клиента). Одна сетка в 4 колонки на все ряды — колонки стоят ровно друг под
-   другом: 1) логотип · «Покупка» · «Питомник» · контакты справа; 2) колонка на породу; 3) города доставки;
-   4) реквизиты и подпись студии под колонкой контактов. Ссылки одного размера и цвета, «Все … →» — чёрные со
-   стрелкой. Планшет — 2 колонки, телефон и узкий планшет (≤ 699 px: уже две колонки не вмещают «Виды и окрасы
+   ПОДВАЛ (правка 21.10, по скринам клиента). 1) логотип · «Покупка» · «Породы» · «Питомник» · контакты справа;
+   2) колонка на породу: окрасы, виды, цена; 3) города доставки; 4) реквизиты и подпись студии. Ссылки одного
+   размера и цвета, «Все условия доставки →» — чёрная со стрелкой. Планшет — 2 колонки, телефон (≤ 760 px, как во всём сайте: уже две колонки не вмещают «Виды и окрасы
    французского бульдога») — одна: каждая ссылка своей строкой 46 px (правка 15.10), породы и города —
    раскрывающиеся списки (main.js закрывает их там же)
    ========================================================= */
@@ -1125,6 +1124,10 @@ legend.field__label { margin-bottom: 8px; }
 .footer__row { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.45fr) minmax(0, 1fr) minmax(0, 1.35fr); gap: 40px 32px; }
 .footer__row + .footer__row { margin-top: 40px; padding-top: 36px; border-top: 1px solid var(--line); }
 
+/* верхний ряд (21.10: добавили «Породы») — пять колонок по ширине содержимого с равными промежутками:
+   логотип у левого края, контакты у правого. Ссылки и контакты не переносятся, на узком компьютере
+   сужается только строка о питомнике под логотипом */
+.footer__row.footer__top { grid-template-columns: minmax(min-content, auto) repeat(4, max-content); justify-content: space-between; column-gap: 24px; }
 .footer__brand { display: flex; flex-direction: column; align-items: flex-start; gap: 16px; }
 .footer .logo__sub { display: block; white-space: nowrap; }
 .footer__about { max-width: 28ch; font-size: 14.5px; line-height: 1.45; color: var(--muted); }
@@ -1139,6 +1142,13 @@ legend.field__label { margin-bottom: 8px; }
 .footer .flink-all:hover { text-decoration: none; }
 .flink-all:hover .i { transform: translateX(3px); }
 .footer a[aria-current="page"] { color: var(--muted); text-decoration: none; pointer-events: none; }
+/* «Подбор породы — тест» выделен, как в меню: сиреневый кружок с искоркой; кружок не раздвигает строки списка */
+.fcol .flink-ico { display: inline-flex; align-items: center; gap: 10px; margin: -3px 0; color: var(--ink); font-weight: 500; }
+.flink-ico span { white-space: nowrap; }
+.flink-ico .ico { width: 26px; height: 26px; }
+.flink-ico .ico .i { width: 14px; height: 14px; }
+.fcol .flink-ico:hover { text-decoration: none; }
+.flink-ico:hover span { text-decoration: underline; text-underline-offset: 3px; }
 
 /* контакты — правая колонка; без телефона (site.contacts_ready = false) — часы, почта, адрес и «Оставить заявку» */
 .footer__contacts { display: flex; flex-direction: column; align-items: flex-start; }
@@ -1161,19 +1171,24 @@ legend.field__label { margin-bottom: 8px; }
 .footer__legal { font-size: 13px; line-height: 1.5; color: var(--muted); }
 .footer__legal a { color: var(--ink); white-space: nowrap; }
 .footer__legal-text { grid-column: 1 / span 3; display: flex; flex-direction: column; gap: 4px; min-width: 0; }
-/* подпись студии (20.10): под колонкой контактов, обычным шрифтом подвала — «Создание и продвижение сайта — MOON» */
-.footer__legal .footer__credit { align-self: end; color: var(--muted); text-decoration: none; transition: color .2s; }
+/* подпись студии (20.10): справа внизу, обычным шрифтом подвала — «Создание и продвижение сайта — MOON» */
+.footer__legal .footer__credit { align-self: end; justify-self: end; color: var(--muted); text-decoration: none; transition: color .2s; }
 .footer__legal .footer__credit:hover { color: var(--ink); }
 
 @media (max-width: 1199px) {
   .footer__row { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  /* верхний ряд: логотип и контакты, под ними три колонки ссылок */
+  .footer__row.footer__top { grid-template-columns: repeat(3, minmax(0, 1fr)); justify-content: normal; column-gap: 24px; }
   .footer__brand { order: -2; }
-  .footer__contacts { order: -1; }
+  .footer__contacts { order: -1; grid-column: span 2; }
+  .footer__legal .footer__credit { justify-self: start; }
   .footer__legal { row-gap: 12px; }
   .footer__legal-text { grid-column: 1 / -1; }
 }
-@media (max-width: 699px) {
-  .footer__row { grid-template-columns: minmax(0, 1fr); gap: 32px; }
+@media (max-width: 760px) {
+  .footer__row, .footer__row.footer__top { grid-template-columns: minmax(0, 1fr); gap: 32px; }
+  .footer__contacts { grid-column: auto; }
+  .fcol .flink-ico { display: flex; margin: 0; }
   .footer__row + .footer__row { margin-top: 32px; padding-top: 0; }
   .fcol__h { margin-bottom: 4px; }
   .fcol ul { gap: 0; }

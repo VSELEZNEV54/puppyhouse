@@ -354,12 +354,13 @@
         "title": "Покупка",
         "links": [
           {
-            "label": "Все щенки в наличии",
+            "label": "Каталог щенков",
             "url": "/shchenki/"
           },
           {
             "label": "Подбор породы — тест",
-            "url": "/podbor-porody/"
+            "url": "/podbor-porody/",
+            "icon": "sparkle"
           },
           {
             "label": "Бронь щенка",
@@ -378,6 +379,10 @@
             "url": "/shchenok-v-podarok/"
           }
         ]
+      },
+      {
+        "title": "Породы",
+        "breeds": true
       },
       {
         "title": "Питомник",

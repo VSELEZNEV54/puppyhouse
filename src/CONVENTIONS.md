@@ -213,7 +213,7 @@ burger's top bar with the close button never scrolls away — only `.mmenu__scro
 `footer` (client 21.10, big footer after the client's screenshots: `about` — the line under the logo; `columns` — «Покупка» and «Питомник»; under them
 partials/footer.html.j2 builds a column per breed from breedsub.json colours + «Виды и окрасы» + «Цена» + coral «Все щенки …», then
 the delivery cities from cities.json under `cities_title`. One grid for every row (columns sized to the longest breed links), the
-contacts in the right column — they are not repeated under the lead form; ≤ 699 px: one column, the breed columns and the cities fold,
+contacts in the right column — they are not repeated under the lead form; ≤ 760 px: one column, the breed columns and the cities fold,
 main.js `details[data-fold]`),
 `tg_cta` («Написать в Telegram»), `messengers.telegram|whatsapp|max` (`url_placeholder` marks placeholder links; `icon` — `tg` / `wa` / `max`: the official mark shapes
 in one colour; in a `.msgr` circle they are dark brown on a soft peach gradient — client sample 15.10, no brand-colour logos),
