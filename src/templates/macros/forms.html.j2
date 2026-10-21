@@ -95,7 +95,7 @@
     site.contacts_ready is false the tile never shows them (the response-time note instead); cls: extra class
     on the tile; caller() → content after the tile inside the same section (homepage: contact tiles).
     local_time=false: the response-time note without «по московскому времени» (city pages). -#}
-{% macro lead_form(title='Подберём щенка за 1 час', line='Пришлём щенков в наличии, цены и свежие видео', tone='peach', breed=none, id='zayavka', contacts=true, cls='', local_time=true) -%}
+{% macro lead_form(title='Пришлём варианты щенков', line='Оставьте заявку, и мы пришлём варианты ваших будущих питомцев: фото, видео и цены', tone='peach', breed=none, id='zayavka', contacts=true, cls='', local_time=true) -%}
 <section class="section container" id="{{ id }}" aria-labelledby="lead-title">
   <div class="lead tone--{{ tone }}{{ ' ' ~ cls if cls }}">
     <div class="lead__intro">

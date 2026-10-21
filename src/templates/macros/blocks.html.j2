@@ -107,7 +107,7 @@
 {%- set general = data.blog|selectattr('breed', 'none')|list -%}
 {%- set others = data.blog|rejectattr('breed', 'none')|rejectattr('breed', 'equalto', breed)|list -%}
 {%- set slugs = ((own + general + others)|map(attribute='slug')|list)[:limit] -%}
-{{ blog_teasers(slugs=slugs, title='Полезные статьи', id='poleznoe', lead='Характер, уход и выбор щенка — коротко и по делу', limit=limit) }}
+{{ blog_teasers(slugs=slugs, title='Полезные статьи', id='poleznoe', lead='Характер, уход и выбор щенка: коротко и по делу', limit=limit) }}
 {%- endmacro %}
 
 {% macro blog_teasers(slugs=none, posts=none, title='Гид по породам', id='blog', lead=none, link={'url': '/blog/', 'label': 'Все статьи'}, limit=3) -%}

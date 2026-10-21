@@ -55,7 +55,8 @@ pixel-parity baseline no longer applies. Reference inner page: `/shchenki/`.
   пожизненная консультация, видео до покупки, доставка — `site.advantages`). Used on /, hubs, catalog, puppy pages,
   /dokumenty-i-garantii/, /dostavka/, /otzyvy/, /o-pitomnike/, /rassrochka/, /shchenok-v-podarok/, /faq/.
   The guarantee is **lifetime** everywhere («Пожизненная гарантия на врождённые и генетические заболевания — условия в договоре»).
-- **Promises**: picking a puppy — «Подберём щенка за 1 час» (hub hero, modal, `forms.lead_form` default); «за 15 минут» is only
+- **Promises** (client 21.10): no «за 1 час». The offer is «Пришлём варианты щенков» / «Оставьте заявку, и мы пришлём варианты ваших будущих питомцев: фото, видео и цены» (`forms.lead_form` default,
+  modals, blog form; breed pages «Пришлём варианты мальтипу»); «за 15 минут» is only
   the reply time («Ответим за 15 минут», «Цену пришлём за 15 минут»).
 - **City pages** (client 21.10): `/shchenki-v-<город>/` (`/shchenki-v-novosibirske/`, address = `cities.json → url`) for
   every city is the homepage — the same template `pages/home.html.j2` with `city` (route `home.py`, copy `home-city.json`).
@@ -264,7 +265,7 @@ in the order of `breeds-hub.json` → `media` (+ extra placeholders), so a video
 | `media.video_review_card` | `r, full=false, cls=''` | 9:16 poster + play + review text (`r.short`; `full=true` → `r.text` + source and puppy) + name, city, breed on a white panel. In `ul.vrev-grid` (or `cls='vrev--stack'`) the card grows with its text. /otzyvy/ (21.10) shows the homepage photo reviews (`media.photo_review_card`, `home.json → reviews_home`) in `.tr-rvws`: 12, «Показать ещё отзывы» opens the rest |
 | `media.video_reviews` | `reviews, title='Отзывы владельцев', id='otzyvy', title_id, link, lead, ratings=true` | section: rating tiles + row of video review cards (arrows under it); phones: first three stacked + «Все отзывы» |
 | `blocks.blog_teasers` | `slugs` (or `posts[{url,title,line,cover,topic}]`), `title='Гид по породам', id='blog', lead, link, limit=3` | article cards: photo, title, one line, «Читать»; phones — compact list |
-| `forms.lead_form` | `title='Подберём щенка за 1 час', line, tone, breed, id='zayavka', contacts=true, cls=''` | one per page (the layout adds it); phones: phone number on its own line, three messengers (`.lead__msgrs`, never split) under it. `contacts=false` — no phone/messengers in the tile (a «ответим за 15 минут» note instead); `{% call %}` content goes after the tile in the same section (homepage: contact tiles `.hm-cts`) |
+| `forms.lead_form` | `title='Пришлём варианты щенков', line='Оставьте заявку, и мы пришлём варианты ваших будущих питомцев: фото, видео и цены', tone, breed, id='zayavka', contacts=true, cls=''` | one per page (the layout adds it); phones: phone number on its own line, three messengers (`.lead__msgrs`, never split) under it. `contacts=false` — no phone/messengers in the tile (a «ответим за 15 минут» note instead); `{% call %}` content goes after the tile in the same section (homepage: contact tiles `.hm-cts`) |
 | `forms.price_button(label, cls, breed)`, `forms.msgr(kind)` | `kind = telegram \| whatsapp \| max` | generic «Узнать цену» / messenger round button |
 | `forms.contact_tiles()` | | phone, messengers, e-mail, address — four white tiles under `forms.lead_form(contacts=false, cls='hm-lead')` (homepage, breed pages v2) |
 | `forms.contact_field(prefix)` | `'lf' \| 'pm' \| yours` | «Куда написать» chips Telegram / WhatsApp / MAX / Звонок |
