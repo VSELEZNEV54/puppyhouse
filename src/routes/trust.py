@@ -4,7 +4,7 @@ Owns: src/templates/trust/, src/data/trust.json (copy), assets/css/trust.css, as
 Client 21.10: /vypuskniki/ is gone — the graduates (owners' photo reviews, as on the homepage) are a block of
 «О питомнике» (/o-pitomnike/), the page about the kennel itself. /otzyvy/ shows the same photo reviews, no breed filter."""
 
-from _lib import by_id, crumbs, sort_puppies
+from _lib import by_id, crumbs, mixed_puppies, sort_puppies
 from blog import rich
 
 ABOUT_PUPS = 8  # «Каталог щенков» on /o-pitomnike/: 4 / 2 per row — full rows (3 per row: the first 6, trust.css)
@@ -77,6 +77,9 @@ def routes(data):
                 pg=dok,
                 docs=docs,
                 faq_items=_faq(dok["faq"], faq),
+                # «Щенки в наличии» (client 21.10): the standard block — two puppies of every breed + «Весь каталог»
+                catalog=mixed_puppies(data["breeds"]),
+                pups_strip=False,
             ),
         ),
     ]
