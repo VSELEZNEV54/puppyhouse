@@ -1,10 +1,9 @@
 {#- Homepage — redesigned 13.10 (docs/brief.md → «Правки клиента 13.10» → «Главная (новый порядок)»).
     Route: src/routes/home.py, data: src/data/home.json. Context: title, description, stats (site.stats + line),
     media_items, reviews_home, faq_items, teasers. Loads only main.css: every homepage rule lives there.
-    City pages /shchenki-v-<city>/ (client 21.10) render the same template with `city` (+ hero, pups, pups_title,
-    pups_lead, pups_help, seo; data/home-city.json). They differ from the homepage only by the heading — and by what
-    would name the kennel's city: no «в Москве», no Moscow paragraph in the SEO text, no address tile under the form.
-    Plus the whole catalog after the breeds (pages.css and catalog.js for its grid). -#}
+    City pages /shchenki-v-<city>/ (client 21.10) render the same template with `city` (+ hero, seo;
+    data/home-city.json) and differ from the homepage only by the heading — and by what would name the kennel's city:
+    no «Москва» in the eyebrow and the text, no Moscow paragraph in the SEO text, no address tile under the form. -#}
 {% extends "base.html.j2" %}
 {% import "macros/ui.html.j2" as ui %}
 {% import "macros/cards.html.j2" as cards %}
@@ -16,29 +15,21 @@
 {% block body_attrs %} class="page-home"{% endblock %}
 {%- set city = city | default(none) %}
 
-{% block head_css %}{% if city %}
-  <link rel="stylesheet" href="/assets/css/pages.css">
-{% endif %}{% endblock %}
-{% block head_js %}{% if city %}
-  <script src="/assets/js/catalog.js" defer></script>
-{% endif %}{% endblock %}
-
 {% block content %}
     <!-- ================= ПЕРВЫЙ ЭКРАН — на весь экран ================= -->
     <section class="hero hero--full container" id="top" aria-labelledby="hero-title">
       <div class="hero__main tone--cream">
         <span class="hero__floor" aria-hidden="true"></span>
         <div class="hero__copy">
+          <p class="eyebrow"><span class="eyebrow__dot" aria-hidden="true"></span>Питомник щенков{% if not city %} · Москва{% endif %}</p>
           {% if city %}
-          <p class="eyebrow"><span class="eyebrow__dot" aria-hidden="true"></span>{{ hero.eyebrow|typo }}</p>
           <h1 class="h1{{ ' hm-h1--long' if hero.long }}" id="hero-title">{{ hero.h1|typo }}</h1>
           {% else %}
-          <p class="eyebrow"><span class="eyebrow__dot" aria-hidden="true"></span>Питомник щенков · Москва</p>
-          <h1 class="h1" id="hero-title">Купить щенка в&nbsp;Москве напрямую от&nbsp;заводчика</h1>
+          <h1 class="h1" id="hero-title">Щенки в&nbsp;Москве напрямую от&nbsp;заводчика</h1>
           {% endif %}
           <p class="hero__sub">Проверенный заводчик{% if not city %} в&nbsp;Москве{% endif %}. Щенки мальтипу, французского бульдога, <span class="nw">той-пуделя</span> и&nbsp;<span class="nw">бордер-колли</span>&nbsp;— с&nbsp;гарантией и&nbsp;заботой о&nbsp;каждом малыше</p>
           <div class="hero__actions" data-hero-ctas>
-            <a class="btn btn--ink btn--lg" href="{{ '#shchenki' if city else '/shchenki/' }}">Выбрать щенка {{ ui.icon('arrow') }}</a>
+            <a class="btn btn--ink btn--lg" href="/shchenki/">Выбрать щенка {{ ui.icon('arrow') }}</a>
             <button class="btn btn--white btn--lg" type="button" data-open-modal data-modal-kind="consult" data-modal-title="Получить консультацию" data-modal-sub="Расскажем о&nbsp;породах и&nbsp;щенках в&nbsp;наличии, ответим на&nbsp;вопросы и&nbsp;пришлём цены" data-modal-note="Консультация ({{ city.name if city else 'главная' }})" data-modal-submit="Получить консультацию" data-modal-done="Куратор свяжется с&nbsp;вами в&nbsp;течение рабочего дня">Получить консультацию</button>
           </div>
         </div>
@@ -66,6 +57,7 @@
             <li><span class="hm-about__ico" style="--c:var(--mint)" aria-hidden="true">{{ ui.icon('shield', sm=true) }}</span><span><b>Здоровье в&nbsp;документах.</b> Осмотр ветеринара, прививки по&nbsp;возрасту, ветпаспорт и&nbsp;договор.</span></li>
             <li><span class="hm-about__ico" style="--c:var(--lilac)" aria-hidden="true">{{ ui.icon('chat', sm=true) }}</span><span><b>Не&nbsp;пропадаем после покупки.</b> Гарантия по&nbsp;договору и&nbsp;советы по&nbsp;уходу всю жизнь собаки.</span></li>
           </ul>
+          <a class="btn btn--ink hm-about__cta" href="/o-pitomnike/">Подробнее о&nbsp;питомнике {{ ui.icon('arrow') }}</a>
         </div>
         {#- слайдер: фото по 2,6 с, видео — до конца; полоски сверху — прогресс и переход к кадру.
             Дальние кадры спрятаны (.is-idle — display:none, а lazy-картинку в нём браузер не грузит);
@@ -103,28 +95,26 @@
 
     <!-- ================= ПОРОДЫ — по две в ряд ================= -->
     <section class="section container" id="porody" aria-labelledby="porody-title">
-      {{ ui.section_head('Четыре породы питомника', id='porody-title', link={'url': '#shchenki' if city else '/shchenki/', 'label': 'Все щенки в наличии — ' ~ puppies|length}) }}
+      {{ ui.section_head('Породы щенков питомника', id='porody-title') }}
       {{ cards.breed_tiles(cols=2) }}
     </section>
-    {% if city %}
 
-    <!-- ================= ЩЕНКИ В НАЛИЧИИ — весь каталог, как на /shchenki/ (страница города) ================= -->
-    <section class="section container" id="shchenki" aria-labelledby="shchenki-title" data-catalog>
-      {% call ui.section_head(pups_title, id='shchenki-title', lead=pups_lead) %}
-        <button class="btn btn--ink" type="button" data-open-modal data-modal-kind="help" data-modal-title="{{ pups_help.title }}" data-modal-sub="{{ pups_help.sub }}" data-modal-note="{{ pups_help.note }}">{{ pups_help.label }}</button>
-      {% endcall %}
-      <ul class="pups pups--grid ct-grid" data-cf-list>
-        {% for p in pups %}
-        <li class="pups__item" data-breed="{{ p.breed }}">
+    <!-- ================= КАТАЛОГ — первые 12 щенков /shchenki/ (правка 21.10) ================= -->
+    {#- те же карточки и тот же порядок, что в каталоге; 4 / 3 / 2 в ряд — ряды всегда полные; на телефоне 8 карточек.
+        Кнопка — под сеткой: коралловая, на телефоне во всю ширину -#}
+    <section class="section container" id="katalog" aria-labelledby="katalog-title">
+      {{ ui.section_head('Каталог щенков', id='katalog-title') }}
+      <ul class="pups hm-pups" data-reveal="items">
+        {% for p in catalog %}
+        <li class="pups__item">
           {{ cards.puppy_card(p) }}
         </li>
         {% endfor %}
-        <li class="pups__more" data-cf-more>
-          {{ cards.soon_tile() }}
-        </li>
       </ul>
+      <div class="hm-pups__foot">
+        <a class="btn btn--ink btn--lg" href="/shchenki/">Перейти в&nbsp;каталог {{ ui.icon('arrow') }}</a>
+      </div>
     </section>
-    {% endif %}
 
     <!-- ================= ФОТО И ВИДЕО ЩЕНКОВ + ЗАЯВКА ================= -->
     {% call media.media_carousel(media_items, title='Фото и видео щенков', id='foto-video', lead='Как растут наши щенки — живые кадры из питомника', label='Фото и видео щенков') %}

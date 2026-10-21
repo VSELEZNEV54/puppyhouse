@@ -1,24 +1,22 @@
 """Homepage — redesigned for the client revisions of 13.10 (docs/brief.md → «Главная (новый порядок)»).
 
-Order: full-screen hero · «О нашем питомнике» (numbers from site.stats) · breeds two per row · photo and video
-carousel + lead band · advantages · video reviews · how to buy · FAQ (12 questions) · blog · SEO text · lead form.
+Order: full-screen hero · «О нашем питомнике» (numbers from site.stats) · breeds two per row · catalog (the first
+HOME_PUPS puppies of /shchenki/, client 21.10) · photo and video carousel + lead band · advantages · video reviews · how to buy · FAQ (12 questions) · blog · SEO text · lead form.
 Own data: src/data/home.json (stat details, carousel items, reviews, blog picks, FAQ).
 
 City pages /shchenki-v-<city>/ (client 21.10): the homepage for every city of cities.json, different only in the
-heading («Щенки в Новосибирске» · «Купить щенка в Новосибирске напрямую от заводчика»), plus the whole puppy catalog
-after the breeds. Not a word about where the kennel is (hide_city: no «Москва» in the logo caption and footer, no
-reviews from Moscow and its region, no address tiles, the Moscow paragraph of the SEO text is the city's own).
-Copy: src/data/home-city.json.
+heading («Щенки в Новосибирске напрямую от заводчика»). Not a word about where the kennel is (hide_city: no «Москва»
+in the logo caption, footer and texts, no reviews from Moscow and its region, no address tile, the Moscow paragraph of
+the SEO text is the city's own). Copy: src/data/home-city.json.
 """
 
 import re
-
-from markupsafe import Markup
 
 from _lib import crumbs, nobr, sort_puppies
 
 TITLE_MAX, DESC_MAX = 60, 160
 BRAND = " | домщенков.рф"
+HOME_PUPS = 12  # 4 / 3 / 2 per row — every row full; phones show the first 8 (main.css .hm-pups)
 
 
 def routes(data):
@@ -48,9 +46,11 @@ def routes(data):
 
     shared = dict(
         stats=stats,
+        catalog=sort_puppies(data["puppies"])[:HOME_PUPS],
         media_items=home["media"],
         # «О нашем питомнике»: фото листаются сами, видео доигрывает до конца (правка 15.10)
         about_slides=home["about_slides"],
+        faq_items=home["faq"],
         teasers=teasers,
     )
     return [dict(
@@ -63,7 +63,6 @@ def routes(data):
                         "Прививки, ветпаспорт, договор, гарантия, доставка по России.",
             # отзывы на главной — свои (правка 15.10): фото щенка, текст, имя, город, порода; /otzyvy/ — reviews.json
             reviews_home=home["reviews_home"],
-            faq_items=home["faq"],
         ),
     )] + [city_page(data, c, shared) for c in data["cities"]]
 
@@ -71,12 +70,6 @@ def routes(data):
 def fill(text, **kw):
     """str.format for copy templates; unknown keys stay as they are."""
     return re.sub(r"\{(\w+)\}", lambda m: str(kw.get(m.group(1), m.group(0))), text)
-
-
-def one_box(text):
-    """nobr() in one <span>: inside a flex box (the eyebrow) «в Санкт-Петербурге» must not become a separate flex
-    item with a gap before it."""
-    return Markup("<span>") + nobr(text) + Markup("</span>")
 
 
 def city_page(data, c, shared):
@@ -109,15 +102,10 @@ def city_page(data, c, shared):
             breadcrumbs=crumbs((fill(hc["crumb"], **v), None)),
             city=dict(name=c["name"], slug=c["slug"]),
             hide_city=True,
-            hero=dict(eyebrow=one_box(fill(hc["eyebrow"], **v)), h1=nobr(fill(hc["h1"], **v)),
+            hero=dict(h1=nobr(fill(hc["h1"], **v)),
                       # «в Санкт-Петербурге» не переносится: на телефоне такой заголовок чуть мельче (main.css)
                       long="-" in c["prep"] and len(c["prep"]) > 15),
-            pups=sort_puppies(data["puppies"]),
-            pups_title=hc["pups_title"],
-            pups_lead=hc["pups_lead"],
-            pups_help={k: fill(x, **v) for k, x in hc["pups_help"].items()},
             reviews_home=reviews,
-            faq_items=data["home"]["faq"],
             seo=dict(title=nobr(fill(seo["title"], **v)), lead=nobr(fill(ov.get("seo_lead") or seo["lead"], **v)),
                      local_h=nobr(fill(seo["local_h"], **v)), local_p=nobr(fill(seo["local_p"], **v))),
         ),

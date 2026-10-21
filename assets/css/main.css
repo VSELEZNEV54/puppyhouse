@@ -171,19 +171,6 @@ main:focus, section[tabindex="-1"]:focus, [data-anchor-focus]:focus { outline: n
   font-weight: 500;
   letter-spacing: -0.03em;
 }
-.text-link {
-  position: relative;
-  display: inline-block;
-  font-size: 15px; font-weight: 500; line-height: 1.4;
-  text-decoration: none; color: var(--ink);
-  background: linear-gradient(currentColor, currentColor) 0 100% / 0 1px no-repeat;
-  padding-bottom: 2px;
-  transition: background-size .35s var(--ease);
-}
-.text-link .i { display: inline-block; vertical-align: -3px; margin-left: 2px; transition: transform .3s var(--ease); }
-.text-link:hover { background-size: 100% 1px; }
-.text-link::after { content: ""; position: absolute; inset: -11px -6px; } /* зона нажатия ≥ 44 px */
-.text-link:hover .i { transform: translateX(3px); }
 
 /* ---------- кнопки ---------- */
 .btn {
@@ -204,11 +191,12 @@ main:focus, section[tabindex="-1"]:focus, [data-anchor-focus]:focus { outline: n
 /* основная: чёрная пилюля; на ховере — коралл с тёмным текстом (контраст 6,6:1) */
 .btn--ink { background: var(--ink); color: #fff; }
 @media (hover: hover) { .btn--ink:hover { background: var(--coral); color: var(--ink); } }
-/* главная, страницы пород v2 (правки 15.10) и страница щенка (19.10): основные кнопки — коралловые (цвет прежнего
-   наведения), при наведении — темнее; белые — как были. Карточка щенка одна на весь сайт: её «Узнать цену» остаётся чёрной */
-:is(.page-home, .page-breed, .page-puppy) { --cta: var(--coral); --cta-hover: #F7805F; }
-:is(.page-home, .page-breed, .page-puppy) :is(.btn--ink, .mbar__btn--ink):not(.pup .btn) { background: var(--cta); color: var(--ink); }
-@media (hover: hover) { :is(.page-home, .page-breed, .page-puppy) :is(.btn--ink, .mbar__btn--ink):not(.pup .btn):hover { background: var(--cta-hover); color: var(--ink); } }
+/* главная, страницы пород v2 (правки 15.10), страница щенка (19.10) и «О питомнике» (21.10): основные кнопки —
+   коралловые (цвет прежнего наведения), при наведении — темнее; белые — как были. Карточка щенка одна на весь сайт:
+   её «Узнать цену» остаётся чёрной */
+:is(.page-home, .page-breed, .page-puppy, .page-about) { --cta: var(--coral); --cta-hover: #F7805F; }
+:is(.page-home, .page-breed, .page-puppy, .page-about) :is(.btn--ink, .mbar__btn--ink):not(.pup .btn) { background: var(--cta); color: var(--ink); }
+@media (hover: hover) { :is(.page-home, .page-breed, .page-puppy, .page-about) :is(.btn--ink, .mbar__btn--ink):not(.pup .btn):hover { background: var(--cta-hover); color: var(--ink); } }
 .btn--white { background: #fff; color: var(--ink); border-color: var(--line-2); }
 /* ПРАВИЛО (клиент 19.10): кнопка в заголовке блока — всегда коралловая, на любой странице и в любом новом блоке:
    «Получить консультацию», «Узнать цену», «Весь каталог», «Документы и гарантии»… Текстовые ссылки («Все статьи →») — как были */
@@ -224,7 +212,22 @@ main:focus, section[tabindex="-1"]:focus, [data-anchor-focus]:focus { outline: n
 .btn--tg .i { width: 19px; height: 19px; margin-left: -2px; }
 @media (hover: hover) { .btn--tg:hover { background: linear-gradient(180deg, var(--tg-b) 0%, #11639A 100%); } }
 .btn--tg:hover .i { transform: none; }
-/* коралловая: «Оставить заявку» в шапке, меню и просмотре видео, пока телефона и мессенджеров нет (site.contacts_ready, 20.10) */
+/* подчёркнутая ссылка со стрелкой — только ссылки на юридические документы в «Другие документы» (ui.text_link, 21.10) */
+.text-link {
+  position: relative;
+  display: inline-block;
+  font-size: 15px; font-weight: 500; line-height: 1.4;
+  text-decoration: none; color: var(--ink);
+  background: linear-gradient(currentColor, currentColor) 0 100% / 0 1px no-repeat;
+  padding-bottom: 2px;
+  transition: background-size .35s var(--ease);
+}
+.text-link .i { display: inline-block; vertical-align: -3px; margin-left: 2px; transition: transform .3s var(--ease); }
+.text-link:hover { background-size: 100% 1px; }
+.text-link::after { content: ""; position: absolute; inset: -11px -6px; } /* зона нажатия ≥ 44 px */
+.text-link:hover .i { transform: translateX(3px); }
+/* коралловая: кнопка к разделу или странице (ui.link_button — правило 21.10), «Оставить заявку» в шапке, меню
+   и просмотре видео, пока телефона и мессенджеров нет (site.contacts_ready, 20.10) */
 .btn--coral { background: var(--coral); color: var(--ink); border-color: transparent; }
 @media (hover: hover) { .btn--coral:hover { background: #F7805F; color: var(--ink); } }
 .btn[disabled] { opacity: .7; cursor: progress; }
@@ -694,6 +697,7 @@ main:focus, section[tabindex="-1"]:focus, [data-anchor-focus]:focus { outline: n
 .hm-about__list b { color: var(--ink); }
 .hm-about__ico { display: grid; place-items: center; width: 36px; height: 36px; border-radius: 50%; background: var(--c); color: var(--ink); }
 .hm-about__ico .i { width: 18px; height: 18px; }
+.hm-about__cta { margin-top: auto; }
 .hm-about__photo { position: relative; overflow: hidden; min-height: clamp(420px, 38vw, 580px); border-radius: var(--r-tile); background: #E7E1D8; }
 .hm-about__photo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 56% 60%; transition: transform 1.4s var(--ease); }
 @media (hover: hover) { .hm-about__photo:not(.hm-slider):hover img { transform: scale(1.03); } }
@@ -819,6 +823,8 @@ main:focus, section[tabindex="-1"]:focus, [data-anchor-focus]:focus { outline: n
 
 .pups { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--gap); }
 .pups__item { min-width: 0; }
+/* главная, «Каталог щенков» (21.10): 12 карточек каталога и кнопка под сеткой */
+.hm-pups__foot { display: flex; justify-content: center; margin-top: clamp(24px, 3vw, 40px); }
 .pup {
   position: relative; /* держит .sr-only внутри ленты — иначе он вылезает за её обрезку */
   height: 100%; display: flex; flex-direction: column;
@@ -972,15 +978,15 @@ main:focus, section[tabindex="-1"]:focus, [data-anchor-focus]:focus { outline: n
 .seo__toggle[aria-expanded="true"] .i { transform: rotate(180deg); }
 .seo__toggle:hover span { text-decoration: underline; text-underline-offset: 3px; }
 /* главная и страницы пород v2 (правки 15.10): текст на всю ширину плитки; раскрытая часть на широком экране — в две колонки */
-:is(.page-home, .page-breed) .seo__body { max-width: none; }
-:is(.page-home, .page-breed) .seo__more a { color: var(--ink); text-decoration: underline; text-decoration-color: var(--line-2); text-underline-offset: 3px; }
-:is(.page-home, .page-breed) .seo__more a:hover { text-decoration-color: currentColor; }
+:is(.page-home, .page-breed, .page-about) .seo__body { max-width: none; }
+:is(.page-home, .page-breed, .page-about) .seo__more a { color: var(--ink); text-decoration: underline; text-decoration-color: var(--line-2); text-underline-offset: 3px; }
+:is(.page-home, .page-breed, .page-about) .seo__more a:hover { text-decoration-color: currentColor; }
 @media (min-width: 1200px) {
   /* верх обеих колонок на одной линии: отступ — у блока, у первого подзаголовка его нет (у колонки справа его съедает разрыв) */
-  :is(.page-home, .page-breed) .seo__more { columns: 2; column-gap: clamp(40px, 4vw, 72px); padding-top: 20px; }
-  :is(.page-home, .page-breed) .seo__more h3 { break-after: avoid; }
-  :is(.page-home, .page-breed) .seo__more p { break-inside: avoid; }
-  :is(.page-home, .page-breed) .seo__more > h3:first-child { margin-top: 0; }
+  :is(.page-home, .page-breed, .page-about) .seo__more { columns: 2; column-gap: clamp(40px, 4vw, 72px); padding-top: 20px; }
+  :is(.page-home, .page-breed, .page-about) .seo__more h3 { break-after: avoid; }
+  :is(.page-home, .page-breed, .page-about) .seo__more p { break-inside: avoid; }
+  :is(.page-home, .page-breed, .page-about) .seo__more > h3:first-child { margin-top: 0; }
 }
 
 /* =========================================================
@@ -1746,6 +1752,7 @@ legend.field__label { margin-bottom: 8px; }
 
   .hm-about__txt { padding: 22px 20px 20px; }
   .hm-about__lead { font-size: 21px; line-height: 1.3; }
+  .hm-about__cta { width: 100%; }
   .hm-about__photo { aspect-ratio: 4 / 3.3; }
   .hm-about__list { gap: 14px; margin: 18px 0 22px; }
   .hm-about__list li { grid-template-columns: 32px minmax(0, 1fr); gap: 12px; font-size: 15px; }
@@ -1874,6 +1881,10 @@ legend.field__label { margin-bottom: 8px; }
    ========================================================= */
 @media (max-width: 560px) {
   .pups { grid-template-columns: minmax(0, 1fr); gap: 12px; }
+  /* главная: на телефоне карточки по одной в ряд — показываем 8 из 12, кнопка во всю ширину */
+  .hm-pups > .pups__item:nth-child(n + 9) { display: none; }
+  .hm-pups__foot { margin-top: 20px; }
+  .hm-pups__foot .btn { width: 100%; }
   .pups .pup__media { aspect-ratio: 1 / .86; }
   .ct-card__body { min-width: 0; padding: 14px 16px 16px; }
   .ct-card .pup__name { font-size: 24px; }
@@ -1887,28 +1898,20 @@ legend.field__label { margin-bottom: 8px; }
 }
 
 /* =========================================================
-   ПРАВИЛО (клиент 19.10). Телефон ≤ 760 px: кнопка или ссылка к разделу из заголовка блока («Все отзывы →»,
-   «Узнать цену», «Получить консультацию», «Все вопросы»…) стоит не под заголовком, а под всем блоком —
-   отдельной коралловой кнопкой во всю ширину. Срабатывает само для любого ui.section_head и blocks.faq_section:
+   ПРАВИЛО (клиент 19.10, 21.10). Кнопка к разделу или странице («Все отзывы», «Все статьи», «Документы и гарантии»,
+   «Все вопросы», «Узнать цену», «Получить консультацию»…) — всегда круглая коралловая кнопка (ui.link_button,
+   .btn--coral), никаких подчёркнутых ссылок со стрелкой. Телефон ≤ 760 px: кнопка из заголовка блока стоит не под
+   заголовком, а под всем блоком — во всю ширину. Срабатывает само для любого ui.section_head и blocks.faq_section:
    заголовок «растворяется» (display: contents), кнопка уходит в конец блока (order).
    ========================================================= */
 @media (max-width: 760px) {
-  .section:has(> .sec-head > :is(.btn, .text-link)),
-  .faq:has(> .faq__aside > .text-link) { display: grid; grid-template-columns: minmax(0, 1fr); }
-  .section:has(> .sec-head > :is(.btn, .text-link)) > .sec-head,
-  .faq:has(> .faq__aside > .text-link) > .faq__aside { display: contents; }
+  .section:has(> .sec-head > .btn),
+  .faq:has(> .faq__aside > .btn) { display: grid; grid-template-columns: minmax(0, 1fr); }
+  .section:has(> .sec-head > .btn) > .sec-head,
+  .faq:has(> .faq__aside > .btn) > .faq__aside { display: contents; }
   .section > .sec-head > :is(.h2, .sec-head__txt) { margin-bottom: 18px; padding-inline: 4px; }
   .faq > .faq__aside > .h2 { padding-inline: 4px; }
 
-  .section > .sec-head > :is(.btn, .text-link),
-  .faq > .faq__aside > .text-link { order: 99; width: 100%; }
-  .section > .sec-head > .btn { --h: 52px; height: 52px; margin-top: 20px; font-size: 16px; }
-  .section > .sec-head > .text-link,
-  .faq > .faq__aside > .text-link {
-    display: block; min-height: 52px; padding: 16px 20px; border-radius: var(--r-pill);
-    background: var(--coral); color: var(--ink); font-size: 16px; line-height: 1.25; text-align: center;
-  }
-  .section > .sec-head > .text-link, .faq > .faq__aside > .text-link { margin-top: 20px; }
-  .section > .sec-head > .text-link::after, .faq > .faq__aside > .text-link::after { content: none; }
-  @media (hover: hover) { .section > .sec-head > .text-link:hover, .faq > .faq__aside > .text-link:hover { background: #F7805F; } }
+  .section > .sec-head > .btn,
+  .faq > .faq__aside > .btn { order: 99; width: 100%; --h: 52px; height: 52px; margin-top: 20px; font-size: 16px; }
 }

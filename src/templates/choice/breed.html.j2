@@ -29,14 +29,14 @@
           <ul class="cho-fit__list" aria-labelledby="komu-da">
             {% for t in pg.fit %}<li><span class="cho-fit__mark" aria-hidden="true">{{ ui.icon('check', sm=true) }}</span><span>{{ t|typo }}</span></li>{% endfor %}
           </ul>
-          <p class="cho-fit__more">{{ ui.text_link('#pups', com.fit_yes_link) }}</p>
+          <p class="cho-fit__more">{{ ui.link_button('#pups', com.fit_yes_link) }}</p>
         </div>
         <div class="cho-fit__card cho-fit__card--no">
           <h3 class="cho-fit__title" id="komu-net">{{ com.fit_no|typo }}</h3>
           <ul class="cho-fit__list" aria-labelledby="komu-net">
             {% for t in pg.unfit %}<li><span class="cho-fit__mark" aria-hidden="true">{{ ui.icon('close', sm=true) }}</span><span>{{ t|typo }}</span></li>{% endfor %}
           </ul>
-          <p class="cho-fit__more">{{ ui.text_link('/podbor-porody/', com.fit_no_link) }}</p>
+          <p class="cho-fit__more">{{ ui.link_button('/podbor-porody/', com.fit_no_link) }}</p>
         </div>
       </div>
     </section>
@@ -52,7 +52,7 @@
           <ul class="cho-other__picks">
             {% for k in c.picks %}<li>{{ ui.face(k.b) }}<p><span class="cho-other__name">{{ k.name|typo }}</span>&nbsp;{{ k.text|typo }}</p></li>{% endfor %}
           </ul>
-          <p class="cho-other__more">{{ ui.text_link(c.more.url, c.more.label) }}</p>
+          <p class="cho-other__more">{{ ui.link_button(c.more.url, c.more.label) }}</p>
         </li>
         {% endfor %}
       </ul>

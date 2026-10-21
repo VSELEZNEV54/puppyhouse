@@ -51,6 +51,7 @@
     "/maltipu/shokoladnyj/": "breeds",
     "/maltipu/sobolinyj/": "breeds",
     "/maltipu/vidy-i-okrasy/": "breedsub",
+    "/o-pitomnike/": "trust",
     "/otzyvy/": "trust",
     "/podbor-porody/": "choice",
     "/politika-konfidencialnosti/": "delivery",
@@ -162,7 +163,6 @@
     "/toj-pudel/korichnevyj/": "breeds",
     "/toj-pudel/ryzhij/": "breeds",
     "/toj-pudel/seryj/": "breeds",
-    "/toj-pudel/vidy-i-okrasy/": "breedsub",
-    "/vypuskniki/": "trust"
+    "/toj-pudel/vidy-i-okrasy/": "breedsub"
   }
 }

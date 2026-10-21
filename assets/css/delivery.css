@@ -182,7 +182,7 @@
 .dlv-think__intro { display: flex; flex-direction: column; align-items: flex-start; gap: 16px; padding-block: clamp(16px, 2.6vw, 44px); }
 .dlv-think__title { margin-top: 8px; max-width: 9em; }
 .dlv-think__lead { font-size: 17px; line-height: 1.45; color: var(--ink-soft); max-width: 40ch; }
-.dlv-think__intro .text-link { margin-top: auto; padding-top: 12px; }
+.dlv-think__intro > .btn { margin-top: auto; }
 .dlv-think__box { padding: clamp(22px, 2.8vw, 40px); border-radius: var(--r-img); background: var(--tile); }
 .dlv-think__list li {
   display: grid; grid-template-columns: 32px minmax(0, 1fr); align-items: center; gap: 14px;

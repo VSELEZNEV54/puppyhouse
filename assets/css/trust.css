@@ -1,5 +1,5 @@
 /* =========================================================
-   Страницы доверия: /vypuskniki/, /otzyvy/, /dokumenty-i-garantii/.
+   Страницы доверия: /o-pitomnike/, /otzyvy/, /dokumenty-i-garantii/.
    Только раскладка своих блоков — плитки, кнопки, FAQ, формы, модалка берутся из main.css и pages.css.
    ========================================================= */
 
@@ -35,21 +35,6 @@
 }
 .tr-feat__title { margin-top: clamp(28px, 3vw, 44px); font-size: var(--fs-h3); font-weight: 500; letter-spacing: -0.025em; line-height: 1.15; }
 .tr-feat__line { margin-top: 8px; font-size: 15px; line-height: 1.45; color: var(--muted); max-width: 36ch; }
-
-/* =========================================================
-   ИСТОРИИ ВЫПУСКНИКОВ
-   ========================================================= */
-.tr-stories { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--gap); }
-.tr-stories > li { min-width: 0; }
-.tr-story {
-  height: 100%; display: flex; flex-direction: column; gap: 22px;
-  padding: var(--tile-pad); border-radius: var(--r-tile); background: var(--tile);
-}
-.tr-story__head { display: flex; align-items: center; gap: 14px; }
-.tr-story .face { width: 56px; height: 56px; }
-.tr-story__name { font-size: 19px; font-weight: 500; letter-spacing: -0.02em; line-height: 1.2; }
-.tr-story__meta { margin-top: 3px; font-size: 14px; line-height: 1.3; color: var(--muted); }
-.tr-story__text { font-size: 16px; line-height: 1.5; }
 
 /* =========================================================
    ОТЗЫВЫ — рейтинги, «Оставить отзыв», фильтр, карточки
@@ -139,11 +124,81 @@
 .tr-checks--big .tr-checks__ico { width: 30px; height: 30px; margin-top: -1px; }
 
 /* =========================================================
+   «О ПИТОМНИКЕ» (/o-pitomnike/, клиент 21.10): про сам питомник — годы на рынке, выпускники, преимущества
+   ========================================================= */
+/* первый экран: основное фото главной (hero-four-breeds.jpg — четыре щенка в ряд) — справа во всю высоту плитки,
+   шире квадрата, щенки видны целиком; левый край кадра гаснет в тон плитки */
+@media (min-width: 761px) {
+  .phero--about .phero__tile { --ph: clamp(440px, 38vw, 580px); min-height: var(--ph); align-items: center; }
+  .phero--about .phero__photo { width: 62%; aspect-ratio: auto; transform: none; }
+  .phero--about .phero__photo img {
+    object-position: 50% 62%;
+    -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 22%), linear-gradient(180deg, transparent 0, #000 10%);
+    mask-image: linear-gradient(90deg, transparent 0, #000 22%), linear-gradient(180deg, transparent 0, #000 10%);
+  }
+  .phero--about .phero__copy { max-width: min(620px, 46%); }
+}
+/* планшет: справа кадру тесно (щенки режутся) — фото сверху во всю ширину плитки, текст под ним, как на телефоне */
+@media (min-width: 761px) and (max-width: 1000px) {
+  .phero--about .phero__tile { --p: clamp(28px, 3.4vw, 52px); flex-direction: column; align-items: stretch; min-height: 0; padding-top: 0; background: var(--tone-floor); }
+  .phero--about .phero__photo {
+    position: relative; order: -1; top: auto; bottom: auto; right: auto;
+    width: calc(100% + 2 * var(--p)); height: auto; margin: 0 calc(-1 * var(--p)) 8px; aspect-ratio: 2 / 1;
+  }
+  .phero--about .phero__photo img {
+    object-position: 50% 70%;
+    -webkit-mask-image: linear-gradient(180deg, #000 86%, transparent 100%);
+    mask-image: linear-gradient(180deg, #000 86%, transparent 100%);
+  }
+  .phero--about .phero__copy { max-width: none; }
+}
+@media (max-width: 760px) {
+  .phero--about .phero__photo img { object-position: 50% 100%; }
+}
+/* телефон: в pages.css кадр шапки — квадрат по центру с гаснущими краями (под одного щенка); здесь четыре щенка в ряд —
+   кадр во всю ширину полосы, гаснет только нижний край */
+@media (max-width: 560px) {
+  .phero--about .phero__photo { aspect-ratio: 1.45; }
+  .phero--about .phero__photo img {
+    left: 0; width: 100%; aspect-ratio: auto; transform: none; object-fit: cover; object-position: 50% 92%;
+    -webkit-mask-image: linear-gradient(180deg, #000 86%, transparent 100%);
+    mask-image: linear-gradient(180deg, #000 86%, transparent 100%);
+  }
+}
+
+/* «Кто мы»: текст слева, три цифры столбиком справа */
+.abt-who { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: var(--gap); }
+.abt-who__text { padding: clamp(26px, 3.2vw, 48px); border-radius: var(--r-tile); background: var(--tile); }
+.abt-who__text p { font-size: clamp(16px, 1.2vw, 18px); line-height: 1.55; color: var(--ink-soft); max-width: 60ch; }
+.abt-who__text p:first-child { font-size: clamp(22px, 2vw, 30px); line-height: 1.28; letter-spacing: -0.022em; color: var(--ink); max-width: 30ch; }
+.abt-who__text p + p { margin-top: 16px; }
+.abt-who .kpis { --n: 1; }
+.abt-who .stat { align-content: center; }
+
+/* «Каталог щенков» — 8 карточек, как на главной (.hm-pups); при трёх в ряд — первые 6, чтобы ряды были полными */
+@media (min-width: 901px) and (max-width: 1199px) {
+  .abt-pups > .pups__item:nth-child(n + 7) { display: none; }
+}
+
+/* «Почему нам доверяют»: карточки с фото, как карточки щенков — фото с отступом 8 px, под ним заголовок и строка */
+.abt-advs { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--gap); }
+.abt-adv { display: flex; flex-direction: column; min-width: 0; padding: var(--inset); border-radius: var(--r-tile); background: var(--tile); }
+.abt-adv__media { aspect-ratio: 4 / 3; border-radius: var(--r-img); overflow: hidden; background: #E7E1D8; }
+.abt-adv__media img { display: block; width: 100%; height: 100%; object-fit: cover; transition: transform 1.1s var(--ease); }
+@media (hover: hover) { .abt-adv:hover .abt-adv__media img { transform: scale(1.04); } }
+.abt-adv__body { padding: 18px clamp(10px, 1vw, 14px) 14px; }
+.abt-adv__title { font-size: var(--fs-h3); font-weight: 500; letter-spacing: -0.025em; line-height: 1.15; }
+.abt-adv__line { margin-top: 8px; font-size: 15px; line-height: 1.45; color: var(--muted); }
+
+/* =========================================================
    АДАПТИВ
    ========================================================= */
 @media (max-width: 1199px) {
+  .abt-who { grid-template-columns: minmax(0, 1fr); }
+  .abt-who .kpis { --n: 3; }
+  .abt-advs { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .tr-hero__tile { grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); }
-  /* родители: в узкой плитке кличка, роль и метки переносятся и закрывают морду — две плитки в ряд */
+  /* четыре плитки документов — по две в ряд */
   .tr-feats--4, .tr-docs { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .tr-rate { grid-template-columns: minmax(0, 1fr); }
   .tr-write { flex-direction: row; flex-wrap: wrap; align-items: center; column-gap: 20px; }
@@ -156,8 +211,6 @@
 }
 
 @media (max-width: 1000px) {
-  .tr-stories { grid-template-columns: minmax(0, 1fr); }
-  .tr-story { display: grid; grid-template-columns: minmax(0, 260px) minmax(0, 1fr); align-items: center; gap: 24px; }
   .tr-health__media { min-height: 0; aspect-ratio: 16 / 9; }
 }
 
@@ -172,7 +225,15 @@
 }
 
 @media (max-width: 760px) {
-  /* родители — по одному в ряд, широкими плитками (pages.css: .stiles на телефоне) */
+  .abt-who .kpis { --n: 2; }
+  /* карточки преимуществ — компактной строкой: фото слева, текст справа (как статьи на телефоне) */
+  .abt-advs { grid-template-columns: minmax(0, 1fr); }
+  .abt-adv { display: grid; grid-template-columns: 112px minmax(0, 1fr); align-items: center; }
+  .abt-adv__media { aspect-ratio: 1; border-radius: 16px; }
+  .abt-adv__body { padding: 8px 10px 8px 14px; }
+  .abt-adv__title { font-size: 18px; }
+  .abt-adv__line { margin-top: 4px; font-size: 14px; }
+
   .tr-hero__media { aspect-ratio: 4 / 3; }
   .tr-hero__copy { padding: 18px 12px 12px; }
 
@@ -182,9 +243,6 @@
   .tr-feat .ico { grid-row: 1 / 3; margin: 0; }
   .tr-feat__title { margin-top: 0; font-size: 19px; align-self: end; }
   .tr-feat__line { margin-top: 0; font-size: 14.5px; }
-
-  .tr-story { display: flex; align-items: stretch; gap: 16px; padding: 20px; }
-  .tr-story .face { width: 48px; height: 48px; }
 
   .tr-rate { margin-bottom: 28px; }
   .tr-write { display: grid; grid-template-columns: minmax(0, 1fr); gap: 2px; padding: 18px 20px 20px; }

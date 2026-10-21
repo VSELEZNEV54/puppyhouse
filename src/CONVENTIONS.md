@@ -35,27 +35,31 @@ pixel-parity baseline no longer applies. Reference inner page: `/shchenki/`.
   video reviews (`media.video_reviews`) stack on phones (three cards + «Все отзывы»), wide comparison tables (`ui.cmp_table`
   with 3+ columns) turn into one tile per column. `.scroller` is a no-op now — don't use it. The crawler flags any other
   sideways scroll container and any link/button cut off by an `overflow: hidden` parent (`control-clipped`).
-- **Block head actions (client 19.10, automatic — main.css).** A button in a block head (`ui.section_head(...)` with a
-  caller button or `button=true`) is always coral. On phones ≤ 760 px every head action — the button or the text link
-  («Все отзывы →», «Документы и гарантии →», «Все вопросы →» of `blocks.faq_section`) — leaves the head and stands under
-  the whole block as a full-width coral button. Nothing to do per page: keep the head as `section.section > .sec-head`
-  (or `.faq > .faq__aside`) and the rule applies. Don't add a second, hand-made bottom button.
-- **CTA wording: no arrow-only buttons.** Every clickable tile/card ends with a text pill (`ui.tile_cta`) or a text link
-  (`ui.text_link`): «Перейти к породе» (breed tiles), «Подробнее» (help / link / studio tiles, puppy cards),
+- **RULE — links to a section or page are coral pill buttons (client 19.10, 21.10; automatic — main.css).** No underlined
+  text links with an arrow anywhere on the site. «Все отзывы», «Все статьи», «Документы и гарантии», «Все вопросы»,
+  «Весь каталог», «Узнать цену», «Получить консультацию» — every such link is a rounded coral button: `ui.link_button(url,
+  label)` (`.btn.btn--coral`), and `ui.section_head(link=…)` / `blocks.faq_section(link=…)` render it themselves (the old
+  `button=` argument changes nothing). On phones ≤ 760 px the button of a block head leaves the head and stands under the
+  whole block, full width, 52 px. Nothing to do per page: keep the head as `section.section > .sec-head` (or
+  `.faq > .faq__aside`) and the rule applies. Don't add a second, hand-made bottom button. Exceptions that stay as
+  they are (client 21.10): links to the legal documents in «Другие документы» on the consent / privacy pages
+  (`ui.text_link` — underlined with an arrow, used nowhere else) and the plain links of the header, menus and footer.
+- **CTA wording: no arrow-only buttons.** Every clickable tile/card ends with a text pill (`ui.tile_cta`) or a coral
+  button (`ui.link_button`): «Перейти к породе» (breed tiles), «Подробнее» (help / link / studio tiles, puppy cards),
   «Все окрасы» / «Смотреть окрас» (colours), «Читать» (articles). `ui.round_arrow` is decorative only.
 - **Advantages everywhere it fits**: `ui.advantages()` (привиты по возрасту, ветпаспорт и договор, пожизненная гарантия,
   пожизненная консультация, видео до покупки, доставка — `site.advantages`). Used on /, hubs, catalog, puppy pages,
-  /dokumenty-i-garantii/, /dostavka/, /otzyvy/, /vypuskniki/, /rassrochka/, /shchenok-v-podarok/, /faq/.
+  /dokumenty-i-garantii/, /dostavka/, /otzyvy/, /o-pitomnike/, /rassrochka/, /shchenok-v-podarok/, /faq/.
   The guarantee is **lifetime** everywhere («Пожизненная гарантия на врождённые и генетические заболевания — условия в договоре»).
 - **Promises**: picking a puppy — «Подберём щенка за 1 час» (hub hero, modal, `forms.lead_form` default); «за 15 минут» is only
   the reply time («Ответим за 15 минут», «Цену пришлём за 15 минут»).
 - **City pages** (client 21.10): `/shchenki-v-<город>/` (`/shchenki-v-novosibirske/`, address = `cities.json → url`) for
   every city is the homepage — the same template `pages/home.html.j2` with `city` (route `home.py`, copy `home-city.json`).
-  It differs only by the heading («Щенки в Новосибирске» · «Купить щенка в Новосибирске напрямую от заводчика») and the
-  whole catalog after the breeds. No «доставка в <город>», and the kennel's own city is never named: context
-  `hide_city=true` drops «Москва» from the logo caption (`site.tagline_plain`), the footer address and «по московскому
-  времени» (modal; `forms.lead_form(local_time=false)`); reviews from Moscow and its region are left out; the SEO text's
-  Moscow paragraph is the city's own; under the form only the e-mail tile (`forms.contact_tiles(address=false)`).
+  It differs only by the heading («Щенки в Новосибирске напрямую от заводчика»). No «доставка в <город>», and the
+  kennel's own city is never named: context `hide_city=true` drops «Москва» from the logo caption (`site.tagline_plain`),
+  the footer address and «по московскому времени» (modal; `forms.lead_form(local_time=false)`); the eyebrow and texts
+  lose «Москва»; reviews from Moscow and its region are left out; the SEO text's Moscow paragraph is the city's own;
+  under the form only the e-mail tile (`forms.contact_tiles(address=false)`).
 - **First screen**: `ui.page_hero(..., full=true)` = the whole screen (breed pages); homepage hero: `.hero--full`.
   Studio photos in page heroes are larger on desktop (≥ 1200 px the tile is taller; the photo is never cropped).
 - **Images.** Placeholders come from `assets/img/` (`src/data/media.json` lists sets per page/breed); a video is a
@@ -245,7 +249,7 @@ in the order of `breeds-hub.json` → `media` (+ extra placeholders), so a video
 | `ui.keyfacts`, `ui.callout(kind,title)` + call, `ui.toc([[id,label]])` | | articles (`.article`, `.prose`) |
 | `ui.cmp_table` | `cols` (names or breed dicts), `rows[[label, v1, v2…]]`, `caption` | comparison table in a white tile; column names never break at a hyphen. 3+ columns: phones ≤ 760 get one tile per column (`.cmp-cards`) instead of the table |
 | `ui.gallery` | `photos[{src,alt,caption?}]` | 1–5+ photos; phones: a grid (first photo full width, the rest two per row). Swipeable row → `media.media_carousel` |
-| `ui.badges`, `ui.empty_state(title,text,button,label,attrs)`, `ui.img(src,alt,…)`, `ui.icon`, `ui.ico`, `ui.face`, `ui.round_arrow`, `ui.text_link` | | small parts |
+| `ui.badges`, `ui.empty_state(title,text,button,label,attrs)`, `ui.img(src,alt,…)`, `ui.icon`, `ui.ico`, `ui.face`, `ui.round_arrow`, `ui.link_button(url, label)` (coral pill link) | | small parts |
 | `cards.puppy_card(p, tag='h3', eager=false, simple=false)` | puppy | THE puppy card of the whole site (every strip, hub, catalog, «Похожие щенки»): photo (a link), white «Узнать цену» (modal for that puppy) + «Подробнее» with a white outline (`.btn--outline`), heart in the photo corner; studio photo → card in that photo's measured colours; phones ≤ 560 — a compact row, photo left. `simple=true` (breed pages v2): name, sex · colour, the same two buttons, no age / heart; photo and name are not links. Styles: `main.css` (`.pup` + `.ct-card`) |
 | `ct.card(p, eager=false)` / `ct.strip(items, breed)` | `{% import "catalog/_card.html.j2" as ct %}` | `ct.card` = `cards.puppy_card`; `ct.strip` = a strip of cards + «Ждёте другого щенка?» («Похожие щенки») |
 | `cards.pups_section` | `title, breed, limit=4, id, exclude=slug` | «Щенки в наличии» strip (`.pups--strip`: at 3 columns a lone 4th card is hidden) |

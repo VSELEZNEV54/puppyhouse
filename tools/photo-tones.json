@@ -120,6 +120,17 @@
   "floor": "#ECCE92",
   "floor_line": 0.91
  },
+ "hero-four-breeds": {
+  "size": [
+   1264,
+   848
+  ],
+  "top": "#F3DEC2",
+  "wall": "#F3DFC1",
+  "wall_right": "#EAD2B1",
+  "floor": "#F9E9D3",
+  "floor_line": 0.91
+ },
  "okras-buldog-goluboj": {
   "size": [
    1024,
