@@ -1,0 +1,89 @@
+{#- /o-pitomnike/ — the page about the kennel itself (client 21.10; replaces /roditeli/ and /vypuskniki/).
+    Key phrase «питомник щенков в Москве». Context (routes/trust.py): pg (data/trust.json → o_pitomnike), seo (its SEO
+    text, links rendered), stats (site.stats), graduates (home.json → reviews_home: the owners' photo reviews, as on the
+    homepage), faq_items. No parents and no «как растим щенков» on this page.
+    Order: hero (four breeds together, 9 лет / 640+ / 4,9) → «Кто мы» (text + numbers) → «Почему нам доверяют» (eight
+    photo cards, the puppy-card look) → four breeds → «Наши выпускники» (ratings on Яндекс / Google / Авито + photo
+    reviews) → puppies in stock → FAQ about the kennel → more about the kennel → SEO text → lead form with contact tiles. -#}
+{% extends "layouts/page.html.j2" %}
+
+{% block body_attrs %} class="page-about"{% endblock %}
+
+{% block page_css %}
+  <link rel="stylesheet" href="/assets/css/trust.css">
+{% endblock %}
+
+{% block hero %}
+    {%- set h = pg.hero %}
+    {%- set size = imgsize(h.photo.src) or [1536, 1024] %}
+    {% call ui.page_hero(h.h1, lead=h.lead, tone='peach', photo={'src': h.photo.src, 'w': size[0], 'h': size[1], 'alt': h.photo.alt}, eyebrow=h.eyebrow, facts=h.facts, cls='phero--about') %}
+      <a class="btn btn--ink btn--lg" href="/shchenki/">Щенки в наличии {{ ui.icon('arrow') }}</a>
+      <button class="btn btn--white btn--lg" type="button" data-open-modal data-modal-kind="consult" data-modal-title="Получить консультацию" data-modal-sub="Расскажем о питомнике и породах, ответим на вопросы и пришлём щенков в наличии с ценами" data-modal-note="Консультация: о питомнике" data-modal-submit="Получить консультацию" data-modal-done="Спасибо! Куратор свяжется с вами в течение рабочего дня">Получить консультацию</button>
+    {% endcall %}
+{% endblock %}
+
+{% block body %}
+    <!-- ================= КТО МЫ — текст + цифры ================= -->
+    <section class="section container" id="kto-my" aria-labelledby="kto-my-title">
+      {{ ui.section_head(pg.about.title, id='kto-my-title') }}
+      <div class="abt-who">
+        <div class="abt-who__text">
+          {% for para in pg.about.text %}<p>{{ para|typo }}</p>{% endfor %}
+        </div>
+        {{ ui.stat_tiles(stats) }}
+      </div>
+    </section>
+
+    <!-- ================= ПОЧЕМУ НАМ ДОВЕРЯЮТ — карточки с фото, как карточки щенков ================= -->
+    {%- set adv = pg.advantages %}
+    <section class="section container" id="preimushchestva" aria-labelledby="preimushchestva-title">
+      {{ ui.section_head(adv.title, id='preimushchestva-title', lead=adv.lead) }}
+      <ul class="abt-advs" data-reveal="items">
+        {% for a in adv['items'] %}
+        {%- set size = imgsize(a.photo.src) or [1264, 848] %}
+        <li class="abt-adv">
+          <div class="abt-adv__media"><img src="{{ a.photo.src }}" alt="{{ a.photo.alt|typo }}" width="{{ size[0] }}" height="{{ size[1] }}"{% if a.photo.get('pos') %} style="object-position:{{ a.photo.pos }}"{% endif %} loading="lazy" decoding="async"></div>
+          <div class="abt-adv__body">
+            <h3 class="abt-adv__title">{{ a.title|typo }}</h3>
+            <p class="abt-adv__line">{{ a.line|typo }}</p>
+          </div>
+        </li>
+        {% endfor %}
+      </ul>
+    </section>
+
+    <!-- ================= ЧЕТЫРЕ ПОРОДЫ ================= -->
+    <section class="section container" id="porody" aria-labelledby="porody-title">
+      {{ ui.section_head(pg.breeds.title, id='porody-title', lead=pg.breeds.lead, link={'url': '/shchenki/', 'label': 'Все щенки в наличии — ' ~ puppies|length}) }}
+      {{ cards.breed_tiles() }}
+    </section>
+
+    <!-- ================= НАШИ ВЫПУСКНИКИ — рейтинг на площадках + отзывы с фото щенков (как на главной) ================= -->
+    {{ media.video_reviews(graduates, title=pg.graduates.title, id='vypuskniki', lead=pg.graduates.lead, photo=true) }}
+
+    <!-- ================= ЩЕНКИ В НАЛИЧИИ ================= -->
+    {{ cards.pups_section() }}
+
+    <!-- ================= ВОПРОСЫ О ПИТОМНИКЕ ================= -->
+    {{ blocks.faq_section(faq_items, title=pg.faq_title) }}
+
+    <!-- ================= ЕЩЁ О ПИТОМНИКЕ ================= -->
+    <section class="section container" id="eshchyo" aria-labelledby="eshchyo-title">
+      {{ ui.section_head(pg.links_title, id='eshchyo-title') }}
+      {{ ui.link_tiles(pg.links) }}
+    </section>
+
+    <!-- ================= SEO-ТЕКСТ — как на главной ================= -->
+    {% call blocks.seo_block(seo.title, seo.lead, id='pitomnik-v-moskve', key='seo') %}
+        {% for s in seo.blocks %}
+        <h3>{{ s.h|typo }}</h3>
+        <p>{{ s.p|typo }}</p>
+        {% endfor %}
+    {% endcall %}
+{% endblock %}
+
+{% block lead %}
+    {% call forms.lead_form(title=pg.lead_title, line=pg.lead_line, contacts=false, cls='hm-lead') %}
+      {{ forms.contact_tiles() }}
+    {% endcall %}
+{% endblock %}

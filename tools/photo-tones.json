@@ -1,4 +1,15 @@
 {
+ "about-four-breeds": {
+  "size": [
+   1536,
+   1024
+  ],
+  "top": "#F0BC9B",
+  "wall": "#F0BC9A",
+  "wall_right": "#C29A82",
+  "floor": "#F6D0B9",
+  "floor_line": 0.7
+ },
  "color-buldog-blue": {
   "size": [
    1024,

@@ -77,7 +77,7 @@
     },
     {
       "label": "О питомнике",
-      "url": "/#o-pitomnike",
+      "url": "/o-pitomnike/",
       "prio": 2
     },
     {
@@ -256,8 +256,8 @@
       "title": "О питомнике",
       "items": [
         {
-          "label": "Выпускники",
-          "url": "/vypuskniki/"
+          "label": "О питомнике",
+          "url": "/o-pitomnike/"
         },
         {
           "label": "Отзывы владельцев",
@@ -398,8 +398,8 @@
         "title": "О питомнике",
         "links": [
           {
-            "label": "Выпускники",
-            "url": "/vypuskniki/"
+            "label": "О питомнике",
+            "url": "/o-pitomnike/"
           },
           {
             "label": "Отзывы",

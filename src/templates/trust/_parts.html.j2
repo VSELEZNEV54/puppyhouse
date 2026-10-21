@@ -1,4 +1,4 @@
-{#- Parts of the trust pages (/vypuskniki/, /otzyvy/, /dokumenty-i-garantii/).
+{#- Parts of the trust pages (/o-pitomnike/, /otzyvy/, /dokumenty-i-garantii/).
     Import: {% import "trust/_parts.html.j2" as tr %}. Text params are plain text (escaped, |typo). -#}
 {% import "macros/ui.html.j2" as ui %}
 
@@ -36,21 +36,6 @@
   {% endfor %}
 </ul>
 {%- endmacro %}
-
-{#- Graduate story: breed face, «Кличка, город», breed · age, 2–3 sentences. s = {name, meta, text, b} -#}
-{% macro story(s) -%}
-<article class="tr-story">
-  <div class="tr-story__head">
-    {{ ui.face(s.b) }}
-    <div>
-      <h3 class="tr-story__name">{{ s.name|typo }}</h3>
-      <p class="tr-story__meta">{{ s.meta|typo }}</p>
-    </div>
-  </div>
-  <p class="tr-story__text">{{ s.text|typo }}</p>
-</article>
-{%- endmacro %}
-
 
 {#- Document card: icon, title, one line, which breeds get it (faces + label). d = trust.json docs item + fit_breeds -#}
 {% macro doc_card(d) -%}
