@@ -164,44 +164,33 @@ html:not(.js) .cho-quiz { display: none; }
 #preimushchestva .adv { align-content: start; }
 @media (min-width: 761px) { #preimushchestva .adv__title { align-self: start; } }
 
-/* «Кому подойдёт»: тинт породы с галочками и белая карточка с крестиками (как «Почему не бывает дёшево» на /<breed>/cena/) */
-.cho-fit { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--gap); }
-.cho-fit__card {
-  display: flex; flex-direction: column; gap: clamp(20px, 2vw, 28px);
-  padding: clamp(24px, 3vw, 44px); border-radius: var(--r-tile); background: var(--tile);
+/* «Кому подойдёт» (правка 21.10): четыре карточки с фото — как на странице щенка (puppy.css .pp-fit): фото с отступом
+   8 px на тоне породы, заголовок и строка под ним */
+.cho-fits { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--gap); }
+.cho-fitc { display: flex; flex-direction: column; min-width: 0; padding: var(--inset); border-radius: var(--r-tile); background: var(--tile); }
+.cho-fitc__photo { position: relative; aspect-ratio: 4 / 5; border-radius: var(--r-img); overflow: hidden; background: var(--tone); }
+.cho-fitc__photo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.cho-fitc__title { margin: 16px 10px 0; font-size: clamp(20px, 1.6vw, 24px); font-weight: 500; letter-spacing: -0.025em; line-height: 1.15; }
+.cho-fitc__line { margin: 6px 10px 12px; font-size: 15px; line-height: 1.45; color: var(--ink-soft); }
+
+/* «Лучше подобрать другую породу»: три белые плашки — крестик, кому не подойдёт, и почему */
+.cho-unfit { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--gap); }
+.cho-unfit__item {
+  display: grid; grid-template-columns: 36px minmax(0, 1fr); column-gap: 14px; row-gap: 10px; align-content: start; min-width: 0;
+  padding: clamp(22px, 2.4vw, 32px); border-radius: var(--r-tile); background: var(--tile);
 }
-.cho-fit__card--yes { background: linear-gradient(180deg, var(--tone) 0 55%, var(--tone-floor) 100%); }
-.cho-fit__title { font-size: clamp(22px, 1.9vw, 30px); font-weight: 500; letter-spacing: -0.03em; line-height: 1.1; }
-.cho-fit__list { display: grid; gap: 16px; }
-.cho-fit__list li { display: grid; grid-template-columns: 30px minmax(0, 1fr); column-gap: 14px; align-items: start; font-size: 17px; line-height: 1.4; }
-.cho-fit__list li > span:last-child { padding-top: 3px; }
-.cho-fit__mark {
-  width: 30px; height: 30px; border-radius: 50%;
+.cho-unfit__mark {
+  grid-row: 1 / span 2; width: 36px; height: 36px; border-radius: 50%;
   display: grid; place-items: center; background: var(--coral-50); color: var(--ink);
 }
-.cho-fit__card--yes .cho-fit__mark { background: #fff; color: var(--ok); }
-.cho-fit__mark .i { stroke-width: 2.2; }
-.cho-fit__more { margin-top: auto; padding-top: 4px; }
+.cho-unfit__mark .i { stroke-width: 2.2; }
+.cho-unfit__title { padding-top: 5px; font-size: clamp(19px, 1.5vw, 23px); font-weight: 500; letter-spacing: -0.025em; line-height: 1.2; }
+.cho-unfit__text { font-size: 15.5px; line-height: 1.5; color: var(--ink-soft); }
 
-/* «<порода> и другие породы»: три белые карточки — заголовок пары, общая строка, кому какая порода, ссылка */
-/* строки карточек выровнены между собой (subgrid): заголовки в одну или две строки не сдвигают «кому какая» */
-.cho-others { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--gap); }
-.cho-other {
-  display: grid; grid-row: span 5; grid-template-rows: subgrid; row-gap: 14px; align-content: start; min-width: 0;
-  padding: clamp(22px, 2.4vw, 34px); border-radius: var(--r-tile); background: var(--tile);
-  scroll-margin-top: 110px;
+/* «Щенки <породы> в наличии» — 8 карточек, как на главной (.hm-pups); при трёх в ряд — первые 6, ряды полные */
+@media (min-width: 901px) and (max-width: 1199px) {
+  .cho-pups > .pups__item:nth-child(n + 7) { display: none; }
 }
-.cho-other__faces { display: flex; margin-bottom: 4px; }
-.cho-other__faces .face { width: 56px; height: 56px; border: 3px solid var(--tile); }
-.cho-other__faces .face + .face { margin-left: -14px; }
-.cho-other__title { align-self: end; font-size: clamp(21px, 1.6vw, 26px); font-weight: 500; letter-spacing: -0.028em; line-height: 1.12; }
-.cho-other__lead { font-size: 15px; line-height: 1.45; color: var(--muted); }
-.cho-other__picks { display: grid; align-content: start; gap: 12px; margin-top: 4px; padding-top: 18px; border-top: 1px solid var(--line); }
-.cho-other__picks li { display: grid; grid-template-columns: 36px minmax(0, 1fr); column-gap: 12px; align-items: start; }
-.cho-other__picks .face { width: 36px; height: 36px; }
-.cho-other__picks p { padding-top: 6px; font-size: 15.5px; line-height: 1.4; }
-.cho-other__name { font-weight: 500; }
-.cho-other__more { align-self: end; padding-top: 8px; }
 
 .cho-band__faces .face img { transform-origin: 50% 30%; }
 
@@ -220,13 +209,8 @@ html:not(.js) .cho-quiz { display: none; }
 }
 
 @media (max-width: 1000px) {
-  .cho-others { grid-template-columns: minmax(0, 1fr); }
-  .cho-other { grid-row: auto; grid-template-rows: none; grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); grid-template-areas: "faces picks" "title picks" "lead picks" "more picks"; column-gap: 32px; }
-  .cho-other__faces { grid-area: faces; }
-  .cho-other__title { grid-area: title; align-self: start; }
-  .cho-other__lead { grid-area: lead; }
-  .cho-other__picks { grid-area: picks; align-self: center; margin: 0; padding: 0 0 0 32px; border-top: 0; border-left: 1px solid var(--line); }
-  .cho-other__more { grid-area: more; margin-top: 4px; }
+  .cho-fits { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .cho-unfit { grid-template-columns: minmax(0, 1fr); }
   .cho-res__copy { max-width: 62%; }
 }
 
@@ -238,7 +222,6 @@ html:not(.js) .cho-quiz { display: none; }
   .cho-opt__mark { top: 50%; margin-top: -15px; }
   .cho-q__opts--4 .cho-opt { flex-direction: column; align-items: flex-start; padding: 16px; }
   .cho-q__opts--4 .cho-opt__mark { top: 14px; margin-top: 0; right: 14px; }
-  .cho-fit { grid-template-columns: minmax(0, 1fr); }
 }
 
 @media (max-width: 760px) {
@@ -276,21 +259,20 @@ html:not(.js) .cho-quiz { display: none; }
   .cho-pair { height: auto; min-height: 48px; padding-block: 6px; white-space: normal; line-height: 1.25; }
 
   .cho-links .ltiles { --n: 1; }
-  .cho-fit__card { padding: 22px 20px; gap: 18px; }
-  .cho-fit__list { gap: 14px; }
-  .cho-fit__list li { font-size: 16px; }
-
-  .cho-other { display: flex; flex-direction: column; padding: 22px 20px; gap: 12px; }
-  .cho-other__title, .cho-other__more { align-self: stretch; }
-  .cho-other__faces .face { width: 48px; height: 48px; }
-  .cho-other__title { font-size: 21px; }
-  .cho-other__picks { margin-top: 2px; padding: 16px 0 0; border-left: 0; border-top: 1px solid var(--line); }
-  .cho-other__picks p { font-size: 15px; }
-
+  .cho-fits { gap: 10px; }
+  .cho-fitc__title { margin: 12px 6px 0; font-size: 18px; }
+  .cho-fitc__line { margin: 4px 6px 8px; font-size: 13.5px; }
+  .cho-unfit__item { padding: 20px 18px; column-gap: 12px; }
+  .cho-unfit__title { font-size: 19px; }
+  .cho-unfit__text { font-size: 15px; }
 }
 
 @media (max-width: 560px) {
   .cho-res__again .cho-alt__links { flex-direction: column; align-items: flex-start; }
+  .cho-fits { grid-template-columns: minmax(0, 1fr); gap: 12px; }
+  .cho-fitc__photo { aspect-ratio: 1 / .86; }
+  .cho-fitc__title { margin: 14px 10px 0; font-size: 22px; }
+  .cho-fitc__line { margin: 6px 10px 12px; font-size: 15px; }
 }
 
 @media (max-width: 420px) {

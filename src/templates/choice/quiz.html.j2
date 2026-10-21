@@ -93,9 +93,9 @@
                 </div>
                 <p class="cho-alt__links">
                   {{ ui.link_button(s.urls.hub, 'Всё о породе') }}
-                  {#- the card «<второй> или <победитель>» on the second breed's page «Чем хорош щенок …» -#}
+                  {#- the comparison table of all breeds on the second breed's page «Чем хорош щенок …» -#}
                   {% for w in qz.breeds if w.slug != s.slug %}
-                  <a class="btn btn--coral" href="/sravnenie/{{ s.slug }}/#ili-{{ w.slug }}" data-win="{{ w.slug }}" hidden>Сравнить две породы</a>
+                  <a class="btn btn--coral" href="/sravnenie/{{ s.slug }}/#sravnenie" data-win="{{ w.slug }}" hidden>Сравнить породы</a>
                   {% endfor %}
                 </p>
               </div>

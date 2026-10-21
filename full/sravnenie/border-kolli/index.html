@@ -29,12 +29,12 @@
   <!-- Geist is served from our own domain (assets/fonts, SIL OFL 1.1): no visitor IP goes to Google before consent -->
   <link rel="preload" href="../../../assets/fonts/geist-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="../../../assets/fonts/geist-latin.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="../../../assets/css/main.css?v=51eef193">
+  <link rel="stylesheet" href="../../../assets/css/main.css?v=83af6b5c">
   <link rel="stylesheet" href="../../../assets/css/pages.css?v=9b1a639b">
-  <link rel="stylesheet" href="../../../assets/css/choice.css?v=6b8d0350">
+  <link rel="stylesheet" href="../../../assets/css/choice.css?v=a1fc7f20">
   <script src="../../../assets/js/main.js?v=fb7f2364" defer></script>
 </head>
-<body>
+<body class="page-compare">
   <!-- Иконки: инлайн-спрайт 24×24. Линейные — stroke currentColor, заливочные — fill. -->
   <svg class="sprite" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
     <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
@@ -241,8 +241,8 @@
     <div class="phero__photo"><img src="../../../assets/img/studio-kolli-green.jpg" alt="Щенок бордер-колли голубой мрамор на мятном фоне" width="1024" height="1024" fetchpriority="high" decoding="async"></div>
     <div class="phero__copy">
 <p class="eyebrow"><span class="eyebrow__dot" aria-hidden="true"></span>Сравнение пород</p>      <h1 class="phero__title" id="page-title">Чем хорош щенок <span class="nw">бордер-колли</span></h1>
-<p class="phero__lead">Преимущества <span class="nw">бордер-колли</span>: один из самых умных псов и напарник для спорта</p><div class="phero__actions">      <button class="btn btn--ink btn--lg" type="button" data-open-modal data-modal-kind="price" data-modal-breed="Бордер-колли">Узнать цену</button>
-      <a class="btn btn--white btn--lg" href="#pups">Щенки в&nbsp;наличии</a>
+<p class="phero__lead">Почему стоит выбрать <span class="nw">бордер-колли</span>: один из самых умных псов, схватывает команды с первых повторов и станет напарником для спорта, походов и активной семьи</p><div class="phero__actions">      <button class="btn btn--ink btn--lg" type="button" data-open-modal data-modal-kind="price" data-modal-breed="Бордер-колли">Узнать цену</button>
+      <a class="btn btn--white btn--lg" href="#katalog">Щенки в&nbsp;наличии</a>
 </div>    </div>
   </div>
 </section>
@@ -289,64 +289,291 @@
 </section>
 
 
+    <!-- ================= КОМУ ПОДОЙДЁТ — карточки с фото, как на странице щенка ================= -->
     <section class="section container" id="komu" aria-labelledby="komu-title">
       <div class="sec-head">
-  <div class="sec-head__txt">
-    <h2 class="h2" id="komu-title">Кому подойдёт <span class="nw">бордер-колли</span></h2>
-    <p class="sec-head__lead">Честно — и кому лучше выбрать другую породу</p>
-  </div>
+  <h2 class="h2" id="komu-title">Кому подойдёт <span class="nw">бордер-колли</span></h2>
 
 </div>
-      <div class="cho-fit">
-        <div class="cho-fit__card cho-fit__card--yes tone--mint">
-          <h3 class="cho-fit__title" id="komu-da">Подойдёт, если…</h3>
-          <ul class="cho-fit__list" aria-labelledby="komu-da">
-<li><span class="cho-fit__mark" aria-hidden="true"><svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-check"/></svg></span><span>Любите бег, походы и велопрогулки</span></li><li><span class="cho-fit__mark" aria-hidden="true"><svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-check"/></svg></span><span>Хотите заниматься с собакой спортом</span></li><li><span class="cho-fit__mark" aria-hidden="true"><svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-check"/></svg></span><span>Есть время на занятия каждый день</span></li><li><span class="cho-fit__mark" aria-hidden="true"><svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-check"/></svg></span><span>Живёте в доме или часто бываете за городом</span></li>          </ul>
-          <p class="cho-fit__more"><a class="btn btn--coral" href="#pups">Щенки в наличии</a></p>
-        </div>
-        <div class="cho-fit__card cho-fit__card--no">
-          <h3 class="cho-fit__title" id="komu-net">Лучше другая порода, если…</h3>
-          <ul class="cho-fit__list" aria-labelledby="komu-net">
-<li><span class="cho-fit__mark" aria-hidden="true"><svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-close"/></svg></span><span>Нужна спокойная собака для дивана</span></li><li><span class="cho-fit__mark" aria-hidden="true"><svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-close"/></svg></span><span>Нет 2 часов в день на прогулки и занятия</span></li><li><span class="cho-fit__mark" aria-hidden="true"><svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-close"/></svg></span><span>Важно, чтобы шерсти в доме было меньше</span></li>          </ul>
-          <p class="cho-fit__more"><a class="btn btn--coral" href="../../podbor-porody/">Подобрать породу</a></p>
-        </div>
-      </div>
-    </section>
-
-    <section class="section container" id="drugie-porody" aria-labelledby="drugie-porody-title">
-      <div class="sec-head">
-  <div class="sec-head__txt">
-    <h2 class="h2" id="drugie-porody-title"><span class="nw">Бордер-колли</span> и другие породы</h2>
-    <p class="sec-head__lead">Коротко: чем отличается от других пород питомника</p>
-  </div>
-<a class="btn btn--coral" href="../../podbor-porody/#sravnenie">Все породы в таблице</a>
-</div>
-      <ul class="cho-others" data-reveal="items">
-        <li class="cho-other" id="ili-maltipu">
-          <span class="cho-other__faces" aria-hidden="true"><span class="face tone--sage"><img src="../../../assets/img/studio-kolli-green.jpg" alt="" width="1024" height="1024" loading="lazy" decoding="async"></span><span class="face tone--peach"><img src="../../../assets/img/studio-maltipu-peach.jpg" alt="" width="1024" height="1024" loading="lazy" decoding="async"></span></span>
-          <h3 class="cho-other__title"><span class="nw">Бордер-колли</span> или мальтипу</h3>
-          <p class="cho-other__lead">Неутомимый спортсмен или диванный компаньон — выбирайте по своему ритму</p>
-          <ul class="cho-other__picks">
-<li><span class="face tone--sage"><img src="../../../assets/img/studio-kolli-green.jpg" alt="" width="1024" height="1024" loading="lazy" decoding="async"></span><p><span class="cho-other__name"><span class="nw">Бордер-колли</span></span>&nbsp;— если готовы к 2 часам движения и занятий каждый день</p></li><li><span class="face tone--peach"><img src="../../../assets/img/studio-maltipu-peach.jpg" alt="" width="1024" height="1024" loading="lazy" decoding="async"></span><p><span class="cho-other__name">Мальтипу</span>&nbsp;— если живёте в квартире и гуляете по часу в день</p></li>          </ul>
-          <p class="cho-other__more"><a class="btn btn--coral" href="../maltipu/">Чем хорош мальтипу</a></p>
+      <ul class="cho-fits" data-reveal="items">
+        <li class="cho-fitc tone--sage">
+          <span class="cho-fitc__photo"><img src="../../../assets/img/fit-kolli-semya.jpg" alt="Семья с детьми гуляет по осеннему лесу с бордер-колли" width="928" height="1152" style="object-position:55% 60%" loading="lazy" decoding="async"></span>
+          <h3 class="cho-fitc__title">Для активной семьи</h3>
+          <p class="cho-fitc__line">Прогулки, походы и игры каждый день</p>
         </li>
-        <li class="cho-other" id="ili-francuzskij-buldog">
-          <span class="cho-other__faces" aria-hidden="true"><span class="face tone--sage"><img src="../../../assets/img/studio-kolli-green.jpg" alt="" width="1024" height="1024" loading="lazy" decoding="async"></span><span class="face tone--powder"><img src="../../../assets/img/studio-buldog-blue.jpg" alt="" width="1024" height="1024" loading="lazy" decoding="async"></span></span>
-          <h3 class="cho-other__title"><span class="nw">Бордер-колли</span> или французский бульдог</h3>
-          <p class="cho-other__lead">Энергичный пастух или спокойный городской друг — решает ваш ритм жизни</p>
-          <ul class="cho-other__picks">
-<li><span class="face tone--sage"><img src="../../../assets/img/studio-kolli-green.jpg" alt="" width="1024" height="1024" loading="lazy" decoding="async"></span><p><span class="cho-other__name"><span class="nw">Бордер-колли</span></span>&nbsp;— если ваш отдых — бег, походы и спорт</p></li><li><span class="face tone--powder"><img src="../../../assets/img/studio-buldog-blue.jpg" alt="" width="1024" height="1024" loading="lazy" decoding="async"></span><p><span class="cho-other__name">Французский бульдог</span>&nbsp;— если гуляете спокойно и любите вечера дома</p></li>          </ul>
-          <p class="cho-other__more"><a class="btn btn--coral" href="../francuzskij-buldog/">Чем хорош французский бульдог</a></p>
+        <li class="cho-fitc tone--sage">
+          <span class="cho-fitc__photo"><img src="../../../assets/img/fit-kolli-sport.jpg" alt="Бордер-колли в прыжке ловит фрисби на лугу" width="928" height="1152" style="object-position:45% 45%" loading="lazy" decoding="async"></span>
+          <h3 class="cho-fitc__title">Спорт и аджилити</h3>
+          <p class="cho-fitc__line">Фрисби, аджилити и послушание — в радость</p>
         </li>
-        <li class="cho-other" id="ili-toj-pudel">
-          <span class="cho-other__faces" aria-hidden="true"><span class="face tone--sage"><img src="../../../assets/img/studio-kolli-green.jpg" alt="" width="1024" height="1024" loading="lazy" decoding="async"></span><span class="face tone--butter"><img src="../../../assets/img/studio-pudel-yellow.jpg" alt="" width="1024" height="1024" loading="lazy" decoding="async"></span></span>
-          <h3 class="cho-other__title"><span class="nw">Бордер-колли</span> или <span class="nw">той-пудель</span></h3>
-          <p class="cho-other__lead">Обе породы очень умные. Разница — в размере, энергии и линьке</p>
-          <ul class="cho-other__picks">
-<li><span class="face tone--sage"><img src="../../../assets/img/studio-kolli-green.jpg" alt="" width="1024" height="1024" loading="lazy" decoding="async"></span><p><span class="cho-other__name"><span class="nw">Бордер-колли</span></span>&nbsp;— если нужен напарник для спорта и походов</p></li><li><span class="face tone--butter"><img src="../../../assets/img/studio-pudel-yellow.jpg" alt="" width="1024" height="1024" loading="lazy" decoding="async"></span><p><span class="cho-other__name"><span class="nw">Той-пудель</span></span>&nbsp;— если нужен умный компаньон для квартиры</p></li>          </ul>
-          <p class="cho-other__more"><a class="btn btn--coral" href="../toj-pudel/">Чем хорош той-пудель</a></p>
+        <li class="cho-fitc tone--sage">
+          <span class="cho-fitc__photo"><img src="../../../assets/img/fit-kolli-dom.jpg" alt="Бордер-колли бежит по лужайке у загородного дома" width="928" height="1152" style="object-position:50% 60%" loading="lazy" decoding="async"></span>
+          <h3 class="cho-fitc__title">Загородный дом</h3>
+          <p class="cho-fitc__line">Лучше всего там, где есть двор и простор</p>
+        </li>
+        <li class="cho-fitc tone--sage">
+          <span class="cho-fitc__photo"><img src="../../../assets/img/fit-kolli-uchitsya.jpg" alt="Щенок бордер-колли на дрессировке смотрит на хозяина" width="928" height="1152" style="object-position:45% 50%" loading="lazy" decoding="async"></span>
+          <h3 class="cho-fitc__title">Легко учится</h3>
+          <p class="cho-fitc__line">Схватывает команды с первых повторов</p>
         </li>
       </ul>
+    </section>
+
+    <!-- ================= ЛУЧШЕ ПОДОБРАТЬ ДРУГУЮ ПОРОДУ — три плашки с пояснением ================= -->
+    <section class="section container" id="drugaya-poroda" aria-labelledby="drugaya-poroda-title">
+      <div class="sec-head">
+  <div class="sec-head__txt">
+    <h2 class="h2" id="drugaya-poroda-title">Лучше подобрать другую породу</h2>
+    <p class="sec-head__lead">Если для вас важно <span class="nw">что-⁠то</span> из этого, <span class="nw">бордер-колли</span> вряд ли подойдёт</p>
+  </div>
+<a class="btn btn--coral" href="../../podbor-porody/">Подобрать породу</a>
+</div>
+      <ul class="cho-unfit" data-reveal="items">
+        <li class="cho-unfit__item">
+          <span class="cho-unfit__mark" aria-hidden="true"><svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-close"/></svg></span>
+          <h3 class="cho-unfit__title">Нужна спокойная собака для дивана</h3>
+          <p class="cho-unfit__text"><span class="nw">Бордер-колли</span> — рабочая пастушья порода. Без дела он скучает и сам придумывает себе занятия — не всегда безобидные: грызёт вещи и пытается «пасти» детей.</p>
+        </li>
+        <li class="cho-unfit__item">
+          <span class="cho-unfit__mark" aria-hidden="true"><svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-close"/></svg></span>
+          <h3 class="cho-unfit__title">Нет 2 часов в день на прогулки и занятия</h3>
+          <p class="cho-unfit__text">Ему нужно от двух часов в день движения и задач для головы: прогулки, фрисби, аджилити, обучение командам. Без нагрузки <span class="nw">бордер-колли</span> становится нервным и непослушным.</p>
+        </li>
+        <li class="cho-unfit__item">
+          <span class="cho-unfit__mark" aria-hidden="true"><svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-close"/></svg></span>
+          <h3 class="cho-unfit__title">Важно, чтобы шерсти в доме было меньше</h3>
+          <p class="cho-unfit__text"><span class="nw">У бордер-колли</span> густая шерсть с подшёрстком: он линяет круглый год, а весной и осенью — особенно сильно. Вычёсывать его нужно <span class="nw">1–2</span> раза в неделю, в линьку — чаще.</p>
+        </li>
+      </ul>
+    </section>
+
+    <!-- ================= СРАВНЕНИЕ СО ВСЕМИ ПОРОДАМИ — таблица (эта порода первой) ================= -->
+    <section class="section container" id="sravnenie" aria-labelledby="sravnenie-title">
+      <div class="sec-head">
+  <div class="sec-head__txt">
+    <h2 class="h2" id="sravnenie-title"><span class="nw">Бордер-колли</span> и другие породы</h2>
+    <p class="sec-head__lead">Сравнение всех пород питомника — по главному</p>
+  </div>
+
+</div>
+      <div class="cmp cmp--wide" role="region" aria-label="Сравнение пород: Бордер-колли, Мальтипу, Французский бульдог, Той-пудель" tabindex="0">
+  <table class="cmp__table">
+<caption class="sr-only">Сравнение пород: Бордер-колли, Мальтипу, Французский бульдог, Той-пудель</caption>    <thead>
+      <tr>
+        <td></td>
+        <th scope="col"><span class="cmp__head"><span class="face tone--sage"><img src="../../../assets/img/studio-kolli-green.jpg" alt="" width="1024" height="1024" loading="lazy" decoding="async"></span><span><span class="nw">Бордер-колли</span></span></span></th>
+        <th scope="col"><span class="cmp__head"><span class="face tone--peach"><img src="../../../assets/img/studio-maltipu-peach.jpg" alt="" width="1024" height="1024" loading="lazy" decoding="async"></span><span>Мальтипу</span></span></th>
+        <th scope="col"><span class="cmp__head"><span class="face tone--powder"><img src="../../../assets/img/studio-buldog-blue.jpg" alt="" width="1024" height="1024" loading="lazy" decoding="async"></span><span>Французский бульдог</span></span></th>
+        <th scope="col"><span class="cmp__head"><span class="face tone--butter"><img src="../../../assets/img/studio-pudel-yellow.jpg" alt="" width="1024" height="1024" loading="lazy" decoding="async"></span><span><span class="nw">Той-пудель</span></span></span></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th scope="row">Размер</th>
+<td>Средний, <span class="nw">46–56</span> см</td><td>Маленький, <span class="nw">20–35</span> см</td><td>Небольшой, <span class="nw">24–35</span> см</td><td>Той, <span class="nw">24–28</span> см</td>      </tr>
+      <tr>
+        <th scope="row">Вес</th>
+<td><span class="nw">14–22</span> кг</td><td><span class="nw">2–5</span> кг, стандарт до 7 кг</td><td><span class="nw">8–14</span> кг</td><td><span class="nw">2–4</span> кг</td>      </tr>
+      <tr>
+        <th scope="row">Шерсть</th>
+<td>С подшёрстком, линяет заметно</td><td>Мягкая, почти не линяет</td><td>Короткая, линяет умеренно</td><td>Кудрявая, практически не линяет</td>      </tr>
+      <tr>
+        <th scope="row">Уход за шерстью</th>
+<td>Вычёсывать <span class="nw">1–2</span> раза в неделю, в линьку чаще</td><td>Расчёсывать <span class="nw">2–3</span> раза в неделю, стрижка раз в <span class="nw">6–8</span> недель</td><td>Щётка раз в неделю, складки на морде протирать</td><td>Расчёсывать, стрижка у грумера раз в <span class="nw">4–6</span> недель</td>      </tr>
+      <tr>
+        <th scope="row">Активность</th>
+<td>Очень высокая: 2+ часа в день</td><td>Средняя: игры и прогулки</td><td>Невысокая: спокойные прогулки</td><td>Средняя: любит учиться</td>      </tr>
+      <tr>
+        <th scope="row">Для детей</th>
+<td>Для активных детей постарше</td><td>Да, с бережными детьми</td><td>Да, терпелив и устойчив</td><td>Лучше со школьниками</td>      </tr>
+      <tr>
+        <th scope="row">Для квартиры</th>
+<td>Только с ежедневным спортом</td><td>Да</td><td>Да, но беречь от жары</td><td>Да</td>      </tr>
+      <tr>
+        <th scope="row">Живут</th>
+<td><span class="nw">12–15</span> лет</td><td><span class="nw">12–15</span> лет</td><td><span class="nw">10–12</span> лет</td><td><span class="nw">14–16</span> лет</td>      </tr>
+      <tr>
+        <th scope="row">Документы</th>
+<td>Метрика РКФ, ветпаспорт, договор</td><td>Ветпаспорт, договор, копии родословных предков</td><td>Метрика РКФ, ветпаспорт, договор</td><td>Метрика РКФ, ветпаспорт, договор</td>      </tr>
+    </tbody>
+  </table>
+</div>
+<ul class="cmp-cards" aria-label="Сравнение пород: Бордер-колли, Мальтипу, Французский бульдог, Той-пудель">
+  <li class="cmp-card">
+    <h3 class="cmp-card__head"><span class="face tone--sage"><img src="../../../assets/img/studio-kolli-green.jpg" alt="" width="1024" height="1024" loading="lazy" decoding="async"></span><span><span class="nw">Бордер-колли</span></span></h3>
+    <dl class="cmp-card__rows">
+      <div class="cmp-card__row"><dt>Размер</dt><dd>Средний, <span class="nw">46–56</span> см</dd></div>
+      <div class="cmp-card__row"><dt>Вес</dt><dd><span class="nw">14–22</span> кг</dd></div>
+      <div class="cmp-card__row"><dt>Шерсть</dt><dd>С подшёрстком, линяет заметно</dd></div>
+      <div class="cmp-card__row"><dt>Уход за шерстью</dt><dd>Вычёсывать <span class="nw">1–2</span> раза в неделю, в линьку чаще</dd></div>
+      <div class="cmp-card__row"><dt>Активность</dt><dd>Очень высокая: 2+ часа в день</dd></div>
+      <div class="cmp-card__row"><dt>Для детей</dt><dd>Для активных детей постарше</dd></div>
+      <div class="cmp-card__row"><dt>Для квартиры</dt><dd>Только с ежедневным спортом</dd></div>
+      <div class="cmp-card__row"><dt>Живут</dt><dd><span class="nw">12–15</span> лет</dd></div>
+      <div class="cmp-card__row"><dt>Документы</dt><dd>Метрика РКФ, ветпаспорт, договор</dd></div>
+    </dl>
+  </li>
+  <li class="cmp-card">
+    <h3 class="cmp-card__head"><span class="face tone--peach"><img src="../../../assets/img/studio-maltipu-peach.jpg" alt="" width="1024" height="1024" loading="lazy" decoding="async"></span><span>Мальтипу</span></h3>
+    <dl class="cmp-card__rows">
+      <div class="cmp-card__row"><dt>Размер</dt><dd>Маленький, <span class="nw">20–35</span> см</dd></div>
+      <div class="cmp-card__row"><dt>Вес</dt><dd><span class="nw">2–5</span> кг, стандарт до 7 кг</dd></div>
+      <div class="cmp-card__row"><dt>Шерсть</dt><dd>Мягкая, почти не линяет</dd></div>
+      <div class="cmp-card__row"><dt>Уход за шерстью</dt><dd>Расчёсывать <span class="nw">2–3</span> раза в неделю, стрижка раз в <span class="nw">6–8</span> недель</dd></div>
+      <div class="cmp-card__row"><dt>Активность</dt><dd>Средняя: игры и прогулки</dd></div>
+      <div class="cmp-card__row"><dt>Для детей</dt><dd>Да, с бережными детьми</dd></div>
+      <div class="cmp-card__row"><dt>Для квартиры</dt><dd>Да</dd></div>
+      <div class="cmp-card__row"><dt>Живут</dt><dd><span class="nw">12–15</span> лет</dd></div>
+      <div class="cmp-card__row"><dt>Документы</dt><dd>Ветпаспорт, договор, копии родословных предков</dd></div>
+    </dl>
+  </li>
+  <li class="cmp-card">
+    <h3 class="cmp-card__head"><span class="face tone--powder"><img src="../../../assets/img/studio-buldog-blue.jpg" alt="" width="1024" height="1024" loading="lazy" decoding="async"></span><span>Французский бульдог</span></h3>
+    <dl class="cmp-card__rows">
+      <div class="cmp-card__row"><dt>Размер</dt><dd>Небольшой, <span class="nw">24–35</span> см</dd></div>
+      <div class="cmp-card__row"><dt>Вес</dt><dd><span class="nw">8–14</span> кг</dd></div>
+      <div class="cmp-card__row"><dt>Шерсть</dt><dd>Короткая, линяет умеренно</dd></div>
+      <div class="cmp-card__row"><dt>Уход за шерстью</dt><dd>Щётка раз в неделю, складки на морде протирать</dd></div>
+      <div class="cmp-card__row"><dt>Активность</dt><dd>Невысокая: спокойные прогулки</dd></div>
+      <div class="cmp-card__row"><dt>Для детей</dt><dd>Да, терпелив и устойчив</dd></div>
+      <div class="cmp-card__row"><dt>Для квартиры</dt><dd>Да, но беречь от жары</dd></div>
+      <div class="cmp-card__row"><dt>Живут</dt><dd><span class="nw">10–12</span> лет</dd></div>
+      <div class="cmp-card__row"><dt>Документы</dt><dd>Метрика РКФ, ветпаспорт, договор</dd></div>
+    </dl>
+  </li>
+  <li class="cmp-card">
+    <h3 class="cmp-card__head"><span class="face tone--butter"><img src="../../../assets/img/studio-pudel-yellow.jpg" alt="" width="1024" height="1024" loading="lazy" decoding="async"></span><span><span class="nw">Той-пудель</span></span></h3>
+    <dl class="cmp-card__rows">
+      <div class="cmp-card__row"><dt>Размер</dt><dd>Той, <span class="nw">24–28</span> см</dd></div>
+      <div class="cmp-card__row"><dt>Вес</dt><dd><span class="nw">2–4</span> кг</dd></div>
+      <div class="cmp-card__row"><dt>Шерсть</dt><dd>Кудрявая, практически не линяет</dd></div>
+      <div class="cmp-card__row"><dt>Уход за шерстью</dt><dd>Расчёсывать, стрижка у грумера раз в <span class="nw">4–6</span> недель</dd></div>
+      <div class="cmp-card__row"><dt>Активность</dt><dd>Средняя: любит учиться</dd></div>
+      <div class="cmp-card__row"><dt>Для детей</dt><dd>Лучше со школьниками</dd></div>
+      <div class="cmp-card__row"><dt>Для квартиры</dt><dd>Да</dd></div>
+      <div class="cmp-card__row"><dt>Живут</dt><dd><span class="nw">14–16</span> лет</dd></div>
+      <div class="cmp-card__row"><dt>Документы</dt><dd>Метрика РКФ, ветпаспорт, договор</dd></div>
+    </dl>
+  </li>
+</ul>
+
+    </section>
+
+    <!-- ================= ЩЕНКИ ПОРОДЫ — 8 карточек, как каталог на главной ================= -->
+    <section class="section container" id="katalog" aria-labelledby="katalog-title">
+      <div class="sec-head">
+  <h2 class="h2" id="katalog-title">Щенки <span class="nw">бордер-колли</span> в наличии</h2>
+
+</div>
+      <ul class="pups hm-pups cho-pups" data-reveal="items">
+        <li class="pups__item">
+          <article class="pup ct-card tone--sage ct-card--life" data-pup data-slug="border-kolli-goluboj-mramor-2026-07" data-breed="border-kolli" data-name="Скай" data-desc="Бордер-колли · 11 недель · мальчик" data-img="pup-kolli-109.jpg">
+<a class="pup__media ct-card__media" href="../../shchenki/border-kolli-goluboj-mramor-2026-07/" tabindex="-1" aria-hidden="true">    <img src="../../../assets/img/pup-kolli-109.jpg" alt="Щенок бордер-колли Скай, голубой мрамор, лежит на траве" width="1254" height="1254" style="object-position:50% 50%" loading="lazy" decoding="async">
+</a>  <div class="pup__body ct-card__body">
+    <h3 class="pup__name"><a href="../../shchenki/border-kolli-goluboj-mramor-2026-07/">Скай</a></h3>
+    <p class="pup__meta"><span>Бордер-колли&nbsp;·</span> <span>11 недель&nbsp;·</span> <span>мальчик</span></p>
+    <div class="ct-card__actions">
+      <button class="btn btn--white ct-card__price" type="button" data-open-modal data-modal-kind="puppy" aria-label="Узнать цену: Скай">Узнать цену</button>
+      <a class="btn btn--outline ct-card__more" href="../../shchenki/border-kolli-goluboj-mramor-2026-07/" aria-label="Подробнее: Скай">Подробнее</a>
+    </div>
+  </div>
+</article>
+        </li>
+        <li class="pups__item">
+          <article class="pup ct-card tone--sage ct-card--life" data-pup data-slug="border-kolli-trehcvetnyj-2026-07" data-breed="border-kolli" data-name="Ральф" data-desc="Бордер-колли · 12 недель · мальчик" data-img="pup-kolli-112.jpg">
+<a class="pup__media ct-card__media" href="../../shchenki/border-kolli-trehcvetnyj-2026-07/" tabindex="-1" aria-hidden="true">    <img src="../../../assets/img/pup-kolli-112.jpg" alt="Трёхцветный щенок бордер-колли Ральф сидит на траве" width="1254" height="1254" style="object-position:50% 50%" loading="lazy" decoding="async">
+</a>  <div class="pup__body ct-card__body">
+    <h3 class="pup__name"><a href="../../shchenki/border-kolli-trehcvetnyj-2026-07/">Ральф</a></h3>
+    <p class="pup__meta"><span>Бордер-колли&nbsp;·</span> <span>12 недель&nbsp;·</span> <span>мальчик</span></p>
+    <div class="ct-card__actions">
+      <button class="btn btn--white ct-card__price" type="button" data-open-modal data-modal-kind="puppy" aria-label="Узнать цену: Ральф">Узнать цену</button>
+      <a class="btn btn--outline ct-card__more" href="../../shchenki/border-kolli-trehcvetnyj-2026-07/" aria-label="Подробнее: Ральф">Подробнее</a>
+    </div>
+  </div>
+</article>
+        </li>
+        <li class="pups__item">
+          <article class="pup ct-card tone--sage ct-card--life" data-pup data-slug="border-kolli-goluboj-mramor-2026-08" data-breed="border-kolli" data-name="Джесси" data-desc="Бордер-колли · 9 недель · девочка" data-img="pup-kolli-103.jpg">
+<a class="pup__media ct-card__media" href="../../shchenki/border-kolli-goluboj-mramor-2026-08/" tabindex="-1" aria-hidden="true">    <img src="../../../assets/img/pup-kolli-103.jpg" alt="Щенок бордер-колли Джесси, голубой мрамор, сидит у дерева" width="1254" height="1254" style="object-position:45% 50%" loading="lazy" decoding="async">
+</a>  <div class="pup__body ct-card__body">
+    <h3 class="pup__name"><a href="../../shchenki/border-kolli-goluboj-mramor-2026-08/">Джесси</a></h3>
+    <p class="pup__meta"><span>Бордер-колли&nbsp;·</span> <span>9 недель&nbsp;·</span> <span>девочка</span></p>
+    <div class="ct-card__actions">
+      <button class="btn btn--white ct-card__price" type="button" data-open-modal data-modal-kind="puppy" aria-label="Узнать цену: Джесси">Узнать цену</button>
+      <a class="btn btn--outline ct-card__more" href="../../shchenki/border-kolli-goluboj-mramor-2026-08/" aria-label="Подробнее: Джесси">Подробнее</a>
+    </div>
+  </div>
+</article>
+        </li>
+        <li class="pups__item">
+          <article class="pup ct-card tone--sage ct-card--life" data-pup data-slug="border-kolli-cherno-belyj-2026-07-rokki" data-breed="border-kolli" data-name="Рокки" data-desc="Бордер-колли · 12 недель · мальчик" data-img="pup-kolli-106.jpg">
+<a class="pup__media ct-card__media" href="../../shchenki/border-kolli-cherno-belyj-2026-07-rokki/" tabindex="-1" aria-hidden="true">    <img src="../../../assets/img/pup-kolli-106.jpg" alt="Чёрно-белый щенок бордер-колли Рокки на прогулке" width="1254" height="1254" style="object-position:45% 50%" loading="lazy" decoding="async">
+</a>  <div class="pup__body ct-card__body">
+    <h3 class="pup__name"><a href="../../shchenki/border-kolli-cherno-belyj-2026-07-rokki/">Рокки</a></h3>
+    <p class="pup__meta"><span>Бордер-колли&nbsp;·</span> <span>12 недель&nbsp;·</span> <span>мальчик</span></p>
+    <div class="ct-card__actions">
+      <button class="btn btn--white ct-card__price" type="button" data-open-modal data-modal-kind="puppy" aria-label="Узнать цену: Рокки">Узнать цену</button>
+      <a class="btn btn--outline ct-card__more" href="../../shchenki/border-kolli-cherno-belyj-2026-07-rokki/" aria-label="Подробнее: Рокки">Подробнее</a>
+    </div>
+  </div>
+</article>
+        </li>
+        <li class="pups__item">
+          <article class="pup ct-card tone--sage ct-card--life" data-pup data-slug="border-kolli-krasnyj-mramor-2026-08" data-breed="border-kolli" data-name="Луна" data-desc="Бордер-колли · 9 недель · девочка" data-img="pup-kolli-107.jpg">
+<a class="pup__media ct-card__media" href="../../shchenki/border-kolli-krasnyj-mramor-2026-08/" tabindex="-1" aria-hidden="true">    <img src="../../../assets/img/pup-kolli-107.jpg" alt="Щенок бордер-колли Луна, красный мрамор, с голубыми глазами" width="1254" height="1254" style="object-position:50% 50%" loading="lazy" decoding="async">
+</a>  <div class="pup__body ct-card__body">
+    <h3 class="pup__name"><a href="../../shchenki/border-kolli-krasnyj-mramor-2026-08/">Луна</a></h3>
+    <p class="pup__meta"><span>Бордер-колли&nbsp;·</span> <span>9 недель&nbsp;·</span> <span>девочка</span></p>
+    <div class="ct-card__actions">
+      <button class="btn btn--white ct-card__price" type="button" data-open-modal data-modal-kind="puppy" aria-label="Узнать цену: Луна">Узнать цену</button>
+      <a class="btn btn--outline ct-card__more" href="../../shchenki/border-kolli-krasnyj-mramor-2026-08/" aria-label="Подробнее: Луна">Подробнее</a>
+    </div>
+  </div>
+</article>
+        </li>
+        <li class="pups__item">
+          <article class="pup ct-card tone--sage ct-card--life" data-pup data-slug="border-kolli-krasnyj-mramor-2026-07" data-breed="border-kolli" data-name="Бадди" data-desc="Бордер-колли · 11 недель · мальчик" data-img="pup-kolli-121.jpg">
+<a class="pup__media ct-card__media" href="../../shchenki/border-kolli-krasnyj-mramor-2026-07/" tabindex="-1" aria-hidden="true">    <img src="../../../assets/img/pup-kolli-121.jpg" alt="Щенок бордер-колли Бадди бежит к игрушке" width="1067" height="1600" style="object-position:50% 45%" loading="lazy" decoding="async">
+</a>  <div class="pup__body ct-card__body">
+    <h3 class="pup__name"><a href="../../shchenki/border-kolli-krasnyj-mramor-2026-07/">Бадди</a></h3>
+    <p class="pup__meta"><span>Бордер-колли&nbsp;·</span> <span>11 недель&nbsp;·</span> <span>мальчик</span></p>
+    <div class="ct-card__actions">
+      <button class="btn btn--white ct-card__price" type="button" data-open-modal data-modal-kind="puppy" aria-label="Узнать цену: Бадди">Узнать цену</button>
+      <a class="btn btn--outline ct-card__more" href="../../shchenki/border-kolli-krasnyj-mramor-2026-07/" aria-label="Подробнее: Бадди">Подробнее</a>
+    </div>
+  </div>
+</article>
+        </li>
+        <li class="pups__item">
+          <article class="pup ct-card tone--sage ct-card--life" data-pup data-slug="border-kolli-krasno-belyj-2026-07" data-breed="border-kolli" data-name="Айла" data-desc="Бордер-колли · 13 недель · девочка" data-img="pup-kolli-138.jpg">
+<a class="pup__media ct-card__media" href="../../shchenki/border-kolli-krasno-belyj-2026-07/" tabindex="-1" aria-hidden="true">    <img src="../../../assets/img/pup-kolli-138.jpg" alt="Красно-белый щенок бордер-колли Айла на снегу" width="470" height="646" style="object-position:50% 50%" loading="lazy" decoding="async">
+</a>  <div class="pup__body ct-card__body">
+    <h3 class="pup__name"><a href="../../shchenki/border-kolli-krasno-belyj-2026-07/">Айла</a></h3>
+    <p class="pup__meta"><span>Бордер-колли&nbsp;·</span> <span>13 недель&nbsp;·</span> <span>девочка</span></p>
+    <div class="ct-card__actions">
+      <button class="btn btn--white ct-card__price" type="button" data-open-modal data-modal-kind="puppy" aria-label="Узнать цену: Айла">Узнать цену</button>
+      <a class="btn btn--outline ct-card__more" href="../../shchenki/border-kolli-krasno-belyj-2026-07/" aria-label="Подробнее: Айла">Подробнее</a>
+    </div>
+  </div>
+</article>
+        </li>
+        <li class="pups__item">
+          <article class="pup ct-card tone--sage ct-card--life" data-pup data-slug="border-kolli-krasno-belyj-2026-08" data-breed="border-kolli" data-name="Ханни" data-desc="Бордер-колли · 9 недель · девочка" data-img="pup-kolli-149.jpg">
+<a class="pup__media ct-card__media" href="../../shchenki/border-kolli-krasno-belyj-2026-08/" tabindex="-1" aria-hidden="true">    <img src="../../../assets/img/pup-kolli-149.jpg" alt="Рыже-белый щенок бордер-колли Ханни отдыхает у мисок" width="1280" height="960" style="object-position:55% 50%" loading="lazy" decoding="async">
+</a>  <div class="pup__body ct-card__body">
+    <h3 class="pup__name"><a href="../../shchenki/border-kolli-krasno-belyj-2026-08/">Ханни</a></h3>
+    <p class="pup__meta"><span>Бордер-колли&nbsp;·</span> <span>9 недель&nbsp;·</span> <span>девочка</span></p>
+    <div class="ct-card__actions">
+      <button class="btn btn--white ct-card__price" type="button" data-open-modal data-modal-kind="puppy" aria-label="Узнать цену: Ханни">Узнать цену</button>
+      <a class="btn btn--outline ct-card__more" href="../../shchenki/border-kolli-krasno-belyj-2026-08/" aria-label="Подробнее: Ханни">Подробнее</a>
+    </div>
+  </div>
+</article>
+        </li>
+      </ul>
+      <div class="hm-pups__foot">
+        <a class="btn btn--ink btn--lg" href="../../border-kolli/#shchenki"><span>Все щенки <span class="nw">бордер-колли</span></span> <svg class="i" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></a>
+      </div>
     </section>
 
     <section class="section container" id="cena" aria-labelledby="cena-title">
@@ -451,66 +678,6 @@
     </div>
     <button class="seo__toggle" type="button" aria-expanded="false" aria-controls="seo-more" data-seo-toggle><span data-seo-label>Читать полностью</span><svg class="i i--sm" aria-hidden="true" focusable="false"><use href="#i-chevron"/></svg></button>
   </div>
-</section>
-    <section class="section container" id="pups" aria-labelledby="pups-title">
-  <div class="sec-head">
-  <h2 class="h2" id="pups-title">Щенки <span class="nw">бордер-колли</span> в наличии</h2>
-<a class="btn btn--coral" href="../../shchenki/">Весь каталог — 60</a>
-</div>
-  <ul class="pups pups--strip" data-reveal="items">
-    <li class="pups__item">
-      <article class="pup ct-card tone--sage ct-card--life" data-pup data-slug="border-kolli-goluboj-mramor-2026-07" data-breed="border-kolli" data-name="Скай" data-desc="Бордер-колли · 11 недель · мальчик" data-img="pup-kolli-109.jpg">
-<a class="pup__media ct-card__media" href="../../shchenki/border-kolli-goluboj-mramor-2026-07/" tabindex="-1" aria-hidden="true">    <img src="../../../assets/img/pup-kolli-109.jpg" alt="Щенок бордер-колли Скай, голубой мрамор, лежит на траве" width="1254" height="1254" style="object-position:50% 50%" loading="lazy" decoding="async">
-</a>  <div class="pup__body ct-card__body">
-    <h3 class="pup__name"><a href="../../shchenki/border-kolli-goluboj-mramor-2026-07/">Скай</a></h3>
-    <p class="pup__meta"><span>Бордер-колли&nbsp;·</span> <span>11 недель&nbsp;·</span> <span>мальчик</span></p>
-    <div class="ct-card__actions">
-      <button class="btn btn--white ct-card__price" type="button" data-open-modal data-modal-kind="puppy" aria-label="Узнать цену: Скай">Узнать цену</button>
-      <a class="btn btn--outline ct-card__more" href="../../shchenki/border-kolli-goluboj-mramor-2026-07/" aria-label="Подробнее: Скай">Подробнее</a>
-    </div>
-  </div>
-</article>
-    </li>
-    <li class="pups__item">
-      <article class="pup ct-card tone--sage ct-card--life" data-pup data-slug="border-kolli-trehcvetnyj-2026-07" data-breed="border-kolli" data-name="Ральф" data-desc="Бордер-колли · 12 недель · мальчик" data-img="pup-kolli-112.jpg">
-<a class="pup__media ct-card__media" href="../../shchenki/border-kolli-trehcvetnyj-2026-07/" tabindex="-1" aria-hidden="true">    <img src="../../../assets/img/pup-kolli-112.jpg" alt="Трёхцветный щенок бордер-колли Ральф сидит на траве" width="1254" height="1254" style="object-position:50% 50%" loading="lazy" decoding="async">
-</a>  <div class="pup__body ct-card__body">
-    <h3 class="pup__name"><a href="../../shchenki/border-kolli-trehcvetnyj-2026-07/">Ральф</a></h3>
-    <p class="pup__meta"><span>Бордер-колли&nbsp;·</span> <span>12 недель&nbsp;·</span> <span>мальчик</span></p>
-    <div class="ct-card__actions">
-      <button class="btn btn--white ct-card__price" type="button" data-open-modal data-modal-kind="puppy" aria-label="Узнать цену: Ральф">Узнать цену</button>
-      <a class="btn btn--outline ct-card__more" href="../../shchenki/border-kolli-trehcvetnyj-2026-07/" aria-label="Подробнее: Ральф">Подробнее</a>
-    </div>
-  </div>
-</article>
-    </li>
-    <li class="pups__item">
-      <article class="pup ct-card tone--sage ct-card--life" data-pup data-slug="border-kolli-goluboj-mramor-2026-08" data-breed="border-kolli" data-name="Джесси" data-desc="Бордер-колли · 9 недель · девочка" data-img="pup-kolli-103.jpg">
-<a class="pup__media ct-card__media" href="../../shchenki/border-kolli-goluboj-mramor-2026-08/" tabindex="-1" aria-hidden="true">    <img src="../../../assets/img/pup-kolli-103.jpg" alt="Щенок бордер-колли Джесси, голубой мрамор, сидит у дерева" width="1254" height="1254" style="object-position:45% 50%" loading="lazy" decoding="async">
-</a>  <div class="pup__body ct-card__body">
-    <h3 class="pup__name"><a href="../../shchenki/border-kolli-goluboj-mramor-2026-08/">Джесси</a></h3>
-    <p class="pup__meta"><span>Бордер-колли&nbsp;·</span> <span>9 недель&nbsp;·</span> <span>девочка</span></p>
-    <div class="ct-card__actions">
-      <button class="btn btn--white ct-card__price" type="button" data-open-modal data-modal-kind="puppy" aria-label="Узнать цену: Джесси">Узнать цену</button>
-      <a class="btn btn--outline ct-card__more" href="../../shchenki/border-kolli-goluboj-mramor-2026-08/" aria-label="Подробнее: Джесси">Подробнее</a>
-    </div>
-  </div>
-</article>
-    </li>
-    <li class="pups__item">
-      <article class="pup ct-card tone--sage ct-card--life" data-pup data-slug="border-kolli-cherno-belyj-2026-07-rokki" data-breed="border-kolli" data-name="Рокки" data-desc="Бордер-колли · 12 недель · мальчик" data-img="pup-kolli-106.jpg">
-<a class="pup__media ct-card__media" href="../../shchenki/border-kolli-cherno-belyj-2026-07-rokki/" tabindex="-1" aria-hidden="true">    <img src="../../../assets/img/pup-kolli-106.jpg" alt="Чёрно-белый щенок бордер-колли Рокки на прогулке" width="1254" height="1254" style="object-position:45% 50%" loading="lazy" decoding="async">
-</a>  <div class="pup__body ct-card__body">
-    <h3 class="pup__name"><a href="../../shchenki/border-kolli-cherno-belyj-2026-07-rokki/">Рокки</a></h3>
-    <p class="pup__meta"><span>Бордер-колли&nbsp;·</span> <span>12 недель&nbsp;·</span> <span>мальчик</span></p>
-    <div class="ct-card__actions">
-      <button class="btn btn--white ct-card__price" type="button" data-open-modal data-modal-kind="puppy" aria-label="Узнать цену: Рокки">Узнать цену</button>
-      <a class="btn btn--outline ct-card__more" href="../../shchenki/border-kolli-cherno-belyj-2026-07-rokki/" aria-label="Подробнее: Рокки">Подробнее</a>
-    </div>
-  </div>
-</article>
-    </li>
-  </ul>
 </section>
 
     <section class="section container" id="poleznoe" aria-labelledby="poleznoe-title">
