@@ -6116,6 +6116,18 @@
       "default": null,
       "title": "Form Title"
      },
+     "question": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "default": null,
+      "title": "Question"
+     },
      "quiz": {
       "anyOf": [
        {

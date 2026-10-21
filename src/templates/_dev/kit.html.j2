@@ -212,7 +212,7 @@
 
     {{ blocks.reviews_section(data.reviews[3:], title='Отзывы: полный текст', id='kit-reviews', title_id='kit-reviews-title', short=false) }}
 
-    {{ blocks.faq_section(data.faq[5:], title='FAQ', id='kit-faq', link=none) }}
+    {{ blocks.faq_section(data.faq[5:], title='FAQ', id='kit-faq') }}
 
     <section class="section container">
       {% call ui.empty_state('Таких щенков сейчас нет', 'Оставьте заявку — напишем, когда появится новый помёт.') %}<button class="btn btn--white" type="button">Показать всех</button>{% endcall %}

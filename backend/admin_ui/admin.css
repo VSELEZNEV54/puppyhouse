@@ -118,7 +118,7 @@ label.field > span { color: var(--muted); }
 .drawer__close { margin-left: auto; }
 .kv { display: grid; grid-template-columns: 150px 1fr; gap: 6px 14px; margin: 0; }
 .kv dt { color: var(--muted); font-size: 14px; }
-.kv dd { margin: 0; overflow-wrap: anywhere; }
+.kv dd { margin: 0; overflow-wrap: anywhere; white-space: pre-line; } /* «Вопрос» keeps its line breaks */
 .links { display: flex; gap: 8px; flex-wrap: wrap; }
 .work { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px; align-items: end; }
 .feed { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }

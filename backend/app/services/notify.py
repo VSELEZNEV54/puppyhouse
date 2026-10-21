@@ -106,9 +106,14 @@ def telegram_text(lead: Lead | None, review: Review | None, event: str, s: Setti
     lines = [head, f"{breed} · {kind} · {_local(lead.created_at, s):%H:%M}"]
     if lead.puppy_name:
         lines.append(f"Щенок: {lead.puppy_name}")
+    question = (lead.details or {}).get("question")
     if s.telegram_include_pd and consent.allows_cross_border(lead.consent_version):
         lines.append(f"{lead.name}, {phones.display(lead.phone)}, "
                      f"{CHANNEL_LABELS.get(Channel(lead.channel), lead.channel)}")
+        if question:
+            lines.append(f"Вопрос: {question[:500]}")
+    elif question:  # free text may hold personal data: its text goes to Telegram only with the cross-border notice
+        lines.append("Есть вопрос — текст в админке")
     link = _admin_link(s, num)
     if link:
         lines.append(link)
@@ -140,6 +145,9 @@ def email_message(lead: Lead | None, review: Review | None, event: str, s: Setti
             body.append(f"Окрас: {lead.colour}")
         if lead.note:
             body.append(f"Пометка формы: {lead.note}")
+        question = (lead.details or {}).get("question")
+        if question:
+            body += ["", "Вопрос:", question, ""] if s.email_include_pd else ["Есть вопрос — текст в админке"]
         if lead.page_path:
             body.append(f"Страница: {lead.page_path}")
         src = " / ".join(x for x in (lead.source, lead.medium) if x)

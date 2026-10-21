@@ -29,10 +29,10 @@
   <!-- Geist is served from our own domain (assets/fonts, SIL OFL 1.1): no visitor IP goes to Google before consent -->
   <link rel="preload" href="../../assets/fonts/geist-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="../../assets/fonts/geist-latin.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="../../assets/css/main.css?v=83fd91fb">
+  <link rel="stylesheet" href="../../assets/css/main.css?v=51eef193">
   <link rel="stylesheet" href="../../assets/css/pages.css?v=221bc484">
   <link rel="stylesheet" href="../../assets/css/trust.css?v=6ab8c16f">
-  <script src="../../assets/js/main.js?v=edd1a1dc" defer></script>
+  <script src="../../assets/js/main.js?v=6c034f0f" defer></script>
   <script src="../../assets/js/trust.js?v=fb638fd4" defer></script>
 </head>
 <body class="page-reviews">
@@ -979,6 +979,10 @@
               <label class="field__label" for="pm-phone">Телефон</label>
               <input class="input" id="pm-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="+7 (___) ___-__-__" required aria-describedby="pm-phone-err" data-phone>
               <p class="field__err" id="pm-phone-err" hidden></p>
+            </div><div class="field" data-pm-question hidden>
+              <label class="field__label" for="pm-question">Ваш вопрос</label>
+              <textarea class="input input--area" id="pm-question" name="question" rows="4" maxlength="1000" placeholder="Например: сколько гуляет мальтипу и&nbsp;можно ли его оставлять одного?" aria-describedby="pm-question-err"></textarea>
+              <p class="field__err" id="pm-question-err" hidden></p>
             </div>
             <div class="field" data-pm-breed>
               <label class="field__label" for="pm-breed">Какая порода интересует</label>

@@ -36,9 +36,9 @@ pixel-parity baseline no longer applies. Reference inner page: `/shchenki/`.
   with 3+ columns) turn into one tile per column. `.scroller` is a no-op now — don't use it. The crawler flags any other
   sideways scroll container and any link/button cut off by an `overflow: hidden` parent (`control-clipped`).
 - **RULE — links to a section or page are coral pill buttons (client 19.10, 21.10; automatic — main.css).** No underlined
-  text links with an arrow anywhere on the site. «Все отзывы», «Все статьи», «Документы и гарантии», «Все вопросы»,
+  text links with an arrow anywhere on the site. «Все отзывы», «Все статьи», «Документы и гарантии», «Задать свой вопрос»,
   «Весь каталог», «Узнать цену», «Получить консультацию» — every such link is a rounded coral button: `ui.link_button(url,
-  label)` (`.btn.btn--coral`), and `ui.section_head(link=…)` / `blocks.faq_section(link=…)` render it themselves (the old
+  label)` (`.btn.btn--coral`), and `ui.section_head(link=…)` and `blocks.faq_section` (its «Задать свой вопрос») render it themselves (the old
   `button=` argument changes nothing). On phones ≤ 760 px the button of a block head leaves the head and stands under the
   whole block, full width, 52 px. Nothing to do per page: keep the head as `section.section > .sec-head` (or
   `.faq > .faq__aside`) and the rule applies. Don't add a second, hand-made bottom button. Exceptions that stay as
@@ -266,7 +266,7 @@ in the order of `breeds-hub.json` → `media` (+ extra placeholders), so a video
 | `forms.contact_field(prefix)` | `'lf' \| 'pm' \| yours` | «Куда написать» chips Telegram / WhatsApp / MAX / Звонок |
 | `forms.consent_check(prefix, kind='processing', name='consent', privacy=true)` | `kind = processing \| distribution` | 152-ФЗ consent checkbox from `data/consent.json` (current version): «Даю согласие на …» linking `/soglasie/` (or `/soglasie-na-publikaciyu/`), privacy link on the next line. Every form that sends personal data needs it |
 | `forms.honeypot(prefix)`, `forms.send_fail(what, saved)` | | hidden `hp_note` field (off-screen, out of the Tab order); «Не получилось отправить…» + phone / Telegram / MAX (shown by JS when the API is unreachable) |
-| `blocks.faq_section` / `faq_list` | `items` (faq.json or `{q,a}`), `title, id, link, short, ld=true` | accordion; `ld=true` also emits FAQPage JSON-LD for its questions (one FAQ section per page — pass `ld=false` where the page outputs its own FAQPage: /faq/, blog articles) |
+| `blocks.faq_section` / `faq_list` | `items` (faq.json or `{q,a}`), `title, id, ask=true, short, ld=true` | accordion + «Задать свой вопрос» (client 21.10, instead of «Все вопросы»): a coral button under the H2 (phones: under all the questions) that opens the shared modal with the required «Ваш вопрос» field (`data-modal-question="1"`, kind consult; the API keeps the text in `details.question`, the e-mail carries it, Telegram only says «Есть вопрос» unless personal data may go there); `ask=false` hides it (/faq/); `ld=true` also emits FAQPage JSON-LD for its questions (one FAQ section per page — pass `ld=false` where the page outputs its own FAQPage: /faq/, blog articles) |
 | `blocks.reviews_section` | `reviews, title, id, title_id, link, short` | text reviews (one per row on phones); for video reviews use `media.video_reviews` |
 | `blocks.seo_block` | `title, lead, id, key` + `call` → hidden `<h3>/<p>` | collapsed SEO text |
 

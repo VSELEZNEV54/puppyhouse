@@ -28,7 +28,7 @@
 
     <div class="dlv-faqcats">
     {% for c in cats %}
-    {{ blocks.faq_section(c.qs, title=c.title, id=c.id, link=none, ld=false) }}
+    {{ blocks.faq_section(c.qs, title=c.title, id=c.id, ask=false, ld=false) }}
     {% endfor %}
     </div>
 

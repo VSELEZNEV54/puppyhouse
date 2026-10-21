@@ -42,14 +42,22 @@
 <script type="application/ld+json">{{ {'@context': 'https://schema.org', '@type': 'FAQPage', 'mainEntity': ents}|tojson }}</script>
 {%- endmacro %}
 
-{#- FAQ section: H2 + link on the left (sticky), accordion on the right (homepage layout). -#}
-{% macro faq_section(items, title='Частые вопросы', id='faq', link={'url': '/faq/', 'label': 'Все вопросы'}, short=false, ld=true) -%}
+{#- «Задать свой вопрос»: the shared modal with the question field; note — which block it came from -#}
+{% macro ask_button(where='') -%}
+<button class="btn btn--coral" type="button" data-open-modal data-modal-kind="consult" data-modal-question="1" data-modal-title="Задать свой вопрос" data-modal-sub="Ответим в&nbsp;течение рабочего дня по&nbsp;московскому времени" data-modal-note="Вопрос{{ ' из блока «' ~ (where|striptags) ~ '»' if where }}" data-modal-submit="Задать вопрос" data-modal-done="Спасибо! Ответим на&nbsp;ваш вопрос в&nbsp;течение рабочего дня">Задать свой вопрос</button>
+{%- endmacro %}
+
+{#- FAQ section: H2 + «Задать свой вопрос» on the left (sticky), accordion on the right (homepage layout).
+    «Задать свой вопрос» (client 21.10, instead of «Все вопросы»): a coral button that opens the shared modal with the
+    «Ваш вопрос» field (data-modal-question, kind consult). Desktop: under the H2; phones: under all the questions
+    (main.css head-action rule). ask=false — no button (the /faq/ page lists many groups). -#}
+{% macro faq_section(items, title='Частые вопросы', id='faq', ask=true, short=false, ld=true) -%}
 <section class="section container" id="{{ id }}" aria-labelledby="{{ id }}-title">
   {% if ld and items %}{{ faq_ld(items, short=short) }}{% endif %}
   <div class="faq">
     <div class="faq__aside">
       <h2 class="h2" id="{{ id }}-title">{{ title|typo }}</h2>
-      {% if link %}{{ ui.link_button(link.url, link.label) }}{% endif %}
+      {% if ask %}{{ ask_button(title) }}{% endif %}
     </div>
     {{ faq_list(items, prefix=id, short=short)|indent(4) }}
   </div>

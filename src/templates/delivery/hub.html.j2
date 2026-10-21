@@ -103,7 +103,7 @@
 
     {{ cards.pups_section() }}
 
-    {{ blocks.faq_section(faq_items, title=hub.faq_title, id='voprosy', link={'url': '/faq/#dostavka', 'label': 'Все вопросы'}) }}
+    {{ blocks.faq_section(faq_items, title=hub.faq_title, id='voprosy') }}
 
     {% call blocks.seo_block(hub.seo.title, hub.seo.lead, id='perevozka') %}
         {% for s in hub.seo.blocks %}
