@@ -114,7 +114,7 @@ case "$cmd" in
     # (A www → this server) and a certificate that names www
     d=xn--b1adduihee9g.xn--p1ai; w="www.$d"; cert="/etc/letsencrypt/live/$d/fullchain.pem"
     my_ips="$(ip -o addr show scope global | awk '{split($4, a, "/"); print a[1]}')"
-    w_ips="$(getent ahosts "$w" | awk '{print $1}' | sort -u)"
+    w_ips="$(getent ahosts "$w" | awk '{print $1}' | sort -u || true)"   # no record yet: empty, not an exit
     if [ -z "$w_ips" ] || ! grep -qxFf <(echo "$w_ips") <(echo "$my_ips"); then
       echo "www.домщенков.рф сейчас указывает на ${w_ips:-—} — не на этот сервер ($(echo $my_ips))." >&2
       echo "В DNS (Beget → DNS → www): A-запись на $(echo "$my_ips" | head -1); подождите 15–60 минут и запустите dsh www снова." >&2
@@ -147,7 +147,7 @@ case "$cmd" in
     echo "Готово: работает $pv. Вернуться обратно: dsh rollback"
     ;;
   -h|--help|help)
-    sed -n '2,17p' "$0"
+    sed -n '2,16p' "$0"
     ;;
   *)
     echo "dsh: неизвестная команда $cmd (dsh help)" >&2; exit 2

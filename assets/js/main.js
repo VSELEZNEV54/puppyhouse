@@ -256,6 +256,7 @@
       for (const e of list) {
         if (inflight.has(e.key)) continue;
         const res = await sendEntry(e);
+        if (res.ok && e.path === '/leads') leadSent(e.payload); // заявка из очереди дошла — тоже засчитываем
         if (settled(res.status) || permanent(res.status)) outboxDrop(e.key);
         else if (retryable(res.status)) break; // сервер всё ещё недоступен — дождёмся 'online' или следующей страницы
         // иначе (403, 404…) запись ждёт следующего раза, но не держит за собой остальную очередь
@@ -293,6 +294,11 @@
   // Цели Метрики (form_open, contact_click, quiz_complete, lead_sent — имена целей в счётчике, до символа) и то же
   // событие в dataLayer для GTM / Google Analytics. Счётчики подключаются только на боевом домене (tools/seo.py):
   // на копии сайта ym и dataLayer нет — тогда ничего не делаем.
+  // цель «Заявка отправлена» — только когда API принял заявку (2xx). Ловушку для ботов (заполненное скрытое поле
+  // hp_note) API «принимает» ответом 201, но не сохраняет — её не считаем
+  function leadSent(payload) {
+    if (!String(payload.hp_note || '').trim()) goal('lead_sent', { kind: payload.kind, breed: payload.breed || null });
+  }
   function goal(name, data) {
     try {
       if (typeof window.ym === 'function') window.ym(113696111, 'reachGoal', name, data || {});
@@ -719,7 +725,7 @@
       session.del('dsh:quiz'); // результат теста уходит только со следующей заявкой
       // цель «Заявка отправлена»: только после ответа 2xx от API и до isCurrent() — заявка ушла, даже если окно уже
       // закрыли; напрямую, не через track(): в собственный API новый тип события не идёт
-      goal('lead_sent', { kind: payload.kind, breed: payload.breed || null });
+      leadSent(payload);
     }
     if (!isCurrent()) return;
     btn.disabled = false;
