@@ -1,5 +1,5 @@
 {#- Cookie banner (client 22.10): «Принять» — statistics (Metrika, GTM, the site's own events) and the Yandex map;
-    «Принять только необходимые» and the small «Отказаться» — only what the site needs (the queue of unsent leads,
+    «Принять только необходимые» and «Отказаться» (both outlined, in one row with «Принять») — only what the site needs (the queue of unsent leads,
     the quiz result, this choice). Hidden in the markup: main.js shows it while there is no choice (localStorage
     'dsh:cookie', a year) and again from «Настройки cookie» in the footer. Texts: site.json → cookie. Not a modal: the
     page stays usable, focus is not moved on load. -#}
@@ -10,6 +10,6 @@
     <div class="cookie__btns">
       <button class="btn cookie__accept" type="button" data-cookie-choice="all">{{ ck.accept }}</button>
       <button class="btn btn--white" type="button" data-cookie-choice="necessary">{{ ck.necessary }}</button>
-      <button class="cookie__decline" type="button" data-cookie-choice="declined">{{ ck.decline }}</button>
+      <button class="btn btn--white" type="button" data-cookie-choice="declined">{{ ck.decline }}</button>
     </div>
   </section>
