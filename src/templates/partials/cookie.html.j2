@@ -1,6 +1,7 @@
-{#- Cookie banner (client 22.10): «Принять» — statistics (Metrika, GTM, the site's own events) and the Yandex map;
-    «Принять только необходимые» and «Отказаться» (both outlined, in one row with «Принять») — only what the site needs (the queue of unsent leads,
-    the quiz result, this choice). Hidden in the markup: main.js shows it while there is no choice (localStorage
+{#- Cookie banner (client 22.10), opt-out: statistics (Metrika, GTM, the site's own events), the visit source and the
+    Yandex map run from the first visit and after «Принять»; «Принять только необходимые» turns statistics off (the
+    visit source stays for leads), «Отказаться» turns off the visit source too. All three buttons in one row, the two
+    refusals outlined. Hidden in the markup: main.js shows it while there is no choice (localStorage
     'dsh:cookie', a year) and again from «Настройки cookie» in the footer. Texts: site.json → cookie. Not a modal: the
     page stays usable, focus is not moved on load; it comes first in <body> (base.html.j2), so Tab and screen readers
     reach it at once. -#}

@@ -195,11 +195,11 @@ def head_block(html: str, url: str, ctx: dict, site: dict, conf: dict, imgsize) 
 
 
 # Counters run only on the production host: the GitHub Pages preview and local builds stay out of the statistics.
-# And only after the visitor accepts cookie in the banner (partials/cookie.html.j2, main.js): window.dshStats() loads
-# them, the <head> script calls it right away when localStorage 'dsh:cookie' already holds a fresh «Принять».
+# Opt-out (client 22.10): they run from the first visit until the visitor picks «Принять только необходимые» or
+# «Отказаться» in the cookie banner (partials/cookie.html.j2, main.js). window.dshStats() loads them; the <head> script
+# calls it at once unless localStorage 'dsh:cookie' holds such a refusal (refusals do not expire).
 _PROD_JS = 'location.hostname==="{host}"'
 COOKIE_KEY = "dsh:cookie"                   # main.js: the same key and the same term
-COOKIE_TTL_MS = 365 * 24 * 60 * 60 * 1000   # the choice is asked again after a year
 
 
 def _host(conf: dict) -> str:
@@ -240,15 +240,15 @@ def gtm(conf: dict) -> str:
 
 def counters(conf: dict) -> str:
     """<script> for <head>: defines window.dshStats() — GTM, then Metrika, once, on the production host only — and
-    runs it when the visitor has already accepted cookie (not older than COOKIE_TTL_MS). Empty without counters."""
+    runs it unless the visitor has refused statistics ("necessary" or "declined"). Empty without counters."""
     js = gtm(conf) + metrika(conf)
     if not js:
         return ""
     return (
         f'<script>window.dshStats=function(){{if(window.dshStats.on||!({_PROD_JS.format(host=_host(conf))}))return;'
         f'window.dshStats.on=1;{js}}};'
-        f'try{{var c=JSON.parse(localStorage.getItem("{COOKIE_KEY}"));'
-        f'if(c&&c.choice==="all"&&Date.now()-c.ts<{COOKIE_TTL_MS})window.dshStats()}}catch(e){{}}</script>'
+        f'(function(){{var c=null;try{{c=JSON.parse(localStorage.getItem("{COOKIE_KEY}"))}}catch(e){{}}'
+        'if(!(c&&(c.choice==="necessary"||c.choice==="declined")))window.dshStats()})()</script>'
     )
 
 

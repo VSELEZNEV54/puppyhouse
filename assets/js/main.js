@@ -44,18 +44,22 @@
   const readJSON = (st, k) => { try { const v = st.get(k); return v ? JSON.parse(v) : null; } catch (_) { return null; } };
   const writeJSON = (st, k, v) => { try { st.set(k, JSON.stringify(v)); } catch (_) { /* ничего */ } };
 
-  /* Выбор в баннере cookie (partials/cookie.html.j2): localStorage 'dsh:cookie' = {choice, ts}. 'all' («Принять») —
-     статистика: Яндекс Метрика и GTM (window.dshStats из <head>, tools/seo.py — тот же ключ и срок), события в наш API
-     под номером браузера, карта Яндекса. 'necessary' и 'declined' — только необходимое: очередь неотправленных заявок,
-     результат теста, сам выбор. Через год спрашиваем снова. */
+  /* Баннер cookie (partials/cookie.html.j2), отказная модель (клиент 22.10): localStorage 'dsh:cookie' = {choice, ts}.
+     Пока выбора нет и после «Принять» ('all') работает всё: Яндекс Метрика и GTM (window.dshStats из <head>,
+     tools/seo.py — тот же ключ), события в наш API под номером браузера, источник перехода, карта Яндекса.
+     'necessary' («Принять только необходимые») — без статистики: остаются очередь неотправленных заявок, результат
+     теста и источник перехода текущего визита для заявки. 'declined' («Отказаться») — ещё и без источника перехода.
+     Отказ хранится бессрочно; «Принять» — год, потом баннер появится снова. */
   const COOKIE_KEY = 'dsh:cookie';
   const COOKIE_TTL = 365 * 24 * 60 * 60 * 1000;
-  const COOKIE_CHOICES = ['all', 'necessary', 'declined'];
   function cookieChoice() {
     const c = readJSON(local, COOKIE_KEY);
-    return c && COOKIE_CHOICES.includes(c.choice) && typeof c.ts === 'number' && Date.now() - c.ts < COOKIE_TTL ? c.choice : '';
+    if (!c || typeof c.ts !== 'number') return '';
+    if (c.choice === 'necessary' || c.choice === 'declined') return c.choice;
+    return c.choice === 'all' && Date.now() - c.ts < COOKIE_TTL ? 'all' : '';
   }
-  let statsOn = cookieChoice() === 'all';
+  let statsOn = !['necessary', 'declined'].includes(cookieChoice()); // статистика и номер браузера
+  let attrOn = cookieChoice() !== 'declined';                          // источник перехода визита (dsh:sess)
 
   function uuid() {
     const c = window.crypto;
@@ -88,9 +92,10 @@
 
   /* идентификаторы браузера: посетитель (localStorage, навсегда), визит (sessionStorage, новый после 30 минут
      тишины: тогда же запоминаем страницу входа, внешний referrer и метки), первое касание (localStorage, один раз).
-     Номера посетителя и визита и первое касание хранятся только с согласием на статистику (statsOn), без него —
-     в памяти страницы. Страница входа, referrer и метки визита (dsh:sess, без номера) — в sessionStorage при любом
-     выборе: уходят только вместе с заявкой как её источник (это есть в согласии на обработку) и живут до закрытия вкладки */
+     Номера посетителя и визита и первое касание хранятся, пока статистику не отключили (statsOn), потом — только в
+     памяти страницы. Страница входа, referrer и метки визита (dsh:sess, без номера) — в sessionStorage, пока не нажали
+     «Отказаться» (attrOn): уходят вместе с заявкой как её источник и живут до закрытия вкладки; после отказа в заявке
+     только страница, с которой её отправили */
   const SESSION_TTL = 30 * 60 * 1000;
   const UTM_KEYS = { utm_source: 'source', utm_medium: 'medium', utm_campaign: 'campaign', utm_content: 'content', utm_term: 'term', yclid: 'yclid', gclid: 'gclid' };
   function readUtm() {
@@ -114,16 +119,20 @@
   let mem = { id: '', ts: 0, info: null }; // если sessionStorage недоступен — визит живёт в памяти страницы
   function currentSession() {
     const now = Date.now();
-    let info = readJSON(session, 'dsh:sess') || mem.info;
-    const ts = Number(session.get('dsh:sid-ts')) || mem.ts;
+    let info = (attrOn && readJSON(session, 'dsh:sess')) || mem.info;
+    const ts = (attrOn && Number(session.get('dsh:sid-ts'))) || mem.ts;
     let id = (statsOn && session.get('dsh:sid')) || mem.id;
     if (!info || now - ts > SESSION_TTL) {
       id = '';
-      info = { landing: location.pathname, referrer: externalReferrer(), utm: readUtm() };
+      info = attrOn
+        ? { landing: location.pathname, referrer: externalReferrer(), utm: readUtm() }
+        : { landing: location.pathname, referrer: '', utm: {} };
     }
     if (!id) id = uuid();
-    writeJSON(session, 'dsh:sess', info);
-    session.set('dsh:sid-ts', String(now));
+    if (attrOn) {
+      writeJSON(session, 'dsh:sess', info);
+      session.set('dsh:sid-ts', String(now));
+    }
     if (statsOn) session.set('dsh:sid', id);
     mem = { id, ts: now, info };
     return mem;
@@ -137,7 +146,7 @@
     return f;
   }
   function ymUid() {
-    if (!statsOn) return null; // cookie Метрики мог остаться с прошлых визитов — без согласия его номер не отправляем
+    if (!statsOn) return null; // статистику отключили, а cookie Метрики мог остаться — его номер не отправляем
     const m = /(?:^|;\s*)_ym_uid=(\d+)/.exec(d.cookie || '');
     return m ? m[1] : null;
   }
@@ -284,7 +293,7 @@
     }
   }
 
-  /* Анонимные события (только LIVE и с согласием на статистику): page_view, form_open, contact_click, quiz_complete. Пачки до 20 штук уходят
+  /* Анонимные события (только LIVE и пока статистику не отключили): page_view, form_open, contact_click, quiz_complete. Пачки до 20 штук уходят
      через sendBeacon (text/plain — без preflight), когда вкладка скрывается или закрывается; page_view — сразу. */
   const queue = [];
   function flushEvents() {
@@ -310,8 +319,8 @@
     if (queue.length >= 20) flushEvents();
   }
   // Цели Метрики (form_open, contact_click, quiz_complete, lead_sent — имена целей в счётчике, до символа) и то же
-  // событие в dataLayer для GTM / Google Analytics. Счётчики подключаются только на боевом домене и только после
-  // «Принять» в баннере cookie (tools/seo.py): иначе ym и dataLayer нет — тогда ничего не делаем.
+  // событие в dataLayer для GTM / Google Analytics. Счётчики подключаются только на боевом домене и не работают после
+  // «Только необходимые» / «Отказаться» в баннере cookie (tools/seo.py): тогда ym и dataLayer нет — ничего не делаем.
   // цель «Заявка отправлена» — только когда API принял заявку (2xx). Ловушку для ботов (заполненное скрытое поле
   // hp_note) API «принимает» ответом 201, но не сохраняет — её не считаем
   function leadSent(payload) {
@@ -336,12 +345,13 @@
   ];
   const PLACES = [['#mega', 'mega'], ['#mmenu', 'mmenu'], ['.mbar', 'mbar'], ['.modal', 'modal'], ['.lead', 'lead'], ['.hdr', 'header'], ['.footer', 'footer']];
   // очередь заявок — необходимое: уходит при любом выборе в баннере cookie; визит запоминает страницу входа и метки
+  // (кроме «Отказаться»)
   if (LIVE) {
     currentSession();
     window.addEventListener('online', flushOutbox);
     flushOutbox();
   }
-  // статистика — с согласием: сразу при загрузке или по «Принять» (cookieSet)
+  // статистика — сразу при загрузке, пока её не отключили в баннере
   let statsStarted = false;
   function startStats() {
     if (!LIVE || !statsOn || statsStarted) return;
@@ -362,16 +372,22 @@
   startStats();
 
   /* ---------- Баннер cookie (partials/cookie.html.j2) и карта Яндекса ----------
-     «Принять» — включаем счётчики, статистику и карту на этой же странице. «Только необходимые» / «Отказаться» —
-     стираем номер браузера, первое касание, номер визита и cookie счётчиков на этом домене (в том числе оставшиеся
-     с прошлых визитов); если счётчики на странице уже работали — перезагружаем её, иначе Метрика и GTM работали бы
-     до ухода. Смену выбора в другой вкладке и возврат страницы кнопкой «Назад» ловим по 'storage' и 'pageshow'. */
+     «Принять» — статистика и карта и так работают, только запоминаем выбор. «Только необходимые» / «Отказаться» —
+     стираем номер браузера, первое касание, номер визита и cookie счётчиков на этом домене; «Отказаться» — ещё и
+     источник перехода визита. Если счётчики на странице уже работали — перезагружаем её, иначе Метрика и GTM
+     работали бы до ухода. Смену выбора в другой вкладке и возврат страницы кнопкой «Назад» ловим по 'storage' и
+     'pageshow'. */
   const cookieBox = $('[data-cookie]');
   let cookieOpener = null; // «Настройки cookie», откуда открыли баннер: туда вернётся фокус
   function forgetStats() {
     queue.length = 0;
     ['dsh:vid', 'dsh:first'].forEach((k) => local.del(k));
     session.del('dsh:sid');
+    if (!attrOn) {
+      session.del('dsh:sess');
+      session.del('dsh:sid-ts');
+      mem = { id: '', ts: 0, info: null }; // метки визита, уже прочитанные в память страницы, тоже забываем
+    }
     const host = location.hostname;
     (d.cookie || '').split(';').forEach((c) => {
       const name = c.split('=')[0].trim();
@@ -415,24 +431,30 @@
     startStats();
     $$('[data-map]').forEach(showMap);
   }
-  function statsStop() {
+  function statsStop(declined) {
     const running = statsOn || !!(window.dshStats && window.dshStats.on);
     statsOn = false;
+    attrOn = !declined;
     forgetStats();
     if (running) location.reload();
+  }
+  function cookieApply(choice) {
+    if (choice === 'necessary' || choice === 'declined') statsStop(choice === 'declined');
+    else {
+      attrOn = true;
+      if (!statsOn) statsStart();
+    }
   }
   function cookieSet(choice) {
     writeJSON(local, COOKIE_KEY, { choice, ts: Date.now() });
     cookieShow(false);
-    if (choice === 'all') statsStart();
-    else statsStop();
+    cookieApply(choice);
   }
   // выбор поменяли в другой вкладке или страница вернулась из кэша «Назад» после смены выбора
   function cookieSync() {
     const c = cookieChoice();
     if (c && !cookieOpener) cookieShow(false);
-    if (c === 'all') { if (!statsOn) statsStart(); }
-    else if (statsOn || (window.dshStats && window.dshStats.on)) statsStop();
+    cookieApply(c);
   }
   window.addEventListener('storage', (e) => { if (e.key === COOKIE_KEY || e.key === null) cookieSync(); });
   window.addEventListener('pageshow', (e) => { if (e.persisted) cookieSync(); });
@@ -447,8 +469,8 @@
     if ('ResizeObserver' in window) new ResizeObserver(cookieRoom).observe(cookieBox);
     if (!cookieChoice()) cookieShow(true);
   }
-  // уже отказались — подчищаем то, что могло остаться с визитов до баннера или после истёкшего «Принять»
-  if (['necessary', 'declined'].includes(cookieChoice())) forgetStats();
+  // уже отказались — подчищаем то, что могло остаться (другая вкладка, визиты до отказа)
+  if (!statsOn) forgetStats();
   if (statsOn) $$('[data-map]').forEach(showMap);
 
   /* Блок «Не получилось отправить…» (forms.send_fail): saved — запрос ждёт в очереди браузера и уйдёт позже;

@@ -72,8 +72,9 @@
     <section class="section container" id="kak-priehat" aria-labelledby="kak-priehat-title">
       {{ ui.section_head(c.visit_title, id='kak-priehat-title') }}
       <div class="dlv-visit">
-        {#- Яндекс Карты ставят cookie Яндекса: вместо iframe — заглушка; main.js ставит карту (loading="lazy"), когда
-            посетитель принял cookie, или по кнопке «Показать карту» (только на этот раз). Под картой — адрес и две ссылки -#}
+        {#- Яндекс Карты ставят cookie Яндекса: в разметке — заглушка; main.js ставит карту (loading="lazy"), пока в баннере
+            cookie не выбрали «Только необходимые» / «Отказаться», а после этого — по кнопке «Показать карту» (только на
+            этот раз). Под картой — адрес и две ссылки -#}
         <figure class="dlv-map">
           <div class="dlv-map__frame dlv-map__ph" data-map="{{ site.address.map.embed }}" data-map-title="{{ c.map_label }}: {{ site.address.short }}">
             <p class="dlv-map__ph-text">{{ site.cookie.map_text|typo }}</p>
