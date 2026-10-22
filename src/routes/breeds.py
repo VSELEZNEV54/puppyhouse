@@ -127,10 +127,10 @@ def _colour_pages(b, hub, colours):
         ]
         faq = [dict(q=Markup("<span>") + nobr(f["q"]) + Markup("</span>"), a=nobr(f["a"])) for f in faq]
         pups = [p for p in sort_puppies(b["puppies"]) if p["colour"].lower().split(" (")[0] == c["label"].lower()]
-        # <title> ≤ 60 characters: the long colour names («Бордер-колли мраморный триколор») get a shorter tail
-        title = next(t for t in (f"{c['title']} — купить щенка в Москве | домщенков.рф",
-                                 f"{c['title']} — щенки в Москве | домщенков.рф",
-                                 f"{c['title']} | домщенков.рф") if len(t) <= 60 or t.startswith(f"{c['title']} |"))
+        # <title> ≤ 60 characters before « | домщенков.рф»: a long colour name would get a shorter tail
+        title = next(t for t in (f"{c['title']} — купить щенка в Москве",
+                                 f"{c['title']} — купить щенка",
+                                 c["title"]) if len(t) <= 60 or t == c["title"]) + " | домщенков.рф"
         short = re.sub(r"<[^>]+>", "", str(c['short'] or '')).lower()   # the meta text: no <span class="nw"> of |typo
         desc = (f"{c['title']}: {short}. {c['facts'][0]['value']}. Фото и описание окраса, "
                 f"щенки в наличии, видео и цена за 15 минут.")

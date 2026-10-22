@@ -163,11 +163,11 @@ def routes(data):
         ca = colour_adj(p["colour"])
 
         bg = b["name_gen"]
-        # one wording for every status: the site shows no «забронирован» / «скоро» (client 19.10)
-        title = fit([f"{ca} щенок {bg}{gen_sp} {name} — купить в Москве{BRAND}",
-                     f"{ca} щенок {bg}{gen_sp} {name} в Москве{BRAND}", f"{ca} щенок {bg}{gen_sp} {name}{BRAND}",
-                     f"Щенок {bg}{gen_sp} {name} — купить в Москве{BRAND}", f"Щенок {bg}{gen_sp} {name} в Москве{BRAND}",
-                     f"Щенок {bg} {name} в Москве{BRAND}", f"Щенок {bg} {name}{BRAND}"], TITLE_MAX)
+        # one wording for every status: the site shows no «забронирован» / «скоро» (client 19.10).
+        # The query («купить» + colour + breed) always stays; ≤ 60 is counted without BRAND (the search engine may cut it)
+        title = fit([f"{ca} щенок {bg}{gen_sp} {name} — купить в Москве", f"{ca} щенок {bg}{gen_sp} {name} — купить",
+                     f"Щенок {bg}{gen_sp} {name} — купить в Москве", f"Щенок {bg} {name} — купить в Москве",
+                     f"Щенок {bg} {name} — купить"], TITLE_MAX) + BRAND
         tail = "Покажем по видео, доставим по России. Узнайте цену."
         head = f"{name} — щенок {bg}{gen_sp}, {p['sex_label']}, окрас {p['colour']}, {weeks(p['age_weeks'])}."
         short_head = f"{name} — щенок {bg}{gen_sp}, {p['sex_label']}, {weeks(p['age_weeks'])}."
