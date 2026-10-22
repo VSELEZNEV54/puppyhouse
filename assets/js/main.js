@@ -58,8 +58,10 @@
     if (c.choice === 'necessary' || c.choice === 'declined') return c.choice;
     return c.choice === 'all' && Date.now() - c.ts < COOKIE_TTL ? 'all' : '';
   }
-  let statsOn = !['necessary', 'declined'].includes(cookieChoice()); // статистика и номер браузера
-  let attrOn = cookieChoice() !== 'declined';                          // источник перехода визита (dsh:sess)
+  // хранилище заблокировано (запрет данных сайтов): отказ не запомнить — тогда ничего и не собираем (так же <head>)
+  const canStore = (() => { try { window.localStorage.getItem(COOKIE_KEY); return true; } catch (_) { return false; } })();
+  let statsOn = canStore && !['necessary', 'declined'].includes(cookieChoice()); // статистика и номер браузера
+  let attrOn = cookieChoice() !== 'declined';                                     // источник перехода визита (dsh:sess)
 
   function uuid() {
     const c = window.crypto;
@@ -243,6 +245,23 @@
     h2 = Math.imul(h2 ^ (h2 >>> 16), 2246822507) ^ Math.imul(h1 ^ (h1 >>> 13), 3266489909);
     return (4294967296 * (2097151 & h2) + (h1 >>> 0)).toString(36);
   }
+  // заявка, которая ждала связи, уходит после отказа без того, что он отключил: без номеров браузера, визита и
+  // Метрики, после «Отказаться» — и без источника перехода (только её страница). Ключ тот же: если прежнее тело всё же
+  // дошло, сервер ответит 409 и запись уйдёт из очереди
+  function outboxScrub() {
+    if (statsOn) return;
+    const list = outboxRead();
+    if (!list.length) return;
+    outboxWrite(list.map((e) => {
+      const p = Object.assign({}, e.payload);
+      ['visitor_id', 'session_id', 'ym_uid'].forEach((k) => { if (k in p) p[k] = null; });
+      if (!attrOn && 'referrer' in p) {
+        const here = (p.page && p.page.path) || null;
+        Object.assign(p, { landing: here, referrer: null, utm: {}, first_landing: here, first_referrer: null, first_utm: {} });
+      }
+      return Object.assign({}, e, { payload: p, fp: fingerprint(e.path, p) });
+    }));
+  }
   async function sendEntry(entry) {
     inflight.add(entry.key);
     try { return await sendJSON(entry.path, entry.payload); } finally { inflight.delete(entry.key); }
@@ -278,6 +297,7 @@
     if (!LIVE || flushing) return;
     flushing = true;
     try {
+      outboxScrub();
       const list = outboxRead();
       outboxWrite(list); // заодно убираем просроченные
       for (const e of list) {
@@ -327,6 +347,7 @@
     if (!String(payload.hp_note || '').trim()) goal('lead_sent', { kind: payload.kind, breed: payload.breed || null });
   }
   function goal(name, data) {
+    if (!statsOn) return; // отказались, а страница не перезагрузилась — ym и dataLayer на ней ещё есть
     try {
       if (typeof window.ym === 'function') window.ym(113696111, 'reachGoal', name, data || {});
       if (Array.isArray(window.dataLayer)) window.dataLayer.push(Object.assign({ event: name }, data || {}));
@@ -382,6 +403,7 @@
   function forgetStats() {
     queue.length = 0;
     ['dsh:vid', 'dsh:first'].forEach((k) => local.del(k));
+    outboxScrub();
     session.del('dsh:sid');
     if (!attrOn) {
       session.del('dsh:sess');
@@ -406,7 +428,18 @@
     f.loading = 'lazy';
     f.allowFullscreen = true;
     f.referrerPolicy = 'no-referrer-when-downgrade';
+    f.dshPlaceholder = ph;
     ph.replaceWith(f);
+  }
+  function hideMaps() { $$('iframe.dlv-map__frame').forEach((f) => { if (f.dshPlaceholder) f.replaceWith(f.dshPlaceholder); }); }
+  // перезагрузка стёрла бы начатое: введённое в форму, открытое окно, «Спасибо» после заявки
+  function busy() {
+    if (d.querySelector('dialog[open]') || $$('[data-done]').some((el) => !el.hidden)) return true;
+    return $$('form').some((f) => Array.from(f.elements).some((el) => {
+      if (el.type === 'checkbox' || el.type === 'radio') return el.checked !== el.defaultChecked;
+      if (el.tagName === 'SELECT') return Array.from(el.options).some((o) => o.selected !== o.defaultSelected);
+      return (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') && el.type !== 'hidden' && el.value !== el.defaultValue;
+    }));
   }
   $$('[data-map]').forEach((ph) => {
     const b = $('[data-map-show]', ph);
@@ -431,15 +464,20 @@
     startStats();
     $$('[data-map]').forEach(showMap);
   }
-  function statsStop(declined) {
-    const running = statsOn || !!(window.dshStats && window.dshStats.on);
+  // saved = false: выбор не записался (хранилище переполнено) — перезагрузка запустила бы всё заново
+  function statsStop(declined, saved = true) {
     statsOn = false;
     attrOn = !declined;
     forgetStats();
-    if (running) location.reload();
+    if (!(window.dshStats && window.dshStats.on)) { hideMaps(); return; }
+    if (saved && !busy()) { location.reload(); return; }
+    // счётчики уже работают, а перезагрузить нельзя: Метрику останавливаем на месте, карту убираем, цели не шлём
+    // (goal), GTM останется до ухода со страницы — на следующих страницах его нет
+    hideMaps();
+    try { if (typeof window.ym === 'function') window.ym(113696111, 'destruct'); } catch (_) { /* нет такого метода */ }
   }
-  function cookieApply(choice) {
-    if (choice === 'necessary' || choice === 'declined') statsStop(choice === 'declined');
+  function cookieApply(choice, saved) {
+    if (choice === 'necessary' || choice === 'declined') statsStop(choice === 'declined', saved);
     else {
       attrOn = true;
       if (!statsOn) statsStart();
@@ -448,10 +486,11 @@
   function cookieSet(choice) {
     writeJSON(local, COOKIE_KEY, { choice, ts: Date.now() });
     cookieShow(false);
-    cookieApply(choice);
+    cookieApply(choice, cookieChoice() === choice);
   }
   // выбор поменяли в другой вкладке или страница вернулась из кэша «Назад» после смены выбора
   function cookieSync() {
+    if (!canStore) return;
     const c = cookieChoice();
     if (c && !cookieOpener) cookieShow(false);
     cookieApply(c);
@@ -467,10 +506,11 @@
       if (first) first.focus();
     }));
     if ('ResizeObserver' in window) new ResizeObserver(cookieRoom).observe(cookieBox);
-    if (!cookieChoice()) cookieShow(true);
+    if (canStore && !cookieChoice()) cookieShow(true);
   }
-  // уже отказались — подчищаем то, что могло остаться (другая вкладка, визиты до отказа)
-  if (!statsOn) forgetStats();
+  // уже отказались — подчищаем то, что могло остаться (визиты до отказа); если отказ пришёл из другой вкладки, пока
+  // эта грузилась, счётчики из <head> уже запущены — останавливаем их тем же путём
+  if (!statsOn) statsStop(cookieChoice() === 'declined');
   if (statsOn) $$('[data-map]').forEach(showMap);
 
   /* Блок «Не получилось отправить…» (forms.send_fail): saved — запрос ждёт в очереди браузера и уйдёт позже;

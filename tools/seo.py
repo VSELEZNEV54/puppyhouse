@@ -240,14 +240,16 @@ def gtm(conf: dict) -> str:
 
 def counters(conf: dict) -> str:
     """<script> for <head>: defines window.dshStats() — GTM, then Metrika, once, on the production host only — and
-    runs it unless the visitor has refused statistics ("necessary" or "declined"). Empty without counters."""
+    runs it unless the visitor has refused statistics ("necessary" or "declined") or the browser blocks site storage
+    (a refusal could not be kept, so nothing starts; main.js does the same). Empty without counters."""
     js = gtm(conf) + metrika(conf)
     if not js:
         return ""
     return (
         f'<script>window.dshStats=function(){{if(window.dshStats.on||!({_PROD_JS.format(host=_host(conf))}))return;'
         f'window.dshStats.on=1;{js}}};'
-        f'(function(){{var c=null;try{{c=JSON.parse(localStorage.getItem("{COOKIE_KEY}"))}}catch(e){{}}'
+        f'(function(){{var c=null;try{{c=localStorage.getItem("{COOKIE_KEY}")}}catch(e){{return}}'
+        'try{c=JSON.parse(c)}catch(e){c=null}'
         'if(!(c&&(c.choice==="necessary"||c.choice==="declined")))window.dshStats()})()</script>'
     )
 
