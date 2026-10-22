@@ -35,6 +35,9 @@
 
   <a class="skip-link" href="#main">Перейти к&nbsp;содержанию</a>
 
+{#- cookie banner first in the reading and Tab order (position: fixed keeps it at the bottom) -#}
+{% include "partials/cookie.html.j2" %}
+
 {% include "partials/header.html.j2" %}
 
   <main id="main">
@@ -53,7 +56,6 @@
 
 {% include "partials/toast.html.j2" %}
 
-{% include "partials/cookie.html.j2" %}
 {% block body_end %}{% endblock %}
 </body>
 </html>

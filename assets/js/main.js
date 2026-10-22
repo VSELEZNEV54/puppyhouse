@@ -88,7 +88,9 @@
 
   /* идентификаторы браузера: посетитель (localStorage, навсегда), визит (sessionStorage, новый после 30 минут
      тишины: тогда же запоминаем страницу входа, внешний referrer и метки), первое касание (localStorage, один раз).
-     Хранятся только с согласием на статистику (statsOn); без него живут в памяти страницы — заявке хватает этой */
+     Номера посетителя и визита и первое касание хранятся только с согласием на статистику (statsOn), без него —
+     в памяти страницы. Страница входа, referrer и метки визита (dsh:sess, без номера) — в sessionStorage при любом
+     выборе: уходят только вместе с заявкой как её источник (это есть в согласии на обработку) и живут до закрытия вкладки */
   const SESSION_TTL = 30 * 60 * 1000;
   const UTM_KEYS = { utm_source: 'source', utm_medium: 'medium', utm_campaign: 'campaign', utm_content: 'content', utm_term: 'term', yclid: 'yclid', gclid: 'gclid' };
   function readUtm() {
@@ -112,18 +114,17 @@
   let mem = { id: '', ts: 0, info: null }; // если sessionStorage недоступен — визит живёт в памяти страницы
   function currentSession() {
     const now = Date.now();
+    let info = readJSON(session, 'dsh:sess') || mem.info;
+    const ts = Number(session.get('dsh:sid-ts')) || mem.ts;
     let id = (statsOn && session.get('dsh:sid')) || mem.id;
-    const ts = (statsOn && Number(session.get('dsh:sid-ts'))) || mem.ts;
-    let info = (statsOn && readJSON(session, 'dsh:sess')) || mem.info;
-    if (!id || !info || now - ts > SESSION_TTL) {
-      id = uuid();
+    if (!info || now - ts > SESSION_TTL) {
+      id = '';
       info = { landing: location.pathname, referrer: externalReferrer(), utm: readUtm() };
     }
-    if (statsOn) {
-      session.set('dsh:sid', id);
-      writeJSON(session, 'dsh:sess', info);
-      session.set('dsh:sid-ts', String(now));
-    }
+    if (!id) id = uuid();
+    writeJSON(session, 'dsh:sess', info);
+    session.set('dsh:sid-ts', String(now));
+    if (statsOn) session.set('dsh:sid', id);
     mem = { id, ts: now, info };
     return mem;
   }
@@ -136,6 +137,7 @@
     return f;
   }
   function ymUid() {
+    if (!statsOn) return null; // cookie Метрики мог остаться с прошлых визитов — без согласия его номер не отправляем
     const m = /(?:^|;\s*)_ym_uid=(\d+)/.exec(d.cookie || '');
     return m ? m[1] : null;
   }
@@ -333,8 +335,9 @@
     ['a[href*="max.ru"]', 'max'], ['a[href^="mailto:"]', 'email']
   ];
   const PLACES = [['#mega', 'mega'], ['#mmenu', 'mmenu'], ['.mbar', 'mbar'], ['.modal', 'modal'], ['.lead', 'lead'], ['.hdr', 'header'], ['.footer', 'footer']];
-  // очередь заявок — необходимое: уходит при любом выборе в баннере cookie
+  // очередь заявок — необходимое: уходит при любом выборе в баннере cookie; визит запоминает страницу входа и метки
   if (LIVE) {
+    currentSession();
     window.addEventListener('online', flushOutbox);
     flushOutbox();
   }
@@ -359,14 +362,16 @@
   startStats();
 
   /* ---------- Баннер cookie (partials/cookie.html.j2) и карта Яндекса ----------
-     «Принять» — включаем счётчики, статистику и карту на этой же странице. «Только необходимые» / «Отказаться» после
-     «Принять» (из «Настройки cookie» в подвале) — согласие отозвано: стираем номер браузера, визит и cookie
-     счётчиков на этом домене и перезагружаем страницу — иначе уже загруженные Метрика и GTM работали бы до ухода. */
+     «Принять» — включаем счётчики, статистику и карту на этой же странице. «Только необходимые» / «Отказаться» —
+     стираем номер браузера, первое касание, номер визита и cookie счётчиков на этом домене (в том числе оставшиеся
+     с прошлых визитов); если счётчики на странице уже работали — перезагружаем её, иначе Метрика и GTM работали бы
+     до ухода. Смену выбора в другой вкладке и возврат страницы кнопкой «Назад» ловим по 'storage' и 'pageshow'. */
   const cookieBox = $('[data-cookie]');
+  let cookieOpener = null; // «Настройки cookie», откуда открыли баннер: туда вернётся фокус
   function forgetStats() {
     queue.length = 0;
     ['dsh:vid', 'dsh:first'].forEach((k) => local.del(k));
-    ['dsh:sid', 'dsh:sid-ts', 'dsh:sess'].forEach((k) => session.del(k));
+    session.del('dsh:sid');
     const host = location.hostname;
     (d.cookie || '').split(';').forEach((c) => {
       const name = c.split('=')[0].trim();
@@ -391,30 +396,59 @@
     const b = $('[data-map-show]', ph);
     if (b) b.addEventListener('click', () => showMap(ph)); // только на этот раз, выбор в баннере не меняется
   });
-  function cookieSet(choice) {
-    const running = statsOn || !!(window.dshStats && window.dshStats.on);
-    writeJSON(local, COOKIE_KEY, { choice, ts: Date.now() });
-    if (cookieBox) cookieBox.hidden = true;
-    if (choice === 'all') {
-      statsOn = true;
-      if (typeof window.dshStats === 'function') window.dshStats();
-      startStats();
-      $$('[data-map]').forEach(showMap);
-    } else if (running) {
-      statsOn = false;
-      forgetStats();
-      location.reload();
-    }
+  // пока баннер открыт: место под ним в конце страницы и отступ прокрутки к фокусу (CSS: html.has-cookie, --cookie-h)
+  function cookieRoom() {
+    const on = !!cookieBox && !cookieBox.hidden;
+    root.classList.toggle('has-cookie', on);
+    root.style.setProperty('--cookie-h', on ? cookieBox.offsetHeight + 'px' : '0px');
   }
+  function cookieShow(on) {
+    if (!cookieBox) return;
+    if (!on && cookieBox.contains(d.activeElement) && cookieOpener) cookieOpener.focus();
+    cookieBox.hidden = !on;
+    if (!on) cookieOpener = null;
+    cookieRoom();
+  }
+  function statsStart() {
+    statsOn = true;
+    if (typeof window.dshStats === 'function') window.dshStats();
+    startStats();
+    $$('[data-map]').forEach(showMap);
+  }
+  function statsStop() {
+    const running = statsOn || !!(window.dshStats && window.dshStats.on);
+    statsOn = false;
+    forgetStats();
+    if (running) location.reload();
+  }
+  function cookieSet(choice) {
+    writeJSON(local, COOKIE_KEY, { choice, ts: Date.now() });
+    cookieShow(false);
+    if (choice === 'all') statsStart();
+    else statsStop();
+  }
+  // выбор поменяли в другой вкладке или страница вернулась из кэша «Назад» после смены выбора
+  function cookieSync() {
+    const c = cookieChoice();
+    if (c && !cookieOpener) cookieShow(false);
+    if (c === 'all') { if (!statsOn) statsStart(); }
+    else if (statsOn || (window.dshStats && window.dshStats.on)) statsStop();
+  }
+  window.addEventListener('storage', (e) => { if (e.key === COOKIE_KEY || e.key === null) cookieSync(); });
+  window.addEventListener('pageshow', (e) => { if (e.persisted) cookieSync(); });
   if (cookieBox) {
     $$('[data-cookie-choice]', cookieBox).forEach((b) => b.addEventListener('click', () => cookieSet(b.dataset.cookieChoice)));
-    if (!cookieChoice()) cookieBox.hidden = false;
     $$('[data-cookie-open]').forEach((b) => b.addEventListener('click', () => {
-      cookieBox.hidden = false;
+      cookieOpener = b;
+      cookieShow(true);
       const first = $('[data-cookie-choice]', cookieBox);
       if (first) first.focus();
     }));
+    if ('ResizeObserver' in window) new ResizeObserver(cookieRoom).observe(cookieBox);
+    if (!cookieChoice()) cookieShow(true);
   }
+  // уже отказались — подчищаем то, что могло остаться с визитов до баннера или после истёкшего «Принять»
+  if (['necessary', 'declined'].includes(cookieChoice())) forgetStats();
   if (statsOn) $$('[data-map]').forEach(showMap);
 
   /* Блок «Не получилось отправить…» (forms.send_fail): saved — запрос ждёт в очереди браузера и уйдёт позже;
@@ -1125,7 +1159,11 @@
   if (mbar && heroCtas && 'IntersectionObserver' in window) {
     let ctasGone = false;
     let leadVisible = false;
-    const sync = () => mbar.classList.toggle('is-on', ctasGone && !leadVisible);
+    const sync = () => {
+      const on = ctasGone && !leadVisible;
+      mbar.classList.toggle('is-on', on);
+      root.classList.toggle('mbar-on', on); // баннер cookie поднимается над панелью (main.css)
+    };
     new IntersectionObserver(([entry]) => {
       ctasGone = !entry.isIntersecting && entry.boundingClientRect.top < 0;
       sync();

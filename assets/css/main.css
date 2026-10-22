@@ -312,6 +312,8 @@ main:focus, section[tabindex="-1"]:focus, [data-anchor-focus]:focus { outline: n
   width: min(100% - 2 * var(--pad), var(--maxw));
   margin: 10px auto 0;
 }
+/* открытые «Меню» и «Породы» — над баннером cookie (80), но под мобильным меню (90) */
+.hdr:has([data-mega].is-open, [data-dd].is-open) { z-index: 85; }
 .hdr__bar {
   display: flex; align-items: center; gap: 6px;
   height: var(--head-h);
@@ -1306,10 +1308,25 @@ legend.field__label { margin-bottom: 8px; }
   padding: 20px 20px 18px; border-radius: var(--r-tile);
   background: #fff; color: var(--ink);
   border: 1px solid rgba(20, 20, 20, .08); box-shadow: var(--shadow-pop);
+  max-height: calc(100vh - 32px - env(safe-area-inset-bottom));
+  max-height: calc(100dvh - 32px - env(safe-area-inset-bottom)); /* низкий экран, зум 400 %: прокрутка внутри */
+  overflow-y: auto; overscroll-behavior: contain;
   transition: bottom .35s var(--ease);
 }
 .cookie[hidden] { display: none; }
-.mbar.is-on ~ .cookie { bottom: calc(88px + env(safe-area-inset-bottom)); }
+/* над липкой панелью — только там, где она есть (≤ 900 px); класс ставит main.js вместе с .mbar.is-on */
+@media (max-width: 900px) {
+  html.mbar-on .cookie {
+    bottom: calc(88px + env(safe-area-inset-bottom));
+    max-height: calc(100vh - 104px - env(safe-area-inset-bottom));
+    max-height: calc(100dvh - 104px - env(safe-area-inset-bottom));
+  }
+}
+/* пока баннер открыт: место под ним в конце страницы (подвал не прячется) и отступ, чтобы фокус не уходил под него;
+   --cookie-h — высота баннера (main.js) */
+html.has-cookie body::after { content: ""; display: block; height: calc(var(--cookie-h, 0px) + 32px); }
+html.has-cookie { scroll-padding-bottom: calc(var(--cookie-h, 0px) + 32px); }
+@media (max-width: 900px) { html.has-cookie { scroll-padding-bottom: calc(var(--cookie-h, 0px) + 104px); } }
 .cookie__title { font-size: 17px; font-weight: 500; letter-spacing: -0.02em; line-height: 1.25; }
 .cookie__text { margin-top: 6px; font-size: 14px; line-height: 1.45; color: var(--muted); }
 .cookie__text a { color: var(--ink); text-decoration: underline; text-underline-offset: 2px; white-space: nowrap; }

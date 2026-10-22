@@ -31,10 +31,10 @@
   <!-- Geist is served from our own domain (assets/fonts, SIL OFL 1.1): no visitor IP goes to Google before consent -->
   <link rel="preload" href="../../assets/fonts/geist-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="../../assets/fonts/geist-latin.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="../../assets/css/main.css?v=1f9efb58">
+  <link rel="stylesheet" href="../../assets/css/main.css?v=9ec82eea">
   <link rel="stylesheet" href="../../assets/css/pages.css?v=694a13c3">
   <link rel="stylesheet" href="../../assets/css/puppy.css?v=116f0d50">
-  <script src="../../assets/js/main.js?v=a5ccc488" defer></script>
+  <script src="../../assets/js/main.js?v=138465d8" defer></script>
   <script src="../../assets/js/puppy.js?v=aeaff49f" defer></script>
 </head>
 <body class="page-puppy">
@@ -87,7 +87,15 @@
     <symbol id="i-ruler" viewBox="0 0 24 24"><rect x="2.8" y="8.3" width="18.4" height="7.4" rx="1.6" transform="rotate(-45 12 12)"/><path d="m8.5 10.5 1.5 1.5M11 8l1.5 1.5M13.5 5.5 15 7M6 13l1.5 1.5"/></symbol>
   </svg>
 
-  <a class="skip-link" href="#main">Перейти к&nbsp;содержанию</a>
+  <a class="skip-link" href="#main">Перейти к&nbsp;содержанию</a>  <section class="cookie" role="dialog" aria-modal="false" aria-labelledby="cookie-title" aria-describedby="cookie-text" data-cookie hidden>
+    <h2 class="cookie__title" id="cookie-title">Мы используем cookie</h2>
+    <p class="cookie__text" id="cookie-text">Необходимые cookie нужны для заявок, теста и этого выбора. Статистику (Яндекс Метрика, Google Analytics) и карту Яндекса включим, только если вы согласны. <a href="../../politika-konfidencialnosti/#cookie">Подробнее — в политике</a></p>
+    <div class="cookie__btns">
+      <button class="btn cookie__accept" type="button" data-cookie-choice="all">Принять</button>
+      <button class="btn btn--white" type="button" data-cookie-choice="necessary">Принять только необходимые</button>
+      <button class="btn btn--white" type="button" data-cookie-choice="declined">Отказаться</button>
+    </div>
+  </section>
 
   <!-- ================= ШАПКА ================= -->
   <header class="hdr" data-hdr>
@@ -1103,14 +1111,5 @@
 
 <div class="toast" role="status" aria-live="polite" aria-atomic="true" data-toast></div>
 
-  <section class="cookie" role="dialog" aria-modal="false" aria-labelledby="cookie-title" aria-describedby="cookie-text" data-cookie hidden>
-    <h2 class="cookie__title" id="cookie-title">Мы используем cookie</h2>
-    <p class="cookie__text" id="cookie-text">Необходимые cookie нужны для заявок, теста и этого выбора. Статистику (Яндекс Метрика, Google Analytics) и карту Яндекса включим, только если вы согласны. <a href="../../politika-konfidencialnosti/#cookie">Подробнее — в политике</a></p>
-    <div class="cookie__btns">
-      <button class="btn cookie__accept" type="button" data-cookie-choice="all">Принять</button>
-      <button class="btn btn--white" type="button" data-cookie-choice="necessary">Принять только необходимые</button>
-      <button class="btn btn--white" type="button" data-cookie-choice="declined">Отказаться</button>
-    </div>
-  </section>
 </body>
 </html>

@@ -2,7 +2,8 @@
     «Принять только необходимые» and «Отказаться» (both outlined, in one row with «Принять») — only what the site needs (the queue of unsent leads,
     the quiz result, this choice). Hidden in the markup: main.js shows it while there is no choice (localStorage
     'dsh:cookie', a year) and again from «Настройки cookie» in the footer. Texts: site.json → cookie. Not a modal: the
-    page stays usable, focus is not moved on load. -#}
+    page stays usable, focus is not moved on load; it comes first in <body> (base.html.j2), so Tab and screen readers
+    reach it at once. -#}
 {%- set ck = site.cookie %}
   <section class="cookie" role="dialog" aria-modal="false" aria-labelledby="cookie-title" aria-describedby="cookie-text" data-cookie hidden>
     <h2 class="cookie__title" id="cookie-title">{{ ck.title|typo }}</h2>
