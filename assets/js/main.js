@@ -285,9 +285,19 @@
     }
   }
   function track(type, data) {
+    if (type !== 'page_view') goal(type, data);   // просмотры Метрика и GA считают сами
     if (!LIVE) return;
     queue.push({ type, path: location.pathname, ts: Date.now(), data: data || {} });
     if (queue.length >= 20) flushEvents();
+  }
+  // Цели Метрики (form_open, contact_click, quiz_complete, lead_sent — имена целей в счётчике, до символа) и то же
+  // событие в dataLayer для GTM / Google Analytics. Счётчики подключаются только на боевом домене (tools/seo.py):
+  // на копии сайта ym и dataLayer нет — тогда ничего не делаем.
+  function goal(name, data) {
+    try {
+      if (typeof window.ym === 'function') window.ym(113696111, 'reachGoal', name, data || {});
+      if (Array.isArray(window.dataLayer)) window.dataLayer.push(Object.assign({ event: name }, data || {}));
+    } catch (_) { /* статистика не должна ломать форму */ }
   }
   // тест «Подбор породы» (choice.js): событие + результат для следующей заявки из этой вкладки
   function quizDone(winner, second, answers) {
@@ -705,7 +715,12 @@
     btn.textContent = 'Отправляем…';
     let res;
     try { res = await submit('/leads', payload, state); } catch (_) { res = { ok: false, status: 0, data: null }; }
-    if (res.ok) session.del('dsh:quiz'); // результат теста уходит только со следующей заявкой
+    if (res.ok) {
+      session.del('dsh:quiz'); // результат теста уходит только со следующей заявкой
+      // цель «Заявка отправлена»: только после ответа 2xx от API и до isCurrent() — заявка ушла, даже если окно уже
+      // закрыли; напрямую, не через track(): в собственный API новый тип события не идёт
+      goal('lead_sent', { kind: payload.kind, breed: payload.breed || null });
+    }
     if (!isCurrent()) return;
     btn.disabled = false;
     btn.textContent = btn.dataset.label;

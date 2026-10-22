@@ -10,6 +10,7 @@
 #   dsh backup                         an encrypted database backup now (same as the nightly one)
 #   dsh update                         git pull in /opt/domshchenkov/src and deploy (pass deploy.sh options after it)
 #   dsh rollback                       start the previous release again (API + site; the database stays as it is)
+#   dsh www                            after the www A record points here: certificate with www, 301 to the main address
 #   dsh autoupdate on|off|status       every 5 minutes: a new commit on the branch of /opt/domshchenkov/src is deployed
 #                                      by itself (a commit that failed to deploy is not retried until the next one);
 #                                      log: /var/log/domshchenkov-deploy.log, the running release: /api/v1/health
@@ -108,6 +109,30 @@ case "$cmd" in
       *) echo "dsh autoupdate on|off|status" >&2; exit 2 ;;
     esac
     ;;
+  www)
+    # www.домщенков.рф: nginx.conf already answers it with one 301 to the main address; it needs the DNS record
+    # (A www → this server) and a certificate that names www
+    d=xn--b1adduihee9g.xn--p1ai; w="www.$d"; cert="/etc/letsencrypt/live/$d/fullchain.pem"
+    my_ips="$(ip -o addr show scope global | awk '{split($4, a, "/"); print a[1]}')"
+    w_ips="$(getent ahosts "$w" | awk '{print $1}' | sort -u)"
+    if [ -z "$w_ips" ] || ! grep -qxFf <(echo "$w_ips") <(echo "$my_ips"); then
+      echo "www.домщенков.рф сейчас указывает на ${w_ips:-—} — не на этот сервер ($(echo $my_ips))." >&2
+      echo "В DNS (Beget → DNS → www): A-запись на $(echo "$my_ips" | head -1); подождите 15–60 минут и запустите dsh www снова." >&2
+      exit 1
+    fi
+    if openssl x509 -noout -ext subjectAltName -in "$cert" 2>/dev/null | grep -q "DNS:$w"; then
+      echo "сертификат уже включает www"
+    else
+      certbot certonly --webroot -w /var/www/letsencrypt --cert-name "$d" -d "$d" -d "$w" --expand -n \
+        --deploy-hook "systemctl reload nginx"
+    fi
+    systemctl reload nginx
+    for u in "http://$w/maltipu/" "https://$w/maltipu/"; do
+      printf '  %-40s → %s\n' "$u" "$(curl -s -o /dev/null -m 10 --noproxy '*' --resolve "$w:80:127.0.0.1" \
+        --resolve "$w:443:127.0.0.1" -w '%{http_code} %{redirect_url}' "$u" || true)"
+    done
+    echo "Должно быть 301 → https://$d/maltipu/ для обоих адресов."
+    ;;
   rollback)
     pv="$(cat "$STATE/prev_version" 2>/dev/null || true)"; pr="$(cat "$STATE/prev_root" 2>/dev/null || true)"
     [ -n "$pv" ] && [ -f "$pr/backend/docker-compose.yml" ] || { echo "dsh: прошлого релиза нет" >&2; exit 1; }
@@ -122,7 +147,7 @@ case "$cmd" in
     echo "Готово: работает $pv. Вернуться обратно: dsh rollback"
     ;;
   -h|--help|help)
-    sed -n '2,16p' "$0"
+    sed -n '2,17p' "$0"
     ;;
   *)
     echo "dsh: неизвестная команда $cmd (dsh help)" >&2; exit 2

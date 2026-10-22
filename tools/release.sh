@@ -57,10 +57,13 @@ shutil.copytree("assets", stage / "assets")
 # written by tools/build.py (tools/seo.py) next to the pages: they are not in the manifest's page list
 extras = ["404.html", "robots.txt", "sitemap.xml", "site.webmanifest", "favicon.ico"]
 verify = sorted(p.name for p in Path(".").glob("yandex_*.html")) + sorted(p.name for p in Path(".").glob("google*.html"))
+# IndexNow key (<32 hex>.txt containing the key): Яндекс reads it at the site root before it accepts a list of pages
+import re
+verify += sorted(p.name for p in Path(".").glob("*.txt") if re.fullmatch(r"[0-9a-f]{32}\.txt", p.name))
 missing = [f for f in extras if not Path(f).is_file()]
 if missing:
     sys.exit(f"release: the build did not write {missing} (tools/build.py → tools/seo.py)")
-for f in extras + verify:   # + site verification files of Yandex Webmaster / Google Search Console
+for f in extras + verify:   # + verification files of Yandex Webmaster / Search Console, the IndexNow key
     shutil.copy2(f, stage / f)
 # 404.html in the repo writes <base> from a script ("/" here, "/puppyhouse/" on the GitHub Pages preview). The
 # browser's preload scanner does not run it and first fetches every asset of a missing /a/b/ as /a/b/assets/… —
