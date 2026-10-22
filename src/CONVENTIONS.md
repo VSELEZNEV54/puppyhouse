@@ -9,11 +9,13 @@ pixel-parity baseline no longer applies. Reference inner page: `/shchenki/`.
 ## Stage 3 rules for every page (client 13.10) — read first
 
 - **Brand: «домщенков.рф»** — lowercase, no hyphen, from `site.brand`. Never «Puppy House» (the build warns on it).
-  `<title>` suffix: ` | домщенков.рф`; titles stay ≤ 60 characters.
+  `<title>` suffix: ` | домщенков.рф`; the text before it stays ≤ 60 characters (the engine may cut the brand, not the query).
 - **SEO is automatic** (`tools/seo.py`, `docs/seo.md`): every page gets canonical, robots, Open Graph, icons and
   BreadcrumbList from its `title`, `description`, `breadcrumbs` and first photo in `<main>`; sitemap.xml, robots.txt,
   404.html, site.webmanifest are written by the build. Write one H1 with the page's main query (≤ 2 lines),
-  a title with the query + «в Москве» where it fits, a 110–160-character description. Optional context:
+  a title with the query + «в Москве» where it fits (selling pages — home, catalog, breed, colour, puppy and city
+  pages — start with «Купить»: «Купить абрикосового щенка той-пуделя в Москве», never a puppy's name; the H1 names
+  the thing, the title is the search phrase; docs/seo.md), a 110–160-character description. Optional context:
   `robots="noindex, follow"`, `og_image="/assets/img/…"`, `og_title`, `og_type`. Add JSON-LD only for what the page
   really shows (FAQ via `faq_section(ld=true)`); no Product/Offer while prices are not published.
 - **Header** (shared, `partials/header.html.j2`): logo · «Меню» (site map panel `#mega`, data `site.menu`) · «Породы ▾» ·
@@ -158,7 +160,7 @@ def routes(data):            # data = deep copy of all src/data/*.json, enriched
         url="/dostavka/",                       # /lowercase-latin/…/ with trailing slash
         template="delivery/hub.html.j2",
         context=dict(
-            title="…",                          # <title>, ≤ 60 chars
+            title="…",                          # <title>, ≤ 60 chars before « | домщенков.рф»
             description="…",                    # meta description, ≤ 160 chars
             breadcrumbs=crumbs(("Доставка", None)),   # Главная is added; last item = current page (→ BreadcrumbList)
             # SEO extras (optional): robots="noindex, follow", og_image="/assets/img/…" (else the first photo in <main>)
@@ -333,7 +335,7 @@ Facts about breeds — from `breeds.json` / `content/home.md`; anything unverifi
 `|typo` adds non-breaking spaces (after 1–2 letter words, before dashes, number + unit) and a word joiner after the hyphen of
 «что-то», «как-нибудь», «кое-где» (no line break there); in hand-written HTML use `&nbsp;` the same way.
 The build warns about prices, banned words, the old brand («Puppy House», «puppyhouse», «дом-щенков.рф») in visible text, duplicate ids, broken aria references, `<img>` without alt/size, missing title/description,
-`<title>` over 60 and meta description over 160 characters.
+`<title>` over 60 characters before the brand and meta description over 160 characters.
 
 ## QA before you report
 

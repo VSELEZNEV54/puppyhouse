@@ -1,7 +1,7 @@
 """Small helpers for route modules. READ-ONLY for page-group agents (copy what you need into your module
 if you want something different). Files starting with "_" are not route modules.
 
-    from _lib import crumbs, by_id, sort_puppies, mixed_puppies
+    from _lib import crumbs, by_id, sort_puppies, mixed_puppies, adj_gen
     from _lib import nobr, nb      # copy text → Markup that never breaks inside «Санкт-Петербург» or «10–16 лет»
 """
 
@@ -57,6 +57,18 @@ def nobr(text):
         return text
     raw = text if "<a " in text else str(escape(text))
     return Markup("".join(p if p.startswith("<") else _nobr_text(p) for p in _TAG.split(raw)))
+
+
+def adj_gen(phrase):
+    """Colour adjectives in the genitive, the accusative of an animal in a title («Купить рыжего щенка»):
+    «Голубой мраморный» → «голубого мраморного», «чёрно-белый» → «чёрно-белого», «рыжий» → «рыжего», «пегий» → «пегого»."""
+    def one(w):
+        if w.endswith(("ый", "ой")):
+            return w[:-2] + "ого"
+        if w.endswith("ий"):
+            return w[:-2] + ("ого" if w[-3:-2] in ("г", "к", "х") else "его")
+        return w
+    return " ".join(one(w) for w in phrase.lower().split())
 
 
 def nb(d, *keys):

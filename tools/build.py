@@ -399,6 +399,9 @@ _TEXT_RE = re.compile(r"<(script|style)\b.*?</\1>|<[^>]+>", re.S | re.I)
 _TITLE_RE = re.compile(r"<title>(.*?)</title>", re.S)
 _DESC_RE = re.compile(r'<meta name="description" content="([^"]*)"')
 TITLE_MAX, DESC_MAX = 60, 160
+# ≤ 60 counts the query part only: the brand closing the title (« | домщенков.рф», «… в питомнике домщенков.рф») may be
+# cut in the search results, the query before it may not
+_TITLE_BRAND_RE = re.compile(r"\s*(?:[|—]\s*)?домщенков\.рф$")
 # Стиль клиента: без капса и без жирных начертаний (максимум 500).
 _CAPS_WORD_RE = re.compile(r"\b[А-ЯЁA-Z]{4,}\b")
 CAPS_OK = {"FCI", "ФКС", "ДНК", "ИНН", "ОГРН", "ОГРНИП", "КПП", "БИК", "ОКПО", "ОКВЭД", "MAX", "HTML", "SMS", "PDF", "WhatsApp",
@@ -442,8 +445,8 @@ def lint(html: str, url: str, rep: Report) -> None:
     title = htmllib.unescape(m.group(1)).strip() if m else ""
     if not title:
         rep.warn(f"{where} empty <title>")
-    elif len(title) > TITLE_MAX:
-        rep.warn(f"{where} <title> is {len(title)} chars (≤ {TITLE_MAX}): «{title}»")
+    elif len(core := _TITLE_BRAND_RE.sub("", title)) > TITLE_MAX:
+        rep.warn(f"{where} <title> without the brand is {len(core)} chars (≤ {TITLE_MAX}): «{title}»")
     m = _DESC_RE.search(html)
     desc = htmllib.unescape(m.group(1)).strip() if m else ""
     if not desc:
