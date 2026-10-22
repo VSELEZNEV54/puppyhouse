@@ -14,7 +14,7 @@ import re
 
 from markupsafe import Markup, escape
 
-from _lib import by_id, crumbs, sort_puppies
+from _lib import adj_gen, by_id, crumbs, sort_puppies
 from blog import rich
 from breedsub import breed_colours
 
@@ -127,10 +127,15 @@ def _colour_pages(b, hub, colours):
         ]
         faq = [dict(q=Markup("<span>") + nobr(f["q"]) + Markup("</span>"), a=nobr(f["a"])) for f in faq]
         pups = [p for p in sort_puppies(b["puppies"]) if p["colour"].lower().split(" (")[0] == c["label"].lower()]
-        # <title> ≤ 60 characters before « | домщенков.рф»: a long colour name would get a shorter tail
-        title = next(t for t in (f"{c['title']} — купить щенка в Москве",
-                                 f"{c['title']} — купить щенка",
-                                 c["title"]) if len(t) <= 60 or t == c["title"]) + " | домщенков.рф"
+        # «Купить» first (owner 22.10), without «щенка» — that is a puppy page's title («Купить абрикосового щенка …»):
+        # «Абрикосовый той-пудель» → «Купить абрикосового той-пуделя в Москве», «Мальтипу фантом» → «Купить мальтипу
+        # фантом в Москве». ≤ 60 characters before « | домщенков.рф»
+        if c["title"].lower().startswith(b["name"].lower()):
+            what = c["title"][:1].lower() + c["title"][1:]
+        else:
+            what = f"{adj_gen(c['title'][:len(c['title']) - len(b['name'])])} {b['name_gen']}"
+        title = next(t for t in (f"Купить {what} в Москве", f"Купить {what}") if len(t) <= 60 or t == f"Купить {what}")
+        title += " | домщенков.рф"
         short = re.sub(r"<[^>]+>", "", str(c['short'] or '')).lower()   # the meta text: no <span class="nw"> of |typo
         desc = (f"{c['title']}: {short}. {c['facts'][0]['value']}. Фото и описание окраса, "
                 f"щенки в наличии, видео и цена за 15 минут.")

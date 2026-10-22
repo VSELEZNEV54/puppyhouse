@@ -14,7 +14,8 @@ pixel-parity baseline no longer applies. Reference inner page: `/shchenki/`.
   BreadcrumbList from its `title`, `description`, `breadcrumbs` and first photo in `<main>`; sitemap.xml, robots.txt,
   404.html, site.webmanifest are written by the build. Write one H1 with the page's main query (≤ 2 lines),
   a title with the query + «в Москве» where it fits (selling pages — home, catalog, breed, colour, puppy and city
-  pages — say «купить»; the H1 names the thing, the title is the search phrase), a 110–160-character description. Optional context:
+  pages — start with «Купить»: «Купить абрикосового щенка той-пуделя в Москве», never a puppy's name; the H1 names
+  the thing, the title is the search phrase; docs/seo.md), a 110–160-character description. Optional context:
   `robots="noindex, follow"`, `og_image="/assets/img/…"`, `og_title`, `og_type`. Add JSON-LD only for what the page
   really shows (FAQ via `faq_section(ld=true)`); no Product/Offer while prices are not published.
 - **Header** (shared, `partials/header.html.j2`): logo · «Меню» (site map panel `#mega`, data `site.menu`) · «Породы ▾» ·
