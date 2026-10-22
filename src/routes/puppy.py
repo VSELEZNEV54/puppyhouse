@@ -165,8 +165,11 @@ def routes(data):
         bg = b["name_gen"]
         # the search phrase, «Купить» first and no name (owner 22.10): «Купить абрикосового щенка той-пуделя в Москве»;
         # one wording for every status (client 19.10); ≤ 60 is counted without BRAND (the search engine may cut it)
-        title = fit([f"Купить {adj_gen(ca)} щенка {bg}{gen_sp} в Москве", f"Купить {adj_gen(ca)} щенка {bg}{gen_sp}",
-                     f"Купить щенка {bg}{gen_sp} в Москве"], TITLE_MAX) + BRAND
+        if all(w.endswith(("ый", "ий", "ой")) for w in ca.lower().split()):
+            what = f"{adj_gen(ca)} щенка {bg}{gen_sp}"
+        else:  # a noun colour goes after the breed: «Купить щенка мальтипу F2 фантом»
+            what = f"щенка {bg}{gen_sp} {ca.lower()}"
+        title = fit([f"Купить {what} в Москве", f"Купить {what}", f"Купить щенка {bg}{gen_sp} в Москве"], TITLE_MAX) + BRAND
         tail = "Покажем по видео, доставим по России. Узнайте цену."
         head = f"{name} — щенок {bg}{gen_sp}, {p['sex_label']}, окрас {p['colour']}, {weeks(p['age_weeks'])}."
         short_head = f"{name} — щенок {bg}{gen_sp}, {p['sex_label']}, {weeks(p['age_weeks'])}."
