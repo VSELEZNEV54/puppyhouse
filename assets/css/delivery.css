@@ -286,6 +286,9 @@ a.dlv-ct__value:hover { text-decoration: underline; text-decoration-thickness: 1
   padding: var(--inset); border-radius: var(--r-tile); background: var(--tile);
 }
 .dlv-map__frame { display: block; flex: 1; width: 100%; min-height: 380px; border: 0; border-radius: var(--r-img); background: #EFE6D7; }
+/* заглушка вместо карты, пока нет согласия на cookie (main.js ставит iframe): текст и кнопка «Показать карту» по центру */
+.dlv-map__ph { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; padding: 24px; text-align: center; }
+.dlv-map__ph-text { max-width: 34ch; font-size: 15px; line-height: 1.45; color: var(--ink-soft); }
 .dlv-map__card { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; column-gap: 20px; padding: 16px 12px 8px; }
 .dlv-map__title { font-size: 19px; font-weight: 500; letter-spacing: -0.02em; line-height: 1.2; }
 .dlv-map__line { margin-top: 4px; font-size: 14px; line-height: 1.45; color: var(--muted); }

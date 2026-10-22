@@ -174,3 +174,33 @@ def test_titles_and_descriptions_carry_no_markup():
         for m in _META_TEXT.finditer(p.read_text(encoding="utf-8")):
             val = html.unescape(m.group(1) if m.group(1) is not None else m.group(2))
             assert "<" not in val and ">" not in val, f"{p.relative_to(REPO).as_posix()}: {val[:120]}"
+
+
+_COUNTERS = re.compile(r"<script>window\.dshStats=function\(\)\{(.*?)\};(.*?)</script>", re.S)
+_THIRD_PARTY = ("mc.yandex.ru", "googletagmanager.com", "yandex.ru/map-widget")
+
+
+def test_cookie_banner_and_its_settings_link_on_every_page(site):
+    """Three choices in the banner (client 22.10) and «Настройки cookie» in the footer to change the choice later."""
+    for name, page in site.items():
+        choices = sorted(a.get("data-cookie-choice") for t, a in page.tags if "data-cookie-choice" in a)
+        assert choices == ["all", "declined", "necessary"], name
+        assert any("data-cookie" in a and "hidden" in a for t, a in page.tags), f"{name}: the banner is hidden until main.js"
+        assert any("data-cookie-open" in a for t, a in page.tags), f"{name}: no «Настройки cookie»"
+
+
+def test_third_party_services_wait_for_cookie_consent():
+    """Metrika, GTM and the Yandex map load only after «Принять»: the counters live inside window.dshStats() (called at
+    once only for a stored choice "all"), no <noscript> pixels, the map is a placeholder for main.js."""
+    for p in PAGES:
+        src = p.read_text(encoding="utf-8")
+        name = p.relative_to(REPO).as_posix()
+        m = _COUNTERS.search(src)
+        outside = _COUNTERS.sub(" ", src) if m else src
+        for host in _THIRD_PARTY:
+            assert host not in outside or host == "yandex.ru/map-widget" and f'data-map="https://{host}' in outside, \
+                f"{name}: {host} outside the consent gate"
+        assert "<noscript>" not in src or not any(h in src.split("<noscript>", 1)[1] for h in _THIRD_PARTY[:2]), name
+        if m:
+            assert 'c.choice==="all"' in m.group(2) and "window.dshStats()" in m.group(2), name
+        assert not re.search(r"<iframe\b[^>]*\ssrc=\"https?://", src), f"{name}: a third-party iframe before consent"

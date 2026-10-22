@@ -72,9 +72,13 @@
     <section class="section container" id="kak-priehat" aria-labelledby="kak-priehat-title">
       {{ ui.section_head(c.visit_title, id='kak-priehat-title') }}
       <div class="dlv-visit">
-        {#- Яндекс Карты: iframe грузится, когда блок близко к экрану (loading="lazy"); под картой — адрес и две ссылки -#}
+        {#- Яндекс Карты ставят cookie Яндекса: вместо iframe — заглушка; main.js ставит карту (loading="lazy"), когда
+            посетитель принял cookie, или по кнопке «Показать карту» (только на этот раз). Под картой — адрес и две ссылки -#}
         <figure class="dlv-map">
-          <iframe class="dlv-map__frame" src="{{ site.address.map.embed }}" title="{{ c.map_label }}: {{ site.address.short }}" loading="lazy" allowfullscreen referrerpolicy="no-referrer-when-downgrade"></iframe>
+          <div class="dlv-map__frame dlv-map__ph" data-map="{{ site.address.map.embed }}" data-map-title="{{ c.map_label }}: {{ site.address.short }}">
+            <p class="dlv-map__ph-text">{{ site.cookie.map_text|typo }}</p>
+            <button class="btn btn--white" type="button" data-map-show>{{ site.cookie.map_button }}</button>
+          </div>
           <figcaption class="dlv-map__card">
             <p class="dlv-map__title">{{ site.address.short|typo }}</p>
             <p class="dlv-map__line">{{ site.address.visit|typo }}</p>

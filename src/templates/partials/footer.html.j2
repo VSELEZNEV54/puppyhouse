@@ -4,7 +4,7 @@
     and messengers once site.contacts_ready; «Оставить заявку»). The contacts are not repeated under the lead form.
     Row 2: a column per breed — its colour pages /<breed>/<colour>/ (order of breedsub.json), «Виды и окрасы …», «Цена …».
     Row 3: the delivery cities (cities.json → /shchenki-v-…/) and «Все условия доставки →». Row 4: requisites,
-    documents, studio credit. Phones ≤ 760 px: one column, the breed columns and the cities fold
+    documents, «Настройки cookie» (reopens the banner, partials/cookie.html.j2), studio credit. Phones ≤ 760 px: one column, the breed columns and the cities fold
     (<details data-fold>; main.js closes them there, without the script they stay open). A link to the current page
     gets aria-current and is not clickable. -#}
 {% import "macros/ui.html.j2" as ui %}
@@ -91,7 +91,7 @@
       <div class="footer__row footer__legal">
         <div class="footer__legal-text">
           <span>{{ site.footer.legal.requisites|typo }}</span>
-          <span>{{ site.footer.legal.offer|typo }} · <a href="{{ site.footer.legal.privacy.url }}">{{ site.footer.legal.privacy.label }}</a>{% for l in site.footer.legal.consents %} · <a href="{{ l.url }}">{{ l.label|typo }}</a>{% endfor %}</span>
+          <span>{{ site.footer.legal.offer|typo }} · <a href="{{ site.footer.legal.privacy.url }}">{{ site.footer.legal.privacy.label }}</a>{% for l in site.footer.legal.consents %} · <a href="{{ l.url }}">{{ l.label|typo }}</a>{% endfor %} · <button class="footer__cookie" type="button" data-cookie-open>{{ site.cookie.settings }}</button></span>
         </div>
         {#- studio credit (client 20.10): bottom right, the last line on phones -#}
         {%- set cr = site.footer.credit %}

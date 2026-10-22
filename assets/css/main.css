@@ -1294,6 +1294,50 @@ legend.field__label { margin-bottom: 8px; }
 .modal .toast { position: fixed; }
 .mbar.is-on ~ .toast { bottom: calc(88px + env(safe-area-inset-bottom)); }
 
+/* Баннер cookie (partials/cookie.html.j2, клиент 22.10): белая карточка внизу слева, над липкой панелью; ниже
+   мобильного меню (90) и тоста (120); от 1024 px — полоса по центру: текст слева, кнопки справа в одну строку.
+   «Принять» — чёрная на любой странице (не .btn--ink: его перекрашивают страницы с коралловыми кнопками),
+   «Отказаться» — маленькая подчёркнутая ссылка с зоной нажатия 44 px (на телефоне — в правом верхнем углу) */
+.cookie {
+  position: fixed; z-index: 80;
+  left: 16px; bottom: calc(16px + env(safe-area-inset-bottom));
+  width: min(540px, calc(100% - 32px));
+  padding: 20px 20px 18px; border-radius: var(--r-tile);
+  background: #fff; color: var(--ink);
+  border: 1px solid rgba(20, 20, 20, .08); box-shadow: var(--shadow-pop);
+  transition: bottom .35s var(--ease);
+}
+.cookie[hidden] { display: none; }
+.mbar.is-on ~ .cookie { bottom: calc(88px + env(safe-area-inset-bottom)); }
+.cookie__title { font-size: 17px; font-weight: 500; letter-spacing: -0.02em; line-height: 1.25; }
+.cookie__text { margin-top: 6px; font-size: 14px; line-height: 1.45; color: var(--muted); }
+.cookie__text a { color: var(--ink); text-decoration: underline; text-underline-offset: 2px; white-space: nowrap; }
+.cookie__btns { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 14px; }
+.cookie__btns .btn { --h: 44px; padding: 0 18px; font-size: 14.5px; }
+.btn.cookie__accept { background: var(--ink); color: #fff; }
+@media (hover: hover) { .btn.cookie__accept:hover { background: var(--coral); color: var(--ink); } }
+.cookie__decline {
+  min-height: 44px; padding: 0 6px; border: 0; background: none;
+  font-size: 13px; color: var(--muted); text-decoration: underline; text-underline-offset: 2px;
+}
+.cookie__decline:hover { color: var(--ink); }
+@media (min-width: 1024px) {
+  .cookie {
+    left: 50%; transform: translateX(-50%); width: min(1120px, calc(100% - 2 * var(--pad)));
+    display: grid; grid-template-columns: minmax(0, 1fr) auto; column-gap: 32px; align-items: center;
+    padding: 18px 18px 18px 28px;
+  }
+  .cookie__btns { grid-column: 2; grid-row: 1 / span 2; flex-wrap: nowrap; margin-top: 0; }
+}
+@media (max-width: 560px) {
+  .cookie { left: 8px; width: calc(100% - 16px); padding: 16px 16px 16px; border-radius: 24px; }
+  .cookie__title { padding-right: 96px; }
+  .cookie__btns .btn { flex: 1 1 100%; }
+  .cookie__decline { position: absolute; top: 4px; right: 10px; }
+}
+/* «Настройки cookie» в строке документов подвала — как ссылки рядом */
+.footer__cookie { padding: 0; border: 0; background: none; font-size: inherit; line-height: inherit; color: var(--ink); text-decoration: underline; text-underline-offset: 2px; white-space: nowrap; }
+
 /* =========================================================
    ОБЩИЕ БЛОКИ ЭТАПА 3 (правки 13.10): карусель фото и видео, видеоотзывы, лайтбокс,
    преимущества, полоса заявки, статьи блога, полноэкранный первый экран главной

@@ -195,68 +195,74 @@ def head_block(html: str, url: str, ctx: dict, site: dict, conf: dict, imgsize) 
 
 
 # Counters run only on the production host: the GitHub Pages preview and local builds stay out of the statistics.
+# And only after the visitor accepts cookie in the banner (partials/cookie.html.j2, main.js): window.dshStats() loads
+# them, the <head> script calls it right away when localStorage 'dsh:cookie' already holds a fresh «Принять».
 _PROD_JS = 'location.hostname==="{host}"'
+COOKIE_KEY = "dsh:cookie"                   # main.js: the same key and the same term
+COOKIE_TTL_MS = 365 * 24 * 60 * 60 * 1000   # the choice is asked again after a year
 
 
 def _host(conf: dict) -> str:
     return conf["base_url"].split("://", 1)[-1]
 
 
-def metrika(conf: dict) -> tuple[str, str]:
+def metrika(conf: dict) -> str:
     """Yandex Metrika counter (site.json → seo.yandex_metrika) with the settings from the Metrika panel: Webvisor,
-    click map, e-commerce from dataLayer. → (script for <head>, <noscript> for <body>); empty when not set."""
+    click map, e-commerce from dataLayer. → JS for counters(); empty when not set. No <noscript> pixel: without
+    scripts there is no banner, so no consent."""
     cid = str(conf.get("yandex_metrika") or "").strip()
     if not cid.isdigit():
-        return "", ""
+        return ""
     src = f"https://mc.yandex.ru/metrika/tag.js?id={cid}"
-    head = (
-        f'<script>if({_PROD_JS.format(host=_host(conf))}){{(function(m,e,t,r,i,k,a){{m[i]=m[i]||function(){{(m[i].a=m[i].a||[]).push(arguments)}};'
+    return (
+        '(function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};'
         'm[i].l=1*new Date();for(var j=0;j<document.scripts.length;j++){if(document.scripts[j].src===r){return;}}'
         'k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})'
         f'(window,document,"script","{src}","ym");'
         f'ym({cid},"init",{{ssr:true,webvisor:true,clickmap:true,ecommerce:"dataLayer",referrer:document.referrer,'
-        'url:location.href,accurateTrackBounce:true,trackLinks:true});}</script>'
+        'url:location.href,accurateTrackBounce:true,trackLinks:true});'
     )
-    body = (f'<noscript><div><img src="https://mc.yandex.ru/watch/{cid}" width="1" height="1" '
-            'style="position:absolute;left:-9999px" alt=""></div></noscript>')
-    return head, body
 
 
-def gtm(conf: dict) -> tuple[str, str]:
+def gtm(conf: dict) -> str:
     """Google Tag Manager container (site.json → seo.google_tag_manager, «GTM-…»): Google Analytics and other tags are
-    set up in the GTM panel. → (script for <head>, <noscript> for <body>); empty when not set."""
+    set up in the GTM panel. → JS for counters(); empty when not set. No <noscript> iframe (see metrika())."""
     gid = str(conf.get("google_tag_manager") or "").strip()
     if not re.fullmatch(r"GTM-[A-Z0-9]+", gid):
-        return "", ""
-    head = (
-        f'<script>if({_PROD_JS.format(host=_host(conf))}){{(function(w,d,s,l,i){{w[l]=w[l]||[];w[l].push({{"gtm.start":'
+        return ""
+    return (
+        '(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({"gtm.start":'
         'new Date().getTime(),event:"gtm.js"});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),'
         'dl=l!="dataLayer"?"&l="+l:"";j.async=true;j.src="https://www.googletagmanager.com/gtm.js?id="+i+dl;'
-        f'f.parentNode.insertBefore(j,f);}})(window,document,"script","dataLayer","{gid}");}}</script>'
+        f'f.parentNode.insertBefore(j,f);}})(window,document,"script","dataLayer","{gid}");'
     )
-    body = (f'<noscript><iframe src="https://www.googletagmanager.com/ns.html?id={gid}" height="0" width="0" '
-            'style="display:none;visibility:hidden"></iframe></noscript>')
-    return head, body
+
+
+def counters(conf: dict) -> str:
+    """<script> for <head>: defines window.dshStats() — GTM, then Metrika, once, on the production host only — and
+    runs it when the visitor has already accepted cookie (not older than COOKIE_TTL_MS). Empty without counters."""
+    js = gtm(conf) + metrika(conf)
+    if not js:
+        return ""
+    return (
+        f'<script>window.dshStats=function(){{if(window.dshStats.on||!({_PROD_JS.format(host=_host(conf))}))return;'
+        f'window.dshStats.on=1;{js}}};'
+        f'try{{var c=JSON.parse(localStorage.getItem("{COOKIE_KEY}"));'
+        f'if(c&&c.choice==="all"&&Date.now()-c.ts<{COOKIE_TTL_MS})window.dshStats()}}catch(e){{}}</script>'
+    )
 
 
 _CHARSET_RE = re.compile(r'<meta charset="[^"]*">')
-_BODY_RE = re.compile(r"<body\b[^>]*>")
 
 
 def finalize(html: str, url: str, ctx: dict, site: dict, conf: dict, imgsize) -> str:
     if MARKER in html:
         html = html.replace(MARKER, head_block(html, url, ctx, site, conf, imgsize), 1)
-    counters = [gtm(conf), metrika(conf)]
-    head = "".join(h for h, _ in counters if h)
-    body = "".join(b for _, b in counters if b)
+    head = counters(conf)
     if head:   # as early in <head> as possible (GTM asks for it), right after the charset
         m = _CHARSET_RE.search(html)
         if m:
             html = html[:m.end()] + "\n  " + head + html[m.end():]
-    if body:   # right after the opening <body>
-        m = _BODY_RE.search(html)
-        if m:
-            html = html[:m.end()] + "\n" + body + html[m.end():]
     return html
 
 
