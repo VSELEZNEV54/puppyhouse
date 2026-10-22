@@ -7,7 +7,7 @@ The puppy card of «Похожие щенки» is the shared card cards.puppy_c
 
 import datetime as dt
 
-from _lib import by_id, crumbs
+from _lib import adj_gen, by_id, crumbs
 
 NBSP = " "
 MONTHS_GEN = ["января", "февраля", "марта", "апреля", "мая", "июня", "июля", "августа",
@@ -163,11 +163,13 @@ def routes(data):
         ca = colour_adj(p["colour"])
 
         bg = b["name_gen"]
-        # one wording for every status: the site shows no «забронирован» / «скоро» (client 19.10)
-        title = fit([f"{ca} щенок {bg}{gen_sp} {name} — купить в Москве{BRAND}",
-                     f"{ca} щенок {bg}{gen_sp} {name} в Москве{BRAND}", f"{ca} щенок {bg}{gen_sp} {name}{BRAND}",
-                     f"Щенок {bg}{gen_sp} {name} — купить в Москве{BRAND}", f"Щенок {bg}{gen_sp} {name} в Москве{BRAND}",
-                     f"Щенок {bg} {name} в Москве{BRAND}", f"Щенок {bg} {name}{BRAND}"], TITLE_MAX)
+        # the search phrase, «Купить» first and no name (owner 22.10): «Купить абрикосового щенка той-пуделя в Москве»;
+        # one wording for every status (client 19.10); ≤ 60 is counted without BRAND (the search engine may cut it)
+        if all(w.endswith(("ый", "ий", "ой")) for w in ca.lower().split()):
+            what = f"{adj_gen(ca)} щенка {bg}{gen_sp}"
+        else:  # a noun colour goes after the breed: «Купить щенка мальтипу F2 фантом»
+            what = f"щенка {bg}{gen_sp} {ca.lower()}"
+        title = fit([f"Купить {what} в Москве", f"Купить {what}", f"Купить щенка {bg}{gen_sp} в Москве"], TITLE_MAX) + BRAND
         tail = "Покажем по видео, доставим по России. Узнайте цену."
         head = f"{name} — щенок {bg}{gen_sp}, {p['sex_label']}, окрас {p['colour']}, {weeks(p['age_weeks'])}."
         short_head = f"{name} — щенок {bg}{gen_sp}, {p['sex_label']}, {weeks(p['age_weeks'])}."
