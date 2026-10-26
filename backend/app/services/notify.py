@@ -1,7 +1,7 @@
 """Manager notifications through the outbox.
 
 Channels (each is optional, configured in .env):
-- telegram — chat per breed. Telegram is outside Russia, so by default a message carries NO personal data:
+- telegram — chat per breed (or several chats: a group and the private chat with the bot). Telegram is outside Russia, so by default a message carries NO personal data:
   «№123 · Мальтипу · Цена щенка · 14:32» + a link to the admin panel. Plain text, no markup.
 - email    — full details (name, phone, «куда написать») over SMTP of a Russian provider to the kennel's mailbox.
 - webhook  — {event, id, public_id, at}, HMAC-signed; the receiver (the admin panel) pulls the details with its key.
@@ -50,12 +50,17 @@ class RetryAfter(Exception):
         self.seconds = seconds
 
 
+def chat_list(value: str) -> list[str]:
+    """DSH_TELEGRAM_CHAT_ID (and a breed chat) may name several chats separated by commas: a group and the private
+    chat with the bot «-100…,123…» — a request goes to each of them."""
+    return list(dict.fromkeys(c.strip()[:300] for c in (value or "").split(",") if c.strip()))
+
+
 def _targets(s: Settings, breed_key: str | None) -> list[tuple[str, str]]:
     out = []
     if s.telegram_bot_token:
-        chat = s.telegram_breed_chats.get(breed_key or "", "") or s.telegram_chat_id
-        if chat:
-            out.append(("telegram", chat))
+        chats = chat_list(s.telegram_breed_chats.get(breed_key or "", "")) or chat_list(s.telegram_chat_id)
+        out.extend(("telegram", chat) for chat in chats)  # one row per chat, like e-mail per address
     if s.smtp_host:
         out.extend(("email", addr[:300]) for addr in s.notify_emails)  # one row per address
     if s.webhook_url:
@@ -408,7 +413,7 @@ def send_test(s: Settings | None = None, client: httpx.Client | None = None) -> 
     own = client is None
     client = client or httpx.Client(timeout=10)
     try:
-        chats = list(dict.fromkeys(c for c in (s.telegram_chat_id, *s.telegram_breed_chats.values()) if c))
+        chats = list(dict.fromkeys(c for v in (s.telegram_chat_id, *s.telegram_breed_chats.values()) for c in chat_list(v)))
         if s.telegram_bot_token or chats:
             if not s.telegram_bot_token:
                 fail("telegram", "—", "нет DSH_TELEGRAM_BOT_TOKEN (токен от @BotFather)")
@@ -496,13 +501,12 @@ def mask_token(token: str) -> str:
 
 
 def telegram_targets(s: Settings) -> dict[str, str]:
-    """{label: chat id} — the default chat and the per-breed chats."""
+    """{label: chat id} — the default chats and the per-breed chats (a list → «общий чат», «общий чат 2», …)."""
     out = {}
-    if s.telegram_chat_id:
-        out["общий чат"] = s.telegram_chat_id
-    for key, chat in sorted(s.telegram_breed_chats.items()):
-        if chat:
-            out[f"порода {key}"] = chat
+    for label, value in [("общий чат", s.telegram_chat_id),
+                         *((f"порода {key}", v) for key, v in sorted(s.telegram_breed_chats.items()))]:
+        for i, chat in enumerate(chat_list(value)):
+            out[label + (f" {i + 1}" if i else "")] = chat
     return out
 
 

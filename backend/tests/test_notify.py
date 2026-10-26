@@ -32,6 +32,7 @@ UTC = dt.timezone.utc
 TOKEN = "7012345678:AAH-test_SECRET-token-0123456789abcd"
 DEFAULT_CHAT = "-1001000000001"
 MALTIPU_CHAT = "-1002000000002"
+PRIVATE_CHAT = "123456789"   # the private chat with the bot: the person's own id
 WEBHOOK_URL = "https://admin.example/hooks/dsh"
 WEBHOOK_SECRET = "w3bh00k-secret-" + "x" * 20
 SMTP_PASSWORD = "smtp-PASSWORD-very-secret"
@@ -261,6 +262,18 @@ def test_delivery_goes_to_the_breed_chat_by_breed_key(client, db, tg):
     # sent once: a second run sends nothing
     assert notify.deliver_due(db, client=fake.client()) == {"sent": 0, "failed": 0, "retry": 0}
     assert len(fake.requests) == 1
+
+
+def test_several_default_chats_each_get_the_request(client, db, tg):
+    # a group and the private chat with the bot; a repeated id and blanks are ignored
+    tg.telegram_chat_id = f" {DEFAULT_CHAT}, {PRIVATE_CHAT} ,{DEFAULT_CHAT},"
+    lead_id, _ = post_lead(client, breed="border-kolli")
+    assert sorted(o.target for o in outbox(db)) == sorted([DEFAULT_CHAT, PRIVATE_CHAT])
+    fake = FakeHttp()
+    assert notify.deliver_due(db, client=fake.client()) == {"sent": 2, "failed": 0, "retry": 0}
+    assert sorted(fake.json(i)["chat_id"] for i in range(2)) == sorted([DEFAULT_CHAT, PRIVATE_CHAT])
+    assert all(f"№{lead_id}" in tg_text(fake, i) for i in range(2))
+    assert notify.telegram_targets(tg) == {"общий чат": DEFAULT_CHAT, "общий чат 2": PRIVATE_CHAT}
 
 
 @pytest.mark.parametrize("breed", ["border-kolli", "francuzskij-buldog", None])
