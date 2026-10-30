@@ -379,7 +379,7 @@
     statsStarted = true;
     d.addEventListener('click', (e) => {
       const a = e.target && e.target.closest ? e.target.closest('a[href]') : null;
-      if (!a) return;
+      if (!a || a.matches('.footer__credit')) return; // подпись студии (Telegram MOON) — не контакт питомника
       const ch = CHANNELS.find(([sel]) => a.matches(sel));
       if (!ch) return;
       const place = PLACES.find(([sel]) => a.closest(sel));
