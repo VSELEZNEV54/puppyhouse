@@ -4,7 +4,8 @@
 #                            address домщенков.рф until then (so nothing breaks while the new DNS is not ready)
 #   domain.sh cert           certificate of дом-щенков.рф for those of its names whose DNS points to this server
 #                            (www.дом-щенков.рф, dom-shchenkov.ru, www.dom-shchenkov.ru join when they point here);
-#                            after a failed attempt the next one waits an hour (Let's Encrypt limits)
+#                            after a failed attempt the next one waits 20 minutes (Let's Encrypt allows 5 failed
+#                            checks per name an hour); DSH_FORCE=1 tries at once (dsh domain)
 #   domain.sh nginx IN OUT   the release's nginx.conf (@CANON@, @CERT@, @REDIRECTS@) → the server's config: the site
 #                            on the canonical host, one 301 to it from every other name that has a certificate
 #   domain.sh stamp          one line: the canonical host and the names of the certificates in use
@@ -54,8 +55,8 @@ cert() {
   for n in "${want[@]}"; do grep -qxF "$n" <<<"$have" || missing+=("$n"); done
   [ "${#missing[@]}" -gt 0 ] || return 0
   local fail="$STATE/cert-failed" args=()
-  if [ -f "$fail" ] && [ $(( $(date +%s) - $(stat -c %Y "$fail") )) -lt 3600 ]; then
-    [ -n "${DSH_QUIET:-}" ] || echo "сертификат для ${missing[*]}: прошлая попытка не удалась, следующая — через час после неё"
+  if [ -z "${DSH_FORCE:-}" ] && [ -f "$fail" ] && [ $(( $(date +%s) - $(stat -c %Y "$fail") )) -lt 1200 ]; then
+    [ -n "${DSH_QUIET:-}" ] || echo "сертификат для ${missing[*]}: прошлая попытка не удалась, следующая — через 20 минут после неё (сразу: dsh domain)"
     return 0
   fi
   for n in "${want[@]}"; do args+=(-d "$n"); done
@@ -65,7 +66,7 @@ cert() {
     rm -f "$fail"
   else
     mkdir -p "$STATE"; touch "$fail"
-    echo "certbot не получил сертификат — сайт остаётся на $(human "$(canon)"); новая попытка через час" >&2
+    echo "certbot не получил сертификат — сайт остаётся на $(human "$(canon)"); новая попытка через 20 минут" >&2
   fi
   return 0
 }

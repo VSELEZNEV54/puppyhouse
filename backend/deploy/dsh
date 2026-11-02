@@ -132,6 +132,7 @@ case "$cmd" in
     dom=(env "DSH_STATE=$STATE" bash "$CUR/backend/deploy/domain.sh")
     [ -f "$src/backend/deploy/domain.sh" ] && dom=(env "DSH_STATE=$STATE" bash "$src/backend/deploy/domain.sh")
     "${dom[@]}" status
+    DSH_FORCE=1 "${dom[@]}" cert          # at once, with certbot's own words if it fails
     if "${dom[@]}" due; then
       echo "Адреса изменились — выкладываю текущую версию заново"
       if [ -d "$src/.git" ]; then exec "$src/backend/deploy/deploy.sh" "$@"; else exec "$CUR/backend/deploy/deploy.sh" "$@"; fi
