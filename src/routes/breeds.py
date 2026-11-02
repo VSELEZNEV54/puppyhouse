@@ -129,13 +129,13 @@ def _colour_pages(b, hub, colours):
         pups = [p for p in sort_puppies(b["puppies"]) if p["colour"].lower().split(" (")[0] == c["label"].lower()]
         # «Купить» first (owner 22.10), without «щенка» — that is a puppy page's title («Купить абрикосового щенка …»):
         # «Абрикосовый той-пудель» → «Купить абрикосового той-пуделя в Москве», «Мальтипу фантом» → «Купить мальтипу
-        # фантом в Москве». ≤ 60 characters before « | домщенков.рф»
+        # фантом в Москве». ≤ 60 characters before « | дом-щенков.рф»
         if c["title"].lower().startswith(b["name"].lower()):
             what = c["title"][:1].lower() + c["title"][1:]
         else:
             what = f"{adj_gen(c['title'][:len(c['title']) - len(b['name'])])} {b['name_gen']}"
         title = next(t for t in (f"Купить {what} в Москве", f"Купить {what}") if len(t) <= 60 or t == f"Купить {what}")
-        title += " | домщенков.рф"
+        title += " | дом-щенков.рф"
         short = re.sub(r"<[^>]+>", "", str(c['short'] or '')).lower()   # the meta text: no <span class="nw"> of |typo
         desc = (f"{c['title']}: {short}. {c['facts'][0]['value']}. Фото и описание окраса, "
                 f"щенки в наличии, видео и цена в течение рабочего дня.")

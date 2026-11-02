@@ -15,7 +15,7 @@ import re
 from _lib import crumbs, nobr, sort_puppies
 
 TITLE_MAX, DESC_MAX = 60, 160
-BRAND = " | домщенков.рф"
+BRAND = " | дом-щенков.рф"
 HOME_PUPS = 12  # 4 / 3 / 2 per row — every row full; phones show the first 8 (main.css .hm-pups)
 
 
@@ -58,7 +58,7 @@ def routes(data):
         template="pages/home.html.j2",
         context=dict(
             shared,
-            title="Купить щенка в Москве — питомник собак домщенков.рф",
+            title="Купить щенка в Москве — питомник собак дом-щенков.рф",
             description="Питомник собак в Москве: щенки мальтипу, французского бульдога, той-пуделя и бордер-колли. "
                         "Прививки, ветпаспорт, договор, гарантия, доставка по России.",
             # отзывы на главной — свои (правка 15.10): фото щенка, текст, имя, город, порода; /otzyvy/ — reviews.json

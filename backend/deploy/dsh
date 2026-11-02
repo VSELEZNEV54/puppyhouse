@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# dsh — everyday commands for the домщенков.рф server (installed to /usr/local/bin/dsh by deploy.sh). Run as root.
+# dsh — everyday commands for the дом-щенков.рф server (installed to /usr/local/bin/dsh by deploy.sh). Run as root.
 #   dsh status                         containers, API health, the current release
 #   dsh logs [api|worker|migrate|postgres] [-f]
 #   dsh app <command> [args]           backend CLI, e.g.: dsh app create-admin --login olga --name "Ольга" --role manager
@@ -10,7 +10,9 @@
 #   dsh backup                         an encrypted database backup now (same as the nightly one)
 #   dsh update                         git pull in /opt/domshchenkov/src and deploy (pass deploy.sh options after it)
 #   dsh rollback                       start the previous release again (API + site; the database stays as it is)
-#   dsh www                            after the www A record points here: certificate with www, 301 to the main address
+#   dsh domain                         addresses: what points here, certificates; gets the certificate of дом-щенков.рф
+#                                      (+ www, dom-shchenkov.ru) once their DNS points here and deploys again (dsh www —
+#                                      the same). With autoupdate on this happens by itself within 5 minutes
 #   dsh autoupdate on|off|status       every 5 minutes: a new commit on the branch of /opt/domshchenkov/src is deployed
 #                                      by itself (a commit that failed to deploy is not retried until the next one);
 #                                      log: /var/log/domshchenkov-deploy.log, the running release: /api/v1/health
@@ -74,7 +76,7 @@ case "$cmd" in
     case "$sub" in
       on)
         [ -d "$src/.git" ] || { echo "dsh: автообновление работает от git-копии в $src" >&2; exit 1; }
-        printf '%s\n' "# домщенков.рф: deploy new commits of $(git -C "$src" rev-parse --abbrev-ref HEAD) (dsh autoupdate off — stop)" \
+        printf '%s\n' "# дом-щенков.рф: deploy new commits of $(git -C "$src" rev-parse --abbrev-ref HEAD) (dsh autoupdate off — stop)" \
           "SHELL=/bin/bash" "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin" \
           "*/5 * * * * root /usr/local/bin/dsh autoupdate run >> $log 2>&1" > "$cron"
         printf '%s\n' "$log {" "  weekly" "  rotate 8" "  compress" "  missingok" "  notifempty" "}" > /etc/logrotate.d/domshchenkov-deploy
@@ -94,7 +96,21 @@ case "$cmd" in
         flock -n 9 || exit 0                       # the previous run is still deploying
         git -C "$src" fetch -q origin
         remote="$(git -C "$src" rev-parse '@{u}')"
-        [ "$remote" = "$(git -C "$src" rev-parse HEAD)" ] && exit 0
+        if [ "$remote" = "$(git -C "$src" rev-parse HEAD)" ]; then
+          # no new commit — but the addresses may have changed: дом-щенков.рф (or www, dom-shchenkov.ru) now points
+          # here and got its certificate → deploy the same commit again, the site moves to it (deploy/domain.sh)
+          dom=(env "DSH_STATE=$STATE" bash "$src/backend/deploy/domain.sh")
+          if [ -f "$src/backend/deploy/domain.sh" ] && "${dom[@]}" due; then
+            echo "=== $(date -Is) адреса сайта изменились ($("${dom[@]}" stamp)) — выкладываю ${remote:0:8} заново"
+            if "$src/backend/deploy/deploy.sh"; then
+              echo "$(date -Is) выложен ${remote:0:8} на https://$("${dom[@]}" canon)" | tee "$STATE/autoupdate"
+            else
+              "${dom[@]}" stamp > "$STATE/domain-failed"   # not again for the same addresses: wait for a fix
+              echo "$(date -Is) адреса изменились, но выкладка не прошла — работает прошлая; подробности выше в $log" | tee "$STATE/autoupdate"
+            fi
+          fi
+          exit 0
+        fi
         [ "$remote" = "$(cat "$STATE/autoupdate-failed" 2>/dev/null || true)" ] && exit 0   # failed before: wait for a fix
         echo "=== $(date -Is) новый коммит ${remote:0:8}: $(git -C "$src" log -1 --format=%s "$remote")"
         git -C "$src" reset -q --hard "$remote"    # a deploy-only checkout: nobody edits files there
@@ -109,29 +125,18 @@ case "$cmd" in
       *) echo "dsh autoupdate on|off|status" >&2; exit 2 ;;
     esac
     ;;
-  www)
-    # www.домщенков.рф: nginx.conf already answers it with one 301 to the main address; it needs the DNS record
-    # (A www → this server) and a certificate that names www
-    d=xn--b1adduihee9g.xn--p1ai; w="www.$d"; cert="/etc/letsencrypt/live/$d/fullchain.pem"
-    my_ips="$(ip -o addr show scope global | awk '{split($4, a, "/"); print a[1]}')"
-    w_ips="$(getent ahosts "$w" | awk '{print $1}' | sort -u || true)"   # no record yet: empty, not an exit
-    if [ -z "$w_ips" ] || ! grep -qxFf <(echo "$w_ips") <(echo "$my_ips"); then
-      echo "www.домщенков.рф сейчас указывает на ${w_ips:-—} — не на этот сервер ($(echo $my_ips))." >&2
-      echo "В DNS (Beget → DNS → www): A-запись на $(echo "$my_ips" | head -1); подождите 15–60 минут и запустите dsh www снова." >&2
-      exit 1
+  domain|www)
+    # the site's addresses (deploy/domain.sh): status, the certificate of дом-щенков.рф once its DNS points here,
+    # then the same release again so nginx serves the new address and the 301s
+    src="$APP_ROOT/src"
+    dom=(env "DSH_STATE=$STATE" bash "$CUR/backend/deploy/domain.sh")
+    [ -f "$src/backend/deploy/domain.sh" ] && dom=(env "DSH_STATE=$STATE" bash "$src/backend/deploy/domain.sh")
+    "${dom[@]}" status
+    if "${dom[@]}" due; then
+      echo "Адреса изменились — выкладываю текущую версию заново"
+      if [ -d "$src/.git" ]; then exec "$src/backend/deploy/deploy.sh" "$@"; else exec "$CUR/backend/deploy/deploy.sh" "$@"; fi
     fi
-    if openssl x509 -noout -ext subjectAltName -in "$cert" 2>/dev/null | grep -q "DNS:$w"; then
-      echo "сертификат уже включает www"
-    else
-      certbot certonly --webroot -w /var/www/letsencrypt --cert-name "$d" -d "$d" -d "$w" --expand -n \
-        --deploy-hook "systemctl reload nginx"
-    fi
-    systemctl reload nginx
-    for u in "http://$w/maltipu/" "https://$w/maltipu/"; do
-      printf '  %-40s → %s\n' "$u" "$(curl -s -o /dev/null -m 10 --noproxy '*' --resolve "$w:80:127.0.0.1" \
-        --resolve "$w:443:127.0.0.1" -w '%{http_code} %{redirect_url}' "$u" || true)"
-    done
-    echo "Должно быть 301 → https://$d/maltipu/ для обоих адресов."
+    echo "Менять нечего: сайт работает на https://$("${dom[@]}" canon)"
     ;;
   rollback)
     pv="$(cat "$STATE/prev_version" 2>/dev/null || true)"; pr="$(cat "$STATE/prev_root" 2>/dev/null || true)"

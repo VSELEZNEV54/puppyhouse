@@ -86,7 +86,7 @@ def db():
     session.close()
 
 
-ORIGIN = "https://xn--b1adduihee9g.xn--p1ai"
+ORIGIN = "https://xn----dtbefzjjef0i.xn--p1ai"   # дом-щенков.рф (the first address домщенков.рф stays allowed: test_events_reviews)
 
 
 @pytest.fixture

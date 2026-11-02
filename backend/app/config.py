@@ -31,13 +31,16 @@ class Settings(BaseSettings):
     cors_origins: CSV = Field(default_factory=list)
     admin_cors_origins: CSV = Field(default_factory=list)   # the admin panel's origin
     # Origins whose POSTs are accepted (a foreign Origin header is rejected). Empty = same host only.
+    # дом-щенков.рф since 02.11.2026; домщенков.рф (the first address) stays allowed while it redirects here
     allowed_origins: CSV = Field(default_factory=lambda: [
+        "https://xn----dtbefzjjef0i.xn--p1ai", "https://www.xn----dtbefzjjef0i.xn--p1ai",
         "https://xn--b1adduihee9g.xn--p1ai", "https://www.xn--b1adduihee9g.xn--p1ai"])
     # X-Real-IP is believed only from these peers (nginx). Networks allowed: 172.28.0.0/16 for the Compose network.
     trusted_proxies: CSV = Field(default_factory=lambda: ["127.0.0.1/32", "::1/128"])
     site_base_paths: CSV = Field(default_factory=lambda: ["/puppyhouse"])  # stripped from paths (GitHub Pages)
-    own_hosts: CSV = Field(default_factory=lambda: ["xn--b1adduihee9g.xn--p1ai", "домщенков.рф",
-                                                    "vseleznev54.github.io", "localhost"])
+    own_hosts: CSV = Field(default_factory=lambda: ["xn----dtbefzjjef0i.xn--p1ai", "дом-щенков.рф",
+                                                    "xn--b1adduihee9g.xn--p1ai", "домщенков.рф",
+                                                    "dom-shchenkov.ru", "vseleznev54.github.io", "localhost"])
 
     # anti-spam (soft: flags; hard limits are in nginx)
     leads_per_ip_10min: int = 6       # above → flag rate_ip (the request is still saved and shown)

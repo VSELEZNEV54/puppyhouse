@@ -1,4 +1,4 @@
-/* Админ-панель домщенков.рф: резервная копия всех заявок с сайта, по базам пород.
+/* Админ-панель дом-щенков.рф: резервная копия всех заявок с сайта, по базам пород.
    Работает поверх /api/v1/admin (тот же сервер, тот же домен). Ванильный JS без сборки.
    Безопасность: данные заявок вставляются только как текст (textContent), никогда как HTML; токен входа живёт
    в sessionStorage (закрыли вкладку — вышли) и отправляется только в заголовке Authorization. */
@@ -164,9 +164,9 @@
       }
     },
     h('div', { class: 'login__brand' }, h('span', { class: 'logo', 'aria-hidden': 'true' }),
-      h('div', null, h('div', { text: 'домщенков.рф' }), h('div', { class: 'muted small', text: 'Заявки с сайта' }))),
+      h('div', null, h('div', { text: 'дом-щенков.рф' }), h('div', { class: 'muted small', text: 'Заявки с сайта' }))),
     field('Логин', login), field('Пароль', pass), err, btn);
-    document.title = 'Вход · домщенков.рф';
+    document.title = 'Вход · дом-щенков.рф';
     app.replaceChildren(h('main', { class: 'login' }, form));
     setTimeout(() => login.focus(), 0);
   }
@@ -182,7 +182,7 @@
     const r = route();
     const link = (path, text) => h('a', { href: '#' + path, text, 'aria-current': r.path === path ? 'page' : null });
     const top = h('header', { class: 'top' },
-      h('div', { class: 'top__brand' }, h('span', { class: 'logo', 'aria-hidden': 'true' }), 'домщенков.рф'),
+      h('div', { class: 'top__brand' }, h('span', { class: 'logo', 'aria-hidden': 'true' }), 'дом-щенков.рф'),
       h('nav', { class: 'nav', 'aria-label': 'Разделы' }, link('/leads', 'Заявки'), link('/reviews', 'Отзывы'), link('/stats', 'Сводка')),
       h('div', { class: 'top__me' }, h('span', { class: 'muted', text: S.me ? S.me.name : '' }),
         h('button', { class: 'btn btn--sm', type: 'button', text: 'Выйти', onclick: logout })));
@@ -212,7 +212,7 @@
   async function loadBreeds() {
     S.breeds = await api('/breeds');
     const totalNew = S.breeds.reduce((s, b) => s + (b.new || 0), 0);
-    document.title = (totalNew ? '(' + totalNew + ') ' : '') + 'Заявки · домщенков.рф';
+    document.title = (totalNew ? '(' + totalNew + ') ' : '') + 'Заявки · дом-щенков.рф';
     const grew = S.lastNew != null && totalNew > S.lastNew;
     S.lastNew = totalNew;
     return grew;

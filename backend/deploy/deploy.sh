@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Deploy домщенков.рф on the server (as root). Two ways to call it:
+# Deploy дом-щенков.рф on the server (as root). Two ways to call it:
 #   git checkout:      /opt/domshchenkov/src/backend/deploy/deploy.sh    — packs a release from the checkout first
 #                      (tools/release.sh into /opt/domshchenkov/releases/) and deploys that
 #   unpacked release:  /opt/domshchenkov/releases/<version>/deploy.sh
@@ -10,12 +10,14 @@
 #   --allow-placeholders   deploy although the consent texts / privacy policy still contain [placeholders]
 #                          (a test launch: do not take real requests and do not run ads on it)
 # Needs server-setup.sh done once: docker, nginx, the certificate, /etc/domshchenkov/{db,api}.env.
+# Addresses (deploy/domain.sh, 02.11.2026): the site is served on дом-щенков.рф as soon as its certificate exists —
+# this script gets it once the DNS points here; until then on the first address домщенков.рф. Every other name with a
+# certificate (www, dom-shchenkov.ru, домщенков.рф) answers one 301 to the site's address.
 set -euo pipefail
 
 APP_ROOT="${DSH_APP_ROOT:-/opt/domshchenkov}"
 DOCROOT="${DSH_DOCROOT:-/var/www/domshchenkov}"
 ETC="${DSH_ETC:-/etc/domshchenkov}"
-DOMAIN="xn--b1adduihee9g.xn--p1ai"
 NGINX_SITE=/etc/nginx/sites-available/domshchenkov
 KEEP_RELEASES=4
 ALLOW_PLACEHOLDERS=0
@@ -63,7 +65,17 @@ grep -q '^DSH_ENV=prod' "$ETC/api.env" || echo "ВНИМАНИЕ: в $ETC/api.en
 if grep -q 'change-me' "$ETC/db.env" "$ETC/api.env"; then die "в $ETC/*.env остались значения change-me"; fi
 command -v docker >/dev/null && docker compose version >/dev/null 2>&1 || die "нет docker compose — server-setup.sh"
 command -v nginx >/dev/null || die "нет nginx — server-setup.sh"
+DOM=(env "DSH_STATE=$APP_ROOT/state" bash "$HERE/backend/deploy/domain.sh")
+"${DOM[@]}" cert || true                       # дом-щенков.рф: its certificate once the DNS points here
+DOMAIN="$("${DOM[@]}" canon)"                  # the host the site is served on
 [ -f "/etc/letsencrypt/live/$DOMAIN/fullchain.pem" ] || die "нет сертификата для $DOMAIN — server-setup.sh"
+echo "Адрес сайта: https://$DOMAIN"
+# links in the notifications (Telegram, e-mail) lead to the admin panel on the site's address
+if grep -Eq "^DSH_ADMIN_BASE_URL=https://(xn--b1adduihee9g|xn----dtbefzjjef0i)\.xn--p1ai/" "$ETC/api.env" \
+   && ! grep -q "^DSH_ADMIN_BASE_URL=https://$DOMAIN/" "$ETC/api.env"; then
+  sed -i -E "s#^(DSH_ADMIN_BASE_URL=https://)[^/]+/#\1$DOMAIN/#" "$ETC/api.env"
+  echo "api.env: ссылки уведомлений → https://$DOMAIN/admin/"
+fi
 [ -f "$HERE/site/index.html" ] && [ -f "$HERE/site/404.html" ] || die "в релизе нет собранного сайта (site/)"
 if ! python3 "$HERE/tools/check_launch.py" --strict --quiet; then
   if [ "$ALLOW_PLACEHOLDERS" = 1 ]; then
@@ -184,7 +196,7 @@ nginx_restore() {
 }
 install -D -m 644 "$HERE/backend/deploy/nginx-snippets/dsh-proxy.conf" "$SNIPPET"
 NEW_CONF="$(mktemp)"
-cp "$HERE/backend/deploy/nginx.conf" "$NEW_CONF"
+"${DOM[@]}" nginx "$HERE/backend/deploy/nginx.conf" "$NEW_CONF"
 [ -f /proc/net/if_inet6 ] || sed -i '/listen \[::\]/d' "$NEW_CONF"   # a server without IPv6
 # nginx ≥ 1.25.1 (Ubuntu 26.04: 1.28) warns about «listen … http2»: write «http2 on;» there, keep the old form for 1.24
 ngx_ver="$(nginx -v 2>&1 | sed -n 's|.*nginx/\([0-9][0-9.]*\).*|\1|p')"
@@ -205,6 +217,8 @@ if ! nginx -t 2>/tmp/dsh-nginx.txt; then
 fi
 systemctl reload nginx
 rm -rf "$BK"
+"${DOM[@]}" stamp > "$STATE/domain-stamp"     # dsh autoupdate deploys again when the addresses change
+rm -f "$STATE/domain-failed"
 
 say "Проверка снаружи (через nginx)"
 fail=0
@@ -236,6 +250,12 @@ check /assets/img/ 404 'Страница не найдена'
 check /backend/docker-compose.yml 404
 code="$(curl -s -m 10 --noproxy "*" -o /dev/null -w '%{http_code}' --resolve "$DOMAIN:443:127.0.0.1" "https://$DOMAIN/api/v1/health" || true)"
 if [ "$code" = 200 ] || [ "$code" = 503 ]; then echo "  ok   /api/v1/health → $code"; else echo "  FAIL /api/v1/health → $code"; fail=1; fi
+# every other name of the certificates: one 301 to the same page on the site's address
+for h in $(grep -o 'server_name [^;]*;' "$NGINX_SITE" | sed 's/server_name //; s/;//' | tr ' ' '\n' | grep -vxF -e "$DOMAIN" -e _ | sort -u); do
+  # -k: this checks where nginx sends the name, not its certificate (the old address's one may have expired)
+  r="$(curl -sk -m 10 --noproxy "*" -o /dev/null -w '%{http_code} %{redirect_url}' --resolve "$h:443:127.0.0.1" "https://$h/maltipu/" || true)"
+  if [ "$r" = "301 https://$DOMAIN/maltipu/" ]; then echo "  ok   https://$h/maltipu/ → 301 $DOMAIN"; else echo "  FAIL https://$h/maltipu/ → $r"; fail=1; fi
+done
 
 # ---- old releases and images
 say "Уборка"
@@ -252,7 +272,7 @@ docker image prune -f >/dev/null 2>&1 || true
 echo
 python3 "$HERE/tools/check_launch.py" --quiet || true
 if [ "$fail" = 0 ]; then
-  echo "Готово: https://домщенков.рф — релиз $VERSION. Админ-панель: https://домщенков.рф/admin/"
+  echo "Готово: https://$DOMAIN — релиз $VERSION. Админ-панель: https://$DOMAIN/admin/"
 else
   echo "Релиз $VERSION выложен, но часть проверок не прошла — см. FAIL выше"; exit 1
 fi

@@ -1,4 +1,4 @@
-# домщенков.рф backend. Run from backend/:
+# дом-щенков.рф backend. Run from backend/:
 #   docker compose --env-file /etc/domshchenkov/db.env up -d --build
 # Two secret files, both outside the repo (chmod 600):
 #   /etc/domshchenkov/db.env  — DB passwords; read ONLY by compose for ${…} below (never loaded into api / worker)

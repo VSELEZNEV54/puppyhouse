@@ -249,7 +249,7 @@ def email_message(lead: Lead | None, review: Review | None, event: str, s: Setti
         link = _admin_link(s, num)
         if link:
             body += ["", link]
-    m["From"] = formataddr(("домщенков.рф", s.smtp_from or s.smtp_user))
+    m["From"] = formataddr(("дом-щенков.рф", s.smtp_from or s.smtp_user))
     m["Message-ID"] = make_msgid(domain=(s.smtp_from or s.smtp_user or "localhost").split("@")[-1])
     m.set_content("\n".join(body))
     return m
@@ -350,16 +350,16 @@ def _scrub(err: str, s: Settings) -> str:
 
 
 # ---------------------------------------------------------------- check of the settings (python -m app notify-test)
-TEST_TELEGRAM_TEXT = ("Проверка уведомлений домщенков.рф: бот подключён. Так будут приходить новые заявки — номер, "
+TEST_TELEGRAM_TEXT = ("Проверка уведомлений дом-щенков.рф: бот подключён. Так будут приходить новые заявки — номер, "
                       "порода и ссылка в админку, без имени и телефона.")
 
 
 def _test_email_message(s: Settings) -> EmailMessage:
     m = EmailMessage()
-    m["Subject"] = "Проверка уведомлений домщенков.рф"
-    m["From"] = formataddr(("домщенков.рф", s.smtp_from or s.smtp_user))
+    m["Subject"] = "Проверка уведомлений дом-щенков.рф"
+    m["From"] = formataddr(("дом-щенков.рф", s.smtp_from or s.smtp_user))
     m["Message-ID"] = make_msgid(domain=(s.smtp_from or s.smtp_user or "localhost").split("@")[-1])
-    m.set_content("Почта для заявок настроена: так будут приходить новые заявки с сайта домщенков.рф — с именем, "
+    m.set_content("Почта для заявок настроена: так будут приходить новые заявки с сайта дом-щенков.рф — с именем, "
                   "телефоном и ссылкой в админку.")
     return m
 
@@ -381,7 +381,7 @@ def _hint(channel: str, err: Exception, s: Settings) -> str:
     if isinstance(cause, (smtplib.SMTPSenderRefused, smtplib.SMTPRecipientsRefused)):
         return "почта не приняла адрес: DSH_SMTP_FROM должен совпадать с ящиком, проверьте и DSH_NOTIFY_EMAILS"
     if isinstance(cause, UnicodeEncodeError):
-        return "логин и адреса пишутся латиницей: домен .рф — как xn--b1adduihee9g.xn--p1ai"
+        return "логин и адреса пишутся латиницей: домен .рф — как xn----dtbefzjjef0i.xn--p1ai"
     if isinstance(cause, socket.gaierror):
         return f"сервер почты {s.smtp_host} не найден: проверьте DSH_SMTP_HOST"
     if isinstance(cause, ssl.SSLError):
@@ -487,7 +487,7 @@ def retry_now(db: Session, client: httpx.Client | None = None, since: dt.timedel
 
 
 # ---------------------------------------------------------------- setup checks (python -m app notify-check)
-TEST_TEXT = ("Проверка уведомлений домщенков.рф: бот подключён. Сюда будут приходить новые заявки с сайта — "
+TEST_TEXT = ("Проверка уведомлений дом-щенков.рф: бот подключён. Сюда будут приходить новые заявки с сайта — "
              "номер, порода, что нужно и ссылка в админ-панель.")
 
 
@@ -580,12 +580,12 @@ def smtp_check(s: Settings, send_to: list[str] | None = None) -> dict:
                 c.login(s.smtp_user, s.smtp_password)
             for addr in send_to or []:
                 m = EmailMessage()
-                m["Subject"] = "Проверка уведомлений домщенков.рф"
-                m["From"] = formataddr(("домщенков.рф", s.smtp_from or s.smtp_user))
+                m["Subject"] = "Проверка уведомлений дом-щенков.рф"
+                m["From"] = formataddr(("дом-щенков.рф", s.smtp_from or s.smtp_user))
                 m["To"] = addr
                 m["Message-ID"] = make_msgid(domain=(s.smtp_from or s.smtp_user or "localhost").split("@")[-1])
                 m.set_content("Почта для заявок подключена. На этот адрес будут приходить новые заявки с сайта "
-                              "домщенков.рф: имя, телефон, куда написать, порода и ссылка в админ-панель.")
+                              "дом-щенков.рф: имя, телефон, куда написать, порода и ссылка в админ-панель.")
                 c.send_message(m)
         return {"ok": True}
     except Exception as e:  # noqa: BLE001 — any failure is reported, never raised

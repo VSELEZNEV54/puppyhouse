@@ -1,4 +1,4 @@
-# домщенков.рф API. Build from the REPOSITORY ROOT (the image needs src/data for the catalog and consent texts):
+# дом-щенков.рф API. Build from the REPOSITORY ROOT (the image needs src/data for the catalog and consent texts):
 #   docker build -f backend/Dockerfile -t domshchenkov-api .
 # Base image: Docker Hub by default; server-setup.sh points Docker to a mirror, DSH_PYTHON_IMAGE overrides it
 ARG PYTHON_IMAGE=python:3.13-slim

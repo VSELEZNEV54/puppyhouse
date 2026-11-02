@@ -1,24 +1,26 @@
 {
   "_note": "Shared site data. READ-ONLY for page-group agents. Values in [square brackets] are placeholders to replace with real data (see placeholders).",
-  "brand": "домщенков.рф",
+  "brand": "дом-щенков.рф",
   "tagline": "питомник щенков · Москва",
   "tagline_plain": "питомник щенков",
-  "domain": "домщенков.рф",
-  "domain_ascii": "xn--b1adduihee9g.xn--p1ai",
+  "domain": "дом-щенков.рф",
+  "domain_ascii": "xn----dtbefzjjef0i.xn--p1ai",
   "api": {
     "url": "/api/v1",
     "origins": [
+      "https://xn----dtbefzjjef0i.xn--p1ai",
+      "https://www.xn----dtbefzjjef0i.xn--p1ai",
       "https://xn--b1adduihee9g.xn--p1ai",
       "https://www.xn--b1adduihee9g.xn--p1ai"
     ]
   },
-  "mirror": "домщенков.рф",
+  "mirror": "дом-щенков.рф",
   "as_of": "2026-10-12",
   "theme_color": "#F3F2EF",
   "seo": {
     "_note": "SEO (tools/seo.py, docs/seo.md). base_url — боевой адрес в punycode без слэша. Пустые verification и yandex_metrika не выводятся: впишите коды из Яндекс Вебмастера, Google Search Console и номер счётчика Метрики. google_tag_manager — контейнер «GTM-…» (Google Analytics настраивается в нём). Счётчики работают только на боевом домене.",
-    "base_url": "https://xn--b1adduihee9g.xn--p1ai",
-    "site_name": "Дом щенков — домщенков.рф",
+    "base_url": "https://xn----dtbefzjjef0i.xn--p1ai",
+    "site_name": "Дом щенков — дом-щенков.рф",
     "org_name": "Дом щенков",
     "og_image": "/assets/img/og/og-default.jpg",
     "noindex": ["/politika-konfidencialnosti/", "/soglasie/", "/soglasie-na-otzyv/", "/soglasie-na-publikaciyu/"],
@@ -37,9 +39,9 @@
     "response": "Свяжемся с вами в течение рабочего дня по московскому времени",
     "response_plain": "Свяжемся с вами в течение рабочего дня"
   },
-  "email": "main@домщенков.рф",
-  "email_href": "mailto:main@xn--b1adduihee9g.xn--p1ai",
-  "email_ascii": "main@xn--b1adduihee9g.xn--p1ai",
+  "email": "main@дом-щенков.рф",
+  "email_href": "mailto:main@xn----dtbefzjjef0i.xn--p1ai",
+  "email_ascii": "main@xn----dtbefzjjef0i.xn--p1ai",
   "address": {
     "city": "Москва",
     "street": "Ташкентская ул., 19",
@@ -56,7 +58,7 @@
     "telegram": {
       "label": "Telegram",
       "url": "https://t.me/puppyhouse_msk",
-      "url_placeholder": "[ссылка Telegram — заглушка со старым названием, заменить на канал домщенков.рф]",
+      "url_placeholder": "[ссылка Telegram — заглушка со старым названием, заменить на канал дом-щенков.рф]",
       "aria": "Написать в Telegram",
       "icon": "tg"
     },
@@ -419,7 +421,7 @@
       "url": "https://t.me/moon_dsgn_sales"
     },
     "legal": {
-      "requisites": "© 2017–2026 домщенков.рф · ИП Селезнев Владимир Игоревич · ИНН 220703337790 · ОГРНИП 324547600187418",
+      "requisites": "© 2017–2026 дом-щенков.рф · ИП Селезнев Владимир Игоревич · ИНН 220703337790 · ОГРНИП 324547600187418",
       "offer": "Сайт не является публичной офертой",
       "privacy": {
         "label": "Политика конфиденциальности",

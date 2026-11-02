@@ -1,4 +1,4 @@
-# домщенков.рф — правила для поисковых роботов (собирается tools/build.py)
+# дом-щенков.рф — правила для поисковых роботов (собирается tools/build.py)
 User-agent: *
 Disallow: /_kit/
 Disallow: /admin/
@@ -15,4 +15,4 @@ Clean-param: breed&sex&status
 Clean-param: tema /blog/
 Clean-param: utm_source&utm_medium&utm_campaign&utm_content&utm_term&yclid&ysclid&gclid&fbclid&from&openstat
 
-Sitemap: https://xn--b1adduihee9g.xn--p1ai/sitemap.xml
+Sitemap: https://xn----dtbefzjjef0i.xn--p1ai/sitemap.xml

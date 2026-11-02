@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# One-time preparation of a fresh server for домщенков.рф (Ubuntu 22.04 / 24.04 or Debian 12, as root).
+# One-time preparation of a fresh server for дом-щенков.рф (Ubuntu 22.04 / 24.04 or Debian 12, as root).
 # Safe to run again: it never overwrites the secrets, the backup key or a working certificate.
 #   server-setup.sh --email you@example.ru [--no-cert] [--skip-dns-check]
 #     --email           address for Let's Encrypt (expiry warnings), required for the certificate
@@ -11,7 +11,7 @@
 # the Let's Encrypt certificate (webroot, auto-renewal). The site itself goes up with deploy.sh afterwards.
 set -euo pipefail
 
-DOMAIN="xn--b1adduihee9g.xn--p1ai"        # домщенков.рф
+DOMAIN="xn----dtbefzjjef0i.xn--p1ai"       # дом-щенков.рф (since 02.11.2026; the first address домщенков.рф → deploy/domain.sh)
 APP_ROOT=/opt/domshchenkov
 ETC=/etc/domshchenkov
 ACME_ROOT=/var/www/letsencrypt
@@ -33,7 +33,7 @@ SRC="$(cd "$(dirname "$(readlink -f "$0")")/../.." && pwd)"
 [ -f "$SRC/backend/.env.example" ] || die "запускайте из репозитория или релиза: backend/deploy/server-setup.sh"
 [ "$CERT" = 0 ] || [ -n "$EMAIL" ] || die "укажите почту для сертификата: --email you@example.ru (или --no-cert)"
 # Let's Encrypt registers the address: a real one, in Latin letters (not the «ваша@почта.ru» sample from the guide);
-# a .рф domain in its Latin form passes: info@xn--b1adduihee9g.xn--p1ai
+# a .рф domain in its Latin form passes: info@xn----dtbefzjjef0i.xn--p1ai
 if [ "$CERT" = 1 ] && ! LC_ALL=C grep -Eq '^[A-Za-z0-9._%+-]+@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)*\.([A-Za-z]{2,}|xn--[A-Za-z0-9-]{2,})$' <<<"$EMAIL"; then
   die "почта «$EMAIL» не подходит для сертификата: нужна ваша настоящая почта латиницей, например name@yandex.ru"
 fi
@@ -203,7 +203,7 @@ else
   echo "  backup.env уже есть — не трогаю"
 fi
 cat > /etc/cron.d/domshchenkov <<'EOF'
-# домщенков.рф: nightly encrypted database backup (Moscow time)
+# дом-щенков.рф: nightly encrypted database backup (Moscow time)
 SHELL=/bin/bash
 PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 30 2 * * * root /usr/local/bin/dsh backup >> /var/log/domshchenkov-backup.log 2>&1 || logger -t domshchenkov-backup FAILED
@@ -242,13 +242,13 @@ EOF
   my_ips="$(ip -o addr show scope global | awk '{split($4, a, "/"); print a[1]}')"
   points_here() { local ips; ips="$(getent ahosts "$1" | awk '{print $1}' | sort -u)"; [ -n "$ips" ] && grep -qxFf <(echo "$ips") <(echo "$my_ips"); }
   if [ "$DNS_CHECK" = 1 ] && ! points_here "$DOMAIN"; then
-    die "домен домщенков.рф не указывает на этот сервер.
+    die "домен дом-щенков.рф не указывает на этот сервер.
   Сейчас: $(getent ahosts "$DOMAIN" | awk '{print $1}' | sort -u | tr '\n' ' ')
   Адреса сервера: $(echo $my_ips)
 Пропишите у регистратора A-запись (@ и www) на адрес сервера, подождите обновления DNS и запустите снова.
 Если сервер за NAT провайдера и адрес верный: --skip-dns-check"
   fi
-  if [ "$DNS_CHECK" = 0 ] || points_here "www.$DOMAIN"; then names+=("www.$DOMAIN"); else echo "  www.домщенков.рф не указывает сюда — сертификат без www"; fi
+  if [ "$DNS_CHECK" = 0 ] || points_here "www.$DOMAIN"; then names+=("www.$DOMAIN"); else echo "  www.дом-щенков.рф не указывает сюда — сертификат без www"; fi
   args=(); for n in "${names[@]}"; do args+=(-d "$n"); done
   certbot certonly --webroot -w "$ACME_ROOT" "${args[@]}" --email "$EMAIL" --agree-tos --no-eff-email -n \
     --deploy-hook "systemctl reload nginx"

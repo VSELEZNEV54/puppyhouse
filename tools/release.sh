@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Pack a release of домщенков.рф — the built site + the API + the server scripts — into one folder (and archive):
+# Pack a release of дом-щенков.рф — the built site + the API + the server scripts — into one folder (and archive):
 #   tools/release.sh                      → dist/domshchenkov-<version>/ and dist/domshchenkov-<version>.tar.gz
 #   tools/release.sh --out DIR --no-tar   (backend/deploy/deploy.sh calls this in a git checkout on the server)
 # Version: <YYYYmmdd-HHMMSS>-<git sha>[-dirty]. Needs python3 + jinja2 (the site build); git is optional.

@@ -14,7 +14,7 @@ from markupsafe import Markup, escape
 from _lib import by_id, crumbs, mixed_puppies, sort_puppies
 from breedsub import breed_colours
 
-BRAND = " | домщенков.рф"
+BRAND = " | дом-щенков.рф"
 TITLE_MAX = 60
 CATALOG_PUPS = 8  # «Щенки <породы> в наличии» on /sravnenie/<breed>/: 4 / 2 per row; 6 at three per row (choice.css)
 

@@ -63,7 +63,8 @@ def test_every_page_has_the_api_meta(site):
         assert len(metas) == 1, f"{page}: one <meta name=dsh-api> expected"
         m = metas[0]
         assert m.get("content") == "/api/v1", page
-        assert "https://xn--b1adduihee9g.xn--p1ai" in m.get("data-origins", "").split(), page
+        assert "https://xn----dtbefzjjef0i.xn--p1ai" in m.get("data-origins", "").split(), page   # дом-щенков.рф
+        assert "https://xn--b1adduihee9g.xn--p1ai" in m.get("data-origins", "").split(), page    # while it redirects
         assert "github.io" not in m.get("data-origins", ""), f"{page}: the preview must stay in prototype mode"
         assert m.get("data-consent") == cur["processing"], page
         assert m.get("data-consent-publish") == cur["distribution"], page

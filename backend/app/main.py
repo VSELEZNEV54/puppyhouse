@@ -70,10 +70,10 @@ def create_app() -> FastAPI:
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s: %(message)s")
     docs = s.docs_enabled
     app = FastAPI(
-        title="домщенков.рф API",
+        title="дом-щенков.рф API",
         version="1.0.0",
         description=(
-            "Заявки, контакты и события сайта домщенков.рф. Публичная часть — для форм сайта; "
+            "Заявки, контакты и события сайта дом-щенков.рф. Публичная часть — для форм сайта; "
             "/admin — для внутренней админ-панели (Bearer-токен). Ошибки: "
             '{"error": {"code", "message", "fields": {<поле>: <текст>}}}.'),
         docs_url=f"{API}/docs" if docs else None,

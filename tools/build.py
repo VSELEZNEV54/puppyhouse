@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""домщенков.рф — static site generator.
+"""дом-щенков.рф — static site generator.
 
     python3 tools/build.py            build every route into <url>/index.html
     python3 tools/build.py --clean    also delete pages from earlier builds that no route produces now
@@ -399,17 +399,18 @@ _TEXT_RE = re.compile(r"<(script|style)\b.*?</\1>|<[^>]+>", re.S | re.I)
 _TITLE_RE = re.compile(r"<title>(.*?)</title>", re.S)
 _DESC_RE = re.compile(r'<meta name="description" content="([^"]*)"')
 TITLE_MAX, DESC_MAX = 60, 160
-# ≤ 60 counts the query part only: the brand closing the title (« | домщенков.рф», «… в питомнике домщенков.рф») may be
+# ≤ 60 counts the query part only: the brand closing the title (« | дом-щенков.рф», «… в питомнике дом-щенков.рф») may be
 # cut in the search results, the query before it may not
-_TITLE_BRAND_RE = re.compile(r"\s*(?:[|—]\s*)?домщенков\.рф$")
+_TITLE_BRAND_RE = re.compile(r"\s*(?:[|—]\s*)?дом-щенков\.рф$")
 # Стиль клиента: без капса и без жирных начертаний (максимум 500).
 _CAPS_WORD_RE = re.compile(r"\b[А-ЯЁA-Z]{4,}\b")
 CAPS_OK = {"FCI", "ФКС", "ДНК", "ИНН", "ОГРН", "ОГРНИП", "КПП", "БИК", "ОКПО", "ОКВЭД", "MAX", "HTML", "SMS", "PDF", "WhatsApp",
            "MOON"}  # studio name in the footer credit, written the way the studio writes it (client 20.10)
 _CSS_CAPS_RE = re.compile(r"text-transform\s*:\s*uppercase|font-variant(?:-caps)?\s*:\s*(?:all-)?small-caps", re.I)
 _CSS_WEIGHT_RE = re.compile(r"font-weight\s*:\s*(\d{3}|bold|bolder)", re.I)
-# Бренд с 13.10 — «домщенков.рф» (строчными, без дефиса): старое имя и вариант с дефисом не должны попадать на страницы
-_OLD_BRAND_RE = re.compile(r"puppy\s*house|дом-щенков\.рф", re.I)  # «Puppy House», «puppyhouse.ru», hyphenated form
+# Бренд с 02.11.2026 — «дом-щенков.рф» (строчными, с дефисом; сайт переехал с домщенков.рф без дефиса): старые имена не должны
+# попадать на страницы
+_OLD_BRAND_RE = re.compile(r"puppy\s*house|(?<!-)домщенков\.рф|xn--b1adduihee9g", re.I)  # «Puppy House», «puppyhouse.ru», «домщенков.рф» без дефиса
 
 
 def lint_css(rep: "Report") -> None:
@@ -464,7 +465,7 @@ def lint(html: str, url: str, rep: Report) -> None:
         rep.warn(f"{where} banned wording: «{_BANNED_RE.search(text).group(0)}»")
     m = _OLD_BRAND_RE.search(htmllib.unescape(text + " " + title + " " + desc))
     if m:
-        rep.warn(f"{where} old brand name «{m.group(0)}» — the brand is «домщенков.рф» (site.brand)")
+        rep.warn(f"{where} old brand name «{m.group(0)}» — the brand is «дом-щенков.рф» (site.brand)")
     caps = sorted({w for w in _CAPS_WORD_RE.findall(htmllib.unescape(text)) if w not in CAPS_OK and not re.fullmatch(r"[A-Z]\d*", w)})
     if caps:
         rep.warn(f"{where} words in capitals: {', '.join(caps[:6])} — write in normal case (client style rule)")
@@ -583,7 +584,7 @@ def make_env(data: dict) -> jinja2.Environment:
 
 
 def main(argv=None) -> int:
-    ap = argparse.ArgumentParser(description="Build the домщенков.рф static site.")
+    ap = argparse.ArgumentParser(description="Build the дом-щенков.рф static site.")
     ap.add_argument("--clean", action="store_true", help="delete pages listed in the manifest that this build no longer produces")
     ap.add_argument("--kit", action="store_true", help="also write the UI kit page to /_kit/ (git-ignored)")
     ap.add_argument("--verbose", action="store_true", help="list every unbuilt link target and the pages using it")
@@ -600,7 +601,7 @@ def main(argv=None) -> int:
     routes, failed_modules = discover_routes(data, rep)
     if args.kit:
         routes.append(("(kit)", {"url": KIT_URL, "template": "_dev/kit.html.j2",
-                                 "context": {"title": "UI-кит — домщенков.рф", "description": "Компоненты внутренних страниц",
+                                 "context": {"title": "UI-кит — дом-щенков.рф", "description": "Компоненты внутренних страниц",
                                              "breadcrumbs": [("Главная", "/"), ("UI-кит", None)]}}))
 
     args.all = args.all or args.full
@@ -710,7 +711,7 @@ def main(argv=None) -> int:
     try:
         if args.full:
             raise StopIteration  # GitHub Pages serves only the root 404.html
-        ctx404 = {"title": "Страница не найдена | домщенков.рф",
+        ctx404 = {"title": "Страница не найдена | дом-щенков.рф",
                   "description": "Такой страницы на сайте нет. Щенки в наличии, породы и контакты питомника — по ссылкам ниже.",
                   "breadcrumbs": [("Главная", "/"), ("Страница не найдена", None)], "robots": "noindex, follow",
                   "page": {"url": "/404.html", "depth": 0, "module": "(404)"}}
@@ -792,7 +793,7 @@ def main(argv=None) -> int:
 
 def summary(args, rep, rw, per_module, rendered, changed, entries, unpublished, all_urls, kept, removed, stale) -> int:
     # 5. summary
-    print("домщенков.рф build")
+    print("дом-щенков.рф build")
     mods = ", ".join(f"{m} ({n})" for m, n in sorted(per_module.items()))
     print(f"  routes: {mods or '—'}")
     print(f"  pages written: {len(rendered)} ({changed} changed, {len(rendered) - changed} unchanged)")

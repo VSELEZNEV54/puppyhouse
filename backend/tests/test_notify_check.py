@@ -49,7 +49,7 @@ class FakeBot:
                 return httpx.Response(400, json={"ok": False, "error_code": 400, "description": "Bad Request: chat not found"})
             if method == "getChat":
                 return httpx.Response(200, json={"ok": True, "result": {"id": int(body["chat_id"]), "type": "supergroup",
-                                                                         "title": "Заявки домщенков.рф"}})
+                                                                         "title": "Заявки дом-щенков.рф"}})
             return httpx.Response(200, json={"ok": True, "result": {"message_id": 1}})
         return httpx.Response(404, json={"ok": False, "description": "Not Found"})
 
@@ -99,9 +99,9 @@ def test_nothing_configured_says_so_and_fails(channels, capsys):
 def test_good_bot_lists_chats_and_checks_the_configured_one(channels, monkeypatch, capsys):
     channels.telegram_bot_token, channels.telegram_chat_id = TOKEN, DEFAULT_CHAT
     bot = use_bot(monkeypatch, FakeBot(updates=[
-        {"update_id": 1, "my_chat_member": {"chat": {"id": int(DEFAULT_CHAT), "type": "supergroup", "title": "Заявки домщенков.рф"}}},
+        {"update_id": 1, "my_chat_member": {"chat": {"id": int(DEFAULT_CHAT), "type": "supergroup", "title": "Заявки дом-щенков.рф"}}},
         {"update_id": 2, "message": {"chat": {"id": 555, "type": "private", "first_name": "Анна"}, "text": "/start"}},
-        {"update_id": 3, "message": {"chat": {"id": int(DEFAULT_CHAT), "type": "supergroup", "title": "Заявки домщенков.рф"}}},
+        {"update_id": 3, "message": {"chat": {"id": int(DEFAULT_CHAT), "type": "supergroup", "title": "Заявки дом-щенков.рф"}}},
     ]))
     code, out = run(capsys)
     assert code == 0, out
@@ -166,7 +166,7 @@ def test_mail_login_and_test_letters(channels, monkeypatch, capsys):
     assert code == 0, out
     assert FakeSMTP.logins == [("kennel@yandex.ru", SMTP_PASSWORD)]
     assert sorted(m["To"] for m in FakeSMTP.sent) == ["manager@yandex.ru", "owner@yandex.ru"]
-    assert all(m["Subject"] == "Проверка уведомлений домщенков.рф" for m in FakeSMTP.sent)
+    assert all(m["Subject"] == "Проверка уведомлений дом-щенков.рф" for m in FakeSMTP.sent)
     assert "тестовое письмо отправлено" in out
 
 

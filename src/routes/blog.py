@@ -176,7 +176,7 @@ def routes(data):
     bmap = by_id(data["breeds"], "slug")
     tones = _tones()
     # JSON-LD needs absolute production URLs (the build does not rewrite <script> bodies)
-    # the brand domain домщенков.рф in its ASCII (punycode) form — xn--b1adduihee9g.xn--p1ai
+    # the brand domain дом-щенков.рф in its ASCII (punycode) form — xn----dtbefzjjef0i.xn--p1ai
     site_url = "https://" + data["site"].get("domain_ascii", data["site"]["domain"].encode("idna").decode())
 
     cards = {}

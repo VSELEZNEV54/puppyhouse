@@ -32,7 +32,7 @@ def cfg(site: dict) -> dict:
     s = dict(site.get("seo") or {})
     host = site.get("domain_ascii") or site.get("domain", "").encode("idna").decode()
     s.setdefault("base_url", "https://" + host)
-    s.setdefault("site_name", "Дом щенков — домщенков.рф")
+    s.setdefault("site_name", "Дом щенков — дом-щенков.рф")
     s.setdefault("org_name", "Дом щенков")
     s.setdefault("og_image", "/assets/img/og/og-default.jpg")
     s.setdefault("noindex", [])
@@ -79,7 +79,7 @@ def organization(site: dict, conf: dict, imgsize) -> dict:
         "@type": "PetStore",
         "@id": base + "/#org",
         "name": conf["org_name"],
-        "alternateName": site.get("brand", "домщенков.рф"),
+        "alternateName": site.get("brand", "дом-щенков.рф"),
         "url": base + "/",
         "logo": base + "/assets/icons/icon-512.png",
         "image": base + conf["og_image"],
@@ -186,7 +186,7 @@ def head_block(html: str, url: str, ctx: dict, site: dict, conf: dict, imgsize) 
     if url in ("/", "/kontakty/"):
         if url == "/":
             graph.append({"@type": "WebSite", "@id": base + "/#website", "url": base + "/", "name": conf["org_name"],
-                          "alternateName": site.get("brand", "домщенков.рф"), "inLanguage": "ru",
+                          "alternateName": site.get("brand", "дом-щенков.рф"), "inLanguage": "ru",
                           "publisher": {"@id": base + "/#org"}})
         graph.append(organization(site, conf, imgsize))
     if graph:
@@ -312,7 +312,7 @@ def robots_txt(conf: dict) -> str:
     dis = "".join(f"Disallow: {u}\n" for u in hidden)
     utm = "utm_source&utm_medium&utm_campaign&utm_content&utm_term&yclid&ysclid&gclid&fbclid&from&openstat"
     return (
-        "# домщенков.рф — правила для поисковых роботов (собирается tools/build.py)\n"
+        "# дом-щенков.рф — правила для поисковых роботов (собирается tools/build.py)\n"
         "User-agent: *\n" + dis + "Allow: /\n\n"
         "# Яндекс: фильтры каталога и блога и метки рекламы не создают новых страниц\n"
         "User-agent: Yandex\n" + dis + "Allow: /\n"

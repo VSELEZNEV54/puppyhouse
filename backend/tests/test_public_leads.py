@@ -569,6 +569,10 @@ def test_page_paths_are_normalised_and_lose_the_query(client, db, raw, path):
 
 
 @pytest.mark.parametrize("referrer", [
+    "https://xn----dtbefzjjef0i.xn--p1ai/maltipu/",
+    "https://www.xn----dtbefzjjef0i.xn--p1ai/",
+    "https://дом-щенков.рф/toj-pudel/",
+    "https://dom-shchenkov.ru/",
     "https://xn--b1adduihee9g.xn--p1ai/maltipu/",
     "https://www.xn--b1adduihee9g.xn--p1ai/",
     "https://домщенков.рф/toj-pudel/",
