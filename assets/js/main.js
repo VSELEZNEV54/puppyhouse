@@ -349,7 +349,7 @@
   function goal(name, data) {
     if (!statsOn) return; // отказались, а страница не перезагрузилась — ym и dataLayer на ней ещё есть
     try {
-      if (typeof window.ym === 'function') window.ym(113696111, 'reachGoal', name, data || {});
+      if (typeof window.ym === 'function' && window.dshYm) window.ym(window.dshYm, 'reachGoal', name, data || {}); // номер счётчика — site.json → seo
       if (Array.isArray(window.dataLayer)) window.dataLayer.push(Object.assign({ event: name }, data || {}));
     } catch (_) { /* статистика не должна ломать форму */ }
   }
@@ -474,7 +474,7 @@
     // счётчики уже работают, а перезагрузить нельзя: Метрику останавливаем на месте, карту убираем, цели не шлём
     // (goal), GTM останется до ухода со страницы — на следующих страницах его нет
     hideMaps();
-    try { if (typeof window.ym === 'function') window.ym(113696111, 'destruct'); } catch (_) { /* нет такого метода */ }
+    try { if (typeof window.ym === 'function' && window.dshYm) window.ym(window.dshYm, 'destruct'); } catch (_) { /* нет такого метода */ }
   }
   function cookieApply(choice, saved) {
     if (choice === 'necessary' || choice === 'declined') statsStop(choice === 'declined', saved);
