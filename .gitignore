@@ -17,3 +17,6 @@ backend/.env.*
 
 # release packages (tools/release.sh)
 dist/
+
+# security audit report: a map of weaknesses, never commit (the repository is public)
+SECURITY_REPORT.md
