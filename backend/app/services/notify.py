@@ -91,6 +91,8 @@ def enqueue_lead(db: Session, lead: Lead, event: str = "lead.created",
             continue
         if channel != "webhook" and event not in ("lead.created", "lead.repeat"):
             continue  # people are pinged about requests; the webhook hears every change
+        if channel == "amocrm" and not consent.allows_processor(lead.consent_version, "amocrm"):
+            continue  # the person agreed to a text that does not name amoCRM: the request stays with us
         db.add(Outbox(channel=channel, target=target, event=event, lead_id=lead.id))
         out.append(channel)
     return out

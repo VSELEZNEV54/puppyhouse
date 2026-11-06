@@ -405,6 +405,18 @@ def test_the_channel_is_off_without_the_token_or_the_subdomain(client, db, amo, 
     assert outbox(db) == [] and no_network == []
 
 
+def test_a_request_with_a_consent_text_that_does_not_name_amocrm_stays_with_us(client, db, amo):
+    """152-ФЗ: amoCRM (АО «амоЦРМ») processes requests on our behalf only for people whose consent text names it —
+    a page opened before 06.11.2026 sends the older text: telegram/email still, amoCRM never."""
+    from app.services import consent
+    assert consent.allows_processor(CONSENT_CURRENT["processing"], "amocrm")
+    assert not consent.allows_processor("processing-2026-11-02", "amocrm")
+    post_lead(client, consent_version="processing-2026-11-02")
+    assert "amocrm" not in {o.channel for o in outbox(db)}
+    post_lead(client, phone="+7 (999) 765-43-21")
+    assert "amocrm" in {o.channel for o in outbox(db)}
+
+
 def test_reviews_never_go_to_amocrm(client, db, amo):
     amo.telegram_bot_token, amo.telegram_chat_id, amo.telegram_breed_chats = "7012345678:AAH-test", "-1001", {}
     r = client.post("/api/v1/reviews", json={

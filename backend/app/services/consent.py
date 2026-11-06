@@ -19,7 +19,8 @@ class ConsentError(RuntimeError):
 
 def digest(doc: dict) -> str:
     canon = json.dumps({"title": doc["title"], "checkbox": doc["checkbox"], "body": doc["body"],
-                        **({"cross_border": True} if doc.get("cross_border") else {})},
+                        **({"cross_border": True} if doc.get("cross_border") else {}),
+                        **({"processors": doc["processors"]} if doc.get("processors") else {})},
                        ensure_ascii=False, sort_keys=True, separators=(",", ":"))
     return hashlib.sha256(canon.encode()).hexdigest()
 
@@ -51,6 +52,13 @@ def pick(sent: str | None, kind: str) -> str:
     """The version the page showed if it is a known document of this kind, else the current one."""
     doc = load()["versions"].get(sent or "")
     return sent if doc and doc["kind"] == kind else current(kind)
+
+
+def allows_processor(version: str | None, name: str) -> bool:
+    """True only for a consent text that names this processor — the service the request is entrusted to
+    (consent.json: "processors": ["amocrm"]). A request sent with an older text never goes there."""
+    doc = load()["versions"].get(version or "")
+    return bool(doc and name in (doc.get("processors") or []))
 
 
 def allows_cross_border(version: str | None) -> bool:
