@@ -26,6 +26,7 @@ os.environ.update({
     "DSH_TELEGRAM_BOT_TOKEN": "",
     "DSH_WEBHOOK_URL": "",
     "DSH_SMTP_HOST": "",
+    "DSH_AMOCRM_TOKEN": "",
 })
 
 # the consent versions the site shows now (src/data/consent.json → current); tests never hard-code a date

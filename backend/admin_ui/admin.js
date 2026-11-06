@@ -425,6 +425,7 @@
       ['Страница', d.page_path],
       ['Источник', sourceLabel(d.source, d.medium)],
       ['Кампания', utm.campaign],
+      ['amoCRM', safeHref(L.amocrm) ? h('a', { href: safeHref(L.amocrm), target: '_blank', rel: 'noopener noreferrer', text: 'Сделка №' + ((d.details || {}).amocrm || {}).lead_id }) : null],
       ['Отметки', d.flags && d.flags.length ? d.flags.join(', ') : null],
       ['Причина спама', d.spam_reason],
       ['Согласие', d.consent_version ? d.consent_version + ' · ' + fmtDate(d.consent_at) : null]

@@ -62,7 +62,7 @@ def channels(settings, monkeypatch):
     """Every channel off; the test turns on what it needs. Telegram goes to the stub."""
     for k, v in dict(telegram_bot_token="", telegram_chat_id="", telegram_breed_chats={}, telegram_include_pd=False,
                      telegram_api_base=API, smtp_host="", smtp_user="", smtp_password="", smtp_from="",
-                     notify_emails=[], webhook_url="").items():
+                     notify_emails=[], webhook_url="", amocrm_subdomain="", amocrm_token="").items():
         monkeypatch.setattr(settings, k, v)
     return settings
 

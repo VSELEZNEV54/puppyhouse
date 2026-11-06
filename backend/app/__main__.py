@@ -9,8 +9,10 @@
     revoke-api-keys --login <service login>
     worker                  send notifications every 10 s, purge once a night
     send-pending            send due notifications once
-    notify-test             a test message to every Telegram chat and mailbox of api.env (no request needed)
+    notify-test             a test message to every Telegram chat and mailbox of api.env, the amoCRM token
+                            checked (no request needed)
     notify-retry            send now what failed in the last 24 h or waits for a retry (after fixing api.env)
+    notify-check [--send]   before launch: the bot and its chats, the mailbox, amoCRM pipelines and stages (ids)
     purge                   retention clean-up (see app/services/retention.py)
     forget-contact --phone +7… --reason withdrawal|request|retention|not_me --subject "ФИО"
     export-reviews [--out path]   approved reviews as JSON for the site
@@ -220,11 +222,11 @@ def cmd_notify_test(args) -> int:
     from .services import notify
     res = notify.send_test()
     if not res:
-        print("Уведомления не настроены: заполните DSH_TELEGRAM_BOT_TOKEN и DSH_TELEGRAM_CHAT_ID и/или DSH_SMTP_* и "
-              "DSH_NOTIFY_EMAILS в /etc/domshchenkov/api.env")
+        print("Уведомления не настроены: заполните DSH_TELEGRAM_BOT_TOKEN и DSH_TELEGRAM_CHAT_ID, DSH_SMTP_* и "
+              "DSH_NOTIFY_EMAILS и/или DSH_AMOCRM_* в /etc/domshchenkov/api.env")
         return 2
     for r in res:
-        where = "Telegram" if r["channel"] == "telegram" else "почта"
+        where = {"telegram": "Telegram", "email": "почта", "amocrm": "amoCRM"}.get(r["channel"], r["channel"])
         if r["ok"]:
             print(f"  ok    {where} → {r['target']}")
         else:
@@ -352,9 +354,51 @@ def cmd_export_reviews(args) -> int:
     return 0
 
 
+def _check_amocrm(s, client, send: bool) -> int:
+    """The amoCRM part of notify-check: the token, every pipeline with its stages and ids, whether the configured ones
+    exist; with send, a test deal. → the number of problems."""
+    from .services import notify
+    acc = notify.amocrm_account(s, client)
+    if not acc["ok"]:
+        print(f"  ✗ {s.amocrm_host}: {notify.amocrm_hint(acc)}\n    ({acc['error']})")
+        return 1
+    print(f"  ✓ аккаунт «{acc['name']}» ({s.amocrm_host}), токен принят")
+    pipes = notify.amocrm_pipelines(s, client)
+    if not pipes["ok"]:
+        print(f"  ✗ не удалось получить воронки: {notify.amocrm_hint(pipes)}\n    ({pipes['error']})")
+        return 1
+    target = notify.amocrm_target(s, pipes["pipelines"])
+    print("  воронки и этапы (id воронки → DSH_AMOCRM_PIPELINE_ID, id этапа → DSH_AMOCRM_STATUS_ID):")
+    for p in pipes["pipelines"]:
+        mark = "  ← сюда" if target["pipeline"] is p else ""
+        print(f"    {p['id']}  {p['name']}{' (главная)' if p['is_main'] else ''}{mark}")
+        for st in p["statuses"]:
+            mark = "  ← сюда" if target["status"] is st else ""
+            print(f"      {st['id']}  {st['name']}{' (' + st['kind'] + ')' if st['kind'] else ''}{mark}")
+    for problem in target["problems"]:
+        print(f"  ✗ {problem}")
+    if target["problems"]:
+        return len(target["problems"])
+    pipe, status = target["pipeline"], target["status"]
+    print(f"  ✓ новые сделки: воронка «{pipe['name'] if pipe else '—'}», "
+          f"этап «{status['name'] if status else 'первый этап воронки'}», ответственный — "
+          + (f"пользователь {s.amocrm_responsible_user_id}" if s.amocrm_responsible_user_id is not None
+             else "тот, кто выпустил токен") + f"; теги: {', '.join(s.amocrm_tags) or '—'}")
+    if not send:
+        return 0
+    t = notify.amocrm_send_test(s, client)
+    if t["ok"]:
+        print(f"  ✓ тестовая сделка создана: {t['url']} — удалите её в amoCRM")
+        return 0
+    print(f"  ✗ тестовая сделка: {notify.amocrm_hint(t)}\n    ({t['error']})"
+          + (f"\n    сделка всё же создана: {t['url']} — удалите её в amoCRM" if t.get("url") else ""))
+    return 1
+
+
 def cmd_notify_check(args) -> int:
     """Check the notification channels before launch: the bot token, which chats the bot sees (their ids, to put into
-    DSH_TELEGRAM_CHAT_ID), that the configured chats reach the bot, SMTP login; --send also sends test messages.
+    DSH_TELEGRAM_CHAT_ID), that the configured chats reach the bot, SMTP login, the amoCRM token and the ids of its
+    pipelines and stages; --send also sends test messages (and makes a test deal in amoCRM).
     Exit 1 if a configured channel fails or nothing is configured."""
     from .services import notify
     s = get_settings()
@@ -428,6 +472,17 @@ def cmd_notify_check(args) -> int:
         print(f"  {'настроен: ' + s.webhook_url if s.webhook_url else 'не настроен (нужен только внешней CRM)'}")
         if s.webhook_url:
             configured += 1
+
+        print("amoCRM")
+        if not s.amocrm_subdomain and not s.amocrm_token:
+            print("  не настроен: DSH_AMOCRM_SUBDOMAIN и DSH_AMOCRM_TOKEN (долгосрочный токен интеграции)")
+        elif not s.amocrm_enabled:
+            bad += 1
+            print("  ✗ заявки в amoCRM не идут: нужны оба — " + ("DSH_AMOCRM_TOKEN (долгосрочный токен интеграции)"
+                  if s.amocrm_subdomain else "DSH_AMOCRM_SUBDOMAIN (monnypassy из https://monnypassy.amocrm.ru)"))
+        else:
+            configured += 1
+            bad += _check_amocrm(s, client, args.send)
     finally:
         client.close()
     if not configured:
@@ -472,7 +527,8 @@ def main(argv=None) -> int:
     p.add_argument("--subject", required=True); p.set_defaults(fn=cmd_forget_contact)
     p = sub.add_parser("export-reviews"); p.add_argument("--out"); p.set_defaults(fn=cmd_export_reviews)
     sub.add_parser("reapply-erasures").set_defaults(fn=cmd_reapply_erasures)
-    p = sub.add_parser("notify-check", help="проверить Telegram-бота и почту; --send — тестовые сообщения")
+    p = sub.add_parser("notify-check",
+                       help="проверить Telegram-бота, почту и amoCRM; --send — тестовые сообщения и сделка")
     p.add_argument("--send", action="store_true"); p.set_defaults(fn=cmd_notify_check)
     p = sub.add_parser("openapi"); p.add_argument("--out", default=str(BACKEND_DIR / "openapi.json"))
     p.set_defaults(fn=cmd_openapi)

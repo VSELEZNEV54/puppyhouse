@@ -241,6 +241,10 @@ def detail(db: Session, lead_id: int) -> sa.LeadDetail:
                       history=[sa.HistoryItem.model_validate(h) for h in hist], journey=journey(db, lead),
                       links=contact_links(lead.phone, lead.channel,
                                           lead.contact.telegram_username if lead.contact else None))
+    s = get_settings()
+    deal = ((lead.details or {}).get("amocrm") or {}).get("lead_id")
+    if deal and s.amocrm_subdomain:  # the request's deal in amoCRM: a plain link, the token stays in api.env
+        d.links["amocrm"] = notify.amocrm_deal_url(s, deal)
     return d
 
 

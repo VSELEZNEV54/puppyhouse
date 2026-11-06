@@ -149,7 +149,7 @@ class LeadDetail(LeadRow):
     other_leads: list[LeadRow] = Field(default_factory=list)    # the same person's requests (all breeds)
     history: list[HistoryItem] = Field(default_factory=list)
     journey: Journey | None = None
-    links: dict[str, str] = Field(default_factory=dict)          # tel:, wa.me, t.me
+    links: dict[str, str] = Field(default_factory=dict)          # tel:, wa.me, t.me, the amoCRM deal
 
 
 class LeadPatch(BaseModel):

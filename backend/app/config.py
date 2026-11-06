@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import ipaddress
+import re
 from functools import lru_cache
 from pathlib import Path
 
@@ -101,6 +102,17 @@ class Settings(BaseSettings):
     email_include_pd: bool = True
     webhook_url: str = ""             # e.g. the admin panel; gets ids only, pulls the details with an API key
     webhook_secret: str = ""
+    # amoCRM (a Russian service): every request from the site becomes a deal with a contact (name, phone) and a note
+    # with the details; a repeat request is a note in the person's deal. On only with both the subdomain and the
+    # long-lived token (amoCRM → amoМаркет → «Создать интеграцию» → «Ключи и доступы» → «Долгосрочный токен»).
+    amocrm_subdomain: str = ""        # monnypassy — from https://monnypassy.amocrm.ru/ (the full address works too)
+    amocrm_token: str = ""
+    amocrm_pipeline_id: int | None = None          # воронка; empty → the main one (ids: `python -m app notify-check`)
+    amocrm_status_id: int | None = None            # этап of that pipeline; empty → its first stage
+    amocrm_responsible_user_id: int | None = None  # empty → the user who made the token
+    amocrm_tags: CSV = Field(default_factory=lambda: ["сайт"])  # on every deal, besides the breed and the kind
+    # API address; empty → https://<subdomain>.amocrm.ru. Change only for a test stub
+    amocrm_api_base: str = ""
     notify_max_attempts: int = 8
     admin_base_url: str = ""          # link in notifications: https://admin.example/leads/{id}
     # the deployed release (deploy.sh → docker-compose.yml): /api/v1/health shows it, so whoever pushed can see that
@@ -111,12 +123,30 @@ class Settings(BaseSettings):
     site_data_dir: Path = REPO_DIR / "src" / "data"
 
     @field_validator("cors_origins", "admin_cors_origins", "allowed_origins", "trusted_proxies", "site_base_paths",
-                     "own_hosts", "notify_emails", mode="before")
+                     "own_hosts", "notify_emails", "amocrm_tags", mode="before")
     @classmethod
     def _csv(cls, v):
         if isinstance(v, str):
             return [x.strip() for x in v.split(",") if x.strip()]
         return v
+
+    @field_validator("amocrm_subdomain", mode="before")
+    @classmethod
+    def _amocrm_account(cls, v):
+        """«https://monnypassy.amocrm.ru/leads/» → «monnypassy»; an account on another domain (amocrm.com,
+        kommo.com) keeps its whole host."""
+        host = re.sub(r"^[a-z]+://", "", str(v or "").strip().lower()).split("/", 1)[0].split(":", 1)[0]
+        return host.removesuffix(".amocrm.ru")
+
+    @field_validator("amocrm_token", mode="before")
+    @classmethod
+    def _amocrm_token(cls, v):
+        return str(v or "").strip().removeprefix("Bearer ").strip()  # pasted together with «Bearer »
+
+    @field_validator("amocrm_pipeline_id", "amocrm_status_id", "amocrm_responsible_user_id", mode="before")
+    @classmethod
+    def _empty_id(cls, v):
+        return None if isinstance(v, str) and not v.strip() else v  # «DSH_AMOCRM_STATUS_ID=» left empty
 
     @field_validator("database_url")
     @classmethod
@@ -149,6 +179,16 @@ class Settings(BaseSettings):
     @property
     def is_prod(self) -> bool:
         return self.env == "prod"
+
+    @property
+    def amocrm_enabled(self) -> bool:
+        return bool(self.amocrm_subdomain and self.amocrm_token)
+
+    @property
+    def amocrm_host(self) -> str:
+        """monnypassy → monnypassy.amocrm.ru: the account's address (deal links, the default API address)."""
+        sub = self.amocrm_subdomain
+        return sub if "." in sub or not sub else f"{sub}.amocrm.ru"
 
     @property
     def docs_enabled(self) -> bool:

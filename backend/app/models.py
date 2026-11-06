@@ -8,7 +8,7 @@ The admin API gives the same split: /admin/leads?breed=maltipu and /admin/leads/
     consent_versions ─┐
     breeds ─ puppies ─┼─ leads ─ contacts ─ contact_aliases
                       │    ├─ lead_history (status, assignment, comments, repeat requests)
-                      │    └─ outbox (Telegram / webhook notifications with retries)
+                      │    └─ outbox (Telegram / e-mail / webhook / amoCRM notifications with retries)
     visitors ─ sessions ─ site_events          (leads.visitor_id links a request to the visits before it)
     reviews · admin_users ─ admin_tokens · audit_log · rate_limits
 
@@ -429,8 +429,8 @@ class Outbox(Base):
     __tablename__ = "outbox"
     id: Mapped[int] = mapped_column(BigInteger, Identity(), primary_key=True)
     created_at: Mapped[dt.datetime] = _now()
-    channel: Mapped[str] = mapped_column(String(16))                    # telegram | email | webhook
-    target: Mapped[str] = mapped_column(String(300))                    # chat id | address | URL
+    channel: Mapped[str] = mapped_column(String(16))                    # telegram | email | webhook | amocrm
+    target: Mapped[str] = mapped_column(String(300))                    # chat id | address | URL | subdomain
     event: Mapped[str] = mapped_column(String(32))                      # lead.created | lead.repeat | lead.updated …
     lead_id: Mapped[int | None] = mapped_column(ForeignKey("leads.id", ondelete="CASCADE"), index=True)
     review_id: Mapped[int | None] = mapped_column(ForeignKey("reviews.id", ondelete="CASCADE"), index=True)
@@ -441,7 +441,7 @@ class Outbox(Base):
     sent_at: Mapped[dt.datetime | None] = mapped_column(TZ)
     __table_args__ = (
         CheckConstraint("status IN ('pending', 'sent', 'failed')", name="status"),
-        CheckConstraint("channel IN ('telegram', 'email', 'webhook')", name="channel"),
+        CheckConstraint("channel IN ('telegram', 'email', 'webhook', 'amocrm')", name="channel"),
         CheckConstraint("num_nonnulls(lead_id, review_id) = 1", name="one_subject"),
         CheckConstraint("attempts >= 0", name="attempts"),
         Index("ix_outbox_due", "next_attempt_at", postgresql_where=sql("status = 'pending'")),

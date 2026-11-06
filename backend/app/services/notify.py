@@ -5,6 +5,9 @@ Channels (each is optional, configured in .env):
   «№123 · Мальтипу · Цена щенка · 14:32» + a link to the admin panel. Plain text, no markup.
 - email    — full details (name, phone, «куда написать») over SMTP of a Russian provider to the kennel's mailbox.
 - webhook  — {event, id, public_id, at}, HMAC-signed; the receiver (the admin panel) pulls the details with its key.
+- amocrm   — requests only (no reviews): a deal in the configured pipeline and stage with the contact (name, phone,
+  an existing contact with the same number is reused) and a note with every detail of the request. A repeat request
+  is a note in the deal of the person's first request, not a new deal. The deal id is kept in leads.details["amocrm"].
 
 enqueue_*() runs inside the request transaction (the lead and its notifications commit together).
 deliver_due() sends what is due: right after the request (background task), and in a loop in the worker
@@ -25,7 +28,7 @@ from email.utils import formataddr, make_msgid
 from types import SimpleNamespace
 
 import httpx
-from sqlalchemy import func, select, update
+from sqlalchemy import func, or_, select, update
 from sqlalchemy.orm import Session
 
 from ..config import Settings, get_settings
@@ -50,6 +53,15 @@ class RetryAfter(Exception):
         self.seconds = seconds
 
 
+class Wait(RetryAfter):
+    """Not a failure: the row waits for another one (a repeat request for the amoCRM deal of the first request), so
+    its attempts are not spent."""
+
+    def __init__(self, seconds: int, reason: str):
+        super().__init__(seconds)
+        self.args = (reason,)
+
+
 def chat_list(value: str) -> list[str]:
     """DSH_TELEGRAM_CHAT_ID (and a breed chat) may name several chats separated by commas: a group and the private
     chat with the bot «-100…,123…» — a request goes to each of them."""
@@ -65,11 +77,13 @@ def _targets(s: Settings, breed_key: str | None) -> list[tuple[str, str]]:
         out.extend(("email", addr[:300]) for addr in s.notify_emails)  # one row per address
     if s.webhook_url:
         out.append(("webhook", s.webhook_url))
+    if s.amocrm_enabled:
+        out.append(("amocrm", s.amocrm_subdomain[:300]))  # one row per request: the deal, its contact and the note
     return out
 
 
 def enqueue_lead(db: Session, lead: Lead, event: str = "lead.created",
-                 channels: tuple[str, ...] = ("telegram", "email", "webhook")) -> list[str]:
+                 channels: tuple[str, ...] = ("telegram", "email", "webhook", "amocrm")) -> list[str]:
     s = get_settings()
     out = []
     for channel, target in _targets(s, lead.breed.key if lead.breed else None):
@@ -86,6 +100,8 @@ def enqueue_review(db: Session, review: Review) -> list[str]:
     s = get_settings()
     out = []
     for channel, target in _targets(s, review.breed.key if review.breed else None):
+        if channel == "amocrm":
+            continue  # amoCRM gets requests only: a review is not a deal
         db.add(Outbox(channel=channel, target=target, event="review.created", review_id=review.id))
         out.append(channel)
     return out
@@ -263,6 +279,57 @@ def webhook_body(item: Outbox, lead: Lead | None, review: Review | None) -> byte
                        **subject}, ensure_ascii=False).encode()
 
 
+def amocrm_deal_name(lead: Lead) -> str:
+    """«Заявка с сайта №123: Мальтипу — Узнать цену». The number also finds the deal again after a lost answer."""
+    kind = LEAD_KIND_LABELS.get(LeadKind(lead.kind), lead.kind)
+    return f"Заявка с сайта №{lead.id}: {lead.breed.name if lead.breed else 'порода не выбрана'} — {kind}"
+
+
+def amocrm_note(lead: Lead, event: str, s: Settings) -> str:
+    """The note in the deal: plain text, one line per item the request has (empty ones are left out)."""
+    details = lead.details or {}
+    cat = catalog.load()
+    head = (f"Повторная заявка с сайта №{lead.id} (первая — №{lead.parent_id})" if event == "lead.repeat"
+            and lead.parent_id else f"Заявка с сайта №{lead.id}")
+    lines = [f"{head} · {_local(lead.created_at, s):%d.%m.%Y %H:%M}", f"Имя: {lead.name}",
+             f"Телефон: {phones.display(lead.phone)}"]
+    kind = LEAD_KIND_LABELS.get(LeadKind(lead.kind), lead.kind)
+    breed = lead.breed.name if lead.breed else (f"не распознана: {lead.breed_input}" if lead.breed_input
+                                                else "не выбрана")
+    colour = details.get("colour_raw")  # a colour the catalog does not know is kept raw
+    if lead.colour:
+        colour = cat.colour_label(lead.breed.slug if lead.breed else None, lead.colour) or lead.colour
+    quiz = details.get("quiz") or {}
+    quiz_names = [(cat.breed_by_any(quiz.get(k)) or {}).get("name") or quiz.get(k) for k in ("winner", "second")
+                  if quiz.get(k)]
+    utm = lead.utm or {}
+    items = [
+        ("Что нужно", kind + (f" ({details['kind_raw']})" if details.get("kind_raw") else "")),
+        ("Порода", breed),
+        ("Щенок", lead.puppy_name or lead.puppy_slug),
+        ("Окрас", colour),
+        ("Вопрос", details.get("question")),
+        ("Куда написать", CHANNEL_LABELS.get(Channel(lead.channel), lead.channel)),
+        ("Пометка формы", lead.note),
+        ("Заголовок окна", lead.form_title),
+        ("Страница", lead.page_path),
+        ("Вошёл на сайт", lead.landing_path if lead.landing_path != lead.page_path else None),
+        ("Источник", " / ".join(x for x in (lead.source, lead.medium) if x)),
+        ("UTM", ", ".join(f"{k}={v}" for k, v in utm.items() if v)),
+        ("Тест «Подбор породы»", ", затем ".join(quiz_names)),
+    ]
+    lines += [f"{label}: {value}" for label, value in items if value]
+    if lead.is_repeat:
+        lines.append("Человек уже обращался раньше")
+    if lead.flags:
+        lines.append(f"Отметки антиспама: {', '.join(lead.flags)}")
+    num = lead.parent_id or lead.id
+    link = _admin_link(s, num)
+    if link:
+        lines.append(f"Заявка №{num} в админке: {link}")
+    return "\n".join(lines)
+
+
 # ---------------------------------------------------------------- delivery
 def _backoff(attempts: int) -> dt.timedelta:
     return dt.timedelta(seconds=min(30 * 2 ** max(attempts - 1, 0), 6 * 3600))  # 30 s, 1 min, 2 min … 6 h
@@ -323,6 +390,156 @@ def _send_webhook(item: Outbox, body: bytes, s: Settings, client: httpx.Client) 
         raise RuntimeError(f"webhook HTTP {r.status_code}")
 
 
+_LONG_DIGITS = re.compile(r"\d{7,}")  # a phone number (the contact search carries it in the URL)
+
+
+def _amo_url(s: Settings, path: str) -> str:
+    return f"{(s.amocrm_api_base or 'https://' + s.amocrm_host).rstrip('/')}/api/v4/{path}"
+
+
+def _amo_problem(r: httpx.Response) -> str:
+    """amoCRM answers errors with problem+json: the detail and, for 400, which field it did not take."""
+    try:
+        info = r.json()
+    except ValueError:
+        return r.text
+    if not isinstance(info, dict):
+        return str(info)
+    parts = [str(info.get("detail") or info.get("title") or "")]
+    for v in info.get("validation-errors") or []:
+        parts += [f"{e.get('path')}: {e.get('code')}" for e in (v.get("errors") or []) if isinstance(e, dict)]
+    return "; ".join(p for p in parts if p)
+
+
+def _amo(s: Settings, client: httpx.Client, method: str, path: str, **kw) -> httpx.Response:
+    """One call of amoCRM API v4 with the long-lived token. A retry will not fix 401 (the token was revoked or has
+    expired), 400 (e.g. a pipeline or stage id that is not there), 402 (the account is not paid), 403 or 404; 429 waits
+    (amoCRM allows 7 calls a second); 5xx and no answer are retried with backoff."""
+    try:
+        r = client.request(method, _amo_url(s, path), headers={"Authorization": f"Bearer {s.amocrm_token}"}, **kw)
+    except httpx.HTTPError as e:
+        raise RuntimeError(f"amoCRM {path}: {type(e).__name__}: {_LONG_DIGITS.sub('***', str(e))}") from e
+    if r.status_code < 300:
+        return r
+    desc = _scrub(_LONG_DIGITS.sub("***", _amo_problem(r)), s)[:200]  # mask before cutting
+    if r.status_code == 429:
+        wait = r.headers.get("Retry-After", "")
+        raise RetryAfter(min(int(wait), 3600) if wait.isdigit() and int(wait) > 0 else 60)
+    if r.status_code in (400, 401, 402, 403, 404):
+        raise Permanent(f"amoCRM {r.status_code} {path}: {desc}")
+    raise RuntimeError(f"amoCRM {r.status_code} {path}: {desc}")
+
+
+def _amo_items(r: httpx.Response, key: str) -> list[dict]:
+    """_embedded.<key> of a list answer; 204 No Content = nothing found."""
+    if r.status_code == 204 or not r.content:
+        return []
+    return [x for x in ((r.json() or {}).get("_embedded") or {}).get(key) or [] if isinstance(x, dict)]
+
+
+def _amo_contact(s: Settings, client: httpx.Client, phone: str | None) -> int | None:
+    """The person's contact in amoCRM, found by the phone. Reused only when one of its numbers really is this one
+    (the same last 10 digits): the search also matches parts of numbers and other fields."""
+    want = re.sub(r"\D", "", phone or "")[-10:]
+    if len(want) < 10:
+        return None
+    r = _amo(s, client, "GET", "contacts", params={"query": phone.lstrip("+"), "with": "leads"})
+    for c in _amo_items(r, "contacts"):
+        for f in c.get("custom_fields_values") or []:
+            if f.get("field_code") == "PHONE" and any(
+                    re.sub(r"\D", "", str(v.get("value", "")))[-10:] == want for v in f.get("values") or []):
+                return int(c["id"])
+    return None
+
+
+def _amo_deal(s: Settings, name: str, tags: list[str], contact: dict) -> dict:
+    """A deal of leads/complex: pipeline, stage and responsible user only when they are set (amoCRM's defaults)."""
+    deal = {"name": name, "_embedded": {"tags": [{"name": t[:50]} for t in dict.fromkeys(tags) if t],
+                                        "contacts": [contact]}}
+    for key in ("pipeline_id", "status_id", "responsible_user_id"):
+        value = getattr(s, "amocrm_" + key)
+        if value is not None:
+            deal[key] = value
+    return deal
+
+
+def _amo_new_deal(s: Settings, client: httpx.Client, lead: Lead, contact_id: int | None) -> tuple[int, int | None]:
+    """POST leads/complex: the deal with the existing contact, or with a new one (name and phone) → (deal, contact)."""
+    contact = {"id": contact_id} if contact_id else {
+        "first_name": lead.name,
+        "custom_fields_values": [{"field_code": "PHONE", "values": [{"value": lead.phone, "enum_code": "MOB"}]}]}
+    tags = [*s.amocrm_tags, lead.breed.name if lead.breed else "", LEAD_KIND_LABELS.get(LeadKind(lead.kind), lead.kind)]
+    r = _amo(s, client, "POST", "leads/complex", json=[_amo_deal(s, amocrm_deal_name(lead), tags, contact)])
+    made = r.json()[0]
+    return int(made["id"]), made.get("contact_id") or contact_id
+
+
+def _amo_find_deal(s: Settings, client: httpx.Client, lead: Lead) -> tuple[int, int | None] | None:
+    """The last attempt asked for the deal and got no answer (a timeout): amoCRM may have made it all the same.
+    Found by its name, which starts with the request number."""
+    prefix = f"Заявка с сайта №{lead.id}:"
+    for d in _amo_items(_amo(s, client, "GET", "leads", params={"query": prefix, "with": "contacts"}), "leads"):
+        if str(d.get("name", "")).startswith(prefix):
+            contacts = (d.get("_embedded") or {}).get("contacts") or [{}]
+            return int(d["id"]), contacts[0].get("id")
+    return None
+
+
+def _amo_first_deal(db: Session, item: Outbox, lead: Lead) -> int | None:
+    """The deal of the person's first request — or the one an earlier repeat request made when the first had none
+    (it came before amoCRM was connected). While the deal of one of them is still being sent: wait for it, so a
+    repeat request never makes a second deal."""
+    rows = db.execute(select(Lead.id, Lead.details).where(
+        or_(Lead.id == lead.parent_id, Lead.parent_id == lead.parent_id), Lead.id != lead.id).order_by(Lead.id)).all()
+    for _, details in rows:
+        deal = ((details or {}).get("amocrm") or {}).get("lead_id")
+        if deal:
+            return int(deal)
+    waiting = db.scalar(select(Outbox.lead_id).where(
+        Outbox.channel == "amocrm", Outbox.status == "pending", Outbox.id < item.id,
+        Outbox.lead_id.in_([i for i, _ in rows])).limit(1))
+    if waiting:
+        raise Wait(60, f"waits for the amoCRM deal of request №{waiting}")
+    return None
+
+
+def _send_amocrm(item: Outbox, lead: Lead, db: Session, s: Settings, client: httpx.Client) -> None:
+    """The deal with the contact, then the note with the request; a repeat request is only a note in the deal of the
+    person's first request. Each step is written to lead.details["amocrm"] at once and committed with the outbox row
+    even when a later step fails: a retry goes on from there and never makes a second deal."""
+    # read afresh and locked before anything is sent: an erasure in flight goes first (then this one finds the
+    # person erased), and nothing else writes leads.details meanwhile
+    lead = db.scalars(select(Lead).where(Lead.id == lead.id).with_for_update(of=Lead)
+                      .execution_options(populate_existing=True)).first()
+    if lead is None or lead.anonymised_at is not None:
+        raise Permanent("the person was erased")
+    state = dict((lead.details or {}).get("amocrm") or {})
+
+    def save(**kw) -> None:
+        state.update(kw)
+        lead.details = {**(lead.details or {}), "amocrm": dict(state)}  # a new object: SQLAlchemy sees the change
+
+    if state.get("note"):
+        return  # done by an earlier attempt (the row was revived by notify-retry)
+    if not state.get("lead_id") and state.pop("creating", None):  # asked for the deal last time, got no answer
+        found = _amo_find_deal(s, client, lead)
+        if found:
+            save(lead_id=found[0], contact_id=found[1])
+    if not state.get("lead_id") and item.event == "lead.repeat" and lead.parent_id:
+        deal = _amo_first_deal(db, item, lead)
+        if deal:
+            save(lead_id=deal, to_request=lead.parent_id)
+    if not state.get("lead_id"):
+        contact_id = _amo_contact(s, client, lead.phone)
+        save(creating=True)
+        deal, contact_id = _amo_new_deal(s, client, lead, contact_id)
+        state.pop("creating")
+        save(lead_id=deal, contact_id=contact_id)
+    _amo(s, client, "POST", f"leads/{int(state['lead_id'])}/notes",
+         json=[{"note_type": "common", "params": {"text": amocrm_note(lead, item.event, s)}}])
+    save(note=True)
+
+
 def _send(item: Outbox, db: Session, s: Settings, client: httpx.Client) -> None:
     lead = db.get(Lead, item.lead_id) if item.lead_id else None
     review = db.get(Review, item.review_id) if item.review_id else None
@@ -335,18 +552,23 @@ def _send(item: Outbox, db: Session, s: Settings, client: httpx.Client) -> None:
         _send_telegram(item, telegram_text(lead, review, item.event, s, facts), s, client, parse_mode="HTML")
     elif item.channel == "email":
         _send_email(item, email_message(lead, review, item.event, s), s)
+    elif item.channel == "amocrm":
+        if lead is None:
+            raise Permanent("amoCRM takes requests only")
+        _send_amocrm(item, lead, db, s, client)
     else:
         _send_webhook(item, webhook_body(item, lead, review), s, client)
 
 
 _BOT_TOKEN = re.compile(r"\d{5,}:[A-Za-z0-9_-]{10,}")
+_JWT = re.compile(r"eyJ[A-Za-z0-9_-]{6,}(?:\.[A-Za-z0-9_-]*){0,2}")  # the amoCRM token, whole or cut
 
 
 def _scrub(err: str, s: Settings) -> str:
-    for secret in (s.telegram_bot_token, s.smtp_password, s.webhook_secret):
+    for secret in (s.telegram_bot_token, s.smtp_password, s.webhook_secret, s.amocrm_token):
         if secret:
             err = err.replace(secret, "***")
-    return _BOT_TOKEN.sub("***", err)[:500]
+    return _JWT.sub("***", _BOT_TOKEN.sub("***", err))[:500]
 
 
 # ---------------------------------------------------------------- check of the settings (python -m app notify-test)
@@ -368,6 +590,8 @@ def _hint(channel: str, err: Exception, s: Settings) -> str:
     """What to fix, in the words of api.env, for the person who runs the check."""
     cause = err.__cause__ or err
     msg = str(err).lower()
+    if channel == "amocrm":
+        return amocrm_hint({"error": str(err), "network": isinstance(err.__cause__, httpx.HTTPError)})
     if channel == "telegram":
         if "telegram 401" in msg:
             return "токен не подходит: проверьте DSH_TELEGRAM_BOT_TOKEN (его выдаёт @BotFather)"
@@ -394,8 +618,8 @@ def _hint(channel: str, err: Exception, s: Settings) -> str:
 
 def send_test(s: Settings | None = None, client: httpx.Client | None = None) -> list[dict]:
     """One test message to every Telegram chat and mailbox of the settings, through the same senders as real
-    notifications. No personal data, nothing in the database. → [{channel, target, ok, error, hint}]; [] when no
-    channel is configured."""
+    notifications; amoCRM: the token is checked (no test deal — that is notify-check --send). No personal data,
+    nothing in the database. → [{channel, target, ok, error, hint}]; [] when no channel is configured."""
     s = s or get_settings()
     results: list[dict] = []
 
@@ -431,6 +655,11 @@ def send_test(s: Settings | None = None, client: httpx.Client | None = None) -> 
             else:
                 for to in s.notify_emails:
                     attempt("email", to, lambda to=to: _send_email(SimpleNamespace(target=to), _test_email_message(s), s))
+        if s.amocrm_subdomain or s.amocrm_token:
+            if not s.amocrm_enabled:
+                fail("amocrm", s.amocrm_host or "—", "нужны оба: DSH_AMOCRM_SUBDOMAIN и DSH_AMOCRM_TOKEN")
+            else:
+                attempt("amocrm", s.amocrm_host, lambda: _amo(s, client, "GET", "account"))
     finally:
         if own:
             client.close()
@@ -458,6 +687,8 @@ def deliver_due(db: Session, limit: int = 20, client: httpx.Client | None = None
                 stats["sent"] += 1
             except Exception as e:  # noqa: BLE001 — every failure is recorded and retried or given up
                 item.last_error = _scrub(f"{type(e).__name__}: {e}", s)
+                if isinstance(e, Wait):
+                    item.attempts -= 1  # it waits its turn: not an attempt
                 if isinstance(e, Permanent) or item.attempts >= s.notify_max_attempts:
                     item.status = "failed"
                     stats["failed"] += 1
@@ -466,8 +697,11 @@ def deliver_due(db: Session, limit: int = 20, client: httpx.Client | None = None
                     delay = dt.timedelta(seconds=e.seconds) if isinstance(e, RetryAfter) else _backoff(item.attempts)
                     item.next_attempt_at = now + delay
                     stats["retry"] += 1
-                    log.warning("outbox %s (%s) attempt %s failed: %s", item.id, item.channel, item.attempts,
-                                item.last_error)
+                    if isinstance(e, Wait):
+                        log.info("outbox %s (%s) %s", item.id, item.channel, e)
+                    else:
+                        log.warning("outbox %s (%s) attempt %s failed: %s", item.id, item.channel, item.attempts,
+                                    item.last_error)
             db.commit()
     finally:
         if own:
@@ -562,6 +796,114 @@ def telegram_chat(s: Settings, client: httpx.Client, chat_id: str) -> dict:
 def telegram_send_test(s: Settings, client: httpx.Client, chat_id: str) -> dict:
     r = _tg_call(s, client, "sendMessage", chat_id=chat_id, text=TEST_TEXT, disable_web_page_preview=True)
     return {"ok": True} if r["ok"] else r
+
+
+TEST_AMOCRM_DEAL = "Проверка интеграции с сайтом дом-щенков.рф — можно удалить"
+TEST_AMOCRM_NOTE = ("Тестовая сделка из проверки настроек сайта дом-щенков.рф (notify-check --send). Так будут "
+                    "приходить заявки с сайта: сделка с контактом и примечание со всеми подробностями. Удалите её.")
+
+
+def amocrm_deal_url(s: Settings, deal_id: int) -> str:
+    return f"https://{s.amocrm_host}/leads/detail/{int(deal_id)}"
+
+
+def _amo_call(s: Settings, client: httpx.Client, method: str, path: str, **kw) -> dict:
+    try:
+        r = _amo(s, client, method, path, **kw)
+        return {"ok": True, "result": r.json() if r.content else {}}
+    except Exception as e:  # noqa: BLE001 — reported to the person running the check, never raised
+        return {"ok": False, "network": isinstance(e.__cause__, httpx.HTTPError), "error": _scrub(str(e), s)}
+
+
+def amocrm_hint(r: dict) -> str:
+    """What to fix, in the words of api.env, for a failed amoCRM call."""
+    err = r.get("error", "")
+    if r.get("network"):
+        return "сервер не достаёт до amoCRM: проверьте DSH_AMOCRM_SUBDOMAIN и интернет на сервере"
+    if "amoCRM 401" in err:
+        return ("токен не принят (отозван или истёк срок): выпустите новый долгосрочный токен — amoCRM → amoМаркет → "
+                "ваша интеграция → «Ключи и доступы» — и впишите его в DSH_AMOCRM_TOKEN")
+    if "amoCRM 402" in err:
+        return "аккаунт amoCRM не оплачен: после оплаты заявки пойдут снова (dsh app notify-retry)"
+    if "amoCRM 403" in err:
+        return "amoCRM не пускает: у пользователя токена нет прав или аккаунт заблокирован"
+    if "amoCRM 404" in err:
+        return "такого аккаунта нет: проверьте DSH_AMOCRM_SUBDOMAIN (из адреса https://<поддомен>.amocrm.ru)"
+    if "amoCRM 400" in err:
+        return "amoCRM не принял сделку: проверьте id воронки, этапа и ответственного (список выше)"
+    return "amoCRM ответил ошибкой — подробности в скобках, попробуйте ещё раз"
+
+
+def amocrm_account(s: Settings, client: httpx.Client) -> dict:
+    """GET account: the token works, the account's name."""
+    r = _amo_call(s, client, "GET", "account")
+    if r["ok"]:
+        a = r["result"] or {}
+        return {"ok": True, "name": a.get("name", ""), "id": a.get("id")}
+    return r
+
+
+def _stage_kind(status: dict) -> str:
+    if status.get("id") == 142:
+        return "успешно реализовано — закрывает сделку"
+    if status.get("id") == 143:
+        return "закрыто и не реализовано — закрывает сделку"
+    return "неразобранное" if status.get("type") == 1 else ""
+
+
+def amocrm_pipelines(s: Settings, client: httpx.Client) -> dict:
+    """GET leads/pipelines: every pipeline with its stages and their ids (for DSH_AMOCRM_PIPELINE_ID / _STATUS_ID)."""
+    r = _amo_call(s, client, "GET", "leads/pipelines")
+    if not r["ok"]:
+        return r
+    out = []
+    for p in ((r["result"] or {}).get("_embedded") or {}).get("pipelines") or []:
+        stages = [{"id": st.get("id"), "name": st.get("name", ""), "kind": _stage_kind(st)}
+                  for st in (p.get("_embedded") or {}).get("statuses") or []]
+        out.append({"id": p.get("id"), "name": p.get("name", ""), "is_main": bool(p.get("is_main")),
+                    "statuses": stages})
+    return {"ok": True, "pipelines": out}
+
+
+def amocrm_target(s: Settings, pipelines: list[dict]) -> dict:
+    """Where new deals go, checked against the account → {"pipeline", "status", "problems"}. Without a pipeline id
+    amoCRM takes the main pipeline; without a stage id, the first stage of the pipeline."""
+    problems = []
+    if s.amocrm_pipeline_id is None:
+        pipe = next((p for p in pipelines if p["is_main"]), pipelines[0] if pipelines else None)
+    else:
+        pipe = next((p for p in pipelines if p["id"] == s.amocrm_pipeline_id), None)
+        if pipe is None:
+            problems.append(f"воронки {s.amocrm_pipeline_id} нет в аккаунте: проверьте DSH_AMOCRM_PIPELINE_ID")
+    status = None
+    if s.amocrm_status_id is not None and pipe is not None:
+        status = next((st for st in pipe["statuses"] if st["id"] == s.amocrm_status_id), None)
+        if status is None:
+            other = next((p for p in pipelines if any(st["id"] == s.amocrm_status_id for st in p["statuses"])), None)
+            where = (f" (этот этап — из воронки «{other['name']}», её id {other['id']} впишите в "
+                     "DSH_AMOCRM_PIPELINE_ID)" if other else "")
+            problems.append(f"этапа {s.amocrm_status_id} нет в воронке «{pipe['name']}»: проверьте "
+                            f"DSH_AMOCRM_STATUS_ID{where}")
+        elif status["id"] in (142, 143):
+            problems.append(f"этап «{status['name']}» закрывает сделку: для новых заявок выберите рабочий этап "
+                            "(DSH_AMOCRM_STATUS_ID)")
+    return {"pipeline": pipe, "status": status, "problems": problems}
+
+
+def amocrm_send_test(s: Settings, client: httpx.Client) -> dict:
+    """A clearly marked test deal with the contact «Тест» (no phone, no personal data) and a note, in the configured
+    pipeline and stage → {"ok", "lead_id", "url"}."""
+    r = _amo_call(s, client, "POST", "leads/complex",
+                  json=[_amo_deal(s, TEST_AMOCRM_DEAL, [*s.amocrm_tags, "проверка"], {"first_name": "Тест"})])
+    if not r["ok"]:
+        return r
+    try:
+        deal = int(r["result"][0]["id"])
+    except (KeyError, IndexError, TypeError, ValueError):
+        return {"ok": False, "error": f"amoCRM не вернул номер сделки: {str(r['result'])[:200]}"}
+    n = _amo_call(s, client, "POST", f"leads/{deal}/notes",
+                  json=[{"note_type": "common", "params": {"text": TEST_AMOCRM_NOTE}}])
+    return {**n, "lead_id": deal, "url": amocrm_deal_url(s, deal)}
 
 
 def _smtp_connect(s: Settings):

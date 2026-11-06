@@ -176,6 +176,9 @@ def erase(db: Session, contact_id: int, reason: str, subject: str, user: AdminUs
     visitor_ids = [v for v in db.scalars(select(Lead.visitor_id).where(Lead.contact_id == c.id,
                                                                       Lead.visitor_id.is_not(None)).distinct())]
     counts = {"leads_anonymised": len(lead_ids)}
+    # deals made in amoCRM: the API there cannot delete them, so the manager does (manual_steps)
+    amocrm_deals = sorted({a["lead_id"] for a in (((d or {}).get("amocrm") or {}) for d in db.scalars(
+        select(Lead.details).where(Lead.id.in_(lead_ids)))) if isinstance(a.get("lead_id"), int)})
     counts["comments_cleared"] = db.execute(update(LeadHistory).where(LeadHistory.lead_id.in_(lead_ids),
                                                                      LeadHistory.comment.is_not(None))
                                             .values(comment=None)).rowcount
@@ -215,7 +218,7 @@ def erase(db: Session, contact_id: int, reason: str, subject: str, user: AdminUs
     audit(db, user, "erase", target=f"contact:{contact_id}", actor_label=label, reason=reason, **counts)
     db.commit()
     write_tombstones([security.phone_hash(p) for p in phones])
-    return {"counts": counts, "manual_steps": manual_steps(lead_ids)}
+    return {"counts": counts, "manual_steps": manual_steps(lead_ids, amocrm_deals)}
 
 
 def write_tombstones(hashes: list[str]) -> None:
@@ -259,11 +262,16 @@ def categories(counts: dict) -> list[str]:
     return out
 
 
-def manual_steps(lead_ids: list[int]) -> list[str]:
+def manual_steps(lead_ids: list[int], amocrm_deals: list[int] = ()) -> list[str]:
     """What the database cannot destroy by itself (copies outside it)."""
     from ..config import get_settings
+    from .notify import amocrm_deal_url
     s = get_settings()
     steps = []
+    if amocrm_deals or (lead_ids and s.amocrm_enabled):
+        links = ", ".join(amocrm_deal_url(s, d) for d in amocrm_deals[:20])
+        steps.append("Удалите в amoCRM контакт этого человека (поиск по номеру телефона) и его сделки"
+                     + (f": {links}." if links else "."))
     if lead_ids and s.smtp_host and s.notify_emails:
         nums = ", ".join(f"№{i}" for i in sorted(lead_ids)[:20])
         steps.append(f"Удалите из рабочей почты ({', '.join(s.notify_emails)}) письма о заявках {nums}.")
