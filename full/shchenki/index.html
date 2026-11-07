@@ -15,10 +15,7 @@
   .site-loader__inner{text-align:center;padding:24px}
   .site-loader__paw{display:block;width:104px;height:104px;margin:0 auto 24px;color:#ff967c}
   .site-loader__fill{transform:scaleY(var(--loaded,.08));transform-origin:50% 100%;transition:transform .18s ease-out}
-  .site-loader__brand{margin:0;font-size:20px;font-weight:400;letter-spacing:-.5px}
-  .site-loader__label{margin:6px 0 24px;color:#6b6b6b}
-  .site-loader__skip{border:1px solid #d8d4cd;border-radius:999px;padding:9px 18px;background:transparent;color:#555;font:inherit;cursor:pointer}
-  .site-loader__skip:focus-visible{outline:2px solid #141414;outline-offset:4px}
+  .site-loader__label{margin:0;color:#6b6b6b}
   @media(prefers-reduced-motion:reduce){.site-loader,.site-loader__fill{transition:none}}
 </style>
 <script>
@@ -39,22 +36,15 @@
     const content = document.getElementById('site-content');
     if (content) content.inert = false;
     const loader = document.getElementById('site-loader');
-    const restoreFocus = loader && loader.contains(document.activeElement);
     root.classList.remove('site-loading');
     root.classList.add('site-revealing');
     if (loader) loader.setAttribute('aria-hidden', 'true');
-    if (restoreFocus) {
-      const main = document.getElementById('main');
-      if (main) { main.setAttribute('tabindex', '-1'); main.focus({preventScroll:true}); }
-    }
     setTimeout(() => root.classList.remove('site-revealing'), 180);
     resolveReady();
     window.dispatchEvent(new Event('site:ready'));
   }
   // This timer is independent of main.js, fonts, images and third-party services.
   const deadline = setTimeout(finish, 4000);
-  window.__finishSiteLoading = finish;
-  document.addEventListener('keydown', event => { if (event.key === 'Escape') finish(); });
   window.addEventListener('pageshow', event => { if (event.persisted) finish(); });
   document.addEventListener('DOMContentLoaded', () => {
     if (ended) return;
@@ -125,9 +115,7 @@
       <use href="#loader-paw" fill="#e7e4df"/>
       <g clip-path="url(#loader-paw-clip)"><rect class="site-loader__fill" width="120" height="120" fill="currentColor"/></g>
     </svg>
-    <p class="site-loader__brand">дом-щенков.рф</p>
-    <p class="site-loader__label" role="status">Загружаем сайт…</p>
-    <button class="site-loader__skip" type="button" onclick="window.__finishSiteLoading()">Открыть сайт</button>
+    <p class="site-loader__label" role="status">Подождите, сайт загружается</p>
   </div>
 </div>
   <div id="site-content">

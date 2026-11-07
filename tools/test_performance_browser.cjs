@@ -50,6 +50,11 @@ const heroRequest = url => /\/assets\/img\/(?:responsive\/)?hero-four-breeds[^/]
     if (await button.isVisible()) await button.click();
   }
 
+  async function assertLoaderPresentation(page) {
+    assert.equal(await page.locator('#site-loader').innerText(), 'Подождите, сайт загружается');
+    assert.equal(await page.locator('#site-loader button, #site-loader a, #site-loader input, #site-loader select, #site-loader textarea, #site-loader [tabindex]').count(), 0, 'Automatic loading screen has no manual controls');
+  }
+
   await test('loader-progress-and-lazy-images', {}, async page => {
     let releaseHero;
     const heroGate = new Promise(resolve => { releaseHero = resolve; });
@@ -65,6 +70,7 @@ const heroRequest = url => /\/assets\/img\/(?:responsive\/)?hero-four-breeds[^/]
     assert.equal(await page.locator('#site-content').evaluate(el => el.inert), true);
     const progress = await page.locator('#site-loader').evaluate(el => parseFloat(el.style.getPropertyValue('--loaded')));
     assert.ok(progress >= .2 && progress < 1, `Paw shows partial progress (${progress}) while hero is pending`);
+    await assertLoaderPresentation(page);
     await page.screenshot({ path: path.join(artifacts, 'paw-loader-mobile.png') });
     const releasedAt = Date.now();
     releaseHero();
@@ -99,15 +105,23 @@ const heroRequest = url => /\/assets\/img\/(?:responsive\/)?hero-four-breeds[^/]
     await page.evaluate(() => window.__siteReady);
   });
 
-  await test('loader-skip-and-reduced-motion', { reducedMotion: 'reduce' }, async page => {
-    await page.route('**/*', route => heroRequest(route.request().url()) ? undefined : route.fallback());
+  await test('loader-automatic-and-reduced-motion', { reducedMotion: 'reduce' }, async page => {
+    let releaseHero;
+    const heroGate = new Promise(resolve => { releaseHero = resolve; });
+    await page.route('**/*', async route => {
+      if (heroRequest(route.request().url())) { await heroGate; await route.continue().catch(() => {}); }
+      else await route.fallback();
+    });
     await page.goto(base.href, { waitUntil: 'domcontentloaded' });
+    await assertLoaderPresentation(page);
     assert.ok(await page.locator('.site-loader__fill').evaluate(el => parseFloat(getComputedStyle(el).transitionDuration) <= .001), 'Reduced motion removes visible paw transitions');
     assert.ok(await page.locator('.site-loader').evaluate(el => parseFloat(getComputedStyle(el).transitionDuration) <= .001), 'Reduced motion removes visible loader transitions');
-    await page.locator('.site-loader__skip').click();
-    await page.waitForFunction(() => !document.documentElement.classList.contains('site-loading'));
+    await page.keyboard.press('Escape');
+    assert.equal(await page.evaluate(() => document.documentElement.classList.contains('site-loading')), true, 'Loading completes automatically when resources are ready');
+    releaseHero();
+    await page.waitForFunction(() => !document.documentElement.classList.contains('site-loading'), null, { timeout: 2000 });
     assert.equal(await page.locator('#site-content').evaluate(el => el.inert), false);
-    assert.equal(await page.evaluate(() => document.activeElement.id), 'main', 'Skip moves focus to page content');
+    await page.evaluate(() => window.__siteReady);
   });
 
   await test('no-javascript-content', { javaScriptEnabled: false }, async page => {
