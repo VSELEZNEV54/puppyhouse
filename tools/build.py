@@ -63,7 +63,7 @@ URL_RE = re.compile(r"^/(?:[a-z0-9]+(?:-[a-z0-9]+)*/)*$")
 KIT_URL = "/_kit/"
 
 # Attributes whose root-absolute values are rewritten to page-relative ones.
-URL_ATTRS = ("href", "src", "poster", "action", "data-src", "data-href")
+URL_ATTRS = ("href", "src", "poster", "action", "data-src", "data-href", "data-poster")
 
 
 # ---------------------------------------------------------------- typography
@@ -300,7 +300,7 @@ def out_path_for(url: str, base: Path = ROOT) -> Path:
 
 # ---------------------------------------------------------------- post-processing
 _ATTR_RE = re.compile(r"(\s(?:%s)\s*=\s*)([\"'])(.*?)\2" % "|".join(re.escape(a) for a in URL_ATTRS), re.S)
-_SRCSET_RE = re.compile(r"(\ssrcset\s*=\s*)([\"'])(.*?)\2", re.S)
+_SRCSET_RE = re.compile(r"(\s(?:image)?srcset\s*=\s*)([\"'])(.*?)\2", re.S)
 _CSSURL_RE = re.compile(r"url\(\s*([\"']?)(/[^\"')\s]*)\1\s*\)")
 _SCRIPT_RE = re.compile(r"(<script\b[^>]*>)(.*?)(</script>)", re.S | re.I)
 _hash_cache: dict[Path, str] = {}

@@ -4,6 +4,7 @@
   <meta charset="utf-8">
   <script data-dsh-counters>(function(){function allowed(){if(window.dshStats.disabled)return false;if(!(location.hostname==="xn----dtbefzjjef0i.xn--p1ai"))return false;var c=null;try{c=localStorage.getItem("dsh:cookie")}catch(e){return false}try{c=JSON.parse(c)}catch(e){c=null}return !(c&&(c.choice==="necessary"||c.choice==="declined"))}window.dshStats=function(){var s=window.dshStats;if(s.on||s.pending||!allowed())return;if(!s.prepared){s.prepared=true;window.dataLayer=window.dataLayer||[];window.dataLayer.push({"gtm.start":Date.now(),event:"gtm.js"});window.ym=window.ym||function(){(window.ym.a=window.ym.a||[]).push(arguments)};window.ym.l=Date.now();window.dshYm=114070015;ym(114070015,"init",{ssr:true,webvisor:true,clickmap:true,ecommerce:"dataLayer",referrer:document.referrer,url:location.href,accurateTrackBounce:true,trackLinks:true});}s.pending=true;function start(){s.pending=false;if(s.on||!allowed())return;s.on=true;(function(w,d,s,l,i){var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!="dataLayer"?"&l="+l:"";j.async=true;j.src="https://www.googletagmanager.com/gtm.js?id="+i+dl;f.parentNode.insertBefore(j,f);})(window,document,"script","dataLayer","GTM-PB3WF4SH");(function(d,s){var j=d.createElement("script");j.async=true;j.src=s;d.head.appendChild(j)})(document,"https://mc.yandex.ru/metrika/tag.js?id=114070015");}function idle(){requestAnimationFrame(function(){requestAnimationFrame(function(){if(window.requestIdleCallback)requestIdleCallback(start,{timeout:1500});else setTimeout(start,0)})})}function ready(){Promise.resolve(window.__siteReady).then(idle,idle)}if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",ready,{once:true});else ready()};window.dshStats.cancel=function(){var s=window.dshStats;s.disabled=true;if(!s.on){s.pending=false;s.prepared=false;if(window.ym&&window.ym.a)window.ym.a.length=0;if(Array.isArray(window.dataLayer))window.dataLayer.length=0}};window.dshStats()})()</script>
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <link data-hero-preload rel="preload" as="image" href="../../assets/img/pup-maltipu-391.jpg" fetchpriority="high" imagesrcset="../../assets/img/responsive/pup-maltipu-391-157e6d43920b-160.webp 160w, ../../assets/img/responsive/pup-maltipu-391-157e6d43920b-320.webp 320w, ../../assets/img/responsive/pup-maltipu-391-157e6d43920b-480.webp 480w, ../../assets/img/responsive/pup-maltipu-391-157e6d43920b-640.webp 640w, ../../assets/img/responsive/pup-maltipu-391-157e6d43920b-960.webp 960w, ../../assets/img/responsive/pup-maltipu-391-157e6d43920b-1200.webp 1200w" imagesizes="(max-width: 760px) calc(100vw - 32px), (min-width: 1600px) 800px, 50vw">
   <title>Купить партиколорного щенка мальтипу F1b в Москве | дом-щенков.рф</title>
   <meta name="description" content="Бусинка — щенок мальтипу F1b, девочка, окрас партиколор, 12 недель. Ветпаспорт, договор. Покажем по видео, доставим по России. Узнайте цену.">
   <meta name="theme-color" content="#F3F2EF">
@@ -21,7 +22,7 @@
 <script>
 (() => {
   const root = document.documentElement;
-  let ended = false, resolveReady;
+  let ended = false, watching = false, resolveReady;
   window.__siteReady = new Promise(resolve => { resolveReady = resolve; });
   root.classList.add('site-loading');
   function progress(value) {
@@ -46,8 +47,9 @@
   // This timer is independent of main.js, fonts, images and third-party services.
   const deadline = setTimeout(finish, 4000);
   window.addEventListener('pageshow', event => { if (event.persisted) finish(); });
-  document.addEventListener('DOMContentLoaded', () => {
-    if (ended) return;
+  function watch() {
+    if (ended || watching) return;
+    watching = true;
     progress(.2);
     const ready = [];
     document.querySelectorAll('link[rel="stylesheet"],link[data-site-styles]').forEach(link => {
@@ -56,7 +58,20 @@
         link.addEventListener('error', resolve, {once:true});
       }));
     });
-    if (document.fonts) ready.push(document.fonts.ready);
+    // Called by the parser before defer scripts execute. Decode ready hero media
+    // in parallel with their download/initialization, but reveal only when controls work.
+    if (document.readyState === 'loading') document.querySelectorAll('script[src][defer]').forEach(script => {
+      ready.push(new Promise(resolve => {
+        script.addEventListener('load', resolve, {once:true});
+        script.addEventListener('error', resolve, {once:true});
+      }));
+    });
+    // The first screen uses Geist 400/500, Latin and Cyrillic. Explicit loads avoid
+    // document.fonts.ready forcing layout for the entire (mostly offscreen) page.
+    if (document.fonts && document.fonts.load) ready.push(Promise.all([
+      document.fonts.load('400 16px Geist', 'Щенки 0123'),
+      document.fonts.load('500 16px Geist', 'Щенки 0123')
+    ]));
     // Only eager hero media: lazy galleries and analytics never hold the page closed.
     document.querySelectorAll('main img[fetchpriority="high"],main img:not([loading])').forEach(img => {
       ready.push(new Promise(resolve => {
@@ -69,9 +84,12 @@
       }));
     });
     let complete = 0;
-    ready.forEach(task => task.then(() => { if (!ended) progress(.2 + .8 * ++complete / ready.length); }));
+    const settled = () => { if (!ended) progress(.2 + .8 * ++complete / ready.length); };
+    ready.forEach(task => task.then(settled, settled));
     Promise.allSettled(ready).then(finish);
-  }, {once:true});
+  }
+  window.__watchSiteLoading = watch;
+  document.addEventListener('DOMContentLoaded', watch, {once:true});
 })();
 </script>
   <link rel="canonical" href="https://xn----dtbefzjjef0i.xn--p1ai/shchenki/maltipu-f1b-parti-2026-07/">
@@ -103,7 +121,7 @@
   <noscript><link rel="stylesheet" href="../../assets/css/site.40e75b66f6c30d27.min.css?v=3d937cf4"></noscript>
 
 
-  <script src="../../assets/js/main.0c4be10168213c5f.min.js?v=7a326afa" defer></script>
+  <script src="../../assets/js/main.216b47e0c7e26511.min.js?v=73a23f86" defer></script>
   <script src="../../assets/js/puppy.a7f66cfdb9834bb7.min.js?v=566d2a0c" defer></script>
 </head>
 <body class="page-puppy">
@@ -1216,5 +1234,6 @@
 <div class="toast" role="status" aria-live="polite" aria-atomic="true" data-toast></div>
 
   </div>
+  <script>if(window.__watchSiteLoading)window.__watchSiteLoading();</script>
 </body>
 </html>

@@ -472,15 +472,27 @@
     if (b) b.addEventListener('click', () => showMap(ph)); // только на этот раз, выбор в баннере не меняется
   });
   // пока баннер открыт: место под ним в конце страницы и отступ прокрутки к фокусу (CSS: html.has-cookie, --cookie-h)
-  function cookieRoom() {
+  let cookieHeight = 0;
+  let cookieObserver = null;
+  function setCookieRoom(on, height) {
+    root.classList.toggle('has-cookie', on);
+    const value = (on ? height : 0) + 'px';
+    if (root.style.getPropertyValue('--cookie-h') !== value) root.style.setProperty('--cookie-h', value);
+  }
+  function cookieRoom(height) {
     const on = !!cookieBox && !cookieBox.hidden;
-    measure('cookie-room', () => {
-      const height = on ? cookieBox.offsetHeight : 0;
-      return () => {
-        root.classList.toggle('has-cookie', on);
-        root.style.setProperty('--cookie-h', height + 'px');
-      };
-    });
+    if (Number.isFinite(height) && height > 0) cookieHeight = height;
+    if (cookieObserver) {
+      // ResizeObserver уже получил размер после раскладки. Повторное чтение offsetHeight в следующем
+      // rAF раньше вынуждало браузер заново раскладывать всю страницу после других изменений DOM.
+      setCookieRoom(on, cookieHeight);
+    } else {
+      // Старые браузеры без ResizeObserver: измерение вместе с остальными чтениями, до изменений DOM.
+      measure('cookie-room', () => {
+        const measured = on ? cookieBox.offsetHeight : 0;
+        return () => setCookieRoom(on, measured);
+      });
+    }
   }
   function cookieShow(on) {
     if (!cookieBox) return;
@@ -540,7 +552,21 @@
       const first = $('[data-cookie-choice]', cookieBox);
       if (first) first.focus();
     }));
-    if ('ResizeObserver' in window) new ResizeObserver(cookieRoom).observe(cookieBox);
+    if ('ResizeObserver' in window) {
+      cookieObserver = new ResizeObserver(([entry]) => {
+        const box = entry.borderBoxSize;
+        const size = box && (box[0] || box);
+        if (size && Number.isFinite(size.blockSize)) cookieRoom(size.blockSize);
+        else {
+          // В ранних реализациях RO есть только contentRect, без padding и border.
+          measure('cookie-room', () => {
+            const height = cookieBox.offsetHeight;
+            return () => cookieRoom(height);
+          });
+        }
+      });
+      cookieObserver.observe(cookieBox);
+    } else window.addEventListener('resize', cookieRoom);
     if (canStore && !cookieChoice()) cookieShow(true);
   }
   // уже отказались — подчищаем то, что могло остаться (визиты до отказа); если отказ пришёл из другой вкладки, пока
@@ -614,15 +640,25 @@
 
   /* ---------- шапка: тень при прокрутке ---------- */
   const hdr = $('[data-hdr]');
-  const onScroll = () => {
-    if (!hdr) return;
-    measure('header', () => {
+  if (hdr && 'IntersectionObserver' in window) {
+    // Невидимая метка первых 8px документа не занимает места и работает также после перехода по якорю
+    // или восстановления прокрутки из истории. window.scrollY на старте мог вынудить раскладку всей страницы.
+    const marker = d.createElement('span');
+    marker.setAttribute('aria-hidden', 'true');
+    marker.dataset.hdrSentinel = '';
+    marker.style.cssText = 'position:absolute;top:0;left:0;width:1px;height:8px;opacity:0;pointer-events:none';
+    d.body.appendChild(marker);
+    new IntersectionObserver(([entry]) => {
+      hdr.classList.toggle('is-scrolled', !entry.isIntersecting && entry.boundingClientRect.bottom <= 0);
+    }).observe(marker);
+  } else if (hdr) {
+    const onScroll = () => measure('header', () => {
       const scrolled = window.scrollY > 8;
       return () => hdr.classList.toggle('is-scrolled', scrolled);
     });
-  };
-  window.addEventListener('scroll', onScroll, { passive: true });
-  onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+  }
 
   /* ---------- выпадающие панели шапки: «Меню» (карта сайта) и «Породы» ----------
      Ховер с небольшой задержкой (намерение), клик / тап, клавиатура: Enter / Space — открыть-закрыть,
@@ -1411,9 +1447,15 @@
     const media = (k) => slides[k].querySelector('img, video');
     const load = (k) => {
       const sl = slides[(k + n) % n];
+      const m = media((k + n) % n);
+      // Даже preload="none" не задерживает загрузку video.poster. Постер скрытого кадра нужен
+      // только при подготовке этого кадра рядом с экраном или после выбора посетителя.
+      if (m && m.tagName === 'VIDEO' && m.dataset.poster) {
+        m.poster = m.dataset.poster;
+        delete m.dataset.poster;
+      }
       if (!sl.classList.contains('is-idle')) return;
       sl.classList.remove('is-idle');
-      const m = media((k + n) % n);
       if (m && m.tagName === 'VIDEO') m.preload = 'auto';
     };
     const playable = (v) => v && v.tagName === 'VIDEO' && !v.dataset.failed;
@@ -1503,14 +1545,17 @@
      Длинный текст свёрнут до 8 строк: «Читать полностью» / «Свернуть» — только если текст правда не влез.
      На телефоне видно четыре отзыва, «Показать ещё отзывы» открывает следующие четыре. */
   const rvTexts = $$('[data-rvw-text]');
+  const nearReviews = new Set();
   const pendingReviews = new Set();
-  const foldReviews = (texts) => {
+  const foldReviews = (texts, newlyShown = false) => {
     texts.forEach((t) => {
       const btn = t.parentElement.querySelector('[data-rvw-toggle]');
       if (!btn || btn.getAttribute('aria-expanded') === 'true') return;
       t.classList.add('is-folded');
-      pendingReviews.add(t);
+      if (newlyShown) nearReviews.add(t);
+      if (nearReviews.has(t)) pendingReviews.add(t);
     });
+    if (!pendingReviews.size) return;
     measure('reviews', () => {
       const rows = Array.from(pendingReviews).map((t) => ({
         t, btn: t.parentElement.querySelector('[data-rvw-toggle]'),
@@ -1525,9 +1570,27 @@
     });
   };
   // Скрытые карточки повторно измеряем при показе (trust.js).
-  window.DSH.foldReviews = (scope) => foldReviews($$('[data-rvw-text]', scope));
+  window.DSH.foldReviews = (scope) => foldReviews($$('[data-rvw-text]', scope), true);
   if (rvTexts.length) {
+    // Высоту длинных текстов ограничиваем сразу, а переполнение измеряем перед появлением раздела.
+    // На главной отзывы далеко внизу: их scrollHeight/clientHeight не должны задерживать первый экран.
     foldReviews(rvTexts);
+    if ('IntersectionObserver' in window) {
+      const scopes = new Map();
+      rvTexts.forEach((t) => {
+        const scope = t.closest('.rvws, [data-rvw-grid]') || t.parentElement;
+        if (!scopes.has(scope)) scopes.set(scope, []);
+        scopes.get(scope).push(t);
+      });
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          foldReviews(scopes.get(entry.target), true);
+          observer.unobserve(entry.target);
+        });
+      }, { rootMargin: '600px 0px' });
+      stylesReady.then(() => scopes.forEach((_, scope) => observer.observe(scope)));
+    } else foldReviews(rvTexts, true);
     rvTexts.forEach((t) => {
       const btn = t.parentElement.querySelector('[data-rvw-toggle]');
       btn && btn.addEventListener('click', () => {
@@ -1538,8 +1601,10 @@
       });
     });
     let rvt;
-    window.addEventListener('resize', () => { clearTimeout(rvt); rvt = setTimeout(() => foldReviews(rvTexts), 200); });
-    if (d.fonts && d.fonts.ready) d.fonts.ready.then(() => foldReviews(rvTexts));
+    window.addEventListener('resize', () => { clearTimeout(rvt); rvt = setTimeout(() => foldReviews(nearReviews), 200); });
+    // FontFaceSet.ready сам может принудительно обновить стили, чтобы определить используемые шрифты.
+    // Первое измерение раздела уже ждёт CSS, а последующую смену шрифта ловим без чтения этого свойства.
+    if (d.fonts) d.fonts.addEventListener('loadingdone', () => foldReviews(nearReviews));
   }
   const rvws = $('.rvws');
   const rvMore = $('[data-rvw-more]');
@@ -1556,7 +1621,7 @@
     rvMore.addEventListener('click', () => {
       const next = closed().slice(0, STEP);
       next.forEach((li) => li.classList.add('is-open'));
-      foldReviews(next.flatMap((li) => $$('[data-rvw-text]', li)));
+      foldReviews(next.flatMap((li) => $$('[data-rvw-text]', li)), true);
       upd();
       if (rvMore.hidden && next[0]) { const b = $('button', next[0]); b && b.focus({ preventScroll: true }); }
     });
@@ -1658,9 +1723,12 @@
 
   /* ---------- мягкое появление при скролле ---------- */
   if (!reduceMotion && 'IntersectionObserver' in window) {
+    const scrollers = new Map();
     const inScroller = (el) => {
       const p = el.parentElement;
-      return p && getComputedStyle(p).overflowX !== 'visible';
+      if (!p) return false;
+      if (!scrollers.has(p)) scrollers.set(p, getComputedStyle(p).overflowX !== 'visible');
+      return scrollers.get(p);
     };
     const targets = $$([
       'main .section .sec-head',
@@ -1670,7 +1738,9 @@
       '[data-reveal]:not([data-reveal="items"])', '[data-reveal="items"] > *'
     ].join(','));
 
+    let printing = false;
     const io = new IntersectionObserver((entries) => {
+      if (printing) return;
       entries.forEach((entry) => {
         if (!entry.isIntersecting) return;
         const el = entry.target;
@@ -1684,21 +1754,35 @@
       });
     }, { rootMargin: '0px 0px -6% 0px', threshold: 0.08 });
 
-    measure('reveal', () => {
-      const below = targets.filter((el) => !inScroller(el) && el.getBoundingClientRect().top >= window.innerHeight * 0.9);
-      return () => below.forEach((el) => { el.classList.add('rv'); io.observe(el); });
+    let preparing = null;
+    // Геометрию первого кадра отдаёт браузер через IO, без синхронного измерения всех секций в стартовом rAF.
+    // Пока ждём CSS и первый экран, пользователь уже может перейти по якорю: видимые элементы не скрываем.
+    Promise.allSettled([stylesReady, window.__siteReady]).then(() => {
+      if (printing) return;
+      preparing = new IntersectionObserver((entries) => {
+        if (printing) return;
+        const below = entries.filter((entry) => entry.rootBounds
+          && entry.boundingClientRect.top >= entry.rootBounds.bottom && !inScroller(entry.target));
+        // Все чтения overflow родителей выполнены до изменения классов.
+        entries.forEach((entry) => preparing.unobserve(entry.target));
+        below.forEach(({ target }) => { target.classList.add('rv'); io.observe(target); });
+      });
+      targets.forEach((el) => preparing.observe(el));
     });
     window.addEventListener('beforeprint', () => {
-      $$('.rv').forEach((el) => { el.classList.remove('rv', 'is-in'); io.unobserve(el); });
+      printing = true;
+      if (preparing) preparing.disconnect();
+      io.disconnect();
+      $$('.rv').forEach((el) => { el.classList.remove('rv', 'is-in'); el.style.transitionDelay = ''; });
     });
   }
 
-  // Независимо от закрытия загрузочного экрана: CSS может прийти уже после «Открыть сайт» или его таймаута.
+  // Независимо от закрытия загрузочного экрана: CSS может прийти уже после его аварийного таймаута.
   stylesReady.then(() => {
     layoutReady = true;
     scheduleLayout();
     if (pendingStyles.length) {
-      foldReviews(rvTexts);
+      foldReviews(nearReviews);
       // Страничные скрипты (например catalog.js) также пересчитывают сетки по resize.
       window.dispatchEvent(new Event('resize'));
     }

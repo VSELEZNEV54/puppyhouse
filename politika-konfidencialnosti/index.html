@@ -21,7 +21,7 @@
 <script>
 (() => {
   const root = document.documentElement;
-  let ended = false, resolveReady;
+  let ended = false, watching = false, resolveReady;
   window.__siteReady = new Promise(resolve => { resolveReady = resolve; });
   root.classList.add('site-loading');
   function progress(value) {
@@ -46,8 +46,9 @@
   // This timer is independent of main.js, fonts, images and third-party services.
   const deadline = setTimeout(finish, 4000);
   window.addEventListener('pageshow', event => { if (event.persisted) finish(); });
-  document.addEventListener('DOMContentLoaded', () => {
-    if (ended) return;
+  function watch() {
+    if (ended || watching) return;
+    watching = true;
     progress(.2);
     const ready = [];
     document.querySelectorAll('link[rel="stylesheet"],link[data-site-styles]').forEach(link => {
@@ -56,7 +57,20 @@
         link.addEventListener('error', resolve, {once:true});
       }));
     });
-    if (document.fonts) ready.push(document.fonts.ready);
+    // Called by the parser before defer scripts execute. Decode ready hero media
+    // in parallel with their download/initialization, but reveal only when controls work.
+    if (document.readyState === 'loading') document.querySelectorAll('script[src][defer]').forEach(script => {
+      ready.push(new Promise(resolve => {
+        script.addEventListener('load', resolve, {once:true});
+        script.addEventListener('error', resolve, {once:true});
+      }));
+    });
+    // The first screen uses Geist 400/500, Latin and Cyrillic. Explicit loads avoid
+    // document.fonts.ready forcing layout for the entire (mostly offscreen) page.
+    if (document.fonts && document.fonts.load) ready.push(Promise.all([
+      document.fonts.load('400 16px Geist', 'Щенки 0123'),
+      document.fonts.load('500 16px Geist', 'Щенки 0123')
+    ]));
     // Only eager hero media: lazy galleries and analytics never hold the page closed.
     document.querySelectorAll('main img[fetchpriority="high"],main img:not([loading])').forEach(img => {
       ready.push(new Promise(resolve => {
@@ -69,9 +83,12 @@
       }));
     });
     let complete = 0;
-    ready.forEach(task => task.then(() => { if (!ended) progress(.2 + .8 * ++complete / ready.length); }));
+    const settled = () => { if (!ended) progress(.2 + .8 * ++complete / ready.length); };
+    ready.forEach(task => task.then(settled, settled));
     Promise.allSettled(ready).then(finish);
-  }, {once:true});
+  }
+  window.__watchSiteLoading = watch;
+  document.addEventListener('DOMContentLoaded', watch, {once:true});
 })();
 </script>
   <meta name="robots" content="noindex, follow">
@@ -99,7 +116,7 @@
   <noscript><link rel="stylesheet" href="../assets/css/site.10019ede83f59468.min.css?v=d19027b6"></noscript>
 
 
-  <script src="../assets/js/main.0c4be10168213c5f.min.js?v=7a326afa" defer></script>
+  <script src="../assets/js/main.216b47e0c7e26511.min.js?v=73a23f86" defer></script>
 </head>
 <body>
 <div class="site-loader" id="site-loader" aria-label="Загрузка сайта">
@@ -761,5 +778,6 @@
 <div class="toast" role="status" aria-live="polite" aria-atomic="true" data-toast></div>
 
   </div>
+  <script>if(window.__watchSiteLoading)window.__watchSiteLoading();</script>
 </body>
 </html>

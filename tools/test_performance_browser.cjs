@@ -43,6 +43,10 @@ const heroRequest = url => /\/assets\/img\/(?:responsive\/)?hero-four-breeds[^/]
     await page.waitForFunction(() => !document.documentElement.classList.contains('site-loading') && !document.documentElement.classList.contains('site-revealing'));
     assert.equal(await page.locator('#site-content').evaluate(el => el.inert), false);
     assert.equal(await page.locator('h1').count(), 1);
+    assert.equal(await page.locator('h1').evaluate(el => {
+      for (let node = el; node; node = node.parentElement) if (Number(getComputedStyle(node).opacity) < .99) return false;
+      return true;
+    }), true, 'First-screen heading is already visible when loading finishes');
     if (checkLayout) assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth), false, 'No horizontal document overflow');
   }
   async function closeCookies(page) {
@@ -81,6 +85,49 @@ const heroRequest = url => /\/assets\/img\/(?:responsive\/)?hero-four-breeds[^/]
     await page.evaluate(() => window.__siteReady);
   });
 
+  await test('responsive-hero-preload-is-reused', { viewport: { width: 412, height: 823 }, deviceScaleFactor: 1.75 }, async page => {
+    const requests = [];
+    page.on('request', request => { if (heroRequest(request.url())) requests.push(request.url()); });
+    await ready(page);
+    const hero = await page.locator('main img[fetchpriority="high"]').first().evaluate(img => ({ src: img.currentSrc, srcset: img.srcset, sizes: img.sizes }));
+    const preload = await page.locator('link[rel="preload"][as="image"]').first().evaluate(link => ({ srcset: link.imageSrcset, sizes: link.imageSizes }));
+    assert.equal(preload.srcset, hero.srcset, 'Preload and hero use the same responsive candidates');
+    assert.equal(preload.sizes, hero.sizes, 'Preload selects the same viewport size as the rendered hero');
+    assert.deepEqual(requests, [hero.src], 'One selected WebP request serves both preload and hero; no duplicate JPEG');
+    assert.match(hero.src, /\.webp(?:\?|$)/);
+  });
+
+  await test('loader-waits-for-deferred-controls', {}, async page => {
+    let releaseScript;
+    const scriptGate = new Promise(resolve => { releaseScript = resolve; });
+    let held = false;
+    await page.route('**/*', async route => {
+      if (route.request().resourceType() === 'script' && /\/main(?:\.[a-f0-9]+)?(?:\.min)?\.js(?:\?|$)/.test(route.request().url())) {
+        held = true;
+        await scriptGate;
+        await route.continue().catch(() => {});
+      } else await route.fallback();
+    });
+    await page.goto(base.href, { waitUntil: 'commit' });
+    await page.waitForFunction(() => {
+      const hero = document.querySelector('main img[fetchpriority="high"]');
+      const loader = document.getElementById('site-loader');
+      return hero && hero.complete && hero.naturalWidth && loader && parseFloat(loader.style.getPropertyValue('--loaded')) > .2;
+    });
+    assert.ok(held, 'Deferred control script was held while the hero completed');
+    assert.equal(await page.evaluate(() => document.readyState), 'interactive', 'Parser finished while DOMContentLoaded still waits for defer');
+    await page.waitForTimeout(250);
+    assert.equal(await page.evaluate(() => document.documentElement.classList.contains('site-loading')), true, 'Ready hero alone cannot reveal nonworking controls');
+    assert.equal(await page.locator('#site-content').evaluate(el => el.inert), true);
+    releaseScript();
+    await page.waitForFunction(() => !document.documentElement.classList.contains('site-loading'), null, { timeout: 2000 });
+    await page.waitForLoadState('domcontentloaded');
+    assert.equal(await page.locator('#site-content').evaluate(el => el.inert), false);
+    await closeCookies(page);
+    await page.locator('[data-burger]').click();
+    assert.equal(await page.locator('#mmenu').isVisible(), true, 'Controls work as soon as automatic loading finishes');
+  });
+
   await test('hero-error-does-not-trap-page', {}, async page => {
     await page.route('**/*', route => heroRequest(route.request().url()) ? route.abort() : route.fallback());
     await ready(page);
@@ -88,6 +135,20 @@ const heroRequest = url => /\/assets\/img\/(?:responsive\/)?hero-four-breeds[^/]
     await closeCookies(page);
     await page.locator('[data-burger]').click();
     assert.equal(await page.locator('#mmenu').isVisible(), true);
+  });
+
+  await test('font-errors-use-fallback-and-reveal', {}, async page => {
+    let failedFonts = 0;
+    await page.route('**/*', route => {
+      if (route.request().resourceType() === 'font') { failedFonts++; return route.abort(); }
+      return route.fallback();
+    });
+    const started = Date.now();
+    await ready(page);
+    assert.ok(failedFonts > 0, 'Font requests were actually interrupted');
+    assert.ok(Date.now() - started < 3000, 'Failed font promises settle without waiting for the loading deadline');
+    assert.equal(await page.locator('h1').isVisible(), true, 'Fallback font keeps the heading readable');
+    assert.equal(await page.locator('#site-loader').isVisible(), false);
   });
 
   await test('loader-timeout-with-hung-resources', {}, async page => {
@@ -149,22 +210,25 @@ const heroRequest = url => /\/assets\/img\/(?:responsive\/)?hero-four-breeds[^/]
     await page.locator('[data-close-modal]:visible').first().click();
     const carousel = page.locator('#foto-video [data-carousel]');
     await carousel.scrollIntoViewIfNeeded();
+    await page.waitForFunction(() => document.querySelector('[data-hdr]').classList.contains('is-scrolled'));
     await page.waitForTimeout(250); // allow IntersectionObserver and the shared read/write frame to settle
     const before = await carousel.locator('[data-carousel-viewport]').evaluate(el => el.scrollLeft);
     await carousel.locator('[data-carousel-next]').click();
     await page.waitForFunction(({ before }) => Math.abs(document.querySelector('#foto-video [data-carousel-viewport]').scrollLeft - before) > 20, { before });
+    await page.evaluate(() => window.scrollTo(0, 0));
+    await page.waitForFunction(() => !document.querySelector('[data-hdr]').classList.contains('is-scrolled'));
     const more = page.locator('[data-rvw-more]');
     await more.scrollIntoViewIfNeeded();
     const opened = await page.locator('.rvws .media-carousel__item.is-open').count();
     await more.click();
     assert.ok(await page.locator('.rvws .media-carousel__item.is-open').count() > opened, 'More reviews reveals another batch');
-    const fold = page.locator('[data-rvw-toggle]:visible').first();
-    if (await fold.count()) {
-      await fold.click();
-      assert.equal(await fold.getAttribute('aria-expanded'), 'true');
-      await fold.click();
-      assert.equal(await fold.getAttribute('aria-expanded'), 'false');
-    }
+    await page.locator('.rvws').scrollIntoViewIfNeeded();
+    const fold = page.locator('[data-rvw-toggle]').first();
+    await fold.waitFor({ state: 'visible' });
+    await fold.click();
+    assert.equal(await fold.getAttribute('aria-expanded'), 'true');
+    await fold.click();
+    assert.equal(await fold.getAttribute('aria-expanded'), 'false');
   });
 
   for (const cssDelay of [1800, 4800]) await test(`delayed-css-${cssDelay}-keeps-review-controls`, {}, async page => {
@@ -178,6 +242,8 @@ const heroRequest = url => /\/assets\/img\/(?:responsive\/)?hero-four-breeds[^/]
     await ready(page, '/', cssDelay < 4000);
     assert.ok(delayed > 0, 'Deferred CSS request was actually delayed');
     await closeCookies(page);
+    await page.waitForFunction(() => [...document.querySelectorAll('link[data-site-styles]')].every(link => !!link.sheet));
+    await page.locator('.rvws').scrollIntoViewIfNeeded();
     const text = page.locator('[data-rvw-text]').first();
     const toggle = page.locator('[data-rvw-toggle]').first();
     await toggle.waitFor({ state: 'visible', timeout: 2000 });

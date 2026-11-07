@@ -29,6 +29,47 @@ _TOKEN = re.compile(r"[a-zA-Z_][\w-]*")
 _STATE_PREFIXES = ("is-", "has-")
 
 
+class _HeroImage(HTMLParser):
+    """Pick the first eager content image, using exactly the browser's responsive candidates."""
+
+    def __init__(self, source: str):
+        super().__init__(convert_charrefs=True)
+        self.in_main = False
+        self.image: dict[str, str] = {}
+        self.feed(source)
+
+    def handle_starttag(self, tag, attrs):
+        if tag == "main":
+            self.in_main = True
+        if self.in_main and tag == "img" and not self.image:
+            image = dict(attrs)
+            if image.get("fetchpriority") == "high" and image.get("loading") != "lazy":
+                self.image = image
+
+    def handle_endtag(self, tag):
+        if tag == "main":
+            self.in_main = False
+
+
+def preload_hero(source: str) -> str:
+    image = _HeroImage(source).image
+    if not image or not image.get("src") or 'data-hero-preload' in source:
+        return source
+    attrs = {"rel": "preload", "as": "image", "href": image["src"], "fetchpriority": "high"}
+    if image.get("srcset"):
+        attrs["imagesrcset"] = image["srcset"]
+        if image.get("sizes"):
+            attrs["imagesizes"] = image["sizes"]
+    link = '<link data-hero-preload ' + ' '.join(
+        f'{key}="{html_lib.escape(value, quote=True)}"' for key, value in attrs.items()
+    ) + '>'
+    # viewport must precede imagesizes evaluation; insert before fonts and other downloads.
+    viewport = re.search(r'<meta\b[^>]*\bname=[\"\']viewport[\"\'][^>]*>', source, re.I)
+    if not viewport:
+        return source
+    return source[:viewport.end()] + '\n  ' + link + source[viewport.end():]
+
+
 class _Names(HTMLParser):
     """Read actual attributes; text and embedded SVG/CSS strings are not classes."""
 
@@ -161,6 +202,7 @@ class WebAssets:
 
     def page(self, source: str) -> str:
         """Call after template/SEO rendering, before build.py's relative URL rewrite."""
+        source = preload_hero(source)
         links = []
         for match in _LINK.finditer(source):
             attrs = {k.lower(): html_lib.unescape(v) for k, _, v in _ATTR.findall(match.group())}
