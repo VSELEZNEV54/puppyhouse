@@ -177,7 +177,7 @@ def test_titles_and_descriptions_carry_no_markup():
             assert "<" not in val and ">" not in val, f"{p.relative_to(REPO).as_posix()}: {val[:120]}"
 
 
-_COUNTERS = re.compile(r"<script>window\.dshStats=function\(\)\{(.*?)\};(.*?)</script>", re.S)
+_COUNTERS = re.compile(r"<script data-dsh-counters>(.*?)</script>", re.S)
 _THIRD_PARTY = ("mc.yandex.ru", "googletagmanager.com", "yandex.ru/map-widget")
 
 
@@ -191,9 +191,8 @@ def test_cookie_banner_and_its_settings_link_on_every_page(site):
 
 
 def test_third_party_services_stop_after_a_refusal():
-    """Opt-out (client 22.10): Metrika and GTM live inside window.dshStats(), called at once unless the visitor chose
-    «Принять только необходимые» or «Отказаться»; no <noscript> pixels (they would ignore a refusal); the Yandex map is
-    a placeholder that main.js swaps for the iframe unless refused."""
+    """Counters wait for the first screen and recheck opt-out before loading; no <noscript> pixels can bypass refusal.
+    The Yandex map stays a placeholder that main.js swaps for the iframe unless refused."""
     for p in PAGES:
         src = p.read_text(encoding="utf-8")
         name = p.relative_to(REPO).as_posix()
@@ -204,6 +203,8 @@ def test_third_party_services_stop_after_a_refusal():
                 f"{name}: {host} outside window.dshStats()"
         assert "<noscript>" not in src or not any(h in src.split("<noscript>", 1)[1] for h in _THIRD_PARTY[:2]), name
         if m:
-            gate = m.group(2)
+            gate = m.group(1)
             assert 'c.choice==="necessary"' in gate and 'c.choice==="declined"' in gate and "window.dshStats()" in gate, name
+            assert "window.__siteReady" in gate and "requestIdleCallback" in gate, name
+            assert "if(s.on||!allowed())return" in gate and "window.dshStats.cancel=" in gate, name
         assert not re.search(r"<iframe\b[^>]*\ssrc=\"https?://", src), f"{name}: a third-party iframe main.js cannot hold back"

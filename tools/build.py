@@ -44,6 +44,8 @@ from markupsafe import Markup, escape
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import seo  # noqa: E402  (tools/seo.py: canonical, Open Graph, JSON-LD, sitemap, robots.txt)
+from image_assets import ResponsiveImages
+from web_assets import WebAssets
 
 sys.dont_write_bytecode = True  # no __pycache__ next to route modules
 
@@ -688,11 +690,14 @@ def main(argv=None) -> int:
     if args.all and not args.full:
         link_root_files(ALL_DIR)
     rw = Rewriter(set(rendered) | set(kept), fallbacks, prefix="/full" if args.full else "")
+    images = ResponsiveImages(ROOT)
+    web_assets = WebAssets(ROOT)
     written, changed = [], 0
     old_lastmod = old.get("lastmod") if isinstance(old.get("lastmod"), dict) else {}
     lastmod: dict[str, list[str]] = {}
     for url in sorted(rendered):
         module, html = rendered[url]
+        html = web_assets.page(images.process(html))
         html = nofollow_unbuilt(rw.page(html, url))
         lint(html, url, rep)
         out = out_path_for(url, out_base)
@@ -717,6 +722,7 @@ def main(argv=None) -> int:
                   "page": {"url": "/404.html", "depth": 0, "module": "(404)"}}
         html = env.get_template("pages/404.html.j2").render(**ctx404)
         html = seo.finalize(html, "/404.html", ctx404, data.get("site", {}), seo_conf, imgsize)
+        html = web_assets.page(images.process(html))
         html = nofollow_unbuilt(rw.page(html, "/"))  # links relative to the site root; the page sets <base> itself
         lint(html, "/404.html", rep)
         write_if_changed(out_base / "404.html", html)

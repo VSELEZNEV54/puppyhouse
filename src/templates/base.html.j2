@@ -12,6 +12,7 @@
   <title>{% block title %}{{ title }}{% endblock %}</title>
   <meta name="description" content="{% block description %}{{ description }}{% endblock %}">
   <meta name="theme-color" content="{{ site.theme_color }}">
+{% include "partials/loader-head.html.j2" %}
   {# canonical, robots, Open Graph, иконки, JSON-LD (хлебные крошки, организация) — tools/seo.py, docs/seo.md #}
   <!--seo-->
   {# API for the forms and the tracker (main.js): live mode only on an origin from data-origins (or a localStorage
@@ -27,6 +28,9 @@
 {% block head_extra %}{% endblock %}
 </head>
 <body{% block body_attrs %}{% endblock %}>
+{% include "partials/loader.html.j2" %}
+  <div id="site-content">
+  <script>if(document.documentElement.classList.contains('site-loading'))document.getElementById('site-content').inert=true;</script>
   <!-- Иконки: инлайн-спрайт 24×24. Линейные — stroke currentColor, заливочные — fill. -->
   <svg class="sprite" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
 {% include "partials/sprite.html.j2" %}
@@ -57,5 +61,6 @@
 {% include "partials/toast.html.j2" %}
 
 {% block body_end %}{% endblock %}
+  </div>
 </body>
 </html>

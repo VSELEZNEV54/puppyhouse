@@ -2,7 +2,7 @@
 # Pack a release of дом-щенков.рф — the built site + the API + the server scripts — into one folder (and archive):
 #   tools/release.sh                      → dist/domshchenkov-<version>/ and dist/domshchenkov-<version>.tar.gz
 #   tools/release.sh --out DIR --no-tar   (backend/deploy/deploy.sh calls this in a git checkout on the server)
-# Version: <YYYYmmdd-HHMMSS>-<git sha>[-dirty]. Needs python3 + jinja2 (the site build); git is optional.
+# Version: <YYYYmmdd-HHMMSS>-<git sha>[-dirty]. Needs requirements-build.txt; git is optional.
 # Layout of a release:
 #   site/        the docroot: published pages (src/data/publish.json), assets, 404.html, robots.txt, sitemap.xml,
 #                site.webmanifest, favicon.ico (nothing else of the repo)
@@ -23,6 +23,7 @@ while [ $# -gt 0 ]; do
   esac
 done
 cd "$ROOT"
+BUILD_PYTHON="${DSH_BUILD_PYTHON:-python3}"
 
 if git rev-parse --git-dir >/dev/null 2>&1; then
   sha="$(git rev-parse --short=8 HEAD)"
@@ -41,7 +42,7 @@ TMP="$(mktemp -d "$OUT/.$NAME.XXXX")"
 trap 'rm -rf "$TMP"' EXIT
 
 echo "== сайт: сборка"
-python3 tools/build.py --clean   # exits non-zero on a broken page or template
+"$BUILD_PYTHON" tools/build.py --clean   # exits non-zero on a broken page or template
 
 echo "== сайт: папка для сервера"
 python3 - "$TMP/site" <<'PY'

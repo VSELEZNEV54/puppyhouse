@@ -1,0 +1,15 @@
+<div class="site-loader" id="site-loader" aria-label="Загрузка сайта">
+  <div class="site-loader__inner">
+    <svg class="site-loader__paw" viewBox="0 0 120 120" aria-hidden="true" focusable="false">
+      <defs>
+        <path id="loader-paw" d="M60 54c-12 0-16 12-23 20-5 6-10 10-10 19 0 11 9 16 18 14 6-1 10-4 15-4s9 3 15 4c9 2 18-3 18-14 0-9-5-13-10-19-7-8-11-20-23-20ZM26 37c-7-5-14-1-14 8 0 10 6 21 14 23 7 2 11-4 10-12-1-8-5-15-10-19ZM47 12c-8-2-13 4-13 14 0 11 5 22 13 23 8 1 12-7 11-17-1-9-4-18-11-20ZM73 12c8-2 13 4 13 14 0 11-5 22-13 23-8 1-12-7-11-17 1-9 4-18 11-20ZM94 37c7-5 14-1 14 8 0 10-6 21-14 23-7 2-11-4-10-12 1-8 5-15 10-19Z"/>
+        <clipPath id="loader-paw-clip"><use href="#loader-paw"/></clipPath>
+      </defs>
+      <use href="#loader-paw" fill="#e7e4df"/>
+      <g clip-path="url(#loader-paw-clip)"><rect class="site-loader__fill" width="120" height="120" fill="currentColor"/></g>
+    </svg>
+    <p class="site-loader__brand">{{ site.brand }}</p>
+    <p class="site-loader__label" role="status">Загружаем сайт…</p>
+    <button class="site-loader__skip" type="button" onclick="window.__finishSiteLoading()">Открыть сайт</button>
+  </div>
+</div>

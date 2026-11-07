@@ -39,7 +39,17 @@ HERE="$(cd "$(dirname "$(readlink -f "$0")")/../.." && pwd)"
 # ---- a git checkout: pack a release from it and run that release's deploy.sh
 if [ ! -f "$HERE/VERSION" ]; then
   [ -f "$HERE/tools/release.sh" ] || die "$HERE — не релиз и не репозиторий"
-  python3 -c 'import jinja2' 2>/dev/null || die "для сборки сайта нужен jinja2: apt install python3-jinja2"
+  # Keep build dependencies separate from the system Python and the API environment.
+  build_env="$APP_ROOT/build-venv"
+  build_requirements="$HERE/requirements-build.txt"
+  if [ ! -x "$build_env/bin/python" ]; then
+    python3 -m venv "$build_env" || die "для сборки нужен python3-venv: apt install python3-venv"
+  fi
+  if ! cmp -s "$build_requirements" "$build_env/requirements-installed.txt"; then
+    "$build_env/bin/python" -m pip install -r "$build_requirements" || die "не удалось установить зависимости сборки"
+    cp "$build_requirements" "$build_env/requirements-installed.txt"
+  fi
+  export DSH_BUILD_PYTHON="$build_env/bin/python"
   say "Собираю релиз из $HERE"
   mkdir -p "$APP_ROOT/releases"
   # not `tee /dev/stderr`: when stderr is a log file (cron: >> deploy.log) tee re-opens it with truncation

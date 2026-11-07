@@ -26,6 +26,32 @@
   const $$ = (sel, ctx = d) => Array.from(ctx.querySelectorAll(sel));
   const scrollBehavior = reduceMotion ? 'auto' : 'smooth';
 
+  // Один кадр: сначала все измерения, затем изменения DOM. Несколько каруселей и отзывов не вынуждают
+  // браузер заново считать раскладку после каждой карточки. Полный CSS загружается неблокирующе:
+  // геометрия до его применения ещё неверна, хотя обработчики и DSH уже должны работать.
+  const pendingStyles = $$('link[data-site-styles]').filter((link) => !link.sheet);
+  let layoutReady = !pendingStyles.length;
+  const stylesReady = Promise.all(pendingStyles.map((link) => new Promise((resolve) => {
+    link.addEventListener('load', resolve, { once: true });
+    link.addEventListener('error', resolve, { once: true });
+  })));
+  const layoutReads = new Map();
+  let layoutFrame = 0;
+  const scheduleLayout = () => {
+    if (!layoutReady || layoutFrame || !layoutReads.size) return;
+    layoutFrame = requestAnimationFrame(() => {
+      layoutFrame = 0;
+      const reads = Array.from(layoutReads.values());
+      layoutReads.clear();
+      const writes = reads.map((fn) => fn());
+      writes.forEach((write) => { if (write) write(); });
+    });
+  };
+  const measure = (key, read) => {
+    layoutReads.set(key, read);
+    scheduleLayout();
+  };
+
   /* ---------- API: заявки, отзывы, анонимные события ----------
      Рабочий режим (LIVE) — только если <meta name="dsh-api"> (base.html.j2) задаёт адрес и сайт открыт с домена из
      data-origins, или в localStorage 'dsh:api' лежит абсолютный адрес API (разработка: http://127.0.0.1:8000/api/v1).
@@ -448,8 +474,13 @@
   // пока баннер открыт: место под ним в конце страницы и отступ прокрутки к фокусу (CSS: html.has-cookie, --cookie-h)
   function cookieRoom() {
     const on = !!cookieBox && !cookieBox.hidden;
-    root.classList.toggle('has-cookie', on);
-    root.style.setProperty('--cookie-h', on ? cookieBox.offsetHeight + 'px' : '0px');
+    measure('cookie-room', () => {
+      const height = on ? cookieBox.offsetHeight : 0;
+      return () => {
+        root.classList.toggle('has-cookie', on);
+        root.style.setProperty('--cookie-h', height + 'px');
+      };
+    });
   }
   function cookieShow(on) {
     if (!cookieBox) return;
@@ -460,13 +491,17 @@
   }
   function statsStart() {
     statsOn = true;
-    if (typeof window.dshStats === 'function') window.dshStats();
+    if (typeof window.dshStats === 'function') {
+      window.dshStats.disabled = false;
+      window.dshStats();
+    }
     startStats();
     $$('[data-map]').forEach(showMap);
   }
   // saved = false: выбор не записался (хранилище переполнено) — перезагрузка запустила бы всё заново
   function statsStop(declined, saved = true) {
     statsOn = false;
+    if (window.dshStats && window.dshStats.cancel) window.dshStats.cancel();
     attrOn = !declined;
     forgetStats();
     if (!(window.dshStats && window.dshStats.on)) { hideMaps(); return; }
@@ -579,7 +614,13 @@
 
   /* ---------- шапка: тень при прокрутке ---------- */
   const hdr = $('[data-hdr]');
-  const onScroll = () => hdr && hdr.classList.toggle('is-scrolled', window.scrollY > 8);
+  const onScroll = () => {
+    if (!hdr) return;
+    measure('header', () => {
+      const scrolled = window.scrollY > 8;
+      return () => hdr.classList.toggle('is-scrolled', scrolled);
+    });
+  };
   window.addEventListener('scroll', onScroll, { passive: true });
   onScroll();
 
@@ -1161,12 +1202,16 @@
     // плитка «Весь каталог» закрывает пустые ячейки последнего ряда; в ленте — всегда в конце
     const fitMore = () => {
       if (!more) return;
-      const cs = getComputedStyle(grid);
-      if (cs.display !== 'grid') { more.hidden = visible === 0; more.style.gridColumn = ''; return; }
-      const cols = cs.gridTemplateColumns.split(' ').filter(Boolean).length || 1;
-      const rest = visible % cols;
-      more.hidden = visible === 0 || rest === 0;
-      more.style.gridColumn = rest ? 'span ' + (cols - rest) : '';
+      measure(grid, () => {
+        const cs = getComputedStyle(grid);
+        const isGrid = cs.display === 'grid';
+        const cols = isGrid ? cs.gridTemplateColumns.split(' ').filter(Boolean).length || 1 : 1;
+        const rest = visible % cols;
+        return () => {
+          more.hidden = visible === 0 || (isGrid && rest === 0);
+          more.style.gridColumn = isGrid && rest ? 'span ' + (cols - rest) : '';
+        };
+      });
     };
     let rt;
     window.addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(fitMore, 120); });
@@ -1206,11 +1251,12 @@
     if (!box || !more || !label) return;
     seoBtn.addEventListener('click', () => {
       const open = seoBtn.getAttribute('aria-expanded') !== 'true';
+      const aboveScreen = !open && box.getBoundingClientRect().top < 0;
       seoBtn.setAttribute('aria-expanded', String(open));
       more.hidden = !open;
       box.classList.toggle('is-open', open);
       label.textContent = open ? 'Свернуть' : 'Читать полностью';
-      if (!open && box.getBoundingClientRect().top < 0) box.scrollIntoView({ behavior: scrollBehavior, block: 'start' });
+      if (aboveScreen) box.scrollIntoView({ behavior: scrollBehavior, block: 'start' });
     });
   });
 
@@ -1256,62 +1302,77 @@
     const prev = $('[data-carousel-prev]', root);
     const next = $('[data-carousel-next]', root);
     if (!vp || !items.length) return;
-    if (carouselIO) carouselIO.observe(root);
+    if (carouselIO) stylesReady.then(() => carouselIO.observe(root));
     const fromStart = root.classList.contains('media-carousel--reviews') || root.dataset.align === 'start';
-    let active = -1;
+    const start = Math.min(items.length - 1, Math.max(0, Number(root.dataset.start) || 0));
+    let active = start;
     let near = !carouselIO;
-    const warm = (k) => {
-      if (!near) return;
-      items.slice(Math.max(0, k - 4), k + 7).forEach((li) => $$('img[loading="lazy"]', li).forEach((img) => { img.loading = 'eager'; }));
-    };
-    root.addEventListener('carousel:near', () => { near = true; warm(Math.max(active, 0)); });
-    // точка, к которой прилипает карточка: центр ленты или её левый край (с учётом scroll-padding)
-    const anchor = () => {
-      const r = vp.getBoundingClientRect();
-      return fromStart ? r.left + (parseFloat(getComputedStyle(vp).scrollPaddingLeft) || 0) : r.left + r.width / 2;
-    };
-    const pos = (li) => { const r = li.getBoundingClientRect(); return fromStart ? r.left : r.left + r.width / 2; };
-    const setActive = (i) => {
-      if (i === active) return;
-      active = i;
-      warm(i);
-      items.forEach((li, k) => li.classList.toggle('is-active', k === i));
-      if (prev) prev.disabled = i <= 0;
-      if (next) next.disabled = i >= items.length - 1 || (fromStart && vp.scrollLeft + vp.clientWidth >= vp.scrollWidth - 2);
-    };
-    const nearest = () => {
-      const a = anchor();
-      let best = 0; let dist = Infinity;
-      items.forEach((li, k) => { const dd = Math.abs(pos(li) - a); if (dd < dist) { dist = dd; best = k; } });
-      return best;
-    };
-    // пока лента плавно едет к карточке после стрелки или клавиши, цель — эта карточка, а не «ближайшая к центру»:
-    // иначе события scroll на полпути сбивают индекс, и быстрые нажатия подряд теряются
     let target = -1; let settle = 0;
+    const warm = (k, count) => {
+      if (!near) return;
+      // Видимые кадры + по одному соседнему. На телефоне не скачиваем сразу одиннадцать фотографий.
+      const before = fromStart ? 1 : Math.ceil(count / 2);
+      const after = fromStart ? count + 1 : Math.ceil(count / 2) + 1;
+      items.slice(Math.max(0, k - before), k + after + 1).forEach((li) => {
+        $$('img[loading="lazy"]', li).forEach((img) => { img.loading = 'eager'; });
+      });
+    };
+    // Геометрия всей ленты читается до изменения классов и прокрутки.
+    const geometry = () => {
+      const r = vp.getBoundingClientRect();
+      const anchor = fromStart ? r.left + (parseFloat(getComputedStyle(vp).scrollPaddingLeft) || 0) : r.left + r.width / 2;
+      const positions = items.map((li) => { const box = li.getBoundingClientRect(); return fromStart ? box.left : box.left + box.width / 2; });
+      const itemWidth = items[0].getBoundingClientRect().width;
+      return { anchor, positions, left: vp.scrollLeft, max: Math.max(0, vp.scrollWidth - vp.clientWidth), count: Math.max(1, Math.ceil(r.width / (itemWidth || r.width || 1))) };
+    };
+    const setActive = (i, atEnd, count) => {
+      if (active !== i) {
+        active = i;
+        items.forEach((li, k) => li.classList.toggle('is-active', k === i));
+      }
+      warm(i, count);
+      if (prev) prev.disabled = i <= 0;
+      if (next) next.disabled = i >= items.length - 1 || (fromStart && atEnd);
+    };
+    const syncPosition = () => measure(root, () => {
+      const g = geometry();
+      let best = 0; let distance = Infinity;
+      g.positions.forEach((position, k) => { const dd = Math.abs(position - g.anchor); if (dd < distance) { distance = dd; best = k; } });
+      return () => setActive(best, g.left >= g.max - 2, g.count);
+    });
+    // Пока лента едет, повторная стрелка отталкивается от цели, а не промежуточной карточки.
     const release = (ms) => {
       clearTimeout(settle);
-      settle = setTimeout(() => { target = -1; const k = nearest(); active = -1; setActive(k); }, ms);
+      settle = setTimeout(() => { target = -1; syncPosition(); }, ms);
     };
     const cur = () => (target >= 0 ? target : active);
     const go = (i, smooth = true) => {
       const k = Math.max(0, Math.min(items.length - 1, i));
       const animate = smooth && !reduceMotion;
-      vp.scrollBy({ left: pos(items[k]) - anchor(), behavior: animate ? 'smooth' : 'auto' });
-      setActive(k);
-      if (animate) { target = k; release(400); }
+      near = true;
+      target = k;
+      measure(root, () => {
+        const g = geometry();
+        const left = Math.max(0, Math.min(g.max, g.left + g.positions[k] - g.anchor));
+        return () => {
+          vp.scrollTo({ left, behavior: animate ? 'smooth' : 'auto' });
+          setActive(k, left >= g.max - 2, g.count);
+          if (animate) release(400);
+          else target = -1;
+        };
+      });
       return k;
     };
-    let raf = 0;
+    root.addEventListener('carousel:near', () => go(active, false), { once: true });
     vp.addEventListener('scroll', () => {
-      if (target >= 0) { release(140); return; } // своя анимация: ждём, пока лента остановится
-      cancelAnimationFrame(raf);
-      raf = requestAnimationFrame(() => { const k = nearest(); active = -1; setActive(k); });
+      if (target >= 0) { release(140); return; }
+      if (near) syncPosition();
     }, { passive: true });
-    // палец или колесо на ленте — снова главный пользователь
-    ['pointerdown', 'wheel'].forEach((ev) => vp.addEventListener(ev, () => { if (target >= 0) { target = -1; clearTimeout(settle); } }, { passive: true }));
+    ['pointerdown', 'wheel'].forEach((ev) => vp.addEventListener(ev, () => {
+      if (target >= 0) { target = -1; clearTimeout(settle); }
+    }, { passive: true }));
     if (prev) prev.addEventListener('click', () => go(cur() - 1));
     if (next) next.addEventListener('click', () => go(cur() + 1));
-    // клавиатура: на самой ленте или на карточке внутри — стрелки листают, фокус переходит на новую карточку
     vp.addEventListener('keydown', (e) => {
       if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
       e.preventDefault();
@@ -1321,16 +1382,17 @@
         btn && btn.focus({ preventScroll: true });
       }
     });
-    // Tab по карточкам — карточка с фокусом выезжает к центру
     vp.addEventListener('focusin', (e) => {
       const li = e.target.closest('.media-carousel__item');
       if (li) go(items.indexOf(li));
     });
-    // старт: средняя карточка (data-start), без анимации; после смены ширины — снова к активной
-    const start = Math.min(items.length - 1, Math.max(0, Number(root.dataset.start) || 0));
-    requestAnimationFrame(() => go(start, false));
+    // Внизу страницы ленты остаются без измерений и прокрутки до приближения к экрану.
+    if (near) go(start, false);
     let rt;
-    window.addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(() => go(Math.max(active, 0), false), 150); });
+    window.addEventListener('resize', () => {
+      if (!near) return;
+      clearTimeout(rt); rt = setTimeout(() => go(active, false), 150);
+    });
   });
 
   /* ---------- слайдер «О нашем питомнике» [data-hm-slider] (главная) ----------
@@ -1441,19 +1503,32 @@
      Длинный текст свёрнут до 8 строк: «Читать полностью» / «Свернуть» — только если текст правда не влез.
      На телефоне видно четыре отзыва, «Показать ещё отзывы» открывает следующие четыре. */
   const rvTexts = $$('[data-rvw-text]');
-  const fold = (t) => {
-    const btn = t.parentElement.querySelector('[data-rvw-toggle]');
-    if (!btn || btn.getAttribute('aria-expanded') === 'true') return;
-    t.classList.add('is-folded');
-    const over = t.scrollHeight > t.clientHeight + 2;
-    t.classList.toggle('is-folded', over);
-    btn.hidden = !over;
+  const pendingReviews = new Set();
+  const foldReviews = (texts) => {
+    texts.forEach((t) => {
+      const btn = t.parentElement.querySelector('[data-rvw-toggle]');
+      if (!btn || btn.getAttribute('aria-expanded') === 'true') return;
+      t.classList.add('is-folded');
+      pendingReviews.add(t);
+    });
+    measure('reviews', () => {
+      const rows = Array.from(pendingReviews).map((t) => ({
+        t, btn: t.parentElement.querySelector('[data-rvw-toggle]'),
+        visible: t.clientHeight > 0, over: t.scrollHeight > t.clientHeight + 2
+      }));
+      pendingReviews.clear();
+      return () => rows.forEach(({ t, btn, visible, over }) => {
+        if (!visible || btn.getAttribute('aria-expanded') === 'true') return;
+        t.classList.toggle('is-folded', over);
+        btn.hidden = !over;
+      });
+    });
   };
-  /* скрытые карточки (display: none) не измерить — страница складывает их тексты, когда показывает (trust.js) */
-  window.DSH.foldReviews = (scope) => $$('[data-rvw-text]', scope).forEach(fold);
+  // Скрытые карточки повторно измеряем при показе (trust.js).
+  window.DSH.foldReviews = (scope) => foldReviews($$('[data-rvw-text]', scope));
   if (rvTexts.length) {
+    foldReviews(rvTexts);
     rvTexts.forEach((t) => {
-      fold(t);
       const btn = t.parentElement.querySelector('[data-rvw-toggle]');
       btn && btn.addEventListener('click', () => {
         const open = btn.getAttribute('aria-expanded') !== 'true';
@@ -1463,8 +1538,8 @@
       });
     });
     let rvt;
-    window.addEventListener('resize', () => { clearTimeout(rvt); rvt = setTimeout(() => rvTexts.forEach(fold), 200); });
-    if (d.fonts && d.fonts.ready) d.fonts.ready.then(() => rvTexts.forEach(fold));
+    window.addEventListener('resize', () => { clearTimeout(rvt); rvt = setTimeout(() => foldReviews(rvTexts), 200); });
+    if (d.fonts && d.fonts.ready) d.fonts.ready.then(() => foldReviews(rvTexts));
   }
   const rvws = $('.rvws');
   const rvMore = $('[data-rvw-more]');
@@ -1481,7 +1556,7 @@
     rvMore.addEventListener('click', () => {
       const next = closed().slice(0, STEP);
       next.forEach((li) => li.classList.add('is-open'));
-      next.forEach((li) => $$('[data-rvw-text]', li).forEach(fold));
+      foldReviews(next.flatMap((li) => $$('[data-rvw-text]', li)));
       upd();
       if (rvMore.hidden && next[0]) { const b = $('button', next[0]); b && b.focus({ preventScroll: true }); }
     });
@@ -1511,7 +1586,7 @@
       const isVideo = b.dataset.kind === 'video';
       stopVideo();
       lbImg.loading = 'eager';
-      lbImg.src = pic ? (pic.currentSrc || pic.src) : '';
+      lbImg.src = pic ? pic.src : ''; // src — оригинал, currentSrc — уменьшенная карточка из srcset
       lbImg.alt = pic ? pic.alt : '';
       lbImg.style.objectPosition = pic ? pic.style.objectPosition : '';
       if (pic && pic.naturalWidth) { lbImg.width = pic.naturalWidth; lbImg.height = pic.naturalHeight; }
@@ -1593,7 +1668,7 @@
       '.ratings > li', '.reviews > li', '.faq__aside', '.faq__list', '.seo', '.lead', '.footer__tile',
       // внутренние страницы: data-reveal — сам блок, data-reveal="items" — его дети по очереди
       '[data-reveal]:not([data-reveal="items"])', '[data-reveal="items"] > *'
-    ].join(',')).filter((el) => !inScroller(el));
+    ].join(','));
 
     const io = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
@@ -1609,13 +1684,23 @@
       });
     }, { rootMargin: '0px 0px -6% 0px', threshold: 0.08 });
 
-    targets.forEach((el) => {
-      if (el.getBoundingClientRect().top < window.innerHeight * 0.9) return; // уже на экране
-      el.classList.add('rv');
-      io.observe(el);
+    measure('reveal', () => {
+      const below = targets.filter((el) => !inScroller(el) && el.getBoundingClientRect().top >= window.innerHeight * 0.9);
+      return () => below.forEach((el) => { el.classList.add('rv'); io.observe(el); });
     });
     window.addEventListener('beforeprint', () => {
       $$('.rv').forEach((el) => { el.classList.remove('rv', 'is-in'); io.unobserve(el); });
     });
   }
+
+  // Независимо от закрытия загрузочного экрана: CSS может прийти уже после «Открыть сайт» или его таймаута.
+  stylesReady.then(() => {
+    layoutReady = true;
+    scheduleLayout();
+    if (pendingStyles.length) {
+      foldReviews(rvTexts);
+      // Страничные скрипты (например catalog.js) также пересчитывают сетки по resize.
+      window.dispatchEvent(new Event('resize'));
+    }
+  });
 })();

@@ -115,6 +115,10 @@ Static server: `http://127.0.0.1:8765/` serves the repo (`cd /home/user/puppyhou
 Open `/_kit/` before writing new CSS: most things you need already exist.
 
 Two builds in a row must give no diff. Commit the generated `index.html` files together with the sources and `.build-manifest.json`.
+Install `requirements-build.txt` in a virtual environment before building. After changing photos in `assets/img/`,
+run `python tools/image_assets.py` and commit the generated `assets/img/responsive/` variants and manifest too.
+The build keeps image originals for lightboxes and emits responsive WebP `srcset`; it also generates page-specific,
+minified CSS and hashed JS from the readable source files. Commit those generated `.min.css` and `.min.js` assets.
 Several agents may build at the same time: every page and the manifest are written atomically, and a full build always
 renders every published group, so the files on disk reflect whichever build ran last — rebuild (without `--all`) right
 before you commit. Merging a branch that still carries unpublished pages: resolve by deleting them (`git rm`) and

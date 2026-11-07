@@ -1,0 +1,78 @@
+{# Inline so the loading screen needs no extra network request. Content remains usable without JavaScript. #}
+<style>
+  #site-content{display:contents}
+  .site-loader{display:none;position:fixed;inset:0;z-index:10000;place-items:center;background:#f3f2ef;color:#141414;font:400 15px/1.5 Arial,sans-serif;touch-action:none;opacity:1;transition:opacity .16s ease}
+  .site-loading .site-loader,.site-revealing .site-loader{display:grid}
+  .site-revealing .site-loader{opacity:0;pointer-events:none}
+  .site-loader__inner{text-align:center;padding:24px}
+  .site-loader__paw{display:block;width:104px;height:104px;margin:0 auto 24px;color:#ff967c}
+  .site-loader__fill{transform:scaleY(var(--loaded,.08));transform-origin:50% 100%;transition:transform .18s ease-out}
+  .site-loader__brand{margin:0;font-size:20px;font-weight:400;letter-spacing:-.5px}
+  .site-loader__label{margin:6px 0 24px;color:#6b6b6b}
+  .site-loader__skip{border:1px solid #d8d4cd;border-radius:999px;padding:9px 18px;background:transparent;color:#555;font:inherit;cursor:pointer}
+  .site-loader__skip:focus-visible{outline:2px solid #141414;outline-offset:4px}
+  @media(prefers-reduced-motion:reduce){.site-loader,.site-loader__fill{transition:none}}
+</style>
+<script>
+(() => {
+  const root = document.documentElement;
+  let ended = false, resolveReady;
+  window.__siteReady = new Promise(resolve => { resolveReady = resolve; });
+  root.classList.add('site-loading');
+  function progress(value) {
+    const loader = document.getElementById('site-loader');
+    if (loader) loader.style.setProperty('--loaded', String(value));
+  }
+  function finish() {
+    if (ended) return;
+    ended = true;
+    clearTimeout(deadline);
+    progress(1);
+    const content = document.getElementById('site-content');
+    if (content) content.inert = false;
+    const loader = document.getElementById('site-loader');
+    const restoreFocus = loader && loader.contains(document.activeElement);
+    root.classList.remove('site-loading');
+    root.classList.add('site-revealing');
+    if (loader) loader.setAttribute('aria-hidden', 'true');
+    if (restoreFocus) {
+      const main = document.getElementById('main');
+      if (main) { main.setAttribute('tabindex', '-1'); main.focus({preventScroll:true}); }
+    }
+    setTimeout(() => root.classList.remove('site-revealing'), 180);
+    resolveReady();
+    window.dispatchEvent(new Event('site:ready'));
+  }
+  // This timer is independent of main.js, fonts, images and third-party services.
+  const deadline = setTimeout(finish, 4000);
+  window.__finishSiteLoading = finish;
+  document.addEventListener('keydown', event => { if (event.key === 'Escape') finish(); });
+  window.addEventListener('pageshow', event => { if (event.persisted) finish(); });
+  document.addEventListener('DOMContentLoaded', () => {
+    if (ended) return;
+    progress(.2);
+    const ready = [];
+    document.querySelectorAll('link[rel="stylesheet"],link[data-site-styles]').forEach(link => {
+      if (!link.sheet) ready.push(new Promise(resolve => {
+        link.addEventListener('load', resolve, {once:true});
+        link.addEventListener('error', resolve, {once:true});
+      }));
+    });
+    if (document.fonts) ready.push(document.fonts.ready);
+    // Only eager hero media: lazy galleries and analytics never hold the page closed.
+    document.querySelectorAll('main img[fetchpriority="high"],main img:not([loading])').forEach(img => {
+      ready.push(new Promise(resolve => {
+        const decoded = () => {
+          if (img.decode && img.naturalWidth) img.decode().catch(() => {}).then(resolve);
+          else resolve();
+        };
+        if (img.complete) decoded();
+        else { img.addEventListener('load', decoded, {once:true}); img.addEventListener('error', resolve, {once:true}); }
+      }));
+    });
+    let complete = 0;
+    ready.forEach(task => task.then(() => { if (!ended) progress(.2 + .8 * ++complete / ready.length); }));
+    Promise.allSettled(ready).then(finish);
+  }, {once:true});
+})();
+</script>

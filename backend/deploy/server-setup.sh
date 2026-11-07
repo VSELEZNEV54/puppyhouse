@@ -48,7 +48,7 @@ say "Пакеты"
 APT_OPTS=(-o Acquire::Retries=3 -o Acquire::http::Timeout=30)
 apt_get() { apt-get "${APT_OPTS[@]}" "$@"; }
 PKGS=(ca-certificates curl git rsync nginx certbot ufw fail2ban python3-systemd unattended-upgrades cron age
-      python3 python3-jinja2)
+      python3 python3-jinja2 python3-venv)
 # Docker from the system's repositories (docker.io + docker-compose-v2: Ubuntu 22.04+) goes in the same download, so
 # it gets the same fallback, also on a re-run where everything else is installed. Where there is no
 # docker-compose-v2 (Debian 12), the Docker step below takes it from download.docker.com.

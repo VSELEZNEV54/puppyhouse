@@ -197,7 +197,8 @@ def head_block(html: str, url: str, ctx: dict, site: dict, conf: dict, imgsize) 
 # Counters run only on the production host: the GitHub Pages preview and local builds stay out of the statistics.
 # Opt-out (client 22.10): they run from the first visit until the visitor picks «Принять только необходимые» or
 # «Отказаться» in the cookie banner (partials/cookie.html.j2, main.js). window.dshStats() loads them; the <head> script
-# calls it at once unless localStorage 'dsh:cookie' holds such a refusal (refusals do not expire).
+# queues it unless localStorage 'dsh:cookie' holds such a refusal (refusals do not expire). Network scripts wait
+# for the first screen and an idle slot; refusal is checked again immediately before inserting them.
 _PROD_JS = 'location.hostname==="{host}"'
 COOKIE_KEY = "dsh:cookie"                   # main.js: the same key and the same term
 
@@ -207,20 +208,15 @@ def _host(conf: dict) -> str:
 
 
 def metrika(conf: dict) -> str:
-    """Yandex Metrika counter (site.json → seo.yandex_metrika) with the settings from the Metrika panel: Webvisor,
-    click map, e-commerce from dataLayer. → JS for counters(); empty when not set. No <noscript> pixel: without
-    scripts there is no banner, so no consent."""
+    """Yandex Metrika network script; counters() queues its Webvisor, click map and e-commerce settings first.
+    Empty when not set. No <noscript> pixel: it could not respect the visitor's refusal."""
     cid = str(conf.get("yandex_metrika") or "").strip()
     if not cid.isdigit():
         return ""
     src = f"https://mc.yandex.ru/metrika/tag.js?id={cid}"
     return (
-        '(function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};'
-        'm[i].l=1*new Date();for(var j=0;j<document.scripts.length;j++){if(document.scripts[j].src===r){return;}}'
-        'k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})'
-        f'(window,document,"script","{src}","ym");window.dshYm={cid};'
-        f'ym({cid},"init",{{ssr:true,webvisor:true,clickmap:true,ecommerce:"dataLayer",referrer:document.referrer,'
-        'url:location.href,accurateTrackBounce:true,trackLinks:true});'
+        '(function(d,s){var j=d.createElement("script");j.async=true;j.src=s;d.head.appendChild(j)})'
+        f'(document,"{src}");'
     )
 
 
@@ -231,26 +227,50 @@ def gtm(conf: dict) -> str:
     if not re.fullmatch(r"GTM-[A-Z0-9]+", gid):
         return ""
     return (
-        '(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({"gtm.start":'
-        'new Date().getTime(),event:"gtm.js"});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),'
+        '(function(w,d,s,l,i){var f=d.getElementsByTagName(s)[0],j=d.createElement(s),'
         'dl=l!="dataLayer"?"&l="+l:"";j.async=true;j.src="https://www.googletagmanager.com/gtm.js?id="+i+dl;'
         f'f.parentNode.insertBefore(j,f);}})(window,document,"script","dataLayer","{gid}");'
     )
 
 
 def counters(conf: dict) -> str:
-    """<script> for <head>: defines window.dshStats() — GTM, then Metrika, once, on the production host only — and
-    runs it unless the visitor has refused statistics ("necessary" or "declined") or the browser blocks site storage
-    (a refusal could not be kept, so nothing starts; main.js does the same). Empty without counters."""
+    """Keep early goals in queues; load counters after the first screen, only while statistics remain enabled.
+
+    Existing opt-out behaviour is preserved. A refusal while waiting (including a failed storage write) cancels
+    startup. No network request, pixel or iframe is made by the queues themselves.
+    """
     js = gtm(conf) + metrika(conf)
     if not js:
         return ""
+    queue = ''
+    if gtm(conf):
+        queue += 'window.dataLayer=window.dataLayer||[];window.dataLayer.push({"gtm.start":Date.now(),event:"gtm.js"});'
+    cid = str(conf.get("yandex_metrika") or "").strip()
+    if cid.isdigit():
+        queue += (
+            'window.ym=window.ym||function(){(window.ym.a=window.ym.a||[]).push(arguments)};window.ym.l=Date.now();'
+            f'window.dshYm={cid};ym({cid},"init",{{ssr:true,webvisor:true,clickmap:true,ecommerce:"dataLayer",'
+            'referrer:document.referrer,url:location.href,accurateTrackBounce:true,trackLinks:true});'
+        )
     return (
-        f'<script>window.dshStats=function(){{if(window.dshStats.on||!({_PROD_JS.format(host=_host(conf))}))return;'
-        f'window.dshStats.on=1;{js}}};'
-        f'(function(){{var c=null;try{{c=localStorage.getItem("{COOKIE_KEY}")}}catch(e){{return}}'
+        '<script data-dsh-counters>(function(){'
+        'function allowed(){if(window.dshStats.disabled)return false;'
+        f'if(!({_PROD_JS.format(host=_host(conf))}))return false;'
+        f'var c=null;try{{c=localStorage.getItem("{COOKIE_KEY}")}}catch(e){{return false}}'
         'try{c=JSON.parse(c)}catch(e){c=null}'
-        'if(!(c&&(c.choice==="necessary"||c.choice==="declined")))window.dshStats()})()</script>'
+        'return !(c&&(c.choice==="necessary"||c.choice==="declined"))}'
+        'window.dshStats=function(){var s=window.dshStats;if(s.on||s.pending||!allowed())return;'
+        f'if(!s.prepared){{s.prepared=true;{queue}}}'
+        's.pending=true;function start(){s.pending=false;if(s.on||!allowed())return;'
+        f's.on=true;{js}}}'
+        'function idle(){requestAnimationFrame(function(){requestAnimationFrame(function(){'
+        'if(window.requestIdleCallback)requestIdleCallback(start,{timeout:1500});else setTimeout(start,0)})})}'
+        'function ready(){Promise.resolve(window.__siteReady).then(idle,idle)}'
+        'if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",ready,{once:true});else ready()};'
+        'window.dshStats.cancel=function(){var s=window.dshStats;s.disabled=true;'
+        'if(!s.on){s.pending=false;s.prepared=false;if(window.ym&&window.ym.a)window.ym.a.length=0;'
+        'if(Array.isArray(window.dataLayer))window.dataLayer.length=0}};'
+        'window.dshStats()})()</script>'
     )
 
 
@@ -261,7 +281,7 @@ def finalize(html: str, url: str, ctx: dict, site: dict, conf: dict, imgsize) ->
     if MARKER in html:
         html = html.replace(MARKER, head_block(html, url, ctx, site, conf, imgsize), 1)
     head = counters(conf)
-    if head:   # as early in <head> as possible (GTM asks for it), right after the charset
+    if head:   # early queues preserve goals; external scripts wait for the first screen
         m = _CHARSET_RE.search(html)
         if m:
             html = html[:m.end()] + "\n  " + head + html[m.end():]
