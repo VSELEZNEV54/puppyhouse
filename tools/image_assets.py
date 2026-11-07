@@ -21,12 +21,19 @@ ROOT = Path(__file__).resolve().parent.parent
 DIRECTORY = Path("assets/img/responsive")
 MANIFEST = DIRECTORY / "manifest.json"
 WIDTHS = (160, 320, 480, 640, 960, 1280)
+# These near-screen photos render at ~665 physical pixels on the mobile audit.
+# A middle candidate avoids downloading the much larger 960px version.
+EXTRA_WIDTHS = {"hero-four-breeds": (768,), "about-pudel-309": (768,)}
 PROFILE = "webp-v1-q78-method6-pillow12"
 VOID = {"area", "base", "br", "col", "embed", "hr", "img", "input", "link", "meta", "param", "source", "track", "wbr"}
 
 
 def digest(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def candidate_widths(stem: str, width: int) -> list[int]:
+    return sorted({w for w in WIDTHS + EXTRA_WIDTHS.get(stem, ()) if w < width} | {min(width, WIDTHS[-1])})
 
 
 def generate(root: Path = ROOT) -> dict:
@@ -45,17 +52,24 @@ def generate(root: Path = ROOT) -> dict:
         src = "/" + path.relative_to(root).as_posix()
         checksum = digest(path)
         cached = previous.get(src)
-        if cached and cached["sha256"] == checksum and all((root / item["src"].lstrip("/")).is_file() for item in cached["variants"]):
+        if cached and cached["sha256"] != checksum:
+            cached = None
+        existing = {v["width"]: v for v in cached["variants"]} if cached else {}
+        if cached and set(candidate_widths(path.stem, cached["width"])) == set(existing) and all((root / item["src"].lstrip("/")).is_file() for item in cached["variants"]):
             images[src] = cached
             continue
         with Image.open(path) as source:
             photo = ImageOps.exif_transpose(source)
             photo = photo.convert("RGBA" if "A" in photo.getbands() else "RGB")
             width, height = photo.size
-            widths = sorted({w for w in WIDTHS if w < width} | {min(width, WIDTHS[-1])})
+            widths = candidate_widths(path.stem, width)
             version = hashlib.sha256((checksum + PROFILE).encode()).hexdigest()[:12]
             variants = []
             for w in widths:
+                variant = existing.get(w)
+                if variant and (root / variant["src"].lstrip("/")).is_file():
+                    variants.append(variant)
+                    continue
                 h = max(1, round(height * w / width))
                 output = DIRECTORY / f"{path.stem}-{version}-{w}.webp"
                 resized = photo.resize((w, h), Image.Resampling.LANCZOS)

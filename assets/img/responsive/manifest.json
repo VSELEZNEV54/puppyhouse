@@ -542,6 +542,12 @@
           "bytes": 62224
         },
         {
+          "src": "/assets/img/responsive/about-pudel-309-0a23d88765de-768.webp",
+          "width": 768,
+          "height": 796,
+          "bytes": 80116
+        },
+        {
           "src": "/assets/img/responsive/about-pudel-309-0a23d88765de-960.webp",
           "width": 960,
           "height": 995,
@@ -5188,6 +5194,12 @@
           "width": 640,
           "height": 429,
           "bytes": 16086
+        },
+        {
+          "src": "/assets/img/responsive/hero-four-breeds-954009d3fc25-768.webp",
+          "width": 768,
+          "height": 515,
+          "bytes": 21060
         },
         {
           "src": "/assets/img/responsive/hero-four-breeds-954009d3fc25-960.webp",

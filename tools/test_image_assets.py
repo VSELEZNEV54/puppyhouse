@@ -4,8 +4,9 @@ import json
 from pathlib import Path
 import tempfile
 import unittest
+from unittest.mock import patch
 
-from image_assets import MANIFEST, PROFILE, ResponsiveImages
+from image_assets import MANIFEST, PROFILE, ResponsiveImages, generate
 
 
 class ResponsiveImageTests(unittest.TestCase):
@@ -73,6 +74,29 @@ class ResponsiveImageTests(unittest.TestCase):
         (self.root / self.variant.lstrip("/")).unlink()
         with self.assertRaisesRegex(ValueError, "variants missing"):
             self.images.process(self.image())
+
+
+class ImageGenerationTests(unittest.TestCase):
+    def test_adding_candidate_preserves_existing_files_and_urls(self):
+        from PIL import Image
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            (root / "assets/img").mkdir(parents=True)
+            Image.new("RGB", (1000, 600), "#e9cab0").save(root / "assets/img/hero-four-breeds.jpg")
+            with patch("image_assets.EXTRA_WIDTHS", {}):
+                first = generate(root)["images"]["/assets/img/hero-four-breeds.jpg"]
+            original_files = {
+                v["src"]: ((root / v["src"].lstrip("/")).read_bytes(), (root / v["src"].lstrip("/")).stat().st_mtime_ns)
+                for v in first["variants"]
+            }
+            second = generate(root)["images"]["/assets/img/hero-four-breeds.jpg"]
+            self.assertEqual({v["width"] for v in second["variants"]} - {v["width"] for v in first["variants"]}, {768})
+            for src, (content, modified) in original_files.items():
+                path = root / src.lstrip("/")
+                self.assertEqual(path.read_bytes(), content)
+                self.assertEqual(path.stat().st_mtime_ns, modified)
+            self.assertEqual(generate(root)["images"]["/assets/img/hero-four-breeds.jpg"], second)
 
 
 if __name__ == "__main__":
