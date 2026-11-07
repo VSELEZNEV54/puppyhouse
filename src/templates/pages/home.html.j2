@@ -67,7 +67,8 @@
           {%- set size = imgsize(s.src) or [1200, 1500] %}
           <div class="hm-slider__slide{{ ' is-on' if loop.first else ' is-idle' }}"{% if not loop.first %} aria-hidden="true"{% endif %}>
             {% if s.get('video') %}
-            <video src="{{ s.video }}" poster="{{ s.src }}" muted playsinline preload="none" aria-label="{{ s.alt }}"{% if s.get('pos') %} style="object-position:{{ s.pos }}"{% endif %}></video>
+            {# preload=none does not defer hidden posters. Keep the first visible frame usable without JS. #}
+            <video src="{{ s.video }}" {{ 'poster' if loop.first else 'data-poster' }}="{{ s.src }}" muted playsinline preload="none" aria-label="{{ s.alt }}"{% if s.get('pos') %} style="object-position:{{ s.pos }}"{% endif %}></video>
             {% else %}
             <img src="{{ s.src }}" alt="{{ s.alt|typo }}" width="{{ size[0] }}" height="{{ size[1] }}"{% if s.get('pos') %} style="object-position:{{ s.pos }}"{% endif %} loading="lazy" decoding="async">
             {% endif %}

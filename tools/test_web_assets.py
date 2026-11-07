@@ -3,7 +3,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from web_assets import WebAssets, filter_css
+from web_assets import WebAssets, filter_css, preload_hero
 
 
 class CSSFilteringTests(unittest.TestCase):
@@ -46,6 +46,41 @@ class CSSFilteringTests(unittest.TestCase):
             self.assertIn("../fonts/test.woff2", css)
             script = next((root / "assets/js").glob("*.min.js")).read_text()
             self.assertNotIn("comment", script)
+
+
+class HeroPreloadTests(unittest.TestCase):
+    def test_preload_matches_responsive_image_on_nested_routes(self):
+        from build import Rewriter
+        from html.parser import HTMLParser
+
+        source = '<html><head><meta name="viewport" content="width=device-width"><link rel="preload" as="font" href="/assets/fonts/geist-latin.woff2"></head><body><main><img src="/assets/img/hero-four-breeds.jpg" srcset="/assets/img/responsive/hero-640.webp 640w, /assets/img/responsive/hero-960.webp 960w" sizes="(max-width:760px) 100vw, 70vw" fetchpriority="high"></main></body></html>'
+        preloaded = preload_hero(source)
+        self.assertEqual(preload_hero(preloaded), preloaded)
+        self.assertLess(preloaded.index('data-hero-preload'), preloaded.index('as="font"'))
+
+        class Tags(HTMLParser):
+            def __init__(self, text):
+                super().__init__()
+                self.tags = {}
+                self.feed(text)
+
+            def handle_starttag(self, tag, attrs):
+                values = dict(attrs)
+                if tag == 'img' or 'data-hero-preload' in values:
+                    self.tags[tag] = values
+
+        for prefix, url in [('', '/'), ('', '/maltipu/cena/'), ('/full', '/maltipu/')]:
+            with self.subTest(prefix=prefix, url=url):
+                html = Rewriter({url}, prefix=prefix).page(preloaded, url)
+                tags = Tags(html).tags
+                self.assertEqual(tags['link']['href'], tags['img']['src'])
+                self.assertEqual(tags['link']['imagesrcset'], tags['img']['srcset'])
+                self.assertEqual(tags['link']['imagesizes'], tags['img']['sizes'])
+                self.assertNotIn('"/assets/', html)
+
+    def test_lazy_or_noncontent_images_are_not_preloaded(self):
+        source = '<head><meta name="viewport" content="width=device-width"></head><img src="/assets/img/logo.jpg" fetchpriority="high"><main><img src="/assets/img/photo.jpg" loading="lazy" fetchpriority="high"></main>'
+        self.assertEqual(preload_hero(source), source)
 
 
 if __name__ == "__main__":
