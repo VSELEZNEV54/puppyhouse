@@ -890,3 +890,32 @@ def test_notify_status_with_nothing_wrong_exits_0(client, db, tg, capsys):
 ])
 def test_error_hint_reads_a_recorded_error(tg, channel, error, words):
     assert words in notify.error_hint(channel, error, tg)
+
+
+# ---------------------------------------------------------------- DSH_TELEGRAM_PROXY (api.telegram.org closed for the server)
+@pytest.mark.parametrize("proxy, pool", [("http://kennel:s3cr3t@proxy.example:3128", "HTTPProxy"),
+                                         ("socks5://kennel:s3cr3t@proxy.example:1080", "SOCKSProxy")])
+def test_telegram_proxy_carries_only_the_telegram_calls(tg, monkeypatch, proxy, pool):
+    monkeypatch.setattr(notify, "httpx", httpx)  # a real client here: nothing is sent
+    for var in ("HTTPS_PROXY", "https_proxy", "HTTP_PROXY", "http_proxy", "ALL_PROXY", "all_proxy"):
+        monkeypatch.delenv(var, raising=False)  # the machine's own proxy is not what is checked
+    tg.telegram_proxy = proxy
+    with notify.http_client(tg) as c:
+        telegram = c._transport_for_url(httpx.URL(f"https://api.telegram.org/bot{TOKEN}/sendMessage"))
+        amocrm = c._transport_for_url(httpx.URL("https://monnypassy.amocrm.ru/api/v4/account"))
+    assert type(telegram._pool).__name__ == pool
+    assert type(amocrm._pool).__name__ == "ConnectionPool"  # the mail, amoCRM and the webhook go out directly
+    tg.telegram_proxy = ""
+    with notify.http_client(tg) as c:
+        assert type(c._transport_for_url(httpx.URL("https://api.telegram.org/")) ._pool).__name__ == "ConnectionPool"
+
+
+def test_proxy_login_and_password_never_show(tg):
+    tg.telegram_proxy = "socks5://kennel:s3cr3t-pass@proxy.example:1080"
+    err = notify._scrub("ProxyError: socks5://kennel:s3cr3t-pass@proxy.example:1080 refused (kennel:s3cr3t-pass)", tg)
+    assert "s3cr3t-pass" not in err and "kennel:" not in err
+    assert notify.proxy_label(tg) == "socks5://proxy.example:1080"
+    hint = notify.error_hint("telegram", "ConnectError: [Errno 111] Connection refused", tg)
+    assert "DSH_TELEGRAM_PROXY" in hint and "socks5://proxy.example:1080" in hint and "s3cr3t" not in hint
+    tg.telegram_proxy = ""
+    assert "DSH_TELEGRAM_PROXY" in notify.error_hint("telegram", "ConnectError: [Errno 101] Network is unreachable", tg)

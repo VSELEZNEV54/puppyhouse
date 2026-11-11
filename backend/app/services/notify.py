@@ -27,7 +27,7 @@ import zoneinfo
 from email.message import EmailMessage
 from email.utils import formataddr, make_msgid
 from types import SimpleNamespace
-from urllib.parse import urlsplit
+from urllib.parse import unquote, urlsplit
 
 import httpx
 from sqlalchemy import func, or_, select, update
@@ -639,8 +639,20 @@ _BOT_TOKEN = re.compile(r"\d{5,}:[A-Za-z0-9_-]{10,}")
 _JWT = re.compile(r"eyJ[A-Za-z0-9_-]{6,}(?:\.[A-Za-z0-9_-]*){0,2}")  # the amoCRM token, whole or cut
 
 
+def _proxy_secrets(s: Settings) -> tuple[str, ...]:
+    """The proxy address, its «login:password» and the password: none of them may show in an error."""
+    if not s.telegram_proxy:
+        return ()
+    try:
+        u = urlsplit(s.telegram_proxy)
+        userinfo = u.netloc.rpartition("@")[0]
+        return tuple(x for x in (s.telegram_proxy, userinfo, unquote(u.password or ""), u.password or "") if x)
+    except ValueError:
+        return (s.telegram_proxy,)
+
+
 def _scrub(err: str, s: Settings) -> str:
-    for secret in (s.telegram_bot_token, s.smtp_password, s.webhook_secret, s.amocrm_token):
+    for secret in (s.telegram_bot_token, s.smtp_password, s.webhook_secret, s.amocrm_token, *_proxy_secrets(s)):
         if secret:
             err = err.replace(secret, "***")
     return _JWT.sub("***", _BOT_TOKEN.sub("***", err))[:500]
@@ -674,7 +686,11 @@ def _hint(channel: str, err: Exception, s: Settings) -> str:
             return "бот не видит этот чат: напишите боту /start или добавьте его в группу, проверьте DSH_TELEGRAM_CHAT_ID"
         if "telegram 403" in msg:
             return "бот заблокирован в этом чате или удалён из группы: разблокируйте или добавьте его снова"
-        return "нет ответа от api.telegram.org: проверьте интернет на сервере и попробуйте ещё раз"
+        if s.telegram_proxy:
+            return (f"прокси {proxy_label(s)} не отвечает или не пускает: проверьте DSH_TELEGRAM_PROXY — адрес, порт, "
+                    "логин и пароль, и что прокси за пределами России")
+        return ("нет ответа от api.telegram.org: если сервер в России, Telegram может быть закрыт — "
+                "нужен прокси за рубежом, DSH_TELEGRAM_PROXY (DEPLOY.md)")
     if isinstance(cause, smtplib.SMTPAuthenticationError):
         return "почта не приняла логин или пароль: DSH_SMTP_USER — адрес ящика латиницей, DSH_SMTP_PASSWORD — пароль ящика"
     if isinstance(cause, (smtplib.SMTPSenderRefused, smtplib.SMTPRecipientsRefused)):
@@ -710,7 +726,7 @@ def send_test(s: Settings | None = None, client: httpx.Client | None = None) -> 
                             "error": _scrub(f"{type(e).__name__}: {e}", s), "hint": _hint(channel, e, s)})
 
     own = client is None
-    client = client or httpx.Client(timeout=10)
+    client = client or http_client(s)
     try:
         chats = list(dict.fromkeys(c for v in (s.telegram_chat_id, *s.telegram_breed_chats.values()) for c in chat_list(v)))
         if s.telegram_bot_token or chats:
@@ -746,7 +762,7 @@ def deliver_due(db: Session, limit: int = 20, client: httpx.Client | None = None
     s = get_settings()
     stats = {"sent": 0, "failed": 0, "retry": 0}
     own = client is None
-    client = client or httpx.Client(timeout=10)
+    client = client or http_client(s)
     try:
         for _ in range(limit):
             now = dt.datetime.now(UTC)
@@ -840,8 +856,26 @@ TEST_TEXT = ("Проверка уведомлений дом-щенков.рф: 
              "номер, порода, что нужно и ссылка в админ-панель.")
 
 
-def http_client() -> httpx.Client:
-    return httpx.Client(timeout=10)
+def http_client(s: Settings | None = None) -> httpx.Client:
+    """The client of every channel. With DSH_TELEGRAM_PROXY only the Telegram calls go through that proxy (a server
+    where api.telegram.org is closed); the mail, amoCRM and the webhook go out directly."""
+    s = s or get_settings()
+    mounts = None
+    if s.telegram_proxy:
+        u = urlsplit(s.telegram_api_base)
+        mounts = {f"{u.scheme}://{u.hostname}": httpx.HTTPTransport(proxy=s.telegram_proxy)}
+    return httpx.Client(timeout=10, mounts=mounts)
+
+
+def proxy_label(s: Settings) -> str:
+    """«socks5://proxy.example:1080» — the proxy without its login and password, for messages."""
+    if not s.telegram_proxy:
+        return ""
+    try:
+        u = urlsplit(s.telegram_proxy)
+        return f"{u.scheme}://{u.hostname}:{u.port}" if u.port else f"{u.scheme}://{u.hostname}"
+    except ValueError:  # a malformed value is reported by the call itself
+        return "(адрес не разобран)"
 
 
 def mask_token(token: str) -> str:

@@ -192,3 +192,31 @@ def test_real_delivery_uses_the_configured_api_base(channels):
     client = httpx.Client(transport=httpx.MockTransport(lambda r: (seen.append(str(r.url)), httpx.Response(200, json={"ok": True}))[1]))
     notify._send_telegram(SimpleNamespace(target=DEFAULT_CHAT), "текст", channels, client)
     assert seen == [f"{API}/bot{TOKEN}/sendMessage"]
+
+
+def test_private_chat_with_the_bot_gets_a_ready_line_for_api_env(channels, monkeypatch, capsys):
+    """Someone pressed «Старт» in the bot: the check prints the DSH_TELEGRAM_CHAT_ID that sends requests there too."""
+    channels.telegram_bot_token, channels.telegram_chat_id = TOKEN, DEFAULT_CHAT
+    use_bot(monkeypatch, FakeBot(updates=[
+        {"update_id": 1, "message": {"chat": {"id": int(DEFAULT_CHAT), "type": "supergroup", "title": "Заявки"}}},
+        {"update_id": 2, "message": {"chat": {"id": 555, "type": "private", "first_name": "Анна"}, "text": "/start"}},
+    ]))
+    code, out = run(capsys)
+    assert code == 0, out
+    assert f"впишите: DSH_TELEGRAM_CHAT_ID={DEFAULT_CHAT},555" in out
+    channels.telegram_chat_id = f"{DEFAULT_CHAT},555"     # already there: no advice
+    code, out = run(capsys)
+    assert "впишите: DSH_TELEGRAM_CHAT_ID" not in out
+
+
+def test_no_connection_through_the_proxy_names_the_proxy_not_its_password(channels, monkeypatch, capsys):
+    channels.telegram_bot_token, channels.telegram_chat_id = TOKEN, DEFAULT_CHAT
+    channels.telegram_proxy = "http://kennel:s3cr3t-pass@proxy.example:3128"
+
+    def down(request):
+        raise httpx.ConnectError("[Errno 111] Connection refused")
+    use_bot(monkeypatch, down)
+    code, out = run(capsys)
+    assert code == 1
+    assert "через прокси http://proxy.example:3128" in out and "DSH_TELEGRAM_PROXY" in out
+    assert "s3cr3t-pass" not in out

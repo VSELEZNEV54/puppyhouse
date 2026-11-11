@@ -463,19 +463,31 @@ def cmd_notify_check(args) -> int:
             me = notify.telegram_bot(s, client)
             if not me["ok"] and me.get("network"):
                 bad += 1
-                print(f"  ✗ нет связи с Telegram ({s.telegram_api_base}), токен не проверен: {me['error']}")
-                print("    сервер не достаёт до Telegram: проверьте сеть; если адрес закрыт — DSH_TELEGRAM_API_BASE"
-                      " (backend/.env.example)")
+                via = f" через прокси {notify.proxy_label(s)}" if s.telegram_proxy else ""
+                print(f"  ✗ нет связи с Telegram ({s.telegram_api_base}{via}), токен не проверен: {me['error']}")
+                if s.telegram_proxy:
+                    print("    прокси не отвечает или не пускает: проверьте DSH_TELEGRAM_PROXY — адрес, порт, логин и "
+                          "пароль, и что прокси за пределами России")
+                else:
+                    print("    сервер не достаёт до Telegram: если сервер в России, Telegram может быть закрыт — нужен "
+                          "прокси за рубежом: DSH_TELEGRAM_PROXY (DEPLOY.md)")
             elif not me["ok"]:
                 bad += 1
                 print(f"  ✗ токен {notify.mask_token(s.telegram_bot_token)} не принят: {me['error']}")
             else:
                 print(f"  ✓ бот @{me['username']} ({me['name']}), токен {notify.mask_token(s.telegram_bot_token)}")
                 seen = notify.telegram_chats_seen(s, client)
+                if s.telegram_proxy:
+                    print(f"    через прокси {notify.proxy_label(s)}")
                 if seen["ok"] and seen["chats"]:
                     print("  чаты, где бот есть или ему писали (id → DSH_TELEGRAM_CHAT_ID):")
                     for c in seen["chats"]:
                         print(f"    {c['id']}  {c['type']}  {c['title']}")
+                    # the private chat with the bot (someone pressed «Старт») that requests do not go to yet
+                    have = notify.chat_list(s.telegram_chat_id)
+                    new = [c["id"] for c in seen["chats"] if c["type"] == "private" and c["id"] not in have]
+                    if new:
+                        print(f"  чтобы заявки шли и в личку бота, впишите: DSH_TELEGRAM_CHAT_ID={','.join(have + new)}")
                 elif seen["ok"]:
                     # a bot in a group sees only commands addressed to it (privacy mode), and getUpdates keeps 24 hours
                     print(f"  чатов пока не видно: добавьте бота в группу (или удалите и добавьте снова), напишите там "
