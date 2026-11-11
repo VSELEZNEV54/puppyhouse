@@ -849,3 +849,44 @@ def test_notify_retry_sends_again_what_failed_and_what_waits(client, db, tg):
     r = notify.retry_now(db, client=fake.client())
     assert r == {"revived": 1, "sent": 2, "failed": 0, "retry": 0}
     assert [o.status for o in outbox(db)] == ["sent", "sent"] and len(fake.requests) == 2
+
+
+# ---------------------------------------------------------------- python -m app notify-status
+def test_notify_status_shows_each_notification_and_what_to_fix(client, db, tg, capsys):
+    from app.__main__ import main
+    first, _ = post_lead(client)
+    notify.deliver_due(db, client=FakeHttp().client())                       # the first one went out
+    second, _ = post_lead(client, breed="toj-pudel")
+    third, _ = post_lead(client, breed="border-kolli", phone="+79991112233")
+    fake = FakeHttp(httpx.Response(400, json={"ok": False, "description": "Bad Request: chat not found"}),
+                    httpx.ConnectError("[Errno 101] Network is unreachable"))
+    notify.deliver_due(db, client=fake.client())                             # chat not found / no network
+    assert main(["notify-status"]) == 1
+    out = capsys.readouterr().out
+    assert f"заявка №{first}" in out and "✓ отправлено" in out
+    assert "✗ не отправлено (попыток: 1)" in out and "бот не видит этот чат" in out
+    assert "ждёт повтора" in out and "нет ответа от api.telegram.org" in out
+    assert "За 7 дней: Telegram — " in out and "dsh app notify-retry" in out
+    assert TOKEN not in out
+
+
+def test_notify_status_with_nothing_wrong_exits_0(client, db, tg, capsys):
+    from app.__main__ import main
+    post_lead(client)
+    notify.deliver_due(db, client=FakeHttp().client())
+    assert main(["notify-status"]) == 0
+    out = capsys.readouterr().out
+    assert "Проверка сервера (/api/v1/health): всё в порядке" in out and "✓ отправлено" in out
+
+
+@pytest.mark.parametrize("channel, error, words", [
+    ("telegram", "Permanent: Telegram 401: Unauthorized", "DSH_TELEGRAM_BOT_TOKEN"),
+    ("telegram", "Permanent: Telegram 403: Forbidden: bot was kicked from the group chat", "добавьте его снова"),
+    ("telegram", "ConnectTimeout: timed out", "api.telegram.org"),
+    ("email", "RuntimeError: (535, b'auth failed')", "DSH_SMTP_PASSWORD"),
+    ("email", "TimeoutError: timed out", "Закрытые порты"),
+    ("amocrm", "Permanent: amoCRM 401 account: Unauthorized", "DSH_AMOCRM_TOKEN"),
+    ("amocrm", "RuntimeError: amoCRM account: ConnectError: no route", "не достаёт до amoCRM"),
+])
+def test_error_hint_reads_a_recorded_error(tg, channel, error, words):
+    assert words in notify.error_hint(channel, error, tg)

@@ -722,6 +722,46 @@ def retry_now(db: Session, client: httpx.Client | None = None, since: dt.timedel
     return {"revived": revived, **deliver_due(db, limit=500, client=client)}
 
 
+# ---------------------------------------------------------------- why a notification did not arrive (notify-status)
+_NETWORK = re.compile(r"Connect|Timeout|timed out|Network|Name or service|Temporary failure|refused|unreachable", re.I)
+
+
+def error_hint(channel: str, error: str | None, s: Settings | None = None) -> str:
+    """What to fix for a recorded last_error (a string: the exception is long gone), in the words of api.env."""
+    if not error:
+        return ""
+    s = s or get_settings()
+    if channel == "amocrm":
+        return amocrm_hint({"error": error, "network": bool(_NETWORK.search(error)) and "amoCRM 4" not in error})
+    if channel == "telegram":
+        return _hint("telegram", RuntimeError(error), s)
+    if channel == "email":
+        if "Authentication" in error or "535" in error:
+            return ("почта не приняла логин или пароль: DSH_SMTP_USER — адрес ящика латиницей, "
+                    "DSH_SMTP_PASSWORD — пароль ящика")
+        if "Refused" in error or "550" in error or "553" in error:
+            return "почта не приняла адрес: DSH_SMTP_FROM должен совпадать с ящиком, проверьте и DSH_NOTIFY_EMAILS"
+        if _NETWORK.search(error) or "OSError" in error:
+            return (f"нет соединения с {s.smtp_host}:{s.smtp_port}. На Timeweb Cloud порты 25, 465 и 587 закрыты по "
+                    f"умолчанию — откройте порт {s.smtp_port} в панели сервера («Закрытые порты»)")
+        return "почтовый сервер отказал — подробности выше"
+    if _NETWORK.search(error):
+        return "адрес вебхука не отвечает: проверьте DSH_WEBHOOK_URL"
+    return "вебхук ответил ошибкой — подробности выше"
+
+
+def recent(db: Session, limit: int = 15, days: int = 7) -> dict:
+    """The last notifications, the newest first, and what happened to each channel over `days` — to see why a
+    request did not reach Telegram or the mail (`python -m app notify-status`)."""
+    since = dt.datetime.now(UTC) - dt.timedelta(days=days)
+    rows = db.scalars(select(Outbox).order_by(Outbox.id.desc()).limit(limit)).all()
+    totals: dict[str, dict[str, int]] = {}
+    for channel, status, count in db.execute(select(Outbox.channel, Outbox.status, func.count())
+                                             .where(Outbox.created_at > since).group_by(Outbox.channel, Outbox.status)):
+        totals.setdefault(channel, {})[status] = count
+    return {"rows": rows, "totals": totals}
+
+
 # ---------------------------------------------------------------- setup checks (python -m app notify-check)
 TEST_TEXT = ("Проверка уведомлений дом-щенков.рф: бот подключён. Сюда будут приходить новые заявки с сайта — "
              "номер, порода, что нужно и ссылка в админ-панель.")

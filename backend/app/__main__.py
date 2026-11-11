@@ -12,6 +12,7 @@
     notify-test             a test message to every Telegram chat and mailbox of api.env, the amoCRM token
                             checked (no request needed)
     notify-retry            send now what failed in the last 24 h or waits for a retry (after fixing api.env)
+    notify-status [--limit N]   the last notifications: sent or not, and why (what to fix in api.env)
     notify-check [--send]   before launch: the bot and its chats, the mailbox, amoCRM pipelines and stages (ids)
     purge                   retention clean-up (see app/services/retention.py)
     forget-contact --phone +7… --reason withdrawal|request|retention|not_me --subject "ФИО"
@@ -246,6 +247,52 @@ def cmd_notify_retry(args) -> int:
           f" (снова в очереди из неотправленных: {r['revived']})")
     if r["failed"] or r["retry"]:
         print("Причина — в журнале: dsh logs worker | tail -30. Проверка настроек: dsh app notify-test")
+        return 1
+    return 0
+
+
+_CHANNEL_NAMES = {"telegram": "Telegram", "email": "почта", "webhook": "вебхук", "amocrm": "amoCRM"}
+
+
+def cmd_notify_status(args) -> int:
+    """Why a request did not reach Telegram or the mail: the last notifications with their state and the cause, what
+    the health check sees, and a summary for 7 days. 0 — nothing failed or stuck, 1 — something did."""
+    from .api.public import health_problems
+    from .services import notify
+    s = get_settings()
+    bad = 0
+    with session_scope() as db:
+        problems = health_problems(db)
+        r = notify.recent(db, limit=args.limit)
+        print("Проверка сервера (/api/v1/health): " + ("всё в порядке" if not problems else "есть проблемы"))
+        for p in problems:
+            print(f"  ! {p}")
+        if not r["rows"]:
+            print("Уведомлений ещё не было: проверьте настройки — dsh app notify-check --send")
+        else:
+            print(f"Последние уведомления (новые сверху), время {s.timezone}:")
+        for o in r["rows"]:
+            what = f"заявка №{o.lead_id}" if o.lead_id else (f"отзыв №{o.review_id}" if o.review_id else "—")
+            if o.status == "sent":
+                state = "✓ отправлено"
+            elif o.status == "pending":
+                state = f"… ждёт повтора в {notify._local(o.next_attempt_at, s):%H:%M} (попыток: {o.attempts})"
+                bad += o.attempts > 0
+            else:
+                state = f"✗ не отправлено (попыток: {o.attempts})"
+                bad += 1
+            print(f"  {notify._local(o.created_at, s):%d.%m %H:%M}  {what:<12} {_CHANNEL_NAMES.get(o.channel, o.channel):<9}"
+                  f" {o.target[:32]:<32}  {state}")
+            if o.status != "sent" and o.last_error:
+                print(f"      {o.last_error[:300]}")
+                print(f"      → {notify.error_hint(o.channel, o.last_error, s)}")
+        if r["totals"]:
+            names = {"sent": "отправлено", "failed": "не отправлено", "pending": "ждут"}
+            print("За 7 дней: " + "; ".join(
+                f"{_CHANNEL_NAMES.get(ch, ch)} — " + ", ".join(f"{names.get(st, st)} {n}" for st, n in sorted(c.items()))
+                for ch, c in sorted(r["totals"].items())))
+    if bad or problems:
+        print("После исправления api.env: dsh restart, затем dsh app notify-retry — неотправленное уйдёт снова.")
         return 1
     return 0
 
@@ -521,6 +568,7 @@ def main(argv=None) -> int:
     sub.add_parser("send-pending").set_defaults(fn=cmd_send_pending)
     sub.add_parser("notify-test").set_defaults(fn=cmd_notify_test)
     sub.add_parser("notify-retry").set_defaults(fn=cmd_notify_retry)
+    p = sub.add_parser("notify-status"); p.add_argument("--limit", type=int, default=15); p.set_defaults(fn=cmd_notify_status)
     sub.add_parser("purge").set_defaults(fn=cmd_purge)
     p = sub.add_parser("forget-contact"); p.add_argument("--phone", required=True)
     p.add_argument("--reason", choices=["withdrawal", "request", "retention", "not_me"], required=True)
