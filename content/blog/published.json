@@ -1,0 +1,4 @@
+{
+  "_note": "Что вышло на сайте. Пишет только tools/blog/factory.py publish (GitHub Action «Блог: публикация»). slug → {date: день публикации, links: сколько ссылок в тексте разрешено; 0 — первый месяц, ссылки показываются простым текстом}. Снять статью: python3 tools/blog/factory.py unpublish <slug>.",
+  "posts": {}
+}

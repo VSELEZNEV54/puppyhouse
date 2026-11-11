@@ -48,6 +48,10 @@
       {
         "key": "vospitanie",
         "label": "Воспитание"
+      },
+      {
+        "key": "zdorove",
+        "label": "Здоровье"
       }
     ],
     "more": {

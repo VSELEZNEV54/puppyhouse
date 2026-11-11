@@ -8,6 +8,8 @@
 #   dsh backup                         an encrypted database backup now (same as the nightly one)
 #   dsh update                         git pull in /opt/domshchenkov/src and deploy (pass deploy.sh options after it)
 #   dsh rollback                       start the previous release again (API + site; the database stays as it is)
+#   dsh autoupdate                     `dsh update` only if the server's branch has new commits (blog autopublication);
+#                                      --install / --remove: the cron line for it (weekdays 10:25 and 13:25 Moscow)
 set -euo pipefail
 APP_ROOT="${DSH_APP_ROOT:-/opt/domshchenkov}"
 ETC="${DSH_ETC:-/etc/domshchenkov}"
@@ -60,6 +62,27 @@ case "$cmd" in
     git -C "$src" pull --ff-only
     exec "$src/backend/deploy/deploy.sh" "$@"
     ;;
+  autoupdate)
+    # The blog publishes itself: a GitHub Action commits «Автопубликация …» on weekdays at ~09:40 Moscow time
+    # (content/blog/README.md). This picks the commit up; with nothing new it exits quietly.
+    cron=/etc/cron.d/domshchenkov-blog
+    case "${1:-}" in
+      --install)
+        printf '%s\n' "# домщенков.рф: blog autopublication — deploy new commits of the server branch (dsh autoupdate)" \
+          "SHELL=/bin/bash" "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin" \
+          "25 10,13 * * 1-5 root /usr/local/bin/dsh autoupdate >> /var/log/domshchenkov-autoupdate.log 2>&1 || logger -t domshchenkov-autoupdate FAILED" \
+          > "$cron"
+        echo "крон $cron: по будням в 10:25 и 13:25 (Москва) — выкладка новых коммитов; лог /var/log/domshchenkov-autoupdate.log"
+        exit 0 ;;
+      --remove) rm -f "$cron"; echo "крон автообновления снят"; exit 0 ;;
+    esac
+    src="$APP_ROOT/src"
+    [ -d "$src/.git" ] || { echo "dsh: нет git-копии в $src" >&2; exit 1; }
+    git -C "$src" fetch -q origin
+    if [ "$(git -C "$src" rev-parse HEAD)" = "$(git -C "$src" rev-parse '@{u}')" ]; then exit 0; fi
+    echo "$(date '+%F %T') новые коммиты: $(git -C "$src" log --format=%s HEAD..@{u} | head -5 | paste -sd ';' -)"
+    exec "$0" update "$@"
+    ;;
   rollback)
     pv="$(cat "$STATE/prev_version" 2>/dev/null || true)"; pr="$(cat "$STATE/prev_root" 2>/dev/null || true)"
     [ -n "$pv" ] && [ -f "$pr/backend/docker-compose.yml" ] || { echo "dsh: прошлого релиза нет" >&2; exit 1; }
@@ -74,7 +97,7 @@ case "$cmd" in
     echo "Готово: работает $pv. Вернуться обратно: dsh rollback"
     ;;
   -h|--help|help)
-    sed -n '2,11p' "$0"
+    sed -n '2,13p' "$0"
     ;;
   *)
     echo "dsh: неизвестная команда $cmd (dsh help)" >&2; exit 2

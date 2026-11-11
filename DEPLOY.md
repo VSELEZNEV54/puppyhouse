@@ -105,6 +105,26 @@ dsh update          # git pull + выкладка; при ошибке API са�
 
 Если ветку сольют в основную, переключите сервер: `git -C /opt/domshchenkov/src checkout <ветка> && dsh update`.
 
+## Блог: автопубликация
+
+Статьи выходят сами, по одной в будний день (как устроено — `content/blog/README.md`):
+
+1. ~09:40 МСК GitHub Action «Блог — публикация» берёт следующую готовую статью, пересобирает сайт и коммитит
+   «Автопубликация ГГГГ-ММ-ДД: <слаг>» в ветку сервера.
+2. 10:25 МСК (и повторно 13:25) сервер забирает коммит: `dsh autoupdate` = `dsh update`, только если в ветке есть
+   новые коммиты.
+
+Включить на сервере один раз (после `dsh update`, который привезёт новую версию `dsh`):
+
+```bash
+dsh autoupdate --install     # крон /etc/cron.d/domshchenkov-blog; выключить: dsh autoupdate --remove
+```
+
+Важно: после этого **любой** коммит в ветку сервера выходит на сайт в 10:25 или 13:25 сам, без `dsh update`.
+Ветка Action'а — переменная репозитория `BLOG_BRANCH` (Settings → Secrets and variables → Actions → Variables);
+без неё — ветка по умолчанию. Она должна совпадать с веткой сервера (`git -C /opt/domshchenkov/src branch`).
+Снять статью: `python3 tools/blog/factory.py unpublish <слаг>`, сборка, коммит — сервер заберёт сам.
+
 ## Без git: из архива
 
 На своём компьютере выполните `tools/release.sh`. Получится `dist/domshchenkov-<версия>.tar.gz` и файл контрольной
@@ -131,6 +151,7 @@ domshchenkov-<версия>/deploy.sh
 | `dsh restart` | перезапуск API и воркера (после правки `/etc/domshchenkov/api.env`) |
 | `dsh backup` | бэкап сейчас |
 | `dsh update` / `dsh rollback` | обновить / откатить |
+| `dsh autoupdate --install` | автовыкладка новых коммитов по будням (блог) |
 
 ## Уведомления о заявках
 

@@ -1,0 +1,67 @@
+# Блог: одна статья в будний день. Берёт первую готовую статью контент-плана (content/blog/plan.json):
+# написанную раньше или одобренную редактором (content/blog/posts/<slug>.json, status approved), без hold,
+# с чистой проверкой (tools/blog/factory.py lint). Пишет её в content/blog/published.json, пересобирает сайт
+# (корень — боевой, full/ — превью), коммитит «Автопубликация …» и пушит. Сервер забирает коммит сам
+# (dsh autoupdate по крону, DEPLOY.md → «Блог: автопубликация»).
+# Буфер пуст → шаг «Выбрать статью» падает с кодом 3, GitHub пишет письмо о падении. Это сигнал запустить /статьи.
+# Ветка: переменная репозитория BLOG_BRANCH (Settings → Variables), иначе ветка по умолчанию. По расписанию GitHub
+# запускает только файл из ветки по умолчанию.
+name: Блог — публикация
+
+on:
+  schedule:
+    - cron: "40 6 * * 1-5"   # 09:40 МСК, пн–пт (GitHub может запустить на 5–30 минут позже)
+  workflow_dispatch:
+    inputs:
+      date:
+        description: "Дата публикации ГГГГ-ММ-ДД (пусто — сегодня по Москве)"
+        required: false
+      force:
+        description: "Выпустить ещё одну, даже если сегодня статья уже вышла"
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+concurrency:
+  group: blog-publish
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ vars.BLOG_BRANCH || github.event.repository.default_branch }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install "jinja2>=3.1,<3.2"
+      - name: Выбрать статью
+        id: pick
+        run: |
+          args=(--github-output "$GITHUB_OUTPUT")
+          [ -n "${{ inputs.date }}" ] && args+=(--date "${{ inputs.date }}")
+          [ "${{ inputs.force }}" = "true" ] && args+=(--force)
+          python3 tools/blog/factory.py publish "${args[@]}"
+      - name: Собрать сайт
+        if: steps.pick.outputs.slug != ''
+        run: |
+          python3 tools/build.py
+          python3 tools/build.py --full
+          python3 tools/blog/factory.py plan
+      - name: Коммит и пуш
+        if: steps.pick.outputs.slug != ''
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git diff --cached --quiet && exit 0
+          git commit -m "Автопубликация $(TZ=Europe/Moscow date +%F): ${{ steps.pick.outputs.slug }}"
+          branch="$(git rev-parse --abbrev-ref HEAD)"
+          for i in 1 2 3 4; do git pull --rebase origin "$branch" && git push origin "$branch" && break; sleep $((i * 5)); done
+      - name: Итог
+        if: always()
+        run: python3 tools/blog/factory.py status >> "$GITHUB_STEP_SUMMARY" || true

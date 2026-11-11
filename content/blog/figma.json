@@ -1,0 +1,8 @@
+{
+  "_note": "Файл Figma для иллюстраций блога (команда «Moon дизайн-студия», Pro). generate_image тратит AI-кредиты Figma этой команды — не токены Claude. model — самая дешёвая модель; хватает для сцен с предметами. Одна иллюстрация на статью, только если в карточке плана есть illus.",
+  "fileKey": "qg0yABKOcPF6uSaCl8Ovs2",
+  "file_url": "https://www.figma.com/design/qg0yABKOcPF6uSaCl8Ovs2",
+  "model": "gemini-3.1-flash-lite-image",
+  "width": 1536,
+  "height": 1024
+}
