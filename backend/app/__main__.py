@@ -13,6 +13,7 @@
                             checked (no request needed)
     notify-retry            send now what failed in the last 24 h or waits for a retry (after fixing api.env)
     notify-status [--limit N]   the last notifications: sent or not, and why (what to fix in api.env)
+    notify-hello            a message to every Telegram chat: notifications work; «Старт» in the bot → private chat
     notify-check [--send]   before launch: the bot and its chats, the mailbox, amoCRM pipelines and stages (ids)
     purge                   retention clean-up (see app/services/retention.py)
     forget-contact --phone +7… --reason withdrawal|request|retention|not_me --subject "ФИО"
@@ -251,6 +252,15 @@ def cmd_notify_retry(args) -> int:
     return 0
 
 
+def cmd_notify_hello(args) -> int:
+    """One message to every configured Telegram chat: notifications work, and how to get them in the private chat."""
+    from .services import notify
+    res = notify.telegram_hello()
+    for r in res:
+        print(f"{'✓' if r['ok'] else '✗'} {r['chat']}" + (f": {r['error']}" if r["error"] else ""))
+    return 0 if res and all(r["ok"] for r in res) else 1
+
+
 _CHANNEL_NAMES = {"telegram": "Telegram", "email": "почта", "webhook": "вебхук", "amocrm": "amoCRM"}
 
 
@@ -313,8 +323,17 @@ def cmd_worker(args) -> int:
     signal.signal(signal.SIGINT, lambda *_: stop.update(now=True))
     zone = zoneinfo.ZoneInfo(s.timezone)
     last_purge: dt.date | None = None
+    last_poll = 0.0
     log.info("worker started")
     while not stop["now"]:
+        try:
+            if time.monotonic() - last_poll >= 30:   # «Старт» / /stop in the bot: requests in the private chat
+                last_poll = time.monotonic()
+                st = notify.telegram_poll()
+                if any(st.values()):
+                    log.info("telegram subscribers: %s", st)
+        except Exception:  # noqa: BLE001 — the notifications below must go on
+            log.exception("telegram poll failed")
         try:
             with session_scope() as db:
                 st = notify.deliver_due(db, limit=50)
@@ -485,7 +504,9 @@ def cmd_notify_check(args) -> int:
                         print(f"    {c['id']}  {c['type']}  {c['title']}")
                     # the private chat with the bot (someone pressed «Старт») that requests do not go to yet
                     have = notify.chat_list(s.telegram_chat_id)
-                    new = [c["id"] for c in seen["chats"] if c["type"] == "private" and c["id"] not in have]
+                    subs = notify.subscribers(s)["chats"]
+                    new = [c["id"] for c in seen["chats"] if c["type"] == "private" and c["id"] not in have
+                           and c["id"] not in subs]
                     if new:
                         print(f"  чтобы заявки шли и в личку бота, впишите: DSH_TELEGRAM_CHAT_ID={','.join(have + new)}")
                 elif seen["ok"]:
@@ -494,6 +515,13 @@ def cmd_notify_check(args) -> int:
                           f"/start@{me['username']} и повторите")
                 else:
                     print(f"  ! не удалось получить чаты: {seen['error']}")
+                subs = notify.subscribers(s)["chats"]
+                if subs:
+                    print("  получают заявки в личке бота (нажали «Старт»): "
+                          + ", ".join(f"{v.get('name') or '—'} ({k})" for k, v in subs.items()))
+                else:
+                    print(f"  в личку бота заявки пока никому не идут: участник группы открывает @{me['username']} "
+                          "и нажимает «Старт»")
                 targets = notify.telegram_targets(s)
                 if not targets:
                     bad += 1
@@ -583,6 +611,7 @@ def main(argv=None) -> int:
     sub.add_parser("notify-test").set_defaults(fn=cmd_notify_test)
     sub.add_parser("notify-retry").set_defaults(fn=cmd_notify_retry)
     p = sub.add_parser("notify-status"); p.add_argument("--limit", type=int, default=15); p.set_defaults(fn=cmd_notify_status)
+    sub.add_parser("notify-hello").set_defaults(fn=cmd_notify_hello)
     sub.add_parser("purge").set_defaults(fn=cmd_purge)
     p = sub.add_parser("forget-contact"); p.add_argument("--phone", required=True)
     p.add_argument("--reason", choices=["withdrawal", "request", "retention", "not_me"], required=True)

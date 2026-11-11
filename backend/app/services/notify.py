@@ -74,6 +74,8 @@ def _targets(s: Settings, breed_key: str | None) -> list[tuple[str, str]]:
     out = []
     if s.telegram_bot_token:
         chats = chat_list(s.telegram_breed_chats.get(breed_key or "", "")) or chat_list(s.telegram_chat_id)
+        # + the private chats of the group's members who pressed «Старт» in the bot (telegram_poll)
+        chats += [c for c in subscribers(s)["chats"] if c not in chats]
         out.extend(("telegram", chat) for chat in chats)  # one row per chat, like e-mail per address
     if s.smtp_host:
         out.extend(("email", addr[:300]) for addr in s.notify_emails)  # one row per address
@@ -945,6 +947,138 @@ def telegram_chat(s: Settings, client: httpx.Client, chat_id: str) -> dict:
 def telegram_send_test(s: Settings, client: httpx.Client, chat_id: str) -> dict:
     r = _tg_call(s, client, "sendMessage", chat_id=chat_id, text=TEST_TEXT, disable_web_page_preview=True)
     return {"ok": True} if r["ok"] else r
+
+
+# ---------------------------------------------------------------- requests in the private chat with the bot
+# A bot cannot write to a person first. A member of the requests group opens the bot and presses «Старт» (/start):
+# the worker (telegram_poll) checks with getChatMember that this person is in one of the configured group chats and
+# adds their private chat to every request's recipients; /stop removes it. Anyone else gets a polite refusal. The list
+# lives in a small JSON file on the shared volume (api and worker), not in api.env: nobody has to edit the server.
+SUBSCRIBED = ("Готово ✅ Теперь заявки с сайта дом-щенков.рф будут приходить и сюда: номер, порода и ссылка в "
+              "админку. Отписаться — /stop.")
+ALREADY = "Вы уже получаете заявки здесь. Отписаться — /stop."
+NOT_MEMBER = ("Заявки приходят только участникам группы питомника. Попросите добавить вас в группу с заявками и "
+              "нажмите /start ещё раз.")
+NO_GROUP = "Получать заявки здесь пока нельзя: группа для заявок не настроена."
+UNSUBSCRIBED = "Больше не присылаю заявки сюда. Снова получать — /start."
+_MEMBER = {"creator", "administrator", "member"}
+
+
+def subscribers(s: Settings) -> dict:
+    """{"last_update": int, "chats": {chat id: {"name", "since"}}} — empty when the file is missing or unreadable."""
+    try:
+        data = json.loads(open(s.telegram_subscribers_file, encoding="utf-8").read())
+        if isinstance(data, dict) and isinstance(data.get("chats"), dict):
+            return {"last_update": int(data.get("last_update") or 0), "chats": data["chats"]}
+    except (OSError, ValueError, TypeError):
+        pass
+    return {"last_update": 0, "chats": {}}
+
+
+def _save_subscribers(s: Settings, data: dict) -> None:
+    import os
+    path = str(s.telegram_subscribers_file)
+    tmp = path + ".tmp"
+    with open(tmp, "w", encoding="utf-8") as f:
+        json.dump(data, f, ensure_ascii=False)
+    os.replace(tmp, path)  # whole file or nothing: the API reads it on every request
+
+
+def _group_chats(s: Settings) -> list[str]:
+    """The configured group chats (negative ids): membership in one of them lets a person subscribe."""
+    chats = [c for v in (s.telegram_chat_id, *s.telegram_breed_chats.values()) for c in chat_list(v)]
+    return [c for c in dict.fromkeys(chats) if c.startswith("-")]
+
+
+def _is_member(s: Settings, client: httpx.Client, user_id: int) -> bool | None:
+    """True / False; None when Telegram did not answer (try again next time)."""
+    for group in _group_chats(s):
+        r = _tg_call(s, client, "getChatMember", chat_id=group, user_id=user_id)
+        if r.get("network"):
+            return None
+        m = (r.get("result") or {}) if r["ok"] else {}
+        if m.get("status") in _MEMBER or (m.get("status") == "restricted" and m.get("is_member")):
+            return True
+    return False
+
+
+def telegram_poll(s: Settings | None = None, client: httpx.Client | None = None) -> dict:
+    """/start and /stop sent to the bot in private since the last poll (getUpdates, nothing consumed: notify-check
+    still sees the chats). → {"added": n, "removed": n, "refused": n}; Telegram not reached → nothing changes."""
+    s = s or get_settings()
+    stats = {"added": 0, "removed": 0, "refused": 0}
+    if not s.telegram_bot_token:
+        return stats
+    own = client is None
+    client = client or http_client(s)
+    try:
+        r = _tg_call(s, client, "getUpdates", timeout=0, allowed_updates=["message"])
+        if not r["ok"]:
+            return stats
+        data = subscribers(s)
+        updates = sorted((u for u in r["result"] or [] if isinstance(u, dict) and u.get("update_id", 0) > data["last_update"]),
+                         key=lambda u: u["update_id"])
+        for u in updates:
+            msg = u.get("message") or {}
+            chat, sender = msg.get("chat") or {}, msg.get("from") or {}
+            word = str(msg.get("text") or "").strip().split("@")[0].split(" ")[0].lower()
+            if chat.get("type") != "private" or word not in ("/start", "/stop") or "id" not in chat:
+                data["last_update"] = u["update_id"]
+                continue
+            cid = str(chat["id"])
+            name = " ".join(x for x in (sender.get("first_name"), sender.get("last_name")) if x) or sender.get("username", "")
+            if word == "/stop":
+                reply = UNSUBSCRIBED
+                if data["chats"].pop(cid, None) is not None:
+                    stats["removed"] += 1
+            elif cid in data["chats"]:
+                reply = ALREADY
+            elif not _group_chats(s):
+                reply, stats["refused"] = NO_GROUP, stats["refused"] + 1
+            else:
+                member = _is_member(s, client, int(sender.get("id") or chat["id"]))
+                if member is None:
+                    break  # Telegram went away mid-way: this update and the rest wait for the next poll
+                if member:
+                    data["chats"][cid] = {"name": name[:100], "since": dt.datetime.now(UTC).isoformat(timespec="seconds")}
+                    reply, stats["added"] = SUBSCRIBED, stats["added"] + 1
+                else:
+                    reply, stats["refused"] = NOT_MEMBER, stats["refused"] + 1
+            _tg_call(s, client, "sendMessage", chat_id=cid, text=reply)
+            data["last_update"] = u["update_id"]
+        if updates:
+            _save_subscribers(s, data)
+        return stats
+    finally:
+        if own:
+            client.close()
+
+
+def hello_text(username: str) -> str:
+    return (f"✅ Уведомления о заявках с сайта дом-щенков.рф работают. Чтобы получать заявки и в личные сообщения, "
+            f"откройте @{username} и нажмите «Старт» (участникам этой группы)." if username else
+            "✅ Уведомления о заявках с сайта дом-щенков.рф работают.")
+
+
+def telegram_hello(s: Settings | None = None, client: httpx.Client | None = None) -> list[dict]:
+    """After a fix (e.g. the proxy came): one message to every configured chat — they work again, and how to get
+    requests in the private chat with the bot. → [{chat, ok, error}]."""
+    s = s or get_settings()
+    if not s.telegram_bot_token:
+        return []
+    own = client is None
+    client = client or http_client(s)
+    try:
+        me = telegram_bot(s, client)
+        text = hello_text(me.get("username", "") if me["ok"] else "")
+        out = []
+        for chat in dict.fromkeys(c for v in (s.telegram_chat_id, *s.telegram_breed_chats.values()) for c in chat_list(v)):
+            r = _tg_call(s, client, "sendMessage", chat_id=chat, text=text)
+            out.append({"chat": chat, "ok": r["ok"], "error": r.get("error", "")})
+        return out
+    finally:
+        if own:
+            client.close()
 
 
 TEST_AMOCRM_DEAL = "Проверка интеграции с сайтом дом-щенков.рф — можно удалить"

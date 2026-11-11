@@ -91,6 +91,8 @@ class Settings(BaseSettings):
     # a proxy outside Russia for the Telegram calls only, when api.telegram.org is closed for the server:
     # socks5://login:password@host:port or http://login:password@host:port (11.11.2026: «Network is unreachable»)
     telegram_proxy: str = ""
+    # private chats of the group's members who pressed «Старт» in the bot (notify.telegram_poll): the shared volume
+    telegram_subscribers_file: str = "/var/lib/domshchenkov/telegram_subscribers.json"
     telegram_breed_chats: dict[str, str] = Field(default_factory=dict)  # {"maltipu": "-100…"} by breed key
     telegram_include_pd: bool = False
     # e-mail with full details, over SMTP of a Russian provider (Яндекс 360, VK WorkMail, Mail.ru): no transfer abroad

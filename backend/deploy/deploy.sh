@@ -179,6 +179,8 @@ esac
 docker tag "domshchenkov-api:$VERSION" domshchenkov-api:latest   # `dsh` and backup.sh use the current image
 if [ -n "$SEALED_CHANGED" ]; then   # e.g. the Telegram proxy has just come: what failed in the last 24 h goes out now
   "${COMPOSE[@]}" run --rm migrate python -m app notify-retry || true
+  # …and the chats hear that notifications work again, and how to get them in the private chat with the bot
+  "${COMPOSE[@]}" run --rm migrate python -m app notify-hello || true
 fi
 
 # ---- the API of this release runs: record it now, so `dsh` and the next deploy's rollback point to the right release
