@@ -284,6 +284,8 @@ def stems(text):
 
 def candidates(c, n_land=10, n_port=8):
     items = load(PHOTOS, {"photos": []})["photos"] or build_catalog()
+    # an illustration belongs to its own article: the brief shows it there and nowhere else
+    items = [it for it in items if not it.get("generated") or it["src"].startswith(f"/assets/img/blog/{c['slug']}-")]
     want = stems(" ".join([c.get("photo", ""), c.get("pk", ""), c.get("h1", "")]))
 
     def score(it):

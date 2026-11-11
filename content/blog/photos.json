@@ -156,6 +156,17 @@
       "in_blog": 0
     },
     {
+      "src": "/assets/img/blog/chem-kormit-shchenka-1.jpg",
+      "alt": "Щенок ест корм из керамической миски на кухне, рядом миска с водой",
+      "breed": null,
+      "w": 1264,
+      "h": 848,
+      "shape": "land",
+      "generated": true,
+      "auto_alt": false,
+      "in_blog": 0
+    },
+    {
       "src": "/assets/img/blog/chto-kupit-shchenku-1.jpg",
       "alt": "Пример набора для щенка на полу: лежанка, миски, пелёнки, мячик, шлейка с поводком",
       "breed": null,
@@ -165,6 +176,17 @@
       "generated": true,
       "auto_alt": false,
       "in_blog": 1
+    },
+    {
+      "src": "/assets/img/blog/lapy-zimoj-reagenty-1.jpg",
+      "alt": "Лапу щенка моют в тазике с тёплой водой, рядом полотенце",
+      "breed": null,
+      "w": 1264,
+      "h": 848,
+      "shape": "land",
+      "generated": true,
+      "auto_alt": false,
+      "in_blog": 0
     },
     {
       "src": "/assets/img/breed-border-kolli.jpg",
