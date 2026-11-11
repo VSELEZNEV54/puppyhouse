@@ -72,6 +72,9 @@ def chat_list(value: str) -> list[str]:
 
 def _targets(s: Settings, breed_key: str | None) -> list[tuple[str, str]]:
     out = []
+    if s.amocrm_enabled:
+        # first: the deal is made before the Telegram message, which then links to it (the name and the phone are there)
+        out.append(("amocrm", s.amocrm_subdomain[:300]))  # one row per request: the deal, its contact and the note
     if s.telegram_bot_token:
         chats = chat_list(s.telegram_breed_chats.get(breed_key or "", "")) or chat_list(s.telegram_chat_id)
         # + the private chats of the group's members who pressed «Старт» in the bot (telegram_poll)
@@ -81,8 +84,6 @@ def _targets(s: Settings, breed_key: str | None) -> list[tuple[str, str]]:
         out.extend(("email", addr[:300]) for addr in s.notify_emails)  # one row per address
     if s.webhook_url:
         out.append(("webhook", s.webhook_url))
-    if s.amocrm_enabled:
-        out.append(("amocrm", s.amocrm_subdomain[:300]))  # one row per request: the deal, its contact and the note
     return out
 
 
@@ -164,7 +165,8 @@ def visit_facts(db: Session, lead: Lead) -> dict:
     return out
 
 
-def telegram_text(lead: Lead | None, review: Review | None, event: str, s: Settings, facts: dict | None = None) -> str:
+def telegram_text(lead: Lead | None, review: Review | None, event: str, s: Settings, facts: dict | None = None,
+                  deal_url: str = "") -> str:
     """HTML for parse_mode=HTML, every value escaped. Personal data (name, phone, messenger) only with
     telegram_include_pd AND a consent version that names the transfer abroad (notice to Роскомнадзор first)."""
     def e(v) -> str:
@@ -219,6 +221,8 @@ def telegram_text(lead: Lead | None, review: Review | None, event: str, s: Setti
     if lead.flags:
         lines.append(f"⚠️ Антиспам: {e(', '.join(lead.flags))}")
     lines += ["", f"🕒 {_local(lead.created_at, s):%d.%m.%Y, %H:%M}"]
+    if deal_url:   # the name and the phone are in the deal: Telegram (abroad) gets no personal data
+        lines.append(f'📇 <a href="{html.escape(deal_url, quote=True)}">Имя и телефон — сделка в amoCRM</a>')
     link = _admin_link(s, num)
     if link:
         lines.append(f'👉 <a href="{html.escape(link, quote=True)}">Открыть заявку в админке</a>')
@@ -617,6 +621,23 @@ def _send_amocrm(item: Outbox, lead: Lead, db: Session, s: Settings, client: htt
         save(counted=True)
 
 
+def _amocrm_deal_url(db: Session, item: Outbox, lead: Lead, s: Settings) -> str:
+    """The request's deal in amoCRM, for the Telegram message (a repeat request: the deal of the first one). The deal
+    row goes first (_targets), so it is usually there already; while it is still being made, the message waits —
+    at most 2 minutes, then it goes without the link (amoCRM down must not hold Telegram)."""
+    if not s.amocrm_enabled:
+        return ""
+    db.refresh(lead, ["details"])   # another process may have made the deal meanwhile
+    deal = ((lead.details or {}).get("amocrm") or {}).get("lead_id")
+    if deal:
+        return f"https://{s.amocrm_host}/leads/detail/{int(deal)}"
+    making = db.scalar(select(Outbox.id).where(Outbox.lead_id == lead.id, Outbox.channel == "amocrm",
+                                               Outbox.status == "pending").limit(1))
+    if making and dt.datetime.now(UTC) - item.created_at < dt.timedelta(minutes=2):
+        raise Wait(15, "waits for the amoCRM deal: its link goes into the message")
+    return ""
+
+
 def _send(item: Outbox, db: Session, s: Settings, client: httpx.Client) -> None:
     lead = db.get(Lead, item.lead_id) if item.lead_id else None
     review = db.get(Review, item.review_id) if item.review_id else None
@@ -626,7 +647,8 @@ def _send(item: Outbox, db: Session, s: Settings, client: httpx.Client) -> None:
         raise Permanent("the person was erased")
     if item.channel == "telegram":
         facts = visit_facts(db, lead) if lead is not None else None
-        _send_telegram(item, telegram_text(lead, review, item.event, s, facts), s, client, parse_mode="HTML")
+        deal_url = _amocrm_deal_url(db, item, lead, s) if lead is not None else ""
+        _send_telegram(item, telegram_text(lead, review, item.event, s, facts, deal_url), s, client, parse_mode="HTML")
     elif item.channel == "email":
         _send_email(item, email_message(lead, review, item.event, s), s)
     elif item.channel == "amocrm":

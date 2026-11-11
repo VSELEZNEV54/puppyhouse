@@ -717,3 +717,53 @@ def test_notify_test_checks_the_amocrm_token_without_making_a_deal(amo, capsys):
     amo.amocrm_token = ""
     (r,) = notify.send_test(amo, client=FakeAmo().client())
     assert not r["ok"] and "DSH_AMOCRM_SUBDOMAIN и DSH_AMOCRM_TOKEN" in r["hint"]
+
+
+# ---------------------------------------------------------------- the deal's link in the Telegram message
+class Both:
+    """One client for the delivery: amoCRM goes to FakeAmo, Telegram is recorded (or down)."""
+
+    def __init__(self, amo_fake: FakeAmo, telegram_ok=True):
+        self.amo, self.telegram_ok = amo_fake, telegram_ok
+        self.tg: list[dict] = []
+
+    def __call__(self, request: httpx.Request) -> httpx.Response:
+        if request.url.host == "api.telegram.org":
+            self.tg.append(json.loads(request.content))
+            return httpx.Response(200, json={"ok": True, "result": {"message_id": 1}})
+        return self.amo(request)
+
+    def client(self) -> httpx.Client:
+        return httpx.Client(transport=httpx.MockTransport(self))
+
+
+@pytest.fixture
+def amo_tg(amo):
+    amo.telegram_bot_token, amo.telegram_chat_id, amo.telegram_breed_chats = "7012345678:AAH-test", "-1001", {}
+    amo.telegram_api_base, amo.telegram_include_pd = "https://api.telegram.org", False
+    return amo
+
+
+def test_telegram_message_links_to_the_deal_where_the_name_and_phone_are(client, db, amo_tg):
+    post_lead(client)
+    assert [o.channel for o in outbox(db)] == ["amocrm", "telegram"]   # the deal first
+    both = Both(FakeAmo())
+    assert notify.deliver_due(db, client=both.client()) == {"sent": 2, "failed": 0, "retry": 0}
+    (msg,) = both.tg
+    assert '<a href="https://monnypassy.amocrm.ru/leads/detail/5001">Имя и телефон — сделка в amoCRM</a>' in msg["text"]
+    assert NAME not in msg["text"] and PHONE_E164 not in msg["text"]   # still no personal data in Telegram
+
+
+def test_while_the_deal_is_not_made_the_message_waits_then_goes_without_the_link(client, db, amo_tg):
+    post_lead(client)
+    down = FakeAmo(fail={"GET contacts": [httpx.Response(503)] * 20})
+    both = Both(down)
+    st = notify.deliver_due(db, client=both.client())
+    assert st == {"sent": 0, "failed": 0, "retry": 2} and both.tg == []
+    tg_row = next(o for o in outbox(db) if o.channel == "telegram")
+    assert tg_row.attempts == 0 and "amoCRM deal" in tg_row.last_error        # waiting is not an attempt
+    db.execute(text("UPDATE outbox SET created_at = created_at - interval '3 minutes'"))
+    make_due(db)
+    db.expire_all()   # the worker reads afresh in a new session every round
+    notify.deliver_due(db, client=both.client())
+    assert len(both.tg) == 1 and "amoCRM" not in both.tg[0]["text"]          # amoCRM down does not hold Telegram
