@@ -8,6 +8,7 @@
     python3 tools/blog/factory.py photos [--rebuild] [<slug>]   каталог фото сайта / кандидаты для статьи
     python3 tools/blog/factory.py illus <slug>        запрос для Figma generate_image в стиле эталона (JSON)
     python3 tools/blog/factory.py look <файл>…        похожа ли картинка на эталон по цифрам (свет, тени, теплота)
+    python3 tools/blog/factory.py unimg <slug> <n>    убрать забракованную иллюстрацию (файл и запись в журнале)
     python3 tools/blog/factory.py img <slug> <n> <файл> [--alt "…"]   иллюстрация → assets/img/blog/<slug>-<n>.jpg
     python3 tools/blog/factory.py lint [<slug>…]      проверка черновиков (без аргументов — все)
     python3 tools/blog/factory.py approve <slug> [--note …] | hold <slug> | draft <slug>
@@ -629,7 +630,8 @@ def cmd_photos(a):
 
 def look_metrics(path):
     """Цифры «как эталон» без модели: средняя светлота L*, 5-й процентиль L* (глубина теней), доля пересвета
-    (L* ≥ 98), средняя теплота b* и разница светлоты углов и центра (у эталона углы темнее)."""
+    (L* ≥ 98), средняя теплота b* и разница светлоты углов и центра (у эталона углы темнее). Углы — три самых
+    тёмных из четырёх: окно в одном углу, как у эталона, не считается."""
     from PIL import Image, ImageCms
     lab_t = ImageCms.buildTransformFromOpenProfiles(ImageCms.createProfile("sRGB"), ImageCms.createProfile("LAB"),
                                                      "RGB", "LAB")
@@ -651,7 +653,8 @@ def look_metrics(path):
         return sum(i * cnt for i, cnt in enumerate(hh)) / sum(hh) * 100 / 255
 
     cw, ch = int(w * 0.15), int(h * 0.15)
-    corners = sum(mean_l(b) for b in ((0, 0, cw, ch), (w - cw, 0, w, ch), (0, h - ch, cw, h), (w - cw, h - ch, w, h))) / 4
+    boxes = ((0, 0, cw, ch), (w - cw, 0, w, ch), (0, h - ch, cw, h), (w - cw, h - ch, w, h))
+    corners = sum(sorted(mean_l(b) for b in boxes)[:3]) / 3
     centre = mean_l((int(w * 0.35), int(h * 0.35), int(w * 0.65), int(h * 0.65)))
     return dict(mean_L=round(mean_l((0, 0, w, h)), 1), p5_L=round(p5, 1), clipped=round(sum(hist[250:]) / n * 100, 2),
                 mean_b=round(sum((i - 128) * cnt for i, cnt in enumerate(warm.histogram())) / n, 1),
@@ -672,8 +675,10 @@ def look_check(path):
         bad.append(f"пересвет {m['clipped']}% кадра (нужно ≤ {lim['clipped_max']}%)")
     if m["mean_b"] < lim["mean_b_min"]:
         bad.append(f"холодно: теплота {m['mean_b']} (нужно ≥ {lim['mean_b_min']})")
+    if m["mean_b"] > lim.get("mean_b_max", 99):
+        bad.append(f"оранжево, слишком тепло: теплота {m['mean_b']} (нужно ≤ {lim['mean_b_max']})")
     if m["edge"] > lim["edge_max"]:
-        bad.append(f"края светлее центра на {m['edge']} (нужно ≤ {lim['edge_max']})")
+        bad.append(f"края не темнее центра: {m['edge']} (нужно ≤ {lim['edge_max']})")
     return m, bad
 
 
@@ -752,6 +757,20 @@ def cmd_img(a):
     data["items"][src] = rec
     save(ILLUS, data)
     print(json.dumps({"src": src, "alt": alt, "w": im.width, "h": im.height}, ensure_ascii=False))
+    return 0
+
+
+def cmd_unimg(a):
+    src = f"/assets/img/blog/{a.slug}-{a.n}.jpg"
+    data = load(ILLUS, {"items": {}})
+    gone = data["items"].pop(src, None)
+    f = ROOT / src.lstrip("/")
+    existed = f.is_file()
+    if existed:
+        f.unlink()
+    if gone is not None:
+        save(ILLUS, data)
+    print(f"{src}: {'убрана' if gone is not None or existed else 'не найдена'}")
     return 0
 
 
@@ -892,6 +911,9 @@ def main(argv=None):
     x.add_argument("--force", action="store_true", help="сохранить, даже если не похоже на эталон по цифрам")
     x = sub.add_parser("look")
     x.add_argument("files", nargs="+")
+    x = sub.add_parser("unimg")
+    x.add_argument("slug")
+    x.add_argument("n", type=int)
     x = sub.add_parser("lint")
     x.add_argument("slugs", nargs="*")
     x = sub.add_parser("approve")
