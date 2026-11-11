@@ -22,10 +22,12 @@ import re
 import smtplib
 import socket
 import ssl
+import time
 import zoneinfo
 from email.message import EmailMessage
 from email.utils import formataddr, make_msgid
 from types import SimpleNamespace
+from urllib.parse import urlsplit
 
 import httpx
 from sqlalchemy import func, or_, select, update
@@ -454,15 +456,37 @@ def _amo_contact(s: Settings, client: httpx.Client, phone: str | None) -> int | 
     return None
 
 
-def _amo_deal(s: Settings, name: str, tags: list[str], contact: dict) -> dict:
-    """A deal of leads/complex: pipeline, stage and responsible user only when they are set (amoCRM's defaults)."""
+def _site_url(s: Settings) -> str:
+    """https://дом-щенков.рф (in punycode): the host of the admin links, else the first own host."""
+    parts = urlsplit(s.admin_base_url)
+    if parts.scheme and parts.netloc:
+        return f"{parts.scheme}://{parts.netloc}"
+    return f"https://{s.own_hosts[0]}" if s.own_hosts else ""
+
+
+def _amo_deal(s: Settings, name: str, tags: list[str], contact: dict, form: dict) -> dict:
+    """A deal of leads/complex: pipeline, stage and responsible user only when they are set (amoCRM's defaults).
+    With DSH_AMOCRM_UNSORTED the deal goes to «Неразобранное» of the pipeline: leads/complex makes it a form request
+    when it carries form metadata (amoCRM then ignores any other stage), so no stage is sent."""
     deal = {"name": name, "_embedded": {"tags": [{"name": t[:50]} for t in dict.fromkeys(tags) if t],
                                         "contacts": [contact]}}
-    for key in ("pipeline_id", "status_id", "responsible_user_id"):
+    keys = ("pipeline_id", "responsible_user_id") if s.amocrm_unsorted else (
+        "pipeline_id", "status_id", "responsible_user_id")
+    for key in keys:
         value = getattr(s, "amocrm_" + key)
         if value is not None:
             deal[key] = value
+    if s.amocrm_unsorted:
+        deal["_embedded"]["metadata"] = {"category": "forms", **form}
     return deal
+
+
+def _amo_form(s: Settings, lead: Lead) -> dict:
+    """What «Неразобранное» shows about the form: its name, the page and when it was sent (no IP: amoCRM gets only
+    what the consent names)."""
+    kind = LEAD_KIND_LABELS.get(LeadKind(lead.kind), lead.kind)
+    return {"form_id": f"site-{lead.kind}", "form_name": (lead.form_title or kind)[:100],
+            "form_page": _site_url(s) + (lead.page_path or "/"), "form_sent_at": int(lead.created_at.timestamp())}
 
 
 def _amo_new_deal(s: Settings, client: httpx.Client, lead: Lead, contact_id: int | None) -> tuple[int, int | None]:
@@ -471,9 +495,16 @@ def _amo_new_deal(s: Settings, client: httpx.Client, lead: Lead, contact_id: int
         "first_name": lead.name,
         "custom_fields_values": [{"field_code": "PHONE", "values": [{"value": lead.phone, "enum_code": "MOB"}]}]}
     tags = [*s.amocrm_tags, lead.breed.name if lead.breed else "", LEAD_KIND_LABELS.get(LeadKind(lead.kind), lead.kind)]
-    r = _amo(s, client, "POST", "leads/complex", json=[_amo_deal(s, amocrm_deal_name(lead), tags, contact)])
+    r = _amo(s, client, "POST", "leads/complex",
+             json=[_amo_deal(s, amocrm_deal_name(lead), tags, contact, _amo_form(s, lead))])
     made = r.json()[0]
     return int(made["id"]), made.get("contact_id") or contact_id
+
+
+def _amo_deal_exists(s: Settings, client: httpx.Client, deal: int) -> bool:
+    """GET leads/{id}: 204 — there is no such deal (deleted, or its «Неразобранное» was declined)."""
+    r = _amo(s, client, "GET", f"leads/{int(deal)}")
+    return r.status_code != 204 and bool(r.content)
 
 
 def _amo_find_deal(s: Settings, client: httpx.Client, lead: Lead) -> tuple[int, int | None] | None:
@@ -488,11 +519,12 @@ def _amo_find_deal(s: Settings, client: httpx.Client, lead: Lead) -> tuple[int, 
 
 
 def _amo_first_deal(db: Session, item: Outbox, lead: Lead) -> int | None:
-    """The deal of the person's first request — or the one an earlier repeat request made when the first had none
-    (it came before amoCRM was connected). While the deal of one of them is still being sent: wait for it, so a
-    repeat request never makes a second deal."""
+    """The person's deal: the newest one among their requests — the deal of the first request, or one an earlier
+    repeat request made (the first came before amoCRM was connected, or its deal was deleted or declined). While the
+    deal of one of them is still being sent: wait for it, so a repeat request never makes a second deal."""
     rows = db.execute(select(Lead.id, Lead.details).where(
-        or_(Lead.id == lead.parent_id, Lead.parent_id == lead.parent_id), Lead.id != lead.id).order_by(Lead.id)).all()
+        or_(Lead.id == lead.parent_id, Lead.parent_id == lead.parent_id), Lead.id != lead.id)
+        .order_by(Lead.id.desc())).all()
     for _, details in rows:
         deal = ((details or {}).get("amocrm") or {}).get("lead_id")
         if deal:
@@ -529,8 +561,10 @@ def _send_amocrm(item: Outbox, lead: Lead, db: Session, s: Settings, client: htt
             save(lead_id=found[0], contact_id=found[1])
     if not state.get("lead_id") and item.event == "lead.repeat" and lead.parent_id:
         deal = _amo_first_deal(db, item, lead)
-        if deal:
+        if deal and _amo_deal_exists(s, client, deal):
             save(lead_id=deal, to_request=lead.parent_id)
+        elif deal:  # the manager deleted that deal or declined it in «Неразобранное»: this request gets its own
+            save(gone=deal)
     if not state.get("lead_id"):
         contact_id = _amo_contact(s, client, lead.phone)
         save(creating=True)
@@ -909,7 +943,8 @@ def amocrm_pipelines(s: Settings, client: httpx.Client) -> dict:
 
 def amocrm_target(s: Settings, pipelines: list[dict]) -> dict:
     """Where new deals go, checked against the account → {"pipeline", "status", "problems"}. Without a pipeline id
-    amoCRM takes the main pipeline; without a stage id, the first stage of the pipeline."""
+    amoCRM takes the main pipeline; without a stage id, the first stage of the pipeline; with DSH_AMOCRM_UNSORTED,
+    its «Неразобранное»."""
     problems = []
     if s.amocrm_pipeline_id is None:
         pipe = next((p for p in pipelines if p["is_main"]), pipelines[0] if pipelines else None)
@@ -918,7 +953,12 @@ def amocrm_target(s: Settings, pipelines: list[dict]) -> dict:
         if pipe is None:
             problems.append(f"воронки {s.amocrm_pipeline_id} нет в аккаунте: проверьте DSH_AMOCRM_PIPELINE_ID")
     status = None
-    if s.amocrm_status_id is not None and pipe is not None:
+    if s.amocrm_unsorted and pipe is not None:
+        status = next((st for st in pipe["statuses"] if st["kind"] == "неразобранное"), None)
+        if status is None:
+            problems.append(f"в воронке «{pipe['name']}» выключено «Неразобранное»: включите его в настройках воронки "
+                            "в amoCRM или уберите DSH_AMOCRM_UNSORTED")
+    elif s.amocrm_status_id is not None and pipe is not None:
         status = next((st for st in pipe["statuses"] if st["id"] == s.amocrm_status_id), None)
         if status is None:
             other = next((p for p in pipelines if any(st["id"] == s.amocrm_status_id for st in p["statuses"])), None)
@@ -929,14 +969,19 @@ def amocrm_target(s: Settings, pipelines: list[dict]) -> dict:
         elif status["id"] in (142, 143):
             problems.append(f"этап «{status['name']}» закрывает сделку: для новых заявок выберите рабочий этап "
                             "(DSH_AMOCRM_STATUS_ID)")
+        elif status["kind"] == "неразобранное":
+            problems.append(f"в «{status['name']}» сделки попадают только как заявки: впишите DSH_AMOCRM_UNSORTED=1 "
+                            "вместо DSH_AMOCRM_STATUS_ID")
     return {"pipeline": pipe, "status": status, "problems": problems}
 
 
 def amocrm_send_test(s: Settings, client: httpx.Client) -> dict:
     """A clearly marked test deal with the contact «Тест» (no phone, no personal data) and a note, in the configured
     pipeline and stage → {"ok", "lead_id", "url"}."""
+    form = {"form_id": "site-check", "form_name": "Проверка интеграции", "form_page": _site_url(s) + "/",
+            "form_sent_at": int(time.time())}
     r = _amo_call(s, client, "POST", "leads/complex",
-                  json=[_amo_deal(s, TEST_AMOCRM_DEAL, [*s.amocrm_tags, "проверка"], {"first_name": "Тест"})])
+                  json=[_amo_deal(s, TEST_AMOCRM_DEAL, [*s.amocrm_tags, "проверка"], {"first_name": "Тест"}, form)])
     if not r["ok"]:
         return r
     try:

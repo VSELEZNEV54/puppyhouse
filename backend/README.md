@@ -116,7 +116,7 @@ Selectel, Timeweb, VK Cloud и т. п.
 | Telegram | «Новая заявка №123 · Мальтипу · Цена щенка · 14:32» + ссылка в админку. **Без имени и телефона** | `DSH_TELEGRAM_*`, чат на каждую породу — `DSH_TELEGRAM_BREED_CHATS` |
 | Почта | полные данные: имя, телефон, куда писать, порода, щенок, источник | `DSH_SMTP_*` (российский провайдер), `DSH_NOTIFY_EMAILS` |
 | Вебхук | `{event, id, public_id}` с подписью HMAC — для админ-панели | `DSH_WEBHOOK_URL`, `DSH_WEBHOOK_SECRET` |
-| amoCRM | сделка в заданной воронке и на этапе: контакт (имя, телефон; существующий с тем же номером берётся) и примечание со всеми подробностями. Повторная заявка — примечание в сделке первой. Отзывы не идут | `DSH_AMOCRM_SUBDOMAIN`, `DSH_AMOCRM_TOKEN` (долгосрочный), `DSH_AMOCRM_PIPELINE_ID`, `DSH_AMOCRM_STATUS_ID`, `DSH_AMOCRM_RESPONSIBLE_USER_ID` |
+| amoCRM | сделка в заданной воронке и на этапе: контакт (имя, телефон; существующий с тем же номером берётся) и примечание со всеми подробностями. Повторная заявка — примечание в сделке первой. Отзывы не идут | `DSH_AMOCRM_SUBDOMAIN`, `DSH_AMOCRM_TOKEN` (долгосрочный), `DSH_AMOCRM_PIPELINE_ID`, `DSH_AMOCRM_STATUS_ID` или `DSH_AMOCRM_UNSORTED=true` (в «Неразобранное»), `DSH_AMOCRM_RESPONSIBLE_USER_ID` |
 
 Проверка до запуска: `python -m app notify-check` (на сервере `dsh app notify-check`). Покажет бота, чаты, где он
 есть, с их id, доступ к заданным чатам и вход в почту, а для amoCRM — аккаунт, все воронки и этапы с id (заданные

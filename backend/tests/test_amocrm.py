@@ -85,6 +85,9 @@ class FakeAmo:
             self.deals.append(deal)
             return httpx.Response(200, json=[{"id": deal["id"], "contact_id": contact_id, "company_id": None,
                                               "request_id": ["0"], "merged": False}])
+        if key.startswith("GET leads/") and path.split("/")[1].isdigit():  # one deal; 204 — no such deal
+            deal = next((d for d in self.deals if d["id"] == int(path.split("/")[1])), None)
+            return httpx.Response(200, json=deal) if deal else httpx.Response(204)
         if key == "GET leads":
             found = [d for d in self.deals if request.url.params["query"] in d["name"]]
             return httpx.Response(200, json={"_embedded": {"leads": found}}) if found else httpx.Response(204)
@@ -139,6 +142,7 @@ def amo(settings):
     settings.amocrm_token = AMO_TOKEN
     settings.amocrm_api_base = API
     settings.amocrm_pipeline_id, settings.amocrm_status_id = PIPELINE, STAGE
+    settings.amocrm_unsorted = False
     settings.amocrm_responsible_user_id = None
     settings.amocrm_tags = ["сайт"]
     settings.admin_base_url = ""
@@ -241,7 +245,8 @@ def test_repeat_request_is_a_note_in_the_deal_of_the_first_request(client, db, a
     assert [(o.lead_id, o.event) for o in outbox(db)] == [(first, "lead.created"), (second, "lead.repeat")]
 
     assert notify.deliver_due(db, client=fake.client())["sent"] == 1
-    assert fake.keys() == ["GET contacts", "POST leads/complex", "POST notes", "POST notes"]
+    # the deal is still there (not deleted, not declined) → the note goes to it
+    assert fake.keys() == ["GET contacts", "POST leads/complex", "POST notes", "GET leads/5001", "POST notes"]
     assert fake.calls[-1].path == "leads/5001/notes"
     lines = fake.note().splitlines()
     assert lines[0].startswith(f"Повторная заявка с сайта №{second} (первая — №{first}) · ")
@@ -267,8 +272,26 @@ def test_repeat_whose_first_request_has_no_deal_makes_one_and_the_next_repeat_jo
     third, _ = post_lead(client, kind="litter")
     assert db.scalar(select(Lead.parent_id).where(Lead.id == third)) == first
     notify.deliver_due(db, client=fake.client())
-    assert fake.keys()[3:] == ["POST notes"] and fake.calls[-1].path == "leads/5001/notes"
+    assert fake.keys()[3:] == ["GET leads/5001", "POST notes"] and fake.calls[-1].path == "leads/5001/notes"
     assert len(fake.deals) == 1
+
+
+def test_repeat_after_the_deal_was_deleted_or_declined_makes_a_new_deal_and_the_next_repeat_joins_it(client, db, amo):
+    first, _ = post_lead(client, kind="price")
+    fake = FakeAmo()
+    notify.deliver_due(db, client=fake.client())
+    fake.deals.clear()  # the manager declined it in «Неразобранное» (or deleted the deal): GET leads/5001 → 204
+    second, _ = post_lead(client, kind="video_call")
+    assert notify.deliver_due(db, client=fake.client())["sent"] == 1
+    assert fake.keys()[3:] == ["GET leads/5001", "GET contacts", "POST leads/complex", "POST notes"]
+    assert fake.of("POST leads/complex")[1].body[0]["name"].startswith(f"Заявка с сайта №{second}:")
+    assert fake.note().startswith(f"Повторная заявка с сайта №{second} (первая — №{first})")
+    assert amo_state(db, second) == {"gone": 5001, "lead_id": 5002, "contact_id": 9002, "note": True}
+
+    third, _ = post_lead(client, kind="litter")  # joins the newest deal of the person, not the gone one
+    notify.deliver_due(db, client=fake.client())
+    assert fake.keys()[7:] == ["GET leads/5002", "POST notes"] and fake.calls[-1].path == "leads/5002/notes"
+    assert amo_state(db, third) == {"lead_id": 5002, "to_request": first, "note": True}
 
 
 def test_repeat_waits_while_the_deal_of_the_first_request_is_still_being_sent(client, db, amo):
@@ -290,6 +313,62 @@ def test_repeat_waits_while_the_deal_of_the_first_request_is_still_being_sent(cl
     assert len(fake.deals) == 1
     assert [c.path for c in fake.of("POST notes")] == ["leads/5001/notes", "leads/5001/notes"]
     assert amo_state(db, second)["lead_id"] == 5001
+
+
+# ---------------------------------------------------------------- «Неразобранное»
+def test_unsorted_the_request_lands_in_nerazobrannoe_as_a_form_request_with_the_contact(client, db, amo):
+    amo.amocrm_unsorted = True
+    amo.admin_base_url = "https://xn----dtbefzjjef0i.xn--p1ai/admin/#/leads?lead={id}"
+    lead_id, _ = post_lead(client, breed="maltipu", kind="price", form_title="Узнать цену на щенка")
+    fake = FakeAmo(contacts=[{"id": 777, "custom_fields_values": [
+        {"field_code": "PHONE", "values": [{"value": PHONE_E164}]}]}])
+    assert notify.deliver_due(db, client=fake.client())["sent"] == 1
+    assert fake.keys() == ["GET contacts", "POST leads/complex", "POST notes"]
+    (deal,) = fake.of("POST leads/complex")[0].body
+    created = db.scalar(select(Lead.created_at).where(Lead.id == lead_id))
+    # a form request: amoCRM puts a deal with metadata into «Неразобранное» of the pipeline, so no stage is sent
+    assert "status_id" not in deal and deal["pipeline_id"] == PIPELINE
+    assert deal["_embedded"]["metadata"] == {
+        "category": "forms", "form_id": "site-price", "form_name": "Узнать цену на щенка",
+        "form_page": "https://xn----dtbefzjjef0i.xn--p1ai/maltipu/", "form_sent_at": int(created.timestamp())}
+    assert deal["_embedded"]["contacts"] == [{"id": 777}]  # the person's contact, not a copy
+    assert "ip" not in deal["_embedded"]["metadata"]       # only what the consent names goes to amoCRM
+    assert fake.calls[-1].path == "leads/5001/notes"
+
+
+def test_unsorted_without_admin_links_the_page_is_on_the_first_own_host(client, db, amo):
+    amo.amocrm_unsorted, amo.admin_base_url = True, ""
+    post_lead(client, breed="", kind="consult")
+    fake = FakeAmo()
+    notify.deliver_due(db, client=fake.client())
+    meta = fake.of("POST leads/complex")[0].body[0]["_embedded"]["metadata"]
+    assert meta["form_page"].startswith(f"https://{amo.own_hosts[0]}/") and meta["form_name"] == "Консультация"
+
+
+def test_notify_check_unsorted_marks_nerazobrannoe_and_the_test_deal_is_a_form_request(amo, check, capsys):
+    amo.amocrm_unsorted = True
+    code, out = run(capsys, "--send")
+    assert code == 0, out
+    assert "60000  Неразобранное (неразобранное)  ← сюда" in out
+    assert "этап «Неразобранное» (заявкой с формы: менеджер принимает её или отклоняет)" in out
+    (deal,) = check.of("POST leads/complex")[0].body
+    assert "status_id" not in deal and deal["_embedded"]["metadata"]["category"] == "forms"
+    assert deal["_embedded"]["metadata"]["form_name"] == "Проверка интеграции"
+
+
+def test_notify_check_the_unsorted_stage_id_alone_is_flagged(amo, check, capsys):
+    amo.amocrm_status_id = 60000  # «Неразобранное» as an ordinary stage: leads/complex would not put a deal there
+    code, out = run(capsys, "--send")
+    assert code == 1, out
+    assert "впишите DSH_AMOCRM_UNSORTED=1 вместо DSH_AMOCRM_STATUS_ID" in out
+    assert check.of("POST leads/complex") == []
+
+
+def test_notify_check_unsorted_in_a_pipeline_without_it_is_flagged(amo, check, capsys):
+    amo.amocrm_unsorted, amo.amocrm_pipeline_id = True, OTHER_PIPELINE
+    code, out = run(capsys)
+    assert code == 1, out
+    assert "в воронке «Стартовые наборы» выключено «Неразобранное»" in out
 
 
 # ---------------------------------------------------------------- failures half-way

@@ -109,6 +109,9 @@ class Settings(BaseSettings):
     amocrm_token: str = ""
     amocrm_pipeline_id: int | None = None          # воронка; empty → the main one (ids: `python -m app notify-check`)
     amocrm_status_id: int | None = None            # этап of that pipeline; empty → its first stage
+    # true: a request lands in «Неразобранное» of the pipeline as a form request (the manager accepts or declines it);
+    # DSH_AMOCRM_STATUS_ID is then not used
+    amocrm_unsorted: bool = False
     amocrm_responsible_user_id: int | None = None  # empty → the user who made the token
     amocrm_tags: CSV = Field(default_factory=lambda: ["сайт"])  # on every deal, besides the breed and the kind
     # API address; empty → https://<subdomain>.amocrm.ru. Change only for a test stub

@@ -428,7 +428,9 @@ def _check_amocrm(s, client, send: bool) -> int:
         return len(target["problems"])
     pipe, status = target["pipeline"], target["status"]
     print(f"  ✓ новые сделки: воронка «{pipe['name'] if pipe else '—'}», "
-          f"этап «{status['name'] if status else 'первый этап воронки'}», ответственный — "
+          f"этап «{status['name'] if status else 'первый этап воронки'}»"
+          + (" (заявкой с формы: менеджер принимает её или отклоняет)" if s.amocrm_unsorted else "")
+          + ", ответственный — "
           + (f"пользователь {s.amocrm_responsible_user_id}" if s.amocrm_responsible_user_id is not None
              else "тот, кто выпустил токен") + f"; теги: {', '.join(s.amocrm_tags) or '—'}")
     if not send:
