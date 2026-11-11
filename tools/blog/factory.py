@@ -6,14 +6,16 @@
     python3 tools/blog/factory.py next [N] [--json]   следующие N тем, которые надо написать (по порядку плана)
     python3 tools/blog/factory.py brief <slug>        задание писателю: карточка, правила по месяцу, ссылки, фото
     python3 tools/blog/factory.py photos [--rebuild] [<slug>]   каталог фото сайта / кандидаты для статьи
-    python3 tools/blog/factory.py img <slug> <n> <файл> --alt "…"   иллюстрация → assets/img/blog/<slug>-<n>.jpg
+    python3 tools/blog/factory.py illus <slug>        запрос для Figma generate_image в стиле эталона (JSON)
+    python3 tools/blog/factory.py img <slug> <n> <файл> [--alt "…"]   иллюстрация → assets/img/blog/<slug>-<n>.jpg
     python3 tools/blog/factory.py lint [<slug>…]      проверка черновиков (без аргументов — все)
     python3 tools/blog/factory.py approve <slug> [--note …] | hold <slug> | draft <slug>
     python3 tools/blog/factory.py publish [--date ГГГГ-ММ-ДД] [--dry-run] [--force]
     python3 tools/blog/factory.py unpublish <slug>
 
 Файлы: content/blog/plan.json (план), content/blog/posts/<slug>.json (статьи завода),
-content/blog/published.json (что вышло — пишет только publish), content/blog/photos.json (каталог фото).
+content/blog/published.json (что вышло — пишет только publish), content/blog/photos.json (каталог фото),
+content/blog/figma.json (стиль иллюстраций и эталон), content/blog/illustrations.json (откуда каждая иллюстрация).
 Правила текста: content/blog/ПРАВИЛА.md. Как устроен завод: content/blog/README.md.
 Коды выхода: 0 — ок; 1 — ошибки проверки; 2 — неверный вызов; 3 — публиковать нечего (буфер пуст)."""
 
@@ -31,6 +33,8 @@ POSTS = BLOG / "posts"
 PLAN = BLOG / "plan.json"
 PUBLISHED = BLOG / "published.json"
 PHOTOS = BLOG / "photos.json"
+FIGMA = BLOG / "figma.json"
+ILLUS = BLOG / "illustrations.json"
 LEGACY = ROOT / "src" / "data" / "blog-posts.json"
 PUBLISH_JSON = ROOT / "src" / "data" / "publish.json"
 IMG = ROOT / "assets" / "img"
@@ -221,6 +225,8 @@ def build_catalog():
     alts = {}
     for f in sorted((ROOT / "src" / "data").glob("*.json")):
         _walk_alts(load(f), alts)
+    for src, rec in load(ILLUS, {"items": {}})["items"].items():
+        alts.setdefault(src, []).append(rec["alt"])
     blog_use = {}
     for slug, p in legacy().items():
         _count_photos(p, blog_use)
@@ -452,6 +458,12 @@ def lint_one(slug, pub=None, for_publish=False):
     if len(set(srcs)) != len(srcs):
         errors.append("одно и то же фото дважды в тексте")
     for x in ph + [p["cover"]] + ([p["hero"]] if p.get("hero") else []):
+        if x.get("src", "").startswith("/assets/img/blog/"):
+            said = (x.get("alt", "") + " " + x.get("caption", "")).lower()
+            m = re.search(r"мальтипу|пудел|бульдог|француз|колли|\bнаш\w*|выпускни", said)
+            if m:
+                errors.append(f"иллюстрация {x['src']}: «{m.group(0)}» в подписи — сгенерированное фото не выдаём "
+                              "за щенка питомника и не называем породу")
         if not x.get("alt"):
             errors.append(f"нет alt у {x.get('src')}")
         if not (ROOT / x.get("src", "/").lstrip("/")).is_file():
@@ -591,8 +603,12 @@ def cmd_brief(a):
     lines.append("Вертикальные (photos — по две):")
     lines += [f"  {it['src']} — {it['alt']}{' (подпись по имени файла)' if it['auto_alt'] else ''}"
               f"{' · уже в ' + str(it['in_blog']) + ' ст.' if it['in_blog'] else ''}" for it in port]
-    if c.get("illus"):
-        lines.append(f"Иллюстрация (если сделана): /assets/img/blog/{c['slug']}-1.jpg — сцена: {c['illus']}")
+    ready = {src: r for src, r in load(ILLUS, {"items": {}})["items"].items() if r.get("slug") == c["slug"]}
+    for src, r in ready.items():
+        lines.append(f"Иллюстрация к этой статье (готова, стиль эталона): {src} — {r['alt']}. Поставь её в текст "
+                     "(figure) или обложкой; подпись нейтральная, без породы и без «наш щенок».")
+    if c.get("illus") and not ready:
+        lines.append("Иллюстрации нет (не сгенерирована) — статья обходится реальными фото.")
     print("\n".join(lines))
     return 0
 
@@ -609,21 +625,62 @@ def cmd_photos(a):
     return 0
 
 
+def illus_request(c):
+    """Запрос к Figma generate_image для карточки: стиль эталона (figma.json → style) + тип кадра + сцена.
+    Одни и те же слова для каждой картинки — поэтому все иллюстрации блога в одном стиле."""
+    f = load(FIGMA)
+    st = f["style"]
+    if not c.get("illus_en"):
+        raise SystemExit(f"{c['slug']}: в карточке нет illus_en — иллюстрация не нужна")
+    kind = c.get("illus_set", "home")
+    if kind not in st["sets"]:
+        raise SystemExit(f"{c['slug']}: illus_set «{kind}» — один из: {', '.join(st['sets'])}")
+    parts = [st["base"]] + ([st["interior"]] if kind in st.get("interior_sets", []) else []) + [st["sets"][kind]]
+    if c.get("illus_dog"):
+        parts.append(st["puppy"])
+    parts += ["Scene: " + c["illus_en"].strip(), st["negative"]]
+    return dict(slug=c["slug"], fileKey=f["fileKey"], model=f["model"], width=f["width"], height=f["height"],
+                prompt=" ".join(parts), alt=c["illus"], style=st["name"], style_version=st["version"],
+                reference=st["reference"])
+
+
+def cmd_illus(a):
+    print(json.dumps(illus_request(card_of(a.slug)), ensure_ascii=False, indent=2))
+    return 0
+
+
 def cmd_img(a):
-    """Иллюстрация (картинка из Figma или своя) → assets/img/blog/<slug>-<n>.jpg, до 1600 px, JPEG 82."""
+    """Иллюстрация (картинка из Figma или своя) → assets/img/blog/<slug>-<n>.jpg, до 1600 px, JPEG 82.
+    Запоминает в content/blog/illustrations.json подпись, запрос, модель и версию стиля."""
     try:
         from PIL import Image
     except ImportError:
         print("нужен Pillow: pip install pillow", file=sys.stderr)
         return 2
-    card_of(a.slug)
+    c = card_of(a.slug)
+    alt = a.alt or c.get("illus")
+    if not alt:
+        print("нужна подпись: --alt «…»", file=sys.stderr)
+        return 2
     dst = IMG / "blog" / f"{a.slug}-{a.n}.jpg"
     dst.parent.mkdir(parents=True, exist_ok=True)
     im = Image.open(a.file).convert("RGB")
     im.thumbnail((1600, 1600))
     im.save(dst, "JPEG", quality=82, optimize=True, progressive=True)
     src = "/" + dst.relative_to(ROOT).as_posix()
-    print(json.dumps({"src": src, "alt": a.alt, "w": im.width, "h": im.height}, ensure_ascii=False))
+    rec = dict(slug=a.slug, alt=alt, w=im.width, h=im.height, date=today_msk().isoformat())
+    if c.get("illus_en") and not a.custom:
+        req = illus_request(c)
+        prompt = Path(a.prompt_file).read_text(encoding="utf-8").strip() if a.prompt_file else req["prompt"]
+        rec.update(model=req["model"], style=req["style"], style_version=req["style_version"], prompt=prompt)
+    else:
+        rec.update(model="", style="своя картинка", style_version=0, prompt="")
+    data = load(ILLUS, {"_note": "Откуда каждая иллюстрация блога: статья, подпись, модель Figma, версия стиля "
+                                 "(content/blog/figma.json → style) и точный запрос. Пишет factory.py img.",
+                        "items": {}})
+    data["items"][src] = rec
+    save(ILLUS, data)
+    print(json.dumps({"src": src, "alt": alt, "w": im.width, "h": im.height}, ensure_ascii=False))
     return 0
 
 
@@ -752,11 +809,15 @@ def main(argv=None):
     x = sub.add_parser("photos")
     x.add_argument("slug", nargs="?")
     x.add_argument("--rebuild", action="store_true")
+    x = sub.add_parser("illus")
+    x.add_argument("slug")
     x = sub.add_parser("img")
     x.add_argument("slug")
     x.add_argument("n", type=int)
     x.add_argument("file")
-    x.add_argument("--alt", required=True)
+    x.add_argument("--alt", help="подпись; по умолчанию — сцена из карточки (illus)")
+    x.add_argument("--custom", action="store_true", help="картинка не из Figma по стилю (своё фото, схема)")
+    x.add_argument("--prompt-file", help="точный запрос, если он отличался от factory.py illus")
     x = sub.add_parser("lint")
     x.add_argument("slugs", nargs="*")
     x = sub.add_parser("approve")

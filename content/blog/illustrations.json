@@ -1,0 +1,16 @@
+{
+  "_note": "Откуда каждая иллюстрация блога: статья, подпись, модель Figma, версия стиля (content/blog/figma.json → style) и точный запрос. Пишет factory.py img.",
+  "items": {
+    "/assets/img/blog/chto-kupit-shchenku-1.jpg": {
+      "slug": "chto-kupit-shchenku",
+      "alt": "Пример набора для щенка на полу: лежанка, миски, пелёнки, мячик, шлейка с поводком",
+      "w": 1264,
+      "h": 848,
+      "date": "2026-11-11",
+      "model": "gemini-3.1-flash-lite-image",
+      "style": "эталон стиля «Тёплый скандинавский дом»",
+      "style_version": 1,
+      "prompt": "Photorealistic photo for a puppy care blog. Soft natural daylight, warm cream and beige home interior, shallow depth of field. No text, no letters, no logos, no watermark. Scene: a new puppy starter kit on a light wooden floor — a soft round dog bed, two ceramic bowls, a stack of puppy training pads, a small ball and a harness with a leash; no dog in the frame."
+    }
+  }
+}

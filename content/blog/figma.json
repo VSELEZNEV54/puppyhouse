@@ -1,8 +1,42 @@
 {
-  "_note": "Файл Figma для иллюстраций блога (команда «Moon дизайн-студия», Pro). generate_image тратит AI-кредиты Figma этой команды — не токены Claude. model — самая дешёвая модель; хватает для сцен с предметами. Одна иллюстрация на статью, только если в карточке плана есть illus.",
+  "_note": "Иллюстрации блога. Файл Figma — команда «Moon дизайн-студия» (Pro). generate_image тратит AI-кредиты Figma этой команды, не токены Claude. Одна иллюстрация на статью, только если в карточке плана есть illus. Запрос не писать руками: python3 tools/blog/factory.py illus <slug> собирает его из style ниже — так все картинки в одном стиле. Модель и размер не менять: от них зависит вид.",
   "fileKey": "qg0yABKOcPF6uSaCl8Ovs2",
   "file_url": "https://www.figma.com/design/qg0yABKOcPF6uSaCl8Ovs2",
   "model": "gemini-3.1-flash-lite-image",
   "width": 1536,
-  "height": 1024
+  "height": 1024,
+  "style": {
+    "name": "Тёплый скандинавский дом",
+    "version": 1,
+    "reference": "/assets/img/blog/chto-kupit-shchenku-1.jpg",
+    "reference_note": "Эталон утвердил владелец 11.11.2026: «вот такого же стиля и нужно придерживаться». Каждую новую картинку сравнивать с ним.",
+    "reference_prompt": "Photorealistic photo for a puppy care blog. Soft natural daylight, warm cream and beige home interior, shallow depth of field. No text, no letters, no logos, no watermark. Scene: a new puppy starter kit on a light wooden floor — a soft round dog bed, two ceramic bowls, a stack of puppy training pads, a small ball and a harness with a leash; no dog in the frame.",
+    "rules_ru": [
+      "Фотореализм, как кадр из журнала об интерьере: спокойно, светло, много воздуха.",
+      "Свет — мягкий дневной из окна, тёплый и рассеянный, тени мягкие. Без вспышки и резкого контраста.",
+      "Палитра — крем, айвори, тёплый бежевый, песок, светлый дуб медового оттенка. Акценты маленькие и приглушённые: пудрово-голубой, приглушённый бирюзовый, оливковая зелень растения.",
+      "Фактуры — светлый дубовый пол, плетёный джутовый ковёр, лён, мех-шерпа, крапчатая керамика, ротанг, вязаный плед.",
+      "Камера низко, на уровне колена, объектив 35 мм, малая глубина резкости: предмет резкий в нижних двух третях горизонтального кадра, сверху спокойное пустое место, фон мягко размыт.",
+      "Обработка — тёплый баланс белого, низкий контраст, мягкие тени, чуть приглушённые цвета.",
+      "Только то, что нужно сцене. Без текста, логотипов, этикеток, водяных знаков, лиц людей.",
+      "Щенок, если он в кадре, — один маленький пушистый, кремовый, абрикосовый или светло-карамельный, с естественной анатомией, ведёт себя спокойно и естественно. Не выдаём его за щенка питомника и не называем породу."
+    ],
+    "base": "Photorealistic lifestyle photograph for a puppy-care blog, always in one consistent house style: calm, airy and minimal, like an editorial photo from a Scandinavian interior magazine. Soft natural daylight, warm and diffused, gentle soft shadows. Warm neutral palette of cream, ivory, warm beige, sand and honey-toned light oak, with only small muted accents (powder blue, muted teal, soft olive green). Warm white balance, low contrast, soft lifted shadows, gently muted colours. Uncluttered: only the objects the scene needs.",
+    "interior": "Indoors: the daylight comes from a window on the left. Natural tactile materials: light oak wide-plank floor, woven jute rug, linen, boucle and sherpa, speckled cream stoneware, rattan, knitted throws.",
+    "interior_sets": [
+      "home",
+      "closeup",
+      "flatlay",
+      "car"
+    ],
+    "sets": {
+      "home": "Setting: a bright minimal Scandinavian home; the background is softly blurred (cream walls, sheer linen curtains, light oak, a houseplant in a cream pot where it fits the room). Camera at knee height, looking slightly down, 35 mm lens, shallow depth of field: the subject is sharp in the lower two-thirds of a landscape frame with calm empty space above.",
+      "closeup": "Setting: the same bright minimal Scandinavian home, the background reduced to a soft blur of cream and light oak. Close-up with an 85 mm lens and very shallow depth of field, landscape frame. Hands may appear (natural skin, no jewellery, cuffs of a cream knit sweater); never show faces.",
+      "flatlay": "Setting: an overhead flat lay on honey-toned light oak boards with a softly crumpled cream linen cloth; objects neatly spaced with generous empty space; soft even window light from the left with gentle shadows. Camera directly above, landscape frame.",
+      "outdoor": "Setting: outdoors in soft overcast daylight, the background softly blurred and muted (snowy park path, bare trees), the same warm cream and beige palette carried by the clothing and accessories; camera low at the dog's eye level, 50 mm lens, shallow depth of field, landscape frame.",
+      "car": "Setting: the back seat of a car with light beige upholstery, soft daylight through the side window, the same warm cream palette; camera at seat height, 35 mm lens, shallow depth of field, landscape frame."
+    },
+    "puppy": "The puppy: one small fluffy puppy with a cream, apricot or light caramel coat that matches the palette, realistic anatomy and natural proportions (four legs, natural paws, clear eyes), relaxed natural behaviour, photographed candidly rather than as a studio portrait.",
+    "negative": "No text, no letters, no numbers, no logos, no brand names, no packaging labels, no watermark, no people's faces, no cartoon or illustration style, no 3D-render look, no saturated colours, no harsh flash, no busy patterns, no clutter."
+  }
 }
