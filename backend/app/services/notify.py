@@ -501,10 +501,46 @@ def _amo_new_deal(s: Settings, client: httpx.Client, lead: Lead, contact_id: int
     return int(made["id"]), made.get("contact_id") or contact_id
 
 
-def _amo_deal_exists(s: Settings, client: httpx.Client, deal: int) -> bool:
-    """GET leads/{id}: 204 — there is no such deal (deleted, or its «Неразобранное» was declined)."""
-    r = _amo(s, client, "GET", f"leads/{int(deal)}")
-    return r.status_code != 204 and bool(r.content)
+def _amo_get(s: Settings, client: httpx.Client, what: str, entity_id: int) -> dict | None:
+    """GET leads/{id} or contacts/{id}; None — there is none (204: deleted, or its «Неразобранное» was declined)."""
+    r = _amo(s, client, "GET", f"{what}/{int(entity_id)}")
+    return r.json() if r.status_code != 204 and r.content else None
+
+
+def _amo_known_contact(s: Settings, client: httpx.Client, db: Session, lead: Lead) -> int | None:
+    """The amoCRM contact an earlier request of this person (the same contact in our base) already has — while that
+    request waits in «Неразобранное», amoCRM's search does not see its contact, and a second one must not appear."""
+    for details in db.scalars(select(Lead.details).where(Lead.contact_id == lead.contact_id, Lead.id != lead.id)
+                              .order_by(Lead.id.desc())):
+        known = ((details or {}).get("amocrm") or {}).get("contact_id")
+        if known:
+            return int(known) if _amo_get(s, client, "contacts", known) else None
+    return None
+
+
+_REPEATS = re.compile(r" · \+\d+ повторн\w*$")
+
+
+def _repeats_word(n: int) -> str:
+    """The admin's «+2 повторных» badge: повторный / повторных."""
+    return "повторный" if n % 10 == 1 and n % 100 != 11 else "повторных"
+
+
+def _amo_mark_repeats(s: Settings, client: httpx.Client, db: Session, lead: Lead, deal: int) -> None:
+    """The deal's name shows how many repeat requests the person's card has, like the admin list: «… · +2
+    повторных». Best effort: a deal amoCRM no longer has or will not rename does not fail the delivery."""
+    current = _amo_get(s, client, "leads", deal)
+    if current is None:
+        return
+    n = db.scalar(select(func.count()).select_from(Lead).where(Lead.parent_id == lead.parent_id,
+                                                                 Lead.id <= lead.id)) or 0
+    name = str(current.get("name") or "")
+    new = f"{_REPEATS.sub('', name)} · +{n} {_repeats_word(n)}"[:255]
+    if n and new != name:
+        try:
+            _amo(s, client, "PATCH", f"leads/{int(deal)}", json={"name": new})
+        except Permanent as e:
+            log.warning("amoCRM: the deal %s was not renamed: %s", deal, e)
 
 
 def _amo_find_deal(s: Settings, client: httpx.Client, lead: Lead) -> tuple[int, int | None] | None:
@@ -539,7 +575,8 @@ def _amo_first_deal(db: Session, item: Outbox, lead: Lead) -> int | None:
 
 def _send_amocrm(item: Outbox, lead: Lead, db: Session, s: Settings, client: httpx.Client) -> None:
     """The deal with the contact, then the note with the request; a repeat request is only a note in the deal of the
-    person's first request. Each step is written to lead.details["amocrm"] at once and committed with the outbox row
+    person's first request, and the deal's name counts the repeats («+2 повторных»). One contact per person: the one an
+    earlier request made, else the one with this number. Each step is written to lead.details["amocrm"] at once and committed with the outbox row
     even when a later step fails: a retry goes on from there and never makes a second deal."""
     # read afresh and locked before anything is sent: an erasure in flight goes first (then this one finds the
     # person erased), and nothing else writes leads.details meanwhile
@@ -553,27 +590,29 @@ def _send_amocrm(item: Outbox, lead: Lead, db: Session, s: Settings, client: htt
         state.update(kw)
         lead.details = {**(lead.details or {}), "amocrm": dict(state)}  # a new object: SQLAlchemy sees the change
 
-    if state.get("note"):
-        return  # done by an earlier attempt (the row was revived by notify-retry)
-    if not state.get("lead_id") and state.pop("creating", None):  # asked for the deal last time, got no answer
-        found = _amo_find_deal(s, client, lead)
-        if found:
-            save(lead_id=found[0], contact_id=found[1])
-    if not state.get("lead_id") and item.event == "lead.repeat" and lead.parent_id:
-        deal = _amo_first_deal(db, item, lead)
-        if deal and _amo_deal_exists(s, client, deal):
-            save(lead_id=deal, to_request=lead.parent_id)
-        elif deal:  # the manager deleted that deal or declined it in «Неразобранное»: this request gets its own
-            save(gone=deal)
-    if not state.get("lead_id"):
-        contact_id = _amo_contact(s, client, lead.phone)
-        save(creating=True)
-        deal, contact_id = _amo_new_deal(s, client, lead, contact_id)
-        state.pop("creating")
-        save(lead_id=deal, contact_id=contact_id)
-    _amo(s, client, "POST", f"leads/{int(state['lead_id'])}/notes",
-         json=[{"note_type": "common", "params": {"text": amocrm_note(lead, item.event, s)}}])
-    save(note=True)
+    if not state.get("note"):  # else done by an earlier attempt (the row was revived by notify-retry)
+        if not state.get("lead_id") and state.pop("creating", None):  # asked for the deal last time, no answer
+            found = _amo_find_deal(s, client, lead)
+            if found:
+                save(lead_id=found[0], contact_id=found[1])
+        if not state.get("lead_id") and item.event == "lead.repeat" and lead.parent_id:
+            deal = _amo_first_deal(db, item, lead)
+            if deal and _amo_get(s, client, "leads", deal):
+                save(lead_id=deal, to_request=lead.parent_id)
+            elif deal:  # the manager deleted that deal or declined it in «Неразобранное»: this request gets its own
+                save(gone=deal)
+        if not state.get("lead_id"):
+            contact_id = _amo_known_contact(s, client, db, lead) or _amo_contact(s, client, lead.phone)
+            save(creating=True)
+            deal, contact_id = _amo_new_deal(s, client, lead, contact_id)
+            state.pop("creating")
+            save(lead_id=deal, contact_id=contact_id)
+        _amo(s, client, "POST", f"leads/{int(state['lead_id'])}/notes",
+             json=[{"note_type": "common", "params": {"text": amocrm_note(lead, item.event, s)}}])
+        save(note=True)
+    if item.event == "lead.repeat" and lead.parent_id and not state.get("counted"):
+        _amo_mark_repeats(s, client, db, lead, int(state["lead_id"]))
+        save(counted=True)
 
 
 def _send(item: Outbox, db: Session, s: Settings, client: httpx.Client) -> None:

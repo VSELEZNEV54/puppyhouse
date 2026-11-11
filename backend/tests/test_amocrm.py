@@ -49,6 +49,7 @@ class FakeAmo:
         self.deals: list[dict] = []
         self.calls: list[SimpleNamespace] = []
         self.next_deal, self.next_contact = 5001, 9001
+        self.made_contacts: set[int] = set()
 
     def __call__(self, request: httpx.Request) -> httpx.Response:
         assert str(request.url).startswith(API + "/api/v4/"), request.url
@@ -80,6 +81,7 @@ class FakeAmo:
             contact_id = contact.get("id")
             if contact_id is None:
                 contact_id, self.next_contact = self.next_contact, self.next_contact + 1
+                self.made_contacts.add(contact_id)
             deal = {"id": self.next_deal, "name": body[0]["name"], "_embedded": {"contacts": [{"id": contact_id}]}}
             self.next_deal += 1
             self.deals.append(deal)
@@ -88,6 +90,16 @@ class FakeAmo:
         if key.startswith("GET leads/") and path.split("/")[1].isdigit():  # one deal; 204 — no such deal
             deal = next((d for d in self.deals if d["id"] == int(path.split("/")[1])), None)
             return httpx.Response(200, json=deal) if deal else httpx.Response(204)
+        if key.startswith("PATCH leads/"):
+            deal = next((d for d in self.deals if d["id"] == int(path.split("/")[1])), None)
+            if deal is None:
+                return httpx.Response(400, json={"title": "Bad Request", "status": 400})
+            deal["name"] = body["name"]
+            return httpx.Response(200, json={"id": deal["id"]})
+        if key.startswith("GET contacts/"):  # one contact; 204 — deleted
+            cid = int(path.split("/")[1])
+            ok = cid in self.made_contacts or any(c["id"] == cid for c in self.contacts)
+            return httpx.Response(200, json={"id": cid}) if ok else httpx.Response(204)
         if key == "GET leads":
             found = [d for d in self.deals if request.url.params["query"] in d["name"]]
             return httpx.Response(200, json={"_embedded": {"leads": found}}) if found else httpx.Response(204)
@@ -245,14 +257,17 @@ def test_repeat_request_is_a_note_in_the_deal_of_the_first_request(client, db, a
     assert [(o.lead_id, o.event) for o in outbox(db)] == [(first, "lead.created"), (second, "lead.repeat")]
 
     assert notify.deliver_due(db, client=fake.client())["sent"] == 1
-    # the deal is still there (not deleted, not declined) → the note goes to it
-    assert fake.keys() == ["GET contacts", "POST leads/complex", "POST notes", "GET leads/5001", "POST notes"]
-    assert fake.calls[-1].path == "leads/5001/notes"
+    # the deal is still there (not deleted, not declined) → the note goes to it, and its name counts the repeats
+    assert fake.keys() == ["GET contacts", "POST leads/complex", "POST notes",
+                           "GET leads/5001", "POST notes", "GET leads/5001", "PATCH leads/5001"]
+    assert fake.of("POST notes")[-1].path == "leads/5001/notes"
+    assert fake.deals[0]["name"] == f"Заявка с сайта №{first}: Мальтипу — Узнать цену · +1 повторный"
     lines = fake.note().splitlines()
     assert lines[0].startswith(f"Повторная заявка с сайта №{second} (первая — №{first}) · ")
     assert "Что нужно: Видеозвонок со щенком" in lines and "Человек уже обращался раньше" in lines
-    assert amo_state(db, second) == {"lead_id": 5001, "to_request": first, "note": True}
+    assert amo_state(db, second) == {"lead_id": 5001, "to_request": first, "note": True, "counted": True}
     assert amo_state(db, first) == {"lead_id": 5001, "contact_id": 9001, "note": True}  # the first is not touched
+    assert len(fake.deals) == 1
 
 
 def test_repeat_whose_first_request_has_no_deal_makes_one_and_the_next_repeat_joins_it(client, db, amo, settings):
@@ -263,17 +278,18 @@ def test_repeat_whose_first_request_has_no_deal_makes_one_and_the_next_repeat_jo
     second, _ = post_lead(client, kind="video_call")
     fake = FakeAmo()
     assert notify.deliver_due(db, client=fake.client())["sent"] == 1
-    assert fake.keys() == ["GET contacts", "POST leads/complex", "POST notes"]
+    assert fake.keys() == ["GET contacts", "POST leads/complex", "POST notes", "GET leads/5001", "PATCH leads/5001"]
     assert fake.of("POST leads/complex")[0].body[0]["name"] == \
         f"Заявка с сайта №{second}: Мальтипу — Видеозвонок со щенком"
     assert fake.note().startswith(f"Повторная заявка с сайта №{second} (первая — №{first})")
-    assert amo_state(db, second) == {"lead_id": 5001, "contact_id": 9001, "note": True}
+    assert amo_state(db, second) == {"lead_id": 5001, "contact_id": 9001, "note": True, "counted": True}
 
     third, _ = post_lead(client, kind="litter")
     assert db.scalar(select(Lead.parent_id).where(Lead.id == third)) == first
     notify.deliver_due(db, client=fake.client())
-    assert fake.keys()[3:] == ["GET leads/5001", "POST notes"] and fake.calls[-1].path == "leads/5001/notes"
-    assert len(fake.deals) == 1
+    assert fake.keys()[5:] == ["GET leads/5001", "POST notes", "GET leads/5001", "PATCH leads/5001"]
+    assert fake.of("POST notes")[-1].path == "leads/5001/notes"
+    assert len(fake.deals) == 1 and fake.deals[0]["name"].endswith(" — Видеозвонок со щенком · +2 повторных")
 
 
 def test_repeat_after_the_deal_was_deleted_or_declined_makes_a_new_deal_and_the_next_repeat_joins_it(client, db, amo):
@@ -283,15 +299,53 @@ def test_repeat_after_the_deal_was_deleted_or_declined_makes_a_new_deal_and_the_
     fake.deals.clear()  # the manager declined it in «Неразобранное» (or deleted the deal): GET leads/5001 → 204
     second, _ = post_lead(client, kind="video_call")
     assert notify.deliver_due(db, client=fake.client())["sent"] == 1
-    assert fake.keys()[3:] == ["GET leads/5001", "GET contacts", "POST leads/complex", "POST notes"]
-    assert fake.of("POST leads/complex")[1].body[0]["name"].startswith(f"Заявка с сайта №{second}:")
+    # the new deal is the person's own contact again: one client card in amoCRM
+    assert fake.keys()[3:] == ["GET leads/5001", "GET contacts/9001", "POST leads/complex", "POST notes",
+                               "GET leads/5002", "PATCH leads/5002"]
+    (deal,) = fake.of("POST leads/complex")[1].body
+    assert deal["name"].startswith(f"Заявка с сайта №{second}:") and deal["_embedded"]["contacts"] == [{"id": 9001}]
     assert fake.note().startswith(f"Повторная заявка с сайта №{second} (первая — №{first})")
-    assert amo_state(db, second) == {"gone": 5001, "lead_id": 5002, "contact_id": 9002, "note": True}
+    assert amo_state(db, second) == {"gone": 5001, "lead_id": 5002, "contact_id": 9001, "note": True, "counted": True}
 
     third, _ = post_lead(client, kind="litter")  # joins the newest deal of the person, not the gone one
     notify.deliver_due(db, client=fake.client())
-    assert fake.keys()[7:] == ["GET leads/5002", "POST notes"] and fake.calls[-1].path == "leads/5002/notes"
-    assert amo_state(db, third) == {"lead_id": 5002, "to_request": first, "note": True}
+    assert fake.keys()[9:] == ["GET leads/5002", "POST notes", "GET leads/5002", "PATCH leads/5002"]
+    assert fake.of("POST notes")[-1].path == "leads/5002/notes" and fake.deals[0]["name"].endswith(" · +2 повторных")
+    assert amo_state(db, third) == {"lead_id": 5002, "to_request": first, "note": True, "counted": True}
+
+
+def test_another_breed_of_the_same_person_is_a_new_deal_of_the_same_contact(client, db, amo):
+    post_lead(client, breed="maltipu", kind="price")
+    fake = FakeAmo()
+    notify.deliver_due(db, client=fake.client())
+    second, _ = post_lead(client, breed="toj-pudel", kind="price")  # another breed: its own card, as in the admin
+    assert db.scalar(select(Lead.parent_id).where(Lead.id == second)) is None
+    notify.deliver_due(db, client=fake.client())
+    # the contact comes from our base, not from amoCRM's search: that one does not see a contact of «Неразобранное»
+    assert fake.keys()[3:] == ["GET contacts/9001", "POST leads/complex", "POST notes"]
+    assert fake.of("POST leads/complex")[1].body[0]["_embedded"]["contacts"] == [{"id": 9001}]
+    assert amo_state(db, second) == {"lead_id": 5002, "contact_id": 9001, "note": True}
+
+
+def test_a_contact_deleted_in_amocrm_is_looked_up_by_the_phone_again(client, db, amo):
+    post_lead(client, breed="maltipu")
+    fake = FakeAmo()
+    notify.deliver_due(db, client=fake.client())
+    fake.made_contacts.clear()  # deleted (or went away with a declined request)
+    second, _ = post_lead(client, breed="toj-pudel")
+    notify.deliver_due(db, client=fake.client())
+    assert fake.keys()[3:] == ["GET contacts/9001", "GET contacts", "POST leads/complex", "POST notes"]
+    assert amo_state(db, second)["contact_id"] == 9002
+
+
+def test_a_deal_amocrm_will_not_rename_does_not_fail_the_repeat(client, db, amo, caplog):
+    post_lead(client, kind="price")
+    fake = FakeAmo(fail={"PATCH leads/5001": [httpx.Response(400, json={"title": "Bad Request", "status": 400})]})
+    notify.deliver_due(db, client=fake.client())
+    second, _ = post_lead(client, kind="video_call")
+    assert notify.deliver_due(db, client=fake.client()) == {"sent": 1, "failed": 0, "retry": 0}
+    assert amo_state(db, second)["counted"] is True and "was not renamed" in caplog.text
+    assert notify.deliver_due(db, client=fake.client())["sent"] == 0 and fake.keys().count("PATCH leads/5001") == 1
 
 
 def test_repeat_waits_while_the_deal_of_the_first_request_is_still_being_sent(client, db, amo):
