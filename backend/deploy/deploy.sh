@@ -96,6 +96,12 @@ if ! python3 "$HERE/tools/check_launch.py" --strict --quiet; then
   fi
 fi
 
+# ---- sealed settings (backend/deploy/sealed.sh): values that come through the public repository encrypted for this
+# server → $ETC/sealed.env (compose reads it after api.env); the key's public half goes out with the site
+bash "$HERE/backend/deploy/sealed.sh" key "$ETC" "$HERE/site"
+SEALED_CHANGED="$(bash "$HERE/backend/deploy/sealed.sh" apply "$ETC" "$HERE/backend/deploy/sealed")"
+[ -n "$SEALED_CHANGED" ] && echo "sealed.env: настройки обновлены ($(sed 's/=.*//' "$ETC/sealed.env" | tr '\n' ' '))"
+
 COMPOSE=(docker compose -f "$HERE/backend/docker-compose.yml" --env-file "$ETC/db.env")
 STATE="$APP_ROOT/state"
 mkdir -p "$STATE"
@@ -142,6 +148,9 @@ if ! "${COMPOSE[@]}" up -d --remove-orphans; then
   rollback
   die "контейнеры не запустились (выше — последние строки логов)$hint"
 fi
+if [ -n "$SEALED_CHANGED" ]; then   # new values in sealed.env: the API and the worker take them only when recreated
+  "${COMPOSE[@]}" up -d --no-deps --force-recreate api worker
+fi
 
 say "Проверяю, что API отвечает"
 code=000
@@ -168,6 +177,9 @@ case "$code" in
        die "новый API не запустился (код $code) — выше последние строки его лога" ;;
 esac
 docker tag "domshchenkov-api:$VERSION" domshchenkov-api:latest   # `dsh` and backup.sh use the current image
+if [ -n "$SEALED_CHANGED" ]; then   # e.g. the Telegram proxy has just come: what failed in the last 24 h goes out now
+  "${COMPOSE[@]}" run --rm migrate python -m app notify-retry || true
+fi
 
 # ---- the API of this release runs: record it now, so `dsh` and the next deploy's rollback point to the right release
 # even if a later step (site files, nginx) fails
