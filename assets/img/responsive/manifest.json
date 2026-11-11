@@ -5166,52 +5166,52 @@
       ]
     },
     "/assets/img/hero-four-breeds.jpg": {
-      "sha256": "658bf4438e6c9ed638afd9009a7a4ddbe9974d2814e3ed17fbbae4dfef0444bb",
+      "sha256": "ae7f17fdc2584486fb5f9cb70ddebe6429571d71cb2c54fc2064277f2bbb7dbd",
       "width": 1264,
       "height": 848,
-      "bytes": 147441,
+      "bytes": 143659,
       "variants": [
         {
-          "src": "/assets/img/responsive/hero-four-breeds-954009d3fc25-160.webp",
+          "src": "/assets/img/responsive/hero-four-breeds-c49571476854-160.webp",
           "width": 160,
           "height": 107,
-          "bytes": 2178
+          "bytes": 2116
         },
         {
-          "src": "/assets/img/responsive/hero-four-breeds-954009d3fc25-320.webp",
+          "src": "/assets/img/responsive/hero-four-breeds-c49571476854-320.webp",
           "width": 320,
           "height": 215,
-          "bytes": 5878
+          "bytes": 5632
         },
         {
-          "src": "/assets/img/responsive/hero-four-breeds-954009d3fc25-480.webp",
+          "src": "/assets/img/responsive/hero-four-breeds-c49571476854-480.webp",
           "width": 480,
           "height": 322,
-          "bytes": 10706
+          "bytes": 10202
         },
         {
-          "src": "/assets/img/responsive/hero-four-breeds-954009d3fc25-640.webp",
+          "src": "/assets/img/responsive/hero-four-breeds-c49571476854-640.webp",
           "width": 640,
           "height": 429,
-          "bytes": 16086
+          "bytes": 15734
         },
         {
-          "src": "/assets/img/responsive/hero-four-breeds-954009d3fc25-768.webp",
+          "src": "/assets/img/responsive/hero-four-breeds-c49571476854-768.webp",
           "width": 768,
           "height": 515,
-          "bytes": 21060
+          "bytes": 20790
         },
         {
-          "src": "/assets/img/responsive/hero-four-breeds-954009d3fc25-960.webp",
+          "src": "/assets/img/responsive/hero-four-breeds-c49571476854-960.webp",
           "width": 960,
           "height": 644,
-          "bytes": 29136
+          "bytes": 29558
         },
         {
-          "src": "/assets/img/responsive/hero-four-breeds-954009d3fc25-1264.webp",
+          "src": "/assets/img/responsive/hero-four-breeds-c49571476854-1264.webp",
           "width": 1264,
           "height": 848,
-          "bytes": 44426
+          "bytes": 47506
         }
       ]
     },
@@ -8972,40 +8972,40 @@
       ]
     },
     "/assets/img/parent-maltipu.jpg": {
-      "sha256": "c6f40761ce1fdafabfa55f6a397c9bf3075f822eae14e9ed336b96f30e815a2c",
+      "sha256": "0de97d6589fd1946883d6e29df62ed4e99ad86704d1be968f5aad0c50c33f1e2",
       "width": 928,
       "height": 1152,
-      "bytes": 107021,
+      "bytes": 136980,
       "variants": [
         {
-          "src": "/assets/img/responsive/parent-maltipu-eaa4c401b3b8-160.webp",
+          "src": "/assets/img/responsive/parent-maltipu-11d637a6dd03-160.webp",
           "width": 160,
           "height": 199,
-          "bytes": 1810
+          "bytes": 2578
         },
         {
-          "src": "/assets/img/responsive/parent-maltipu-eaa4c401b3b8-320.webp",
+          "src": "/assets/img/responsive/parent-maltipu-11d637a6dd03-320.webp",
           "width": 320,
           "height": 397,
-          "bytes": 5498
+          "bytes": 7288
         },
         {
-          "src": "/assets/img/responsive/parent-maltipu-eaa4c401b3b8-480.webp",
+          "src": "/assets/img/responsive/parent-maltipu-11d637a6dd03-480.webp",
           "width": 480,
           "height": 596,
-          "bytes": 10444
+          "bytes": 13352
         },
         {
-          "src": "/assets/img/responsive/parent-maltipu-eaa4c401b3b8-640.webp",
+          "src": "/assets/img/responsive/parent-maltipu-11d637a6dd03-640.webp",
           "width": 640,
           "height": 794,
-          "bytes": 15958
+          "bytes": 21014
         },
         {
-          "src": "/assets/img/responsive/parent-maltipu-eaa4c401b3b8-928.webp",
+          "src": "/assets/img/responsive/parent-maltipu-11d637a6dd03-928.webp",
           "width": 928,
           "height": 1152,
-          "bytes": 27868
+          "bytes": 38696
         }
       ]
     },
@@ -12710,46 +12710,46 @@
       ]
     },
     "/assets/img/studio-maltipu-peach.jpg": {
-      "sha256": "e564f90789b249b0310ed5b801e404e48f130eb0790187c70dd9616a5cbbb706",
+      "sha256": "f4720372bda79b422c19adcec439e3226ce52357c5ddacd89db201a9d803ce3f",
       "width": 1024,
       "height": 1024,
-      "bytes": 104725,
+      "bytes": 118122,
       "variants": [
         {
-          "src": "/assets/img/responsive/studio-maltipu-peach-bb7a38048ed8-160.webp",
+          "src": "/assets/img/responsive/studio-maltipu-peach-c4da1bd89287-160.webp",
           "width": 160,
           "height": 160,
-          "bytes": 1396
+          "bytes": 1764
         },
         {
-          "src": "/assets/img/responsive/studio-maltipu-peach-bb7a38048ed8-320.webp",
+          "src": "/assets/img/responsive/studio-maltipu-peach-c4da1bd89287-320.webp",
           "width": 320,
           "height": 320,
-          "bytes": 3828
+          "bytes": 4774
         },
         {
-          "src": "/assets/img/responsive/studio-maltipu-peach-bb7a38048ed8-480.webp",
+          "src": "/assets/img/responsive/studio-maltipu-peach-c4da1bd89287-480.webp",
           "width": 480,
           "height": 480,
-          "bytes": 7130
+          "bytes": 8926
         },
         {
-          "src": "/assets/img/responsive/studio-maltipu-peach-bb7a38048ed8-640.webp",
+          "src": "/assets/img/responsive/studio-maltipu-peach-c4da1bd89287-640.webp",
           "width": 640,
           "height": 640,
-          "bytes": 11260
+          "bytes": 14044
         },
         {
-          "src": "/assets/img/responsive/studio-maltipu-peach-bb7a38048ed8-960.webp",
+          "src": "/assets/img/responsive/studio-maltipu-peach-c4da1bd89287-960.webp",
           "width": 960,
           "height": 960,
-          "bytes": 20794
+          "bytes": 26630
         },
         {
-          "src": "/assets/img/responsive/studio-maltipu-peach-bb7a38048ed8-1024.webp",
+          "src": "/assets/img/responsive/studio-maltipu-peach-c4da1bd89287-1024.webp",
           "width": 1024,
           "height": 1024,
-          "bytes": 24162
+          "bytes": 30694
         }
       ]
     },

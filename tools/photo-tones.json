@@ -125,11 +125,11 @@
    1264,
    848
   ],
-  "top": "#F3DEC2",
-  "wall": "#F3DFC1",
-  "wall_right": "#EAD2B1",
-  "floor": "#F9E9D3",
-  "floor_line": 0.91
+  "top": "#EDD6BC",
+  "wall": "#EDD5BA",
+  "wall_right": "#EAD2B7",
+  "floor": "#F7E7D4",
+  "floor_line": 0.79
  },
  "okras-buldog-goluboj": {
   "size": [
@@ -818,11 +818,11 @@
    928,
    1152
   ],
-  "top": "#EEB991",
-  "wall": "#EDB488",
-  "wall_right": "#F2BD93",
-  "floor": "#F1C09A",
-  "floor_line": 0.9
+  "top": "#EFB285",
+  "wall": "#EEAD7E",
+  "wall_right": "#EDAC7F",
+  "floor": "#FAC7A1",
+  "floor_line": 0.71
  },
  "parent-pudel": {
   "size": [
@@ -862,11 +862,11 @@
    1024,
    1024
   ],
-  "top": "#F3BB95",
-  "wall": "#F5BE97",
-  "wall_right": "#EFB58C",
-  "floor": "#FDD1B0",
-  "floor_line": 0.82
+  "top": "#F0B186",
+  "wall": "#EDA87B",
+  "wall_right": "#EAA579",
+  "floor": "#F8CFAC",
+  "floor_line": 0.8
  },
  "studio-pudel-yellow": {
   "size": [
