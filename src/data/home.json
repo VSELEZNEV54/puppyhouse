@@ -268,6 +268,12 @@
   ],
   "about_slides": [
     {
+      "src": "/assets/img/vid-maltipu-439.jpg",
+      "video": "/assets/video/vid-maltipu-439.mp4",
+      "alt": "Щенок мальтипу на руке на прогулке, видео",
+      "pos": "50% 40%"
+    },
+    {
       "src": "/assets/img/about-pudel-309.jpg",
       "alt": "Два рыжих щенка той-пуделя дома на пушистом пледе",
       "pos": "62% 74%"
@@ -275,12 +281,6 @@
     {
       "src": "/assets/img/ab-kolli-194.jpg",
       "alt": "Щенок бордер-колли выглядывает из-за плеча хозяйки"
-    },
-    {
-      "src": "/assets/img/vid-maltipu-439.jpg",
-      "video": "/assets/video/vid-maltipu-439.mp4",
-      "alt": "Щенок мальтипу на руке на прогулке, видео",
-      "pos": "50% 40%"
     },
     {
       "src": "/assets/img/ab-buldog-27.jpg",
