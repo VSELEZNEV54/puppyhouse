@@ -7,6 +7,7 @@
     python3 tools/blog/factory.py brief <slug>        задание писателю: карточка, правила по месяцу, ссылки, фото
     python3 tools/blog/factory.py photos [--rebuild] [<slug>]   каталог фото сайта / кандидаты для статьи
     python3 tools/blog/factory.py illus <slug>        запрос для Figma generate_image в стиле эталона (JSON)
+    python3 tools/blog/factory.py look <файл>…        похожа ли картинка на эталон по цифрам (свет, тени, теплота)
     python3 tools/blog/factory.py img <slug> <n> <файл> [--alt "…"]   иллюстрация → assets/img/blog/<slug>-<n>.jpg
     python3 tools/blog/factory.py lint [<slug>…]      проверка черновиков (без аргументов — все)
     python3 tools/blog/factory.py approve <slug> [--note …] | hold <slug> | draft <slug>
@@ -17,7 +18,8 @@
 content/blog/published.json (что вышло — пишет только publish), content/blog/photos.json (каталог фото),
 content/blog/figma.json (стиль иллюстраций и эталон), content/blog/illustrations.json (откуда каждая иллюстрация).
 Правила текста: content/blog/ПРАВИЛА.md. Как устроен завод: content/blog/README.md.
-Коды выхода: 0 — ок; 1 — ошибки проверки; 2 — неверный вызов; 3 — публиковать нечего (буфер пуст)."""
+Коды выхода: 0 — ок; 1 — ошибки проверки; 2 — неверный вызов; 3 — публиковать нечего (буфер пуст);
+4 — иллюстрация не похожа на эталон (look)."""
 
 import argparse
 import datetime
@@ -625,6 +627,68 @@ def cmd_photos(a):
     return 0
 
 
+def look_metrics(path):
+    """Цифры «как эталон» без модели: средняя светлота L*, 5-й процентиль L* (глубина теней), доля пересвета
+    (L* ≥ 98), средняя теплота b* и разница светлоты углов и центра (у эталона углы темнее)."""
+    from PIL import Image, ImageCms
+    lab_t = ImageCms.buildTransformFromOpenProfiles(ImageCms.createProfile("sRGB"), ImageCms.createProfile("LAB"),
+                                                     "RGB", "LAB")
+    im = Image.open(path).convert("RGB")
+    im.thumbnail((480, 480))
+    lum, _, warm = ImageCms.applyTransform(im, lab_t).split()  # 8-bit: L = v·100/255, b = v − 128
+    w, h = im.size
+    n = w * h
+    hist = lum.histogram()
+    acc, p5 = 0, 0.0
+    for i, cnt in enumerate(hist):
+        acc += cnt
+        if acc >= 0.05 * n:
+            p5 = i * 100 / 255
+            break
+
+    def mean_l(box):
+        hh = lum.crop(box).histogram()
+        return sum(i * cnt for i, cnt in enumerate(hh)) / sum(hh) * 100 / 255
+
+    cw, ch = int(w * 0.15), int(h * 0.15)
+    corners = sum(mean_l(b) for b in ((0, 0, cw, ch), (w - cw, 0, w, ch), (0, h - ch, cw, h), (w - cw, h - ch, w, h))) / 4
+    centre = mean_l((int(w * 0.35), int(h * 0.35), int(w * 0.65), int(h * 0.65)))
+    return dict(mean_L=round(mean_l((0, 0, w, h)), 1), p5_L=round(p5, 1), clipped=round(sum(hist[250:]) / n * 100, 2),
+                mean_b=round(sum((i - 128) * cnt for i, cnt in enumerate(warm.histogram())) / n, 1),
+                edge=round(corners - centre, 1))
+
+
+def look_check(path):
+    """(metrics, problems): сравнение с порогами figma.json → style.look (их подобрали по эталону)."""
+    lim = load(FIGMA)["style"]["look"]
+    m = look_metrics(path)
+    bad = []
+    if not lim["mean_L"][0] <= m["mean_L"] <= lim["mean_L"][1]:
+        bad.append(f"светлота {m['mean_L']} (нужно {lim['mean_L'][0]}–{lim['mean_L'][1]}: "
+                   + ("бледно, пересвечено" if m["mean_L"] > lim["mean_L"][1] else "темно") + ")")
+    if m["p5_L"] > lim["p5_L_max"]:
+        bad.append(f"нет тёплых теней: тени {m['p5_L']} (нужно ≤ {lim['p5_L_max']})")
+    if m["clipped"] > lim["clipped_max"]:
+        bad.append(f"пересвет {m['clipped']}% кадра (нужно ≤ {lim['clipped_max']}%)")
+    if m["mean_b"] < lim["mean_b_min"]:
+        bad.append(f"холодно: теплота {m['mean_b']} (нужно ≥ {lim['mean_b_min']})")
+    if m["edge"] > lim["edge_max"]:
+        bad.append(f"края светлее центра на {m['edge']} (нужно ≤ {lim['edge_max']})")
+    return m, bad
+
+
+def cmd_look(a):
+    ref = ROOT / load(FIGMA)["style"]["reference"].lstrip("/")
+    m, _ = look_check(ref)
+    print(f"эталон {ref.name}: {m}")
+    bad_any = False
+    for f in a.files:
+        m, bad = look_check(f)
+        print(f"{'✓' if not bad else '✗'} {Path(f).name}: {m}" + ("" if not bad else " — " + "; ".join(bad)))
+        bad_any |= bool(bad)
+    return 4 if bad_any else 0
+
+
 def illus_request(c):
     """Запрос к Figma generate_image для карточки: стиль эталона (figma.json → style) + тип кадра + сцена.
     Одни и те же слова для каждой картинки — поэтому все иллюстрации блога в одном стиле."""
@@ -662,13 +726,20 @@ def cmd_img(a):
     if not alt:
         print("нужна подпись: --alt «…»", file=sys.stderr)
         return 2
+    metrics, bad = look_check(a.file)
+    if bad and not (a.custom or a.force):
+        print(f"✗ не похоже на эталон ({load(FIGMA)['style']['reference']}): " + "; ".join(bad) +
+              ". Сгенерируйте ещё раз (один раз) или пропустите иллюстрацию. Сохранить всё равно: --force",
+              file=sys.stderr)
+        return 4
     dst = IMG / "blog" / f"{a.slug}-{a.n}.jpg"
     dst.parent.mkdir(parents=True, exist_ok=True)
     im = Image.open(a.file).convert("RGB")
     im.thumbnail((1600, 1600))
     im.save(dst, "JPEG", quality=82, optimize=True, progressive=True)
     src = "/" + dst.relative_to(ROOT).as_posix()
-    rec = dict(slug=a.slug, alt=alt, w=im.width, h=im.height, date=today_msk().isoformat())
+    rec = dict(slug=a.slug, alt=alt, w=im.width, h=im.height, date=today_msk().isoformat(), look=metrics,
+               look_ok=not bad)
     if c.get("illus_en") and not a.custom:
         req = illus_request(c)
         prompt = Path(a.prompt_file).read_text(encoding="utf-8").strip() if a.prompt_file else req["prompt"]
@@ -818,6 +889,9 @@ def main(argv=None):
     x.add_argument("--alt", help="подпись; по умолчанию — сцена из карточки (illus)")
     x.add_argument("--custom", action="store_true", help="картинка не из Figma по стилю (своё фото, схема)")
     x.add_argument("--prompt-file", help="точный запрос, если он отличался от factory.py illus")
+    x.add_argument("--force", action="store_true", help="сохранить, даже если не похоже на эталон по цифрам")
+    x = sub.add_parser("look")
+    x.add_argument("files", nargs="+")
     x = sub.add_parser("lint")
     x.add_argument("slugs", nargs="*")
     x = sub.add_parser("approve")
