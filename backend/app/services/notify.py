@@ -961,18 +961,26 @@ NOT_MEMBER = ("Заявки приходят только участникам �
               "нажмите /start ещё раз.")
 NO_GROUP = "Получать заявки здесь пока нельзя: группа для заявок не настроена."
 UNSUBSCRIBED = "Больше не присылаю заявки сюда. Снова получать — /start."
+ADMIN_WELCOME = ("Готово ✅ Вы администратор группы с заявками, поэтому заявки с сайта дом-щенков.рф будут приходить и "
+                 "сюда: номер, порода и ссылка в админку. Не нужны — заблокируйте бота.")
 _MEMBER = {"creator", "administrator", "member"}
 
 
 def subscribers(s: Settings) -> dict:
-    """{"last_update": int, "chats": {chat id: {"name", "since"}}} — empty when the file is missing or unreadable."""
+    """{"last_update": int, "chats": {chat id: {"name", "since", "via"}}, "waiting": {admin id: name},
+    "stopped": [chat id], "warned_at": iso} — empty when the file is missing or unreadable."""
+    data: dict = {}
     try:
-        data = json.loads(open(s.telegram_subscribers_file, encoding="utf-8").read())
-        if isinstance(data, dict) and isinstance(data.get("chats"), dict):
-            return {"last_update": int(data.get("last_update") or 0), "chats": data["chats"]}
+        loaded = json.loads(open(s.telegram_subscribers_file, encoding="utf-8").read())
+        if isinstance(loaded, dict) and isinstance(loaded.get("chats"), dict):
+            data = loaded
     except (OSError, ValueError, TypeError):
         pass
-    return {"last_update": 0, "chats": {}}
+    data["last_update"] = int(data.get("last_update") or 0)
+    data.setdefault("chats", {})
+    data["waiting"] = data.get("waiting") if isinstance(data.get("waiting"), dict) else {}
+    data["stopped"] = data.get("stopped") if isinstance(data.get("stopped"), list) else []
+    return data
 
 
 def _save_subscribers(s: Settings, data: dict) -> None:
@@ -1014,6 +1022,8 @@ def telegram_poll(s: Settings | None = None, client: httpx.Client | None = None)
     try:
         r = _tg_call(s, client, "getUpdates", timeout=0, allowed_updates=["message"])
         if not r["ok"]:
+            if not r.get("network"):
+                _warn_updates_taken(s, client, r.get("error", ""))
             return stats
         data = subscribers(s)
         updates = sorted((u for u in r["result"] or [] if isinstance(u, dict) and u.get("update_id", 0) > data["last_update"]),
@@ -1029,6 +1039,8 @@ def telegram_poll(s: Settings | None = None, client: httpx.Client | None = None)
             name = " ".join(x for x in (sender.get("first_name"), sender.get("last_name")) if x) or sender.get("username", "")
             if word == "/stop":
                 reply = UNSUBSCRIBED
+                if cid not in data["stopped"]:
+                    data["stopped"].append(cid)
                 if data["chats"].pop(cid, None) is not None:
                     stats["removed"] += 1
             elif cid in data["chats"]:
@@ -1040,13 +1052,94 @@ def telegram_poll(s: Settings | None = None, client: httpx.Client | None = None)
                 if member is None:
                     break  # Telegram went away mid-way: this update and the rest wait for the next poll
                 if member:
-                    data["chats"][cid] = {"name": name[:100], "since": dt.datetime.now(UTC).isoformat(timespec="seconds")}
+                    data["chats"][cid] = {"name": name[:100], "since": dt.datetime.now(UTC).isoformat(timespec="seconds"),
+                                          "via": "start"}
+                    data["stopped"] = [x for x in data["stopped"] if x != cid]
                     reply, stats["added"] = SUBSCRIBED, stats["added"] + 1
                 else:
                     reply, stats["refused"] = NOT_MEMBER, stats["refused"] + 1
             _tg_call(s, client, "sendMessage", chat_id=cid, text=reply)
             data["last_update"] = u["update_id"]
         if updates:
+            _save_subscribers(s, data)
+        return stats
+    finally:
+        if own:
+            client.close()
+
+
+def _warn_updates_taken(s: Settings, client: httpx.Client, error: str) -> None:
+    """getUpdates refused: another service takes the bot's messages (a webhook — e.g. amoCRM chats — or another program
+    with the same token), so «Старт» never reaches us. Said once a day in the requests group; requests still go to the
+    group and to its admins (telegram_admins_refresh), who do not need «Старт» to be read."""
+    data = subscribers(s)
+    now = dt.datetime.now(UTC)
+    try:
+        if data.get("warned_at") and now - dt.datetime.fromisoformat(data["warned_at"]) < dt.timedelta(hours=24):
+            return
+    except ValueError:
+        pass
+    hook = _tg_call(s, client, "getWebhookInfo")
+    url = str(((hook.get("result") or {}) if hook["ok"] else {}).get("url") or "")
+    who = f"другой сервис ({urlsplit(url).hostname})" if url else "другая программа с тем же токеном бота"
+    text = (f"⚠️ Бот не видит свои личные сообщения: их забирает {who}. Заявки в эту группу приходят. В личку бот "
+            "присылает заявки администраторам группы, которые нажали у него «Старт». Чтобы бот отвечал на «Старт» "
+            f"и остальным участникам, отключите этот сервис от бота. ({error[:120]})")
+    for group in _group_chats(s):
+        _tg_call(s, client, "sendMessage", chat_id=group, text=text)
+    data["warned_at"] = now.isoformat(timespec="seconds")
+    _save_subscribers(s, data)
+
+
+def _user_name(u: dict) -> str:
+    return (" ".join(x for x in (u.get("first_name"), u.get("last_name")) if x) or u.get("username", ""))[:100]
+
+
+def telegram_admins_refresh(s: Settings | None = None, client: httpx.Client | None = None) -> dict:
+    """The admins of the requests group get every request in their private chat with the bot, without reading
+    «Старт» (which another service may take): the bot simply writes to them. Telegram lets a bot write only to people
+    who pressed «Старт» once — the others answer 403 and wait in "waiting" until they do (tried on every refresh, they
+    get nothing meanwhile). Someone who left the admins, sent /stop or blocked the bot is not written to.
+    → {"added", "removed", "waiting"}."""
+    s = s or get_settings()
+    stats = {"added": 0, "removed": 0, "waiting": 0}
+    groups = _group_chats(s)
+    if not s.telegram_bot_token or not groups:
+        return stats
+    own = client is None
+    client = client or http_client(s)
+    try:
+        admins: dict[str, str] = {}
+        for group in groups:
+            r = _tg_call(s, client, "getChatAdministrators", chat_id=group)
+            if r.get("network"):
+                return stats
+            for m in (r.get("result") or []) if r["ok"] else []:
+                u = (m or {}).get("user") or {}
+                if "id" in u and not u.get("is_bot"):
+                    admins[str(u["id"])] = _user_name(u)
+        data = subscribers(s)
+        before = json.dumps(data, sort_keys=True, ensure_ascii=False)
+        for cid, v in list(data["chats"].items()):
+            if v.get("via") == "admin" and cid not in admins:
+                del data["chats"][cid]
+                stats["removed"] += 1
+        data["waiting"] = {k: v for k, v in data["waiting"].items() if k in admins}
+        for cid, name in admins.items():
+            if cid in data["chats"] or cid in data["stopped"]:
+                continue
+            r = _tg_call(s, client, "sendMessage", chat_id=cid, text=ADMIN_WELCOME)
+            if r["ok"]:
+                data["chats"][cid] = {"name": name, "since": dt.datetime.now(UTC).isoformat(timespec="seconds"),
+                                      "via": "admin"}
+                data["waiting"].pop(cid, None)
+                stats["added"] += 1
+            elif r.get("network"):
+                break
+            else:   # 403: has not pressed «Старт» yet, or blocked the bot
+                data["waiting"][cid] = name
+                stats["waiting"] += 1
+        if json.dumps(data, sort_keys=True, ensure_ascii=False) != before:
             _save_subscribers(s, data)
         return stats
     finally:

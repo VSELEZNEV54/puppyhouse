@@ -323,7 +323,7 @@ def cmd_worker(args) -> int:
     signal.signal(signal.SIGINT, lambda *_: stop.update(now=True))
     zone = zoneinfo.ZoneInfo(s.timezone)
     last_purge: dt.date | None = None
-    last_poll = 0.0
+    last_poll = last_admins = -1e9
     log.info("worker started")
     while not stop["now"]:
         try:
@@ -332,6 +332,11 @@ def cmd_worker(args) -> int:
                 st = notify.telegram_poll()
                 if any(st.values()):
                     log.info("telegram subscribers: %s", st)
+            if time.monotonic() - last_admins >= 600:   # the group's admins get requests in private (no «Старт» read)
+                last_admins = time.monotonic()
+                st = notify.telegram_admins_refresh()
+                if st["added"] or st["removed"]:
+                    log.info("telegram admins: %s", st)
         except Exception:  # noqa: BLE001 — the notifications below must go on
             log.exception("telegram poll failed")
         try:
@@ -515,13 +520,16 @@ def cmd_notify_check(args) -> int:
                           f"/start@{me['username']} и повторите")
                 else:
                     print(f"  ! не удалось получить чаты: {seen['error']}")
-                subs = notify.subscribers(s)["chats"]
-                if subs:
-                    print("  получают заявки в личке бота (нажали «Старт»): "
-                          + ", ".join(f"{v.get('name') or '—'} ({k})" for k, v in subs.items()))
+                data = notify.subscribers(s)
+                if data["chats"]:
+                    print("  получают заявки в личке бота: "
+                          + ", ".join(f"{v.get('name') or '—'} ({k})" for k, v in data["chats"].items()))
                 else:
                     print(f"  в личку бота заявки пока никому не идут: участник группы открывает @{me['username']} "
                           "и нажимает «Старт»")
+                if data["waiting"]:
+                    print(f"  администраторы группы, которым бот пока не может писать (не нажали «Старт» у "
+                          f"@{me['username']}): " + ", ".join(f"{v or '—'} ({k})" for k, v in data["waiting"].items()))
                 targets = notify.telegram_targets(s)
                 if not targets:
                     bad += 1
