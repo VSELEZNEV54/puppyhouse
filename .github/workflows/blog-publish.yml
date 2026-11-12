@@ -1,16 +1,18 @@
-# Блог: одна статья в будний день. Берёт первую готовую статью контент-плана (content/blog/plan.json):
-# написанную раньше или одобренную редактором (content/blog/posts/<slug>.json, status approved), без hold,
-# с чистой проверкой (tools/blog/factory.py lint). Пишет её в content/blog/published.json, пересобирает сайт
-# (корень — боевой, full/ — превью), коммитит «Автопубликация …» и пушит. Сервер забирает коммит сам
-# (dsh autoupdate по крону, DEPLOY.md → «Блог: автопубликация»).
-# Буфер пуст → шаг «Выбрать статью» падает с кодом 3, GitHub пишет письмо о падении. Это сигнал запустить /статьи.
+# Блог: публикация по графику контент-плана (content/blog/plan.json → schedule), запуск каждый день в ~09:20 МСК.
+# 1) В день запуска (schedule.launch, 16.11) разом выходят «Полезные материалы» — серия base (как выбрать щенка и по
+#    три материала о каждой породе). 2) С schedule.start (23.11) — одна статья в день публикации: неделя 1 — 3 статьи
+#    (пн, ср, пт), неделя 2 — 5 (пн–пт), дальше каждый день. Выходит первая готовая статья плана (одобрена редактором,
+#    без hold, с чистой проверкой tools/blog/factory.py lint). 3) С base_links_from в материалах включаются ссылки.
+# Изменился content/blog/published.json → пересборка (корень — боевой, full/ — превью), коммит «Автопубликация …», пуш.
+# Сервер забирает коммит сам в 10:00 (dsh autoupdate, DEPLOY.md → «Блог: автопубликация») — статья на сайте ~10:00 МСК.
+# Буфер пуст в день публикации → шаг «Выбрать статью» падает с кодом 3, GitHub пишет письмо. Это сигнал запустить /статьи.
 # Ветка: переменная репозитория BLOG_BRANCH (Settings → Variables), иначе ветка по умолчанию. По расписанию GitHub
 # запускает только файл из ветки по умолчанию.
 name: Блог — публикация
 
 on:
   schedule:
-    - cron: "40 6 * * 1-5"   # 09:40 МСК, пн–пт (GitHub может запустить на 5–30 минут позже)
+    - cron: "17 6 * * *"   # 09:17 МСК каждый день (GitHub может запустить на 5–30 минут позже); сервер берёт в 10:00
   workflow_dispatch:
     inputs:
       date:
@@ -47,19 +49,19 @@ jobs:
           [ "${{ inputs.force }}" = "true" ] && args+=(--force)
           python3 tools/blog/factory.py publish "${args[@]}"
       - name: Собрать сайт
-        if: steps.pick.outputs.slug != ''
+        if: ${{ !cancelled() && steps.pick.outputs.changed == '1' }}
         run: |
           python3 tools/build.py
           python3 tools/build.py --full
           python3 tools/blog/factory.py plan
       - name: Коммит и пуш
-        if: steps.pick.outputs.slug != ''
+        if: ${{ !cancelled() && steps.pick.outputs.changed == '1' }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -A
           git diff --cached --quiet && exit 0
-          git commit -m "Автопубликация $(TZ=Europe/Moscow date +%F): ${{ steps.pick.outputs.slug }}"
+          git commit -m "Автопубликация $(TZ=Europe/Moscow date +%F): ${{ steps.pick.outputs.slug || 'ссылки в материалах' }}"
           branch="$(git rev-parse --abbrev-ref HEAD)"
           for i in 1 2 3 4; do git pull --rebase origin "$branch" && git push origin "$branch" && break; sleep $((i * 5)); done
       - name: Итог

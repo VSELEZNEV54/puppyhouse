@@ -10,6 +10,8 @@ into JSON-LD; links=0 (the first month of the plan) renders the in-text links as
 /blog/ lists the published articles, newest first, then the first eleven that are not out yet (as before: their cards
 lead to the toast «Раздел скоро откроется»). Factory drafts that are not out are built only by --all / --full
 (preview); a broken draft is skipped with a warning, a broken published article stops the module.
+Above the list — «Полезные материалы»: the series «base» of content/blog/plan.json («Как выбрать щенка» and three
+materials per breed). They go out together at the launch and are not repeated in the list.
 Read time is computed from the article text."""
 
 import datetime
@@ -237,6 +239,39 @@ def _factory(legacy_slugs):
     return metas, posts, pub
 
 
+def _base_series():
+    """Slugs of the series «base» in plan order (content/blog/plan.json); no plan → no block."""
+    plan = _read_json(FACTORY / "plan.json", {})
+    return [c["slug"] for c in plan.get("cards", []) if c.get("series") == "base"]
+
+
+def _materials(base, cards, posts, metas, breeds, cfg):
+    """The «Полезные материалы» block: main = the general card (no breed; «Как выбрать щенка»), then one box per breed
+    (breeds.json order) with its materials. Link label = the part of H1 after the colon («Мальтипу: уход, стрижка и
+    размеры» → «Уход, стрижка и размеры»), else cfg.labels by the slug ending (-kormlenie → «Чем кормить»)."""
+    if not base:
+        return None
+    labels = cfg.get("labels", {})
+
+    def label(slug):
+        h1 = posts[slug]["h1"]
+        if ":" in h1:
+            t = h1.split(":", 1)[1].strip()
+            return t[:1].upper() + t[1:]
+        return labels.get(slug.rsplit("-", 1)[-1], h1)
+
+    main = next((cards[s] for s in base if not metas[s].get("breed")), None)
+    boxes = []
+    for b in breeds:
+        mine = [s for s in base if metas[s].get("breed") == b["slug"]]
+        if mine:
+            boxes.append(dict(name=b["name"], tone_class=b["tone_class"], url=b["urls"]["hub"], face=b["studio"],
+                              links=[dict(url=cards[s]["url"], label=nobr(label(s)), read=cards[s]["read"])
+                                     for s in mine]))
+    return dict(title=cfg.get("title", "Полезные материалы"), lead=cfg.get("lead"),
+                list_title=cfg.get("list_title", "Статьи"), main=main, breeds=boxes)
+
+
 def routes(data):
     cfg = data["blog_posts"]
     hub, posts = cfg["hub"], dict(cfg["posts"])
@@ -261,10 +296,15 @@ def routes(data):
             raise ValueError(f"blog: {slug}: topic «{post['topic']}» is not in blog-posts.json hub.tags")
         cards[slug] = _card(meta, post, breed, tones, tag_of[post["topic"]])
 
+    # «Полезные материалы» (series «base» of content/blog/plan.json): «Как выбрать щенка» + three per breed, a block
+    # above the list. They are not in the list: the list holds the articles of the daily plan.
+    base = [s for s in _base_series() if s in cards]
+    materials = _materials(base, cards, posts, metas, data["breeds"], hub.get("materials") or {})
+
     # /blog/: published articles newest first (same day: the order of `every`), then the first eleven not out yet
-    out_now = sorted((s for s in every if s in published), key=lambda s: (published[s]["date"], -every.index(s)),
-                     reverse=True)
-    listed = out_now + [s for s in hub["order"] if s not in published]
+    out_now = sorted((s for s in every if s in published and s not in base),
+                     key=lambda s: (published[s]["date"], -every.index(s)), reverse=True)
+    listed = out_now + [s for s in hub["order"] if s not in published and s not in base]
 
     # filter chips: only tags and breeds that have articles (hub.tags / breeds.json order)
     shown = [cards[s] for s in listed]
@@ -288,8 +328,10 @@ def routes(data):
             breed_chips=breed_chips,
             hero_chips=[
                 dict(icon="paw", label=f"{len(data['breeds'])}{NBSP}{plural(len(data['breeds']), 'порода', 'породы', 'пород')}"),
-                dict(icon="clock", label="до " + minutes_label(max(read_minutes(posts[s]) for s in listed)) + " чтения"),
+                dict(icon="clock", label="до " + minutes_label(max(read_minutes(posts[s]) for s in listed + base))
+                     + " чтения"),
             ],
+            materials=materials,
         ),
     )]
 

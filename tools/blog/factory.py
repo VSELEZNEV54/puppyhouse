@@ -102,8 +102,29 @@ def card_of(slug):
 
 
 def links_max(c, p=None):
+    """Сколько ссылок в тексте разрешено: «Полезные материалы» — links_max.base (на запуске 0), статьи — по месяцу
+    плана (месяц 1 — 0, дальше default)."""
     lm = (p or plan())["links_max"]
-    return int(lm.get(str(c["m"]), lm["default"]))
+    if c.get("series") == "base":
+        return int(lm.get("base", lm["default"]))
+    return int(lm.get(str(c.get("m")), lm["default"]))
+
+
+def is_base(c):
+    return c.get("series") == "base"
+
+
+def posting_day(day, first, sch):
+    """Выходит ли статья в этот день: разгон от первой статьи (неделя 1 — дни ramp[0], неделя 2 — ramp[1]…),
+    потом daily. first — день первой статьи (None — первой ещё не было)."""
+    if first is None:
+        return True
+    k = (day - first).days
+    if k < 0:
+        return False
+    ramp = sch.get("ramp", [])
+    pattern = ramp[k // 7] if k // 7 < len(ramp) else sch.get("daily", list(range(7)))
+    return k % 7 in pattern
 
 
 def published():
@@ -137,15 +158,28 @@ def ru_date(d):
 
 
 def dates():
-    """slug → ориентировочная дата выхода (по порядку плана, с start, только дни weekdays)."""
+    """slug → ориентировочная дата выхода. «Полезные материалы» — день запуска; статьи — по графику: с start
+    (или с уже вышедшей первой статьи) по разгону ramp, потом каждый день. Вышедшие — их настоящая дата."""
     p = plan()
-    d = datetime.date.fromisoformat(p["start"])
-    days = set(p.get("weekdays", [0, 1, 2, 3, 4]))
+    sch = p["schedule"]
+    pub = published()["posts"]
     out = {}
+    launch = datetime.date.fromisoformat(sch["launch"])
+    main_out = sorted(datetime.date.fromisoformat(e["date"]) for s, e in pub.items() if e.get("series") != "base")
+    first = main_out[0] if main_out else None
+    d = max([datetime.date.fromisoformat(sch["start"]), today_msk()] + [x + datetime.timedelta(days=1) for x in main_out])
     for c in p["cards"]:
-        while d.weekday() not in days:
+        if c["slug"] in pub:
+            out[c["slug"]] = datetime.date.fromisoformat(pub[c["slug"]]["date"])
+            continue
+        if is_base(c):
+            out[c["slug"]] = max(launch, today_msk())
+            continue
+        anchor = first or d
+        while not posting_day(d, anchor, sch):
             d += datetime.timedelta(days=1)
         out[c["slug"]] = d
+        first = first or d
         d += datetime.timedelta(days=1)
     return out
 
@@ -279,7 +313,8 @@ def _count_photos(p, use):
 
 
 def stems(text):
-    return {w[:max(4, len(w) - 2)] for w in WORD_RE.findall(text.lower()) if len(w) >= 3}
+    """Основы слов для сравнения запроса с текстом: «бордер-колли» и «бордер колли» — одно и то же."""
+    return {w[:max(4, len(w) - 2)] for w in WORD_RE.findall(text.lower().replace("-", " ").replace("ё", "е")) if len(w) >= 3}
 
 
 def candidates(c, n_land=10, n_port=8):
@@ -455,6 +490,15 @@ def lint_one(slug, pub=None, for_publish=False):
     if DOSE.search(text):
         errors.append(f"доза «{DOSE.search(text).group(0)}»: дозы лекарств не пишем — только «подберёт ветеринар»")
 
+    # cover: another article's cover makes two identical cards in the /blog/ list
+    cov = (p.get("cover") or {}).get("src")
+    if cov:
+        twins = sorted(s for s, q in legacy().items() if s != slug and (q.get("cover") or {}).get("src") == cov)
+        twins += sorted(g.stem for g in POSTS.glob("*.json") if g.stem != slug and
+                        ((load(g).get("post") or {}).get("cover") or {}).get("src") == cov)
+        if twins:
+            warns.append(f"обложка {cov} уже у {', '.join(twins)}: в списке будут две одинаковые карточки")
+
     # photos: ≥3 in the body, all files exist, alt everywhere, no repeats
     ph = body_photos(p)
     if len(ph) < PHOTOS_MIN:
@@ -525,36 +569,71 @@ def cmd_status(a):
     return 0
 
 
+WEEKDAYS = ("пн", "вт", "ср", "чт", "пт", "сб", "вс")
+MARK = {"published": "✅ вышла", "approved": "🟢 готова", "ready": "🟢 готова (написана раньше)",
+        "draft": "🟡 черновик", "hold": "⏸ отложена", "todo": "⚪ написать"}
+
+
+def _plural(n, one, few, many):
+    return one if n % 10 == 1 and n % 100 != 11 else (few if 2 <= n % 10 <= 4 and not 12 <= n % 100 <= 14 else many)
+
+
 def cmd_plan(a):
     p = plan()
     pub = published()["posts"]
     ds = dates()
-    mark = {"published": "✅ вышла", "approved": "🟢 готова", "ready": "🟢 готова (написана раньше)",
-            "draft": "🟡 черновик", "hold": "⏸ отложена", "todo": "⚪ написать"}
-    lines = ["# Контент-план блога домщенков.рф", "",
-             "Сгенерировано: `python3 tools/blog/factory.py plan` из `content/blog/plan.json`. Руками не править.", "",
-             f"Ритм: {len(p.get('weekdays', []))} публикаций в неделю (пн–пт), ~{p['per_month']} в месяц. "
-             "Даты ориентировочные: статья выходит в первый рабочий день, когда она готова и её очередь подошла.",
-             "Месяц 1 — без ссылок в тексте. С месяца 2 — до 3 ссылок, только на то, что уже вышло.", ""]
-    for m in sorted({c["m"] for c in p["cards"]}):
-        mc = [c for c in p["cards"] if c["m"] == m]
+    sch = p["schedule"]
+    base = [c for c in p["cards"] if is_base(c)]
+    main = [c for c in p["cards"] if not is_base(c)]
+    st = {c["slug"]: state(c, pub) for c in p["cards"]}
+    count = {}
+    for v in st.values():
+        count[v] = count.get(v, 0) + 1
+
+    def title(c):
+        return c.get("h1") or legacy().get(c["slug"], {}).get("h1", c["slug"])
+
+    def row(c):
+        d = ds[c["slug"]]
+        return (f"| {c['n']} | {d.strftime('%d.%m.%y')} {WEEKDAYS[d.weekday()]} | {title(c)} | {c.get('pk', '')} | "
+                f"{c['topic']} | {c.get('breed') or '—'} | {MARK[st[c['slug']]]}{' · ⚕' if c.get('check') else ''}"
+                f"{' · 🖼' if c.get('illus_en') else ''} |")
+
+    head = "| № | Дата | Тема (H1) | Главный запрос | Рубрика | Порода | Статус |\n|---|---|---|---|---|---|---|"
+    lines = [
+        "# Контент-план блога домщенков.рф", "",
+        "База всех статей и тем. Сгенерировано: `python3 tools/blog/factory.py plan` из `content/blog/plan.json` "
+        "(руками не править — правится plan.json).", "",
+        f"**Всего:** {len(p['cards'])} — {len(base)} «Полезных материалов» и {len(main)} статей на 6 месяцев. "
+        f"Вышло {count.get('published', 0)}, готово к выходу {count.get('approved', 0) + count.get('ready', 0)}, "
+        f"черновики {count.get('draft', 0)}, отложено {count.get('hold', 0)}, написать {count.get('todo', 0)}.", "",
+        f"**График:** «Полезные материалы» выходят все сразу в день запуска (не раньше {sch['launch']}). Статьи — "
+        f"по одной в день в {sch['time']}, с {sch['start']}: первая неделя 3 статьи (пн, ср, пт), вторая — 5 (пн–пт), "
+        "дальше каждый день. Даты ориентировочные: если статья не готова, в этот день выходит следующая готовая.", "",
+        "**Ссылки:** в «Полезных материалах» и статьях месяца 1 ссылок в тексте нет; "
+        f"с {p.get('base_links_from')} они включаются в материалах, в статьях с месяца 2 — до 3 ссылок, только на то, "
+        "что уже вышло.", "",
+        "**Основа:** запросы из семантического ядра («Анализ по СОБАЧКАМ» → Семантика, Вордстат 05.09–04.10.2026) "
+        "и темы листа «Контент»; сезонность — лист «Сезонность» (пики покупок: январь, июль, август).", "",
+        "Обозначения: ⚕ — тема о здоровье или правилах, только проверенные факты; 🖼 — иллюстрация Figma.", "",
+        f"## Полезные материалы · {len(base)} · выходят разом в день запуска", "",
+        "Главное о каждой породе — характер, уход, кормление — и «Как выбрать щенка». На /blog/ — отдельный блок "
+        "над статьями.", "", head]
+    lines += [row(c) for c in base]
+    lines.append("")
+    for mo in p["months"]:
+        mc = [c for c in main if c.get("m") == mo["m"]]
+        if not mc:
+            continue
+        d0, d1 = ds[mc[0]["slug"]], ds[mc[-1]["slug"]]
         lm = links_max(mc[0], p)
-        n_word = "статья" if len(mc) % 10 == 1 and len(mc) % 100 != 11 else (
-            "статьи" if 2 <= len(mc) % 10 <= 4 and not 12 <= len(mc) % 100 <= 14 else "статей")
-        lines += [f"## Месяц {m}: {ru_date(ds[mc[0]['slug']])} — {ru_date(ds[mc[-1]['slug']])} · {len(mc)} {n_word} · "
-                  + ("без ссылок в тексте" if lm == 0 else f"до {lm} ссылок в тексте"), "",
-                  "| № | Дата | Тема (H1) | Главный запрос | Рубрика | Порода | Ссылки | Статус |",
-                  "|---|---|---|---|---|---|---|---|"]
-        for c in mc:
-            title = c.get("h1") or (legacy().get(c["slug"], {}).get("h1", c["slug"]))
-            out = pub.get(c["slug"])
-            date = datetime.date.fromisoformat(out["date"]) if out else ds[c["slug"]]
-            lines.append(f"| {c['n']} | {date.strftime('%d.%m')} | {title} | {c.get('pk', '')} | {c['topic']} | "
-                         f"{c.get('breed') or '—'} | {', '.join(c.get('links', [])) or '—'} | "
-                         f"{mark[state(c, pub)]}{' · ⚕ сверка' if c.get('check') else ''} |")
+        lines += [f"## Месяц {mo['m']}: {ru_date(d0)} — {ru_date(d1)} · {len(mc)} {_plural(len(mc), 'статья', 'статьи', 'статей')}"
+                  f" · {'без ссылок в тексте' if lm == 0 else f'до {lm} ссылок в тексте'}", "",
+                  f"Тема месяца: {mo['theme']}.", "", head]
+        lines += [row(c) for c in mc]
         lines.append("")
     (BLOG / "план.md").write_text("\n".join(lines), encoding="utf-8")
-    print(f"content/blog/план.md: {len(p['cards'])} тем")
+    print(f"content/blog/план.md: {len(base)} материалов + {len(main)} статей")
     return 0
 
 
@@ -562,11 +641,13 @@ def cmd_next(a):
     pub = published()["posts"]
     todo = [c for c in cards() if state(c, pub) == "todo"][: a.n]
     if a.json:
-        print(json.dumps([dict(slug=c["slug"], n=c["n"], m=c["m"], h1=c.get("h1"), check=bool(c.get("check")),
+        print(json.dumps([dict(slug=c["slug"], n=c["n"], m=c.get("m"), series=c.get("series", "main"), h1=c.get("h1"),
+                               check=bool(c.get("check")),
                                illus=c.get("illus") or "") for c in todo], ensure_ascii=False))
     else:
         for c in todo:
-            print(f"№{c['n']} (месяц {c['m']}) {c['slug']} — {c.get('h1')}{' · ⚕' if c.get('check') else ''}")
+            where = "полезные материалы" if is_base(c) else f"месяц {c.get('m')}"
+            print(f"№{c['n']} ({where}) {c['slug']} — {c.get('h1')}{' · ⚕' if c.get('check') else ''}")
     return 0
 
 
@@ -576,7 +657,8 @@ def cmd_brief(a):
     pub = published()["posts"]
     lmax = links_max(c, p)
     order = {x["slug"]: x for x in p["cards"]}
-    lines = [f"ЗАДАНИЕ: статья №{c['n']} блога домщенков.рф (месяц {c['m']} плана)",
+    where = "серия «Полезные материалы» — выходит в день запуска" if is_base(c) else f"месяц {c.get('m')} плана"
+    lines = [f"ЗАДАНИЕ: статья №{c['n']} блога домщенков.рф ({where})",
              f"Файл: content/blog/posts/{c['slug']}.json (создать; status «draft»)",
              f"Правила: content/blog/ПРАВИЛА.md · факты питомника: content/blog/факты.md", "",
              f"• slug: {c['slug']}",
@@ -841,41 +923,84 @@ def cmd_draft(a):
 
 
 def cmd_publish(a):
-    """Выпустить одну статью: первая по плану, которая готова (approved / ready), не отложена и проходит проверку."""
+    """Публикация по графику (раз в день, GitHub Action «Блог — публикация»):
+    1) «Полезные материалы» (series base): все готовые выходят разом в день запуска (не раньше schedule.launch);
+    2) статьи: с schedule.start по одной в день публикации — разгон ramp (неделя 1: 3, неделя 2: 5), потом daily;
+       выходит первая по плану готовая (approved / ready), не отложенная и с чистой проверкой;
+    3) с base_links_from в «Полезных материалах» включаются ссылки в тексте.
+    Пишет в --github-output: changed=1, если published.json изменился, slug=… — что вышло."""
     day = datetime.date.fromisoformat(a.date) if a.date else today_msk()
     data = published()
     pub = data["posts"]
-    if not a.force and any(e["date"] == day.isoformat() for e in pub.values()):
-        print(f"{day}: сегодня статья уже вышла — пропускаю (--force, чтобы выпустить ещё одну)")
-        return 0
     p = plan()
-    skipped = []
-    for c in p["cards"]:
-        s = state(c, pub)
-        if s not in ("approved", "ready"):
-            continue
-        if s == "approved":
-            e, _ = lint_one(c["slug"], pub, for_publish=True)
-            if e:
-                skipped.append((c["slug"], e))
+    sch = p["schedule"]
+    lm = p["links_max"]
+    out_slugs, notes = [], []
+
+    blf = p.get("base_links_from")
+    if blf and day >= datetime.date.fromisoformat(blf):
+        for c in p["cards"]:
+            if is_base(c) and c["slug"] in pub and pub[c["slug"]].get("links", 0) == 0:
+                pub[c["slug"]]["links"] = int(lm["default"])
+                notes.append(f"ссылки включены: {c['slug']}")
+
+    def lint_ok(c):
+        if state(c, pub) == "ready":
+            return True
+        e, _ = lint_one(c["slug"], pub, for_publish=True)
+        if e:
+            print(f"  пропущена {c['slug']}: {'; '.join(e)}", file=sys.stderr)
+        return not e
+
+    # 1. launch of «Полезные материалы»
+    base_todo = [c for c in p["cards"] if is_base(c) and state(c, pub) in ("approved", "ready")]
+    launched = False
+    if base_todo and day >= datetime.date.fromisoformat(sch["launch"]):
+        links = int(lm["default"]) if blf and day >= datetime.date.fromisoformat(blf) else links_max(base_todo[0], p)
+        for c in base_todo:
+            if lint_ok(c):
+                pub[c["slug"]] = {"date": day.isoformat(), "links": links, "series": "base"}
+                out_slugs.append(c["slug"])
+        launched = bool(out_slugs)
+
+    # 2. one article on a posting day
+    main_days = sorted(datetime.date.fromisoformat(e["date"]) for e in pub.values() if e.get("series") != "base")
+    first = main_days[0] if main_days else None
+    empty = False
+    if launched:
+        notes.append("день запуска «Полезных материалов»: статья сегодня не выходит")
+    elif day < datetime.date.fromisoformat(sch["start"]):
+        notes.append(f"статьи начнут выходить {sch['start']}")
+    elif not a.force and any(d == day for d in main_days):
+        notes.append(f"{day}: статья сегодня уже вышла")
+    elif not a.force and not posting_day(day, first, sch):
+        notes.append(f"{day}: по графику разгона не день публикации")
+    else:
+        for c in p["cards"]:
+            if is_base(c) or state(c, pub) not in ("approved", "ready"):
                 continue
-        entry = {"date": day.isoformat(), "links": links_max(c, p)}
-        if a.dry_run:
-            print(f"--dry-run: вышла бы {c['slug']} (№{c['n']}) {entry}")
+            if lint_ok(c):
+                pub[c["slug"]] = {"date": day.isoformat(), "links": links_max(c, p), "series": "main"}
+                out_slugs.append(c["slug"])
+                break
         else:
-            pub[c["slug"]] = entry
-            save(PUBLISHED, data)
-            print(f"опубликована {c['slug']} (№{c['n']}) {day}")
-        for slug, e in skipped:
-            print(f"  пропущена {slug}: {'; '.join(e)}", file=sys.stderr)
-        if a.github_output:
-            with open(a.github_output, "a", encoding="utf-8") as g:
-                g.write(f"slug={c['slug']}\n")
-        return 0
-    for slug, e in skipped:
-        print(f"  пропущена {slug}: {'; '.join(e)}", file=sys.stderr)
-    print("БУФЕР ПУСТ: нет одобренных статей. Запустите /статьи в Claude Code.", file=sys.stderr)
-    return 3
+            empty = True
+
+    changed = bool(out_slugs) or any(n.startswith("ссылки включены") for n in notes)
+    if changed and not a.dry_run:
+        save(PUBLISHED, data)
+    for n in notes:
+        print(n)
+    for slug in out_slugs:
+        print(f"{'--dry-run: вышла бы' if a.dry_run else 'опубликована'} {slug} {day}")
+    if a.github_output:
+        with open(a.github_output, "a", encoding="utf-8") as g:
+            g.write(f"changed={'1' if changed and not a.dry_run else ''}\n")
+            g.write(f"slug={' '.join(out_slugs) if len(out_slugs) < 4 else 'полезные материалы (' + str(len(out_slugs)) + ')'}\n")
+    if empty:
+        print("БУФЕР ПУСТ: нет одобренных статей. Запустите /статьи в Claude Code.", file=sys.stderr)
+        return 3
+    return 0
 
 
 def cmd_unpublish(a):

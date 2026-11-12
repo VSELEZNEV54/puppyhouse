@@ -9,7 +9,8 @@
 #   dsh update                         git pull in /opt/domshchenkov/src and deploy (pass deploy.sh options after it)
 #   dsh rollback                       start the previous release again (API + site; the database stays as it is)
 #   dsh autoupdate                     `dsh update` only if the server's branch has new commits (blog autopublication);
-#                                      --install / --remove: the cron line for it (weekdays 10:25 and 13:25 Moscow)
+#                                      --install / --remove: the cron line for it (daily 7:00, 10:00, 13:00 server time:
+#                                      10:00 Moscow whether the server runs on Moscow time or on UTC)
 set -euo pipefail
 APP_ROOT="${DSH_APP_ROOT:-/opt/domshchenkov}"
 ETC="${DSH_ETC:-/etc/domshchenkov}"
@@ -63,16 +64,16 @@ case "$cmd" in
     exec "$src/backend/deploy/deploy.sh" "$@"
     ;;
   autoupdate)
-    # The blog publishes itself: a GitHub Action commits «Автопубликация …» on weekdays at ~09:40 Moscow time
+    # The blog publishes itself: a GitHub Action commits «Автопубликация …» daily at ~09:20 Moscow time
     # (content/blog/README.md). This picks the commit up; with nothing new it exits quietly.
     cron=/etc/cron.d/domshchenkov-blog
     case "${1:-}" in
       --install)
         printf '%s\n' "# домщенков.рф: blog autopublication — deploy new commits of the server branch (dsh autoupdate)" \
           "SHELL=/bin/bash" "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin" \
-          "25 10,13 * * 1-5 root /usr/local/bin/dsh autoupdate >> /var/log/domshchenkov-autoupdate.log 2>&1 || logger -t domshchenkov-autoupdate FAILED" \
+          "0 7,10,13 * * * root /usr/local/bin/dsh autoupdate >> /var/log/domshchenkov-autoupdate.log 2>&1 || logger -t domshchenkov-autoupdate FAILED" \
           > "$cron"
-        echo "крон $cron: по будням в 10:25 и 13:25 (Москва) — выкладка новых коммитов; лог /var/log/domshchenkov-autoupdate.log"
+        echo "крон $cron: каждый день в 7:00, 10:00 и 13:00 по часам сервера (10:00 МСК и на московском времени, и на UTC) — выкладка новых коммитов; лог /var/log/domshchenkov-autoupdate.log"
         exit 0 ;;
       --remove) rm -f "$cron"; echo "крон автообновления снят"; exit 0 ;;
     esac

@@ -32,7 +32,7 @@
       "shape": "port",
       "generated": false,
       "auto_alt": false,
-      "in_blog": 0
+      "in_blog": 1
     },
     {
       "src": "/assets/img/ab-kolli-194.jpg",
@@ -43,7 +43,7 @@
       "shape": "port",
       "generated": false,
       "auto_alt": false,
-      "in_blog": 0
+      "in_blog": 3
     },
     {
       "src": "/assets/img/ab-kolli-198.jpg",
@@ -54,7 +54,7 @@
       "shape": "port",
       "generated": false,
       "auto_alt": false,
-      "in_blog": 0
+      "in_blog": 7
     },
     {
       "src": "/assets/img/ab-maltipu-408.jpg",
@@ -65,7 +65,7 @@
       "shape": "port",
       "generated": false,
       "auto_alt": false,
-      "in_blog": 0
+      "in_blog": 1
     },
     {
       "src": "/assets/img/ab-maltipu-413.jpg",
@@ -76,7 +76,7 @@
       "shape": "port",
       "generated": false,
       "auto_alt": false,
-      "in_blog": 0
+      "in_blog": 3
     },
     {
       "src": "/assets/img/ab-maltipu-433.jpg",
@@ -131,7 +131,7 @@
       "shape": "land",
       "generated": false,
       "auto_alt": false,
-      "in_blog": 0
+      "in_blog": 1
     },
     {
       "src": "/assets/img/about-pudel-309.jpg",
@@ -142,7 +142,7 @@
       "shape": "square",
       "generated": false,
       "auto_alt": false,
-      "in_blog": 0
+      "in_blog": 2
     },
     {
       "src": "/assets/img/about-pudel-364.jpg",
@@ -152,7 +152,7 @@
       "h": 1067,
       "shape": "land",
       "generated": false,
-      "auto_alt": true,
+      "auto_alt": false,
       "in_blog": 0
     },
     {
@@ -164,7 +164,7 @@
       "shape": "land",
       "generated": true,
       "auto_alt": false,
-      "in_blog": 0
+      "in_blog": 1
     },
     {
       "src": "/assets/img/blog/chto-kupit-shchenku-1.jpg",
@@ -178,15 +178,26 @@
       "in_blog": 1
     },
     {
-      "src": "/assets/img/blog/lapy-zimoj-reagenty-1.jpg",
-      "alt": "Лапу щенка моют в тазике с тёплой водой, рядом полотенце",
+      "src": "/assets/img/blog/chto-nelzya-davat-sobake-1.jpg",
+      "alt": "Шоколад, виноград, лук и чеснок лежат отдельно от миски с собачьим кормом",
       "breed": null,
       "w": 1264,
       "h": 848,
       "shape": "land",
       "generated": true,
       "auto_alt": false,
-      "in_blog": 0
+      "in_blog": 1
+    },
+    {
+      "src": "/assets/img/blog/lapy-zimoj-reagenty-1.jpg",
+      "alt": "Лапу щенка моют в тазике с тёплой водой, рядом лежит полотенце",
+      "breed": null,
+      "w": 1264,
+      "h": 848,
+      "shape": "land",
+      "generated": true,
+      "auto_alt": false,
+      "in_blog": 1
     },
     {
       "src": "/assets/img/breed-border-kolli.jpg",
@@ -241,7 +252,7 @@
       "shape": "land",
       "generated": false,
       "auto_alt": false,
-      "in_blog": 1
+      "in_blog": 2
     },
     {
       "src": "/assets/img/buldog-vet.jpg",
@@ -285,7 +296,7 @@
       "shape": "port",
       "generated": false,
       "auto_alt": false,
-      "in_blog": 0
+      "in_blog": 4
     },
     {
       "src": "/assets/img/cl-buldog-48.jpg",
@@ -296,7 +307,7 @@
       "shape": "land",
       "generated": false,
       "auto_alt": false,
-      "in_blog": 0
+      "in_blog": 2
     },
     {
       "src": "/assets/img/cl-buldog-49.jpg",
@@ -362,7 +373,7 @@
       "shape": "square",
       "generated": false,
       "auto_alt": false,
-      "in_blog": 0
+      "in_blog": 2
     },
     {
       "src": "/assets/img/cl-kolli-100.jpg",
@@ -384,7 +395,7 @@
       "shape": "port",
       "generated": false,
       "auto_alt": false,
-      "in_blog": 0
+      "in_blog": 1
     },
     {
       "src": "/assets/img/cl-kolli-124.jpg",
@@ -417,7 +428,7 @@
       "shape": "port",
       "generated": false,
       "auto_alt": false,
-      "in_blog": 0
+      "in_blog": 2
     },
     {
       "src": "/assets/img/cl-kolli-143.jpg",
@@ -505,7 +516,7 @@
       "shape": "port",
       "generated": false,
       "auto_alt": false,
-      "in_blog": 0
+      "in_blog": 1
     },
     {
       "src": "/assets/img/cl-maltipu-396.jpg",
@@ -527,7 +538,7 @@
       "shape": "port",
       "generated": false,
       "auto_alt": false,
-      "in_blog": 0
+      "in_blog": 1
     },
     {
       "src": "/assets/img/cl-maltipu-412.jpg",
@@ -549,7 +560,7 @@
       "shape": "port",
       "generated": false,
       "auto_alt": false,
-      "in_blog": 0
+      "in_blog": 1
     },
     {
       "src": "/assets/img/cl-maltipu-458.jpg",
@@ -560,7 +571,7 @@
       "shape": "square",
       "generated": false,
       "auto_alt": false,
-      "in_blog": 0
+      "in_blog": 1
     },
     {
       "src": "/assets/img/cl-maltipu-481.jpg",
@@ -626,7 +637,7 @@
       "shape": "port",
       "generated": false,
       "auto_alt": false,
-      "in_blog": 0
+      "in_blog": 2
     },
     {
       "src": "/assets/img/cl-pudel-300.jpg",
@@ -637,7 +648,7 @@
       "shape": "land",
       "generated": false,
       "auto_alt": false,
-      "in_blog": 0
+      "in_blog": 1
     },
     {
       "src": "/assets/img/cl-pudel-301.jpg",
@@ -681,7 +692,7 @@
       "shape": "port",
       "generated": false,
       "auto_alt": false,
-      "in_blog": 0
+      "in_blog": 1
     },
     {
       "src": "/assets/img/cl-pudel-363.jpg",
@@ -692,7 +703,7 @@
       "shape": "land",
       "generated": false,
       "auto_alt": false,
-      "in_blog": 0
+      "in_blog": 1
     },
     {
       "src": "/assets/img/color-buldog-blue.jpg",
@@ -714,7 +725,7 @@
       "shape": "square",
       "generated": false,
       "auto_alt": false,
-      "in_blog": 0
+      "in_blog": 1
     },
     {
       "src": "/assets/img/color-buldog-pied.jpg",
@@ -724,8 +735,8 @@
       "h": 1024,
       "shape": "square",
       "generated": false,
-      "auto_alt": true,
-      "in_blog": 0
+      "auto_alt": false,
+      "in_blog": 1
     },
     {
       "src": "/assets/img/color-kolli-red.jpg",
@@ -735,7 +746,7 @@
       "h": 1024,
       "shape": "square",
       "generated": false,
-      "auto_alt": true,
+      "auto_alt": false,
       "in_blog": 0
     },
     {
@@ -779,8 +790,8 @@
       "h": 1024,
       "shape": "square",
       "generated": false,
-      "auto_alt": true,
-      "in_blog": 0
+      "auto_alt": false,
+      "in_blog": 1
     },
     {
       "src": "/assets/img/color-maltipu-parti.jpg",
@@ -834,8 +845,8 @@
       "h": 1024,
       "shape": "square",
       "generated": false,
-      "auto_alt": true,
-      "in_blog": 0
+      "auto_alt": false,
+      "in_blog": 1
     },
     {
       "src": "/assets/img/color-maltipu-white.jpg",
@@ -846,7 +857,7 @@
       "shape": "square",
       "generated": false,
       "auto_alt": false,
-      "in_blog": 0
+      "in_blog": 1
     },
     {
       "src": "/assets/img/color-pudel-black.jpg",
@@ -856,8 +867,8 @@
       "h": 1024,
       "shape": "square",
       "generated": false,
-      "auto_alt": true,
-      "in_blog": 0
+      "auto_alt": false,
+      "in_blog": 1
     },
     {
       "src": "/assets/img/color-pudel-chocolate.jpg",
@@ -867,8 +878,8 @@
       "h": 1024,
       "shape": "square",
       "generated": false,
-      "auto_alt": true,
-      "in_blog": 0
+      "auto_alt": false,
+      "in_blog": 1
     },
     {
       "src": "/assets/img/color-pudel-white.jpg",
@@ -900,8 +911,8 @@
       "h": 1024,
       "shape": "square",
       "generated": false,
-      "auto_alt": true,
-      "in_blog": 0
+      "auto_alt": false,
+      "in_blog": 1
     },
     {
       "src": "/assets/img/colsrc-buldog-mramornyj.jpg",
@@ -1043,8 +1054,8 @@
       "h": 1024,
       "shape": "square",
       "generated": false,
-      "auto_alt": true,
-      "in_blog": 0
+      "auto_alt": false,
+      "in_blog": 1
     },
     {
       "src": "/assets/img/colsrc-maltipu-shokoladnyj.jpg",
@@ -1076,8 +1087,8 @@
       "h": 1024,
       "shape": "square",
       "generated": false,
-      "auto_alt": true,
-      "in_blog": 0
+      "auto_alt": false,
+      "in_blog": 1
     },
     {
       "src": "/assets/img/colsrc-pudel-chernyj.jpg",
@@ -1154,7 +1165,7 @@
       "shape": "land",
       "generated": false,
       "auto_alt": false,
-      "in_blog": 0
+      "in_blog": 1
     },
     {
       "src": "/assets/img/fit-buldog-deti.jpg",
@@ -1363,7 +1374,7 @@
       "shape": "land",
       "generated": false,
       "auto_alt": false,
-      "in_blog": 0
+      "in_blog": 1
     },
     {
       "src": "/assets/img/grad-woman-pudel.jpg",
@@ -1506,7 +1517,7 @@
       "shape": "land",
       "generated": false,
       "auto_alt": false,
-      "in_blog": 0
+      "in_blog": 1
     },
     {
       "src": "/assets/img/ml-maltipu-372.jpg",
@@ -1517,7 +1528,7 @@
       "shape": "port",
       "generated": false,
       "auto_alt": false,
-      "in_blog": 0
+      "in_blog": 1
     },
     {
       "src": "/assets/img/ml-maltipu-377.jpg",
@@ -1748,7 +1759,7 @@
       "shape": "square",
       "generated": false,
       "auto_alt": false,
-      "in_blog": 0
+      "in_blog": 1
     },
     {
       "src": "/assets/img/okras-buldog-pegij-big.jpg",
@@ -2364,7 +2375,7 @@
       "shape": "port",
       "generated": false,
       "auto_alt": false,
-      "in_blog": 0
+      "in_blog": 1
     },
     {
       "src": "/assets/img/parents-maltipu.jpg",
@@ -2408,7 +2419,7 @@
       "shape": "port",
       "generated": false,
       "auto_alt": false,
-      "in_blog": 0
+      "in_blog": 1
     },
     {
       "src": "/assets/img/pup-buldog-19.jpg",
@@ -2474,7 +2485,7 @@
       "shape": "port",
       "generated": false,
       "auto_alt": false,
-      "in_blog": 0
+      "in_blog": 1
     },
     {
       "src": "/assets/img/pup-kolli-103.jpg",
@@ -2639,7 +2650,7 @@
       "shape": "port",
       "generated": false,
       "auto_alt": false,
-      "in_blog": 0
+      "in_blog": 1
     },
     {
       "src": "/assets/img/pup-maltipu-378.jpg",
@@ -2815,7 +2826,7 @@
       "shape": "port",
       "generated": false,
       "auto_alt": false,
-      "in_blog": 0
+      "in_blog": 1
     },
     {
       "src": "/assets/img/pup-maltipu-472.jpg",
@@ -2837,7 +2848,7 @@
       "shape": "port",
       "generated": false,
       "auto_alt": false,
-      "in_blog": 0
+      "in_blog": 1
     },
     {
       "src": "/assets/img/pup-maltipu-478.jpg",
@@ -2969,7 +2980,7 @@
       "shape": "port",
       "generated": false,
       "auto_alt": false,
-      "in_blog": 0
+      "in_blog": 1
     },
     {
       "src": "/assets/img/pup-pudel-295.jpg",
@@ -2991,7 +3002,7 @@
       "shape": "land",
       "generated": false,
       "auto_alt": false,
-      "in_blog": 0
+      "in_blog": 2
     },
     {
       "src": "/assets/img/pup-pudel-308.jpg",
@@ -3101,7 +3112,7 @@
       "shape": "port",
       "generated": false,
       "auto_alt": false,
-      "in_blog": 0
+      "in_blog": 1
     },
     {
       "src": "/assets/img/rv-buldog-55.jpg",
@@ -3123,7 +3134,7 @@
       "shape": "port",
       "generated": false,
       "auto_alt": false,
-      "in_blog": 0
+      "in_blog": 2
     },
     {
       "src": "/assets/img/rv-buldog-75.jpg",
@@ -3156,7 +3167,7 @@
       "shape": "port",
       "generated": false,
       "auto_alt": false,
-      "in_blog": 0
+      "in_blog": 2
     },
     {
       "src": "/assets/img/rv-kolli-170.jpg",
@@ -3200,7 +3211,7 @@
       "shape": "port",
       "generated": false,
       "auto_alt": false,
-      "in_blog": 0
+      "in_blog": 1
     },
     {
       "src": "/assets/img/rv-maltipu-431.jpg",
@@ -3292,14 +3303,14 @@
     },
     {
       "src": "/assets/img/starter-kit.jpg",
-      "alt": "Всё для щенка перед переездом: лежанка, миски, корм, игрушки",
+      "alt": "Лежанка, миски, корм и игрушки для щенка, собранные перед переездом",
       "breed": null,
       "w": 1024,
       "h": 1024,
       "shape": "square",
       "generated": false,
       "auto_alt": false,
-      "in_blog": 1
+      "in_blog": 2
     },
     {
       "src": "/assets/img/studio-buldog-blue.jpg",
@@ -3365,7 +3376,7 @@
       "shape": "port",
       "generated": false,
       "auto_alt": false,
-      "in_blog": 0
+      "in_blog": 2
     },
     {
       "src": "/assets/img/video-call.jpg",
