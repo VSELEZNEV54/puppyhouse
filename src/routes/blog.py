@@ -7,8 +7,8 @@ Two sources of articles, one format of copy:
 An article goes out on its publication day: content/blog/published.json → posts[slug] = {date, links}. Its route then
 carries live=True and the build publishes it without a line in publish.json. The date is shown on the page and goes
 into JSON-LD; links=0 (the first month of the plan) renders the in-text links as plain words.
-/blog/ lists the published articles, newest first, then the first eleven that are not out yet (as before: their cards
-lead to the toast «Раздел скоро откроется»). Factory drafts that are not out are built only by --all / --full
+/blog/ lists the published articles, newest first; before anything is out — the first eleven (their cards lead to the
+toast «Раздел скоро откроется»). Factory drafts that are not out are built only by --all / --full
 (preview); a broken draft is skipped with a warning, a broken published article stops the module.
 Above the list — «Полезные материалы»: the series «base» of content/blog/plan.json («Как выбрать щенка» and three
 materials per breed). They go out together at the launch and are not repeated in the list.
@@ -301,10 +301,11 @@ def routes(data):
     base = [s for s in _base_series() if s in cards]
     materials = _materials(base, cards, posts, metas, data["breeds"], hub.get("materials") or {})
 
-    # /blog/: published articles newest first (same day: the order of `every`), then the first eleven not out yet
+    # /blog/: published articles newest first (same day: the order of `every`). Until anything is out (before the
+    # launch) — the first eleven, as before; after it a card that is not out yet would only lead to the toast.
     out_now = sorted((s for s in every if s in published and s not in base),
                      key=lambda s: (published[s]["date"], -every.index(s)), reverse=True)
-    listed = out_now + [s for s in hub["order"] if s not in published and s not in base]
+    listed = out_now if published else [s for s in hub["order"] if s not in base]
 
     # filter chips: only tags and breeds that have articles (hub.tags / breeds.json order)
     shown = [cards[s] for s in listed]
@@ -328,7 +329,7 @@ def routes(data):
             breed_chips=breed_chips,
             hero_chips=[
                 dict(icon="paw", label=f"{len(data['breeds'])}{NBSP}{plural(len(data['breeds']), 'порода', 'породы', 'пород')}"),
-                dict(icon="clock", label="до " + minutes_label(max(read_minutes(posts[s]) for s in listed + base))
+                dict(icon="clock", label="до " + minutes_label(max([read_minutes(posts[s]) for s in listed + base] or [3]))
                      + " чтения"),
             ],
             materials=materials,
