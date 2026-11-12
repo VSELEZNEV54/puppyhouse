@@ -1,5 +1,7 @@
 {#- /blog/ — list of articles with two filters, «Тема» and «Порода» (assets/js/blog.js), then the «Подобрать породу» band.
-    Copy: data/blog-posts.json → hub; cards: routes/blog.py. Context: hub, articles (cards), tags, breed_chips, hero_chips. -#}
+    Copy: data/blog-posts.json → hub; cards: routes/blog.py. Context: hub, articles (cards), tags, breed_chips, hero_chips,
+    materials (the «Полезные материалы» block above the list: main card + one box per breed; none → no block).
+    The filters show from six articles on: with fewer they filter nothing (no data-blog → blog.js stays idle). -#}
 {% extends "layouts/page.html.j2" %}
 {% import "blog/_parts.html.j2" as blg %}
 
@@ -17,11 +19,41 @@
 
 {% block body %}
     {%- set n = articles|length %}
-    <section class="section section--tight container" id="stati" aria-labelledby="stati-title" data-blog>
-      <h2 class="sr-only" id="stati-title">Все статьи</h2>
+    {%- set filters = n >= 6 %}
+    {%- if materials %}
+    {%- set m = materials %}
+    <section class="section section--tight container" id="materialy" aria-labelledby="materialy-title">
+      {{ ui.section_head(m.title, id='materialy-title', lead=m.lead) }}
+      <div class="blg-mat">
+        {% if m.main %}
+        <div class="blg-mat__main">
+          {{ blg.card(m.main, eager=true) }}
+        </div>
+        {% endif %}
+        {% for b in m.breeds %}
+        <section class="blg-mat__breed {{ b.tone_class }}" aria-labelledby="mat-{{ loop.index }}">
+          <div class="blg-mat__head">
+            <span class="blg-mat__face"><img src="{{ b.face.src }}" alt="" width="56" height="56" loading="lazy" decoding="async"></span>
+            <h3 class="blg-mat__name" id="mat-{{ loop.index }}"><a href="{{ b.url }}">{{ b.name|typo }}</a></h3>
+          </div>
+          <ul class="blg-mat__list">
+            {% for l in b.links %}
+            <li><a class="blg-mat__link" href="{{ l.url }}"><span class="blg-mat__label">{{ l.label|typo }}<span class="blg-mat__time">{{ l.read }}</span></span>{{ ui.icon('arrow', sm=true) }}</a></li>
+            {% endfor %}
+          </ul>
+        </section>
+        {% endfor %}
+      </div>
+    </section>
+    {%- endif %}
+
+    {%- if n %}
+    <section class="section section--tight container" id="stati" aria-labelledby="stati-title"{% if filters %} data-blog{% endif %}>
+      {% if materials %}{{ ui.section_head(materials.list_title, id='stati-title') }}{% else %}<h2 class="sr-only" id="stati-title">Все статьи</h2>{% endif %}
       {#- два ряда фильтров: тема и порода; выбор в обоих — статьи, подходящие под оба (blog.js). Число на кнопке —
           сколько статей останется; кнопка без статей неактивна -#}
       {%- set f = hub.filters %}
+      {%- if filters %}
       <div class="blg-filters">
         <div class="blg-filters__row">
           <p class="blg-filters__label" id="bf-tag-label">{{ f.tag_label }}</p>
@@ -47,6 +79,7 @@
         </div>
         <p class="sr-only" role="status" aria-live="polite" data-bf-status></p>
       </div>
+      {%- endif %}
 
       <ul class="blg-grid" data-bf-list data-reveal="items">
         {% for c in articles %}
@@ -55,10 +88,13 @@
         </li>
         {% endfor %}
       </ul>
+      {% if filters %}
       {% call ui.empty_state(f.empty_title, f.empty_text, button=none, attrs='data-bf-empty hidden') %}
       <button class="btn btn--ink" type="button" data-bf-reset>Показать все статьи</button>
       {% endcall %}
+      {% endif %}
     </section>
+    {%- endif %}
 
     <section class="section section--tight container" id="podbor" aria-labelledby="podbor-title">
       {{ ui.cta_band(hub.more.title, line=hub.more.line, button={'url': hub.more.url, 'label': hub.more.label}, tone='lilac', faces=true, title_id='podbor-title') }}

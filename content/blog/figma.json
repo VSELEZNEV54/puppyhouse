@@ -1,0 +1,80 @@
+{
+  "_note": "Иллюстрации блога. Файл Figma — команда «Moon дизайн-студия» (Pro). generate_image тратит AI-кредиты Figma этой команды, не токены Claude. Одна иллюстрация на статью, только если в карточке плана есть illus. Запрос не писать руками: python3 tools/blog/factory.py illus <slug> собирает его из style ниже — так все картинки в одном стиле. Модель и размер не менять: от них зависит вид.",
+  "fileKey": "qg0yABKOcPF6uSaCl8Ovs2",
+  "file_url": "https://www.figma.com/design/qg0yABKOcPF6uSaCl8Ovs2",
+  "model": "gemini-3.1-flash-lite-image",
+  "width": 1536,
+  "height": 1024,
+  "style": {
+    "name": "Тёплый скандинавский дом",
+    "version": 3,
+    "reference": "/assets/img/blog/chto-kupit-shchenku-1.jpg",
+    "reference_note": "Эталон утвердил владелец 11.11.2026: «вот такого же стиля и нужно придерживаться». Каждую новую картинку сравнивать с ним.",
+    "reference_prompt": "Photorealistic photo for a puppy care blog. Soft natural daylight, warm cream and beige home interior, shallow depth of field. No text, no letters, no logos, no watermark. Scene: a new puppy starter kit on a light wooden floor — a soft round dog bed, two ceramic bowls, a stack of puppy training pads, a small ball and a harness with a leash; no dog in the frame.",
+    "rules_ru": [
+      "Фотореализм, как тёплый кадр журнала о доме: спокойно, уютно, ничего лишнего.",
+      "Свет — мягкий рассеянный дневной, тёплый и сливочный, но не закатный: без оранжевого, янтарного и жёлтого оттенка, без дымки и контрового света. Белое и светлый текстиль — айвори и крем, не персиковые; тепло дают материалы (светлый дуб, джут, лён), а не цветной фильтр.",
+      "Экспозиция средняя, не «светлая картинка»: блики сливочные и с деталями; тени настоящие, тёплые коричневые; самое светлое и резкое в кадре — предмет, края и углы чуть темнее центра.",
+      "Палитра — крем, айвори, тёплый бежевый, песок, светлый медовый дуб. Акценты маленькие и приглушённые: пудрово-голубой, бирюзовый, глубокая оливковая зелень.",
+      "Дерево — светлый натуральный дуб с мягким медовым оттенком и видимой текстурой, матовый: не тёмно-янтарный, не оранжевый, не глянцевый, не выбеленный и не серый. Стены, подоконники и плинтусы — тёплая кремовая штукатурка, не белые, не серые и не обшитые деревом; дуб — только пол, мебель и мелкие предметы. Окно — самое большее уголок за прозрачной льняной шторой у края кадра, темнее предмета; голого белого стекла и вида на улицу нет. Вода в миске или тазу прозрачная.",
+      "Фон — размытая обжитая комната (льняной диван, корзина с пледом, растение в кремовом горшке), а не голая стена и не шоурум.",
+      "Камера на уровне колена, смотрит вниз под 15–25°, 35 мм, повёрнута к доскам пола на 30–45° (доски идут по диагонали), не в лоб стене; фон — обжитая комната в нескольких метрах, заметно размыта. Передний план пустой: между объективом и предметом ничего нет, сбоку ничего не влезает. Предмет — в нижних двух третях, чуть сбоку от центра, в три четверти; вещи — одна плотная группа на разной глубине, каждая там, где сказано в сцене; не россыпью по пустому полу и не в линию.",
+      "Крупный план — 85 мм, кадр обрезан вплотную вокруг одной детали из сцены; собака целиком не помещается; фон — ровное размытие крема и дуба, без окна и мебели. Руки — только кисти и предплечья, край кадра режет руку между запястьем и локтем; без плеч, туловища, волос, колен и лиц.",
+      "Щенок — маленький (8–12 недель), пропорции маленькой породы: круглый, тело примерно квадратное, лапы короткие, голова крупная, не долговязый; пушистый, кремовый, абрикосовый или светло-карамельный, чистый (лапы тоже), без пятен; занят своим делом (ест, нюхает, идёт, отдыхает) и смотрит на него, а не в камеру; стоит не по центру. Породу не называем.",
+      "Без текста, логотипов, этикеток, водяных знаков, лиц людей; без оранжевого оттенка; без размытых предметов на переднем плане; без тёмных ободков, ручек, крючков и металла; без бытовой техники; без мутной или «молочной» воды; без грязи и потёртостей; ничего не свисает над щенком и не торчит за ним (шнуры, поводки, столбы, стебли).",
+      "Улицы и снега в кадре нет: зимние темы снимаем дома (прихожая перед прогулкой)."
+    ],
+    "look": {
+      "_note": "Проверка «похоже на эталон» по цифрам (factory.py look / img): средняя светлота L*, тени (5-й процентиль L*), пересвет (доля L* ≥ 98, %), теплота b* (от 13 — не холодно, до 22 — не оранжево), края: средняя L* трёх самых тёмных угловых зон минус центр (самый светлый угол, обычно окно, не считается). Проверено на двух кругах: все 9 забракованных кадров не проходят, эталон и assets/img/maltipu-kit.jpg проходят.",
+      "reference": {
+        "mean_L": 63.5,
+        "p5_L": 26.3,
+        "clipped": 0.3,
+        "mean_b": 17.6,
+        "edge": -7.4
+      },
+      "mean_L": [
+        55,
+        69
+      ],
+      "p5_L_max": 34,
+      "clipped_max": 1.5,
+      "mean_b_min": 13,
+      "mean_b_max": 22,
+      "edge_max": -2
+    },
+    "base": "Photorealistic lifestyle photograph for a puppy-care blog: calm, cosy and uncluttered, like a warm editorial photo. Soft, diffused natural daylight, no hard sun patches, with a gently warm, creamy white balance: warmer than neutral but never golden hour, with no orange, amber or yellow cast and no sun glow, haze or rim light. Whites and pale fabrics stay ivory and cream, never peach, butter or tan; the warmth comes from the materials (light oak, jute, linen), not from a colour filter. Natural mid-key exposure, never high-key or washed out: creamy highlights that keep detail, never pure white; soft but real warm-brown shadows; the subject is the brightest, sharpest area and the frame darkens gently toward the edges and corners. Palette of cream, ivory, warm beige, sand and light honey oak, with one or two small muted accents (powder blue, muted teal, deep olive green).",
+    "interior": "Indoors: soft daylight from a window on the left, filtered through sheer ivory linen curtains; at most a small corner of the curtained window at the frame edge, softly glowing but dimmer than the subject, never bare white glass and never a view outside. Wood is light natural oak with a soft honey tone and visible grain, matte, light-to-mid in value: never deep amber, orange or glossy, and never bleached, whitewashed or grey. Walls, window sills and skirting boards are warm cream painted plaster, never white, grey or wood-panelled; oak appears only on the floor, furniture and small objects. Natural tactile materials: light honey oak wide-plank floor, woven jute rug, linen, boucle and sherpa, matte speckled cream stoneware, rattan, knitted throws. Water in any bowl or basin is clear and transparent.",
+    "interior_sets": [
+      "home",
+      "closeup",
+      "flatlay",
+      "car"
+    ],
+    "sets": {
+      "home": "Setting: soft natural daylight, warm cream and beige home interior, cosy and lived-in. The softly blurred background is furnished and a few metres behind the subject, never a bare wall, a wall right behind the subject or an empty showroom: cues of the room the scene names, otherwise a living room (a cream linen sofa, a rattan basket with a knitted throw, a deep-green houseplant in a cream pot). Camera at knee height looking down at about 15-25 degrees so the floor fills the lower half of the frame, 35 mm lens, turned 30-45 degrees to the floorboards so they run diagonally across the frame, never square-on to a wall; shallow depth of field with a clearly defocused background. Open foreground: nothing out of focus between the lens and the subject, and no curtain, furniture or object entering the foreground from a frame edge. The subject sharp in the lower two-thirds of a landscape frame, slightly off-centre, at a three-quarter angle; the items form one compact, overlapping group at staggered depths around the main item, each exactly where the scene places it, never spread over empty floor or lined up in a row.",
+      "closeup": "Setting: a warm cream and beige home interior reduced to an even, low-detail blur of cream and honey oak, with no window, curtains or recognisable furniture. Tight close-up, 85 mm lens, very shallow depth of field, camera low and looking slightly down, landscape frame, cropped tight around the one detail the scene names so that it fills most of the frame; a dog is never shown whole, only the part the scene names. Hands appear only as hands and forearms entering from a frame edge that cuts the arm between wrist and elbow (natural skin, no jewellery, bare forearms or a thin cream cuff at the wrist); no upper arms, shoulders, torso, hair, knees or faces.",
+      "flatlay": "Setting: an overhead flat lay on honey-toned light oak boards with a softly crumpled cream linen cloth; objects neatly spaced with generous empty space; soft even window light from the left with gentle shadows. Camera directly above, landscape frame.",
+      "car": "Setting: the back seat of a car with light beige upholstery, soft daylight through the side window, the same warm cream palette; camera at seat height, 35 mm lens, shallow depth of field, landscape frame."
+    },
+    "puppy": "The puppy: one small young fluffy puppy, about 8-12 weeks old, with small-breed proportions: compact and round, body about as long as it is tall, short legs, a big round head, big soft paws and a full natural tail, never lanky or long-legged; a clean cream, apricot or light caramel coat that matches the palette, with no specks or stains, paws included; realistic anatomy and natural proportions (four legs, natural paws, clear dark eyes). Relaxed and candid, caught mid-moment (eating, sniffing, walking, resting), absorbed in what it is doing, eyes on its task rather than on the camera; placed off-centre (in a close-up, only the part the scene names is in frame).",
+    "negative": "No text, no letters, no numbers, no logos, no brand names, no packaging labels, no watermark, no people's faces, no cartoon or illustration style, no 3D-render look, no bright saturated colours, no harsh flash, no busy patterns, no clutter, no high-key, washed-out or overexposed look, no blown-out highlights, no bare white window glass, no cool, grey or blue-white cast, no orange, amber or golden-hour cast, no deep amber or glossy orange wood, no out-of-focus objects in the foreground, no black or dark rims, handles, hooks or metal hardware on objects, no appliances or stainless steel, no milky or murky water, no dirt, stains or scuffs, nothing (cords, leashes, poles, stems) hanging over or rising behind the subject.",
+    "history": [
+      {
+        "version": 1,
+        "date": "2026-11-11",
+        "note": "Первый шаблон. Проверка 8 судьями: 4 кадра из 4 — «не та серия» (бледно, выбеленный пол, пересвеченные окна, голые стены). Причина — слова «bright, airy, low contrast, lifted shadows»."
+      },
+      {
+        "version": 2,
+        "date": "2026-11-11",
+        "note": "Тёплый медово-янтарный тон на весь кадр, средняя экспозиция, тёплые тени, медовый дуб, окно уголком, обжитой размытый фон, щенок занят делом; добавлена числовая проверка look."
+      },
+      {
+        "version": 3,
+        "date": "2026-11-11",
+        "note": "Круг 2 (5 кадров, по два судьи): v2 убрал бледность круга 1, но перегрел цвет — теплота b* 24,6–26,3 против 17,6 у эталона, оранжевый пол; окна пересвечены, углы светлее центра, размытые предметы на переднем плане, человек на крупном плане, «молоко» в миске, долговязые щенки. v3: тепло от материалов, а не от фильтра; светлый медовый дуб; окно — уголок за шторой; пустой передний план; крупный план — только кисти рук; щенок маленькой породы; съёмка на улице убрана. look: теплота ≤ 22, края по трём тёмным углам ≤ −2. Круг 3 (по одному проверяющему): 3 кадра из 3 — та же серия (4 из 5), блокеров нет; замечания — виньетка местами сильнее эталона, кухня читается слабо. Зимняя сцена не прошла проверку по цифрам за 4 попытки (кремовый щенок в кремовом на кремовом фоне выходит бледным) — статья выйдет с реальными фото."
+      }
+    ]
+  }
+}

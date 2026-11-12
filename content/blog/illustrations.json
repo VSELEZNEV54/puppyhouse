@@ -1,0 +1,81 @@
+{
+  "_note": "Откуда каждая иллюстрация блога: статья, подпись, модель Figma, версия стиля (content/blog/figma.json → style) и точный запрос. Пишет factory.py img.",
+  "items": {
+    "/assets/img/blog/chto-kupit-shchenku-1.jpg": {
+      "slug": "chto-kupit-shchenku",
+      "alt": "Пример набора для щенка на полу: лежанка, миски, пелёнки, мячик, шлейка с поводком",
+      "w": 1264,
+      "h": 848,
+      "date": "2026-11-11",
+      "model": "gemini-3.1-flash-lite-image",
+      "style": "эталон стиля «Тёплый скандинавский дом»",
+      "style_version": 1,
+      "prompt": "Photorealistic photo for a puppy care blog. Soft natural daylight, warm cream and beige home interior, shallow depth of field. No text, no letters, no logos, no watermark. Scene: a new puppy starter kit on a light wooden floor — a soft round dog bed, two ceramic bowls, a stack of puppy training pads, a small ball and a harness with a leash; no dog in the frame.",
+      "look": {
+        "mean_L": 63.5,
+        "p5_L": 26.3,
+        "clipped": 0.3,
+        "mean_b": 17.6,
+        "edge": -7.4
+      },
+      "look_ok": true
+    },
+    "/assets/img/blog/chem-kormit-shchenka-1.jpg": {
+      "slug": "chem-kormit-shchenka",
+      "alt": "Щенок ест корм из керамической миски на кухне, рядом миска с водой",
+      "w": 1264,
+      "h": 848,
+      "date": "2026-11-11",
+      "look": {
+        "mean_L": 62.7,
+        "p5_L": 20.8,
+        "clipped": 0.0,
+        "mean_b": 18.3,
+        "edge": -10.3
+      },
+      "look_ok": true,
+      "model": "gemini-3.1-flash-lite-image",
+      "style": "Тёплый скандинавский дом",
+      "style_version": 3,
+      "prompt": "Photorealistic lifestyle photograph for a puppy-care blog: calm, cosy and uncluttered, like a warm editorial photo. Soft, diffused natural daylight, no hard sun patches, with a gently warm, creamy white balance: warmer than neutral but never golden hour, with no orange, amber or yellow cast and no sun glow, haze or rim light. Whites and pale fabrics stay ivory and cream, never peach, butter or tan; the warmth comes from the materials (light oak, jute, linen), not from a colour filter. Natural mid-key exposure, never high-key or washed out: creamy highlights that keep detail, never pure white; soft but real warm-brown shadows; the subject is the brightest, sharpest area and the frame darkens gently toward the edges and corners. Palette of cream, ivory, warm beige, sand and light honey oak, with one or two small muted accents (powder blue, muted teal, deep olive green). Indoors: soft daylight from a window on the left, filtered through sheer ivory linen curtains; at most a small corner of the curtained window at the frame edge, softly glowing but dimmer than the subject, never bare white glass and never a view outside. Wood is light natural oak with a soft honey tone and visible grain, matte, light-to-mid in value: never deep amber, orange or glossy, and never bleached, whitewashed or grey. Walls, window sills and skirting boards are warm cream painted plaster, never white, grey or wood-panelled; oak appears only on the floor, furniture and small objects. Natural tactile materials: light honey oak wide-plank floor, woven jute rug, linen, boucle and sherpa, matte speckled cream stoneware, rattan, knitted throws. Water in any bowl or basin is clear and transparent. Setting: soft natural daylight, warm cream and beige home interior, cosy and lived-in. The softly blurred background is furnished and a few metres behind the subject, never a bare wall, a wall right behind the subject or an empty showroom: cues of the room the scene names, otherwise a living room (a cream linen sofa, a rattan basket with a knitted throw, a deep-green houseplant in a cream pot). Camera at knee height looking down at about 15-25 degrees so the floor fills the lower half of the frame, 35 mm lens, turned 30-45 degrees to the floorboards so they run diagonally across the frame, never square-on to a wall; shallow depth of field with a clearly defocused background. Open foreground: nothing out of focus between the lens and the subject, and no curtain, furniture or object entering the foreground from a frame edge. The subject sharp in the lower two-thirds of a landscape frame, slightly off-centre, at a three-quarter angle; the items form one compact, overlapping group at staggered depths around the main item, each exactly where the scene places it, never spread over empty floor or lined up in a row. The puppy: one small young fluffy puppy, about 8-12 weeks old, with small-breed proportions: compact and round, body about as long as it is tall, short legs, a big round head, big soft paws and a full natural tail, never lanky or long-legged; a clean cream, apricot or light caramel coat that matches the palette, with no specks or stains, paws included; realistic anatomy and natural proportions (four legs, natural paws, clear dark eyes). Relaxed and candid, caught mid-moment (eating, sniffing, walking, resting), absorbed in what it is doing, eyes on its task rather than on the camera; placed off-centre (in a close-up, only the part the scene names is in frame). Scene: a small young fluffy cream puppy eating kibble from a matte, densely speckled sand-coloured stoneware bowl on a crumpled oatmeal linen mat on a honey oak kitchen floor, a matching second bowl with clear water beside it; the camera looks slightly down into both bowls; behind, softly blurred, the plinth and lower fronts of cream wooden kitchen cabinets and a deep-green houseplant in a cream pot; no stainless steel, no appliances. No text, no letters, no numbers, no logos, no brand names, no packaging labels, no watermark, no people's faces, no cartoon or illustration style, no 3D-render look, no bright saturated colours, no harsh flash, no busy patterns, no clutter, no high-key, washed-out or overexposed look, no blown-out highlights, no bare white window glass, no cool, grey or blue-white cast, no orange, amber or golden-hour cast, no deep amber or glossy orange wood, no out-of-focus objects in the foreground, no black or dark rims, handles, hooks or metal hardware on objects, no appliances or stainless steel, no milky or murky water, no dirt, stains or scuffs, nothing (cords, leashes, poles, stems) hanging over or rising behind the subject."
+    },
+    "/assets/img/blog/lapy-zimoj-reagenty-1.jpg": {
+      "slug": "lapy-zimoj-reagenty",
+      "alt": "Лапу щенка моют в тазике с тёплой водой, рядом полотенце",
+      "w": 1264,
+      "h": 848,
+      "date": "2026-11-11",
+      "look": {
+        "mean_L": 64.3,
+        "p5_L": 29.0,
+        "clipped": 0.0,
+        "mean_b": 19.9,
+        "edge": -12.6
+      },
+      "look_ok": true,
+      "model": "gemini-3.1-flash-lite-image",
+      "style": "Тёплый скандинавский дом",
+      "style_version": 3,
+      "prompt": "Photorealistic lifestyle photograph for a puppy-care blog: calm, cosy and uncluttered, like a warm editorial photo. Soft, diffused natural daylight, no hard sun patches, with a gently warm, creamy white balance: warmer than neutral but never golden hour, with no orange, amber or yellow cast and no sun glow, haze or rim light. Whites and pale fabrics stay ivory and cream, never peach, butter or tan; the warmth comes from the materials (light oak, jute, linen), not from a colour filter. Natural mid-key exposure, never high-key or washed out: creamy highlights that keep detail, never pure white; soft but real warm-brown shadows; the subject is the brightest, sharpest area and the frame darkens gently toward the edges and corners. Palette of cream, ivory, warm beige, sand and light honey oak, with one or two small muted accents (powder blue, muted teal, deep olive green). Indoors: soft daylight from a window on the left, filtered through sheer ivory linen curtains; at most a small corner of the curtained window at the frame edge, softly glowing but dimmer than the subject, never bare white glass and never a view outside. Wood is light natural oak with a soft honey tone and visible grain, matte, light-to-mid in value: never deep amber, orange or glossy, and never bleached, whitewashed or grey. Walls, window sills and skirting boards are warm cream painted plaster, never white, grey or wood-panelled; oak appears only on the floor, furniture and small objects. Natural tactile materials: light honey oak wide-plank floor, woven jute rug, linen, boucle and sherpa, matte speckled cream stoneware, rattan, knitted throws. Water in any bowl or basin is clear and transparent. Setting: a warm cream and beige home interior reduced to an even, low-detail blur of cream and honey oak, with no window, curtains or recognisable furniture. Tight close-up, 85 mm lens, very shallow depth of field, camera low and looking slightly down, landscape frame, cropped tight around the one detail the scene names so that it fills most of the frame; a dog is never shown whole, only the part the scene names. Hands appear only as hands and forearms entering from a frame edge that cuts the arm between wrist and elbow (natural skin, no jewellery, bare forearms or a thin cream cuff at the wrist); no upper arms, shoulders, torso, hair, knees or faces. The puppy: one small young fluffy puppy, about 8-12 weeks old, with small-breed proportions: compact and round, body about as long as it is tall, short legs, a big round head, big soft paws and a full natural tail, never lanky or long-legged; a clean cream, apricot or light caramel coat that matches the palette, with no specks or stains, paws included; realistic anatomy and natural proportions (four legs, natural paws, clear dark eyes). Relaxed and candid, caught mid-moment (eating, sniffing, walking, resting), absorbed in what it is doing, eyes on its task rather than on the camera; placed off-centre (in a close-up, only the part the scene names is in frame). Scene: a small fluffy cream puppy's front paw dipped into a small all-cream speckled enamel basin of clear warm water (cream rim), the wet fur on the paw visibly clumped; a person's hands enter from the right edge, one steadying the leg, one cupping water over the paw; a folded soft cream towel beside the basin on a jute doormat. No text, no letters, no numbers, no logos, no brand names, no packaging labels, no watermark, no people's faces, no cartoon or illustration style, no 3D-render look, no bright saturated colours, no harsh flash, no busy patterns, no clutter, no high-key, washed-out or overexposed look, no blown-out highlights, no bare white window glass, no cool, grey or blue-white cast, no orange, amber or golden-hour cast, no deep amber or glossy orange wood, no out-of-focus objects in the foreground, no black or dark rims, handles, hooks or metal hardware on objects, no appliances or stainless steel, no milky or murky water, no dirt, stains or scuffs, nothing (cords, leashes, poles, stems) hanging over or rising behind the subject."
+    },
+    "/assets/img/blog/chto-nelzya-davat-sobake-1.jpg": {
+      "slug": "chto-nelzya-davat-sobake",
+      "alt": "Шоколад, виноград, лук и чеснок отдельно от миски с собачьим кормом",
+      "w": 1264,
+      "h": 848,
+      "date": "2026-11-12",
+      "look": {
+        "mean_L": 65.1,
+        "p5_L": 27.5,
+        "clipped": 0.0,
+        "mean_b": 17.7,
+        "edge": -46.6
+      },
+      "look_ok": true,
+      "model": "gemini-3.1-flash-lite-image",
+      "style": "Тёплый скандинавский дом",
+      "style_version": 3,
+      "prompt": "Photorealistic lifestyle photograph for a puppy-care blog: calm, cosy and uncluttered, like a warm editorial photo. Soft, diffused natural daylight, no hard sun patches, with a gently warm, creamy white balance: warmer than neutral but never golden hour, with no orange, amber or yellow cast and no sun glow, haze or rim light. Whites and pale fabrics stay ivory and cream, never peach, butter or tan; the warmth comes from the materials (light oak, jute, linen), not from a colour filter. Natural mid-key exposure, never high-key or washed out: creamy highlights that keep detail, never pure white; soft but real warm-brown shadows; the subject is the brightest, sharpest area and the frame darkens gently toward the edges and corners. Palette of cream, ivory, warm beige, sand and light honey oak, with one or two small muted accents (powder blue, muted teal, deep olive green). Indoors: soft daylight from a window on the left, filtered through sheer ivory linen curtains; at most a small corner of the curtained window at the frame edge, softly glowing but dimmer than the subject, never bare white glass and never a view outside. Wood is light natural oak with a soft honey tone and visible grain, matte, light-to-mid in value: never deep amber, orange or glossy, and never bleached, whitewashed or grey. Walls, window sills and skirting boards are warm cream painted plaster, never white, grey or wood-panelled; oak appears only on the floor, furniture and small objects. Natural tactile materials: light honey oak wide-plank floor, woven jute rug, linen, boucle and sherpa, matte speckled cream stoneware, rattan, knitted throws. Water in any bowl or basin is clear and transparent. Setting: an overhead flat lay on honey-toned light oak boards with a softly crumpled cream linen cloth; objects neatly spaced with generous empty space; soft even window light from the left with gentle shadows. Camera directly above, landscape frame. Scene: on one side a bar of dark chocolate, a bunch of grapes, an onion and two garlic bulbs; on the other side a speckled cream ceramic bowl of dog kibble; clear empty space between the two groups. No text, no letters, no numbers, no logos, no brand names, no packaging labels, no watermark, no people's faces, no cartoon or illustration style, no 3D-render look, no bright saturated colours, no harsh flash, no busy patterns, no clutter, no high-key, washed-out or overexposed look, no blown-out highlights, no bare white window glass, no cool, grey or blue-white cast, no orange, amber or golden-hour cast, no deep amber or glossy orange wood, no out-of-focus objects in the foreground, no black or dark rims, handles, hooks or metal hardware on objects, no appliances or stainless steel, no milky or murky water, no dirt, stains or scuffs, nothing (cords, leashes, poles, stems) hanging over or rising behind the subject."
+    }
+  }
+}

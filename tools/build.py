@@ -9,7 +9,8 @@
     python3 tools/build.py --full     build EVERY route into full/ (committed: GitHub Pages …/full/, never deployed to
                                       the server); pages there use the shared assets/ of the published tree
 
-Published pages: src/data/publish.json → pages. A normal build renders only them and deletes the other generated
+Published pages: src/data/publish.json → pages, plus routes that carry live=True (blog articles listed in
+content/blog/published.json). A normal build renders only them and deletes the other generated
 pages, so the repo (GitHub Pages) and the server get just the published site. Links to the rest go to a block on a
 published page (publish.json → link_fallbacks) or stay root-absolute: toast «Раздел скоро откроется…», rel=nofollow.
 A broken publish.json stops the build before anything is written. Full site of 19.10: branch backup/full-site-2026-10-19.
@@ -620,7 +621,11 @@ def main(argv=None) -> int:
             for e in rep.errors:
                 print(f"  ✗ {e}")
             return 1
-        published, fallbacks, out_base = publish_matcher(cfg[0]), cfg[1], ROOT
+        base_published = publish_matcher(cfg[0])
+        # a route may publish itself: a blog article from its publication day on (content/blog/published.json →
+        # routes/blog.py sets live=True). Everything else goes out only through publish.json.
+        live = frozenset(r.get("url") for _, r in routes if isinstance(r, dict) and r.get("live") is True)
+        published, fallbacks, out_base = (lambda u: base_published(u) or u in live), cfg[1], ROOT
     all_urls: set[str] = set()
     unpublished: list[str] = []
 

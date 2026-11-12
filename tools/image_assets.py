@@ -46,7 +46,8 @@ def generate(root: Path = ROOT) -> dict:
     images = {}
     written = 0
     (root / DIRECTORY).mkdir(parents=True, exist_ok=True)
-    for path in sorted((root / "assets/img").glob("*")):
+    # assets/img/blog/: illustrations of the blog factory (content/blog/README.md), same pipeline as the photos
+    for path in sorted([*(root / "assets/img").glob("*"), *(root / "assets/img/blog").glob("*")]):
         if path.suffix.lower() not in {".jpg", ".jpeg", ".png"}:
             continue
         src = "/" + path.relative_to(root).as_posix()

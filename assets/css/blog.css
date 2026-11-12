@@ -31,6 +31,45 @@
 .blg-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--gap); }
 .blg-grid__item { min-width: 0; }
 
+/* ---------- «Полезные материалы»: «Как выбрать щенка» + по три материала о каждой породе (над списком статей) ---------- */
+.blg-mat { display: grid; grid-template-columns: minmax(0, 1.1fr) repeat(2, minmax(0, 1fr)); gap: var(--gap); }
+.blg-mat__main { grid-row: span 2; min-width: 0; }
+.blg-mat__breed {
+  display: flex; flex-direction: column; min-width: 0;
+  padding: clamp(18px, 1.8vw, 24px) clamp(18px, 1.8vw, 24px) clamp(8px, 1vw, 12px);
+  border-radius: var(--r-tile); background: var(--tone-floor); color: var(--ink);
+}
+.blg-mat__head { display: flex; align-items: center; gap: 14px; margin-bottom: 10px; }
+.blg-mat__face { flex: none; width: 56px; height: 56px; overflow: hidden; border-radius: 50%; background: var(--tone); }
+.blg-mat__face img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.blg-mat__name { font-size: clamp(20px, 1.6vw, 24px); font-weight: 500; letter-spacing: -0.025em; line-height: 1.12; }
+.blg-mat__name a { text-decoration: none; }
+.blg-mat__name a:hover { text-decoration: underline; text-underline-offset: 3px; }
+.blg-mat__list { margin: 0; padding: 0; list-style: none; }
+.blg-mat__link {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  min-height: 56px; padding: 10px 0; border-top: 1px solid rgba(46, 31, 18, .1);
+  font-size: 16px; font-weight: 500; line-height: 1.25; color: var(--ink); text-decoration: none;
+}
+.blg-mat__label { display: grid; gap: 2px; }
+.blg-mat__time { font-size: 13px; font-weight: 400; color: var(--ink-soft); }
+.blg-mat__link .i { flex: none; width: 18px; height: 18px; transition: transform .25s var(--ease); }
+.blg-mat__link:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; border-radius: 6px; }
+@media (hover: hover) { .blg-mat__link:hover .i { transform: translateX(3px); } }
+@media (max-width: 1000px) {
+  .blg-mat { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .blg-mat__main { grid-column: 1 / -1; grid-row: auto; }
+}
+/* планшет: главная карточка во всю ширину — фото слева, текст справа; на телефоне — как карточка списка */
+@media (max-width: 1000px) and (min-width: 561px) {
+  .blg-mat__main .blg-card { flex-direction: row; }
+  .blg-mat__main .blg-card__media { width: 46%; aspect-ratio: 4 / 3; }
+  .blg-mat__main .blg-card__body { padding: 20px 22px; }
+}
+@media (max-width: 560px) {
+  .blg-mat { grid-template-columns: minmax(0, 1fr); }
+}
+
 /* ---------- карточка статьи ---------- */
 .blg-card {
   position: relative; isolation: isolate; overflow: hidden;

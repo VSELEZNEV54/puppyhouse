@@ -1,0 +1,70 @@
+# Блог: публикация по графику контент-плана (content/blog/plan.json → schedule), запуск каждый день в ~09:20 МСК.
+# 1) В день запуска (schedule.launch, 12.11) разом выходят «Полезные материалы» — серия base (как выбрать щенка и по
+#    три материала о каждой породе). 2) С schedule.start (23.11) — одна статья в день публикации: неделя 1 — 3 статьи
+#    (пн, ср, пт), неделя 2 — 5 (пн–пт), дальше каждый день. Выходит первая готовая статья плана (одобрена редактором,
+#    без hold, с чистой проверкой tools/blog/factory.py lint). 3) С base_links_from в материалах включаются ссылки.
+# Изменился content/blog/published.json → пересборка (корень — боевой, full/ — превью), коммит «Автопубликация …», пуш.
+# Сервер выкладывает новый коммит сам в течение 5 минут (dsh autoupdate on, DEPLOY.md) — статья на сайте к 10:00 МСК.
+# Буфер пуст в день публикации → шаг «Выбрать статью» падает с кодом 3, GitHub пишет письмо. Это сигнал запустить /статьи.
+# Ветка: переменная репозитория BLOG_BRANCH (Settings → Variables), иначе ветка сервера claude/loving-tesla-vapvct.
+# По расписанию GitHub запускает только файл из ветки по умолчанию — там лежит копия этого файла.
+name: Блог — публикация
+
+on:
+  schedule:
+    - cron: "17 6 * * *"   # 09:17 МСК каждый день (GitHub может запустить на 5–30 минут позже); сервер — за 5 минут
+  workflow_dispatch:
+    inputs:
+      date:
+        description: "Дата публикации ГГГГ-ММ-ДД (пусто — сегодня по Москве)"
+        required: false
+      force:
+        description: "Выпустить ещё одну, даже если сегодня статья уже вышла"
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+concurrency:
+  group: blog-publish
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ vars.BLOG_BRANCH || 'claude/loving-tesla-vapvct' }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements-build.txt
+      - name: Выбрать статью
+        id: pick
+        run: |
+          args=(--github-output "$GITHUB_OUTPUT")
+          [ -n "${{ inputs.date }}" ] && args+=(--date "${{ inputs.date }}")
+          [ "${{ inputs.force }}" = "true" ] && args+=(--force)
+          python3 tools/blog/factory.py publish "${args[@]}"
+      - name: Собрать сайт
+        if: ${{ !cancelled() && steps.pick.outputs.changed == '1' }}
+        run: |
+          python3 tools/image_assets.py   # WebP-версии новых иллюстраций (assets/img/blog), уже готовые не трогает
+          python3 tools/build.py
+          python3 tools/build.py --full
+          python3 tools/blog/factory.py plan
+      - name: Коммит и пуш
+        if: ${{ !cancelled() && steps.pick.outputs.changed == '1' }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git diff --cached --quiet && exit 0
+          git commit -m "Автопубликация $(TZ=Europe/Moscow date +%F): ${{ steps.pick.outputs.slug || 'ссылки в материалах' }}"
+          branch="$(git rev-parse --abbrev-ref HEAD)"
+          for i in 1 2 3 4; do git pull --rebase origin "$branch" && git push origin "$branch" && break; sleep $((i * 5)); done
+      - name: Итог
+        if: always()
+        run: python3 tools/blog/factory.py status >> "$GITHUB_STEP_SUMMARY" || true

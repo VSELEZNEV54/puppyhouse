@@ -1,7 +1,20 @@
 {
   "note": "Written by tools/build.py. Lists generated pages; --clean deletes only files listed here.",
   "files": [
+    "blog/border-kolli-harakter/index.html",
+    "blog/border-kolli-kormlenie/index.html",
+    "blog/border-kolli-uhod/index.html",
+    "blog/francuzskij-buldog-harakter/index.html",
+    "blog/francuzskij-buldog-kormlenie/index.html",
+    "blog/francuzskij-buldog-uhod/index.html",
     "blog/index.html",
+    "blog/kak-vybrat-shchenka/index.html",
+    "blog/maltipu-harakter/index.html",
+    "blog/maltipu-kormlenie/index.html",
+    "blog/maltipu-uhod/index.html",
+    "blog/toj-pudel-harakter/index.html",
+    "blog/toj-pudel-kormlenie/index.html",
+    "blog/toj-pudel-uhod/index.html",
     "border-kolli/cena/index.html",
     "border-kolli/cherno-belyj/index.html",
     "border-kolli/goluboj-mramor/index.html",
@@ -156,6 +169,19 @@
   "routes": {
     "/": "home",
     "/blog/": "blog",
+    "/blog/border-kolli-harakter/": "blog",
+    "/blog/border-kolli-kormlenie/": "blog",
+    "/blog/border-kolli-uhod/": "blog",
+    "/blog/francuzskij-buldog-harakter/": "blog",
+    "/blog/francuzskij-buldog-kormlenie/": "blog",
+    "/blog/francuzskij-buldog-uhod/": "blog",
+    "/blog/kak-vybrat-shchenka/": "blog",
+    "/blog/maltipu-harakter/": "blog",
+    "/blog/maltipu-kormlenie/": "blog",
+    "/blog/maltipu-uhod/": "blog",
+    "/blog/toj-pudel-harakter/": "blog",
+    "/blog/toj-pudel-kormlenie/": "blog",
+    "/blog/toj-pudel-uhod/": "blog",
     "/border-kolli/": "breeds",
     "/border-kolli/cena/": "breedsub",
     "/border-kolli/cherno-belyj/": "breeds",
@@ -308,608 +334,660 @@
   },
   "lastmod": {
     "/": [
-      "9ed31a5caeb8",
-      "2026-11-11"
+      "3c8b3d5855f7",
+      "2026-11-12"
     ],
     "/blog/": [
-      "7a48db8e319c",
-      "2026-11-11"
+      "e232e6732557",
+      "2026-11-12"
+    ],
+    "/blog/border-kolli-harakter/": [
+      "13db3cd69a58",
+      "2026-11-12"
+    ],
+    "/blog/border-kolli-kormlenie/": [
+      "c9da97543991",
+      "2026-11-12"
+    ],
+    "/blog/border-kolli-uhod/": [
+      "e9f9b60bfcad",
+      "2026-11-12"
+    ],
+    "/blog/francuzskij-buldog-harakter/": [
+      "233e458e6be7",
+      "2026-11-12"
+    ],
+    "/blog/francuzskij-buldog-kormlenie/": [
+      "c43154bdd3fe",
+      "2026-11-12"
+    ],
+    "/blog/francuzskij-buldog-uhod/": [
+      "b2b428b95c7f",
+      "2026-11-12"
+    ],
+    "/blog/kak-vybrat-shchenka/": [
+      "2e34098224e3",
+      "2026-11-12"
+    ],
+    "/blog/maltipu-harakter/": [
+      "dff2098a52f3",
+      "2026-11-12"
+    ],
+    "/blog/maltipu-kormlenie/": [
+      "068452d29764",
+      "2026-11-12"
+    ],
+    "/blog/maltipu-uhod/": [
+      "9ec38bf8dcc7",
+      "2026-11-12"
+    ],
+    "/blog/toj-pudel-harakter/": [
+      "96b346354043",
+      "2026-11-12"
+    ],
+    "/blog/toj-pudel-kormlenie/": [
+      "ca117088f2c1",
+      "2026-11-12"
+    ],
+    "/blog/toj-pudel-uhod/": [
+      "98e846c81b21",
+      "2026-11-12"
     ],
     "/border-kolli/": [
-      "42ef8ec24f89",
-      "2026-11-11"
+      "acb6f99074a9",
+      "2026-11-12"
     ],
     "/border-kolli/cena/": [
-      "b85a3e8696fa",
-      "2026-11-11"
+      "2d79eeb3fe9c",
+      "2026-11-12"
     ],
     "/border-kolli/cherno-belyj/": [
-      "486b44897909",
-      "2026-11-11"
+      "776b0d183558",
+      "2026-11-12"
     ],
     "/border-kolli/goluboj-mramor/": [
-      "8b2a6b6ea29c",
-      "2026-11-11"
+      "cc2d313b62bd",
+      "2026-11-12"
     ],
     "/border-kolli/krasno-belyj/": [
-      "6819b1d50ceb",
-      "2026-11-11"
+      "921c10135be8",
+      "2026-11-12"
     ],
     "/border-kolli/krasnyj-mramor/": [
-      "7c1f6da0b887",
-      "2026-11-11"
+      "c0b7477435fb",
+      "2026-11-12"
     ],
     "/border-kolli/lilovyj/": [
-      "d9e5b0f419d3",
-      "2026-11-11"
+      "74909d038e9d",
+      "2026-11-12"
     ],
     "/border-kolli/mramornyj-trikolor/": [
-      "a9ace64d1964",
-      "2026-11-11"
+      "b54a5259f0b3",
+      "2026-11-12"
     ],
     "/border-kolli/trehcvetnyj/": [
-      "520dd01fbcd1",
-      "2026-11-11"
+      "14105221144d",
+      "2026-11-12"
     ],
     "/border-kolli/vidy-i-okrasy/": [
-      "afb5cc71df7b",
-      "2026-11-11"
+      "280a2c081bea",
+      "2026-11-12"
     ],
     "/dokumenty-i-garantii/": [
-      "db213d064898",
-      "2026-11-11"
+      "d9e252c7bd8a",
+      "2026-11-12"
     ],
     "/dostavka/": [
-      "c0c3af837791",
-      "2026-11-11"
+      "53c4de64a136",
+      "2026-11-12"
     ],
     "/faq/": [
-      "d1f070cda0ef",
-      "2026-11-11"
+      "3165b89924b2",
+      "2026-11-12"
     ],
     "/francuzskij-buldog/": [
-      "2a235d2a909c",
-      "2026-11-11"
+      "03278f0b7894",
+      "2026-11-12"
     ],
     "/francuzskij-buldog/cena/": [
-      "e1a63af8b157",
-      "2026-11-11"
+      "474a58343d79",
+      "2026-11-12"
     ],
     "/francuzskij-buldog/goluboj/": [
-      "1923f44a5253",
-      "2026-11-11"
+      "cb14dc28e921",
+      "2026-11-12"
     ],
     "/francuzskij-buldog/kremovyj/": [
-      "185a0746fa2a",
-      "2026-11-11"
+      "cd4194459aec",
+      "2026-11-12"
     ],
     "/francuzskij-buldog/mramornyj/": [
-      "a2462654a018",
-      "2026-11-11"
+      "3d017d83b1ed",
+      "2026-11-12"
     ],
     "/francuzskij-buldog/palevyj/": [
-      "cc53aa7102db",
-      "2026-11-11"
+      "216322c90d39",
+      "2026-11-12"
     ],
     "/francuzskij-buldog/pegij/": [
-      "63cc0a0b1524",
-      "2026-11-11"
+      "dabe28798246",
+      "2026-11-12"
     ],
     "/francuzskij-buldog/shokoladnyj/": [
-      "7a8edcd1e46f",
-      "2026-11-11"
+      "f6b3aea68c81",
+      "2026-11-12"
     ],
     "/francuzskij-buldog/tigrovyj/": [
-      "c7cb2c1b8e1b",
-      "2026-11-11"
+      "8a76dca272f2",
+      "2026-11-12"
     ],
     "/francuzskij-buldog/vidy-i-okrasy/": [
-      "b0b4e18da569",
-      "2026-11-11"
+      "a9786ba530e7",
+      "2026-11-12"
     ],
     "/kontakty/": [
-      "631d9fe86628",
-      "2026-11-11"
+      "45a07e8203a2",
+      "2026-11-12"
     ],
     "/maltipu/": [
-      "6ff31901ad8f",
-      "2026-11-11"
+      "8602e6aef851",
+      "2026-11-12"
     ],
     "/maltipu/abrikosovyj/": [
-      "6ce5e803856c",
-      "2026-11-11"
+      "0f78868ca259",
+      "2026-11-12"
     ],
     "/maltipu/belyj/": [
-      "b7e304aefc2c",
-      "2026-11-11"
+      "a3d879219a18",
+      "2026-11-12"
     ],
     "/maltipu/cena/": [
-      "8701108915c3",
-      "2026-11-11"
+      "7732dfe531f0",
+      "2026-11-12"
     ],
     "/maltipu/chernyj/": [
-      "ca2780e35a68",
-      "2026-11-11"
+      "52fbc49947ce",
+      "2026-11-12"
     ],
     "/maltipu/fantom/": [
-      "9a516326f9ca",
-      "2026-11-11"
+      "2d93b4269106",
+      "2026-11-12"
     ],
     "/maltipu/kremovyj/": [
-      "159b676ae1f5",
-      "2026-11-11"
+      "7848d597a8f2",
+      "2026-11-12"
     ],
     "/maltipu/partikolor/": [
-      "29fe8e188f0e",
-      "2026-11-11"
+      "71d581e58fd1",
+      "2026-11-12"
     ],
     "/maltipu/ryzhij/": [
-      "1da2ff1ddd04",
-      "2026-11-11"
+      "4723be2c3002",
+      "2026-11-12"
     ],
     "/maltipu/serebristyj/": [
-      "f5f610bfa45e",
-      "2026-11-11"
+      "9dbc9f6c13d4",
+      "2026-11-12"
     ],
     "/maltipu/shokoladnyj/": [
-      "58eae1095f9f",
-      "2026-11-11"
+      "89b61b5e2425",
+      "2026-11-12"
     ],
     "/maltipu/sobolinyj/": [
-      "228ac9099597",
-      "2026-11-11"
+      "e41bad246b87",
+      "2026-11-12"
     ],
     "/maltipu/vidy-i-okrasy/": [
-      "57f3b72eea60",
-      "2026-11-11"
+      "14a9f4773621",
+      "2026-11-12"
     ],
     "/o-pitomnike/": [
-      "94b9d3825108",
-      "2026-11-11"
+      "5684a6d56668",
+      "2026-11-12"
     ],
     "/otzyvy/": [
-      "099ebebfb7dd",
-      "2026-11-11"
+      "672bb2b31902",
+      "2026-11-12"
     ],
     "/podbor-porody/": [
-      "b26b53239686",
-      "2026-11-11"
+      "08957fe73253",
+      "2026-11-12"
     ],
     "/politika-konfidencialnosti/": [
-      "b9ac13184b46",
-      "2026-11-11"
+      "65d13ca4a6aa",
+      "2026-11-12"
     ],
     "/rassrochka/": [
-      "44d2d4b4f44d",
-      "2026-11-11"
+      "1bc1fe0009d6",
+      "2026-11-12"
     ],
     "/shchenki-v-barnaule/": [
-      "10e23cc57b93",
-      "2026-11-11"
+      "a2d998ac9c24",
+      "2026-11-12"
     ],
     "/shchenki-v-chelyabinske/": [
-      "a6f557e057b5",
-      "2026-11-11"
+      "70b403febce0",
+      "2026-11-12"
     ],
     "/shchenki-v-ekaterinburge/": [
-      "aed992f2ddf0",
-      "2026-11-11"
+      "bf81d6ed638b",
+      "2026-11-12"
     ],
     "/shchenki-v-habarovske/": [
-      "33de6677c3d6",
-      "2026-11-11"
+      "5750be8ba908",
+      "2026-11-12"
     ],
     "/shchenki-v-irkutske/": [
-      "7eff96221e26",
-      "2026-11-11"
+      "d5550cacf457",
+      "2026-11-12"
     ],
     "/shchenki-v-izhevske/": [
-      "9b29ffa0c407",
-      "2026-11-11"
+      "9766c1759836",
+      "2026-11-12"
     ],
     "/shchenki-v-kazani/": [
-      "ff861aa98fd7",
-      "2026-11-11"
+      "ea2ca2015070",
+      "2026-11-12"
     ],
     "/shchenki-v-kemerove/": [
-      "e6c9549fa989",
-      "2026-11-11"
+      "fbd25ee017c3",
+      "2026-11-12"
     ],
     "/shchenki-v-krasnodare/": [
-      "18eef2232a50",
-      "2026-11-11"
+      "8f129ccef2e3",
+      "2026-11-12"
     ],
     "/shchenki-v-krasnoyarske/": [
-      "c4c9428ff0cf",
-      "2026-11-11"
+      "549c489fa63f",
+      "2026-11-12"
     ],
     "/shchenki-v-mahachkale/": [
-      "f88777f5289d",
-      "2026-11-11"
+      "b8177de3d8d2",
+      "2026-11-12"
     ],
     "/shchenki-v-nizhnem-novgorode/": [
-      "6fc02e326e63",
-      "2026-11-11"
+      "c8dfca7aab5f",
+      "2026-11-12"
     ],
     "/shchenki-v-novosibirske/": [
-      "4e50a1361419",
-      "2026-11-11"
+      "57aec7de395a",
+      "2026-11-12"
     ],
     "/shchenki-v-omske/": [
-      "29012122a4c5",
-      "2026-11-11"
+      "87ee3eb0c73b",
+      "2026-11-12"
     ],
     "/shchenki-v-permi/": [
-      "25c2ba7be494",
-      "2026-11-11"
+      "7f204970b465",
+      "2026-11-12"
     ],
     "/shchenki-v-rostove-na-donu/": [
-      "0d541be4e23e",
-      "2026-11-11"
+      "395ae5d3f4c3",
+      "2026-11-12"
     ],
     "/shchenki-v-samare/": [
-      "2f941af503ca",
-      "2026-11-11"
+      "73a65f59a293",
+      "2026-11-12"
     ],
     "/shchenki-v-sankt-peterburge/": [
-      "f87d96c8fdd8",
-      "2026-11-11"
+      "3fa501869ae0",
+      "2026-11-12"
     ],
     "/shchenki-v-saratove/": [
-      "25c5b4ac24f4",
-      "2026-11-11"
+      "ff1b72fa9ecb",
+      "2026-11-12"
     ],
     "/shchenki-v-sevastopole/": [
-      "b13c78d4dd95",
-      "2026-11-11"
+      "24af53c73889",
+      "2026-11-12"
     ],
     "/shchenki-v-stavropole/": [
-      "f6980cde0f08",
-      "2026-11-11"
+      "0e680f0cd3c0",
+      "2026-11-12"
     ],
     "/shchenki-v-tolyatti/": [
-      "61c0e3bcb6a7",
-      "2026-11-11"
+      "1a0543161f7c",
+      "2026-11-12"
     ],
     "/shchenki-v-tomske/": [
-      "ada964cbf0ea",
-      "2026-11-11"
+      "90ddf832ae26",
+      "2026-11-12"
     ],
     "/shchenki-v-tyumeni/": [
-      "f266e8094df5",
-      "2026-11-11"
+      "a755eda2e6bb",
+      "2026-11-12"
     ],
     "/shchenki-v-ufe/": [
-      "bcbf2c58761a",
-      "2026-11-11"
+      "16c7da95092f",
+      "2026-11-12"
     ],
     "/shchenki-v-ulyanovske/": [
-      "c67dc8ab8ff7",
-      "2026-11-11"
+      "8d2c672fd48a",
+      "2026-11-12"
     ],
     "/shchenki-v-volgograde/": [
-      "c1270a4ea9c4",
-      "2026-11-11"
+      "f4cdaee2d77b",
+      "2026-11-12"
     ],
     "/shchenki-v-voronezhe/": [
-      "379d0d2000d5",
-      "2026-11-11"
+      "a2ec815d0f9a",
+      "2026-11-12"
     ],
     "/shchenki-v-yaroslavle/": [
-      "69c04d43fbdb",
-      "2026-11-11"
+      "8c25c745de2e",
+      "2026-11-12"
     ],
     "/shchenki-vo-vladivostoke/": [
-      "7796f8d3bf93",
-      "2026-11-11"
+      "d1c9cb811c0f",
+      "2026-11-12"
     ],
     "/shchenki/": [
-      "328e8e5161f9",
-      "2026-11-11"
+      "ede46cd4846d",
+      "2026-11-12"
     ],
     "/shchenki/border-kolli-cherno-belyj-2026-07-grom/": [
-      "03df636b40ef",
-      "2026-11-11"
+      "00a72a9e6716",
+      "2026-11-12"
     ],
     "/shchenki/border-kolli-cherno-belyj-2026-07-rokki/": [
-      "52905af04e23",
-      "2026-11-11"
+      "46a6d1c85d2a",
+      "2026-11-12"
     ],
     "/shchenki/border-kolli-cherno-belyj-2026-07/": [
-      "584683dc8247",
-      "2026-11-11"
+      "6175406025d1",
+      "2026-11-12"
     ],
     "/shchenki/border-kolli-cherno-belyj-2026-08/": [
-      "e8f3a8daf6d0",
-      "2026-11-11"
+      "179685d31b7c",
+      "2026-11-12"
     ],
     "/shchenki/border-kolli-goluboj-mramor-2026-07-dymka/": [
-      "f2b5247cf9ec",
-      "2026-11-11"
+      "c68f2a9d7840",
+      "2026-11-12"
     ],
     "/shchenki/border-kolli-goluboj-mramor-2026-07/": [
-      "b2f25225219f",
-      "2026-11-11"
+      "3b79772e984d",
+      "2026-11-12"
     ],
     "/shchenki/border-kolli-goluboj-mramor-2026-08-kira/": [
-      "6eddd0069765",
-      "2026-11-11"
+      "c0f2cd501304",
+      "2026-11-12"
     ],
     "/shchenki/border-kolli-goluboj-mramor-2026-08/": [
-      "4742c855cad5",
-      "2026-11-11"
+      "6bdb90d159b2",
+      "2026-11-12"
     ],
     "/shchenki/border-kolli-krasno-belyj-2026-07/": [
-      "743132ccbf09",
-      "2026-11-11"
+      "e2db3c5349ee",
+      "2026-11-12"
     ],
     "/shchenki/border-kolli-krasno-belyj-2026-08-oskar/": [
-      "05ce52434d5c",
-      "2026-11-11"
+      "bf36b8cc7138",
+      "2026-11-12"
     ],
     "/shchenki/border-kolli-krasno-belyj-2026-08-sanni/": [
-      "9058986d17c7",
-      "2026-11-11"
+      "5f3a06814443",
+      "2026-11-12"
     ],
     "/shchenki/border-kolli-krasno-belyj-2026-08/": [
-      "c698d2d1f3c8",
-      "2026-11-11"
+      "dfc3772cbe68",
+      "2026-11-12"
     ],
     "/shchenki/border-kolli-krasnyj-mramor-2026-07/": [
-      "5f80f7cf5dd6",
-      "2026-11-11"
+      "9d1fbff61dce",
+      "2026-11-12"
     ],
     "/shchenki/border-kolli-krasnyj-mramor-2026-08/": [
-      "2a46d1d21fa4",
-      "2026-11-11"
+      "be51fd5adcea",
+      "2026-11-12"
     ],
     "/shchenki/border-kolli-trehcvetnyj-2026-07/": [
-      "7447c6391d13",
-      "2026-11-11"
+      "0847d225ac5e",
+      "2026-11-12"
     ],
     "/shchenki/francuzskij-buldog-goluboj-2026-07-eva/": [
-      "0960a72b8983",
-      "2026-11-11"
+      "8e9120d3d751",
+      "2026-11-12"
     ],
     "/shchenki/francuzskij-buldog-goluboj-2026-07-tosha/": [
-      "5f3721cdb600",
-      "2026-11-11"
+      "2b7715e223ec",
+      "2026-11-12"
     ],
     "/shchenki/francuzskij-buldog-goluboj-2026-07/": [
-      "0026f13dd925",
-      "2026-11-11"
+      "f1278df4da5b",
+      "2026-11-12"
     ],
     "/shchenki/francuzskij-buldog-goluboj-2026-08-grej/": [
-      "4ae6402e0b38",
-      "2026-11-11"
+      "3cbef982e2d6",
+      "2026-11-12"
     ],
     "/shchenki/francuzskij-buldog-goluboj-2026-08-mars/": [
-      "cb7c3bf5525d",
-      "2026-11-11"
+      "9da4bce90e77",
+      "2026-11-12"
     ],
     "/shchenki/francuzskij-buldog-goluboj-2026-08-sonya/": [
-      "64d65b5c5551",
-      "2026-11-11"
+      "7963e9e58881",
+      "2026-11-12"
     ],
     "/shchenki/francuzskij-buldog-goluboj-2026-08/": [
-      "67f42551d43d",
-      "2026-11-11"
+      "14082577b4de",
+      "2026-11-12"
     ],
     "/shchenki/francuzskij-buldog-krem-2026-07/": [
-      "dc48be114f50",
-      "2026-11-11"
+      "856b7237b6c7",
+      "2026-11-12"
     ],
     "/shchenki/francuzskij-buldog-palevyj-2026-07-bonni/": [
-      "6522095e4c9c",
-      "2026-11-11"
+      "74309caf438c",
+      "2026-11-12"
     ],
     "/shchenki/francuzskij-buldog-palevyj-2026-07/": [
-      "703fe1f650a7",
-      "2026-11-11"
+      "092a1791cceb",
+      "2026-11-12"
     ],
     "/shchenki/francuzskij-buldog-palevyj-2026-08-barni/": [
-      "51492a5502ab",
-      "2026-11-11"
+      "6deded641c41",
+      "2026-11-12"
     ],
     "/shchenki/francuzskij-buldog-palevyj-2026-08-keks/": [
-      "f2b4d9d8bb62",
-      "2026-11-11"
+      "17dca9640726",
+      "2026-11-12"
     ],
     "/shchenki/francuzskij-buldog-palevyj-2026-08/": [
-      "592ba52f6c26",
-      "2026-11-11"
+      "16a73aaf3b72",
+      "2026-11-12"
     ],
     "/shchenki/francuzskij-buldog-pegij-2026-08/": [
-      "2c7b94eb7d52",
-      "2026-11-11"
+      "0d58f0fa9bb2",
+      "2026-11-12"
     ],
     "/shchenki/francuzskij-buldog-podpal-2026-07/": [
-      "81a74019a443",
-      "2026-11-11"
+      "aae9b9a2c24e",
+      "2026-11-12"
     ],
     "/shchenki/maltipu-f1-belyj-2026-08/": [
-      "7771abf2708b",
-      "2026-11-11"
+      "f2d04071304a",
+      "2026-11-12"
     ],
     "/shchenki/maltipu-f1-krem-2026-08/": [
-      "824d548fb52c",
-      "2026-11-11"
+      "2700a078a35e",
+      "2026-11-12"
     ],
     "/shchenki/maltipu-f1-mini-abrikos-2026-07/": [
-      "f3db957703c5",
-      "2026-11-11"
+      "fb7c11e9a770",
+      "2026-11-12"
     ],
     "/shchenki/maltipu-f1-mini-krem-2026-08/": [
-      "3a6d91aaca22",
-      "2026-11-11"
+      "2c99fe4bf690",
+      "2026-11-12"
     ],
     "/shchenki/maltipu-f1-ryzhij-2026-07/": [
-      "fa0cda6a602e",
-      "2026-11-11"
+      "0769cc3baa47",
+      "2026-11-12"
     ],
     "/shchenki/maltipu-f1b-abrikos-2026-07/": [
-      "148c56945307",
-      "2026-11-11"
+      "c2e9474d2f7f",
+      "2026-11-12"
     ],
     "/shchenki/maltipu-f1b-mini-krem-2026-08/": [
-      "b74d71acaba3",
-      "2026-11-11"
+      "93fdd97c4633",
+      "2026-11-12"
     ],
     "/shchenki/maltipu-f1b-mini-ryzhij-2026-07/": [
-      "bd0197560af1",
-      "2026-11-11"
+      "88fd49a2060a",
+      "2026-11-12"
     ],
     "/shchenki/maltipu-f1b-mini-ryzhij-2026-08/": [
-      "d715e07fa152",
-      "2026-11-11"
+      "7e536c2a52e8",
+      "2026-11-12"
     ],
     "/shchenki/maltipu-f1b-parti-2026-07/": [
-      "a5c3c26e9b30",
-      "2026-11-11"
+      "af230d44f480",
+      "2026-11-12"
     ],
     "/shchenki/maltipu-f1b-shokolad-2026-08/": [
-      "dbf8cc90586d",
-      "2026-11-11"
+      "8f264acd959b",
+      "2026-11-12"
     ],
     "/shchenki/maltipu-f2-abrikos-2026-07/": [
-      "4e00ecb0bfe0",
-      "2026-11-11"
+      "cf8d430da458",
+      "2026-11-12"
     ],
     "/shchenki/maltipu-f2-abrikos-2026-08/": [
-      "1b65f68065b1",
-      "2026-11-11"
+      "d7d81f7d2446",
+      "2026-11-12"
     ],
     "/shchenki/maltipu-f2-krem-2026-08/": [
-      "9e51f9628ae2",
-      "2026-11-11"
+      "6b0d68ab3e9c",
+      "2026-11-12"
     ],
     "/shchenki/maltipu-f2-ryzhij-2026-07/": [
-      "bcf6f1623a75",
-      "2026-11-11"
+      "c9876b15c26d",
+      "2026-11-12"
     ],
     "/shchenki/toj-pudel-abrikos-2026-07/": [
-      "a749e68d6c50",
-      "2026-11-11"
+      "c7e410817f02",
+      "2026-11-12"
     ],
     "/shchenki/toj-pudel-chernyj-2026-07/": [
-      "3f94add1c9a2",
-      "2026-11-11"
+      "8d12196944c0",
+      "2026-11-12"
     ],
     "/shchenki/toj-pudel-korichnevyj-2026-07/": [
-      "f6391fd60f62",
-      "2026-11-11"
+      "d7ecdfb18291",
+      "2026-11-12"
     ],
     "/shchenki/toj-pudel-korichnevyj-2026-08-vishnya/": [
-      "9e74a9abb494",
-      "2026-11-11"
+      "213c053dfbea",
+      "2026-11-12"
     ],
     "/shchenki/toj-pudel-korichnevyj-2026-08/": [
-      "e82fb341a899",
-      "2026-11-11"
+      "b82a1b09a65e",
+      "2026-11-12"
     ],
     "/shchenki/toj-pudel-ryzhij-2026-07-boni/": [
-      "ba86cc302767",
-      "2026-11-11"
+      "9e234f302aba",
+      "2026-11-12"
     ],
     "/shchenki/toj-pudel-ryzhij-2026-07-plyusha/": [
-      "4bfec9920eae",
-      "2026-11-11"
+      "2cc4332eaf8b",
+      "2026-11-12"
     ],
     "/shchenki/toj-pudel-ryzhij-2026-07-timosha/": [
-      "435d51837524",
-      "2026-11-11"
+      "864302a901ae",
+      "2026-11-12"
     ],
     "/shchenki/toj-pudel-ryzhij-2026-07/": [
-      "e7901442c04e",
-      "2026-11-11"
+      "5a10f41d64bd",
+      "2026-11-12"
     ],
     "/shchenki/toj-pudel-ryzhij-2026-08-knopka/": [
-      "a4fb3f7510cc",
-      "2026-11-11"
+      "e42d871750b5",
+      "2026-11-12"
     ],
     "/shchenki/toj-pudel-ryzhij-2026-08-leo/": [
-      "60f707a9568a",
-      "2026-11-11"
+      "a2a12e9eed76",
+      "2026-11-12"
     ],
     "/shchenki/toj-pudel-ryzhij-2026-08-lisa/": [
-      "a7a1b4662a4e",
-      "2026-11-11"
+      "14a416ff28a7",
+      "2026-11-12"
     ],
     "/shchenki/toj-pudel-ryzhij-2026-08-ogonek/": [
-      "1cce90dc6a3a",
-      "2026-11-11"
+      "9c9d232d8be7",
+      "2026-11-12"
     ],
     "/shchenki/toj-pudel-ryzhij-2026-08/": [
-      "0ce261f4d6af",
-      "2026-11-11"
+      "747b8bf2645b",
+      "2026-11-12"
     ],
     "/shchenki/toj-pudel-shokolad-2026-07/": [
-      "ec0657c6086a",
-      "2026-11-11"
+      "dedfd48bfc90",
+      "2026-11-12"
     ],
     "/soglasie-na-otzyv/": [
-      "b4c151337bd6",
-      "2026-11-11"
+      "d9d1172310d1",
+      "2026-11-12"
     ],
     "/soglasie-na-publikaciyu/": [
-      "84867ee0d229",
-      "2026-11-11"
+      "92e79460be88",
+      "2026-11-12"
     ],
     "/soglasie/": [
-      "6481e1df645d",
-      "2026-11-11"
+      "be225238ee4a",
+      "2026-11-12"
     ],
     "/sravnenie/border-kolli/": [
-      "11366474a97e",
-      "2026-11-11"
+      "453865e5c62f",
+      "2026-11-12"
     ],
     "/sravnenie/francuzskij-buldog/": [
-      "a5e239333676",
-      "2026-11-11"
+      "fc2f621a47d8",
+      "2026-11-12"
     ],
     "/sravnenie/maltipu/": [
-      "f2b2304645ab",
-      "2026-11-11"
+      "e6bf34125a38",
+      "2026-11-12"
     ],
     "/sravnenie/toj-pudel/": [
-      "5169f0441bfb",
-      "2026-11-11"
+      "3329fabace32",
+      "2026-11-12"
     ],
     "/toj-pudel/": [
-      "dbadff83c58c",
-      "2026-11-11"
+      "40cd11967230",
+      "2026-11-12"
     ],
     "/toj-pudel/abrikosovyj/": [
-      "b45318025058",
-      "2026-11-11"
+      "14498046b636",
+      "2026-11-12"
     ],
     "/toj-pudel/belyj/": [
-      "5070e794f1cc",
-      "2026-11-11"
+      "09f9207259ab",
+      "2026-11-12"
     ],
     "/toj-pudel/cena/": [
-      "5db95010f89b",
-      "2026-11-11"
+      "4c4ab019796b",
+      "2026-11-12"
     ],
     "/toj-pudel/chernyj/": [
-      "26112356b106",
-      "2026-11-11"
+      "3590da6945ef",
+      "2026-11-12"
     ],
     "/toj-pudel/korichnevyj/": [
-      "27ef7bfc04a7",
-      "2026-11-11"
+      "71a0795c2505",
+      "2026-11-12"
     ],
     "/toj-pudel/ryzhij/": [
-      "71b23b9ad526",
-      "2026-11-11"
+      "9dcbd18487b3",
+      "2026-11-12"
     ],
     "/toj-pudel/seryj/": [
-      "e4820911e286",
-      "2026-11-11"
+      "733b410c79b1",
+      "2026-11-12"
     ],
     "/toj-pudel/vidy-i-okrasy/": [
-      "d62834470709",
-      "2026-11-11"
+      "5fab2d8b981e",
+      "2026-11-12"
     ]
   }
 }

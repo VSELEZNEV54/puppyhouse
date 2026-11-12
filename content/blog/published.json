@@ -1,0 +1,70 @@
+{
+  "_note": "Что вышло на сайте. Пишет только tools/blog/factory.py publish (GitHub Action «Блог: публикация»). slug → {date: день публикации, links: сколько ссылок в тексте разрешено; 0 — первый месяц, ссылки показываются простым текстом}. Снять статью: python3 tools/blog/factory.py unpublish <slug>.",
+  "posts": {
+    "kak-vybrat-shchenka": {
+      "date": "2026-11-12",
+      "links": 0,
+      "series": "base"
+    },
+    "maltipu-harakter": {
+      "date": "2026-11-12",
+      "links": 0,
+      "series": "base"
+    },
+    "maltipu-uhod": {
+      "date": "2026-11-12",
+      "links": 0,
+      "series": "base"
+    },
+    "maltipu-kormlenie": {
+      "date": "2026-11-12",
+      "links": 0,
+      "series": "base"
+    },
+    "francuzskij-buldog-harakter": {
+      "date": "2026-11-12",
+      "links": 0,
+      "series": "base"
+    },
+    "francuzskij-buldog-uhod": {
+      "date": "2026-11-12",
+      "links": 0,
+      "series": "base"
+    },
+    "francuzskij-buldog-kormlenie": {
+      "date": "2026-11-12",
+      "links": 0,
+      "series": "base"
+    },
+    "toj-pudel-harakter": {
+      "date": "2026-11-12",
+      "links": 0,
+      "series": "base"
+    },
+    "toj-pudel-uhod": {
+      "date": "2026-11-12",
+      "links": 0,
+      "series": "base"
+    },
+    "toj-pudel-kormlenie": {
+      "date": "2026-11-12",
+      "links": 0,
+      "series": "base"
+    },
+    "border-kolli-harakter": {
+      "date": "2026-11-12",
+      "links": 0,
+      "series": "base"
+    },
+    "border-kolli-uhod": {
+      "date": "2026-11-12",
+      "links": 0,
+      "series": "base"
+    },
+    "border-kolli-kormlenie": {
+      "date": "2026-11-12",
+      "links": 0,
+      "series": "base"
+    }
+  }
+}
