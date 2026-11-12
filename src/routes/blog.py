@@ -239,10 +239,13 @@ def _factory(legacy_slugs):
     return metas, posts, pub
 
 
+def _plan_cards():
+    return _read_json(FACTORY / "plan.json", {}).get("cards", [])
+
+
 def _base_series():
     """Slugs of the series «base» in plan order (content/blog/plan.json); no plan → no block."""
-    plan = _read_json(FACTORY / "plan.json", {})
-    return [c["slug"] for c in plan.get("cards", []) if c.get("series") == "base"]
+    return [c["slug"] for c in _plan_cards() if c.get("series") == "base"]
 
 
 def _materials(base, cards, posts, metas, breeds, cfg):
@@ -301,10 +304,11 @@ def routes(data):
     base = [s for s in _base_series() if s in cards]
     materials = _materials(base, cards, posts, metas, data["breeds"], hub.get("materials") or {})
 
-    # /blog/: published articles newest first (same day: the order of `every`). Until anything is out (before the
+    # /blog/: published articles newest first (same day: plan order). Until anything is out (before the
     # launch) — the first eleven, as before; after it a card that is not out yet would only lead to the toast.
+    n_of = {c["slug"]: c.get("n", 10 ** 4) for c in _plan_cards()}  # same day (launch): plan order
     out_now = sorted((s for s in every if s in published and s not in base),
-                     key=lambda s: (published[s]["date"], -every.index(s)), reverse=True)
+                     key=lambda s: (published[s]["date"], -n_of.get(s, 10 ** 4), -every.index(s)), reverse=True)
     listed = out_now if published else [s for s in hub["order"] if s not in base]
 
     # filter chips: only tags and breeds that have articles (hub.tags / breeds.json order)

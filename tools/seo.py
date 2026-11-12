@@ -307,6 +307,8 @@ def priority(url: str) -> tuple[str, str]:
         return "0.7", "daily"
     if len(parts) == 2 and parts[0] in ("maltipu", "francuzskij-buldog", "toj-pudel", "border-kolli"):
         return "0.8", "weekly"
+    if url == "/blog/":  # a new article every day (content/blog/README.md)
+        return "0.7", "daily"
     if parts and parts[0] in ("dostavka", "blog", "sravnenie"):
         return ("0.7" if len(parts) == 1 else "0.6"), "monthly"
     return "0.6", "monthly"
