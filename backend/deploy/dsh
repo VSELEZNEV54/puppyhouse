@@ -15,11 +15,17 @@
 #                                      the same). With autoupdate on this happens by itself within 5 minutes
 #   dsh autoupdate on|off|status       every 5 minutes: a new commit on the branch of /opt/domshchenkov/src is deployed
 #                                      by itself (a commit that failed to deploy is not retried until the next one);
-#                                      log: /var/log/domshchenkov-deploy.log, the running release: /api/v1/health
+#                                      log: /var/log/domshchenkov-deploy.log, the running release: /api/v1/health.
+#                                      The same run publishes the blog by its schedule (dsh blog run)
+#   dsh blog [status|run]              the blog's schedule (content/blog/published.json): an article goes out on its day at
+#                                      10:00 Moscow time — `run` rebuilds the site files from the checkout when what is due
+#                                      (tools/blog/factory.py stamp) differs from what is on the site, then tells Yandex
+#                                      (IndexNow). API, database and nginx are not touched
 set -euo pipefail
 APP_ROOT="${DSH_APP_ROOT:-/opt/domshchenkov}"
 ETC="${DSH_ETC:-/etc/domshchenkov}"
 STATE="$APP_ROOT/state"
+DOCROOT="${DSH_DOCROOT:-/var/www/domshchenkov}"
 CUR="$(cat "$STATE/root" 2>/dev/null || readlink -f "$APP_ROOT/current" 2>/dev/null || true)"
 [ -n "$CUR" ] && [ -f "$CUR/backend/docker-compose.yml" ] || { echo "dsh: нет выложенного релиза ($APP_ROOT/current)" >&2; exit 1; }
 export DSH_VERSION="$(cat "$STATE/version" 2>/dev/null || echo latest)"
@@ -34,6 +40,39 @@ wait_api() {  # up to 90 s; 503 counts as running (it reports a problem, e.g. st
   done
   echo "API не ответил (код $code): dsh logs api" >&2
   return 1
+}
+
+# ---- blog: the schedule of content/blog/published.json (an article goes out on its day at 10:00 Moscow time)
+blog_stamp() {  # what should be on the site now (count, links on, hash); empty — no blog in this checkout
+  [ -f "$APP_ROOT/src/tools/blog/factory.py" ] || return 0
+  python3 "$APP_ROOT/src/tools/blog/factory.py" stamp 2>/dev/null || true
+}
+blog_refresh() {  # the site files only, from the deployed checkout: same build and copy as deploy.sh, nothing else
+  local src="$APP_ROOT/src" want py="$APP_ROOT/build-venv/bin/python" rel_log out
+  want="$(blog_stamp)"
+  [ -n "$want" ] || return 0
+  [ "$want" = "$(cat "$STATE/blog-stamp" 2>/dev/null || true)" ] && return 0
+  [ -x "$py" ] || py=python3
+  echo "=== $(date -Is) блог: по графику изменилось, что должно быть на сайте ($want) — пересобираю страницы"
+  rel_log="$(mktemp)"
+  if ! DSH_BUILD_PYTHON="$py" bash "$src/tools/release.sh" --out "$APP_ROOT/releases" --no-tar > "$rel_log" 2>&1; then
+    cat "$rel_log"; rm -f "$rel_log"
+    echo "$(date -Is) блог: сборка не прошла — на сайте прежние страницы; следующая попытка через 5 минут"
+    return 1
+  fi
+  out="$(sed -n 's/^RELEASE_DIR=//p' "$rel_log")"; rm -f "$rel_log"
+  if [ -z "$out" ] || [ ! -f "$out/site/index.html" ] || [ ! -f "$out/site/404.html" ]; then
+    echo "$(date -Is) блог: в сборке нет сайта — на сайте прежние страницы"; [ -n "$out" ] && rm -rf "$out"; return 1
+  fi
+  # called as `blog_refresh || true`: set -e is off inside, so every step checks itself
+  if ! bash "$out/backend/deploy/sealed.sh" key "$ETC" "$out/site" \
+     || ! rsync -a --delete --delay-updates --chmod=D755,F644 "$out/site/" "$DOCROOT/"; then   # as deploy.sh
+    rm -rf "$out"; echo "$(date -Is) блог: страницы не скопировались — следующая попытка через 5 минут"; return 1
+  fi
+  rm -rf "$out"
+  echo "$want" > "$STATE/blog-stamp"
+  echo "$(date -Is) блог: страницы обновлены ($want)"
+  python3 "$src/tools/blog/factory.py" indexnow || true   # today's articles → Yandex
 }
 
 cmd="${1:-status}"; shift || true
@@ -89,6 +128,7 @@ case "$cmd" in
       status)
         if [ -f "$cron" ]; then echo "автообновление: включено"; else echo "автообновление: выключено"; fi
         cat "$STATE/autoupdate" 2>/dev/null || true
+        echo "блог: на сайте $(cat "$STATE/blog-stamp" 2>/dev/null || echo —), по графику сейчас $(blog_stamp)"
         [ -f "$log" ] && tail -n 5 "$log" || true
         ;;
       run)  # cron
@@ -109,12 +149,16 @@ case "$cmd" in
               echo "$(date -Is) адреса изменились, но выкладка не прошла — работает прошлая; подробности выше в $log" | tee "$STATE/autoupdate"
             fi
           fi
+          blog_refresh || true   # an article of the blog's schedule is due (10:00 Moscow) → the site files again
           exit 0
         fi
         [ "$remote" = "$(cat "$STATE/autoupdate-failed" 2>/dev/null || true)" ] && exit 0   # failed before: wait for a fix
         echo "=== $(date -Is) новый коммит ${remote:0:8}: $(git -C "$src" log -1 --format=%s "$remote")"
         git -C "$src" reset -q --hard "$remote"    # a deploy-only checkout: nobody edits files there
+        stamp="$(blog_stamp)"                      # taken before the build: the build shows at least this
         if "$src/backend/deploy/deploy.sh"; then
+          [ -n "$stamp" ] && echo "$stamp" > "$STATE/blog-stamp"
+          python3 "$src/tools/blog/factory.py" indexnow >/dev/null 2>&1 || true
           rm -f "$STATE/autoupdate-failed"
           echo "$(date -Is) выложен ${remote:0:8}" | tee "$STATE/autoupdate"
         else
@@ -123,6 +167,23 @@ case "$cmd" in
         fi
         ;;
       *) echo "dsh autoupdate on|off|status" >&2; exit 2 ;;
+    esac
+    ;;
+  blog)
+    # the blog's schedule: status — what is on the site and what is due; run — rebuild the site files if they differ
+    # (autoupdate does this every 5 minutes; by hand: dsh blog run). Schedule: python3 tools/blog/factory.py status
+    case "${1:-status}" in
+      status)
+        echo "на сайте: $(cat "$STATE/blog-stamp" 2>/dev/null || echo —)"
+        echo "по графику сейчас: $(blog_stamp)"
+        python3 "$APP_ROOT/src/tools/blog/factory.py" status 2>/dev/null | head -3 || true
+        ;;
+      run)
+        exec 9>/run/domshchenkov-autoupdate.lock
+        flock 9   # waits for a running deploy
+        blog_refresh
+        ;;
+      *) echo "dsh blog status|run" >&2; exit 2 ;;
     esac
     ;;
   domain|www)

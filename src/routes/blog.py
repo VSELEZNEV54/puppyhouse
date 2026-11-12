@@ -4,9 +4,11 @@ Two sources of articles, one format of copy:
   • the first eleven: list (url, breed, keywords) in the shared blog.json, copy in blog-posts.json → posts[slug];
   • the content factory (content/blog/README.md): one file per article, content/blog/posts/<slug>.json =
     {slug, breed, keywords, status, post: {…the same fields as blog-posts.json posts…}}.
-An article goes out on its publication day: content/blog/published.json → posts[slug] = {date, links}. Its route then
-carries live=True and the build publishes it without a line in publish.json. The date is shown on the page and goes
-into JSON-LD; links=0 (the first month of the plan) renders the in-text links as plain words.
+An article goes out on its day: content/blog/published.json → posts[slug] = {date, links, series}, from `date` at the
+plan's schedule.time (10:00 Moscow); a future date is the schedule — the server rebuilds the site that day by itself
+(dsh autoupdate → dsh blog, DEPLOY.md). An article that is out carries live=True and the build publishes it without a
+line in publish.json. The date is shown on the page and goes into JSON-LD. In-text links show from the plan's
+base_links_from (before it — the blog's first month — and with links=0 they render as plain words).
 /blog/ lists the published articles, newest first; before anything is out — the first eleven (their cards lead to the
 toast «Раздел скоро откроется»). Factory drafts that are not out are built only by --all / --full
 (preview); a broken draft is skipped with a warning, a broken published article stops the module.
@@ -17,6 +19,7 @@ Read time is computed from the article text."""
 import datetime
 import json
 import math
+import os
 import re
 import sys
 from pathlib import Path
@@ -28,6 +31,7 @@ from _lib import by_id, crumbs
 CHARS_PER_MIN = 1300                # silent reading speed, characters with spaces
 TONES = Path(__file__).resolve().parents[2] / "tools" / "photo-tones.json"  # measured studio backdrops (read only)
 FACTORY = Path(__file__).resolve().parents[2] / "content" / "blog"  # the content factory: posts/, published.json
+MSK = datetime.timezone(datetime.timedelta(hours=3))  # Moscow, no DST
 MONTHS = ("января", "февраля", "марта", "апреля", "мая", "июня", "июля", "августа", "сентября", "октября",
           "ноября", "декабря")
 NBSP = " "
@@ -203,13 +207,37 @@ def _read_json(path, default):
         return default
 
 
+def _now():
+    """Now in Moscow; BLOG_NOW=YYYY-MM-DDTHH:MM pins it (checks of the schedule)."""
+    env = os.environ.get("BLOG_NOW")
+    if env:
+        t = datetime.datetime.fromisoformat(env)
+        return t if t.tzinfo else t.replace(tzinfo=MSK)
+    return datetime.datetime.now(MSK)
+
+
+def _goes_live(date_iso):
+    """An article of content/blog/published.json is on the site from its day at schedule.time of the plan (10:00)."""
+    m = re.search(r"(\d{1,2}):(\d{2})", _read_json(FACTORY / "plan.json", {}).get("schedule", {}).get("time", "10:00"))
+    return datetime.datetime.combine(datetime.date.fromisoformat(date_iso), datetime.time(int(m[1]), int(m[2])), MSK)
+
+
+def _links_on(now):
+    """Links in the text: from base_links_from of the plan (the blog's first month has none)."""
+    blf = _read_json(FACTORY / "plan.json", {}).get("base_links_from")
+    return not blf or _goes_live(blf) <= now
+
+
 def _factory(legacy_slugs):
     """(metas, posts, published) of the content factory. published: slug → {date, links} for every article that is
     out, the first eleven included. A draft whose file is broken is skipped with a warning (it is not out);
     a published one that is broken raises: the build must not silently drop a page that is on the site."""
+    now = _now()
     pub = _read_json(FACTORY / "published.json", {}).get("posts", {})
-    for slug, e in pub.items():
-        datetime.date.fromisoformat(e["date"])  # a bad date stops the module
+    # a future date = in the schedule, not out yet (the server rebuilds the site on the day: dsh blog)
+    pub = {slug: e for slug, e in pub.items() if _goes_live(e["date"]) <= now}  # a bad date stops the module
+    on = _links_on(now)
+    pub = {slug: dict(e, links=e.get("links", 3) if on else 0) for slug, e in pub.items()}
     metas, posts = {}, {}
     for path in sorted((FACTORY / "posts").glob("*.json")):
         slug = path.stem

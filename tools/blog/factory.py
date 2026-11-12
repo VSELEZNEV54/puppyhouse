@@ -155,8 +155,39 @@ def article(slug):
     return lp, None
 
 
+def now_msk():
+    """Сейчас по Москве; BLOG_NOW=ГГГГ-ММ-ДДTчч:мм — подставить время (проверки графика)."""
+    env = __import__("os").environ.get("BLOG_NOW")
+    if env:
+        t = datetime.datetime.fromisoformat(env)
+        return t if t.tzinfo else t.replace(tzinfo=TZ_MSK)
+    return datetime.datetime.now(TZ_MSK)
+
+
 def today_msk():
-    return datetime.datetime.now(TZ_MSK).date()
+    return now_msk().date()
+
+
+def release_time(p=None):
+    """Время выхода статьи — schedule.time плана («10:00 МСК»)."""
+    m = re.search(r"(\d{1,2}):(\d{2})", (p or plan())["schedule"].get("time", "10:00"))
+    return datetime.time(int(m.group(1)), int(m.group(2)))
+
+
+def goes_live(date_iso, p=None):
+    return datetime.datetime.combine(datetime.date.fromisoformat(date_iso), release_time(p), TZ_MSK)
+
+
+def is_live(e, now=None, p=None):
+    """Запись published.json уже на сайте: её день наступил и время выхода прошло. Будущая дата — в графике."""
+    return goes_live(e["date"], p) <= (now or now_msk())
+
+
+def links_on(now=None, p=None):
+    """Ссылки в тексте включены: с base_links_from (первый месяц блога — без ссылок)."""
+    p = p or plan()
+    blf = p.get("base_links_from")
+    return not blf or goes_live(blf, p) <= (now or now_msk())
 
 
 def ru_date(d):
@@ -191,10 +222,10 @@ def dates():
 
 
 def state(c, pub=None, posts_on_disk=None):
-    """published | approved | draft | hold | ready (написана раньше, blog-posts.json) | todo"""
+    """published | scheduled (в графике, дата впереди) | approved | draft | hold | ready (написана раньше) | todo"""
     pub = pub if pub is not None else published()["posts"]
     if c["slug"] in pub:
-        return "published"
+        return "published" if is_live(pub[c["slug"]]) else "scheduled"
     if c["slug"] in published().get("hold", []):
         return "hold"
     if c.get("ready"):
@@ -555,17 +586,21 @@ def cmd_status(a):
     count = {}
     for _, s in rows:
         count[s] = count.get(s, 0) + 1
-    buffer = [c for c, s in rows if s in ("approved", "ready")]
-    print(f"Контент-план: {len(rows)} тем · вышло {count.get('published', 0)} · в буфере {len(buffer)} "
-          f"(готово к выходу) · черновики {count.get('draft', 0)} · отложено {count.get('hold', 0)} · "
+    ready = [c for c, s in rows if s in ("approved", "ready")]
+    future = sorted((e["date"], s) for s, e in pub.items() if not is_live(e))
+    print(f"Контент-план: {len(rows)} тем · вышло {count.get('published', 0)} · в графике {len(future)} · "
+          f"готово без даты {len(ready)} · черновики {count.get('draft', 0)} · отложено {count.get('hold', 0)} · "
           f"написать {count.get('todo', 0)}")
-    days = len(buffer)
-    print(f"Буфера хватит на {days} {'публикацию' if days == 1 else 'публикаций'} "
-          f"({'нужно писать' if days < 5 else 'ок'}: держим 5+ готовых)")
-    last = max(pub.values(), key=lambda e: e["date"])["date"] if pub else "—"
-    print(f"Последняя публикация: {last}")
-    if buffer:
-        print(f"Следующая к выходу: {buffer[0]['slug']} (№{buffer[0]['n']})")
+    last_live = max((e["date"] for e in pub.values() if is_live(e)), default="—")
+    print(f"Последняя вышедшая: {last_live}")
+    if future:
+        days = (datetime.date.fromisoformat(future[-1][0]) - today_msk()).days
+        print(f"Следующая: {future[0][0]} {future[0][1]} · график до {future[-1][0]} "
+              f"({'ок' if days >= 7 else 'мало: нужно писать'}, держим неделю+)")
+    else:
+        print("График пуст: новых статей не будет. Запустите /статьи.")
+    if ready:
+        print(f"Готовы, но без даты: {', '.join(c['slug'] for c in ready)} — factory.py publish")
     for c, s in rows:
         if s == "draft":
             e, _ = lint_one(c["slug"], pub)
@@ -576,7 +611,7 @@ def cmd_status(a):
 
 
 WEEKDAYS = ("пн", "вт", "ср", "чт", "пт", "сб", "вс")
-MARK = {"published": "✅ вышла", "approved": "🟢 готова", "ready": "🟢 готова (написана раньше)",
+MARK = {"published": "✅ вышла", "scheduled": "📅 в графике", "approved": "🟢 готова", "ready": "🟢 готова (написана раньше)",
         "draft": "🟡 черновик", "hold": "⏸ отложена", "todo": "⚪ написать"}
 
 
@@ -612,7 +647,8 @@ def cmd_plan(a):
         "База всех статей и тем. Сгенерировано: `python3 tools/blog/factory.py plan` из `content/blog/plan.json` "
         "(руками не править — правится plan.json).", "",
         f"**Всего:** {len(p['cards'])} — {len(base)} «Полезных материалов» и {len(main)} статей на 6 месяцев. "
-        f"Вышло {count.get('published', 0)}, готово к выходу {count.get('approved', 0) + count.get('ready', 0)}, "
+        f"Вышло {count.get('published', 0)}, в графике {count.get('scheduled', 0)}, "
+        f"готово без даты {count.get('approved', 0) + count.get('ready', 0)}, "
         f"черновики {count.get('draft', 0)}, отложено {count.get('hold', 0)}, написать {count.get('todo', 0)}.", "",
         f"**График:** «Полезные материалы» выходят все сразу в день запуска ({sch['launch']})"
         + (f"; вместе с ними вышли {n_launch} {_plural(n_launch, 'статья', 'статьи', 'статей')}" if n_launch else "")
@@ -924,6 +960,13 @@ def cmd_approve(a):
 def cmd_hold(a):
     _set_status(a.slug, "hold")
     print(f"{a.slug}: hold — не выйдет, пока не approve")
+    data = published()
+    e = data["posts"].get(a.slug)
+    if e and not is_live(e):  # стояла в графике: снять и сдвинуть следующие
+        data["posts"].pop(a.slug)
+        save(PUBLISHED, data)
+        print(f"{a.slug}: снята из графика ({e['date']}), график пересчитан:")
+        cmd_publish(argparse.Namespace(dry_run=False, all_ready=False))
     return 0
 
 
@@ -934,102 +977,90 @@ def cmd_draft(a):
 
 
 def cmd_publish(a):
-    """Публикация по графику (раз в день, GitHub Action «Блог — публикация»):
-    1) «Полезные материалы» (series base): все готовые выходят разом в день запуска (не раньше schedule.launch);
-    2) статьи: с schedule.start по одной в день публикации — разгон ramp (неделя 1: 3, неделя 2: 5), потом daily;
-       выходит первая по плану готовая (approved / ready), не отложенная и с чистой проверкой;
-    3) до base_links_from (первый месяц блога) ссылок в тексте нет ни у кого; с этого дня они включаются у всех
-       вышедших (материалы — до default, статьи — до лимита своего месяца).
-    --all-ready: всё готовое выходит сегодня разом (статьи — series «launch», разгон от них не считается).
-    Пишет в --github-output: changed=1, если published.json изменился, slug=… — что вышло."""
-    day = datetime.date.fromisoformat(a.date) if a.date else today_msk()
+    """Поставить готовые статьи в график (published.json). Сайт их выпускает сам: сервер раз в 5 минут сверяет
+    `factory.py stamp` и в день статьи, в schedule.time (10:00 МСК), пересобирает сайт (dsh blog, DEPLOY.md).
+    • Вышедшие (дата и время прошли) не трогаем. Будущие статьи графика пересчитываем заново по порядку плана:
+      одобренные (approved / ready), не отложенные, с чистой проверкой — по одной в день публикации, с schedule.start,
+      разгон ramp (неделя 1: 3, неделя 2: 5) от первой статьи графика, потом каждый день.
+    • links у записи — сколько ссылок в тексте можно; до base_links_from сайт их всё равно не показывает.
+    • --all-ready: всё готовое выходит сегодня разом (статьи — series «launch», разгон от них не считается)."""
     data = published()
     pub = data["posts"]
     p = plan()
     sch = p["schedule"]
     lm = p["links_max"]
-    out_slugs, notes = [], []
+    now = now_msk()
 
-    # links in the text: none before base_links_from (the first month of the blog), then up to the card's limit
-    blf = p.get("base_links_from")
-    links_on = not blf or day >= datetime.date.fromisoformat(blf)
-
-    def target(c):  # links once they are on: «Полезные материалы» — default, статьи — limit of their month
+    def target(c):  # ссылок в тексте, когда они включены: материалы — default, статьи — лимит своего месяца
         return int(lm["default"]) if is_base(c) else links_max(c, p)
 
-    def links_for(c):
-        return target(c) if links_on else 0
-
-    if blf and links_on:
-        for c in p["cards"]:
-            e = pub.get(c["slug"])
-            if e and e.get("links", 0) == 0 and target(c) > 0:
-                e["links"] = target(c)
-                notes.append(f"ссылки включены: {c['slug']}")
-
-    def lint_ok(c):
-        if state(c, pub) == "ready":
+    def lint_ok(c, pool):
+        if c.get("ready"):
             return True
-        e, _ = lint_one(c["slug"], pub, for_publish=True)
+        e, _ = lint_one(c["slug"], pool, for_publish=True)
         if e:
             print(f"  пропущена {c['slug']}: {'; '.join(e)}", file=sys.stderr)
         return not e
 
-    # 0. --all-ready: everything that is ready goes out today (materials as «base», articles as «launch»)
+    hold = set(data.get("hold", []))
+    live = {s: e for s, e in pub.items() if is_live(e, now, p)}
+    before = {s: e["date"] for s, e in pub.items()}
+    new = dict(live)
+    for s, e in pub.items():  # будущие записи запуска и материалов (если были) остаются как есть
+        if s not in live and e.get("series") in AT_LAUNCH and s not in hold:
+            new[s] = e
+
     if a.all_ready:
+        day = now.date().isoformat()
         for c in p["cards"]:
-            if state(c, pub) in ("approved", "ready") and lint_ok(c):
-                pub[c["slug"]] = {"date": day.isoformat(), "links": links_for(c),
-                                  "series": "base" if is_base(c) else "launch"}
-                out_slugs.append(c["slug"])
-
-    # 1. launch of «Полезные материалы»
-    base_todo = [c for c in p["cards"] if is_base(c) and state(c, pub) in ("approved", "ready")]
-    launched = bool(out_slugs)
-    if base_todo and day >= datetime.date.fromisoformat(sch["launch"]):
-        for c in base_todo:
-            if lint_ok(c):
-                pub[c["slug"]] = {"date": day.isoformat(), "links": links_for(c), "series": "base"}
-                out_slugs.append(c["slug"])
-        launched = bool(out_slugs)
-
-    # 2. one article on a posting day
-    main_days = sorted(datetime.date.fromisoformat(e["date"]) for e in pub.values() if e.get("series") not in AT_LAUNCH)
-    first = main_days[0] if main_days else None
-    empty = False
-    if launched:
-        notes.append("день запуска «Полезных материалов»: статья сегодня не выходит")
-    elif day < datetime.date.fromisoformat(sch["start"]):
-        notes.append(f"статьи начнут выходить {sch['start']}")
-    elif not a.force and any(d == day for d in main_days):
-        notes.append(f"{day}: статья сегодня уже вышла")
-    elif not a.force and not posting_day(day, first, sch):
-        notes.append(f"{day}: по графику разгона не день публикации")
+            if c["slug"] not in new and c["slug"] not in hold and state(c, new) in ("approved", "ready", "scheduled") \
+                    and lint_ok(c, new):
+                new[c["slug"]] = {"date": day, "links": target(c), "series": "base" if is_base(c) else "launch"}
     else:
+        mains = sorted(datetime.date.fromisoformat(e["date"]) for e in live.values() if e.get("series") not in AT_LAUNCH)
+        anchor = mains[0] if mains else None
+        earliest = now.date() if now < goes_live(now.date().isoformat(), p) else now.date() + datetime.timedelta(days=1)
+        d = max([datetime.date.fromisoformat(sch["start"]), earliest] + [x + datetime.timedelta(days=1) for x in mains])
         for c in p["cards"]:
-            if is_base(c) or state(c, pub) not in ("approved", "ready"):
+            if is_base(c) or c["slug"] in new or c["slug"] in hold:
                 continue
-            if lint_ok(c):
-                pub[c["slug"]] = {"date": day.isoformat(), "links": links_for(c), "series": "main"}
-                out_slugs.append(c["slug"])
-                break
-        else:
-            empty = True
+            if state(c, new) not in ("approved", "ready", "scheduled") or not lint_ok(c, new):
+                continue
+            while not posting_day(d, anchor or d, sch):
+                d += datetime.timedelta(days=1)
+            new[c["slug"]] = {"date": d.isoformat(), "links": target(c), "series": "main"}
+            anchor = anchor or d
+            d += datetime.timedelta(days=1)
 
-    changed = bool(out_slugs) or any(n.startswith("ссылки включены") for n in notes)
+    changed = {s: e["date"] for s, e in new.items()} != before
+    future = sorted((e["date"], s) for s, e in new.items() if s not in live)
+    for date_iso, s in future:
+        mark = "" if before.get(s) == date_iso else (" (новая)" if s not in before else f" (было {before[s]})")
+        print(f"{date_iso} {s}{mark}")
+    for s in sorted(set(before) - set(new)):
+        print(f"снята из графика: {s}")
+    print(f"в графике {len(future)}" + (f", до {future[-1][0]}" if future else "") + f"; на сайте {len(live)}")
     if changed and not a.dry_run:
+        data["posts"] = dict(sorted(new.items(), key=lambda kv: (kv[1]["date"], kv[0] not in live)))
         save(PUBLISHED, data)
-    for n in notes:
-        print(n)
-    for slug in out_slugs:
-        print(f"{'--dry-run: вышла бы' if a.dry_run else 'опубликована'} {slug} {day}")
-    if a.github_output:
-        with open(a.github_output, "a", encoding="utf-8") as g:
-            g.write(f"changed={'1' if changed and not a.dry_run else ''}\n")
-            g.write(f"slug={' '.join(out_slugs) if len(out_slugs) < 4 else 'полезные материалы (' + str(len(out_slugs)) + ')'}\n")
-    if empty:
-        print("БУФЕР ПУСТ: нет одобренных статей. Запустите /статьи в Claude Code.", file=sys.stderr)
+    elif a.dry_run:
+        print("--dry-run: published.json не изменён")
+    if not future:
+        print("ГРАФИК ПУСТ: новых статей не будет. Запустите /статьи в Claude Code.", file=sys.stderr)
         return 3
+    return 0
+
+
+def cmd_stamp(a):
+    """Что сейчас должно быть на сайте: число вышедших, включены ли ссылки и хеш их списка. Сервер (dsh autoupdate)
+    сравнивает это с тем, что выложено, и пересобирает сайт, когда отметка меняется (статья вышла по графику)."""
+    import hashlib
+    p = plan()
+    now = now_msk()
+    live = sorted(s for s, e in published()["posts"].items() if is_live(e, now, p))
+    on = links_on(now, p)
+    h = hashlib.sha1((",".join(live) + f"|{int(on)}").encode()).hexdigest()[:12]
+    print(f"{len(live)}-{int(on)}-{h}")
     return 0
 
 
@@ -1056,7 +1087,7 @@ def cmd_indexnow(a):
     if not keys:
         print("indexnow: нет файла ключа <32 hex>.txt в корне репозитория")
         return 0
-    slugs = a.slugs or [s for s, e in published()["posts"].items() if e["date"] == day]
+    slugs = a.slugs or [s for s, e in published()["posts"].items() if e["date"] == day and is_live(e)]
     if not slugs:
         print(f"indexnow: {day} ничего не вышло")
         return 0
@@ -1113,12 +1144,10 @@ def main(argv=None):
     x.add_argument("--note")
     for name in ("hold", "draft", "unpublish"):
         sub.add_parser(name).add_argument("slug")
-    x = sub.add_parser("publish")
-    x.add_argument("--date")
+    x = sub.add_parser("publish", help="поставить готовые статьи в график (published.json)")
     x.add_argument("--dry-run", action="store_true")
-    x.add_argument("--force", action="store_true")
     x.add_argument("--all-ready", action="store_true", help="выпустить сегодня всё готовое разом")
-    x.add_argument("--github-output", help=argparse.SUPPRESS)
+    sub.add_parser("stamp", help="отметка того, что сейчас должно быть на сайте (для сервера)")
     x = sub.add_parser("indexnow", help="сообщить Яндексу о вышедших страницах")
     x.add_argument("slugs", nargs="*")
     x.add_argument("--date")

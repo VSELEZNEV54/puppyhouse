@@ -1,69 +1,69 @@
 {
-  "_note": "Что вышло на сайте. Пишет только tools/blog/factory.py publish (GitHub Action «Блог: публикация»). slug → {date: день публикации, links: сколько ссылок в тексте разрешено; 0 — первый месяц, ссылки показываются простым текстом}. Снять статью: python3 tools/blog/factory.py unpublish <slug>.",
+  "_note": "Что выходит на сайте и когда. Пишет только tools/blog/factory.py publish (ставит готовые статьи в график). slug → {date: день выхода (статья появляется в этот день в schedule.time плана, 10:00 МСК; будущая дата — в графике), links: сколько ссылок в тексте можно (до base_links_from плана сайт показывает их простым текстом), series: base — «Полезные материалы», launch — вышла с ними, main — по графику}. Сервер выпускает статьи сам (dsh autoupdate → dsh blog). Снять статью: python3 tools/blog/factory.py unpublish <slug>; отложить из графика: hold <slug>.",
   "posts": {
     "kak-vybrat-shchenka": {
       "date": "2026-11-12",
-      "links": 0,
+      "links": 3,
       "series": "base"
     },
     "maltipu-harakter": {
       "date": "2026-11-12",
-      "links": 0,
+      "links": 3,
       "series": "base"
     },
     "maltipu-uhod": {
       "date": "2026-11-12",
-      "links": 0,
+      "links": 3,
       "series": "base"
     },
     "maltipu-kormlenie": {
       "date": "2026-11-12",
-      "links": 0,
+      "links": 3,
       "series": "base"
     },
     "francuzskij-buldog-harakter": {
       "date": "2026-11-12",
-      "links": 0,
+      "links": 3,
       "series": "base"
     },
     "francuzskij-buldog-uhod": {
       "date": "2026-11-12",
-      "links": 0,
+      "links": 3,
       "series": "base"
     },
     "francuzskij-buldog-kormlenie": {
       "date": "2026-11-12",
-      "links": 0,
+      "links": 3,
       "series": "base"
     },
     "toj-pudel-harakter": {
       "date": "2026-11-12",
-      "links": 0,
+      "links": 3,
       "series": "base"
     },
     "toj-pudel-uhod": {
       "date": "2026-11-12",
-      "links": 0,
+      "links": 3,
       "series": "base"
     },
     "toj-pudel-kormlenie": {
       "date": "2026-11-12",
-      "links": 0,
+      "links": 3,
       "series": "base"
     },
     "border-kolli-harakter": {
       "date": "2026-11-12",
-      "links": 0,
+      "links": 3,
       "series": "base"
     },
     "border-kolli-uhod": {
       "date": "2026-11-12",
-      "links": 0,
+      "links": 3,
       "series": "base"
     },
     "border-kolli-kormlenie": {
       "date": "2026-11-12",
-      "links": 0,
+      "links": 3,
       "series": "base"
     },
     "chto-kupit-shchenku": {
