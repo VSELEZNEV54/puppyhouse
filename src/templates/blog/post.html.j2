@@ -2,8 +2,9 @@
     Context: post (h1, lead, eyebrow, date, read, intro, toc, sections, faq_title, faq, cta),
     hero_photo ({src, alt} of a studio photo or none → four breed faces), hero_wide (four breeds in a row — the wide
     photo hero of /o-pitomnike/), tone, breed (or none), ld (JSON-LD).
-    Right column (client 21.10): the open request form, then «Содержание» (it sticks when the form has scrolled away);
-    phones: «Содержание» above the text, the form under it. -#}
+    Right column: «Содержание», then the open request form. The form sticks under the header while the article scrolls
+    (client 12.11), «Содержание» simply scrolls away with the page — above the form, so it never shows behind it.
+    Phones: «Содержание» above the text, the form under it. -#}
 {% extends "layouts/page.html.j2" %}
 {% import "blog/_parts.html.j2" as blg %}
 
@@ -42,8 +43,8 @@
           {% endfor %}
         </article>
         <div class="article__aside blg-aside">
-          {{ blg.aside_form(post, breed) }}
           {{ ui.toc(post.toc) }}
+          {{ blg.aside_form(post, breed) }}
         </div>
       </div>
     </div>

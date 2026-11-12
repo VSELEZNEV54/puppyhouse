@@ -135,9 +135,12 @@
 .prose > .blg-photos { margin-top: 1.4em; }
 .blg-photos img { width: 100%; height: auto; aspect-ratio: 4 / 5; object-fit: cover; border-radius: var(--r-img); background: #E7E1D8; }
 
-/* правая колонка: открытая форма заявки, под ней «Содержание» — оно прилипает, когда форма ушла вверх */
+/* правая колонка: «Содержание», под ним открытая форма заявки. Прилипает под шапкой форма (правка 12.11),
+   «Содержание» просто уходит вверх со страницей. На низком экране, где форма целиком не помещается,
+   она не прилипает — кнопка «Подобрать щенка» всегда достижима */
 .blg-wrap .article__aside { position: static; align-self: stretch; display: flex; flex-direction: column; gap: var(--gap); }
-.blg-aside .toc { position: sticky; top: 96px; }
+.blg-aside .blg-form { position: sticky; top: 96px; }
+@media (max-height: 759px) { .blg-aside .blg-form { position: static; } }
 .blg-form { padding: 22px 24px 24px; border-radius: var(--r-tile); background: var(--tile); }
 .blg-form__title { font-size: 21px; font-weight: 500; letter-spacing: -0.02em; line-height: 1.15; }
 .blg-form__line { margin-top: 6px; font-size: 14px; line-height: 1.4; color: var(--ink-soft); }
@@ -182,8 +185,8 @@
 @media (max-width: 1000px) {
   /* колонка статьи одна: «Содержание» — над текстом, форма — сразу под ним */
   .blg-wrap .article__aside { display: contents; }
-  .blg-aside .toc { position: static; order: -1; }
-  .blg-form { order: 1; }
+  .blg-aside .toc { order: -1; }
+  .blg-aside .blg-form { position: static; order: 1; }
   .blg-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 
