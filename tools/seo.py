@@ -94,15 +94,16 @@ def organization(site: dict, conf: dict, imgsize) -> dict:
     if not is_placeholder(site.get("email")):
         # the ASCII form (xn--…) of the address, as in the mailto: links: machine-read data
         org["email"] = (site.get("email_href") or "").removeprefix("mailto:") or site["email"]
-    # contacts_ready = false: the number and messengers are not known yet — no telephone / sameAs
+    # phone_public = false (client 13.11: the number is for messengers only) — no telephone; contacts_ready = false —
+    # no sameAs. sameAs lists profiles only: a wa.me link carries the number, so WhatsApp is never there
     ready = site.get("contacts_ready", True)
-    tel = (site.get("phone") or {}).get("tel", "") if ready else ""
+    tel = (site.get("phone") or {}).get("tel", "") if ready and site.get("phone_public", True) else ""
     if tel.startswith("tel:"):
         org["telephone"] = tel[4:]
     if conf.get("opening_hours"):
         org["openingHours"] = conf["opening_hours"]
     same = [m.get("url") for m in (site.get("messengers") or {}).values() if isinstance(m, dict)] if ready else []
-    same = [u for u in same if u and u.startswith("http") and not is_placeholder(u)]
+    same = [u for u in same if u and u.startswith("http") and "wa.me/" not in u and not is_placeholder(u)]
     if same:
         org["sameAs"] = same
     return org

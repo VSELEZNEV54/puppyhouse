@@ -481,9 +481,6 @@ main:focus, section[tabindex="-1"]:focus, [data-anchor-focus]:focus { outline: n
 @media (max-width: 1419px) {
   .nav__item--p5 { display: none; }
 }
-@media (max-width: 1339px) {
-  .hdr .msgr--tg { display: none; }
-}
 @media (max-width: 1289px) {
   .nav__item--p4 { display: none; }
 }
@@ -507,7 +504,8 @@ main:focus, section[tabindex="-1"]:focus, [data-anchor-focus]:focus { outline: n
 }
 @media (max-width: 560px) {
   .hdr__bar { height: 60px; padding-left: 10px; }
-  .hdr .msgr--tg, .hdr .msgr--wa, .hdr .msgr--max { display: none; }
+  /* телефон: в шапке только Telegram (и звонок, если номер публичный); WhatsApp и MAX — в меню (правка 13.11) */
+  .hdr .msgr--wa, .hdr .msgr--max { display: none; }
   .hdr .msgr--call { display: inline-grid; }
   .logo__mark { width: 38px; height: 38px; }
   .logo__name { font-size: 16px; }

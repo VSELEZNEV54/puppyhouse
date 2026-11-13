@@ -30,8 +30,9 @@
     "yandex_metrika": "114070015",
     "google_tag_manager": "GTM-PB3WF4SH"
   },
-  "_contacts_note": "contacts_ready=false: телефон и мессенджеры питомника (phone.display/tel, messengers) не выводятся нигде — ни ссылками, ни в JSON-LD; вместо «Написать в Telegram» в шапке — «Оставить заявку». Когда номер и мессенджеры станут известны, впишите их ниже и поставьте true.",
-  "contacts_ready": false,
+  "_contacts_note": "contacts_ready — мессенджеры питомника (messengers: иконки, кнопки Telegram, sameAs в JSON-LD); мессенджер с пустым url не выводится. phone_public — номер телефона (phone.display/tel) на сайте и telephone в JSON-LD. Клиент 13.11: Telegram @domshenkov, WhatsApp и MAX на +7 913 719-57-83 — номер только для мессенджеров, не для звонков: на сайте его нет ни текстом, ни tel:-ссылкой (phone_public=false); в шапке остаётся «Оставить заявку» (клиент 20.10). Ссылка MAX — когда клиент пришлёт профиль.",
+  "contacts_ready": true,
+  "phone_public": false,
   "phone": {
     "display": "+7 (495) 123-45-67",
     "tel": "tel:+74951234567",
@@ -57,21 +58,19 @@
   "messengers": {
     "telegram": {
       "label": "Telegram",
-      "url": "https://t.me/puppyhouse_msk",
-      "url_placeholder": "[ссылка Telegram — заглушка со старым названием, заменить на канал дом-щенков.рф]",
+      "url": "https://t.me/domshenkov",
       "aria": "Написать в Telegram",
       "icon": "tg"
     },
     "whatsapp": {
       "label": "WhatsApp",
-      "url": "https://wa.me/74951234567",
+      "url": "https://wa.me/79137195783",
       "aria": "Написать в WhatsApp",
       "icon": "wa"
     },
     "max": {
       "label": "MAX",
-      "url": "https://max.ru/domshchenkov",
-      "url_placeholder": "[ссылка MAX — заглушка]",
+      "url": "",
       "aria": "Написать в MAX",
       "icon": "max"
     }

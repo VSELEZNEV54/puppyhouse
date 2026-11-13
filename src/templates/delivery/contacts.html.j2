@@ -1,7 +1,8 @@
 {#- /kontakty/ — «Наши контакты» (client 21.10): hero with the homepage photo of the four breeds, how to reach us,
     how to visit with the Yandex map (site.address.map), then only the lead form «Пришлём варианты щенков» — no
     requisites (they stay in the footer), no puppy strip, no articles.
-    site.contacts_ready = false: no phone and no messengers anywhere on the page — «Оставить заявку» and the e-mail instead.
+    site.contacts_ready — the messengers (card + round icons in the hero), site.phone_public — the phone (card, «Позвонить»);
+    without the phone: «Оставить заявку», the hours card and the e-mail instead (client 13.11: the number is for messengers only).
     Context (routes/delivery.py): c (copy, data/delivery-service.json). Contacts themselves come from site.json. -#}
 {% extends "layouts/page.html.j2" %}
 
@@ -11,14 +12,17 @@
 
 {% block hero %}
     {%- set size = imgsize(c.photo.src) or [1536, 1024] %}
-    {% call ui.page_hero(c.h1, lead=c.lead if site.contacts_ready else c.lead_no_phone, eyebrow=c.eyebrow, photo=dict(c.photo, w=size[0], h=size[1]), tone='cream', cls='dlv-konhero') %}
-      {% if site.contacts_ready %}
+    {% call ui.page_hero(c.h1, lead=c.lead if site.phone_public else (c.lead_messengers if site.contacts_ready else c.lead_no_phone), eyebrow=c.eyebrow, photo=dict(c.photo, w=size[0], h=size[1]), tone='cream', cls='dlv-konhero') %}
+      {% if site.phone_public %}
       <a class="btn btn--ink btn--lg" href="{{ site.phone.tel }}">{{ ui.icon('phone') }}Позвонить</a>
+      {% else %}
+      {{ ui.request_button(cls='btn btn--coral btn--lg', note='Заявка: страница «Контакты»') }}
+      {% endif %}
+      {% if site.contacts_ready %}
       {{ forms.msgr('telegram') }}
       {{ forms.msgr('whatsapp') }}
       {{ forms.msgr('max') }}
       {% else %}
-      {{ ui.request_button(cls='btn btn--coral btn--lg', note='Заявка: страница «Контакты»') }}
       <a class="btn btn--white btn--lg" href="mailto:{{ site.email_ascii }}">{{ ui.icon('mail') }}Написать на&nbsp;почту</a>
       {% endif %}
     {% endcall %}
@@ -28,23 +32,12 @@
     <section class="section section--tight container" id="svyaz" aria-labelledby="svyaz-title">
       {{ ui.section_head(c.ways_title, id='svyaz-title') }}
       <ul class="dlv-cts{{ ' dlv-cts--3' if not site.contacts_ready }}" data-reveal="items">
-        {% if site.contacts_ready %}
+        {% if site.phone_public %}
         <li class="dlv-ct">
           {{ ui.ico('phone', 'coral') }}
           <p class="dlv-ct__label">Телефон</p>
           <a class="dlv-ct__value" href="{{ site.phone.tel }}">{{ site.phone.display }}</a>
           <p class="dlv-ct__line">{{ site.phone.hours|typo }}</p>
-        </li>
-        <li class="dlv-ct">
-          {{ ui.ico('chat', 'sky') }}
-          <p class="dlv-ct__label">Мессенджеры</p>
-          <div class="dlv-ct__msgrs">
-            {% for k in ('telegram', 'whatsapp', 'max') %}
-            {%- set m = site.messengers[k] %}
-            <a class="dlv-msgr" href="{{ m.url }}" target="_blank" rel="noopener" aria-label="{{ m.aria }}"><span class="msgr msgr--{{ m.icon }}" aria-hidden="true">{{ ui.icon(m.icon) }}</span>{{ m.label }}</a>
-            {% endfor %}
-          </div>
-          <p class="dlv-ct__line">Пришлём видео щенков и&nbsp;цену</p>
         </li>
         {% else %}
         <li class="dlv-ct">
@@ -52,6 +45,19 @@
           <p class="dlv-ct__label">Часы работы</p>
           <p class="dlv-ct__value">{{ site.phone.hours|typo }}</p>
           <p class="dlv-ct__line">{{ site.phone.response|typo }}</p>
+        </li>
+        {% endif %}
+        {% if site.contacts_ready %}
+        <li class="dlv-ct">
+          {{ ui.ico('chat', 'sky') }}
+          <p class="dlv-ct__label">Мессенджеры</p>
+          <div class="dlv-ct__msgrs">
+            {% for k in ('telegram', 'whatsapp', 'max') if site.messengers[k].url %}
+            {%- set m = site.messengers[k] %}
+            <a class="dlv-msgr" href="{{ m.url }}" target="_blank" rel="noopener" aria-label="{{ m.aria }}"><span class="msgr msgr--{{ m.icon }}" aria-hidden="true">{{ ui.icon(m.icon) }}</span>{{ m.label }}</a>
+            {% endfor %}
+          </div>
+          <p class="dlv-ct__line">Пришлём видео щенков и&nbsp;цену</p>
         </li>
         {% endif %}
         <li class="dlv-ct">

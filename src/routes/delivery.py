@@ -175,7 +175,7 @@ def faq_page(data):
 
 
 def contacts_page(data):
-    c = nb(data["delivery_service"]["contacts"], "lead", "lead_no_phone", "visit_note")
+    c = nb(data["delivery_service"]["contacts"], "lead", "lead_no_phone", "lead_messengers", "visit_note")
     c["visit"] = [nb(x, "title", "text") for x in c["visit"]]
     return page(
         "/kontakty/", "delivery/contacts.html.j2",

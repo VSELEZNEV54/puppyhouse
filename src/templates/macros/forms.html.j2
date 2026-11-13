@@ -7,7 +7,9 @@
 {#- Messenger round button: kind = telegram | whatsapp | max -#}
 {% macro msgr(kind) -%}
 {%- set m = site.messengers[kind] -%}
+{%- if m.url -%}
 <a class="msgr msgr--{{ m.icon }}" href="{{ m.url }}" target="_blank" rel="noopener" aria-label="{{ m.aria }}" title="{{ m.label }}">{{ ui.icon(m.icon) }}</a>
+{%- endif -%}
 {%- endmacro %}
 
 {#- Breed <select> options. selected: breed slug to preselect (breed pages).
@@ -59,7 +61,7 @@
     waits in this browser and goes out later). Phone, Telegram and MAX as the way out. what: «заявку» | «отзыв».
     [data-fail-lost] replaces [data-fail-saved] (DSH.failMode) when the server will never take that request (400 / 413 / 415):
     it is not kept, so we don't promise to send it later.
-    site.contacts_ready = false: no phone and messenger links — only the text. -#}
+    site.contacts_ready = false: no messenger links — only the e-mail; the phone only when site.phone_public. -#}
 {% macro send_fail(what='заявку', saved='её') -%}
 {% if not site.contacts_ready -%}
 <p class="form-fail__text">Не получилось отправить {{ what }}. <span data-fail-saved>Мы сохранили {{ saved }} и&nbsp;отправим сами, когда появится связь, — страницу можно закрыть.</span><span data-fail-lost hidden>Попробуйте отправить ещё раз чуть позже.</span> Или напишите нам на&nbsp;почту:</p>
@@ -67,11 +69,11 @@
   <a class="form-fail__link" href="{{ site.email_href }}">{{ ui.icon('mail', sm=true) }}{{ site.email }}</a>
 </p>
 {%- else -%}
-<p class="form-fail__text">Не получилось отправить {{ what }}. <span data-fail-saved>Мы сохранили {{ saved }} и&nbsp;отправим, когда появится связь. Или напишите нам:</span><span data-fail-lost hidden>Позвоните или напишите нам:</span></p>
+<p class="form-fail__text">Не получилось отправить {{ what }}. <span data-fail-saved>Мы сохранили {{ saved }} и&nbsp;отправим, когда появится связь. Или напишите нам:</span><span data-fail-lost hidden>{{ 'Позвоните или напишите' if site.phone_public else 'Напишите' }} нам:</span></p>
 <p class="form-fail__links">
-  <a class="form-fail__link" href="{{ site.phone.tel }}">{{ ui.icon('phone', sm=true) }}{{ site.phone.display }}</a>
-  <a class="form-fail__link" href="{{ site.messengers.telegram.url }}" target="_blank" rel="noopener">{{ ui.icon('tg', sm=true) }}{{ site.messengers.telegram.label }}</a>
-  <a class="form-fail__link" href="{{ site.messengers.max.url }}" target="_blank" rel="noopener">{{ ui.icon('max', sm=true) }}{{ site.messengers.max.label }}</a>
+  {% if site.phone_public %}<a class="form-fail__link" href="{{ site.phone.tel }}">{{ ui.icon('phone', sm=true) }}{{ site.phone.display }}</a>{% endif %}
+  {% for k in ('telegram', 'whatsapp', 'max') if site.messengers[k].url %}{% set m = site.messengers[k] %}<a class="form-fail__link" href="{{ m.url }}" target="_blank" rel="noopener">{{ ui.icon(m.icon, sm=true) }}{{ m.label }}</a>{% endfor %}
+  <a class="form-fail__link" href="{{ site.email_href }}">{{ ui.icon('mail', sm=true) }}{{ site.email }}</a>
 </p>
 {%- endif %}
 {%- endmacro %}
@@ -104,7 +106,7 @@
     <div class="lead__intro">
       <h2 class="h2" id="lead-title">{{ title|typo }}</h2>
       <p class="lead__line">{{ line|typo }}</p>
-      {% if contacts and site.contacts_ready %}
+      {% if contacts and site.contacts_ready and site.phone_public %}
       <div class="lead__contacts">
         <a class="lead__phone" href="{{ site.phone.tel }}">{{ site.phone.display }}</a>
         <span class="lead__msgrs">{{ msgr('telegram') }}{{ msgr('whatsapp') }}{{ msgr('max') }}</span>

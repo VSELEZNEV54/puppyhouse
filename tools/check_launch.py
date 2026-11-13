@@ -92,7 +92,10 @@ def collect() -> dict:
             groups[group].append({"file": f"src/data/{fn}", "key": key, "what": what, "count": len(found),
                                   "examples": sorted(set(found))[:6]})
         claimed[fn].add(key)
-    phones = [site["phone"]["display"], site["phone"]["tel"], site["messengers"]["whatsapp"]["url"]]
+    # the phone counts only when the site shows it (site.json → phone_public; client 13.11: the number is for
+    # messengers only), the WhatsApp link always does
+    phones = ([site["phone"]["display"], site["phone"]["tel"]] if site.get("phone_public", True) else []) \
+        + [site["messengers"]["whatsapp"]["url"]]
     if any(FAKE_PHONE.search(p) for p in phones) and not hidden:
         groups["contacts"].insert(0, {"file": "src/data/site.json", "key": "phone", "count": 1,
                                       "what": "Телефон и WhatsApp — сейчас образец +7 (495) 123-45-67",

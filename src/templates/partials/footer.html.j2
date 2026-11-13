@@ -1,7 +1,7 @@
 {#- Footer (client 21.10, after two reference screenshots). Row 1: logo + a line about the kennel · «Покупка» · «Породы»
     · «Питомник» (site.json → footer.columns: a link may carry "icon" — the lilac circle of the menu, the quiz has it;
     "breeds": true — the four breed pages) · contacts on the right (hours, e-mail, address — not on the city pages; phone
-    and messengers once site.contacts_ready; «Оставить заявку»). The contacts are not repeated under the lead form.
+    once site.phone_public, messengers once site.contacts_ready; «Оставить заявку»). The contacts are not repeated under the lead form.
     Row 2: a column per breed — its colour pages /<breed>/<colour>/ (order of breedsub.json), «Виды и окрасы …», «Цена …».
     Row 3: the delivery cities (cities.json → /shchenki-v-…/) and «Все условия доставки →». Row 4: requisites,
     documents, «Настройки cookie» (reopens the banner, partials/cookie.html.j2), studio credit. Phones ≤ 760 px: one column, the breed columns and the cities fold
@@ -43,10 +43,12 @@
         {% endfor %}
         <div class="fcol footer__contacts">
           <h2 class="fcol__h">Контакты</h2>
-          {% if site.contacts_ready %}
+          {% if site.phone_public %}
           <a class="footer__phone" href="{{ site.phone.tel }}">{{ site.phone.display }}</a>
+          {% endif %}
+          {% if site.contacts_ready %}
           <div class="footer__msgs">
-            {% for k in ('telegram', 'whatsapp', 'max') %}{% set m = site.messengers[k] %}
+            {% for k in ('telegram', 'whatsapp', 'max') if site.messengers[k].url %}{% set m = site.messengers[k] %}
             <a class="msgr msgr--{{ m.icon }}" href="{{ m.url }}" target="_blank" rel="noopener" aria-label="{{ m.aria }}" title="{{ m.label }}">{{ ui.icon(m.icon) }}</a>
             {% endfor %}
           </div>
