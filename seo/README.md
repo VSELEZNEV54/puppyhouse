@@ -13,8 +13,18 @@ lead_sent, form_open, contact_click, quiz_complete (их шлёт main.js), Inde
 * **Яндекс (Метрика, Вебмастер).** Токен приложения «Для доступа к API или отладки» с правами metrika:read,
   metrika:write, webmaster:hostinfo, webmaster:verify (docs/2-ДОСТУПЫ-К-API.md, раздел 1). Хранится сетевым
   секретом окружения: прокси сам подставляет заголовок. Метрика принимает «Bearer <токен>», Вебмастер — только
-  «OAuth <токен>» (проверено 13.11). Командам нужен лишь непустой YANDEX_OAUTH_TOKEN — в сессии это заглушка
-  `proxy`, настоящий токен в запросы вставляет прокси.
+  «OAuth <токен>» (проверено 13.11). Прокси заменяет любой заголовок Authorization своим, поэтому командам
+  нужен лишь непустой YANDEX_OAUTH_TOKEN — заглушка. Встроенный fetch в Node сам через прокси не ходит: без
+  NODE_USE_ENV_PROXY запросы идут мимо него, без токена. Запуск в облачной сессии:
+
+  ```bash
+  export YANDEX_OAUTH_TOKEN=proxy-injected NODE_USE_ENV_PROXY=1 NODE_EXTRA_CA_CERTS=/root/.ccr/ca-bundle.crt NODE_NO_WARNINGS=1
+  node seo/cli/doctor.mjs
+  ```
+
+  Секрет Метрики (api-metrika.yandex.net) сохранён 13.11 — «Bearer <токен>»; секрет Вебмастера
+  (api.webmaster.yandex.net) — тот же токен со словом «OAuth» вместо «Bearer», он заводится в настройках
+  окружения (Network secrets).
 * **Google Search Console.** Ключ сервисного аккаунта подписывается внутри машины (JWT), прокси его не заменит:
   файл ключа должен лежать в ~/.seo-tools/google-service-account.json той машины, где идёт работа.
 * **Директ.** direct.mjs — только проверка фраз и отчёт по запросам; управлять кампаниями эти инструменты не умеют.
