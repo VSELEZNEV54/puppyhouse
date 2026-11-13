@@ -57,50 +57,6 @@
       "in_blog": 7
     },
     {
-      "src": "/assets/img/ab-maltipu-408.jpg",
-      "alt": "Светло-кремовый щенок мальтипу на ладони",
-      "breed": "maltipu",
-      "w": 1200,
-      "h": 1600,
-      "shape": "port",
-      "generated": false,
-      "auto_alt": false,
-      "in_blog": 1
-    },
-    {
-      "src": "/assets/img/ab-maltipu-413.jpg",
-      "alt": "Абрикосовый щенок мальтипу в руке у хозяйки",
-      "breed": "maltipu",
-      "w": 1200,
-      "h": 1600,
-      "shape": "port",
-      "generated": false,
-      "auto_alt": false,
-      "in_blog": 3
-    },
-    {
-      "src": "/assets/img/ab-maltipu-433.jpg",
-      "alt": "Кремовый щенок мальтипу играет с рукой хозяйки",
-      "breed": "maltipu",
-      "w": 959,
-      "h": 1280,
-      "shape": "port",
-      "generated": false,
-      "auto_alt": false,
-      "in_blog": 1
-    },
-    {
-      "src": "/assets/img/ab-maltipu-465.jpg",
-      "alt": "Светло-абрикосовый щенок мальтипу на руках у мужчины во дворе",
-      "breed": "maltipu",
-      "w": 1200,
-      "h": 1600,
-      "shape": "port",
-      "generated": false,
-      "auto_alt": false,
-      "in_blog": 1
-    },
-    {
       "src": "/assets/img/ab-pudel-274.jpg",
       "alt": "Два рыжих щенка той-пуделя в ладонях",
       "breed": "toj-pudel",
@@ -486,116 +442,6 @@
       "in_blog": 1
     },
     {
-      "src": "/assets/img/cl-maltipu-379.jpg",
-      "alt": "Рыжий щенок мальтипу стоит на розовой лежанке",
-      "breed": "maltipu",
-      "w": 960,
-      "h": 1280,
-      "shape": "port",
-      "generated": false,
-      "auto_alt": false,
-      "in_blog": 1
-    },
-    {
-      "src": "/assets/img/cl-maltipu-385.jpg",
-      "alt": "Кремовый щенок мальтипу выглядывает из лежанки",
-      "breed": "maltipu",
-      "w": 1280,
-      "h": 960,
-      "shape": "land",
-      "generated": false,
-      "auto_alt": false,
-      "in_blog": 1
-    },
-    {
-      "src": "/assets/img/cl-maltipu-393.jpg",
-      "alt": "Кремовый щенок мальтипу Ваниль на руках",
-      "breed": "maltipu",
-      "w": 1200,
-      "h": 1600,
-      "shape": "port",
-      "generated": false,
-      "auto_alt": false,
-      "in_blog": 1
-    },
-    {
-      "src": "/assets/img/cl-maltipu-396.jpg",
-      "alt": "Абрикосовый щенок мальтипу на розовой лежанке",
-      "breed": "maltipu",
-      "w": 1200,
-      "h": 1600,
-      "shape": "port",
-      "generated": false,
-      "auto_alt": false,
-      "in_blog": 1
-    },
-    {
-      "src": "/assets/img/cl-maltipu-410.jpg",
-      "alt": "Кремовый щенок мальтипу на сером диване",
-      "breed": "maltipu",
-      "w": 1200,
-      "h": 1600,
-      "shape": "port",
-      "generated": false,
-      "auto_alt": false,
-      "in_blog": 1
-    },
-    {
-      "src": "/assets/img/cl-maltipu-412.jpg",
-      "alt": "Кремовый щенок мальтипу сидит на сером диване",
-      "breed": "maltipu",
-      "w": 1600,
-      "h": 1200,
-      "shape": "land",
-      "generated": false,
-      "auto_alt": false,
-      "in_blog": 1
-    },
-    {
-      "src": "/assets/img/cl-maltipu-435.jpg",
-      "alt": "Абрикосовый щенок мальтипу Ричи выглядывает из-за спинки дивана",
-      "breed": "maltipu",
-      "w": 960,
-      "h": 1280,
-      "shape": "port",
-      "generated": false,
-      "auto_alt": false,
-      "in_blog": 1
-    },
-    {
-      "src": "/assets/img/cl-maltipu-458.jpg",
-      "alt": "Крошечный рыжий щенок мальтипу на ладони",
-      "breed": "maltipu",
-      "w": 1600,
-      "h": 1440,
-      "shape": "square",
-      "generated": false,
-      "auto_alt": false,
-      "in_blog": 1
-    },
-    {
-      "src": "/assets/img/cl-maltipu-481.jpg",
-      "alt": "Рубиновый щенок мальтипу с розовым бантом",
-      "breed": "maltipu",
-      "w": 960,
-      "h": 1280,
-      "shape": "port",
-      "generated": false,
-      "auto_alt": false,
-      "in_blog": 0
-    },
-    {
-      "src": "/assets/img/cl-maltipu-484.jpg",
-      "alt": "Рубиновый щенок мальтипу в кружевном воротнике между подушками",
-      "breed": "maltipu",
-      "w": 960,
-      "h": 1280,
-      "shape": "port",
-      "generated": false,
-      "auto_alt": false,
-      "in_blog": 0
-    },
-    {
       "src": "/assets/img/cl-pudel-278.jpg",
       "alt": "Коричневый щенок той-пуделя с кулоном на светлой драпировке",
       "breed": "toj-pudel",
@@ -817,14 +663,14 @@
     },
     {
       "src": "/assets/img/color-maltipu-red.jpg",
-      "alt": "Рыжий щенок мальтипу на персиковом фоне",
+      "alt": "Рыжий щенок мальтипу Корица на персиковом фоне",
       "breed": "maltipu",
       "w": 1024,
       "h": 1024,
       "shape": "square",
       "generated": false,
       "auto_alt": false,
-      "in_blog": 0
+      "in_blog": 1
     },
     {
       "src": "/assets/img/color-maltipu-sable.jpg",
@@ -1165,7 +1011,7 @@
       "shape": "land",
       "generated": false,
       "auto_alt": false,
-      "in_blog": 1
+      "in_blog": 3
     },
     {
       "src": "/assets/img/fit-buldog-deti.jpg",
@@ -1275,7 +1121,7 @@
       "shape": "port",
       "generated": false,
       "auto_alt": false,
-      "in_blog": 1
+      "in_blog": 4
     },
     {
       "src": "/assets/img/fit-maltipu-pervaya.jpg",
@@ -1286,7 +1132,7 @@
       "shape": "port",
       "generated": false,
       "auto_alt": false,
-      "in_blog": 1
+      "in_blog": 3
     },
     {
       "src": "/assets/img/fit-maltipu-sherst.jpg",
@@ -1297,7 +1143,7 @@
       "shape": "port",
       "generated": false,
       "auto_alt": false,
-      "in_blog": 1
+      "in_blog": 4
     },
     {
       "src": "/assets/img/fit-pudel-kompanon.jpg",
@@ -1352,7 +1198,7 @@
       "shape": "port",
       "generated": false,
       "auto_alt": false,
-      "in_blog": 0
+      "in_blog": 2
     },
     {
       "src": "/assets/img/grad-family-buldog.jpg",
@@ -1400,14 +1246,14 @@
     },
     {
       "src": "/assets/img/hero-maltipu-sofa.jpg",
-      "alt": "Абрикосовый щенок мальтипу на светлом диване",
+      "alt": "Абрикосовый щенок мальтипу Нуга на светлом диване",
       "breed": "maltipu",
       "w": 928,
       "h": 1152,
       "shape": "port",
       "generated": false,
       "auto_alt": false,
-      "in_blog": 0
+      "in_blog": 2
     },
     {
       "src": "/assets/img/kinds-buldog.jpg",
@@ -1495,7 +1341,7 @@
       "shape": "land",
       "generated": false,
       "auto_alt": false,
-      "in_blog": 0
+      "in_blog": 1
     },
     {
       "src": "/assets/img/maltipu-kit.jpg",
@@ -1506,7 +1352,7 @@
       "shape": "land",
       "generated": false,
       "auto_alt": false,
-      "in_blog": 1
+      "in_blog": 3
     },
     {
       "src": "/assets/img/maltipu-vet.jpg",
@@ -1515,160 +1361,6 @@
       "w": 1264,
       "h": 848,
       "shape": "land",
-      "generated": false,
-      "auto_alt": false,
-      "in_blog": 1
-    },
-    {
-      "src": "/assets/img/ml-maltipu-372.jpg",
-      "alt": "Белый щенок мальтипу на руках на фоне елей",
-      "breed": "maltipu",
-      "w": 959,
-      "h": 1280,
-      "shape": "port",
-      "generated": false,
-      "auto_alt": false,
-      "in_blog": 1
-    },
-    {
-      "src": "/assets/img/ml-maltipu-377.jpg",
-      "alt": "Рыжий щенок мальтипу стоит на розовой лежанке",
-      "breed": "maltipu",
-      "w": 960,
-      "h": 1280,
-      "shape": "port",
-      "generated": false,
-      "auto_alt": false,
-      "in_blog": 0
-    },
-    {
-      "src": "/assets/img/ml-maltipu-386.jpg",
-      "alt": "Абрикосовый щенок мальтипу стоит на сером диване",
-      "breed": "maltipu",
-      "w": 960,
-      "h": 1280,
-      "shape": "port",
-      "generated": false,
-      "auto_alt": false,
-      "in_blog": 1
-    },
-    {
-      "src": "/assets/img/ml-maltipu-389.jpg",
-      "alt": "Кремово-белый щенок мальтипу на розовой лежанке",
-      "breed": "maltipu",
-      "w": 1200,
-      "h": 1600,
-      "shape": "port",
-      "generated": false,
-      "auto_alt": false,
-      "in_blog": 1
-    },
-    {
-      "src": "/assets/img/ml-maltipu-438.jpg",
-      "alt": "Пушистый кремовый щенок мальтипу на руках у крыльца",
-      "breed": "maltipu",
-      "w": 960,
-      "h": 1280,
-      "shape": "port",
-      "generated": false,
-      "auto_alt": false,
-      "in_blog": 0
-    },
-    {
-      "src": "/assets/img/ml-maltipu-451.jpg",
-      "alt": "Щенок мальтипу в плетёной корзинке с мягкими игрушками",
-      "breed": "maltipu",
-      "w": 1200,
-      "h": 1600,
-      "shape": "port",
-      "generated": false,
-      "auto_alt": false,
-      "in_blog": 1
-    },
-    {
-      "src": "/assets/img/ml-maltipu-457.jpg",
-      "alt": "Рыжий щенок мальтипу на ладони во дворе",
-      "breed": "maltipu",
-      "w": 1200,
-      "h": 1600,
-      "shape": "port",
-      "generated": false,
-      "auto_alt": false,
-      "in_blog": 1
-    },
-    {
-      "src": "/assets/img/ml-maltipu-462.jpg",
-      "alt": "Кремовый щенок мальтипу на мягкой подушке в машине",
-      "breed": "maltipu",
-      "w": 720,
-      "h": 1280,
-      "shape": "port",
-      "generated": false,
-      "auto_alt": false,
-      "in_blog": 1
-    },
-    {
-      "src": "/assets/img/ml-maltipu-470.jpg",
-      "alt": "Абрикосовый щенок мальтипу на руках у хозяйки",
-      "breed": "maltipu",
-      "w": 1280,
-      "h": 1579,
-      "shape": "port",
-      "generated": false,
-      "auto_alt": false,
-      "in_blog": 1
-    },
-    {
-      "src": "/assets/img/ml-maltipu-475.jpg",
-      "alt": "Рыжий кудрявый щенок мальтипу выглядывает из розовой чашки",
-      "breed": "maltipu",
-      "w": 704,
-      "h": 1104,
-      "shape": "port",
-      "generated": false,
-      "auto_alt": false,
-      "in_blog": 1
-    },
-    {
-      "src": "/assets/img/ml-maltipu-477.jpg",
-      "alt": "Рыжий щенок мальтипу сидит на напольных весах",
-      "breed": "maltipu",
-      "w": 1200,
-      "h": 1600,
-      "shape": "port",
-      "generated": false,
-      "auto_alt": false,
-      "in_blog": 1
-    },
-    {
-      "src": "/assets/img/ml-maltipu-479.jpg",
-      "alt": "Рыжий щенок мальтипу в кружевном воротничке",
-      "breed": "maltipu",
-      "w": 960,
-      "h": 1280,
-      "shape": "port",
-      "generated": false,
-      "auto_alt": false,
-      "in_blog": 0
-    },
-    {
-      "src": "/assets/img/ml-maltipu-489.jpg",
-      "alt": "Абрикосовый щенок мальтипу в праздничном кружевном воротничке",
-      "breed": "maltipu",
-      "w": 960,
-      "h": 1280,
-      "shape": "port",
-      "generated": false,
-      "auto_alt": false,
-      "in_blog": 0
-    },
-    {
-      "src": "/assets/img/ml-maltipu-499.jpg",
-      "alt": "Рыжий щенок мальтипу с белой грудкой на руках",
-      "breed": "maltipu",
-      "w": 960,
-      "h": 1280,
-      "shape": "port",
       "generated": false,
       "auto_alt": false,
       "in_blog": 1
@@ -1983,18 +1675,18 @@
     },
     {
       "src": "/assets/img/okras-maltipu-abrikosovyj-big.jpg",
-      "alt": "Собака мальтипу, абрикосовый окрас",
+      "alt": "Абрикосовый щенок мальтипу Тедди на персиковом фоне",
       "breed": "maltipu",
       "w": 1024,
       "h": 1024,
       "shape": "square",
       "generated": false,
-      "auto_alt": true,
-      "in_blog": 0
+      "auto_alt": false,
+      "in_blog": 5
     },
     {
       "src": "/assets/img/okras-maltipu-abrikosovyj.jpg",
-      "alt": "Абрикосовый щенок мальтипу на персиковом фоне",
+      "alt": "Абрикосовый щенок мальтипу Карамель на персиковом фоне",
       "breed": "maltipu",
       "w": 1024,
       "h": 1024,
@@ -2005,13 +1697,13 @@
     },
     {
       "src": "/assets/img/okras-maltipu-belyj-big.jpg",
-      "alt": "Собака мальтипу, белый окрас",
+      "alt": "Белый щенок мальтипу Снежок на персиковом фоне",
       "breed": "maltipu",
       "w": 1024,
       "h": 1024,
       "shape": "square",
       "generated": false,
-      "auto_alt": true,
+      "auto_alt": false,
       "in_blog": 0
     },
     {
@@ -2027,13 +1719,13 @@
     },
     {
       "src": "/assets/img/okras-maltipu-chernyj-big.jpg",
-      "alt": "Собака мальтипу, чёрный окрас",
+      "alt": "Чёрный щенок мальтипу на персиковом фоне",
       "breed": "maltipu",
       "w": 1024,
       "h": 1024,
       "shape": "square",
       "generated": false,
-      "auto_alt": true,
+      "auto_alt": false,
       "in_blog": 0
     },
     {
@@ -2049,13 +1741,13 @@
     },
     {
       "src": "/assets/img/okras-maltipu-fantom-big.jpg",
-      "alt": "Собака мальтипу, фантом окрас",
+      "alt": "Щенок мальтипу фантом на персиковом фоне",
       "breed": "maltipu",
       "w": 1024,
       "h": 1024,
       "shape": "square",
       "generated": false,
-      "auto_alt": true,
+      "auto_alt": false,
       "in_blog": 0
     },
     {
@@ -2071,35 +1763,35 @@
     },
     {
       "src": "/assets/img/okras-maltipu-kremovyj-big.jpg",
-      "alt": "Собака мальтипу, кремовый окрас",
-      "breed": "maltipu",
-      "w": 1024,
-      "h": 1024,
-      "shape": "square",
-      "generated": false,
-      "auto_alt": true,
-      "in_blog": 0
-    },
-    {
-      "src": "/assets/img/okras-maltipu-kremovyj.jpg",
-      "alt": "Кремовый щенок мальтипу на персиковом фоне",
+      "alt": "Кремовый щенок мальтипу Зефир на персиковом фоне",
       "breed": "maltipu",
       "w": 1024,
       "h": 1024,
       "shape": "square",
       "generated": false,
       "auto_alt": false,
-      "in_blog": 0
+      "in_blog": 2
     },
     {
-      "src": "/assets/img/okras-maltipu-partikolor-big.jpg",
-      "alt": "Собака мальтипу, партиколор окрас",
+      "src": "/assets/img/okras-maltipu-kremovyj.jpg",
+      "alt": "Кремовый щенок мальтипу Ваниль на персиковом фоне",
       "breed": "maltipu",
       "w": 1024,
       "h": 1024,
       "shape": "square",
       "generated": false,
-      "auto_alt": true,
+      "auto_alt": false,
+      "in_blog": 1
+    },
+    {
+      "src": "/assets/img/okras-maltipu-partikolor-big.jpg",
+      "alt": "Щенок мальтипу партиколор на персиковом фоне",
+      "breed": "maltipu",
+      "w": 1024,
+      "h": 1024,
+      "shape": "square",
+      "generated": false,
+      "auto_alt": false,
       "in_blog": 0
     },
     {
@@ -2115,35 +1807,35 @@
     },
     {
       "src": "/assets/img/okras-maltipu-ryzhij-big.jpg",
-      "alt": "Собака мальтипу, рыжий окрас",
-      "breed": "maltipu",
-      "w": 1024,
-      "h": 1024,
-      "shape": "square",
-      "generated": false,
-      "auto_alt": true,
-      "in_blog": 0
-    },
-    {
-      "src": "/assets/img/okras-maltipu-ryzhij.jpg",
-      "alt": "Рыжий щенок мальтипу на персиковом фоне",
+      "alt": "Рыжий щенок мальтипу Ириска на персиковом фоне",
       "breed": "maltipu",
       "w": 1024,
       "h": 1024,
       "shape": "square",
       "generated": false,
       "auto_alt": false,
-      "in_blog": 0
+      "in_blog": 3
     },
     {
-      "src": "/assets/img/okras-maltipu-serebristyj-big.jpg",
-      "alt": "Собака мальтипу, серебристый окрас",
+      "src": "/assets/img/okras-maltipu-ryzhij.jpg",
+      "alt": "Рыжий щенок мальтипу Персик на персиковом фоне",
       "breed": "maltipu",
       "w": 1024,
       "h": 1024,
       "shape": "square",
       "generated": false,
-      "auto_alt": true,
+      "auto_alt": false,
+      "in_blog": 2
+    },
+    {
+      "src": "/assets/img/okras-maltipu-serebristyj-big.jpg",
+      "alt": "Серебристый щенок мальтипу на персиковом фоне",
+      "breed": "maltipu",
+      "w": 1024,
+      "h": 1024,
+      "shape": "square",
+      "generated": false,
+      "auto_alt": false,
       "in_blog": 0
     },
     {
@@ -2159,13 +1851,13 @@
     },
     {
       "src": "/assets/img/okras-maltipu-shokoladnyj-big.jpg",
-      "alt": "Собака мальтипу, шоколадный окрас",
+      "alt": "Шоколадный щенок мальтипу Брауни на персиковом фоне",
       "breed": "maltipu",
       "w": 1024,
       "h": 1024,
       "shape": "square",
       "generated": false,
-      "auto_alt": true,
+      "auto_alt": false,
       "in_blog": 0
     },
     {
@@ -2181,13 +1873,13 @@
     },
     {
       "src": "/assets/img/okras-maltipu-sobolinyj-big.jpg",
-      "alt": "Собака мальтипу, соболиный окрас",
+      "alt": "Соболиный щенок мальтипу на персиковом фоне",
       "breed": "maltipu",
       "w": 1024,
       "h": 1024,
       "shape": "square",
       "generated": false,
-      "auto_alt": true,
+      "auto_alt": false,
       "in_blog": 0
     },
     {
@@ -2631,311 +2323,14 @@
       "in_blog": 0
     },
     {
-      "src": "/assets/img/pup-maltipu-375.jpg",
-      "alt": "Персик сидит на розовой лежанке",
-      "breed": "maltipu",
-      "w": 960,
-      "h": 1280,
-      "shape": "port",
-      "generated": false,
-      "auto_alt": false,
-      "in_blog": 0
-    },
-    {
-      "src": "/assets/img/pup-maltipu-376.jpg",
-      "alt": "Рыжий щенок мальтипу Персик на розовой лежанке",
-      "breed": "maltipu",
-      "w": 1120,
-      "h": 1280,
-      "shape": "port",
-      "generated": false,
-      "auto_alt": false,
-      "in_blog": 1
-    },
-    {
-      "src": "/assets/img/pup-maltipu-378.jpg",
-      "alt": "Рыжий мальтипу Персик стоит на лежанке",
-      "breed": "maltipu",
-      "w": 960,
-      "h": 1280,
-      "shape": "port",
-      "generated": false,
-      "auto_alt": false,
-      "in_blog": 0
-    },
-    {
-      "src": "/assets/img/pup-maltipu-383.jpg",
-      "alt": "Кремовый щенок мальтипу Зефир выглядывает из лежанки",
-      "breed": "maltipu",
-      "w": 1200,
-      "h": 1600,
-      "shape": "port",
-      "generated": false,
-      "auto_alt": false,
-      "in_blog": 0
-    },
-    {
-      "src": "/assets/img/pup-maltipu-384.jpg",
-      "alt": "Зефир сидит на розовом пледе",
-      "breed": "maltipu",
-      "w": 1200,
-      "h": 1600,
-      "shape": "port",
-      "generated": false,
-      "auto_alt": false,
-      "in_blog": 0
-    },
-    {
-      "src": "/assets/img/pup-maltipu-385.jpg",
-      "alt": "Зефир положил лапку на край лежанки",
-      "breed": "maltipu",
-      "w": 1280,
-      "h": 960,
-      "shape": "land",
-      "generated": false,
-      "auto_alt": false,
-      "in_blog": 0
-    },
-    {
-      "src": "/assets/img/pup-maltipu-390.jpg",
-      "alt": "Бусинка на розовом пледе",
-      "breed": "maltipu",
-      "w": 1200,
-      "h": 1600,
-      "shape": "port",
-      "generated": false,
-      "auto_alt": false,
-      "in_blog": 0
-    },
-    {
-      "src": "/assets/img/pup-maltipu-391.jpg",
-      "alt": "Бело-абрикосовая малышка мальтипу Бусинка на розовом пледе",
-      "breed": "maltipu",
-      "w": 1200,
-      "h": 1600,
-      "shape": "port",
-      "generated": false,
-      "auto_alt": false,
-      "in_blog": 0
-    },
-    {
-      "src": "/assets/img/pup-maltipu-392.jpg",
-      "alt": "Щенок мальтипу Бусинка, белый с абрикосовыми пятнами",
-      "breed": "maltipu",
-      "w": 1200,
-      "h": 1600,
-      "shape": "port",
-      "generated": false,
-      "auto_alt": false,
-      "in_blog": 0
-    },
-    {
-      "src": "/assets/img/pup-maltipu-397.jpg",
-      "alt": "Карамель сидит на розовом пледе",
-      "breed": "maltipu",
-      "w": 960,
-      "h": 1280,
-      "shape": "port",
-      "generated": false,
-      "auto_alt": false,
-      "in_blog": 0
-    },
-    {
-      "src": "/assets/img/pup-maltipu-399.jpg",
-      "alt": "Абрикосовая малышка мальтипу Карамель на розовом пледе",
-      "breed": "maltipu",
-      "w": 1200,
-      "h": 1600,
-      "shape": "port",
-      "generated": false,
-      "auto_alt": false,
-      "in_blog": 0
-    },
-    {
-      "src": "/assets/img/pup-maltipu-400.jpg",
-      "alt": "Абрикосовый щенок мальтипу Карамель",
-      "breed": "maltipu",
-      "w": 1200,
-      "h": 1600,
-      "shape": "port",
-      "generated": false,
-      "auto_alt": false,
-      "in_blog": 0
-    },
-    {
-      "src": "/assets/img/pup-maltipu-408.jpg",
-      "alt": "Кремовый щенок мальтипу Пломбир на руках",
-      "breed": "maltipu",
-      "w": 1200,
-      "h": 1600,
-      "shape": "port",
-      "generated": false,
-      "auto_alt": false,
-      "in_blog": 0
-    },
-    {
-      "src": "/assets/img/pup-maltipu-409.jpg",
-      "alt": "Кремовый мальтипу Пломбир на диване",
-      "breed": "maltipu",
-      "w": 1600,
-      "h": 1200,
-      "shape": "land",
-      "generated": false,
-      "auto_alt": false,
-      "in_blog": 1
-    },
-    {
-      "src": "/assets/img/pup-maltipu-412.jpg",
-      "alt": "Пломбир сидит на сером диване",
-      "breed": "maltipu",
-      "w": 1600,
-      "h": 1200,
-      "shape": "land",
-      "generated": false,
-      "auto_alt": false,
-      "in_blog": 0
-    },
-    {
-      "src": "/assets/img/pup-maltipu-441.jpg",
-      "alt": "Белый щенок мальтипу Снежок на руках во дворе",
-      "breed": "maltipu",
-      "w": 1200,
-      "h": 1600,
-      "shape": "port",
-      "generated": false,
-      "auto_alt": false,
-      "in_blog": 0
-    },
-    {
-      "src": "/assets/img/pup-maltipu-452.jpg",
-      "alt": "Абрикосовый щенок мальтипу Нуга в корзине с игрушками",
-      "breed": "maltipu",
-      "w": 1200,
-      "h": 1600,
-      "shape": "port",
-      "generated": false,
-      "auto_alt": false,
-      "in_blog": 0
-    },
-    {
-      "src": "/assets/img/pup-maltipu-464.jpg",
-      "alt": "Кремовый щенок мальтипу Бублик на руках на улице",
-      "breed": "maltipu",
-      "w": 1200,
-      "h": 1600,
-      "shape": "port",
-      "generated": false,
-      "auto_alt": false,
-      "in_blog": 1
-    },
-    {
-      "src": "/assets/img/pup-maltipu-472.jpg",
-      "alt": "Рыжий щенок мальтипу Корица на ладони",
-      "breed": "maltipu",
-      "w": 1038,
-      "h": 1280,
-      "shape": "port",
-      "generated": false,
-      "auto_alt": false,
-      "in_blog": 0
-    },
-    {
-      "src": "/assets/img/pup-maltipu-474.jpg",
-      "alt": "Рыжий кудрявый щенок мальтипу Тоффи на руках",
-      "breed": "maltipu",
-      "w": 704,
-      "h": 823,
-      "shape": "port",
-      "generated": false,
-      "auto_alt": false,
-      "in_blog": 1
-    },
-    {
-      "src": "/assets/img/pup-maltipu-478.jpg",
-      "alt": "Шоколадный щенок мальтипу Брауни сидит на тапочке",
-      "breed": "maltipu",
-      "w": 1200,
-      "h": 1600,
-      "shape": "port",
-      "generated": false,
-      "auto_alt": false,
-      "in_blog": 0
-    },
-    {
-      "src": "/assets/img/pup-maltipu-480.jpg",
-      "alt": "Рыжая малышка мальтипу Ириска в кружевном воротничке",
-      "breed": "maltipu",
-      "w": 960,
-      "h": 1280,
-      "shape": "port",
-      "generated": false,
-      "auto_alt": false,
-      "in_blog": 0
-    },
-    {
-      "src": "/assets/img/pup-maltipu-483.jpg",
-      "alt": "Ириска на светлой подушке",
-      "breed": "maltipu",
-      "w": 960,
-      "h": 1280,
-      "shape": "port",
-      "generated": false,
-      "auto_alt": false,
-      "in_blog": 0
-    },
-    {
-      "src": "/assets/img/pup-maltipu-484.jpg",
-      "alt": "Рыжий щенок мальтипу Ириска",
-      "breed": "maltipu",
-      "w": 960,
-      "h": 1280,
-      "shape": "port",
-      "generated": false,
-      "auto_alt": false,
-      "in_blog": 0
-    },
-    {
-      "src": "/assets/img/pup-maltipu-490.jpg",
-      "alt": "Тедди на сером диване",
-      "breed": "maltipu",
-      "w": 960,
-      "h": 1280,
-      "shape": "port",
-      "generated": false,
-      "auto_alt": false,
-      "in_blog": 0
-    },
-    {
-      "src": "/assets/img/pup-maltipu-491.jpg",
-      "alt": "Абрикосовый щенок мальтипу Тедди в праздничном воротничке",
-      "breed": "maltipu",
-      "w": 960,
-      "h": 1280,
-      "shape": "port",
-      "generated": false,
-      "auto_alt": false,
-      "in_blog": 0
-    },
-    {
-      "src": "/assets/img/pup-maltipu-492.jpg",
-      "alt": "Абрикосовый мальтипу Тедди стоит на диване",
-      "breed": "maltipu",
-      "w": 960,
-      "h": 1280,
-      "shape": "port",
-      "generated": false,
-      "auto_alt": false,
-      "in_blog": 0
-    },
-    {
       "src": "/assets/img/pup-maltipu-chocolate.jpg",
-      "alt": "Щенок мальтипу, шоколадный окрас",
+      "alt": "Шоколадный щенок мальтипу на вязаном пледе",
       "breed": "maltipu",
       "w": 928,
       "h": 1152,
       "shape": "port",
       "generated": false,
-      "auto_alt": true,
+      "auto_alt": false,
       "in_blog": 0
     },
     {
@@ -3192,72 +2587,6 @@
       "in_blog": 0
     },
     {
-      "src": "/assets/img/rv-maltipu-381.jpg",
-      "alt": "Рыжий щенок мальтипу на ладони",
-      "breed": "maltipu",
-      "w": 960,
-      "h": 1280,
-      "shape": "port",
-      "generated": false,
-      "auto_alt": false,
-      "in_blog": 0
-    },
-    {
-      "src": "/assets/img/rv-maltipu-418.jpg",
-      "alt": "Абрикосовый кудрявый щенок мальтипу на руке",
-      "breed": "maltipu",
-      "w": 1200,
-      "h": 1600,
-      "shape": "port",
-      "generated": false,
-      "auto_alt": false,
-      "in_blog": 1
-    },
-    {
-      "src": "/assets/img/rv-maltipu-431.jpg",
-      "alt": "Девушка держит на руках кремового щенка мальтипу",
-      "breed": "maltipu",
-      "w": 959,
-      "h": 1280,
-      "shape": "port",
-      "generated": false,
-      "auto_alt": false,
-      "in_blog": 1
-    },
-    {
-      "src": "/assets/img/rv-maltipu-442.jpg",
-      "alt": "Бело-кремовый щенок мальтипу на руке во дворе",
-      "breed": "maltipu",
-      "w": 960,
-      "h": 1280,
-      "shape": "port",
-      "generated": false,
-      "auto_alt": false,
-      "in_blog": 0
-    },
-    {
-      "src": "/assets/img/rv-maltipu-449.jpg",
-      "alt": "Абрикосовый щенок мальтипу на руке у хозяина",
-      "breed": "maltipu",
-      "w": 960,
-      "h": 1280,
-      "shape": "port",
-      "generated": false,
-      "auto_alt": false,
-      "in_blog": 0
-    },
-    {
-      "src": "/assets/img/rv-maltipu-496.jpg",
-      "alt": "Абрикосовый щенок мальтипу в кружевном воротнике на клетчатом пледе",
-      "breed": "maltipu",
-      "w": 960,
-      "h": 1280,
-      "shape": "port",
-      "generated": false,
-      "auto_alt": false,
-      "in_blog": 0
-    },
-    {
       "src": "/assets/img/rv-pudel-292.jpg",
       "alt": "Рыжий щенок той-пуделя выглядывает из белой лежанки",
       "breed": "toj-pudel",
@@ -3303,7 +2632,7 @@
     },
     {
       "src": "/assets/img/starter-kit.jpg",
-      "alt": "Лежанка, миски, корм и игрушки для щенка, собранные перед переездом",
+      "alt": "Лежанка, миски, корм и игрушки, собранные для щенка перед переездом",
       "breed": null,
       "w": 1024,
       "h": 1024,
@@ -3336,14 +2665,14 @@
     },
     {
       "src": "/assets/img/studio-maltipu-peach.jpg",
-      "alt": "Кремовый щенок мальтипу на персиковом фоне",
+      "alt": "Кремовый щенок мальтипу Пломбир на персиковом фоне",
       "breed": "maltipu",
       "w": 1024,
       "h": 1024,
       "shape": "square",
       "generated": false,
       "auto_alt": false,
-      "in_blog": 0
+      "in_blog": 1
     },
     {
       "src": "/assets/img/studio-pudel-yellow.jpg",
@@ -3366,17 +2695,6 @@
       "generated": false,
       "auto_alt": false,
       "in_blog": 0
-    },
-    {
-      "src": "/assets/img/vid-maltipu-439.jpg",
-      "alt": "Щенок мальтипу на руке на прогулке, видео",
-      "breed": "maltipu",
-      "w": 720,
-      "h": 1280,
-      "shape": "port",
-      "generated": false,
-      "auto_alt": false,
-      "in_blog": 2
     },
     {
       "src": "/assets/img/video-call.jpg",

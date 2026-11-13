@@ -19,8 +19,8 @@
     "topic": "Выбор щенка",
     "card_line": "150 кличек для щенков-мальчиков по группам",
     "cover": {
-      "src": "/assets/img/cl-maltipu-458.jpg",
-      "alt": "Крошечный рыжий щенок мальтипу на ладони"
+      "src": "/assets/img/okras-maltipu-ryzhij-big.jpg",
+      "alt": "Рыжий щенок мальтипу на персиковом фоне"
     },
     "hero": {
       "src": "/assets/img/color-maltipu-apricot.jpg",
@@ -292,8 +292,8 @@
           {
             "photos": [
               {
-                "src": "/assets/img/ab-maltipu-408.jpg",
-                "alt": "Светло-кремовый щенок мальтипу на ладони"
+                "src": "/assets/img/okras-maltipu-kremovyj-big.jpg",
+                "alt": "Кремовый щенок мальтипу на персиковом фоне"
               },
               {
                 "src": "/assets/img/ab-kolli-198.jpg",
