@@ -1,0 +1,45 @@
+{
+  "_": "Проект дом-щенков.рф для инструментов seo/ (образец — project.example.json). СЕКРЕТОВ ЗДЕСЬ НЕТ — файл коммитится.",
+
+  "name": "дом-щенков.рф",
+  "host": "xn----dtbefzjjef0i.xn--p1ai",
+  "displayHost": "дом-щенков.рф",
+
+  "metrikaCounter": "114070015",
+  "_metrikaCounter": "Счётчик сайта с 06.11.2026 (src/data/site.json → seo.yandex_metrika). Старт после согласия на cookie (partials/cookie.html.j2).",
+
+  "gscSiteUrl": "sc-domain:xn----dtbefzjjef0i.xn--p1ai",
+  "_gscSiteUrl": "Если ресурс в Search Console заведён «Префиксом URL», а не «Доменом» — https://xn----dtbefzjjef0i.xn--p1ai/ (со слешом). doctor.mjs покажет, какие ресурсы видит ключ.",
+
+  "webmasterHostId": "https:xn----dtbefzjjef0i.xn--p1ai:443",
+
+  "buildDir": ".",
+  "publicDir": ".",
+  "_buildDir": "Сайт собирается в корень репозитория (tools/build.py). Список страниц берётся из карты сайта, так что копия full/ и служебные папки в отправку не попадают.",
+
+  "sitemap": "/sitemap.xml",
+
+  "indexnowKey": "522d5aac4991b2b37c8803e31bab436c",
+  "_indexnowKey": "Файл 522d5aac4991b2b37c8803e31bab436c.txt в корне сайта (его же берёт tools/blog/factory.py indexnow). Не удалять.",
+
+  "_goals": "Идентификаторы ПОСИМВОЛЬНО совпадают с тем, что шлёт assets/js/main.js: track(type) → ym(…, 'reachGoal', type) для каждого события, кроме page_view, и 'lead_sent' после принятой заявки. Новая цель в коде — новая строка здесь, затем node seo/cli/goals.mjs create.",
+  "goals": [
+    { "id": "lead_sent",     "name": "Отправил заявку",                    "star": true },
+    { "id": "form_open",     "name": "Открыл форму заявки",                "star": true },
+    { "id": "contact_click", "name": "Клик по мессенджеру или почте",      "star": true },
+    { "id": "quiz_complete", "name": "Прошёл тест «Подбор породы»" }
+  ],
+
+  "funnel": {
+    "name": "Воронка: форма → заявка",
+    "steps": [
+      { "id": "form_open", "name": "Открыл форму" },
+      { "id": "lead_sent", "name": "Отправил заявку" }
+    ]
+  },
+
+  "ecommerceObject": "",
+  "_ecommerceObject": "Электронной коммерции на сайте нет: щенки продаются по договору, оплат на сайте нет.",
+
+  "cutParams": []
+}
