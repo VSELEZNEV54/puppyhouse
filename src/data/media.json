@@ -66,103 +66,94 @@
   ],
   "maltipu": [
     {
-      "src": "/assets/img/ml-maltipu-389.jpg",
+      "src": "/assets/img/okras-maltipu-kremovyj-big.jpg",
       "kind": "photo",
-      "alt": "Кремово-белый щенок мальтипу на розовой лежанке",
-      "caption": "На любимой лежанке"
+      "alt": "Кремовый щенок мальтипу на персиковом фоне",
+      "caption": "Кремовый мальтипу"
     },
     {
-      "src": "/assets/img/ml-maltipu-377.jpg",
+      "src": "/assets/img/hero-maltipu-sofa.jpg",
       "kind": "photo",
-      "alt": "Рыжий щенок мальтипу стоит на розовой лежанке",
+      "alt": "Абрикосовый щенок мальтипу на светлом диване",
+      "caption": "На диване"
+    },
+    {
+      "src": "/assets/img/okras-maltipu-ryzhij-big.jpg",
+      "kind": "photo",
+      "alt": "Рыжий щенок мальтипу на персиковом фоне",
       "caption": "Рыжий мальтипу"
     },
     {
-      "src": "/assets/img/ml-maltipu-372.jpg",
+      "src": "/assets/img/family-maltipu.jpg",
       "kind": "photo",
-      "alt": "Белый щенок мальтипу на руках на фоне елей",
-      "caption": "Прогулка в саду",
-      "pos": "40% 50%"
+      "alt": "Девушка обнимает щенка мальтипу на диване",
+      "caption": "В новой семье"
     },
     {
-      "src": "/assets/img/ml-maltipu-489.jpg",
+      "src": "/assets/img/okras-maltipu-abrikosovyj-big.jpg",
       "kind": "photo",
-      "alt": "Абрикосовый щенок мальтипу в праздничном кружевном воротничке",
-      "caption": "Нарядный малыш"
-    },
-    {
-      "src": "/assets/img/ml-maltipu-470.jpg",
-      "kind": "photo",
-      "alt": "Абрикосовый щенок мальтипу на руках у хозяйки",
-      "caption": "На руках"
-    },
-    {
-      "src": "/assets/img/ml-maltipu-475.jpg",
-      "kind": "photo",
-      "alt": "Рыжий кудрявый щенок мальтипу выглядывает из розовой чашки",
-      "caption": "Мальтипу в чашке"
-    },
-    {
-      "src": "/assets/img/ml-maltipu-451.jpg",
-      "kind": "photo",
-      "alt": "Щенок мальтипу в плетёной корзинке с мягкими игрушками",
-      "caption": "В корзинке с игрушками"
-    },
-    {
-      "src": "/assets/img/ml-maltipu-386.jpg",
-      "kind": "photo",
-      "alt": "Абрикосовый щенок мальтипу стоит на сером диване",
+      "alt": "Абрикосовый щенок мальтипу на персиковом фоне",
       "caption": "Абрикосовый мальтипу"
     },
     {
-      "src": "/assets/img/vid-maltipu-439.jpg",
-      "kind": "video",
-      "alt": "Щенок мальтипу на руках на прогулке",
-      "caption": "Мальтипу на прогулке",
-      "video": "/assets/video/vid-maltipu-439.mp4"
+      "src": "/assets/img/gift-maltipu.jpg",
+      "kind": "photo",
+      "alt": "Щенок мальтипу в подарочной коробке",
+      "caption": "Щенок в подарок"
     },
     {
-      "src": "/assets/img/cl-maltipu-396.jpg",
+      "src": "/assets/img/okras-maltipu-belyj-big.jpg",
       "kind": "photo",
-      "alt": "Абрикосовый щенок мальтипу на розовой лежанке",
-      "caption": "Плюшевый мишка",
-      "pos": "50% 42%"
+      "alt": "Белый щенок мальтипу на персиковом фоне",
+      "caption": "Белый мальтипу"
     },
     {
-      "src": "/assets/img/ml-maltipu-477.jpg",
+      "src": "/assets/img/parents-maltipu.jpg",
       "kind": "photo",
-      "alt": "Рыжий щенок мальтипу сидит на напольных весах",
-      "caption": "Взвешиваемся"
+      "alt": "Мама-мальтипу со щенками на лежанке",
+      "caption": "Мама со щенками"
     },
     {
-      "src": "/assets/img/ml-maltipu-479.jpg",
+      "src": "/assets/img/okras-maltipu-shokoladnyj-big.jpg",
       "kind": "photo",
-      "alt": "Рыжий щенок мальтипу в кружевном воротничке",
-      "caption": "В кружевном воротничке"
+      "alt": "Шоколадный щенок мальтипу на персиковом фоне",
+      "caption": "Шоколадный мальтипу"
     },
     {
-      "src": "/assets/img/ml-maltipu-457.jpg",
+      "src": "/assets/img/pup-maltipu-chocolate.jpg",
       "kind": "photo",
-      "alt": "Рыжий щенок мальтипу на ладони во дворе",
-      "caption": "Помещается на ладони"
+      "alt": "Шоколадный щенок мальтипу на вязаном пледе",
+      "caption": "На пледе"
     },
     {
-      "src": "/assets/img/ml-maltipu-462.jpg",
+      "src": "/assets/img/okras-maltipu-partikolor-big.jpg",
       "kind": "photo",
-      "alt": "Кремовый щенок мальтипу на мягкой подушке в машине",
-      "caption": "Едет домой"
+      "alt": "Щенок мальтипу партиколор на персиковом фоне",
+      "caption": "Мальтипу партиколор"
     },
     {
-      "src": "/assets/img/ml-maltipu-499.jpg",
+      "src": "/assets/img/okras-maltipu-chernyj-big.jpg",
       "kind": "photo",
-      "alt": "Рыжий щенок мальтипу с белой грудкой на руках",
-      "caption": "Рыжий с белой грудкой"
+      "alt": "Чёрный щенок мальтипу на персиковом фоне",
+      "caption": "Чёрный мальтипу"
     },
     {
-      "src": "/assets/img/ml-maltipu-438.jpg",
+      "src": "/assets/img/okras-maltipu-serebristyj-big.jpg",
       "kind": "photo",
-      "alt": "Пушистый кремовый щенок мальтипу на руках у крыльца",
-      "caption": "Знакомство с улицей"
+      "alt": "Серебристый щенок мальтипу на персиковом фоне",
+      "caption": "Серебристый мальтипу"
+    },
+    {
+      "src": "/assets/img/okras-maltipu-fantom-big.jpg",
+      "kind": "photo",
+      "alt": "Щенок мальтипу фантом на персиковом фоне",
+      "caption": "Мальтипу фантом"
+    },
+    {
+      "src": "/assets/img/okras-maltipu-sobolinyj-big.jpg",
+      "kind": "photo",
+      "alt": "Соболиный щенок мальтипу на персиковом фоне",
+      "caption": "Соболиный мальтипу"
     }
   ],
   "francuzskij-buldog": [
