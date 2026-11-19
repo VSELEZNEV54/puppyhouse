@@ -27,6 +27,7 @@ from pathlib import Path
 from markupsafe import Markup, escape
 
 from _lib import by_id, crumbs
+from tools.blog.server_queue import merged as with_server, private_file, schedule as server_schedule, stage_images
 
 CHARS_PER_MIN = 1300                # silent reading speed, characters with spaces
 TONES = Path(__file__).resolve().parents[2] / "tools" / "photo-tones.json"  # measured studio backdrops (read only)
@@ -233,13 +234,16 @@ def _factory(legacy_slugs):
     out, the first eleven included. A draft whose file is broken is skipped with a warning (it is not out);
     a published one that is broken raises: the build must not silently drop a page that is on the site."""
     now = _now()
-    pub = _read_json(FACTORY / "published.json", {}).get("posts", {})
+    pub = with_server(_read_json(FACTORY / "published.json", {}).get("posts", {}))
     # a future date = in the schedule, not out yet (the server rebuilds the site on the day: dsh blog)
     pub = {slug: e for slug, e in pub.items() if _goes_live(e["date"]) <= now}  # a bad date stops the module
     on = _links_on(now)
     pub = {slug: dict(e, links=e.get("links", 3) if on else 0) for slug, e in pub.items()}
     metas, posts = {}, {}
-    for path in sorted((FACTORY / "posts").glob("*.json")):
+    server_live = pub.keys() & server_schedule().keys()
+    stage_images(server_live)
+    paths = list((FACTORY / "posts").glob("*.json")) + [private_file(s) for s in server_live]
+    for path in sorted(paths):
         slug = path.stem
         try:
             d = json.loads(path.read_text(encoding="utf-8"))
@@ -406,6 +410,8 @@ def _post_route(slug, meta, post, pub, bmap, site_url, brand):
                 intro=rich(post["intro"], links),
                 toc=[[s["id"], s["toc"]] for s in post["sections"]],
                 sections=sections,
+                references=post.get("references", []),
+                image_note=post.get("image_note", ""),
                 faq_title=post["faq_title"],
                 # the question sits in a flex button next to the «+» icon: one wrapping span = one flex item
                 faq=[dict(q=Markup("<span>") + nobr(q["q"]) + Markup("</span>"), a=rich(q["a"], links))

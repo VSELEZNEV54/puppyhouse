@@ -30,6 +30,8 @@ import struct
 import sys
 from pathlib import Path
 
+from server_queue import image_path as server_image, merged as with_server, private_file, schedule as server_schedule
+
 ROOT = Path(__file__).resolve().parents[2]
 BLOG = ROOT / "content" / "blog"
 POSTS = BLOG / "posts"
@@ -142,7 +144,7 @@ def legacy():
 
 
 def post_file(slug):
-    return POSTS / f"{slug}.json"
+    return private_file(slug) if slug in server_schedule() else POSTS / f"{slug}.json"
 
 
 def article(slug):
@@ -200,6 +202,7 @@ def dates():
     p = plan()
     sch = p["schedule"]
     pub = published()["posts"]
+    reserved = {datetime.date.fromisoformat(e["date"]) for e in server_schedule().values()}
     out = {}
     launch = datetime.date.fromisoformat(sch["launch"])
     main_out = sorted(datetime.date.fromisoformat(e["date"]) for s, e in pub.items() if e.get("series") not in AT_LAUNCH)
@@ -213,7 +216,7 @@ def dates():
             out[c["slug"]] = max(launch, today_msk())
             continue
         anchor = first or d
-        while not posting_day(d, anchor, sch):
+        while d in reserved or not posting_day(d, anchor, sch):
             d += datetime.timedelta(days=1)
         out[c["slug"]] = d
         first = first or d
@@ -427,7 +430,7 @@ def lint_one(slug, pub=None, for_publish=False):
         return [f"нет файла {f.relative_to(ROOT)}"], []
     except ValueError as e:
         return [f"битый JSON: {e}"], []
-    c = next((x for x in cards() if x["slug"] == slug), None)
+    c = d.get("card") if slug in server_schedule() else next((x for x in cards() if x["slug"] == slug), None)
     if c is None:
         errors.append("темы нет в plan.json")
         c = {"slug": slug, "m": 99, "pk": ""}
@@ -544,7 +547,7 @@ def lint_one(slug, pub=None, for_publish=False):
     if len(set(srcs)) != len(srcs):
         errors.append("одно и то же фото дважды в тексте")
     for x in ph + [p["cover"]] + ([p["hero"]] if p.get("hero") else []):
-        if x.get("src", "").startswith("/assets/img/blog/"):
+        if x.get("src", "").startswith("/assets/img/blog/") or server_image(x.get("src", "")) is not None:
             said = (x.get("alt", "") + " " + x.get("caption", "")).lower()
             m = re.search(r"мальтипу|пудел|бульдог|француз|колли|\bнаш\w*|выпускни", said)
             if m:
@@ -552,7 +555,7 @@ def lint_one(slug, pub=None, for_publish=False):
                               "за щенка питомника и не называем породу")
         if not x.get("alt"):
             errors.append(f"нет alt у {x.get('src')}")
-        if not (ROOT / x.get("src", "/").lstrip("/")).is_file():
+        if not (server_image(x.get("src", "")) or ROOT / x.get("src", "/").lstrip("/")).is_file():
             errors.append(f"нет файла {x.get('src')}")
 
     # links: month 1 — none; later ≤ links_max, only to what is out (or comes out earlier by the plan)
@@ -581,8 +584,9 @@ def lint_one(slug, pub=None, for_publish=False):
 # ---------------------------------------------------------------- commands
 def cmd_status(a):
     p = plan()
-    pub = published()["posts"]
+    pub = with_server(published()["posts"])
     rows = [(c, state(c, pub)) for c in p["cards"]]
+    rows.extend(({"slug": slug}, "published" if is_live(e) else "scheduled") for slug, e in server_schedule().items())
     count = {}
     for _, s in rows:
         count[s] = count.get(s, 0) + 1
@@ -906,7 +910,7 @@ def cmd_unimg(a):
 
 
 def cmd_lint(a):
-    slugs = a.slugs or sorted(f.stem for f in POSTS.glob("*.json"))
+    slugs = a.slugs or sorted({f.stem for f in POSTS.glob("*.json")} | set(server_schedule()))
     pub = published()["posts"]
     bad = 0
     for s in slugs:
@@ -1017,6 +1021,7 @@ def cmd_publish(a):
                     and lint_ok(c, new):
                 new[c["slug"]] = {"date": day, "links": target(c), "series": "base" if is_base(c) else "launch"}
     else:
+        reserved = {datetime.date.fromisoformat(e["date"]) for e in server_schedule().values()}
         mains = sorted(datetime.date.fromisoformat(e["date"]) for e in live.values() if e.get("series") not in AT_LAUNCH)
         anchor = mains[0] if mains else None
         earliest = now.date() if now < goes_live(now.date().isoformat(), p) else now.date() + datetime.timedelta(days=1)
@@ -1026,7 +1031,7 @@ def cmd_publish(a):
                 continue
             if state(c, new) not in ("approved", "ready", "scheduled") or not lint_ok(c, new):
                 continue
-            while not posting_day(d, anchor or d, sch):
+            while d in reserved or not posting_day(d, anchor or d, sch):
                 d += datetime.timedelta(days=1)
             new[c["slug"]] = {"date": d.isoformat(), "links": target(c), "series": "main"}
             anchor = anchor or d
@@ -1057,9 +1062,11 @@ def cmd_stamp(a):
     import hashlib
     p = plan()
     now = now_msk()
-    live = sorted(s for s, e in published()["posts"].items() if is_live(e, now, p))
+    live = sorted(s for s, e in with_server(published()["posts"]).items() if is_live(e, now, p))
     on = links_on(now, p)
-    h = hashlib.sha1((",".join(live) + f"|{int(on)}").encode()).hexdigest()[:12]
+    private = server_schedule()
+    versions = [s + "@" + private[s]["revision"] if s in private else s for s in live]
+    h = hashlib.sha1((",".join(versions) + f"|{int(on)}").encode()).hexdigest()[:12]
     print(f"{len(live)}-{int(on)}-{h}")
     return 0
 
@@ -1087,7 +1094,7 @@ def cmd_indexnow(a):
     if not keys:
         print("indexnow: нет файла ключа <32 hex>.txt в корне репозитория")
         return 0
-    slugs = a.slugs or [s for s, e in published()["posts"].items() if e["date"] == day and is_live(e)]
+    slugs = a.slugs or [s for s, e in with_server(published()["posts"]).items() if e["date"] == day and is_live(e)]
     if not slugs:
         print(f"indexnow: {day} ничего не вышло")
         return 0

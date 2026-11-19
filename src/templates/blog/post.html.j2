@@ -41,6 +41,13 @@
           <h2 id="{{ s.id }}">{{ s.h2|typo }}</h2>
           {{ blg.copy(s.blocks) }}
           {% endfor %}
+          {% if post.references %}
+          <section aria-labelledby="article-references">
+            <h2 id="article-references">Источники к материалу</h2>
+            <ul>{% for source in post.references %}<li><a href="{{ source.url }}">{{ source.title }}</a></li>{% endfor %}</ul>
+          </section>
+          {% endif %}
+          {% if post.image_note %}<p class="blg-image-note"><small>{{ post.image_note }}</small></p>{% endif %}
         </article>
         <div class="article__aside blg-aside">
           {{ ui.toc(post.toc) }}

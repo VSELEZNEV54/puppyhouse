@@ -5,6 +5,10 @@ _kit/
 __pycache__/
 _all/
 
+# Server-only editorial inputs and their derived, date-gated artwork.
+/content/blog/server-queue
+/assets/img/editorial-queue/
+
 # secrets: never commit (the site is published from the repo root by GitHub Pages)
 .env
 .env.*

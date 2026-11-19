@@ -43,6 +43,7 @@ from pathlib import Path
 import jinja2
 from markupsafe import Markup, escape
 
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import seo  # noqa: E402  (tools/seo.py: canonical, Open Graph, JSON-LD, sitemap, robots.txt)
 from image_assets import ResponsiveImages
@@ -138,6 +139,10 @@ def imgsize(src: str):
             head = f.read(26)
             if head[:8] == b"\x89PNG\r\n\x1a\n":
                 size = struct.unpack(">II", head[16:24])
+            elif head[:4] == b"RIFF" and head[8:12] == b"WEBP":
+                from PIL import Image
+                with Image.open(path) as im:
+                    size = im.size
             elif head[:2] == b"\xff\xd8":
                 f.seek(2)
                 while True:
