@@ -134,6 +134,8 @@ case "$cmd" in
       run)  # cron
         exec 9>/run/domshchenkov-autoupdate.lock
         flock -n 9 || exit 0                       # the previous run is still deploying
+        # Scheduled articles are on this host. Publish them even if the upstream Git server is offline.
+        blog_refresh || true
         git -C "$src" fetch -q origin
         remote="$(git -C "$src" rev-parse '@{u}')"
         if [ "$remote" = "$(git -C "$src" rev-parse HEAD)" ]; then
@@ -149,7 +151,6 @@ case "$cmd" in
               echo "$(date -Is) адреса изменились, но выкладка не прошла — работает прошлая; подробности выше в $log" | tee "$STATE/autoupdate"
             fi
           fi
-          blog_refresh || true   # an article of the blog's schedule is due (10:00 Moscow) → the site files again
           exit 0
         fi
         [ "$remote" = "$(cat "$STATE/autoupdate-failed" 2>/dev/null || true)" ] && exit 0   # failed before: wait for a fix
